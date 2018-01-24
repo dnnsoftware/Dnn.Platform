@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             var userInfo = UserController.Instance.GetUser(PortalId, UserId);
             if (userInfo == null)
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("UserNotFound"), UserId));
-            if (!userInfo.IsDeleted)
+            if (userInfo.IsDeleted)
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_CannotPurgeUser"));
 
             RecyclebinController.Instance.DeleteUsers(new List<UserInfo> { userInfo });
