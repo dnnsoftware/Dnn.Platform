@@ -25,8 +25,8 @@ class DefaultPagesSettingsPanelBody extends Component {
         isHost = util.settings.isHost;
     }
 
-    loadData() {
-        const {props} = this;
+    loadData(newProps) {
+        const props = newProps ? newProps : this.props;
         if (props.defaultPagesSettings) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;
@@ -71,9 +71,17 @@ class DefaultPagesSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            defaultPagesSettings: Object.assign({}, props.defaultPagesSettings)
-        });
+        if (!this.loadData(props)) {
+            this.setState({
+                defaultPagesSettings: Object.assign({}, props.defaultPagesSettings)                
+            });
+            return;
+        }
+        props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
+            this.setState({
+                defaultPagesSettings: Object.assign({}, data.Settings)
+            });
+        }));
     }
 
     onSettingChange(key, event, value) {
@@ -131,7 +139,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
         const TabParameters = {
             portalId: props.portalId !== undefined ? props.portalId : -2,
-            cultureCode: "",
+            cultureCode: props.cultureCode || "",
             isMultiLanguage: false,
             excludeAdminTabs: false,
             roles: "",
