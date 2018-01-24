@@ -365,6 +365,12 @@
     &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
     &lt;code class="block"&gt;purge-user --id 345&lt;/code&gt;</value>
   </data>
+  <data name="Prompt_UserPurged.Text" xml:space="preserve">
+    <value>The User has been permanently removed from the site.</value>
+  </data>
+  <data name="Prompt_CannotPurgeUser.Text" xml:space="preserve">
+    <value>Cannot purge user that has not been deleted first. Try delete-user.</value>
+  </data>
   <data name="Prompt_RestoreModule_Description.Text" xml:space="preserve">
     <value>Restores a module from the DNN Recycle Bin.</value>
   </data>
