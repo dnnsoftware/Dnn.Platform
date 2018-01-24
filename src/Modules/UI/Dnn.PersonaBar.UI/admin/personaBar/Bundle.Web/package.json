@@ -29,7 +29,7 @@
     "dnn-dropdown": "1.0.21",
     "dnn-dropdown-with-error": "0.0.11",
     "dnn-editable-field": "0.0.17",
-    "dnn-file-upload": "^0.1.20",
+    "dnn-file-upload": "0.1.21",
     "dnn-folder-picker": "0.0.7",
     "dnn-global-styles": "0.0.5",
     "dnn-grid-cell": "0.0.6",
