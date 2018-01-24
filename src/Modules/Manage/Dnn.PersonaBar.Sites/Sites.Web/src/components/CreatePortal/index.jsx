@@ -295,7 +295,6 @@ class CreatePortal extends Component {
                                     onChange={this.onChange.bind(this, "IsChildSite")}
                                     buttonGroup="siteType"
                                     value={state.newPortal.IsChildSite}
-                                    buttonWidth={130}
                                     options={[
                                         {
                                             label: Localization.get("Domain"),
