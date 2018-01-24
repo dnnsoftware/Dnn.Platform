@@ -692,13 +692,14 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var author = UserController.Instance.GetUser(message.PortalID, message.SenderUserID);
             var portalSettings = new PortalSettings(message.PortalID);
-            var fromAddress = portalSettings.Email;
+            var fromAddress = (UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email) != null) ?
+                String.Format("{0} < {1} >", UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email).DisplayName, portalSettings.Email) : portalSettings.Email;
             var toAddress = toUser.Email;
 
             if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
             {
                 var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
-                var senderAddress = GetSenderAddress(senderName, fromAddress);
+                var senderAddress = GetSenderAddress(senderName, portalSettings.Email);
                 var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
                 var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
                 var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
