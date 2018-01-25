@@ -332,7 +332,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 var user in
                     userInfos.Select(u => UserController.GetUserById(u.PortalID, u.UserID))
                         .Where(user => user != null)
-                        .Where(user => !user.IsDeleted))
+                        .Where(user => user.IsDeleted))
             {
                 if (CanManageUser(user))
                     UserController.RemoveUser(user);
