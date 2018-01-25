@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         {
             var lst = new List<ModuleInfoModel>();
             KeyValuePair<HttpStatusCode, string> message;
-            var moduleInfo = ModulesController.Instance.GetModule(ModuleId, PageId, out message);
+            var moduleInfo = ModulesController.Instance.GetModule(PortalSettings, ModuleId, PageId, out message);
             if (moduleInfo == null && !string.IsNullOrEmpty(message.Value))
             {
                 return new ConsoleErrorResultModel(message.Value);
