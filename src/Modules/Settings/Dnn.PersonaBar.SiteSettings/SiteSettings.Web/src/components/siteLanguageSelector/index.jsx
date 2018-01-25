@@ -150,13 +150,6 @@ class SiteLanguageSelector extends Component {
             this.setState({
                 cultureCode: culture
             });
-            this.triggerEvent("cultureCodeChanged",
-                {
-                    cultureCode: culture,
-                    referrer: props.referrer,
-                    referrerText: props.referrerText,
-                    backToReferrerFunc: props.backToReferrerFunc
-                });
             return culture;
         }
     }
