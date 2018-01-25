@@ -46,10 +46,13 @@ class PagePicker extends Component {
 
     componentWillReceiveProps(newProps) {
         //reload if any query param changed
-        if (JSON.stringify(this.props.PortalTabsParameters) !== JSON.stringify(newProps.PortalTabsParameters)) {
-            if (!newProps.IsMultiSelect) {
-                this.setState({portalTabs: []});
-            }
+        const {props} = this;
+        if (props.PortalTabsParameters.portalId !== newProps.PortalTabsParameters.portalId ||
+            props.PortalTabsParameters.cultureCode !== newProps.PortalTabsParameters.cultureCode ||
+            props.PortalTabsParameters.isMultiLanguage !== newProps.PortalTabsParameters.isMultiLanguage ||
+            props.PortalTabsParameters.excludeAdminTabs !== newProps.PortalTabsParameters.excludeAdminTabs ||
+            props.PortalTabsParameters.roles !== newProps.PortalTabsParameters.roles) {
+            this.setState({portalTabs: []});
             this.loaded = false;
             return;
         }
