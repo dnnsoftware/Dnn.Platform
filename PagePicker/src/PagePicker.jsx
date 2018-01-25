@@ -45,9 +45,23 @@ class PagePicker extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        //reload if any query param changed
+        const {props} = this;
+        if (props.PortalTabsParameters.portalId !== newProps.PortalTabsParameters.portalId ||
+            props.PortalTabsParameters.cultureCode !== newProps.PortalTabsParameters.cultureCode ||
+            props.PortalTabsParameters.isMultiLanguage !== newProps.PortalTabsParameters.isMultiLanguage ||
+            props.PortalTabsParameters.excludeAdminTabs !== newProps.PortalTabsParameters.excludeAdminTabs ||
+            props.PortalTabsParameters.roles !== newProps.PortalTabsParameters.roles) {
+            this.setState({portalTabs: []});
+            this.loaded = false;
+            return;
+        }
+
         if (newProps.Reload && !newProps.IsInDropDown && this._isMounted) {
             if (!newProps.IsMultiSelect) {
-                this.setDefaultPage(newProps);
+                if (newProps.selectedTabId !== this.props.selectedTabId) {
+                    this.setDefaultPage(newProps);
+                }
             }
             this.setState({ selectedPages: [], dropDownOpen: false, portalTabs: [] }, () => {
                 this.initialize(newProps);
