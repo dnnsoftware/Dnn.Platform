@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
@@ -54,33 +55,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             set
             {
                 Text = value?.ToString(Format) ?? string.Empty;
-                
             }
         }
 
-        public DateTime MinDate { get; set; } = DateTime.MinValue;
+        public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
 
-
-        protected override void OnInit(EventArgs e)
-        {
-            //if (CultureInfo.CurrentCulture.Name == "ar-SA")
-            //{
-            //    Culture.DateTimeFormat.Calendar = new GregorianCalendar();
-            //}
-
-            base.OnInit(e);
-            //base.EnableEmbeddedBaseStylesheet = false;
-            //Utilities.ApplySkin(this);
-            //this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
-            //var specialDay = new RadCalendarDay();
-            //specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
-            //specialDay.ItemStyle.CssClass = "dnnCalendarToday";
-            //this.Calendar.SpecialDays.Add(specialDay);
-            //this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
-            //this.MinDate = (DateTime)SqlDateTime.MinValue;
-        }
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -101,8 +82,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                {"minDate", MinDate > DateTime.MinValue ? $"$new Date('{MinDate.ToString(Format)}')$" : ""},
-                {"maxDate", MaxDate > DateTime.MinValue ? $"$new Date('{MaxDate.ToString(Format)}')$" : ""},
+                {"minDate", MinDate > DateTime.MinValue ? $"$new Date('{MinDate.ToString(Format, CultureInfo.InvariantCulture)}')$" : ""},
+                {"maxDate", MaxDate > DateTime.MinValue ? $"$new Date('{MaxDate.ToString(Format, CultureInfo.InvariantCulture)}')$" : ""},
                 {"format", ClientFormat }
             };
         } 
