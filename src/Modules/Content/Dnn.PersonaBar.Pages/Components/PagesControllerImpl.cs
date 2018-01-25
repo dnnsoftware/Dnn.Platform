@@ -350,8 +350,11 @@ namespace Dnn.PersonaBar.Pages.Components
                         bIsMatch = bIsMatch &
                                    Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
                     if (!string.IsNullOrEmpty(tabSkin))
+                    {
+                        var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled|RegexOptions.ECMAScript|RegexOptions.IgnoreCase|RegexOptions.Multiline);
                         bIsMatch = bIsMatch &
-                                   Regex.IsMatch(tab.SkinSrc, tabSkin.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                                   Regex.IsMatch(tab.SkinSrc, escapedString.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    }
 
                     if (bIsMatch)
                         finalList.Add(tab);
