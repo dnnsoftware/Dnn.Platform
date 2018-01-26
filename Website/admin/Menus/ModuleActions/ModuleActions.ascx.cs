@@ -28,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
@@ -187,7 +188,9 @@ namespace DotNetNuke.Admin.Containers
                             }
                         }
                     }
-                    IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
+                    IsShared = ModuleContext.Configuration.AllTabs
+                        || PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId))
+                        || TabController.Instance.GetTabsByModuleID(ModuleContext.ModuleId).Count > 1;
                 }
             }
             catch (Exception exc) //Module failed to load

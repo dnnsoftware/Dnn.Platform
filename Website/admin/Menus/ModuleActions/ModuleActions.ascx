@@ -53,6 +53,7 @@
                     yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                     noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                     confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                    sharedText: '<%= Localization.GetSafeJSString("ModuleShared.Text", Localization.SharedResourceFile) %>',
                     rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
                     supportsQuickSettings: supportsQuickSettings,
