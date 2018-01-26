@@ -25,6 +25,10 @@
         };
     })();
 
+    var getSiteRoot = function () {
+        return dnn.getVar('sf_siteRoot') || "/";
+    }
+
     var FileUploadPanel = this.FileUploadPanel = function (options) {
         this.options = options;
         this.init();
@@ -454,7 +458,7 @@
             var path = result.path;
             if (this._isValidExtension(result.fileName, [".bmp", ".gif", ".png", ".jpg", ".jpeg"])) {
                 if (result.fileId) {
-                    var thumbnailImage = '/DnnImageHandler.ashx?mode=securefile&fileId=' + result.fileId + '&MaxWidth=74&MaxHeight=42';
+                    var thumbnailImage = getSiteRoot() + 'DnnImageHandler.ashx?mode=securefile&fileId=' + result.fileId + '&MaxWidth=74&MaxHeight=42';
                     path = thumbnailImage;
                 }
                 $img.prop("src", path);
