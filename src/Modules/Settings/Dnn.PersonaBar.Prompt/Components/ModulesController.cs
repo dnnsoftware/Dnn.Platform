@@ -11,13 +11,13 @@ using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Components
 {
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
-        private const int NO_SITE_GROUPID = -1;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));        
 
         protected override Func<IModulesController> GetFactory()
         {
@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 return null;
             }
 
-            if (targetPage.PortalID == portalSettings.PortalId  || IsPageOfSiteGroups(portalSettings, targetPage.PortalID))
+            if (targetPage.PortalID == portalSettings.PortalId  || PortalHelper.IsRequestForSiteGroup(targetPage.PortalID,portalSettings.PortalId))
             {
                 try
                 {
@@ -136,21 +136,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             {
                 return null;
             }            
-        }
-
-        private bool IsPageOfSiteGroups(PortalSettings portalSettings, int pagePortalId)
-        {
-            var isSiteGroupPage = false;
-            var groupController = PortalGroupController.Instance;
-            var portal = PortalController.Instance.GetPortal(portalSettings.PortalId);            
-
-            if (portal.PortalGroupID != NO_SITE_GROUPID)
-            {
-                isSiteGroupPage = groupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == pagePortalId);
-            }
-
-            return isSiteGroupPage;
-        }
+        }      
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {         
@@ -180,7 +166,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
                 if (module != null)
                 {
-                    if (module.PortalID == portalSettings.PortalId || IsModuleOfSiteGroups(portalSettings, module.PortalID, module.ModuleID))
+                    if (module.PortalID == portalSettings.PortalId || PortalHelper.IsRequestForSiteGroup(module.PortalID, portalSettings.PortalId))
                     {
                         return module;
                     }                    
@@ -203,23 +189,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
-
-        private bool IsModuleOfSiteGroups(PortalSettings portalSettings, int modulePortalId, int moduleId)
-        {
-            var isSiteGroupModule = false;
-            var groupController = PortalGroupController.Instance;
-            var portal = PortalController.Instance.GetPortal(portalSettings.PortalId);
-
-            isSiteGroupModule = groupController.IsModuleShared(moduleId, portal);
-
-            if (!isSiteGroupModule && portal.PortalGroupID != NO_SITE_GROUPID)
-            {
-                isSiteGroupModule = groupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == modulePortalId);
-            }
-
-            return isSiteGroupModule;
-        }
-
+      
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
             int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {

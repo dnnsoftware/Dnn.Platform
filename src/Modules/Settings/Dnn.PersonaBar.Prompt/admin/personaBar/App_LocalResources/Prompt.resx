@@ -1200,4 +1200,7 @@
       &lt;tr&gt;&lt;td&gt;Reloading in 3 seconds&lt;/td&gt;&lt;/tr&gt;
     &lt;/table&gt;</value>
   </data>
+  <data name="InValidPortalId.Text" xml:space="preserve">
+    <value>Portal Id {0} does not belong to Site Group.</value>
+  </data>
 </root>
