@@ -1965,4 +1965,7 @@ If you expect this addition, then just ignore this email; otherwise, an immediat
   <data name="RestrictFileMail_Subject.Text" xml:space="preserve">
     <value>Potentially dangerous file added to your website</value>
   </data>
+  <data name="ModuleShared.Text" xml:space="preserve">
+    <value>Shared Module</value>
+  </data>
 </root>
