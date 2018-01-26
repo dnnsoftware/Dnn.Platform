@@ -147,6 +147,12 @@
   <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Settings\Dnn.PersonaBar.Prompt\Dnn.PersonaBar.Prompt.csproj">
+      <Project>{29521c64-3269-40da-9b4c-cd492246c889}</Project>
+      <Name>Dnn.PersonaBar.Prompt</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

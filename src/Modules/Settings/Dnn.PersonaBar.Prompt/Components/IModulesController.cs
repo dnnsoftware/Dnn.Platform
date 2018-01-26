@@ -14,9 +14,9 @@ namespace Dnn.PersonaBar.Prompt.Components
         ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId,
             string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false);
 
-        void DeleteModule(int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message);
+        void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message);
 
-        ModuleInfo GetModule(int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message);
+        ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message);
 
         IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null,
             int pageIndex = 0, int max = 10);

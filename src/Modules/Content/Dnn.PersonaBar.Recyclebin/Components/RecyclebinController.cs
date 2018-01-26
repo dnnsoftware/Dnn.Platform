@@ -37,6 +37,8 @@ using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
+using System.Net;
+using Dnn.PersonaBar.Prompt.Components;
 
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
@@ -255,7 +257,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         {
             errorMessage = null;
             // restore module
-            var module = _moduleController.GetModule(moduleId, tabId, false);
+
+            KeyValuePair<HttpStatusCode, string> message;
+            var module = ModulesController.Instance.GetModule(PortalSettings, moduleId, tabId, out message);
+
             if (module != null)
             {
                 var totalRecords = 0;

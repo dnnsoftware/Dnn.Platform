@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override ConsoleResultModel Run()
         {
             KeyValuePair<HttpStatusCode, string> message;
-            ModulesController.Instance.DeleteModule(ModuleId, PageId, out message);
+            ModulesController.Instance.DeleteModule(PortalSettings, ModuleId, PageId, out message);
             return string.IsNullOrEmpty(message.Value)
                 ? new ConsoleResultModel(LocalizeString("Prompt_ModuleDeleted"))
                 : new ConsoleErrorResultModel(message.Value) { Records = 1 };

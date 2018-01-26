@@ -66,6 +66,12 @@ namespace Dnn.PersonaBar.Prompt.Services
         {
             if (portalId != base.PortalId)
             {
+                if (!PortalHelper.IsRequestForSiteGroup(portalId, base.PortalSettings.PortalId))
+                {
+                    var errorMessage = string.Format(Localization.GetString("InValidPortalId", Constants.LocalResourcesFile), portalId);
+                    Logger.Error(errorMessage);
+                    return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
+                }
                 PortalId = portalId;
                 var portal = PortalController.Instance.GetPortal(PortalId);
                 PortalSettings = new PortalSettings(PortalId);

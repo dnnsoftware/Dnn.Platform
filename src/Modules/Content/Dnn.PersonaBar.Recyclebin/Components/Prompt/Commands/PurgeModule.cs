@@ -6,6 +6,8 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using System.Net;
+using Dnn.PersonaBar.Prompt.Components;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
@@ -32,7 +34,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var module = ModuleController.Instance.GetModule(ModuleId, PageId, true);
+            KeyValuePair<HttpStatusCode, string> message;
+            var module = ModulesController.Instance.GetModule(PortalSettings, ModuleId, PageId, out message);
             if (module == null)
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("ModuleNotFound"), ModuleId));
             var modulesToPurge = new List<ModuleInfo> { module };

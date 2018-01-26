@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dnn.PersonaBar.Prompt</RootNamespace>
     <AssemblyName>Dnn.PersonaBar.Prompt</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -112,6 +112,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\PortalHelper.cs" />
     <Compile Include="Components\Commands\Application\RestartApplication.cs" />
     <Compile Include="Components\Commands\Client\Clh.cs" />
     <Compile Include="Components\Commands\Client\ClearHistory.cs" />
