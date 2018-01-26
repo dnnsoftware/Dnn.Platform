@@ -987,8 +987,8 @@ class App extends Component {
 
     doSearch() {
         const { selectedPage } = this.props;
-        if (selectedPage) {
-            this.onCancelPage();
+        if (selectedPage && this.props.selectedPageDirty) {
+            this.onCancelPage(selectedPage.tabId);
         }
 
         let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
