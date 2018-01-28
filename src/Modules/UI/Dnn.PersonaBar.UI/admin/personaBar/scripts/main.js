@@ -1092,7 +1092,15 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         callback();
                     } else {
                         $personaBar.show();
-                        $personaBar.css({ left: -100 });
+                        
+                        $personaBar.css({
+                            "top":"0",
+                            "right":"0",
+                            "bottom":"0",
+                            "left":"0",
+                            "display":"block"
+                        });
+
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 200, 'linear', callback);
                     }
