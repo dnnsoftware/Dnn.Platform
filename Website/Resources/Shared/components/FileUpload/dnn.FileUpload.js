@@ -454,7 +454,7 @@
             var path = result.path;
             if (this._isValidExtension(result.fileName, [".bmp", ".gif", ".png", ".jpg", ".jpeg"])) {
                 if (result.fileId) {
-                    var thumbnailImage = '/DnnImageHandler.ashx?mode=securefile&fileId=' + result.fileId + '&MaxWidth=74&MaxHeight=42';
+                    var thumbnailImage = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + result.fileId + '&MaxWidth=74&MaxHeight=42';
                     path = thumbnailImage;
                 }
                 $img.prop("src", path);

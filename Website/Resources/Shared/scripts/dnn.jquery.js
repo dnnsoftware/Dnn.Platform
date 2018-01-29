@@ -2604,6 +2604,7 @@
         var xhr = new XMLHttpRequest;
         return !!(xhr && ('upload' in xhr) && ('onprogress' in xhr.upload));
     };
+
     $.fn.dnnFileUpload = function (settings) {
         return this.each(function () {
             // set scope and settings, service
@@ -2669,7 +2670,7 @@
                         src = data.result;
 
                     if (src && $.trim(src)) {
-                        var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + data.result.FileId + '&MaxWidth=180&MaxHeight=150';
+                        var profileImagePath = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + data.result.FileId + '&MaxWidth=180&MaxHeight=150';
                         img.src = profileImagePath;
                         
                         var fileName = data.result.FilePath.replace('\\', '/');
@@ -2734,7 +2735,7 @@
              	var fileId  = selectedFileId ? parseInt(selectedFileId) : 0;
                 if (fileId > 0) {
                     var maxWidth = 180, maxHeight = 150;
-                    var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                    var profileImagePath = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
                     var img = new Image();
 
                     $(img).on('load', function () {
@@ -2788,7 +2789,7 @@
             var fileId = node.key;
             if (fileId) {
                 var maxWidth = 180, maxHeight = 150;
-                var profileImagePath = '/DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
+                var profileImagePath = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + fileId + '&MaxWidth=' + maxWidth + '&MaxHeight=' + maxHeight;
                 var img = new Image();
 
                 $(img).on('load', function () {
