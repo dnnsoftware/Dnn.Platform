@@ -71,6 +71,16 @@ class SearchAdvancedDetails extends Component {
         ReactDOM.findDOMNode(this).getElementsByClassName("input-container")[0].childNodes[0].focus();
     }
 
+    applyDateFilter() {
+        this.toggleDropdownCalendar(); 
+        this.props.onApplyChangesDropdownDayPicker();
+    }
+
+    clearDateFilter() {
+        this.toggleDropdownCalendar();
+        this.props.clearAdvancedSearchDateInterval();
+    }
+
     render() {
         return (
             <div className="search-more-flyout">
@@ -107,7 +117,8 @@ class SearchAdvancedDetails extends Component {
                             <DropdownDayPicker
                                 onDayClick={this.props.onDayClick}
                                 dropdownIsActive={this.state.DropdownCalendarIsActive}
-                                applyChanges={() => {this.toggleDropdownCalendar(); this.props.onApplyChangesDropdownDayPicker();}}
+                                applyChanges={this.applyDateFilter.bind(this)}
+                                clearChanges={this.clearDateFilter.bind(this)}
                                 startDate={this.props.startDate}
                                 endDate={this.props.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
@@ -164,6 +175,7 @@ SearchAdvancedDetails.propTypes = {
     filterByWorkflow : PropTypes.string.isRequired,
     collapsed : PropTypes.bool.isRequired, 
     clearAdvancedSearch : PropTypes.func.isRequired,
+    clearAdvancedSearchDateInterval : PropTypes.func.isRequired,
     updateSearchAdvancedTags : PropTypes.func.isRequired
 };
 
