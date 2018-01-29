@@ -132,7 +132,8 @@ export class App extends Component {
                     break;
             }
         }
-        if (this.isPaging && !e.ctrlKey) {
+        if (this.isPaging && !e.ctrlKey && e.keyCode !== 88) {
+            e.preventDefault();
             return this.runCmd();
         }
     }
