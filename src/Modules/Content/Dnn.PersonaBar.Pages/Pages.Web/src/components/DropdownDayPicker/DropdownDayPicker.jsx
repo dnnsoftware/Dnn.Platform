@@ -5,6 +5,9 @@ import DayPicker from "../DayPicker/src/DayPicker.jsx";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 
+import "./styles.less";
+
+import Localization from "../../localization";
 
 class DropdownDayPicker extends Component  {
 
@@ -66,9 +69,9 @@ class DropdownDayPicker extends Component  {
                                             onDayClick={(data) => onDayClick(data, true) }/>
                                 </GridCell>
                                 <GridCell columnSize={100}>
-                                    <div style={{"width": "100%", "text-align": "center", "height": "30%"}}>
-                                        <Button type="secondary" style={{"margin-right":"5px"}} onClick={()=>clearChanges()}>Clear</Button>
-                                        <Button type="primary" onClick={()=>applyChanges()}>Apply</Button>
+                                    <div className="calendar-dropdown-action-buttons">
+                                        <Button type="secondary" style={{"margin-right":"5px"}} onClick={()=>clearChanges()}>{Localization.get("Clear")}</Button>
+                                        <Button type="primary" onClick={()=>applyChanges()}>{Localization.get("Apply")}</Button>
                                     </div>
                                 </GridCell>
                             </GridCell>
