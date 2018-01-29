@@ -157,7 +157,7 @@
     <value>Unable to find a desktop module with the name '{0}' for this portal</value>
   </data>
   <data name="Prompt_ModuleAdded.Text" xml:space="preserve">
-    <value>Successfully added {0} new module{(1}</value>
+    <value>Successfully added {0} new module{1}</value>
   </data>
   <data name="Prompt_ModuleCopied.Text" xml:space="preserve">
     <value>Successfully copied the module.</value>
