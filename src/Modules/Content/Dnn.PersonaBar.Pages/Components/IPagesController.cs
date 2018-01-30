@@ -3,6 +3,7 @@ using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -26,7 +27,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         void EditModeForPage(int pageId, int userId);
 
-        TabInfo SavePageDetails(PageSettings pageSettings);
+        TabInfo SavePageDetails(PortalSettings portalSettings, PageSettings pageSettings);
 
         IEnumerable<ModuleInfo> GetModules(int pageId);
 

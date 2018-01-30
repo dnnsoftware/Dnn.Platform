@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
                 }
-                var updatedTab = PagesController.Instance.SavePageDetails(pageSettings);
+                var updatedTab = PagesController.Instance.SavePageDetails(PortalSettings, pageSettings);
 
                 var lstResults = new List<PageModel> { new PageModel(updatedTab) };
                 return new ConsoleResultModel(LocalizeString("PageUpdatedMessage")) { Data = lstResults, Records = lstResults.Count };
