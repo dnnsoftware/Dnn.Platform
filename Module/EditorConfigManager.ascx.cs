@@ -357,7 +357,12 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        private static void LoadNodesByTreeViewHelper(List<EditorHostSetting> editorHostSettings, TreeNode portalNode, Dictionary<int, HashSet<TreeNode>> modulesNodes, List<TabInfo> tabs)
+        private static void LoadNodesByTreeViewHelper(
+            List<EditorHostSetting> editorHostSettings, 
+            TreeNode portalNode, 
+            Dictionary<int, HashSet<TreeNode>> modulesNodes, 
+            List<TabInfo> tabs
+            )
         {
             Func<TabInfo, int> getNodeId = x => x.TabID;
             Func<TabInfo, int> getParentId = x => x.ParentId;
