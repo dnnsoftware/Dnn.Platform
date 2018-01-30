@@ -19,7 +19,7 @@ namespace DNNConnect.CKEditorProvider.Helper
         /// <param name="getParentId">Method to return Text used for ParentId from T based Object</param>
         /// <param name="getNodeText">Method to return Text used for TreeNode from T based Object</param>
         /// <param name="getNodeImageURL">Method to return Image used for TreeNode from T based Object</param>
-        /// <param name="parentIdCheck">Validate the parentId for T based object if parrent should not be -1</param>       
+        /// <param name="parentIdCheck">Validate the parentId for T based object if parent should not be -1</param>       
         /// <param name="allLeaves"> if passed would be added as leaves to each node</param>     
         internal void LoadNodes<T>(IEnumerable<T> treeViewData, TreeNodeCollection treeViewNodes, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeValue, Func<T, string> getNodeImageURL, Func<K, bool> parentIdCheck, Dictionary<K, HashSet<TreeNode>> allLeaves = null)
         {
@@ -55,7 +55,14 @@ namespace DNNConnect.CKEditorProvider.Helper
             }
         }
        
-        private void FillNodes<T>(IEnumerable<T> treeViewData, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeValue, Func<T, string> getNodeImageURL)
+        private void FillNodes<T>(
+            IEnumerable<T> treeViewData, 
+            Func<T, K> getNodeId, 
+            Func<T, K> getParentId, 
+            Func<T, string> getNodeText, 
+            Func<T, string> getNodeValue, 
+            Func<T, string> getNodeImageURL
+            )
         {
             _nodes.Clear();
             foreach (var item in treeViewData)
