@@ -1,5 +1,3 @@
-- [Introduction](~/index.html)
-
 - PolyDeploy
   - [Installation](~/poly-deploy/installation.html)
   - [Quick Start Guide](~/poly-deploy/quick-start.html)
