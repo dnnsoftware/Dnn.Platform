@@ -95,7 +95,6 @@
     <Compile Include="Browser\FileUploader.ashx.cs">
       <DependentUpon>FileUploader.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Browser\TreeViewHelper.cs" />
     <Compile Include="Constants\Browser.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
@@ -110,6 +109,7 @@
     </Compile>
     <Compile Include="Extensions\CustomAttributeExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helper\TreeViewHelper.cs" />
     <Compile Include="Module\EditorConfigManager.ascx.cs">
       <DependentUpon>EditorConfigManager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
