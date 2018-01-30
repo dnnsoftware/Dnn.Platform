@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-namespace DNNConnect.CKEditorProvider.Browser
+namespace DNNConnect.CKEditorProvider.Helper
 {
     internal class TreeViewHelper<K>
     {
@@ -19,15 +19,15 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="getParentId">Method to return Text used for ParentId from T based Object</param>
         /// <param name="getNodeText">Method to return Text used for TreeNode from T based Object</param>
         /// <param name="getNodeImageURL">Method to return Image used for TreeNode from T based Object</param>
-        /// <param name="parentIdCheck">Validate the parentId for T based object if parrent should not be -1</param>
-        internal void LoadNodes<T>(IEnumerable<T> treeViewData, TreeNodeCollection treeViewNodes, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeImageURL, Func<K, bool> parentIdCheck)
+        /// <param name="parentIdCheck">Validate the parentId for T based object if parrent should not be -1</param>       
+        /// <param name="allLeaves"> if passed would be added as leaves to each node</param>     
+        internal void LoadNodes<T>(IEnumerable<T> treeViewData, TreeNodeCollection treeViewNodes, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeValue, Func<T, string> getNodeImageURL, Func<K, bool> parentIdCheck, Dictionary<K, HashSet<TreeNode>> allLeaves = null)
         {
-            FillNodes(treeViewData, getNodeId, getParentId, getNodeText, getNodeImageURL);
-
-            RefreshTreeViewNodes(treeViewNodes, parentIdCheck);
+            FillNodes(treeViewData, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL);
+            RefreshTreeViewNodes(treeViewNodes, parentIdCheck, allLeaves);
         }
 
-        private void RefreshTreeViewNodes(TreeNodeCollection treeViewNodes, Func<K, bool> parentIdCheck)
+        private void RefreshTreeViewNodes(TreeNodeCollection treeViewNodes, Func<K, bool> parentIdCheck, Dictionary<K, HashSet<TreeNode>> allLeaves = null)
         {
             treeViewNodes.Clear();
             foreach (var id in _nodes.Keys)
@@ -44,10 +44,18 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     treeViewNodes.Add(node);
                 }
+
+                if (allLeaves != null && allLeaves.ContainsKey(id))
+                {
+                    foreach (var item in allLeaves[id])
+                    {
+                        node.ChildNodes.Add(item);
+                    }
+                }
             }
         }
-
-        private void FillNodes<T>(IEnumerable<T> treeViewData, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeImageURL)
+       
+        private void FillNodes<T>(IEnumerable<T> treeViewData, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeValue, Func<T, string> getNodeImageURL)
         {
             _nodes.Clear();
             foreach (var item in treeViewData)
@@ -55,6 +63,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 var idTab = getNodeId(item);
                 var displayName = getNodeText(item);
                 var imageUrl = getNodeImageURL(item);
+                var nodeValue = getNodeValue(item);
 
                 var nodeData = new TreeNodeWithParentId<K>
                 {
@@ -62,7 +71,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     NodeData = new TreeNode
                     {
                         Text = displayName,
-                        Value = idTab.ToString(),
+                        Value = nodeValue,
                         ImageUrl = imageUrl
                     }
                 };
@@ -73,7 +82,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         private TreeNodeWithParentId<K> GetTreeNodeWithParentId(K key)
         {
             return _nodes[key];
-        }
+        }        
     }
 
     internal class TreeNodeWithParentId<K>

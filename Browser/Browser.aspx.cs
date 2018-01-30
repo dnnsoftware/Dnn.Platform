@@ -36,6 +36,7 @@ using Convert = System.Convert;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Globals = DotNetNuke.Common.Globals;
 using Image = System.Drawing.Image;
+using DNNConnect.CKEditorProvider.Helper;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
@@ -1807,6 +1808,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             Func<TabInfo, int> getNodeId = x => x.TabID;
             Func<TabInfo, int> getParentId = x => x.ParentId;
             Func<TabInfo, string> getNodeText = x => x.TabName;
+            Func<TabInfo, string> getNodeValue = x => x.TabID.ToString();
             Func<int, bool> getParentIdCheck = x => x != -1;
             Func<TabInfo, string> getNodeImageURL = x =>
                 string.IsNullOrWhiteSpace(x.IconFile)
@@ -1814,7 +1816,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 : this.ResolveUrl(x.IconFile);
 
             TreeViewHelper<int> tvh = new TreeViewHelper<int>();
-            tvh.LoadNodes(allPortalTabs, dnntreeTabs.Nodes, getNodeId, getParentId, getNodeText, getNodeImageURL, getParentIdCheck);
+            tvh.LoadNodes(allPortalTabs, dnntreeTabs.Nodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck);
         }
 
         /// <summary>
