@@ -1,0 +1,69 @@
+{
+  "plugins": [
+    "babel"
+  ],
+  "env": {
+    "browser": true,
+    "commonjs": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "eslint-config-dnn"
+  ],
+  "settings": {
+    "import/resolver":{
+      "node":{
+        "extensions":[".js", ".jsx"]
+      }
+    }
+  },
+  "globals": {
+    
+  },
+  "parser": "babel-eslint",
+  "rules" : {
+    "filenames/no-index": 0,
+    "spellcheck/spell-checker": [1,
+      {
+          "comments": true,
+          "strings": true,
+          "identifiers": true,
+          "lang": "en_US",
+          "skipWords": [
+              "spellcheck/spell-checker",
+              "scrollbar",
+              "spellchecker",
+              "webpack"
+          ],
+          "skipIfMatch": [
+              "http://[^s]*",
+               "^[-\\w]+\/[-\\w\\.]+$"
+          ]
+       }
+   ]
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true,
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "forOf": true,
+      "generators": true,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "regexUFlag": true,
+      "regexYFlag": true,
+      "spread": true,
+      "superInFunctions": false,
+      "templateStrings": true
+      
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  }
+}
