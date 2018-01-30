@@ -107,6 +107,9 @@ class SearchResultCard extends Component {
                     && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
             });
         }
+
+        const tabPath = this.getTabPath(this.props.item.tabpath);
+
         return (
             
             <GridCell columnSize={100}>
@@ -115,7 +118,7 @@ class SearchResultCard extends Component {
                     <div className={`search-item-details${utils.isPlatform() ? " full" : ""}`}>
                         <div className="search-item-details-left">
                             <h1 onClick={() => this.onNameClick(this.props.item)}><OverflowText text={this.props.item.name} /></h1>
-                            <h2><OverflowText text={this.getTabPath(this.props.item.tabpath)} /></h2>
+                            <div title={tabPath}>{tabPath}</div>
                         </div>
                         <div className="search-item-details-right">
                             <ul>
