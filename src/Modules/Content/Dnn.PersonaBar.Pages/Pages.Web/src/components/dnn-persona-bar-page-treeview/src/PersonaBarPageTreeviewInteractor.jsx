@@ -1,22 +1,12 @@
-import React, {
-    Component
-} from "react";
-import Scrollbars from "react-custom-scrollbars";
-import {
-    PersonaBarPageTreeview
-} from "./PersonaBarPageTreeview";
-import {
-    PersonaBarPageTreeMenu
-} from "./PersonaBarPageTreeMenu";
-import {
-    PersonaBarPageTreeParentExpand
-} from "./PersonaBarPageTreeParentExpand";
+import React, { Component } from "react";
+import ScrollBar from "dnn-scrollbar";
+import { PersonaBarPageTreeview } from "./PersonaBarPageTreeview";
+import { PersonaBarPageTreeMenu } from "./PersonaBarPageTreeMenu";
+import { PersonaBarPageTreeParentExpand } from "./PersonaBarPageTreeParentExpand";
 import responseStatus from "../../../constants/responseStatus";
 import utils from "../../../utils";
 import cloneDeep from "lodash/cloneDeep";
-import {
-    PropTypes
-} from "prop-types";
+import { PropTypes } from "prop-types";
 import Promise from "promise";
 import GridCell from "dnn-grid-cell";
 import "./styles.less";
@@ -746,13 +736,9 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     <GridCell
                         columnSize={55}
                         style={{ marginLeft: "-2px" }} >
-                        <Scrollbars
-                            className="scrollArea content-horizontal"
-                            autoHeight autoHide={!this.state.isMouseInTree} autoHeightMin={100}
-                            autoHeightMax={9999}
-                            renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}>
+                        <ScrollBar>
                             {this.render_treeview()}
-                        </Scrollbars>
+                        </ScrollBar>
                     </GridCell>
 
                     <GridCell columnSize={30} >
