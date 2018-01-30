@@ -37,6 +37,7 @@
     "dnn-persona-bar-page": "^0.0.3",
     "dnn-persona-bar-page-body": "^0.0.3",
     "dnn-persona-bar-page-header": "^0.0.30",
+    "dnn-scrollbar": "^1.0.0",
     "dnn-text-overflow-wrapper-new": "^0.0.5",
     "dnn-transition-modal": "0.0.1",
     "dnn-webpack-externals": "1.1.2",
