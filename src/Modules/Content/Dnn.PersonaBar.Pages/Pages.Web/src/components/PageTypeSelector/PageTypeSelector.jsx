@@ -68,12 +68,12 @@ class PageTypeSelector extends Component {
                             </span>
                         </div>
                     </div>
-                    <div className="page-info-row page-type">
-                        <div className="page-info-item">
+                    <div className="page-info-row">
+                        <div className="page-info-item page-type">
                             <span className="page-info-item-label">
                                 {Localization.get("PageType") + ": "}
                             </span>
-                            <div className="page-info-item-value">
+                            <span className="page-info-item-value">
                                 <RadioButtons
                                     options={[{value: "normal", label: Localization.get("Standard")},
                                             {value: "tab", label: Localization.get("Existing")},
@@ -81,7 +81,7 @@ class PageTypeSelector extends Component {
                                             {value: "file", label: Localization.get("File")}]}
                                     onChange={onChangePageType}
                                     value={page.pageType}/>
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>

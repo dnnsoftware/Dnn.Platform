@@ -25,6 +25,11 @@
             max-width: ~"calc(100% - 80px)";
             text-overflow: ellipsis;
 
+            &.page-type {
+                text-overflow: clip;
+                -ms-text-overflow: clip;
+            }
+
             .page-info-item-label{
                 font-weight: bold;
             }
@@ -34,6 +39,21 @@
                 margin-right: 30px;
                 &.parent-page-name {
                     word-break: break-all;
+                }
+
+                .dnn-radio-buttons {
+                    float: none !important;
+                    display: inline-block;
+                    height: 24px !important;
+                    overflow: hidden;
+                    vertical-align: middle !important;
+
+                    label {
+                        float: none !important;
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding: 2px 0 0 28px;
+                    }
                 }
             }
         }
