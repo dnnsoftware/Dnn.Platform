@@ -210,6 +210,7 @@
     <Content Include="Clients\Manage\src\js\templates\welcome.html" />
     <Content Include="Clients\Manage\src\js\templates\menu.html" />
     <Content Include="Clients\Manage\src\js\templates\users.html" />
+    <Content Include="Images\polydeploy-logo-icon.png" />
     <Content Include="webpack.base.js" />
     <Content Include="Clients\Deploy\src\js\app.js" />
     <Content Include="Clients\Deploy\src\js\controllers\InstallController.js" />
@@ -246,7 +247,6 @@
     <Content Include="SqlDataProviders\00.06.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\cantarus.png" />
     <Content Include="Clients\Deploy\Deploy.ascx" />
   </ItemGroup>
   <ItemGroup>
