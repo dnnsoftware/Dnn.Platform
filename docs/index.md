@@ -53,4 +53,4 @@ PolyDeploy logs all activity including:
   - Module Upload
   - Module Installation
 
-[polydeploy-logo]: docs/img/polydeploy-logo-full.png
+[polydeploy-logo]: ../docs/img/polydeploy-logo-full.png
