@@ -1,9 +1,9 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.05.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.06.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
-      <iconFile>Images/cantarus.png</iconFile>
+      <iconFile>Images/polydeploy-logo-icon.png</iconFile>
       <owner>
         <name>Cantarus</name>
         <organization>Cantarus</organization>
@@ -95,6 +95,16 @@
               <version>00.04.00</version>
             </script>
             
+            <!-- v0.5.0-->
+            <!-- No script. -->
+
+            <!-- v0.6.0 -->
+            <script type="Install">
+              <path>\SqlDataProviders</path>
+              <name>00.06.00.SqlDataProvider</name>
+              <version>00.06.00</version>
+            </script>
+            
             <!-- Uninstall -->
             <script type="Uninstall">
               <path>\SqlDataProviders</path>
@@ -110,6 +120,9 @@
             <basePath>bin</basePath>
             <assembly>
               <name>Cantarus.Modules.PolyDeploy.dll</name>
+            </assembly>
+            <assembly>
+              <name>Cantarus.Libraries.Encryption.dll</name>
             </assembly>
           </assemblies>
         </component>

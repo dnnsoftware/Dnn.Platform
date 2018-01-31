@@ -2,6 +2,7 @@
   "name": "poly-deploy",
   "version": "0.5.0",
   "main": "app.js",
+  "license": "Apache-2.0",
   "private": true,
   "dependencies": {
     "angular": "^1.4.3",
@@ -21,11 +22,14 @@
     "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",
+    "gulp-clean": "^0.3.2",
     "gulp-zip": "^4.0.0",
+    "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "merge-stream": "^1.0.1",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.18.2",
+    "webpack": "^3.8.1",
     "webpack-stream": "^4.0.0"
   }
 }
