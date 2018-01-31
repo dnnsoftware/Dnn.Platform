@@ -3,7 +3,7 @@
     <package name="Cantarus.PolyDeploy" type="Module" version="00.06.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
-      <iconFile>Images/cantarus.png</iconFile>
+      <iconFile>Images/polydeploy-logo-icon.png</iconFile>
       <owner>
         <name>Cantarus</name>
         <organization>Cantarus</organization>
