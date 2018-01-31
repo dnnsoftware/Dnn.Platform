@@ -621,6 +621,9 @@ namespace DotNetNuke.UI.Skins
 					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof (ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
 				}
 				AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             }
 
             //Process the Panes attributes

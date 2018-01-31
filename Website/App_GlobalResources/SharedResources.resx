@@ -1516,7 +1516,7 @@
     <value>Delete</value>
   </data>
   <data name="UnverifiedUser.Text" xml:space="preserve">
-    <value>You are using an unverified account. Please verify your account by clicking on the link contained in the verification email that has been sent to you.</value>
+    <value>You are using an unverified account. Please verify your account by clicking on the link contained in the verification email that has been sent to you. Click &lt;a href="#" class="send-verification-mail"&gt;here&lt;/a&gt; to re-send the verification mail.</value>
   </data>
   <data name="DayAgo.Text" xml:space="preserve">
     <value>{0} day ago</value>
@@ -1967,5 +1967,8 @@ If you expect this addition, then just ignore this email; otherwise, an immediat
   </data>
   <data name="ModuleShared.Text" xml:space="preserve">
     <value>Shared Module</value>
+  </data>
+  <data name="VerificationMailSendSuccessful.Text" xml:space="preserve">
+    <value>Verification Mail Send Successful.</value>
   </data>
 </root>
