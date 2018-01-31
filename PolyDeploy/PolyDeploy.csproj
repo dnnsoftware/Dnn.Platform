@@ -70,6 +70,10 @@
       <HintPath>..\packages\DotNetNuke_Community_DotNetNuke.Web.Client.07.00.00\lib\DotNetNuke.Web.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke_Community_Newtonsoft.Json.07.00.00\lib\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -137,6 +141,10 @@
       <DependentUpon>Manage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\APIUserManager.cs" />
+    <Compile Include="Components\DataAccess\DataControllers\EventLogDataController.cs" />
+    <Compile Include="Components\DataAccess\Models\EventLog.cs" />
+    <Compile Include="Components\Logging\EventLogSeverity.cs" />
+    <Compile Include="Components\Logging\EventLogManager.cs" />
     <Compile Include="Components\RemoteDeployment.cs" />
     <Compile Include="Components\Deployment.cs" />
     <Compile Include="Components\FeatureController.cs" />
@@ -152,6 +160,7 @@
     <Compile Include="Components\DataAccess\DataControllers\APIUserDataController.cs" />
     <Compile Include="Components\DataAccess\Models\IPSpec.cs" />
     <Compile Include="Components\DataAccess\Models\Session.cs" />
+    <Compile Include="Components\WebAPI\EventLogController.cs" />
     <Compile Include="Components\WebAPI\RemoteController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\PolyDeploySettingsBase.cs">
@@ -177,6 +186,7 @@
   <ItemGroup>
     <Content Include="Clients\Core\src\js\app.js" />
     <Content Include="Clients\Core\src\js\bootstrap.js" />
+    <Content Include="Clients\Core\src\js\services\EventLogDataService.js" />
     <Content Include="Clients\Core\src\js\services\IPSpecDataService.js" />
     <Content Include="Clients\Core\src\js\services\DnnService.js" />
     <Content Include="Clients\Core\src\js\services\index.js" />
@@ -190,10 +200,12 @@
     <Content Include="Clients\Manage\src\js\bootstrap.js" />
     <Content Include="Clients\Manage\src\js\config.js" />
     <Content Include="Clients\Manage\src\js\controllers\index.js" />
+    <Content Include="Clients\Manage\src\js\controllers\EventsController.js" />
     <Content Include="Clients\Manage\src\js\controllers\WhitelistController.js" />
     <Content Include="Clients\Manage\src\js\controllers\UsersController.js" />
     <Content Include="Clients\Manage\src\js\services\APIUserDataService.js" />
     <Content Include="Clients\Manage\src\js\services\index.js" />
+    <Content Include="Clients\Manage\src\js\templates\events.html" />
     <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
     <Content Include="Clients\Manage\src\js\templates\welcome.html" />
     <Content Include="Clients\Manage\src\js\templates\menu.html" />
@@ -231,6 +243,7 @@
     <Content Include="SqlDataProviders\Uninstall.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.03.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.04.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.06.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\cantarus.png" />

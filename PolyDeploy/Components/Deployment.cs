@@ -1,5 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -81,6 +82,14 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
                 // Attempt install.
                 job.Install();
+
+                // Log package installs.
+                foreach (PackageJob package in job.Packages)
+                {
+                    string log = string.Format("Package successfully installed: {0} @ {1}, session: {2}.", package.Name, package.VersionStr, Session.Guid);
+
+                    EventLogManager.Log("PACKAGE_INSTALLED", EventLogSeverity.Info, log);
+                }
 
                 // Make sorted list serialisable.
                 SortedList<string, InstallJob> serOrderedInstall = new SortedList<string, InstallJob>();

@@ -23,6 +23,11 @@
                     url: '/whitelist',
                     template: require('./templates/whitelist.html'),
                     controller: 'WhitelistController'
+                })
+                .state('menu.events', {
+                    url: '/events',
+                    template: require('./templates/events.html'),
+                    controller: 'EventsController'
                 });
 
             // Add $http interceptor for DNN Services Framework.

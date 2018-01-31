@@ -1,4 +1,5 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Linq;
@@ -48,17 +49,13 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 // Set appropriate message.
                 message = "An error occurred while trying to authenticate this request.";
 
-                // TODO: Add some logging of what happened here.
+                EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, null, ex);
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.
             if (!authenticated)
             {
-                EventLogController elc = new EventLogController();
-
-                string log = string.Format("(APIKey: {0}) {1}", apiKey, message);
-
-                elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+                EventLogManager.Log("AUTH_BAD_APIKEY", EventLogSeverity.Warning, string.Format("Authentication failed for API key: {0}.", apiKey));
 
                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, message);
             }
