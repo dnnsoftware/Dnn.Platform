@@ -53,4 +53,7 @@ PolyDeploy logs all key activities including:
   - Module Upload
   - Module Installation
 
+Find out more about our products and services at [www.cantarus.com][cantarus-website].
+
+[cantarus-website]: https://www.cantarus.com
 [polydeploy-logo]: docs/img/polydeploy-logo-full.png
