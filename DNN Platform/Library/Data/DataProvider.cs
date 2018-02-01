@@ -1150,9 +1150,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeleteModuleSettings", moduleId);
         }
 
-        public virtual void DeleteTabModule(int tabId, int moduleId, bool softDelete)
+        public virtual void DeleteTabModule(int tabId, int moduleId, bool softDelete, int lastModifiedByUserId)
         {
-            ExecuteNonQuery("DeleteTabModule", tabId, moduleId, softDelete);
+            ExecuteNonQuery("DeleteTabModule", tabId, moduleId, softDelete, lastModifiedByUserId);
         }
 
         public virtual void DeleteTabModuleSetting(int tabModuleId, string settingName)

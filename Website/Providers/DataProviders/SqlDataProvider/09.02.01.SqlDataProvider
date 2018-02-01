@@ -76,6 +76,32 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/*** DNN-10685: update SP DeleteTabModule to have LastModifiedByUserID parameter. ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModule]
+	@TabId      INT,
+	@ModuleId   INT,
+	@SoftDelete	BIT,
+    @LastModifiedByUserID INT = -1
+AS
+IF @SoftDelete = 1
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET	IsDeleted = 1,
+			VersionGuid = newId(),
+            LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = GETDATE()
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+ELSE
+	DELETE
+	FROM   {databaseOwner}{objectQualifier}TabModules 
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
