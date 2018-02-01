@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
     <style>
         #topLevelMenu .hovermenu > ul, ul.personabarnav {list-style-type: none;}
+        #personabar-wrap {
+          position: fixed;
+          top: 0;
+          right:0;
+          bottom:0;
+          left: 0;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
     </style>
     <script type="text/javascript">
         window.Sys = !window.Sys ? window.top.Sys : window.Sys;
