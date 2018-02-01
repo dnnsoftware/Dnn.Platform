@@ -12,13 +12,29 @@ const Command = ({commandList, IsPaging}) => {
     const paragraphDescription = <p className="lead">{Parser(Localization.get("Prompt_Help_ListOfAvailableMsg"))}</p>;
     const headingCommands = <h4>{Parser(Localization.get("Prompt_Help_Commands"))}</h4>;
 
-    const commandsList = sort(Object.assign(commandList), "Category").reduce((prev,current,index, arr) => {
+    const commandsList = commandList.sort((a,b) => {
+        const catA = a.Category;
+        const catB = b.Category;
+        const kA = a.Key;
+        const kB = b.Key;
+
+        if(catA == catB && kA == kB) return 0;
+
+        if(catA == catB) {
+            return kA < kB ? -1 : 1;
+        } else {
+            return catA < catB ? -1 : 1;
+        }
+
+    }).reduce((prev,current,index, arr) => {
         if (index > 0) {
             const currentCat = current.Category;
             const prevCat = arr[index - 1].Category;
             if (currentCat !== prevCat) {
                 return [...prev, {separator: true, Category: current.Category}, current];
             }
+        } else {
+            return [{separator: true, Category: current.Category}, current];
         }
 
         return [...prev, current];
@@ -33,7 +49,7 @@ const Command = ({commandList, IsPaging}) => {
         return (
             <tr key={DomKey.get("command")}>
                 <td key={DomKey.get("command")} className="mono"><a className="dnn-prompt-cmd-insert" data-cmd={`help ${cmd.Key.toLowerCase()}`} href="#">{cmd.Key}</a></td>
-                <td key={DomKey.get("command")}>{cmd.Description}</td>
+                <td key={DomKey.get("command")}>{Parser(cmd.Description)}</td>
             </tr>
         );
     });
