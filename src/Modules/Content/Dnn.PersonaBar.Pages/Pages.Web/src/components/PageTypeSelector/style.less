@@ -17,32 +17,46 @@
         }
         margin-bottom: 10px;
         .page-info-item{
+
             display: inline-block;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow-x: hidden;
+            max-width: ~"calc(100% - 80px)";
+            text-overflow: ellipsis;
+
+            &.page-type {
+                text-overflow: clip;
+                -ms-text-overflow: clip;
+            }
+
             .page-info-item-label{
-                display: inline-block;
                 font-weight: bold;
             }
 
             .page-info-item-value{
-                display: inline-block;
                 padding-left: 20px;
                 margin-right: 30px;
                 &.parent-page-name {
                     word-break: break-all;
                 }
 
-                .dnn-radio-buttons ul li label {
-                    margin-bottom: 0px;
-                    font-weight: normal;
+                .dnn-radio-buttons {
+                    float: none !important;
+                    display: inline-block;
+                    height: 24px !important;
+                    overflow: hidden;
+                    vertical-align: middle !important;
+
+                    label {
+                        float: none !important;
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding: 2px 0 0 28px;
+                    }
                 }
             }
         }
 
-        &.page-type{
-            .page-info-item-label{
-                vertical-align: top;
-                line-height: 18px;
-            }
-        }
     }
 }

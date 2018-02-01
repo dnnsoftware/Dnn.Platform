@@ -207,28 +207,41 @@
             }
         }
         .search-item-details {
+
             float: left;
             width: 83%;
-            height: 40px;
+            height: 100%;
             padding: 10px 0px 10px 35px;
+            display: block;
+
             &.full {
                 width: 99%;
             }
             .search-item-details-left {
                 float: left;
+                width: 100%;
                 h1 {
                     color: @curiousBlue;
                     cursor: pointer;
                 }
-                h2 {
-                    >div {
-                        font-size: 11px;
-                    }
-                    color: @rollingStone;
+
+                >div {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow-x: hidden;
+                    max-width: ~"calc(100% - 120px)";
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 3px 0;
                 }
+                color: @rollingStone;
             }
             .search-item-details-right {
                 float: right;
+                height: 32px;
+                position: absolute;
+                right: 90px;
+
                 height: 32px;
                 div {
                     height: 32px;

@@ -44,44 +44,44 @@ class PageTypeSelector extends Component {
                     </div>
                     <div className="page-info-row">
                         <div className="page-info-item">
-                            <div className="page-info-item-label">
+                            <span className="page-info-item-label">
                                 {Localization.get("Created") + ": "}
-                            </div>
-                            <div className="page-info-item-value">
+                            </span>
+                            <span className="page-info-item-value">
                                 {createdDate}
-                            </div>
+                            </span>
                         </div>
                         <div className="page-info-item">
-                            <div className="page-info-item-label">
+                            <span className="page-info-item-label">
                                 {Localization.get("PageParent") + ": "}
-                            </div>
-                            <div className="page-info-item-value parent-page-name">
+                            </span>
+                            <span className="page-info-item-value parent-page-name">
                                 {hierarchy}
-                            </div>
+                            </span>
                         </div>
                         <div className="page-info-item">
-                            <div className="page-info-item-label">
+                            <span className="page-info-item-label">
                                 {Localization.get("Status") + ": "}
-                            </div>
-                            <div className="page-info-item-value">
+                            </span>
+                            <span className="page-info-item-value">
                                 {Localization.get("Status_" + page.status)}
-                            </div>
+                            </span>
                         </div>
                     </div>
-                    <div className="page-info-row page-type">
-                        <div className="page-info-item">
-                            <div className="page-info-item-label">
+                    <div className="page-info-row">
+                        <div className="page-info-item page-type">
+                            <span className="page-info-item-label">
                                 {Localization.get("PageType") + ": "}
-                            </div>
-                            <div className="page-info-item-value">
-                                <RadioButtons 
-                                    options={[{value: "normal", label: Localization.get("Standard")}, 
+                            </span>
+                            <span className="page-info-item-value">
+                                <RadioButtons
+                                    options={[{value: "normal", label: Localization.get("Standard")},
                                             {value: "tab", label: Localization.get("Existing")},
                                             {value: "url", label: Localization.get("Url")},
-                                            {value: "file", label: Localization.get("File")}]} 
+                                            {value: "file", label: Localization.get("File")}]}
                                     onChange={onChangePageType}
                                     value={page.pageType}/>
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>
