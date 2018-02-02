@@ -251,9 +251,9 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        public TabInfo SavePageDetails(PortalSettings settings, PageSettings pageSettings)
+        public TabInfo SavePageDetails(PageSettings pageSettings)
         {
-            var portalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             TabInfo tab = null;
             if (pageSettings.TabId > 0)
             {
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             var tabId = pageSettings.TabId <= 0
-                ? AddTab(portalSettings, pageSettings)
+                ? AddTab(pageSettings)
                 : UpdateTab(tab, pageSettings);
 
             return TabController.Instance.GetTab(tabId, portalSettings.PortalId);
@@ -573,9 +573,9 @@ namespace Dnn.PersonaBar.Pages.Components
             return true;
         }
 
-        public virtual int AddTab(PortalSettings settings, PageSettings pageSettings)
+        public virtual int AddTab(PageSettings pageSettings)
         {
-            var portalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var portalId = portalSettings.PortalId;
             var tab = new TabInfo { PortalID = portalId, ParentId = pageSettings.ParentId ?? Null.NullInteger };
             UpdateTabInfoFromPageSettings(tab, pageSettings);

@@ -397,7 +397,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 pageSettings.Clean();
-                var tab = _pagesController.SavePageDetails(PortalSettings, pageSettings);
+                var tab = _pagesController.SavePageDetails(pageSettings);
                 var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false,
                     true);
 
