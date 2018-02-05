@@ -6,7 +6,7 @@ import Localization from "../../localization";
 import utils from "../../utils";
 import { ModuleIcon } from "dnn-svg-icons";
 import Modal from "dnn-modal";
-import ModelEdit from "./ModuleEdit/ModuleEdit";
+import ModuleEdit from "./ModuleEdit/ModuleEdit";
 
 class Modules extends Component {
 
@@ -46,7 +46,7 @@ class Modules extends Component {
     }
 
     render() {
-        const {modules, onCancelEditingModule, editingSettingModuleId, showCopySettings} = this.props;
+        const {modules, onCancelEditingModule, editingSettingModuleId, showCopySettings, selectedPage} = this.props;
         const moduleRows = this.getModules();
         const editingModule = modules.find(m => m.id === editingSettingModuleId);
         return (
@@ -71,7 +71,12 @@ class Modules extends Component {
                     {moduleRows}
                 </div>
                 <Modal isOpen={editingModule} header={Localization.get("ModuleSettings")} onRequestClose={onCancelEditingModule}>
-                    {editingModule && <ModelEdit module={editingModule} onUpdatedModuleSettings={onCancelEditingModule} /> }
+                    {editingModule && 
+                        <ModuleEdit 
+                            module={editingModule} 
+                            onUpdatedModuleSettings={onCancelEditingModule}
+                            selectedPage={selectedPage}
+                            /> }
                 </Modal>      
             </div>      
             /* eslint-enable react/no-danger */
@@ -86,7 +91,8 @@ Modules.propTypes = {
     onCancelEditingModule: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number,
     onModuleCopyChange: PropTypes.func,
-    showCopySettings: PropTypes.bool
+    showCopySettings: PropTypes.bool,
+    selectedPage: PropTypes.object.isRequired
 };
 
 export default Modules;

@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from "react";
+import {pageActions as PageActions} from "../../../actions";
+import utils from "../../../utils";
 
 const queryString = "?popUp=true&HideCancel=true&HideDelete=true&NoRedirectOnUpdate=true";
 
@@ -14,6 +16,9 @@ class ModuleEdit extends Component {
         super();
         this.onIFrameLoad = this.onIFrameLoad.bind(this);
         this.closeOnEndRequest = false;
+        this.state = {
+            userMode: utils.getUserMode().toLowerCase()
+        };
     }
 
     onIFrameLoad() {
@@ -34,19 +39,46 @@ class ModuleEdit extends Component {
         this.closeOnEndRequest = postBackElement.id === ("dnn_ctr" + this.props.module.id + "_ModuleSettings_cmdUpdate");
     }
 
-    componentDidMount() {
+    componentWillMount(){
+        const {state, props} = this;
+        if(state.userMode !== "edit"){
+            PageActions.viewPage(props.selectedPage.tabId, null, () => {
+                this.setState({
+                    userMode: 'edit'
+                }, () => {
+                    this.addEventListener();
+                });
+            });
+        }
+    }
+
+    addEventListener(){
         const iframe = this.refs.iframe;
-        iframe.addEventListener("load", this.onIFrameLoad);
+        if(iframe){
+            iframe.addEventListener("load", this.onIFrameLoad);
+        }
+    }
+
+    removeEventListener(){
+        const iframe = this.refs.iframe;
+        if(iframe){
+            iframe.removeEventListener("load", this.onIFrameLoad);
+        }
+    }
+
+    componentDidMount() {
+        this.addEventListener();
     }
 
     componentWillUnmount() {
-        const iframe = this.refs.iframe;
-        iframe.removeEventListener("load", this.onIFrameLoad);
+        this.removeEventListener();
     }
 
     render() {
+        const {state, props} = this;
+
         const moduleSettingControlPath = this.props.module.editSettingUrl + queryString;
-        return (
+        return (state.userMode === "edit" && 
             <iframe ref="iframe" src={moduleSettingControlPath} style={iFrameStyle} frameBorder={0}></iframe>
         );
     }
