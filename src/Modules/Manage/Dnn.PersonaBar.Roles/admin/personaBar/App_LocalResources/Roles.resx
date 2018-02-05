@@ -388,7 +388,7 @@
     <value>You must specify a valid Role ID as either the first argument or using the --id flag.</value>
   </data>
   <data name="Prompt_RoleIdNegative.Text" xml:space="preserve">
-    <value>The RoleId value must be greater than zero (0)</value>
+    <value>The RoleId value must be greater than or equal zero (0)</value>
   </data>
   <data name="Prompt_RoleIdNotInt.Text" xml:space="preserve">
     <value>The RoleId must be integer.</value>
