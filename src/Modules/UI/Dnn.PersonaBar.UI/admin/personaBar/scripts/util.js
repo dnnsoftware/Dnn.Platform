@@ -89,6 +89,10 @@ define(['jquery'], function ($) {
                         return this.resx[moduleName][key];
                     }
 
+                    if (this.resx['SharedResources'] && this.resx['SharedResources'].hasOwnProperty(key)) {
+                        return this.resx['SharedResources'][key];
+                    }
+
                     return key;
                 },
 
