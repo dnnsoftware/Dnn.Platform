@@ -40,7 +40,7 @@ namespace DeployClient
                 }
 
                 // Output start.
-                WriteLine("*** Polly Deployment Client ***");
+                WriteLine("*** PolyDeploy Client ***");
                 WriteLine();
 
                 // Get the properties we need.
