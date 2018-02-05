@@ -260,7 +260,8 @@ class LanguageSettingsPanelBody extends Component {
                             label={resx.get("plUrl")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.languageSettings.EnableUrlLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableUrlLanguage")}
                             readOnly={state.languageSettings.ContentLocalizationEnabled}
@@ -275,7 +276,8 @@ class LanguageSettingsPanelBody extends Component {
                             label={resx.get("detectBrowserLable")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.languageSettings.EnableBrowserLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableBrowserLanguage")}
                             />
@@ -289,7 +291,8 @@ class LanguageSettingsPanelBody extends Component {
                             label={resx.get("allowUserCulture")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.languageSettings.AllowUserUICulture}
                             onChange={this.onSettingChange.bind(this, "AllowUserUICulture")}
                             />
@@ -310,7 +313,8 @@ class LanguageSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.languageSettings.AllowContentLocalization}
                                 onChange={this.onSettingChange.bind(this, "AllowContentLocalization")}
                                 />

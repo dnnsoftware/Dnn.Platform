@@ -154,7 +154,8 @@ class MessagingSettingsPanelBody extends Component {
                             label={resx.get("plDisablePrivateMessage")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.DisablePrivateMessage}
                             onChange={this.onSettingChange.bind(this, "DisablePrivateMessage")}
                             />
@@ -192,7 +193,8 @@ class MessagingSettingsPanelBody extends Component {
                             label={resx.get("plMsgProfanityFilters")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.ProfanityFilters}
                             onChange={this.onSettingChange.bind(this, "ProfanityFilters")}
                             />
@@ -206,7 +208,8 @@ class MessagingSettingsPanelBody extends Component {
                             label={resx.get("plIncludeAttachments")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.IncludeAttachments}
                             onChange={this.onSettingChange.bind(this, "IncludeAttachments")}
                             />
@@ -220,7 +223,8 @@ class MessagingSettingsPanelBody extends Component {
                             label={resx.get("plMsgAllowAttachments")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.AllowAttachments}
                             onChange={this.onSettingChange.bind(this, "AllowAttachments")}
                             />
@@ -234,7 +238,8 @@ class MessagingSettingsPanelBody extends Component {
                             label={resx.get("plMsgSendEmail")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.SendEmail}
                             onChange={this.onSettingChange.bind(this, "SendEmail")}
                             />

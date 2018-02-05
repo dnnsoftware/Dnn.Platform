@@ -86,7 +86,8 @@ class ListEntryEditor extends Component {
                             label={resx.get("EnableSortOrder")}
                         />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={this.state.entryDetail.EnableSortOrder}
                             onChange={this.onSettingChange.bind(this, "EnableSortOrder")}
                         />

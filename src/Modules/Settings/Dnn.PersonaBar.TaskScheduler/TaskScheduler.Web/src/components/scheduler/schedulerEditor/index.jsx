@@ -374,7 +374,9 @@ class SchedulerEditor extends Component {
                 <div className="editor-row divider">
                     <Label label={resx.get("plEnabled")} style={{ width: "47.5%" }} />
                     <div className="right">
-                        <Switch labelHidden={true}
+                        <Switch
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={this.getValue("Enabled") === "true" ? true : false}
                             onChange={this.onSettingChange.bind(this, "Enabled")}
                         />

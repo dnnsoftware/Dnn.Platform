@@ -309,7 +309,8 @@ class SitemapSettingsPanelBody extends Component {
                             label={resx.get("lblIncludeHidden")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.sitemapSettings.SitemapIncludeHidden}
                             onChange={this.onSettingChange.bind(this, "SitemapIncludeHidden")}
                             />
@@ -355,7 +356,8 @@ class SitemapSettingsPanelBody extends Component {
                             label={resx.get("lblLevelPriority")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.sitemapSettings.SitemapLevelMode}
                             onChange={this.onSettingChange.bind(this, "SitemapLevelMode")}
                             />

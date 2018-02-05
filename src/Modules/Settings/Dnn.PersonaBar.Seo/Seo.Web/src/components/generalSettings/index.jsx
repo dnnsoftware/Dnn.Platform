@@ -125,7 +125,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("enableSystemGeneratedUrlsLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.EnableSystemGeneratedUrls}
                             onChange={this.onSettingChange.bind(this, "EnableSystemGeneratedUrls")}
                             />
@@ -139,7 +140,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("enableLowerCaseLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.ForceLowerCase}
                             onChange={this.onSettingChange.bind(this, "ForceLowerCase")}
                             />
@@ -153,7 +155,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("autoAsciiConvertLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.AutoAsciiConvert}
                             onChange={this.onSettingChange.bind(this, "AutoAsciiConvert")}
                             />
@@ -167,7 +170,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("setDefaultSiteLanguageLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.ForcePortalDefaultLanguage}
                             onChange={this.onSettingChange.bind(this, "ForcePortalDefaultLanguage")}
                             />
@@ -197,7 +201,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("enable301RedirectsLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.RedirectUnfriendly}
                             onChange={this.onSettingChange.bind(this, "RedirectUnfriendly")}
                             />
@@ -211,7 +216,8 @@ class GeneralSettingsPanelBody extends Component {
                             label={resx.get("redirectOnWrongCaseLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.generalSettings.RedirectWrongCase}
                             onChange={this.onSettingChange.bind(this, "RedirectWrongCase")}
                             />

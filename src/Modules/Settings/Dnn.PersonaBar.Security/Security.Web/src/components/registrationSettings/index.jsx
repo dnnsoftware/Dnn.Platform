@@ -304,7 +304,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("plEnableRegisterNotification") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.EnableRegisterNotification}
                                 onChange={this.onSettingChange.bind(this, "EnableRegisterNotification") }
                                 readOnly={!canEdit}
@@ -319,7 +320,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Registration_UseAuthProviders") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.UseAuthenticationProviders}
                                 onChange={this.onSettingChange.bind(this, "UseAuthenticationProviders") }
                                 readOnly={!canEdit}
@@ -334,7 +336,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Registration_UseProfanityFilter") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.UseProfanityFilter}
                                 onChange={this.onSettingChange.bind(this, "UseProfanityFilter") }
                                 readOnly={!canEdit}
@@ -350,7 +353,8 @@ class RegistrationSettingsPanelBody extends Component {
                                     label={resx.get("Registration_UseEmailAsUserName") }
                                     />
                                 <Switch
-                                    labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
                                     value={state.registrationSettings.UseEmailAsUsername}
                                     onChange={this.onSettingChange.bind(this, "UseEmailAsUsername") }
                                     readOnly={!canEdit}
@@ -366,7 +370,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Registration_RequireUniqueDisplayName") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.RequireUniqueDisplayName}
                                 onChange={this.onSettingChange.bind(this, "RequireUniqueDisplayName") }
                                 readOnly={!canEdit}
@@ -382,7 +387,8 @@ class RegistrationSettingsPanelBody extends Component {
                                     label={resx.get("Registration_RandomPassword") }
                                     />
                                 <Switch
-                                    labelHidden={true}
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
                                     value={state.registrationSettings.UseRandomPassword}
                                     onChange={this.onSettingChange.bind(this, "UseRandomPassword") }
                                     readOnly={!canEdit}
@@ -399,7 +405,8 @@ class RegistrationSettingsPanelBody extends Component {
                                     label={resx.get("Registration_RequireConfirmPassword") }
                                     />
                                 <Switch
-                                    labelHidden={true}
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
                                     value={state.registrationSettings.RequirePasswordConfirmation}
                                     onChange={this.onSettingChange.bind(this, "RequirePasswordConfirmation") }
                                     readOnly={!canEdit}
@@ -415,7 +422,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Security_RequireValidProfile") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.RequireValidProfile}
                                 onChange={this.onSettingChange.bind(this, "RequireValidProfile") }
                                 readOnly={!canEdit}
@@ -430,7 +438,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 label={resx.get("Security_CaptchaRegister") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.registrationSettings.UseCaptchaRegister}
                                 onChange={this.onSettingChange.bind(this, "UseCaptchaRegister") }
                                 readOnly={!canEdit}

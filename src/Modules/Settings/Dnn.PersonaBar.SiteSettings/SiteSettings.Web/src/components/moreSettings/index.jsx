@@ -206,7 +206,8 @@ class MoreSettingsPanelBody extends Component {
                                 />}
                         />
                     <Switch
-                        labelHidden={true}
+                        onText={resx.get("SwitchOn")}
+                        offText={resx.get("SwitchOff")}
                         value={state.otherSettings.CheckUpgrade}
                         onChange={this.onSettingChange.bind(this, "CheckUpgrade")}
                         />
@@ -228,7 +229,8 @@ class MoreSettingsPanelBody extends Component {
                                 />}
                         />
                     <Switch
-                        labelHidden={true}
+                        onText={resx.get("SwitchOn")}
+                        offText={resx.get("SwitchOff")}
                         value={state.otherSettings.DnnImprovementProgram}
                         onChange={this.onSettingChange.bind(this, "DnnImprovementProgram")}
                         />

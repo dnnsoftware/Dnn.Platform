@@ -262,7 +262,8 @@ class BasicSearchSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicSearchSettings.AllowLeadingWildcard}
                                 onChange={this.onSettingChange.bind(this, "AllowLeadingWildcard")}
                                 />
