@@ -170,6 +170,7 @@ class PageSettings extends Component {
                         onCancelEditingModule={onCancelEditingPageModule}
                         editingSettingModuleId={editingSettingModuleId} 
                         onModuleCopyChange={onModuleCopyChange}
+                        selectedPage={selectedPage}
                         showCopySettings={!isEditingExistingPage && selectedPage.templateTabId} />
                     {footer}
                 </div>
