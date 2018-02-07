@@ -267,4 +267,10 @@
   <data name="Promp_PositiveValueRequired.Text" xml:space="preserve">
     <value>'[0]' must be greater than 0.\n</value>
   </data>
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
 </root>
