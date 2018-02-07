@@ -5,29 +5,10 @@ import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
 import utils from "../utils";
 import Localization from "../localization";
-import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import Promise from "promise";
-
-
-function updateUrlPreview(value, dispatch) {
-    PagesService.getPageUrlPreview(value).then(response => {
-        dispatch({
-            type: ActionTypes.CHANGE_FIELD_VALUE,
-            urlPreviewChange: true,
-            field: "url",
-            value: response.Url
-        });
-    }).catch(() => {
-        dispatch({
-            type: ActionTypes.ERROR_LOADING_PAGE
-        });
-    });
-}
-
-const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const loadPage = function (dispatch, pageId, callback) {
     return new Promise((resolve) => {
@@ -262,7 +243,7 @@ const pageActions = {
             const { pages } = getState();
             const selectedPage = pages.selectedPage;
 
-            PagesService.savePage(selectedPage, pages.urlChanged).then(response => {
+            PagesService.savePage(selectedPage).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
                     utils.notifyError(response.Message, 3000);
@@ -293,7 +274,7 @@ const pageActions = {
 
             const { pages } = getState();
 
-            PagesService.savePage(page, pages.urlChanged).then(response => {
+            PagesService.savePage(page).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
                     utils.notifyError(response.Message, 3000);
@@ -322,21 +303,12 @@ const pageActions = {
 
 
     changePageField(key, value) {
-        return (dispatch, getState) => {
-            const { pages } = getState();
-
+        return (dispatch) => {
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
                 value
             });
-
-            if (key === "name" &&
-                pages.selectedPage.tabId === 0 &&
-                !pages.urlChanged &&
-                pages.selectedPage.pageType === "normal") {
-                debouncedUpdateUrlPreview(value, dispatch);
-            }
         };
     },
 
