@@ -24,6 +24,7 @@ import RadioButtons from "dnn-radio-buttons";
 import SearchBox from "dnn-search-box";
 import Modal from "dnn-modal";
 import PagePicker from "dnn-page-picker";
+import ScrollBar from "dnn-scrollbar";
 import Select from "dnn-select";
 import SearchableTags from "dnn-searchable-tags";
 import SingleLineInput from "dnn-single-line-input";
@@ -66,6 +67,7 @@ export {
     PersonaBarPageBody,
     RadioButtons,
     Modal,
+    ScrollBar,
     SearchBox,
     SearchableTags,
     Select,
