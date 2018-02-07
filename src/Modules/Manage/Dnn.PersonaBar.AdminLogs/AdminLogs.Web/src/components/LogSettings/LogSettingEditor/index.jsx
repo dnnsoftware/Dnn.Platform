@@ -207,7 +207,12 @@ class LogSettingEditor extends Component {
                     { Localization.get("plIsActive") }
                 </div>
                 <div className="right">
-                    <Switch labelHidden={true} value={this.getEnabledStatus("Logging") } onChange={this.OnCheckboxChanged.bind(this, "LoggingIsActive") }/>
+                    <Switch 
+                    value={this.getEnabledStatus("Logging") } 
+                    onChange={this.OnCheckboxChanged.bind(this, "LoggingIsActive") }
+                    onText={Localization.get("SwitchOn")}
+                    offText={Localization.get("SwitchOff")}
+                    />
                 </div>
             </div>
             <div className="editor-row divider" title={Localization.get("plLogTypeKey.Help") }>
@@ -237,7 +242,12 @@ class LogSettingEditor extends Component {
                     {  Localization.get("plEmailNotificationStatus") }
                 </div>
                 <div className="right">
-                    <Switch labelHidden={true} value={this.getEnabledStatus("EmailNotification") } onChange={this.OnCheckboxChanged.bind(this, "EmailNotificationIsActive") }/>
+                    <Switch 
+                    value={this.getEnabledStatus("EmailNotification") } 
+                    onChange={this.OnCheckboxChanged.bind(this, "EmailNotificationIsActive") }
+                    onText={Localization.get("SwitchOn")}
+                    offText={Localization.get("SwitchOff")}
+                    />
                 </div>
             </div>
             <div className="editor-row divider">

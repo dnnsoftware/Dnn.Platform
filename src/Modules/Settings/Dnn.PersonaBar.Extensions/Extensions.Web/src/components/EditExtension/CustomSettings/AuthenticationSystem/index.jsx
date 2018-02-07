@@ -48,6 +48,8 @@ class AuthenticationSystem extends Component {
                         <Switch
                             value={extensionBeingEdited.enabled.value}
                             onChange={props.onChange.bind(this, "enabled")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             label={Localization.get("EditAuthSystem_Enabled.Label")} />
                     </div>
                 </GridSystem>

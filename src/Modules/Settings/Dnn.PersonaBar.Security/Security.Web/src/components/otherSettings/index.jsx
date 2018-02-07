@@ -184,7 +184,8 @@ class OtherSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.DisplayCopyright}
                                 onChange={this.onSettingChange.bind(this, "DisplayCopyright")}
                                 />
@@ -204,7 +205,8 @@ class OtherSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.ShowCriticalErrors}
                                 onChange={this.onSettingChange.bind(this, "ShowCriticalErrors")}
                                 />
@@ -224,7 +226,8 @@ class OtherSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.DebugMode}
                                 onChange={this.onSettingChange.bind(this, "DebugMode")}
                                 />
@@ -244,7 +247,8 @@ class OtherSettingsPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.RememberCheckbox}
                                 onChange={this.onSettingChange.bind(this, "RememberCheckbox")}
                                 />

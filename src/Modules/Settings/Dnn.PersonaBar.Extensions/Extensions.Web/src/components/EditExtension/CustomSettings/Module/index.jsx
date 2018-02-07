@@ -144,11 +144,15 @@ class Module extends Component {
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsPortable.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             tooltipMessage={Localization.get("EditModule_IsPortable.HelpText")} />
                         <Switch value={extensionBeingEdited.upgradeable.value}
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsUpgradable.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             tooltipMessage={Localization.get("EditModule_IsUpgradable.HelpText")} />
                     </div>
                     <div>
@@ -174,9 +178,13 @@ class Module extends Component {
                             readOnly={true}
                             className="full-width"
                             label={Localization.get("EditModule_IsSearchable.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             tooltipMessage={Localization.get("EditModule_IsSearchable.HelpText")} />
                         {props.isAddMode && <Switch value={extensionBeingEdited.premiumModule.value}
                             label={Localization.get("EditModule_IsPremiumModule.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             onChange={props.onChange.bind(this, "premiumModule")}
                             tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />}
                         {!props.isAddMode && <DropdownWithError
@@ -209,6 +217,8 @@ class Module extends Component {
                         <h3 className="box-title">{Localization.get("EditModule_PremiumModuleAssignment.Header")}</h3>
                         <Switch value={extensionBeingEdited.premiumModule.value}
                             label={Localization.get("EditModule_IsPremiumModule.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             onChange={props.onChange.bind(this, "premiumModule")}
                             tooltipMessage={Localization.get("EditModule_IsPremiumModule.HelpText")} />
                         <AssignedSelector

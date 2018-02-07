@@ -329,7 +329,8 @@ class LanguageEditor extends Component {
                         label={resx.get("enableLanguageLabel")}
                         />
                     <Switch
-                        labelHidden={true}
+                        onText={resx.get("SwitchOn")}
+                        offText={resx.get("SwitchOff")}
                         value={state.languageDetail.Enabled}
                         onChange={this.onToggleEnable.bind(this)}
                         readOnly={!state.languageDetail.CanEnableDisable}

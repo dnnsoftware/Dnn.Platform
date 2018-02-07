@@ -85,7 +85,8 @@ class SslSettingsPanelBody extends Component {
                                 label={resx.get("plSSLEnabled")}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.sslSettings.SSLEnabled}
                                 onChange={this.onSettingChange.bind(this, "SSLEnabled")}
                                 />
@@ -99,7 +100,8 @@ class SslSettingsPanelBody extends Component {
                                 label={resx.get("plSSLEnforced")}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.sslSettings.SSLEnforced}
                                 onChange={this.onSettingChange.bind(this, "SSLEnforced")}
                                 />

@@ -230,7 +230,8 @@ class TranslatePageContent extends Component {
                                 tooltipMessage={resx.get("ActivatePages.Help") }
                                 label={resx.get("ActivatePages") } />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={language.Active}
                                 readOnly={!isEnabled}
                                 onChange={this.onToggleActive.bind(this) }

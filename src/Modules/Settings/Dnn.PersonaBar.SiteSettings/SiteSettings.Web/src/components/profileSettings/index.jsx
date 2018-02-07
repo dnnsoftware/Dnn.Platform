@@ -134,7 +134,8 @@ class ProfileSettingsPanelBody extends Component {
                             label={resx.get("redirectOldProfileUrlsLabel")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.profileSettings.RedirectOldProfileUrl}
                             onChange={this.onSettingChange.bind(this, "RedirectOldProfileUrl")}
                             />
@@ -164,7 +165,8 @@ class ProfileSettingsPanelBody extends Component {
                             label={resx.get("Profile_DisplayVisibility")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.profileSettings.ProfileDisplayVisibility}
                             onChange={this.onSettingChange.bind(this, "ProfileDisplayVisibility")}
                             />

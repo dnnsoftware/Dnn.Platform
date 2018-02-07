@@ -81,7 +81,8 @@ class ProviderEditor extends Component {
                             label={resx.get("enableSitemapProvider")}
                             />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.settings.Enabled}
                             onChange={this.onSettingChange.bind(this, "Enabled")}
                             />

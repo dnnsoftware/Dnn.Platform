@@ -137,7 +137,8 @@ class SiteAliasSettingsPanelBody extends Component {
                                     label={resx.get("plAutoAddPortalAlias")}
                                     />
                                 <Switch
-                                    labelHidden={true}
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
                                     readOnly={!state.urlMappingSettings.AutoAddPortalAliasEnabled}
                                     value={state.urlMappingSettings.AutoAddPortalAlias}
                                     onChange={this.onSettingChange.bind(this, "AutoAddPortalAlias")}

@@ -32,6 +32,8 @@ class AuthenticationSystemSettings extends Component {
                     <GridCell columnSize={50} style={{ padding: 0 }}>
                         <Switch
                             label={Localization.get("AuthSystemSiteSettings_AppEnabled.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             value={extensionBeingEdited.appEnabled.value}
                             onChange={props.onChange.bind(this, "appEnabled")}
                             tooltipMessage={Localization.get("AuthSystemSiteSettings_AppEnabled.HelpText")} />

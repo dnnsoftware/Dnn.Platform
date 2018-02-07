@@ -187,6 +187,8 @@ class Performance extends Component {
                             />
                     }
                     <SwitchBlock label={localization.get("PerformanceTab_SslForCacheSyncrhonization")}
+                        onText={localization.get("SwitchOn")}
+                        offText={localization.get("SwitchOff")}
                         tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
                         value={props.performanceSettings.sslForCacheSynchronization}
                         onChange={this.onChangeField.bind(this, "sslForCacheSynchronization")} />
@@ -217,12 +219,16 @@ class Performance extends Component {
                         onChange={this.onChangeField.bind(this, "clientResourcesManagementMode")}
                         value={props.performanceSettings.clientResourcesManagementMode} />
                     <SwitchBlock label={localization.get("PerformanceTab_EnableCompositeFiles")}
+                        onText={localization.get("SwitchOn")}
+                        offText={localization.get("SwitchOff")}
                         tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
                         value={enableCompositeFiles}
                         onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
                         isGlobal={areGlobalSettings} 
                         globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
+                        onText={localization.get("SwitchOn")}
+                        offText={localization.get("SwitchOff")}
                         tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
                         value={enableCompositeFiles ? minifyCss : false}
                         readOnly={!enableCompositeFiles}
@@ -230,6 +236,8 @@ class Performance extends Component {
                         isGlobal={areGlobalSettings} 
                         globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
+                        onText={localization.get("SwitchOn")}
+                        offText={localization.get("SwitchOff")}
                         tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
                         value={enableCompositeFiles ? minifyJs : false}
                         readOnly={!enableCompositeFiles}

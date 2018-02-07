@@ -218,6 +218,8 @@ class SmtpServer extends Component {
                         }
                         {smtpSettingsVisible &&
                         <SwitchBlock label={localization.get("plSMTPEnableSSL")}
+                            onText={localization.get("SwitchOn")}
+                            offText={localization.get("SwitchOff")}
                             tooltip={localization.get("plSMTPEnableSSL.Help")}
                             value={selectedSmtpSettings.enableSmtpSsl}
                             onChange={this.onChangeSmtpEnableSsl.bind(this)}

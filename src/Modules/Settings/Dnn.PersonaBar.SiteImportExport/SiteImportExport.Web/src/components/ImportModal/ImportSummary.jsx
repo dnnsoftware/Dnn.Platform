@@ -168,6 +168,8 @@ class ImportSummary extends Component {
                                         label={Localization.get("OverwriteCollisions")}
                                     />
                                     <Switch
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         value={props.collisionResolution === 0 ? false : true}
                                         onChange={this.onChange.bind(this, "CollisionResolution")}
                                     />
@@ -178,6 +180,8 @@ class ImportSummary extends Component {
                                         label={Localization.get("RunNow")}
                                     />
                                     <Switch
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         value={props.runNow}
                                         onChange={this.onChange.bind(this, "RunNow")}
                                     />

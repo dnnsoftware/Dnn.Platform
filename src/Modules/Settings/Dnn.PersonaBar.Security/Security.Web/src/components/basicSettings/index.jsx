@@ -202,7 +202,8 @@ class BasicSettingsPanelBody extends Component {
                                 label={resx.get("Security_RequireValidProfileAtLogin") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.RequireValidProfileAtLogin}
                                 onChange={this.onSettingChange.bind(this, "RequireValidProfileAtLogin") }
                                 readOnly={!canEdit}
@@ -217,7 +218,8 @@ class BasicSettingsPanelBody extends Component {
                                 label={resx.get("Security_CaptchaLogin") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaLogin}
                                 onChange={this.onSettingChange.bind(this, "CaptchaLogin") }
                                 readOnly={!canEdit}
@@ -232,7 +234,8 @@ class BasicSettingsPanelBody extends Component {
                                 label={resx.get("Security_CaptchaRetrivePassword") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaRetrivePassword}
                                 onChange={this.onSettingChange.bind(this, "CaptchaRetrivePassword") }
                                 readOnly={!canEdit}
@@ -247,7 +250,8 @@ class BasicSettingsPanelBody extends Component {
                                 label={resx.get("Security_CaptchaChangePassword") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaChangePassword}
                                 onChange={this.onSettingChange.bind(this, "CaptchaChangePassword") }
                                 readOnly={!canEdit}
@@ -262,7 +266,8 @@ class BasicSettingsPanelBody extends Component {
                                 label={resx.get("plHideLoginControl") }
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.HideLoginControl}
                                 onChange={this.onSettingChange.bind(this, "HideLoginControl") }
                                 readOnly={!canEdit}

@@ -246,7 +246,8 @@ class RolesEditor extends Component {
                 </div>
                 <div className="right">
                     <Switch
-                        labelHidden={true}
+                        onText={resx.get("SwitchOn")}
+                        offText={resx.get("SwitchOff")}
                         readOnly={state.roleDetails.isSystem}
                         value={this.getValue("Public")}
                         onChange={this.onSwitchToggle.bind(this, "isPublic")} />
@@ -323,7 +324,8 @@ class RolesEditor extends Component {
                 </div>
                 <div className="right">
                     <Switch
-                        labelHidden={true}
+                        onText={resx.get("SwitchOn")}
+                        offText={resx.get("SwitchOff")}
                         readOnly={state.roleDetails.isSystem}
                         value={state.roleDetails.autoAssign}
                         onChange={this.onSwitchToggle.bind(this, "autoAssign")} />
@@ -340,7 +342,8 @@ class RolesEditor extends Component {
                     </div>
                     <div className="right">
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             readOnly={state.roleDetails.isSystem}
                             value={state.assignToUsers}
                             onChange={this.onSwitchToggle.bind(this, "assignToUsers")} />

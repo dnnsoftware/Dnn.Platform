@@ -416,7 +416,8 @@ class ProfilePropertyEditor extends Component {
                             label={resx.get("ProfilePropertyDefinition_Required")}
                         />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={this.state.profileProperty ? this.state.profileProperty.Required : false}
                             onChange={this.onSettingChange.bind(this, "Required")}
                         />
@@ -430,7 +431,8 @@ class ProfilePropertyEditor extends Component {
                             label={resx.get("ProfilePropertyDefinition_Visible")}
                         />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={this.state.profileProperty ? this.state.profileProperty.Visible : false}
                             onChange={this.onSettingChange.bind(this, "Visible")}
                         />
@@ -497,7 +499,8 @@ class ProfilePropertyEditor extends Component {
                             label={resx.get("ProfilePropertyDefinition_ReadOnly")}
                         />
                         <Switch
-                            labelHidden={true}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={this.state.profileProperty ? this.state.profileProperty.ReadOnly : false}
                             onChange={this.onSettingChange.bind(this, "ReadOnly")}
                         />

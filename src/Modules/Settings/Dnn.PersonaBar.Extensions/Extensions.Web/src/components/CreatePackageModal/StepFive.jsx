@@ -28,6 +28,8 @@ const StepFive = ({
                     <Switch
                         className="create-manifest-switch"
                         label={Localization.get("CreatePackage_CreateManifestFile.Label")}
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                         onChange={onChange.bind(this, "createManifest")}
                         value={createManifest}
                         />
@@ -43,6 +45,8 @@ const StepFive = ({
                     <Switch
                         className="review-manifest-switch"
                         label={Localization.get("CreatePackage_CreatePackage.Label")}
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                         onChange={onChange.bind(this, "createPackage")}
                         value={createPackage}
                         />
@@ -61,6 +65,8 @@ const StepFive = ({
                     <Switch
                         className="review-manifest-switch"
                         label={Localization.get("CreatePackage_CreatePackage.Label")}
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                         onChange={onChange.bind(this, "createPackage")}
                         value={createPackage}
                         />

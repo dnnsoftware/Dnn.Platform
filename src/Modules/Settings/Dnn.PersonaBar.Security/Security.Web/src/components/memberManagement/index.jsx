@@ -206,7 +206,8 @@ class MemberManagementPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnablePasswordHistory}
                                 onChange={this.onSettingChange.bind(this, "EnablePasswordHistory") }
                                 />
@@ -264,7 +265,8 @@ class MemberManagementPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableBannedList}
                                 onChange={this.onSettingChange.bind(this, "EnableBannedList") }
                                 />
@@ -284,7 +286,8 @@ class MemberManagementPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableStrengthMeter}
                                 onChange={this.onSettingChange.bind(this, "EnableStrengthMeter") }
                                 />
@@ -304,7 +307,8 @@ class MemberManagementPanelBody extends Component {
                                         />}
                                 />
                             <Switch
-                                labelHidden={true}
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableIPChecking}
                                 onChange={this.onSettingChange.bind(this, "EnableIPChecking") }
                                 />
