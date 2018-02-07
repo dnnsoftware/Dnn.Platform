@@ -51,7 +51,10 @@ class LanguageInfoView extends Component {
                         resxBeingEdited={resxBeingEdited}
                         resxBeingEditedDisplay={resxBeingEditedDisplay} />
                     <GridCell columnSize={50}>
-                        <Switch label={resx.get("HighlightPendingTranslations")} value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
+                        <Switch label={resx.get("HighlightPendingTranslations")}
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
+                            value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
                     </GridCell>
                     <GridCell columnSize={50} className="translation-action-buttons">
                         <Button type="secondary" onClick={onCancel}>

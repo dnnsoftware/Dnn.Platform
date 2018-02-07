@@ -37,6 +37,8 @@ class SkinObject extends Component {
                             enabled={!props.disabled} />
                         <Switch
                             label={Localization.get("EditSkinObject_SupportsPartialRender.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             value={extensionBeingEdited.supportsPartialRendering.value}
                             onChange={props.onChange.bind(this, "supportsPartialRendering")}
                             tooltipMessage={Localization.get("EditSkinObject_SupportsPartialRender.HelpText")}

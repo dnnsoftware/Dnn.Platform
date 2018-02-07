@@ -115,6 +115,8 @@ class LocalizedContent extends Component {
                             <div className="language-name">{defaultLanguage.EnglishName}</div>
                         </div>
                         <Switch
+                            onText={resx.get("SwitchOn")}
+                            offText={resx.get("SwitchOff")}
                             value={state.allPagesTranslatable}
                             onChange={this.onChange.bind(this) }
                             />

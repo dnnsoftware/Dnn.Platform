@@ -35,6 +35,8 @@ const StepOne = ({packageManifest,
                         <Switch
                             className="existing-manifest-switch"
                             label={Localization.get("CreatePackage_UseExistingManifest.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             onChange={onChange.bind(this, "useExistingManifest")}
                             value={useExistingManifest}
                             />
@@ -55,6 +57,8 @@ const StepOne = ({packageManifest,
                     <Switch
                         className="review-manifest-switch"
                         label={Localization.get("CreatePackage_ReviewManifest.Label")}
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                         onChange={onChange.bind(this, "reviewManifest")}
                         value={reviewManifest}
                         />

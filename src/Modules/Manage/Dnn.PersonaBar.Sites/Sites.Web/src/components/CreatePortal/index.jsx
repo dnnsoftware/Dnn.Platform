@@ -331,6 +331,8 @@ class CreatePortal extends Component {
                         <GridCell className="user-as-admin">
                             <Switch
                                 label={Localization.get("AssignCurrentUserAsAdmin.Label")}
+                                onText={Localization.get("SwitchOn")}
+                                offText={Localization.get("SwitchOff")}
                                 value={state.newPortal.UseCurrentUserAsAdmin}
                                 onChange={this.onChange.bind(this, "UseCurrentUserAsAdmin")}
                                 />

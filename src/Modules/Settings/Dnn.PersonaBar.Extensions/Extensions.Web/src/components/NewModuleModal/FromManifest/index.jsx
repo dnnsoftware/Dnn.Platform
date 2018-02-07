@@ -198,6 +198,8 @@ class FromManifest extends Component {
                         <Switch value={state.newModule.addPage.value}
                             tooltipMessage={Localization.get("NewModule_AddTestPage.HelpText")}
                             label={Localization.get("NewModule_AddTestPage.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             onChange={this.onChange.bind(this, "addPage")} />
                     </div>
                 </GridSystem>

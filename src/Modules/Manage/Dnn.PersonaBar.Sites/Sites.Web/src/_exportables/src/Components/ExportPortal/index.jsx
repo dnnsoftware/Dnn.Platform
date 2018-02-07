@@ -246,30 +246,40 @@ class ExportPortal extends Component {
                                 <div className="export-switches">
                                     <Switch
                                         label={Localization.get("plContent")}
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         tooltipMessage={Localization.get("plContent.Help")}
                                         value={state.portalBeingExported.includeContent}
                                         onChange={this.onChange.bind(this, "includeContent")}
                                         />
                                     <Switch
                                         label={Localization.get("lblFiles")}
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         tooltipMessage={Localization.get("lblFiles.Help")}
                                         value={state.portalBeingExported.includeFiles}
                                         onChange={this.onChange.bind(this, "includeFiles")}
                                         />
                                     <Switch
                                         label={Localization.get("lblRoles")}
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         tooltipMessage={Localization.get("lblRoles.Help")}
                                         value={state.portalBeingExported.includeRoles}
                                         onChange={this.onChange.bind(this, "includeRoles")}
                                         />
                                     <Switch
                                         label={Localization.get("lblProfile")}
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         tooltipMessage={Localization.get("lblProfile.Help")}
                                         value={state.portalBeingExported.includeProfile}
                                         onChange={this.onChange.bind(this, "includeProfile")}
                                         />
                                     <Switch
                                         label={Localization.get("lblModules")}
+                                        onText={Localization.get("SwitchOn")}
+                                        offText={Localization.get("SwitchOff")}
                                         tooltipMessage={Localization.get("lblModules.Help")}
                                         value={state.portalBeingExported.includeModules}
                                         onChange={this.onChange.bind(this, "includeModules")}
@@ -277,6 +287,8 @@ class ExportPortal extends Component {
                                     {props.portalBeingExported.contentLocalizable &&
                                         <Switch
                                             label={Localization.get("lblMultilanguage")}
+                                            onText={Localization.get("SwitchOn")}
+                                            offText={Localization.get("SwitchOff")}
                                             tooltipMessage={Localization.get("lblMultilanguage.Help")}
                                             value={state.portalBeingExported.isMultiLanguage}
                                             onChange={this.onChange.bind(this, "isMultiLanguage")}

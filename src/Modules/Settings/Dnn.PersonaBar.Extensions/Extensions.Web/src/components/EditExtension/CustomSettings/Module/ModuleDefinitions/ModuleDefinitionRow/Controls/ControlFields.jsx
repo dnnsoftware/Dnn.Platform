@@ -92,6 +92,8 @@ class ControlFields extends Component {
                             />
                         <Switch value={props.controlBeingEdited.supportPopups}
                             label={Localization.get("AddModuleControl_SupportsPopups.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             tooltipMessage={Localization.get("AddModuleControl_SupportsPopups.HelpText")}
                             onChange={props.onChange.bind(this, "supportPopups")} />
                     </div>
@@ -130,6 +132,8 @@ class ControlFields extends Component {
                             onChange={props.onChange.bind(this, "helpUrl")} />
                         <Switch
                             label={Localization.get("AddModuleControl_SupportsPartialRendering.Label")}
+                            onText={Localization.get("SwitchOn")}
+                            offText={Localization.get("SwitchOff")}
                             tooltipMessage={Localization.get("AddModuleControl_SupportsPartialRendering.HelpText")}
                             value={props.controlBeingEdited.supportPartialRendering}
                             onChange={props.onChange.bind(this, "supportPartialRendering")} />
