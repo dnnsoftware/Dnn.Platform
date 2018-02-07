@@ -113,7 +113,13 @@ namespace Dnn.PersonaBar.Prompt.Components
                 return null;
             }
 
-            if (targetPage.PortalID == portalSettings.PortalId  || PortalHelper.IsRequestForSiteGroup(targetPage.PortalID,portalSettings.PortalId))
+            var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
+
+            if (
+                currentPortalSetting == portalSettings ||
+                targetPage.PortalID == portalSettings.PortalId ||
+                PortalHelper.IsRequestForSiteGroup(targetPage.PortalID, portalSettings.PortalId)
+                )
             {
                 try
                 {
@@ -166,10 +172,16 @@ namespace Dnn.PersonaBar.Prompt.Components
 
                 if (module != null)
                 {
-                    if (module.PortalID == portalSettings.PortalId || PortalHelper.IsRequestForSiteGroup(module.PortalID, portalSettings.PortalId))
+                    var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+
+                    if (
+                        portalSettings == currentPortal ||
+                        portalSettings.PortalId == module.PortalID ||
+                        PortalHelper.IsRequestForSiteGroup(module.PortalID, portalSettings.PortalId)
+                        )
                     {
                         return module;
-                    }                    
+                    }
                 }
                 else
                 {

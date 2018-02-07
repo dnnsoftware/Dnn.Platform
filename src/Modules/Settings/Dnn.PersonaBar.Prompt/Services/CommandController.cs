@@ -65,7 +65,8 @@ namespace Dnn.PersonaBar.Prompt.Services
         public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
         {
             PortalId = portalId;
-            var portal = PortalController.Instance.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortalSettings(portalId);
+
             if (portal == null)
             {
                 var errorMessage = string.Format(Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
@@ -73,16 +74,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                 return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
 
-            if (portalId != base.PortalId)
-            {
-                if (!PortalHelper.IsRequestForSiteGroup(portalId, base.PortalSettings.PortalId))
-                {
-                    var errorMessage = string.Format(Localization.GetString("InValidPortalId", Constants.LocalResourcesFile), portalId);
-                    Logger.Error(errorMessage);
-                    return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
-                }
-                PortalSettings = new PortalSettings(PortalId);
-            }
+            PortalSettings = new PortalSettings(PortalId);
+
             return Cmd(command);
         }
 
