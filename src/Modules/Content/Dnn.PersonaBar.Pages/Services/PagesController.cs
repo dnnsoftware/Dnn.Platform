@@ -432,13 +432,6 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage GetPageUrlPreview(string url)
-        {
-            var cleanedUrl = _pagesController.CleanTabUrl(url);
-            return Request.CreateResponse(HttpStatusCode.OK, new { Url = cleanedUrl });
-        }
-
-        [HttpGet]
         public HttpResponseMessage GetThemes()
         {
             var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.All);
