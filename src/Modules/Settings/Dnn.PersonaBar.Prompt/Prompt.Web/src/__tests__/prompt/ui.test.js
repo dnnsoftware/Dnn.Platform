@@ -188,7 +188,7 @@ describe("UI snapshots for state change", () => {
 
         const commandsTableRows = wrapper.find("table > tbody > tr");
 
-        expect(commandsTableRows).toHaveLength(commandsList.length);
+        expect(commandsTableRows).toHaveLength(commandsList.length + 1);
         expect(wrapper).toMatchSnapshot();
     });
 
