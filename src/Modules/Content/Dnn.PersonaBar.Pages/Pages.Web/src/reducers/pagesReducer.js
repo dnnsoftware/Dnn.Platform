@@ -6,7 +6,6 @@ export default function pagesReducer(state = {
     errors: {},
     cacheProviderList: null,
     editingSettingModuleId: null,
-    urlChanged: false,
     dirtyPage: false,
     selectedPageSettingTab: 0,
     workflowList: [],
@@ -35,10 +34,6 @@ export default function pagesReducer(state = {
             return m;
         }); 
     };
-
-    const hasChangeUrl = function hasChangeUrl(action) {
-        return state.urlChanged || (!action.urlPreviewChange && action.field === "url");
-    };
     
     function getIndexById(items, id) {
         return items.findIndex((ct) => ct.id === id);
@@ -66,7 +61,6 @@ export default function pagesReducer(state = {
             return { ...state,
                 selectedPage: action.data.page,
                 errors: {},
-                urlChanged: false,
                 dirtyPage: false,
                 cachedPageCount: null,
                 selectedPageSettingTab: action.selectedPageSettingTab
@@ -79,7 +73,6 @@ export default function pagesReducer(state = {
                     ...(state.errors),
                     ...validateFields(action.field, action.value)
                 },
-                urlChanged: hasChangeUrl(action),
                 dirtyPage: true
             };
 
@@ -113,7 +106,6 @@ export default function pagesReducer(state = {
                 selectedPage: null,
                 errors: {},
                 editingSettingModuleId: null,
-                urlChanged: false,
                 dirtyPage: false,
                 selectedPageSettingTab: 0
             };
