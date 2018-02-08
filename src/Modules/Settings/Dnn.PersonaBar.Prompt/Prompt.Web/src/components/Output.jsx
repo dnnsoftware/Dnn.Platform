@@ -34,7 +34,7 @@ export class Output extends Component {
         }
         else if (props.data) {
             const result = [];
-            if(props.paging !== null) {
+            if(props.paging !== null && props.paging !== undefined) {
                 props.IsPaging(props.paging.pageNo < props.paging.totalPages);
             }
             result.push(this.renderData(props.data, fieldOrder));
@@ -49,7 +49,6 @@ export class Output extends Component {
             const style = props.isError ? "dnn-prompt-error" : `dnn-prompt-${props.style === "cmd" ? "cmd" : "ok"}`;
             return <TextLine key={DomKey.get("output")} txt={props.output} css={style}/>;
         }
-        props.busy(false);
     }
 
     renderData(data, fieldOrder) {
@@ -91,7 +90,6 @@ Output.PropTypes = {
     options: PropTypes.array,
     resultHtml: PropTypes.string,
     error: PropTypes.string,
-    busy: PropTypes.func.isRequired,
     IsPaging: PropTypes.func.isRequired
 };
 

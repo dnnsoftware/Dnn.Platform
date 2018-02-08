@@ -18,7 +18,8 @@ const initialState = {
     description: null,
     options: null,
     resultHtml: null,
-    error: null
+    error: null,
+    isBusy: false
 };
 
 describe("Prompt reducers", () => {

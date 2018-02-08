@@ -58,13 +58,26 @@
                     /* Get rid of Chrome focus border */
                     position: absolute;
                     left: 17px;
+
+                    &.hidden-text {
+                      opacity: 0;
+                    }
                 }
-                .dnn-prompt-input-wrapper::before {
-                    content: ">";
-                    color: #8AE234;
-                    margin-left: 3px;
-                    display: inline-block;
+                .dnn-prompt-input-wrapper {
+                    &::before {
+                        content: ">";
+                        color: #8AE234;
+                        margin-left: 3px;
+                        display: inline-block;
+                    }
+
+                    &.hidden-cursor {
+                        &::before {
+                          content: " ";
+                        }
+                    }
                 }
+
                 /* remove MS Edge clear button */
                 .dnn-prompt-input::-ms-clear {
                     display: none;

@@ -100,19 +100,15 @@ class Input extends Component {
 
         // Server Command
         const errorCallback = (error) => {
-            props.busy(false);
             actions.runLocalCommand("ERROR", error.responseJSON.Message);
         };
 
-        props.busy(true);
         if (cmd === Cmd.HELP) {
             if (txt.toUpperCase() === "HELP") {
                 actions.getCommandList({ cmdLine: "list-commands", currentPage: self.tabId }, () => {
-                    props.busy(false);
                 }, errorCallback.bind(this));
             } else {
                 actions.runHelpCommand({ cmdLine: txt, currentPage: self.tabId }, () => {
-                    props.busy(false);
                 }, errorCallback.bind(this));
             }
         } else {
@@ -120,7 +116,6 @@ class Input extends Component {
                 actions.runCommand(
                     {cmdLine: txt, currentPage: self.tabId},
                     () => {
-                        props.busy(false);
                     }, errorCallback.bind(this));
             }
         }
@@ -194,10 +189,22 @@ class Input extends Component {
         return tokens ? tokens.find((token) => token.toUpperCase === flag.toUpperCase()) : false;
     }
 
+    isPaging() {
+        const { props } = this;
+        const IS_PAGING = props.paging !== null && props.paging.pageNo < props.paging.totalPages;
+        return IS_PAGING;
+    }
+
     render() {
+
         return (
-            <div className="dnn-prompt-input-wrapper">
-                <input className="dnn-prompt-input" ref={(el) => this.cmdPromptInput = el} />
+            <div className={`dnn-prompt-input-wrapper ${this.isPaging() === true ? "hidden-cursor" : ""}`}>
+                <input className={`dnn-prompt-input ${this.isPaging() === true ? "hidden-text" : ""}`} ref={(el) => {
+                    this.cmdPromptInput = el;
+                    if(el) {
+                        el.readOnly = this.isPaging() === true;
+                    }
+                }} />
             </div>
         );
     }
@@ -208,7 +215,8 @@ Input.PropTypes = {
     updateHistory: PropTypes.func.isRequired,
     busy: PropTypes.func.isRequired,
     setHeight: PropTypes.func.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    paging: PropTypes.bool.isRequired
 };
 
 export default Input;

@@ -10,6 +10,7 @@ export default function promptReducers(state = {
     output: null,
     isHtml: false,
     isError: false,
+    isBusy: false,
     data: null,
     clearOutput: false,
     style: null,
@@ -40,7 +41,8 @@ export default function promptReducers(state = {
                 description: null,
                 options: null,
                 resultHtml: null,
-                error: null
+                error: null,
+                isBusy: false
             };
         case actionTypes.END_PAGING:
             return {
@@ -61,7 +63,8 @@ export default function promptReducers(state = {
                 description: null,
                 options: null,
                 resultHtml: null,
-                error: null
+                error: null,
+                isBusy: false
             };
         case actionTypes.EXECUTED_COMMAND:
             if (action.data.result.Message) {
@@ -70,7 +73,8 @@ export default function promptReducers(state = {
                     isHelp: false,
                     isError: true,
                     output: action.data.result.Message,
-                    style: action.style
+                    style: action.style,
+                    isBusy: false
                 };
             } else {
                 return {
@@ -84,7 +88,8 @@ export default function promptReducers(state = {
                     fieldOrder: action.data.result.fieldOrder,
                     output: action.data.result.output,
                     nextPageCommand: action.data.result.nextPageCommand,
-                    style: action.style
+                    style: action.style,
+                    isBusy: false
                 };
             }
         case actionTypes.EXECUTED_HELP_COMMAND:
@@ -94,7 +99,8 @@ export default function promptReducers(state = {
                     isHelp: false,
                     isError: true,
                     output: action.data.result.Message,
-                    style: action.style
+                    style: action.style,
+                    isBusy: false
                 };
             } else {
                 return {
@@ -106,7 +112,8 @@ export default function promptReducers(state = {
                     options: action.data.result.options,
                     resultHtml: action.data.result.resultHtml,
                     error: action.data.result.error,
-                    isError: action.data.result.error !== undefined && action.data.result.error !== null && action.data.result.error !== ""
+                    isError: action.data.result.error !== undefined && action.data.result.error !== null && action.data.result.error !== "",
+                    isBusy: false
                 };
             }
         case actionTypes.EXECUTED_LOCAL_COMMAND:
@@ -119,7 +126,8 @@ export default function promptReducers(state = {
                         pagingInfo: null,
                         output: action.output,
                         clearOutput: true,
-                        style: action.style
+                        style: action.style,
+                        isBusy: false
                     };
                 case "RELOAD":
                     return {
@@ -129,7 +137,8 @@ export default function promptReducers(state = {
                         reload: true,
                         output: action.output,
                         clearOutput: false,
-                        style: action.style
+                        style: action.style,
+                        isBusy: false
                     };
                 case "ERROR":
                     return {
@@ -142,7 +151,8 @@ export default function promptReducers(state = {
                         isError: true,
                         data: null,
                         isHtml: false,
-                        style: action.style
+                        style: action.style,
+                        isBusy: false
                     };
                 case "CLH":
                 case "CLEAR-HISTORY":
@@ -157,21 +167,25 @@ export default function promptReducers(state = {
                         isError: false,
                         data: null,
                         isHtml: false,
-                        style: action.style
+                        style: action.style,
+                        isBusy: false
                     };
                 case "EXIT":
                     util.utilities.closePersonaBar();
                     return {
-                        ...state
+                        ...state,
+                        isBusy: false
                     };
                 default:
                     return {
-                        ...state
+                        ...state,
+                        isBusy: false
                     };
             }
         default:
             return {
-                ...state
+                ...state,
+                isBusy: false
             };
     }
 }
