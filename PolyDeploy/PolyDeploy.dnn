@@ -66,14 +66,14 @@
 
         <component type="Script">
           <scripts>
-            
+
             <!-- v0.1.0 -->
             <script type="Install">
               <path>\SqlDataProviders</path>
               <name>00.01.00.SqlDataProvider</name>
               <version>00.01.00</version>
             </script>
-            
+
             <!-- v0.2.0 -->
             <script type="Install">
               <path>\SqlDataProviders</path>
@@ -94,7 +94,7 @@
               <name>00.04.00.SqlDataProvider</name>
               <version>00.04.00</version>
             </script>
-            
+
             <!-- v0.5.0-->
             <!-- No script. -->
 
@@ -104,17 +104,17 @@
               <name>00.06.00.SqlDataProvider</name>
               <version>00.06.00</version>
             </script>
-            
+
             <!-- Uninstall -->
             <script type="Uninstall">
               <path>\SqlDataProviders</path>
               <name>Uninstall.SqlDataProvider</name>
               <version />
             </script>
-            
+
           </scripts>
         </component>
-        
+
         <component type="Assembly">
           <assemblies>
             <basePath>bin</basePath>
@@ -125,6 +125,30 @@
               <name>Cantarus.Libraries.Encryption.dll</name>
             </assembly>
           </assemblies>
+        </component>
+
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings/add[@name='aspnet:UseTaskFriendlySynchronizationContext']" action="add" collision="ignore" key="name">
+                    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node>
+                    <node path="/configuration/appSettings/add[@name='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
+                  </node>
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
         </component>
       </components>
     </package>
