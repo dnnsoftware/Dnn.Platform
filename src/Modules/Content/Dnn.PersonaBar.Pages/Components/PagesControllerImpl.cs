@@ -45,6 +45,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -686,7 +687,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.TabSettings["MaxVaryByCount"] = null;
             }
 
-            tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow;
+            tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow.ToString();
             tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
             // Tab Skin
@@ -1111,15 +1112,19 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
                 {
-                    foreach (var permission in rolePermission.Permissions)
+                    var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, rolePermission.RoleId);
+                    if (role != null)
                     {
-                        tab.TabPermissions.Add(new TabPermissionInfo
+                        foreach (var permission in rolePermission.Permissions)
                         {
-                            PermissionID = permission.PermissionId,
-                            RoleID = rolePermission.RoleId,
-                            UserID = Null.NullInteger,
-                            AllowAccess = permission.AllowAccess
-                        });
+                            tab.TabPermissions.Add(new TabPermissionInfo
+                            {
+                                PermissionID = permission.PermissionId,
+                                RoleID = rolePermission.RoleId,
+                                UserID = Null.NullInteger,
+                                AllowAccess = permission.AllowAccess
+                            });
+                        }
                     }
                 }
             }
@@ -1130,18 +1135,21 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 foreach (var userPermission in permissions.UserPermissions)
                 {
-                    foreach (var permission in userPermission.Permissions)
+                    var user = UserController.Instance.GetUserById(portalSettings.PortalId, userPermission.UserId);
+                    if (user != null)
                     {
                         int roleId;
                         int.TryParse(Globals.glbRoleNothing, out roleId);
-
-                        tab.TabPermissions.Add(new TabPermissionInfo
+                        foreach (var permission in userPermission.Permissions)
                         {
-                            PermissionID = permission.PermissionId,
-                            RoleID = roleId,
-                            UserID = userPermission.UserId,
-                            AllowAccess = permission.AllowAccess
-                        });
+                            tab.TabPermissions.Add(new TabPermissionInfo
+                            {
+                                PermissionID = permission.PermissionId,
+                                RoleID = roleId,
+                                UserID = userPermission.UserId,
+                                AllowAccess = permission.AllowAccess
+                            });
+                        }
                     }
                 }
             }
