@@ -82,8 +82,17 @@ export class App extends Component {
         }
     }
 
+    endPaging() {
+        this.actions.endPaging();
+        this.setValue("");
+        this.setFocus(true);
+    }
+
     keyDownHandler(e) {
         const { state, props } = this;
+
+        const lastPage = props.paging !== null && props.paging.pageNo === props.paging.totalPages;
+
         //CTRL + Key
         if (e.ctrlKey) {
             if (e.keyCode === 192) {
@@ -100,9 +109,7 @@ export class App extends Component {
                 return;
             }
             if (e.keyCode === 88) {
-                this.actions.endPaging();
-                this.setValue("");
-                this.setFocus(true);
+                this.endPaging();
                 return;
             }
         }
@@ -139,10 +146,14 @@ export class App extends Component {
                     break;
             }
         }
+
         if (this.isPaging && !e.ctrlKey && e.keyCode !== 88) {
             this.setValue("");
             this.setFocus(false);
             this.runCmd();
+            if(lastPage) {
+                this.endPaging();
+            }
             return;
         }
     }
