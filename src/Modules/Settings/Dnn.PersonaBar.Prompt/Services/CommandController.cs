@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Prompt.Services
         public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
         {
             PortalId = portalId;
-            var portal = PortalController.Instance.GetPortalSettings(portalId);
+            var portal = PortalController.Instance.GetPortal(PortalId);
 
             if (portal == null)
             {
