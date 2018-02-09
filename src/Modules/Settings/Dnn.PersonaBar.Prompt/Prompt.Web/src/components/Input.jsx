@@ -191,18 +191,38 @@ class Input extends Component {
 
     isPaging() {
         const { props } = this;
-        const IS_PAGING = props.paging !== null && props.paging.pageNo < props.paging.totalPages;
+        const IS_PAGING = props.paging !== null && props.paging.pageNo <= props.paging.totalPages;
         return IS_PAGING;
+    }
+
+    isLastPage() {
+        const { props } = this;
+        const IS_LAST_PAGE = props.paging !== null && props.paging.pageNo == props.paging.totalPages;
+        return IS_LAST_PAGE;
     }
 
     render() {
 
+        const IS_PAGING = this.isPaging();
+        const IS_LAST_PAGE = this.isLastPage();
+
         return (
-            <div className={`dnn-prompt-input-wrapper ${this.isPaging() === true ? "hidden-cursor" : ""}`}>
-                <input className={`dnn-prompt-input ${this.isPaging() === true ? "hidden-text" : ""}`} ref={(el) => {
+            <div className={`dnn-prompt-input-wrapper ${IS_PAGING && !IS_LAST_PAGE ? "hidden-cursor" : ""}`}>
+                <input className={`dnn-prompt-input ${IS_PAGING && !IS_LAST_PAGE ? "hidden-text" : ""}`} ref={(el) => {
                     this.cmdPromptInput = el;
                     if(el) {
-                        el.readOnly = this.isPaging() === true;
+                        el.readOnly = this.isPaging();
+                        /**
+                         * Note: this is a patch to be removed once a complete refactoring of the Redux
+                         * implementation will be done.
+                         * All changes in the DOM must happend accordingly to Redux state update and this
+                         * usage of setTimeout has to be considered wrong.
+                         * Patch needed to close DNN-10688
+                         */
+                        if(this.isPaging() && this.isLastPage() === true) {
+                            el.value = "";
+                            setTimeout(() => el.readOnly = false, 500);
+                        }
                     }
                 }} />
             </div>
