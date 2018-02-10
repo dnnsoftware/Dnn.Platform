@@ -36,11 +36,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -65,6 +63,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
+        private PortalSettings PortalSettings { get; set; }
 
         public PagesControllerImpl()
         {
@@ -78,7 +77,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
             var valid = true;
             errorMessage = string.Empty;
 
@@ -105,7 +104,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 valid = false;
             }
-
+            
             //check whether have conflict between tab path and portal alias.
             if (valid && TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
@@ -254,11 +253,11 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public TabInfo SavePageDetails(PortalSettings settings, PageSettings pageSettings)
         {
-            var portalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
             TabInfo tab = null;
             if (pageSettings.TabId > 0)
             {
-                tab = TabController.Instance.GetTab(pageSettings.TabId, portalSettings.PortalId);
+                tab = TabController.Instance.GetTab(pageSettings.TabId, PortalSettings.PortalId);
                 if (tab == null)
                 {
                     throw new PageNotFoundException();
@@ -273,10 +272,10 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             var tabId = pageSettings.TabId <= 0
-                ? AddTab(portalSettings, pageSettings)
+                ? AddTab(PortalSettings, pageSettings)
                 : UpdateTab(tab, pageSettings);
 
-            return TabController.Instance.GetTab(tabId, portalSettings.PortalId);
+            return TabController.Instance.GetTab(tabId, PortalSettings.PortalId);
         }
 
         private bool IsChild(int portalId, int tabId, int parentId)
@@ -473,10 +472,10 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             var parentId = pageSettings.ParentId ?? tab?.ParentId ?? Null.NullInteger;
+            var portalSettings = PortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
 
             if (pageSettings.PageType == "template")
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 parentId = GetTemplateParentId(tab?.PortalID ?? portalSettings.PortalId);
             }
 
@@ -506,7 +505,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         return false;
                     }
                     if (!TabPermissionController.CanViewPage(TabController.Instance.GetTab(existingTabRedirectionId,
-                        PortalSettings.Current.PortalId)))
+                        portalSettings.PortalId)))
                     {
                         errorMessage = Localization.GetString("NoPermissionViewRedirectPage");
                         invalidField = "ExistingTabRedirection";
@@ -543,7 +542,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private bool ValidatePageUrlSettings(PageSettings pageSettings, TabInfo tab, ref string invalidField, ref string errorMessage)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
             var urlPath = !string.IsNullOrEmpty(pageSettings.Url) ? pageSettings.Url.TrimStart('/') : string.Empty;
 
             if (string.IsNullOrEmpty(urlPath))
@@ -687,7 +686,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.TabSettings["MaxVaryByCount"] = null;
             }
 
-            tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow.ToString();
+            tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow.ToString();   
             tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
             // Tab Skin

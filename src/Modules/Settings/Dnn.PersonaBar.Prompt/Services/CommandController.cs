@@ -64,8 +64,7 @@ namespace Dnn.PersonaBar.Prompt.Services
         [HttpPost]
         public HttpResponseMessage Cmd(int portalId, [FromBody] CommandInputModel command)
         {
-            PortalId = portalId;
-            var portal = PortalController.Instance.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
 
             if (portal == null)
             {
@@ -74,9 +73,18 @@ namespace Dnn.PersonaBar.Prompt.Services
                 return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
 
-            PortalSettings = new PortalSettings(PortalId);
+            PortalId = portalId;
+            SetupPortalSettings(portalId);
 
             return Cmd(command);
+        }
+
+        private void SetupPortalSettings(int portalId)
+        {
+            PortalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(PortalSettings.DefaultPortalAlias);
         }
 
         [ValidateAntiForgeryToken]
