@@ -305,9 +305,9 @@ namespace Dnn.PersonaBar.Pages.Components
             return false;
         }
 
-        public IEnumerable<TabInfo> GetPageList(PortalSettings settings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false)
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false)
         {
-            var portalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
 
             var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, includeHidden, includeDeleted, true);
@@ -323,12 +323,12 @@ namespace Dnn.PersonaBar.Pages.Components
             return pages;
         }
 
-        public IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath,
+        public IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,
             string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10)
         {
             pageIndex = pageIndex <= 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            var tabs = GetPageList(portalSettings, parentId, searchKey, true, deleted ?? false);
+            var tabs = GetPageList(parentId, searchKey, true, deleted ?? false);
             var finalList = new List<TabInfo>();
             if (deleted.HasValue)
                 tabs = tabs.Where(tab => tab.IsDeleted == deleted);

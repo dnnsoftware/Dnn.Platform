@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             var lstOut = new List<PageModelBase>();
             int total;
-            var lstTabs = PagesController.Instance.GetPageList(PortalSettings, Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
             var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));

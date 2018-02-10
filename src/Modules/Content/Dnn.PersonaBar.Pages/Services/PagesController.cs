@@ -206,7 +206,7 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
-            var pages = from p in _pagesController.GetPageList(PortalSettings, parentId, searchKey)
+            var pages = from p in _pagesController.GetPageList(parentId, searchKey)
                         select Converters.ConvertToPageItem<PageItem>(p, tabs);
             return Request.CreateResponse(HttpStatusCode.OK, pages);
         }
