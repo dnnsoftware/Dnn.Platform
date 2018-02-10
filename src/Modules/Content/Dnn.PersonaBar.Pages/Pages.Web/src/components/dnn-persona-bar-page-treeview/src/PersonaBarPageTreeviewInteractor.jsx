@@ -59,6 +59,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                     item.selected = true;
                     this.setState({
                         pageList: list
+                    },()=>{
+                        this._countTreeOpenDeepParent(this.state.pageList);
                     });
                 }
             });
@@ -68,6 +70,8 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                 item.selected = false;
                 this.setState({
                     pageList: list
+                },()=>{
+                    this._countTreeOpenDeepParent(this.state.pageList);
                 });
             });
         }
