@@ -133,7 +133,7 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/appSettings/add[@name='aspnet:UseTaskFriendlySynchronizationContext']" action="add" collision="ignore" key="name">
+                  <node path="/configuration/appSettings" action="update" collision="overwrite" key="key">
                     <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
                   </node>
                 </nodes>
@@ -142,14 +142,13 @@
             <uninstall>
               <configuration>
                 <nodes>
-                  <node>
-                    <node path="/configuration/appSettings/add[@name='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
-                  </node>
+                  <node path="/configuration/appSettings/add[@key='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
                 </nodes>
               </configuration>
             </uninstall>
           </config>
         </component>
+
       </components>
     </package>
   </packages>
