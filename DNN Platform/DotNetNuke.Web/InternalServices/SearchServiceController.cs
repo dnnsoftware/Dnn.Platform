@@ -135,19 +135,6 @@ namespace DotNetNuke.Web.InternalServices
             return searchModule != null ? searchModule.ModuleSettings : null;
         }
 
-        private bool GetBooleanSetting(string settingName, bool defaultValue)
-        {
-            var settings = GetSearchModuleSettings();
-            if (settings != null 
-                    && settings.ContainsKey(settingName) 
-                    && !string.IsNullOrEmpty(Convert.ToString(settings[settingName])))
-            {
-                return Convert.ToBoolean(settings[settingName]);
-            }
-
-            return defaultValue;
-        }
-
         private int GetIntegerSetting(string settingName, int defaultValue)
         {
             var settings = GetSearchModuleSettings();
@@ -416,8 +403,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
-            var showDescription = GetBooleanSetting("ShowDescription", true);
-            var showSnippet = GetBooleanSetting("ShowSnippet", true);
+            var showFriendlyTitle = GetSearchResultModuleSetting("ShowFriendlyTitle", true);
+            var showDescription = GetSearchResultModuleSetting("ShowDescription", true);
+            var showSnippet = GetSearchResultModuleSetting("ShowSnippet", true);
             var maxDescriptionLength = GetIntegerSetting("MaxDescriptionLength", 100);
 
             return sResult.Results.Select(result =>
@@ -430,7 +418,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 return new BasicView
                 {
-                    Title = GetTitle(result),
+                    Title = GetTitle(result, showFriendlyTitle),
                     DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                     DocumentUrl = result.Url,
                     Snippet = showSnippet ? result.Snippet : string.Empty,
@@ -439,7 +427,7 @@ namespace DotNetNuke.Web.InternalServices
             });
         }
 
-        private string GetTitle(SearchResult result)
+        private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
             if (result.ModuleDefId > 0 && result.ModuleDefId == HtmlModuleDefitionId) //special handling for Html module
             {
@@ -452,7 +440,23 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return result.Title;
+            return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
+        }
+
+        private bool GetSearchResultModuleSetting(string settingName, bool defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
         }
 
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
