@@ -391,18 +391,20 @@ namespace DotNetNuke.Web.InternalServices
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
+            var showFriendlyTitle = GetSearchResultModuleSetting("ShowFriendlyTitle", true);
+            var showDescriptionForSnippet = GetSearchResultModuleSetting("ShowDescriptionForSnippet", false);
 
             return sResult.Results.Select(result => 
                 new BasicView
                     {
-                        Title = GetTitle(result),
+                        Title = GetTitle(result, showFriendlyTitle),
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
-                        Snippet = result.Snippet,
+                        Snippet = showDescriptionForSnippet ? result.Description : result.Snippet,
                     });
         }
 
-        private string GetTitle(SearchResult result)
+        private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
             if (result.ModuleDefId > 0 && result.ModuleDefId == HtmlModuleDefitionId) //special handling for Html module
             {
@@ -415,7 +417,23 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return result.Title;
+            return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
+        }
+
+        private bool GetSearchResultModuleSetting(string settingName, bool defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
         }
 
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
