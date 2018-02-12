@@ -52,16 +52,20 @@
                                     var item = group.Results[j];
                                     var itemTitle = item.Title;
                                     var itemUrl = item.DocumentUrl;
+                                    var itemDescription = item.Description;
                                     var itemSnippet = item.Snippet;
                                     markup += '<li data-url="' + itemUrl + '">';
                                     if (item.Attributes.Avatar) {
                                         markup += '<span><img src="' + item.Attributes.Avatar + '" class="userpic" /></span>';
                                     }
                                     markup += '<span>' + itemTitle + '</span>';
-                                    if (itemSnippet)
-                                        markup += '<p>' + itemSnippet + '</p></li>';
-                                    else
-                                        markup += '</li>';
+                                    if (itemDescription) {
+                                        markup += '<p>' + itemDescription + '</p>';
+                                    }
+                                    if (itemSnippet) {
+                                        markup += '<p>' + itemSnippet + '</p>';
+                                    }
+                                    markup += '</li>';
                                 } // end for group items
                             }
                         } // end for group

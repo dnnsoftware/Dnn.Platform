@@ -18,7 +18,12 @@
         resultsCountText: 'About {0} Results',
         currentPageIndexText: 'Current Page Number:',
         linkTarget: '',
-        showDescriptionForSnippet: false,
+        showDescription: false,
+        maxDescriptionLength: 100,
+        showSnippet: false,
+        showSource: false,
+        showLastUpdated: false,
+        showTags: false,
         cultureCode: 'en-US'
     };
 
@@ -110,24 +115,49 @@
         if(renderUrl)
             markup += '<div class="dnnSearchResultItem-Link"><a href="' + data.DocumentUrl + '"' + dnn.searchResult.defaultSettings.linkTarget + '>' + data.DocumentUrl + '</a></div>';
 
-        var showDescriptionForSnippet = dnn.searchResult.defaultSettings.showDescriptionForSnippet;
-        var description = showDescriptionForSnippet && data.Description ? data.Description : data.Snippet;
-        markup += '<div class="dnnSearchResultItem-Description">' + description + '</div>';
-        markup += '<div class="dnnSearchResultItem-Others">';
-        markup += '<span>' + dnn.searchResult.defaultSettings.lastModifiedText + ' </span>';
-        markup += data.DisplayModifiedTime;
-        markup += '</div>';
+        var showDescription = dnn.searchResult.defaultSettings.showDescription;
+        var showSnippet = dnn.searchResult.defaultSettings.showSnippet;
+        var showSource = dnn.searchResult.defaultSettings.showSource;
+        var showLastUpdated = dnn.searchResult.defaultSettings.showLastUpdated;
+        var showTags = dnn.searchResult.defaultSettings.showTags;
+
+        if (showDescription && data.Description) {
+            var description = $.trim(data.Description);
+            var maxDescriptionLength = dnn.searchResult.defaultSettings.maxDescriptionLength;
+            if (description.length > maxDescriptionLength) {
+                description = description.substr(0, maxDescriptionLength) + "...";
+            }
+            markup += '<div class="dnnSearchResultItem-Description">' + description + '</div>';
+        }
+
+        if (showSnippet) {
+            markup += '<div class="dnnSearchResultItem-Description">' + data.Snippet + '</div>';
+        }
+
+        if (showLastUpdated) {
+            markup += '<div class="dnnSearchResultItem-Others">';
+            markup += '<span>' + dnn.searchResult.defaultSettings.lastModifiedText + ' </span>';
+            markup += data.DisplayModifiedTime;
+            markup += '</div>';
+        }
 
         markup += '<div class="dnnSearchResultItem-Others">';
-        markup += '<span>' + dnn.searchResult.defaultSettings.sourceText + ' </span>';
-        markup += '<a href="javascript:void(0)" class="dnnSearchResultItem-sourceLink" data-value="' + data.DocumentTypeName + '" >' + data.DocumentTypeName + '</a>';
+
+        if (showSource) {
+            markup += '<span>' + dnn.searchResult.defaultSettings.sourceText + ' </span>';
+            markup += '<a href="javascript:void(0)" class="dnnSearchResultItem-sourceLink" data-value="' +
+                data.DocumentTypeName +
+                '" >' +
+                data.DocumentTypeName +
+                '</a>';
+        }
 
         if (data.AuthorName && data.AuthorProfileUrl) {
             markup += '&nbsp;&nbsp;&nbsp;<span>' + dnn.searchResult.defaultSettings.authorText + ' </span>';
             markup += '<a href="' + data.AuthorProfileUrl + '" target="_blank">' + data.AuthorName + '</a>';
         }
                         
-        if (data.Tags && data.Tags.length) {
+        if (showTags && data.Tags && data.Tags.length) {
             markup += '&nbsp;&nbsp;&nbsp;<span class="tagSpan">' + dnn.searchResult.defaultSettings.tagsText + ' </span>';
             var k = 0;
             for (k = 0; k < data.Tags.length - 1; k++) {
