@@ -135,9 +135,35 @@ namespace DotNetNuke.Web.InternalServices
             return searchModule != null ? searchModule.ModuleSettings : null;
         }
 
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
+        }
+
         private int GetIntegerSetting(string settingName, int defaultValue)
         {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
             var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
             var settingValue = Convert.ToString(settings[settingName]);
             if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
             {
@@ -403,9 +429,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
-            var showFriendlyTitle = GetSearchResultModuleSetting("ShowFriendlyTitle", true);
-            var showDescription = GetSearchResultModuleSetting("ShowDescription", true);
-            var showSnippet = GetSearchResultModuleSetting("ShowSnippet", true);
+            var showFriendlyTitle = GetBooleanSetting("ShowFriendlyTitle", true);
+            var showDescription = GetBooleanSetting("ShowDescription", true);
+            var showSnippet = GetBooleanSetting("ShowSnippet", true);
             var maxDescriptionLength = GetIntegerSetting("MaxDescriptionLength", 100);
 
             return sResult.Results.Select(result =>
@@ -441,22 +467,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
-        }
-
-        private bool GetSearchResultModuleSetting(string settingName, bool defaultValue)
-        {
-            if (PortalSettings == null)
-            {
-                return defaultValue;
-            }
-
-            var settings = GetSearchModuleSettings();
-            if (settings == null || !settings.ContainsKey(settingName))
-            {
-                return defaultValue;
-            }
-
-            return Convert.ToBoolean(settings[settingName]);
         }
 
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
