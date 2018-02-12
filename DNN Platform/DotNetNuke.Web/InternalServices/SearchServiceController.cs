@@ -266,13 +266,16 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
+            var showFriendlyTitle = ActiveModule == null
+                                    || !ActiveModule.ModuleSettings.ContainsKey("ShowFriendlyTitle")
+                                    || Convert.ToBoolean(ActiveModule.ModuleSettings["ShowFriendlyTitle"]);
             foreach (var results in tabGroups.Values)
             {
                 var group = new GroupedDetailView();
 
                 //first entry
                 var first = results[0];
-                group.Title = first.Title;
+                group.Title = showFriendlyTitle ? GetFriendlyTitle(first) : first.Title;
                 group.DocumentUrl = first.Url;
 
                 //Find a different title for multiple entries with same url
@@ -282,7 +285,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
-                            group.Title = tab.TabName;
+                            group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
                     }
                     else if (first.ModuleId > 0)
                     {
@@ -307,9 +310,10 @@ namespace DotNetNuke.Web.InternalServices
 
                 foreach (var result in results)
                 {
+                    var title = showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
                     var detail = new DetailedView
                     {
-                        Title = result.Title.Contains("<") ? HttpUtility.HtmlEncode(result.Title) : result.Title,
+                        Title = title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
@@ -326,6 +330,16 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return groups;
+        }
+
+        private string GetFriendlyTitle(SearchResult result)
+        {
+            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
+            {
+                return result.Keywords["title"];
+            }
+
+            return result.Title;
         }
 
         internal List<GroupedBasicView> GetGroupedBasicViews(SearchQuery query, SearchContentSource userSearchSource, int portalId)
@@ -422,7 +436,9 @@ namespace DotNetNuke.Web.InternalServices
             var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             if (moduleInfo != null)
             {
-                return moduleInfo.ParentTab.TabName;
+                var tab = moduleInfo.ParentTab;
+
+                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
             }
 
             return string.Empty;
