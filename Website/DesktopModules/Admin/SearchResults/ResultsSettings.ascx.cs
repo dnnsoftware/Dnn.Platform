@@ -122,7 +122,16 @@ namespace DotNetNuke.Modules.SearchResults
                     }
                     else
                     {
-                        chkEnableWildSearch.Checked = false;
+                        chkShowDescriptionForSnippet.Checked = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(Convert.ToString(Settings["ShowFriendlyTitle"])))
+                    {
+                        chkShowFriendlyTitle.Checked = Convert.ToBoolean(Settings["ShowFriendlyTitle"]);
+                    }
+                    else
+                    {
+                        chkShowFriendlyTitle.Checked = true;
                     }
                 }
             }
@@ -150,6 +159,7 @@ namespace DotNetNuke.Modules.SearchResults
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowDescriptionForSnippet", chkShowDescriptionForSnippet.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowFriendlyTitle", chkShowFriendlyTitle.Checked.ToString());
                 }
             }
             catch (Exception exc)
