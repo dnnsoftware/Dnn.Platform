@@ -159,6 +159,10 @@
         color: #777;
     }
 
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span + label {
+        font-weight: normal;
+    }
+
     .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others a {
         display: inline-block;
         margin: 0 2px 0 0;

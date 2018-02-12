@@ -134,17 +134,15 @@
             markup += '<div class="dnnSearchResultItem-Description">' + data.Snippet + '</div>';
         }
 
-        if (showLastUpdated) {
-            markup += '<div class="dnnSearchResultItem-Others">';
-            markup += '<span>' + dnn.searchResult.defaultSettings.lastModifiedText + ' </span>';
-            markup += data.DisplayModifiedTime;
-            markup += '</div>';
-        }
-
         markup += '<div class="dnnSearchResultItem-Others">';
 
+        if (showLastUpdated) {
+            markup += '<span>' + dnn.searchResult.defaultSettings.lastModifiedText + ' </span>';
+            markup += '<label>' + data.DisplayModifiedTime + '</label>';
+        }
+
         if (showSource) {
-            markup += '<span>' + dnn.searchResult.defaultSettings.sourceText + ' </span>';
+            markup += '&nbsp;&nbsp;&nbsp;<span>' + dnn.searchResult.defaultSettings.sourceText + ' </span>';
             markup += '<a href="javascript:void(0)" class="dnnSearchResultItem-sourceLink" data-value="' +
                 data.DocumentTypeName +
                 '" >' +
