@@ -130,6 +130,10 @@
         color: #777;
     }
 
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span + label {
+        font-weight: normal;
+    }
+
     .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others a {
         display: inline-block;
         margin: 0 2px 0 0;
