@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.WebControls
 		            break;
 		    }
 
-		    var promptValue = StringValue == Null.NullString && cultures.Count > 1;
+		    var promptValue = StringValue == Null.NullString && cultures.Count > 1 && !Required;
 
             //Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
