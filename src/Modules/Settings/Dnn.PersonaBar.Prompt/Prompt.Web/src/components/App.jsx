@@ -147,7 +147,7 @@ export class App extends Component {
             }
         }
 
-        if (this.isPaging && !e.ctrlKey && e.keyCode !== 88) {
+        if (this.isPaging && !e.ctrlKey) {
             this.setValue("");
             this.setFocus(false);
             this.runCmd();
