@@ -70,8 +70,20 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
 
             var lstOut = new List<PageModelBase>();
+
             int total;
-            var lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+
+            IEnumerable<DotNetNuke.Entities.Tabs.TabInfo> lstTabs;
+
+            if (ParentId != null)
+            {
+                lstTabs = PagesController.Instance.GetPageList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, ParentId ?? -1, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+            }
+            else
+            {
+                lstTabs = PagesController.Instance.GetSubPagesList(Deleted, PageName, PageTitle, PagePath, PageSkin, PageVisible, out total, string.Empty, Page > 0 ? Page - 1 : 0, max);
+            }
+
             var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             lstOut.AddRange(lstTabs.Select(tab => new PageModelBase(tab)));

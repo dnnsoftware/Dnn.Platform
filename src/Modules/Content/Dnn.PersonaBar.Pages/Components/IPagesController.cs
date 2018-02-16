@@ -10,6 +10,8 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage);
 
+        IEnumerable<TabInfo> GetSubPagesList(bool? deleted, string tabName, string tabTitle, string tabPath, string tabSkin, bool? visible, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10);
+ 
         IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false);
 
         IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,

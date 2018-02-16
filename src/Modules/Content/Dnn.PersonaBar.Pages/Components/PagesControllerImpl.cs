@@ -322,6 +322,70 @@ namespace Dnn.PersonaBar.Pages.Components
             return pages;
         }
 
+        private IEnumerable<TabInfo> GetPageListHelper(string searchKey = "", bool includeHidden = true, bool includeDeleted = false)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var adminTabId = portalSettings.AdminTabId;
+
+            var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, includeHidden, includeDeleted, true);
+            var pages = from t in tabs
+                        where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
+                                !t.IsSystem &&
+                                    (string.IsNullOrEmpty(searchKey)
+                                        || (!string.IsNullOrEmpty(searchKey) &&
+                                                (t.TabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger)))
+                        select t;
+
+            var sorted = pages.OrderBy(x => x.ParentId > -1 ? x.ParentId : x.TabID).ThenBy(x => x.TabID);
+            return sorted;
+        }
+
+        public IEnumerable<TabInfo> GetSubPagesList(bool? deleted, string tabName, string tabTitle, string tabPath, string tabSkin, bool? visible, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10)
+        {
+            pageIndex = pageIndex <= 0 ? 0 : pageIndex;
+            pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
+            var tabs = GetPageListHelper(searchKey, true, deleted ?? false);
+            var finalList = new List<TabInfo>();
+            if (deleted.HasValue)
+                tabs = tabs.Where(tab => tab.IsDeleted == deleted);
+            if (visible.HasValue)
+                tabs = tabs.Where(tab => tab.IsVisible == visible);
+
+            if (!string.IsNullOrEmpty(tabTitle) || !string.IsNullOrEmpty(tabName) || !string.IsNullOrEmpty(tabPath) ||
+                !string.IsNullOrEmpty(tabSkin))
+            {
+                foreach (var tab in tabs)
+                {
+                    var bIsMatch = true;
+                    if (!string.IsNullOrEmpty(tabTitle))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.Title, tabTitle.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabName))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.TabName, tabName.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabPath))
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    if (!string.IsNullOrEmpty(tabSkin))
+                    {
+                        var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled | RegexOptions.ECMAScript | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        bIsMatch = bIsMatch &
+                                   Regex.IsMatch(tab.SkinSrc, escapedString.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    }
+
+                    if (bIsMatch)
+                        finalList.Add(tab);
+                }
+            }
+            else
+            {
+                finalList.AddRange(tabs);
+            }
+            total = finalList.Count;
+            return finalList.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
         public IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,
             string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10)
         {
