@@ -1112,7 +1112,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
                 {
                     var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, rolePermission.RoleId);
-                    if (role != null)
+                    if (role != null || (rolePermission.RoleId.ToString() == Globals.glbRoleAllUsers))
                     {
                         foreach (var permission in rolePermission.Permissions)
                         {
