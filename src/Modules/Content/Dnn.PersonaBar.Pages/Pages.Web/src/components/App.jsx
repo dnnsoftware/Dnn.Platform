@@ -435,6 +435,7 @@ class App extends Component {
         this.props.onLoadAddMultiplePages();
         
     }
+    
     /**
      * When on edit mode
      */
@@ -631,7 +632,7 @@ class App extends Component {
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
-                        disabled={this.onEditMode()}
+                        disabled={this.onEditMode() || this.state.inSearch}
                         onClick={onLoadSavePageAsTemplate}
                         onShowPageSettingsCallback={onShowPageSettings}
                         onHidePageSettings={onHidePageSettings}
