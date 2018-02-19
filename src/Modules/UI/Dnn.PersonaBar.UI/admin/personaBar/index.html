@@ -7,7 +7,6 @@
     <style>
         #topLevelMenu .hovermenu > ul, ul.personabarnav {list-style-type: none;}
         #personabar-wrap {
-          position: fixed;
           top: 0;
           right:0;
           bottom:0;
@@ -15,6 +14,18 @@
           overflow: auto;
           -webkit-overflow-scrolling: touch;
         }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 1) {
+            #personabar-wrap {
+                position: fixed;
+            }
+        }
+
+        @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {  
+            #personabar-wrap {
+                position: absolute;
+            } 
+        }     
     </style>
     <script type="text/javascript">
         window.Sys = !window.Sys ? window.top.Sys : window.Sys;
