@@ -90,8 +90,11 @@
     <Compile Include="Containers\IPersonaBarContainer.cs" />
     <Compile Include="Containers\PersonaBarContainer.cs" />
     <Compile Include="Controllers\ILocalizationController.cs" />
+    <Compile Include="Controllers\IModulesController.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
+    <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Dto\Localization.cs" />
+    <Compile Include="Helper\PortalHelper.cs" />
     <Compile Include="Helper\TimeZoneHelper.cs" />
     <Compile Include="Controllers\IExtensionController.cs" />
     <Compile Include="Controllers\IMenuItemController.cs" />
