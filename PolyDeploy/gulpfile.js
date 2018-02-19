@@ -29,13 +29,22 @@ var fs = require('fs'),
     clean = require('gulp-clean'),
     webpack = require('webpack-stream'),
     zip = require('gulp-zip'),
-    addsrc = require('gulp-add-src');
+    addsrc = require('gulp-add-src'),
+    cheerio = require('cheerio');
 
 /*
     Get Clients
     Gets each of the client folders which exist in the clients directory.
 */
 function getClients(dir) {
+
+    // Does the directory exist?
+    if (!fs.existsSync(dir)) {
+
+        // No.
+        return [];
+    }
+
     return fs.readdirSync(dir)
         .filter(function (file) {
             return fs.statSync(path.join(dir, file)).isDirectory();
@@ -209,6 +218,13 @@ gulp.task('clean-dist',
         // Get list of clients we have to clean.
         var clients = getClients(clientsDir);
 
+        // Have clients to clean?
+        if (clients.length < 1) {
+
+            // No.
+            return true;
+        }
+
         // Delete dist folder in each client.
         var tasks = clients.map(function (folder) {
             return gulp.src(
@@ -245,6 +261,9 @@ gulp.task('bundle',
         // Clear entry points.
         wpConfig.entry = {};
 
+        // Make sure we have at least one client.
+        var hasClient = false;
+
         // Add each client.
         clients.map(function (folder) {
 
@@ -277,9 +296,19 @@ gulp.task('bundle',
                 wpConfig.entry[`${distPath}${folder}.styles`] = [
                     `${cssPath}${cssEntryPoint}`
                 ];
+
+                // Mark that we have a client.
+                hasClient = true;
             }
-            
+
         });
+
+        // Do we have at least one client?
+        if (!hasClient) {
+
+            // No, don't run webpack.
+            return true;
+        }
 
         // Run webpack.
         return webpack(wpConfig)
@@ -366,19 +395,124 @@ gulp.task('copy-module',
 );
 
 /*
+    Get Allowed Bin Files
+    Take the mandated DLL files from the manifest and also allow files with the
+    passed extension(s).
+
+    Extensions should be passed like: '{dll,pdb,xml}'.
+ */
+function getAllowedBinFiles(extensions) {
+
+    // Grab DLL filenames from manifest.
+    var dllNames = getManifestDlls();
+
+    // Any extension(s) passed?
+    if (!extensions) {
+
+        // Use default.
+        extensions = 'dll';
+    }
+
+    // Map each filename to use the passed extension(s).
+    dllNames = dllNames.map(function (dllName) {
+        return path.basename(dllName, path.extname(dllName)) + '.' + extensions;
+    });
+
+    return dllNames;
+}
+
+/*
+    Get Manifest DLLs
+    Returns a list of DLL filenames which are documented in the manifest.
+
+    Throws an error if a DLL specified in the manifest cannot be found.
+*/
+function getManifestDlls() {
+
+    // Configure cheerio.
+    var cheerioOptions = {
+        lowerCaseTags: false,
+        xmlMode: true,
+        decodeEntities: false
+    };
+
+    var dllNames = [];
+
+    // Read the DNN file's contents.
+    var contents = fs.readFileSync(`${CONFIG.MODULE_NAME}.dnn`, 'UTF-8');
+
+    // Parse the XML of the manifest file.
+    var $ = cheerio.load(contents, cheerioOptions);
+
+    // Grab the name of each assembly listed in the manifest.
+    $('dotnetnuke packages package components component[type="Assembly"] assemblies assembly name')
+        .each(function (index, element) {
+
+            // Get filename.
+            var filename = $(element).text();
+
+            // Build file path.
+            var filePath = `${binDir}${filename}`;
+
+            // Does it exist?
+            if (fs.existsSync(filePath)) {
+
+                // Yes, add the DLL's filename to the array.
+                dllNames.push(filename);
+            } else {
+
+                // No, throw an error.
+                throw new Error(`Manifest specifies assembly '${filename}' which was not found in the bin directory.`);
+            }
+        });
+
+    return dllNames;
+}
+
+/*
     Copy Bin
     Dll files need to be copied to the website bin folder.
 */
 gulp.task('copy-bin',
     function () {
+
+        // Get a list of bin files to be copied.
+        var filenames = getAllowedBinFiles('{dll,pdb,xml}');
+
+        // Map to correct path.
+        var sources = filenames.map(function (filename) {
+            return `${binDir}${filename}`;
+        });
+
         return gulp.src(
-            `${binDir}**`,
+            sources,
             {
                 base: 'bin'
             })
             .pipe(gulp.dest(webBinDir));
     }
 );
+
+/*
+    Get Root Install Files
+    Get a series of globs for the files allowed to be in the root of the
+    installation zip.
+*/
+function getRootInstallFiles() {
+    var dllNames = getAllowedBinFiles();
+
+    var rootFiles = dllNames.map(function (dllName) {
+        return "bin/".concat(dllName);
+    });
+
+    rootFiles.push(
+        'SqlDataProviders/**',
+        '*.dnn',
+        'License.txt'
+    );
+
+    return rootFiles;
+}
 
 /*
     Build Install
@@ -429,15 +563,7 @@ gulp.task('build-install',
 
             // Add additional install files to stream.
             .pipe(addsrc(
-                [
-                    // Exclude .pdb file.
-                    `!${binDir}**/*.pdb`,
-
-                    `${binDir}**`,
-                    'SqlDataProviders/**',
-                    '*.dnn',
-                    'License.txt'
-                ],
+                getRootInstallFiles(),
                 {
                     base: '.',
                     nodir: true
@@ -445,7 +571,7 @@ gulp.task('build-install',
             )
 
             // Zip in to install zip.
-            .pipe(zip(`Cantarus_${CONFIG.MODULE_NAME}_${CONFIG.MODULE_VERSION}_Install.zip`))
+            .pipe(zip(`Cantarus.${CONFIG.MODULE_DOMAIN}.${CONFIG.MODULE_NAME}_${CONFIG.MODULE_VERSION}_Install.zip`))
 
             // Move to compiled modules folder.
             .pipe(gulp.dest(compiledModulesDir));

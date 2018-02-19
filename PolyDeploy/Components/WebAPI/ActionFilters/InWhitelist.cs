@@ -1,4 +1,5 @@
-﻿using DotNetNuke.Services.Log.EventLog;
+﻿using Cantarus.Modules.PolyDeploy.Components.Logging;
+using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -53,23 +54,21 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 // Set appropriate message.
                 message = "An error occurred while trying to authenticate this request.";
 
-                // TODO: Add some logging of what happened here.
+                EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, null, ex);
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.
             if (!authenticated)
             {
-                EventLogController elc = new EventLogController();
-
-                string log = string.Format("(IP: {0}) {1}", clientIpAddress, message);
+                string log = string.Format("Whitelist check failed for IP address: {0}.", clientIpAddress);
 
                 // Was it forwarded?
                 if (forwardingAddress != null)
                 {
-                    log = string.Format("(IP: {0} | Forwarded by: {1}) {2}", clientIpAddress, forwardingAddress, message);
+                    log = string.Format("Whitelist check failed for IP address: {0}, forwarded by: {1}.", clientIpAddress, forwardingAddress);
                 }
 
-                elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+                EventLogManager.Log("AUTH_BAD_IPADDRESS", EventLogSeverity.Warning, log);
 
                 actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, message);
             }

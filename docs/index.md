@@ -56,4 +56,4 @@ PolyDeploy logs all key activities including:
 Find out more about our products and services at [www.cantarus.com][cantarus-website].
 
 [cantarus-website]: https://www.cantarus.com
-[polydeploy-logo]: docs/img/polydeploy-logo-full.png
+[polydeploy-logo]: ../docs/img/polydeploy-logo-full.png

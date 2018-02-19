@@ -28,7 +28,7 @@ namespace DeployClient
                 GetSettings(args);
 
                 // Output start.
-                WriteLine("*** Polly Deployment Client ***");
+                WriteLine("*** PolyDeploy Client ***");
                 WriteLine();
                 
                 // Do we have a target uri.

@@ -1,7 +1,7 @@
 ﻿using Cantarus.Libraries.Encryption;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
 using System;
 using System.IO;
@@ -76,6 +76,8 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
             catch (Exception ex)
             {
+                EventLogManager.Log("REMOTE_EXCEPTION", EventLogSeverity.Warning, null, ex);
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
@@ -90,8 +92,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
                 // Session doesn't exist.
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid session.");
             }
-
-            EventLogController elc = new EventLogController();
 
             string apiKey = null;
 
@@ -114,9 +114,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
             catch (Exception ex)
             {
-                string log = string.Format("(APIKey: {0}) Install failure: {1}", apiKey, ex.Message);
-
-                elc.AddLog("PolyDeploy", log, EventLogController.EventLogType.HOST_ALERT);
+                EventLogManager.Log("REMOTE_EXCEPTION", EventLogSeverity.Warning, null, ex);
 
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }

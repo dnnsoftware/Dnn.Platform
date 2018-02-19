@@ -1,4 +1,5 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
@@ -66,6 +67,8 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
             catch (Exception ex)
             {
+                EventLogManager.Log("SESSION_EXCEPTION", EventLogSeverity.Warning, null, ex);
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
@@ -98,6 +101,8 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
             catch (Exception ex)
             {
+                EventLogManager.Log("SESSION_EXCEPTION", EventLogSeverity.Warning, null, ex);
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -128,6 +133,8 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
             catch (Exception ex)
             {
+                EventLogManager.Log("SESSION_EXCEPTION", EventLogSeverity.Warning, null, ex);
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }
