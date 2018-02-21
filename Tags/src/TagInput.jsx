@@ -58,12 +58,17 @@ export default class TagInput extends Component {
     }
 
     onKeyDown(event) {
+        const {props} = this;
         switch (event.keyCode) {
             case KEY.ENTER:
             case KEY.COMMA:
             case KEY.TAB:
                 event.preventDefault();
-                this.addTag(this.props.newTagText);
+                if(props.suggestions.length > 0 && props.selectedIndex > -1 && props.suggestions[props.selectedIndex]) {
+                    this.addTag(props.suggestions[props.selectedIndex].value);
+                } else {
+                    this.addTag(this.props.newTagText);
+                }
                 break;
             case KEY.BACKSPACE:
                 this.removeLastTag();
@@ -116,5 +121,12 @@ TagInput.propTypes = {
     onFocus: PropTypes.func,
     container: PropTypes.object,
     onArrowUp: PropTypes.func.isRequired,
-    onArrowDown: PropTypes.func.isRequired
+    onArrowDown: PropTypes.func.isRequired,
+    selectedIndex: PropTypes.number.isRequired,
+    suggestions: PropTypes.array.isRequired
+};
+
+TagInput.defaultProps = {
+    selectedIndex:-1,
+    suggestions:[]
 };
