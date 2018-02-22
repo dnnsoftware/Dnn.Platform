@@ -305,7 +305,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return false;
         }
 
-        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false)
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false, bool includeSubpages = false)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;
@@ -314,21 +314,21 @@ namespace Dnn.PersonaBar.Pages.Components
             var pages = from t in tabs
                         where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
                                 !t.IsSystem &&
-                                    ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
+                                    ((string.IsNullOrEmpty(searchKey) && (includeSubpages || t.ParentId == parentId))
                                         || (!string.IsNullOrEmpty(searchKey) &&
                                                 (t.TabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger
                                                     || t.LocalizedTabName.IndexOf(searchKey, StringComparison.OrdinalIgnoreCase) > Null.NullInteger)))
                         select t;
 
-            return pages;
+            return includeSubpages ? pages.OrderBy(x => x.ParentId > -1 ? x.ParentId : x.TabID).ThenBy(x => x.TabID) : pages;
         }
 
         public IEnumerable<TabInfo> GetPageList(bool? deleted, string tabName, string tabTitle, string tabPath,
-            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10)
+            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false)
         {
             pageIndex = pageIndex <= 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            var tabs = GetPageList(parentId, searchKey, true, deleted ?? false);
+            var tabs = GetPageList(parentId, searchKey, true, deleted ?? false, includeSubpages);
             var finalList = new List<TabInfo>();
             if (deleted.HasValue)
                 tabs = tabs.Where(tab => tab.IsDeleted == deleted);
