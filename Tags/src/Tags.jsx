@@ -146,7 +146,10 @@ class Tags extends Component {
                         newTagText={this.state.newTagText}
                         removeLastTag={this.removeLastTag.bind(this)}
                         addTagsPlaceholder={this.props.addTagsPlaceholder}
-                        container={this.containerRef} />
+                        container={this.containerRef}
+                        selectedIndex={this.state.selectedIndex}
+                        suggestions={this.props.suggestions}
+                    />
                 </div>
                 {this.state.isInputVisible &&
                     this.state.newTagText.length > 0 &&
