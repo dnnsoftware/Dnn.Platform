@@ -1086,14 +1086,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 function showPersonaBar(callback) {
                     var $personaBar = $(".personabar");
                     var $parentBody = $(parentBody);
-                    if ($parentBody.hasClass('dnnEditState')) {
-                        $personaBar.css({ left: 0, 'display': 'block' });
-                        $parentBody.animate({ marginLeft: personaBarMenuWidth }, 1, 'linear', onShownPersonaBar);
-                        callback();
-                    } else {
-                        $personaBar.show();
+                    var updateStylePersonaBar = function () {
                         
                         $personaBar.css({
+                            "position":"fixed",
                             "top":"0",
                             "right":"0",
                             "bottom":"0",
@@ -1101,8 +1097,21 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             "display":"block"
                         });
 
-                        $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
-                        $personaBar.animate({ left: 0 }, 200, 'linear', callback);
+                        callback();
+                    }
+
+                    if ($parentBody.hasClass('dnnEditState')) {
+                        $personaBar.css({ left: 0, 'display': 'block' });
+                        $parentBody.animate({ marginLeft: personaBarMenuWidth }, 1, 'linear', onShownPersonaBar);
+                        callback();
+                    } else {
+                        $iframe.width(personaBarMenuWidth);
+                        $personaBar.show();
+          
+                        $personaBar.css({ left: 0, 'display': 'block' });
+                        $parentBody.animate({ marginLeft: personaBarMenuWidth }, 1, 'linear', onShownPersonaBar);
+                        $personaBar.animate({ left: 0 }, 1, 'linear', callback);
+
                     }
 
                     $mask.click(function(e) {
