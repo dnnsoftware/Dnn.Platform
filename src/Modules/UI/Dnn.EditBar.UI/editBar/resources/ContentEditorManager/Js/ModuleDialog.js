@@ -451,7 +451,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                         searchTerm: val,
                         excludeCategories: isAdmin ? '' : 'Admin,Professional',
                         sortBookmarks: true,
-                        topModule: 'None'
+                        topModule: htmlModuleName
                     }, $.proxy(this._renderModuleList, this));
                 }
             }
