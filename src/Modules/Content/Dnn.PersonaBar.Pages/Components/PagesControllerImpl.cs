@@ -1362,13 +1362,16 @@ namespace Dnn.PersonaBar.Pages.Components
                     //Make reference copies on secondary language
                     foreach (var m in objModule.LocalizedModules.Values)
                     {
-                        var newLocalizedModule = m.Clone();
-                        var localizedTab = tab.LocalizedTabs[m.CultureCode];
-                        newLocalizedModule.TabID = localizedTab.TabID;
-                        newLocalizedModule.CultureCode = localizedTab.CultureCode;
-                        newLocalizedModule.ModuleTitle = module.Title;
-                        newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
-                        newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
+                        if (tab.LocalizedTabs.ContainsKey(m.CultureCode))
+                        {
+                            var newLocalizedModule = m.Clone();
+                            var localizedTab = tab.LocalizedTabs[m.CultureCode];
+                            newLocalizedModule.TabID = localizedTab.TabID;
+                            newLocalizedModule.CultureCode = localizedTab.CultureCode;
+                            newLocalizedModule.ModuleTitle = module.Title;
+                            newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
+                            newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
+                        }
                     }
                 }
             }
