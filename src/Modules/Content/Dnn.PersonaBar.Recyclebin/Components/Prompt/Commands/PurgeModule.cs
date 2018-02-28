@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
             var module = ModuleController.Instance.GetModule(ModuleId, PageId, true);
             if (module == null)
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("ModuleNotFound"), ModuleId));
+                return new ConsoleErrorResultModel(string.Format(LocalizeString("ModuleNotFound"), ModuleId, PageId));
             var modulesToPurge = new List<ModuleInfo> { module };
             var errors = new StringBuilder();
             RecyclebinController.Instance.DeleteModules(modulesToPurge, errors);
