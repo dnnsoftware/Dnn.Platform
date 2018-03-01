@@ -84,6 +84,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 var page = context.Handler as CDefault;
                 if (page == null) return;
 
+                page.InitComplete += OnPageInitComplete;
 				page.PreRender += OnPagePreRender;
             }
             catch (Exception ex)
@@ -97,25 +98,38 @@ namespace DotNetNuke.HttpModules.Analytics
             }
         }
 
-		private static void OnPagePreRender(object sender, EventArgs e)
+        private static void OnPageInitComplete(object sender, EventArgs e)
+        {
+            InitializeAnalyticsControls(sender as Page, true);
+        }
+
+
+        private static void OnPagePreRender(object sender, EventArgs e)
+        {
+            InitializeAnalyticsControls(sender as Page, false);
+        }
+
+        private static void InitializeAnalyticsControls(Page page, bool injectTop)
         {
             try
             {
                 var  analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
                 if (analyticsEngines == null || analyticsEngines.Count == 0) return;
-                
-                var page = (Page) sender;
+
                 if (page == null) return;
-                
+
                 foreach (AnalyticsEngine engine in analyticsEngines)
                 {
-                    if ((string.IsNullOrEmpty(engine.ElementId))) continue;
-                    
+                    if (string.IsNullOrEmpty(engine.ElementId) || engine.InjectTop != injectTop)
+                    {
+                        continue;
+                    }
+
                     AnalyticsEngineBase objEngine;
                     if ((!string.IsNullOrEmpty(engine.EngineType)))
                     {
                         var engineType = Type.GetType(engine.EngineType);
-                        if (engineType == null) 
+                        if (engineType == null)
                             objEngine = new GenericAnalyticsEngine();
                         else
                             objEngine = (AnalyticsEngineBase) Activator.CreateInstance(engineType);
@@ -125,10 +139,10 @@ namespace DotNetNuke.HttpModules.Analytics
                         objEngine = new GenericAnalyticsEngine();
                     }
                     if (objEngine == null) continue;
-                        
+
                     var script = engine.ScriptTemplate;
                     if ((string.IsNullOrEmpty(script))) continue;
-                            
+
                     script = objEngine.RenderScript(script);
                     if ((string.IsNullOrEmpty(script))) continue;
 
@@ -149,7 +163,7 @@ namespace DotNetNuke.HttpModules.Analytics
             catch (Exception ex)
             {
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-				log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
+                log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);
