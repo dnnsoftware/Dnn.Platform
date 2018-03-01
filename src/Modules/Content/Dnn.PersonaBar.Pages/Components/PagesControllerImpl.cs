@@ -1111,8 +1111,8 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
                 {
-                    var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, rolePermission.RoleId);
-                    if (role != null)
+                    if (rolePermission.RoleId.ToString() == Globals.glbRoleAllUsers ||
+                        RoleController.Instance.GetRoleById(portalSettings.PortalId, rolePermission.RoleId) != null)
                     {
                         foreach (var permission in rolePermission.Permissions)
                         {
@@ -1361,13 +1361,16 @@ namespace Dnn.PersonaBar.Pages.Components
                     //Make reference copies on secondary language
                     foreach (var m in objModule.LocalizedModules.Values)
                     {
-                        var newLocalizedModule = m.Clone();
-                        var localizedTab = tab.LocalizedTabs[m.CultureCode];
-                        newLocalizedModule.TabID = localizedTab.TabID;
-                        newLocalizedModule.CultureCode = localizedTab.CultureCode;
-                        newLocalizedModule.ModuleTitle = module.Title;
-                        newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
-                        newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
+                        if (tab.LocalizedTabs.ContainsKey(m.CultureCode))
+                        {
+                            var newLocalizedModule = m.Clone();
+                            var localizedTab = tab.LocalizedTabs[m.CultureCode];
+                            newLocalizedModule.TabID = localizedTab.TabID;
+                            newLocalizedModule.CultureCode = localizedTab.CultureCode;
+                            newLocalizedModule.ModuleTitle = module.Title;
+                            newLocalizedModule.DefaultLanguageGuid = newModule.UniqueId;
+                            newLocalizedModule.ModuleID = ModuleController.Instance.AddModule(newLocalizedModule);
+                        }
                     }
                 }
             }

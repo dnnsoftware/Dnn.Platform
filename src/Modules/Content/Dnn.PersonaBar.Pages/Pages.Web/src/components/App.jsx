@@ -467,6 +467,7 @@ class App extends Component {
         });  
         
     }
+    
     /**
      * When on edit mode
      */
@@ -733,7 +734,7 @@ class App extends Component {
                     <SaveAsTemplateButton
                         type="secondary"
                         size="large"
-                        disabled={this.onEditMode()}
+                        disabled={this.onEditMode() || this.state.inSearch}
                         onClick={this.onLoadSavePageAsTemplate.bind(this)}
                         onShowPageSettingsCallback={onShowPageSettings}
                         onHidePageSettings={onHidePageSettings}
