@@ -694,7 +694,6 @@ class App extends Component {
     _testDirtyPage(callback) {
         const {selectedPage, selectedPageDirty} = this.props;
         const onConfirm = () => {
-            // TODO: REMOVE REMEMBER this.props.onLoadSavePageAsTemplate();
             callback();
             this.onLoadPage(selectedPage.tabId, () => {
                 this._traverse((item, list) => {
