@@ -75,7 +75,8 @@ class App extends Component {
 
             tags: "",
             filters: [],
-            searchFields: {}
+            searchFields: {},
+            pageUpdatedName: null
         };
         this.lastActivePageId = null;
         this.shouldRunRecursive = true;
@@ -447,9 +448,7 @@ class App extends Component {
     }
 
     onCancelPage(parentPageId) {
-        
         this._removePageFromTree(parentPageId);
-
         this.props.changeSelectedPagePath("");
         this.props.onCancelPage(parentPageId);
     }
@@ -459,11 +458,13 @@ class App extends Component {
     }
 
     onAddMultiplePage() {
-        this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0);
-        this.props.clearSelectedPage();
-
-        this.props.onLoadAddMultiplePages();
+        this._testDirtyPage(()=>{
+            this.clearEmptyStateMessage();
+            this.selectPageSettingTab(0);
+            this.props.clearSelectedPage();
+    
+            this.props.onLoadAddMultiplePages();
+        });  
         
     }
     /**
@@ -479,7 +480,8 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0); 
+        this.selectPageSettingTab(0);
+        
         const addPage = () => {
             const { props } = this;
             const { selectedPage } = props;
@@ -487,7 +489,18 @@ class App extends Component {
             let pageList = null;
         
             const onConfirm = () => {
-                this.props.changeSelectedPagePath(""); 
+                this.props.changeSelectedPagePath("");
+                this.onLoadPage(selectedPage.tabId, () => {
+                    this._traverse((item, list) => {
+                        if (item.id === selectedPage.tabId) {
+                            Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
+                            this.props.updatePageListStore(list);
+                            this.selectPageSettingTab(0);
+                            this.lastActivePageId = null;
+                        }
+                    });
+                });
+                
                 this.props.getNewPage(parentPage).then(()=>{
                     if (parentPage && parentPage.id) {
                         this.props.getChildPageList(parentPage.id)
@@ -514,6 +527,7 @@ class App extends Component {
                     }
                 }); 
             };
+       
 
             if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
                 utils.confirm(
@@ -525,7 +539,7 @@ class App extends Component {
             } else {
                 onConfirm();
             }
-            //Set focus on name
+            // Set focus on name
             ReactDOM.findDOMNode(this).querySelector("#name").focus();        
         };
 
@@ -535,8 +549,8 @@ class App extends Component {
 
     onCancelSettings() {
         const { props } = this;
-    
         if (props.selectedPageDirty) {
+            
             this.showCancelWithoutSavingDialog();
         }
         else {
@@ -626,6 +640,7 @@ class App extends Component {
                 this.onCancelPage();
             }
         };
+
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -649,6 +664,7 @@ class App extends Component {
                     });
                 });
             };
+
 
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
@@ -674,6 +690,39 @@ class App extends Component {
             Localization.get("AddPage") :
             selectedPage.name;
     }
+    
+    _testDirtyPage(callback) {
+        const {selectedPage, selectedPageDirty} = this.props;
+        const onConfirm = () => {
+            // TODO: REMOVE REMEMBER this.props.onLoadSavePageAsTemplate();
+            callback();
+            this.onLoadPage(selectedPage.tabId, () => {
+                this._traverse((item, list) => {
+                    if (item.id === selectedPage.tabId) {
+                        Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
+                        this.props.updatePageListStore(list);
+                        this.selectPageSettingTab(0);
+                        this.lastActivePageId = null;
+                    }
+                });
+            });
+        };
+
+        if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+
+        } else {
+            return onConfirm();
+        }
+    }
+
+    onLoadSavePageAsTemplate() {
+        this._testDirtyPage(this.props.onLoadSavePageAsTemplate.bind(this));
+    }
 
     getSettingsButtons() {
         const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPageSettings, onHidePageSettings } = this.props;
@@ -686,7 +735,7 @@ class App extends Component {
                         type="secondary"
                         size="large"
                         disabled={this.onEditMode()}
-                        onClick={onLoadSavePageAsTemplate}
+                        onClick={this.onLoadSavePageAsTemplate.bind(this)}
                         onShowPageSettingsCallback={onShowPageSettings}
                         onHidePageSettings={onHidePageSettings}
                         onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
@@ -785,6 +834,7 @@ class App extends Component {
     }
 
     getSaveAsTemplatePage() {
+        
         return (
                 <SaveAsTemplate
                     onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
