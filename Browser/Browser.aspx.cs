@@ -1443,11 +1443,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                                             {
                                                 FolderID = folderInfo.FolderID,
                                                 UserID = currentUserInfo.UserID,
-                                                RoleID = Null.NullInteger,
+                                                RoleID = Convert.ToInt32(Globals.glbRoleNothing),
                                                 AllowAccess = true
                                             })
             {
-                folderInfo.FolderPermissions.Add(folderPermission);
+                folderInfo.FolderPermissions.Add(folderPermission, true);
             }
 
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folderInfo);
