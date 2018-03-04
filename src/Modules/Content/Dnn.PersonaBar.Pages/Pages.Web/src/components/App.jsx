@@ -472,8 +472,8 @@ class App extends Component {
      * When on edit mode
      */
     onEditMode() {
-        const {selectedPage, selectedView} = this.props;
-        return (selectedPage && selectedPage.tabId === 0 
+        const {selectedPage, selectedView, selectedPageDirty} = this.props;
+        return (selectedPage && selectedPage.tabId === 0 || selectedPageDirty
             || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
             || selectedView === panels.ADD_MULTIPLE_PAGES_PANEL 
             || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL);
@@ -489,18 +489,15 @@ class App extends Component {
             let runUpdateStore = null;
             let pageList = null;
         
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                pageList = list;
+                runUpdateStore = updateStore;
+            });
+            runUpdateStore(pageList);
+
             const onConfirm = () => {
                 this.props.changeSelectedPagePath("");
-                this.onLoadPage(selectedPage.tabId, () => {
-                    this._traverse((item, list) => {
-                        if (item.id === selectedPage.tabId) {
-                            Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
-                            this.props.updatePageListStore(list);
-                            this.selectPageSettingTab(0);
-                            this.lastActivePageId = null;
-                        }
-                    });
-                });
                 
                 this.props.getNewPage(parentPage).then(()=>{
                     if (parentPage && parentPage.id) {
@@ -509,7 +506,6 @@ class App extends Component {
                             this._traverse((item, list, update) => {
                                 const updateChildItems = () => {
                                     const newPageChildItems = pageChildItems.concat(this.props.selectedPage);
-
                                     item.childListItems = newPageChildItems;
                                     item.isOpen = true;
                                     item.hasChildren = true;
@@ -1701,5 +1697,7 @@ function mapDispatchToProps(dispatch) {
 
     }, dispatch);
 }
-
+App.contextTypes = {
+    scrollArea: PropTypes.object
+};
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import utils from "utils";
 
 import "./styles.less";
+import SingleLineInput from "dnn-single-line-input";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
@@ -133,7 +134,8 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragEnd,
             draggedItem,
-            Localization } = this.props;
+            Localization, 
+            selectedPageDirty } = this.props;
 
         let index = 0;
         let total = listItems.length;
@@ -174,7 +176,14 @@ export class PersonaBarPageTreeview extends Component {
                             <span
                                 className={`item-name`}
                                 onClick={e => item.canManagePage ? onSelection(item) : onNoPermissionSelection(item)}>
-                                {name}
+                                { (item.tabId === 0) || (item.selected && selectedPageDirty) ? 
+                                    (
+                                        <SingleLineInput 
+                                            style={{ marginBottom: "0px", width:"80%", height:"100%"}}
+                                            value={name}/>
+                                    ):
+                                    name
+                                }
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
@@ -219,5 +228,6 @@ PersonaBarPageTreeview.propTypes = {
     onSelect: PropTypes.func.isRequired,
     setEmptyPageMessage: PropTypes.func.isRequired,
     Localization: PropTypes.func.isRequired,
-    parentItem: PropTypes.object
+    parentItem: PropTypes.object,
+    selectedPageDirty: PropTypes.bool
 };
