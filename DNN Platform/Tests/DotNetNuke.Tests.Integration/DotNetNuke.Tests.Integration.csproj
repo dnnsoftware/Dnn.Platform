@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\DigitalAssets\DigitalAssetsTests.cs" />
     <Compile Include="PersonaBar\Content\Pages\AddPageTests.cs" />
     <Compile Include="PersonaBar\Content\Pages\PageUrlsTests.cs" />
     <Compile Include="PersonaBar\Manage\Users\UsersFiltersTests.cs" />
