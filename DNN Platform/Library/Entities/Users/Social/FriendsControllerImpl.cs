@@ -143,10 +143,11 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         private static void AddFriendRequestNotification(UserInfo initiatingUser, UserInfo targetUser, UserRelationship userRelationship)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
-            var subject = string.Format(Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile),
+            var language = GetUserPreferredLocale(targetUser)?.Name;
+            var subject = string.Format(Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
                               initiatingUser.DisplayName);
 
-            var body = string.Format(Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile),
+            var body = string.Format(Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
                               initiatingUser.DisplayName);
 
             var notification = new Notification
@@ -160,6 +161,17 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             };
 
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });
+        }
+
+        private static CultureInfo GetUserPreferredLocale(UserInfo user)
+        {
+            string language = user.Profile.PreferredLocale;
+            if (!string.IsNullOrEmpty(language))
+            {
+                return Localization.GetCultureFromString(user.PortalID, language);
+            }
+
+            return null;
         }
     }
 }
