@@ -74,6 +74,7 @@ class App extends Component {
 
             tags: "",
             filters: [],
+            pageIndex:0,
             searchFields: {}
         };
         this.lastActivePageId = null;
@@ -940,7 +941,7 @@ class App extends Component {
         filterByPageType ? filters.push({ ref: "filterByPageType", tag: `${Localization.get("PageType")}: ${this.getPageTypeLabel(filterByPageType)}` }) : null;
         filterByPublishStatus ? filters.push({ ref: "filterByPublishStatus", tag: `${Localization.get("lblPublishStatus")}: ${this.getPublishStatusLabel(filterByPublishStatus)}` }) : null;
         filterByWorkflow ? filters.push({ ref: "filterByWorkflow", tag: `${Localization.get("WorkflowTitle")}: ${filterByWorkflowName}` }) : null;
-
+        
         if (startAndEndDateDirty) {
             let dateRangeText = Localization.get(utils.isPlatform() ? "ModifiedDateRange" : "PublishedDateRange");
             const fullStartDate = utils.formatDate(startDate);
@@ -956,11 +957,13 @@ class App extends Component {
         return new Promise((resolve) => this.setState({ searchFields }, () => resolve()));
     }
 
+    
     onSearch(term) {
         let newTerm = (term !== undefined) ? term : this.state.searchTerm;
         this.setState({
             searchTerm: newTerm,
-            filtersUpdated: true
+            filtersUpdated: true,
+            pageIndex:0
         },()=>{
             const { selectedPage } = this.props;
             const { filtersUpdated } = this.state;
@@ -991,30 +994,53 @@ class App extends Component {
             this.onCancelPage(selectedPage.tabId);
         }
 
-        let { filtersUpdated, inSearch, searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
-        if (filtersUpdated || !inSearch) {
-            const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
-            const fullEndDate = `${endDate.getDate() < 10 ? `0` + endDate.getDate() : endDate.getDate()}/${((endDate.getMonth() + 1) < 10 ? `0` + (endDate.getMonth() + 1) : (endDate.getMonth() + 1))}/${endDate.getFullYear()} 23:59:59`;
-            const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
+        let { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
+        const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
+        const fullEndDate = `${endDate.getDate() < 10 ? `0` + endDate.getDate() : endDate.getDate()}/${((endDate.getMonth() + 1) < 10 ? `0` + (endDate.getMonth() + 1) : (endDate.getMonth() + 1))}/${endDate.getFullYear()} 23:59:59`;
+        const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
 
-            if (tags) {
-                tags = tags[0] == "," ? tags.replace(",", "") : tags;
-                tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
-            }
-
-            let search = { tags: tags, searchKey: searchTerm, pageType: filterByPageType, publishStatus: filterByPublishStatus, workflowId: filterByWorkflow };
-            search = Object.assign({}, search, searchDateRange);
-            for (let prop in search) {
-                if (!search[prop]) {
-                    delete search[prop];
-                }
-            }
-            
-            this.generateFilters();
-            
-            this.saveSearchFilters(search).then(() => this.props.searchAndFilterPageList(search));
-            this.setState({ inSearch: true, filtersUpdated: false });
+        if (tags) {
+            tags = tags[0] == "," ? tags.replace(",", "") : tags;
+            tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
         }
+
+        let search = { 
+            tags: tags, 
+            searchKey: searchTerm, 
+            pageType: filterByPageType, 
+            publishStatus: filterByPublishStatus, 
+            workflowId: filterByWorkflow,
+            pageSize: 10 
+        };
+        
+        search = Object.assign({}, search, searchDateRange);
+        for (let prop in search) {
+            if (!search[prop]) {
+                delete search[prop];
+            }
+        }
+        
+        search = Object.assign({},search,{pageIndex:this.state.pageIndex});
+        
+        this.generateFilters();
+        const filterUp = this.state.filtersUpdated;
+        const filterPage = this.state.pageIndex;
+        
+        this.saveSearchFilters(search).then(() => {
+            this.props.searchAndFilterPagedPageList(search,filterUp,filterPage);
+        });        
+        this.setState({ 
+            inSearch: true, 
+            filtersUpdated: false 
+        });
+    }
+
+    onSearchScroll(page) {
+        this.setState({
+            pageIndex: page
+        },()=>{
+            this.doSearch();
+        });
     }
     
     clearAdvancedSearch() {
@@ -1030,9 +1056,10 @@ class App extends Component {
             workflowList: [],
             tags: "",
             filters: [],
-            searchFields: {}
-        });
-        this.onSearch(this.state.searchTerm);
+            searchFields: {},
+            filtersUpdated: true,
+            pageIndex:0
+        },()=>this.onSearch(this.state.searchTerm));
     }
 
     clearAdvancedSearchDateInterval(){
@@ -1047,7 +1074,8 @@ class App extends Component {
     clearSearch(callback) {
         let date = new Date();
         this.setState({
-            filtersUpdated: false,
+            filtersUpdated: true,
+            pageIndex:0,
             inSearch: false,
             searchTerm: "",
             startDate: date,
@@ -1252,7 +1280,7 @@ class App extends Component {
     }
 
     updateSearchAdvancedTags(tags) {
-        this.setState({tags:tags,filtersUpdated:true});
+        this.setState({tags:tags,filtersUpdated:true, pageIndex:0});
     }
 
     onApplyChangesDropdownDayPicker() {
@@ -1264,21 +1292,22 @@ class App extends Component {
     }
     
     updateFilterByPageTypeOptions(data) { 
-        this.setState({ filterByPageType: data.value, filtersUpdated: true }); 
+        this.setState({ filterByPageType: data.value, filtersUpdated: true,pageIndex:0 }); 
     }
     
     updateFilterByPageStatusOptions(data) {
-        this.setState({ filterByPublishStatus: data.value, filtersUpdated: true });
+        this.setState({ filterByPublishStatus: data.value, filtersUpdated: true, pageIndex:0 });
     } 
     updateFilterByWorkflowOptions(data) {
-        this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true });
+        this.setState({ filterByWorkflow: data.value, filterByWorkflowName: data.label, filtersUpdated: true, pageIndex:0});
     }
 
     updateFilterStartEndDate(startDate, endDate) {
         this.setState({
             startDate,endDate,
             startAndEndDateDirty:true,
-            filtersUpdated:true
+            filtersUpdated:true,
+            pageIndex:0
         });
     }
 
@@ -1289,6 +1318,7 @@ class App extends Component {
                 tags={this.state.tags}
                 filterPageByType={this.state.filterByPageType}
                 filterByPublishStatus={this.state.filterByPublishStatus}
+                filtersUpdated={this.state.filtersUpdated}
                 startDate={this.state.startDate} 
                 endDate={this.state.endDate}
                 getPageTypeLabel={this.getPageTypeLabel.bind(this)}
@@ -1317,6 +1347,8 @@ class App extends Component {
                 updateSearchAdvancedTags={this.updateSearchAdvancedTags.bind(this)}
                 updateFilterStartEndDate={this.updateFilterStartEndDate.bind(this)}
                 buildTree={this.buildTree.bind(this)}
+                onSearchScroll={this.onSearchScroll.bind(this)}
+                pageIndex={this.state.pageIndex}
             />
         );
     }
@@ -1394,7 +1426,8 @@ class App extends Component {
                         </PersonaBarPageHeader>
                         <GridCell columnSize={100} style={{ padding: "30px 30px 16px 30px" }}>
                             <SearchPageInput 
-                                inSearch={this.state.inSearch} onSearch={this.onSearch.bind(this)}
+                                inSearch={this.state.inSearch} 
+                                onSearch={this.onSearch.bind(this)}
                                 clearSearch={this.clearSearch.bind(this)}  />
                         </GridCell>
                         <GridCell columnSize={100} style={{ padding: "0px 30px 30px 30px" }} >
@@ -1440,9 +1473,8 @@ class App extends Component {
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
-    searchList: PropTypes.array.isRequired,
     searchPageList: PropTypes.func.isRequired,
-    searchAndFilterPageList: PropTypes.func.isRequired,
+    searchAndFilterPagedPageList: PropTypes.func.isRequired,
     getChildPageList: PropTypes.func.isRequired,
     getWorkflowsList: PropTypes.func.isRequired,
     selectedView: PropTypes.number,
@@ -1450,6 +1482,7 @@ App.propTypes = {
     selectedPageErrors: PropTypes.object,
     selectedPageDirty: PropTypes.boolean,
     selectedTemplateDirty: PropTypes.boolean,
+    filtersUpdated: PropTypes.boolean,
     bulkPage: PropTypes.object,
     dirtyBulkPage : PropTypes.boolean, 
     editingSettingModuleId: PropTypes.number,
@@ -1511,12 +1544,12 @@ App.propTypes = {
 function mapStateToProps(state) {
     return {
         pageList: state.pageList.pageList,
-        searchList: state.searchList.searchList,
         selectedView: state.visiblePanel.selectedPage,
         selectedCustomPageSettings : state.visiblePageSettings.panelId,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
+        filtersUpdated: state.pages.filtersUpdated,
         dirtyTemplate: state.template.dirtyTemplate,
         dirtyEvoqTemplate: state.template.dirtyEvoqTemplate,
         bulkPage: state.addPages.bulkPage,
@@ -1543,7 +1576,7 @@ function mapDispatchToProps(dispatch) {
         getNewPage: PageActions.getNewPage,
         getPageList: PageActions.getPageList,
         searchPageList: PageActions.searchPageList,
-        searchAndFilterPageList: PageActions.searchAndFilterPageList,
+        searchAndFilterPagedPageList: PageActions.searchAndFilterPagedPageList,
         getWorkflowsList: PageActions.getWorkflowsList,
         getPage: PageActions.getPage,
         viewPage: PageActions.viewPage,

@@ -20,12 +20,6 @@ class SearchAdvanced extends Component {
         });
     }
 
-    onClear() {
-        this.setState({
-            collapsed : false
-        });
-    }
-
     /*eslint-disable react/no-danger*/
     render() {
         return (

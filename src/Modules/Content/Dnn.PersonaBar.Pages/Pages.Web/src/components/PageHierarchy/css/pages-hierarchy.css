@@ -110,6 +110,15 @@
     float: left;
     position: relative;
 }
+.lazy-loading {
+    content: ".";
+    display: inline-block;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    transform: translate(50%, 0%); 
+    background: url('../images/loading.gif') no-repeat;
+}
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.thumbnail.loading:before, li.page-drag-helper div.page-item span.thumbnail.loading:before {
     content: ".";
     text-indent: -200px;
