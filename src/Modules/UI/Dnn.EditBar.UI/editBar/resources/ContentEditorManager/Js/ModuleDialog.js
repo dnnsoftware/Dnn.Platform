@@ -92,7 +92,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             } else {
                 paneName = paneName.toLowerCase();
             }
-            $('div.dnnSortable[id]').each(function () {
+            $('.dnnSortable[id]').each(function () {
                 var paneId = $(this).attr('id').toLowerCase();
                 if (paneId.length >= paneName.length
                         && paneId.indexOf(paneName) == (paneId.length - paneName.length)) {

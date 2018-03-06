@@ -118,7 +118,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
                 if (!$(this).hasClass('active-pane')) {
                     $('.actionMenu').stop(true, true).hide();
                     $(menusSelector).not('[class~="floating"]').show();
-                    $('div.dnnSortable').removeClass('active-pane');
+                    $('.dnnSortable[id]').removeClass('active-pane');
                     $(this).addClass('active-pane');
                 }
                 return false;
@@ -154,8 +154,8 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
                 }
 
                 $('.actionMenu').stop(true, true).hide();
-                $('div.dnnSortable').removeClass('active-pane');
-                $('div.dnnSortable > div.DnnModule').removeClass('active-module');
+                $('.dnnSortable[id]').removeClass('active-pane');
+                $('.dnnSortable[id] > div.DnnModule').removeClass('active-module');
             });
 
             $('.actionMenu').mouseover(function () {
@@ -163,7 +163,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
             });
 
             setTimeout(function () {
-                $('div.dnnSortable').trigger('mouseout');
+                $('.dnnSortable[id]').trigger('mouseout');
 
                 $(menusSelector).find('li[id$="-Delete"] a').each(function () {
                     var $deleteButton = $(this);
