@@ -4,38 +4,65 @@ import GridCell from "dnn-grid-cell";
 import Localization from "../../localization";
 import SearchAdvanced from "./SearchAdvanced";
 import SearchResultCard from "./SearchResultCard";
+import LazyLoad from "./LazyLoad/LazyLoad";
 
 class SearchResult extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pageList:[],
+            page:0
+        };
 
     }
 
-    distinct(list) {
-        let distinctList = [];
-        list.map((item) => {
-            if (item.trim() !== "" && distinctList.indexOf(item.trim().toLowerCase()) === -1)
-                distinctList.push(item.trim().toLowerCase());
-        });
-        return distinctList;
+    loadMore(page) {
+        if (this.props.filtersUpdated) {
+            this.props.onSearchScroll(0);
+            this.setState({
+                page:0
+            });
+        } else {
+            this.props.onSearchScroll(page);
+            this.setState({
+                page:page
+            });
+        }
     }
-    
+
+    hasMoreItems() {
+        if (this.props.searchResult.TotalResults === this.props.searchList.length) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     
     /* eslint-disable react/no-danger */
     render() {
-        const { searchList } = this.props;
+        const { searchResult, searchList } = this.props;
+        const loader = <div key={-1} className={"lazy-loading"} ></div>;
 
-        return (
+        return ((this.props.searchResult !== null)?
             <GridCell columnSize={100} className="fade-in">
                 <GridCell columnSize={100} style={{ padding: "20px" }}>
                     <SearchAdvanced {...this.props} />
                     <GridCell columnSize={100} style={{ textAlign: "center", padding: "10px", fontWeight: "bold", animation: "fadeIn .15s ease-in forwards" }}>
-                        <p>{searchList.length === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchList.length} ` + Localization.get(searchList.length > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
+                        <p>{searchResult.TotalResults === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchResult.TotalResults} ` + Localization.get(searchResult.TotalResults > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
-                        {searchList.map((item) => {
+                    <div>
+                        <LazyLoad 
+                            pageIndex={0} 
+                            loadMore={this.loadMore.bind(this)}
+                            hasMore={searchList.length !== searchResult.TotalResults}
+                            loadingComponent={loader}
+                            filtersUpdated={this.props.filtersUpdated}
+                        >
+                        {searchList.map((item,index) => {
                             return (
-                                <SearchResultCard 
+                                <SearchResultCard key={index}
                                     item={item}
                                     clearSearch={this.props.clearSearch}
                                     onLoadPage={this.props.onLoadPage}
@@ -60,12 +87,13 @@ class SearchResult extends Component {
                                     pageTypeSelectorComponents={this.props.pageTypeSelectorComponents}
                                     updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
                                     filterByWorkflow={this.props.filterByWorkflow}  />
-                            );
-                        })}
+                            );})}
+                        </LazyLoad>                            
+                        </div>
                     </GridCell>
                 </GridCell>
             </GridCell>
-        );
+        :null);
     }
 }
 
@@ -73,11 +101,13 @@ class SearchResult extends Component {
 SearchResult.propTypes = {
     pageInContextComponents : PropTypes.array,
     searchList : PropTypes.array,
+    searchResult : PropTypes.object,
     pageTypeSelectorComponents : PropTypes.array,
     filters : PropTypes.array.isRequired,
     tags : PropTypes.string.isRequired,
     filterByPageType : PropTypes.string.isRequired,
     filterByPublishStatus : PropTypes.bool.isRequired,
+    filtersUpdated : PropTypes.bool.isRequired,
     startDate : PropTypes.instanceOf(Date).isRequired,
     endDate : PropTypes.instanceOf(Date).isRequired,
     getPageTypeLabel : PropTypes.func.isRequired,
@@ -85,7 +115,6 @@ SearchResult.propTypes = {
     onSearch : PropTypes.func.isRequired,
     clearSearch : PropTypes.func.isRequired,
     clearAdvancedSearch : PropTypes.func.isRequired,
-
     buildBreadCrumbPath : PropTypes.func.isRequired,
     setEmptyStateMessage : PropTypes.func.isRequired,
     onViewPage : PropTypes.func.isRequired,
@@ -98,13 +127,16 @@ SearchResult.propTypes = {
     updateFilterByWorkflowOptions : PropTypes.func.isRequired,
     updateFilterStartEndDate : PropTypes.func.isRequired,
     filterByWorkflow: PropTypes.string.isRequired,
-    buildTree : PropTypes.func.isRequired
+    onSearchScroll: PropTypes.func,
+    buildTree : PropTypes.func.isRequired,
+    pageIndex: PropTypes.number
 
 };
 
 const mapStateToProps = (state) => {
     return {
         pageInContextComponents : state.extensions.pageInContextComponents,
+        searchResult : state.searchList.searchResult,
         searchList : state.searchList.searchList,
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents
     };
