@@ -23,15 +23,10 @@ namespace DotNetNuke.Tests.Integration.Tests
 {
     public class FriendsTests : IntegrationTestBase
     {
-        #region Fields
 
         private const int PortalId = 0;
         private const string FirstLanguage = "en-US";
         private const string SecondLanguage = "fr-FR";
-
-        #endregion
-
-        #region SetUp
 
         [SetUp]
         public void SetUp()
@@ -52,10 +47,6 @@ namespace DotNetNuke.Tests.Integration.Tests
             ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
 
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Friend_Request_Should_Match_Target_User_Culture()
@@ -90,10 +81,6 @@ namespace DotNetNuke.Tests.Integration.Tests
                 ProfileController.UpdateUserProfile(user);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void PrepareSecondLanguage()
         {
@@ -145,7 +132,5 @@ namespace DotNetNuke.Tests.Integration.Tests
         {
             return WebApiTestHelper.GetRequestHeaders("Member Directory", PortalId);
         }
-
-        #endregion
     }
 }
