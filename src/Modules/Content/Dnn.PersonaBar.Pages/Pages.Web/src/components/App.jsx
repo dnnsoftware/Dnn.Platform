@@ -536,8 +536,12 @@ class App extends Component {
             } else {
                 onConfirm();
             }
-            // Set focus on name
-            ReactDOM.findDOMNode(this).querySelector("#name").focus();        
+
+            setTimeout(()=>{
+                if (ReactDOM.findDOMNode(this).querySelector("#name")) {
+                    ReactDOM.findDOMNode(this).querySelector("#name").focus();
+                }    
+            },100);
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
