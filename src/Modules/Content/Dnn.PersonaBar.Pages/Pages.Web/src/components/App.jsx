@@ -75,8 +75,7 @@ class App extends Component {
 
             tags: "",
             filters: [],
-            searchFields: {},
-            pageUpdatedName: null
+            searchFields: {}
         };
         this.lastActivePageId = null;
         this.shouldRunRecursive = true;
