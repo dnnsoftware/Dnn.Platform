@@ -1238,4 +1238,22 @@
   <data name="Prompt_UsersCategory.Text" xml:space="preserve">
     <value>User Commands</value>
   </data>
+  <data name="Answer.Help" xml:space="preserve">
+    <value>Enter an answer to the password question.</value>
+  </data>
+  <data name="Answer.Required" xml:space="preserve">
+    <value>You must provide a password answer.</value>
+  </data>
+  <data name="Answer.Text" xml:space="preserve">
+    <value>Password Answer:</value>
+  </data>
+  <data name="Question.Help" xml:space="preserve">
+    <value>Enter a password question to be used when retrieving the password.</value>
+  </data>
+  <data name="Question.Required" xml:space="preserve">
+    <value>You must provide a password question.</value>
+  </data>
+  <data name="Question.Text" xml:space="preserve">
+    <value>Password Question:</value>
+  </data>
 </root>
