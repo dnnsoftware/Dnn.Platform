@@ -12,21 +12,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
     [TestFixture]
     public class DigitalAssetsTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly int PortalId = 0;
-
-        #endregion
-
-        #region SetUp
-
-        public DigitalAssetsTests()
-        {
-        }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void File_Url_Should_Update_After_Rename_Folder()
@@ -47,10 +33,6 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
 
             Assert.IsTrue(fileUrl.Contains(newFolderName));
         }
-
-        #endregion
-
-        #region Private Methods
 
         private int GetRootFolderId()
         {
@@ -102,7 +84,5 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
         {
             return WebApiTestHelper.GetRequestHeaders("//Admin//FileManagement", "Digital Asset Management", PortalId);
         }
-
-        #endregion
     }
 }
