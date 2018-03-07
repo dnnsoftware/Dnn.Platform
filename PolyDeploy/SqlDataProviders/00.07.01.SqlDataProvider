@@ -1,0 +1,28 @@
+﻿/************************************************************/
+/***** SqlDataProvider                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/*** Cantarus_PolyDeploy v0.7.1                           ***/
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] DROP COLUMN [APIKey]
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] DROP COLUMN [EncryptionKey]
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [APIKey_Sha] [BINARY](32) NOT NULL
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [EncryptionKey_Enc] [VARCHAR](32) NOT NULL
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD UNIQUE ([APIKey_Sha])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD UNIQUE ([EncryptionKey_Enc])
+    END
+GO
