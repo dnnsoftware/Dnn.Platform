@@ -1,0 +1,23 @@
+﻿/************************************************************/
+/***** SqlDataProvider                                  *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+/*** Cantarus_PolyDeploy v0.7.0                           ***/
+/************************************************************/
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    BEGIN
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [APIKey_Sha] [BINARY](32)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [EncryptionKey_Enc] [VARCHAR](32)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [Salt] [VARCHAR](32)
+    END
+GO
