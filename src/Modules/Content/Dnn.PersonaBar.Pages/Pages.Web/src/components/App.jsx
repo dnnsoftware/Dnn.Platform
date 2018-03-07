@@ -472,7 +472,7 @@ class App extends Component {
      */
     onEditMode() {
         const {selectedPage, selectedView, selectedPageDirty} = this.props;
-        return (selectedPage && selectedPage.tabId === 0 || selectedPageDirty
+        return ((selectedPage && selectedPage.tabId === 0) || selectedPageDirty
             || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
             || selectedView === panels.ADD_MULTIPLE_PAGES_PANEL 
             || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL);
@@ -535,7 +535,7 @@ class App extends Component {
             } else {
                 onConfirm();
             }
-
+            
             setTimeout(()=>{
                 if (ReactDOM.findDOMNode(this).querySelector("#name")) {
                     ReactDOM.findDOMNode(this).querySelector("#name").focus();
@@ -1496,8 +1496,8 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={ this.onEditMode() } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={ this.onEditMode() } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={ this.onEditMode()  || this.state.inSearch} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={ this.onEditMode() || this.state.inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
