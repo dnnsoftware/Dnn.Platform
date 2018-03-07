@@ -107,13 +107,13 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         private static byte[] GenerateHash(string value)
         {
             // Hash and return.
-            return Cantarus.Libraries.Encryption.Utilities.SHA256Hash(value);
+            return CryptoUtilities.SHA256Hash(value);
         }
 
         private static string GenerateSalt(int length)
         {
             // Generate random bytes.
-            byte[] salt = Cantarus.Libraries.Encryption.Utilities.GenerateRandomBytes(length);
+            byte[] salt = CryptoUtilities.GenerateRandomBytes(length);
 
             // Convert to a string and return.
             return BitConverter.ToString(salt);

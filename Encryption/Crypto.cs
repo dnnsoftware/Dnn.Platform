@@ -189,7 +189,7 @@ namespace Cantarus.Libraries.Encryption
 
         private static byte[] Generate256BitsOfRandomEntropy()
         {
-            byte[] randomBytes = Utilities.GenerateRandomBytes(32);
+            byte[] randomBytes = CryptoUtilities.GenerateRandomBytes(32);
 
             return randomBytes;
         }

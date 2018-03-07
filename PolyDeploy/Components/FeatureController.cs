@@ -139,11 +139,11 @@ namespace Cantarus.Modules.PolyDeploy.Components
             foreach(APIUser apiUser in dc.Get())
             {
                 // Generate a salt.
-                byte[] saltBytes = Cantarus.Libraries.Encryption.Utilities.GenerateRandomBytes(32);
+                byte[] saltBytes = CryptoUtilities.GenerateRandomBytes(32);
                 apiUser.Salt = BitConverter.ToString(saltBytes);
 
                 // Use existing plain text api key and salt to create a hashed api key.
-                apiUser.APIKey_Sha = Cantarus.Libraries.Encryption.Utilities.SHA256Hash(apiUser.APIKey + apiUser.Salt);
+                apiUser.APIKey_Sha = CryptoUtilities.SHA256Hash(apiUser.APIKey + apiUser.Salt);
 
                 // Encrypt existing plain text encryption key and store in new field.
                 apiUser.EncryptionKey_Enc = Crypto.Encrypt(apiUser.EncryptionKey, apiUser.APIKey);

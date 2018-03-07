@@ -7,7 +7,7 @@ namespace Cantarus.Libraries.Encryption
     /// Provides useful utility methods which may not easily be grouped
     /// elsewhere.
     /// </summary>
-    public static class Utilities
+    public static class CryptoUtilities
     {
         /// <summary>
         /// Generates a byte array of the length specified filled with random
