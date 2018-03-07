@@ -1,6 +1,10 @@
-using System.Collections.Generic;
+using Cantarus.Libraries.Encryption;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Search;
+using System;
+using System.Collections.Generic;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
@@ -96,13 +100,57 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// </summary>
         /// <param name="Version">The current version of the module</param>
         /// -----------------------------------------------------------------------------
-        public string UpgradeModule(string Version)
+        public string UpgradeModule(string version)
         {
-            throw new System.NotImplementedException("The method or operation is not implemented.");
+            string result = string.Format("Upgrade logic for {0} completed.", version);
+
+            switch (version)
+            {
+                case "00.07.00":
+                    Upgrade_00_07_00();
+                    break;
+
+                default:
+                    result = string.Format("No upgrade logic for {0}.", version);
+                    break;
+
+            }
+
+            return result;
         }
 
         #endregion
 
+        #region Upgrade Logic
+
+        /// <summary>
+        /// Upgrades to 00.07.00
+        /// 
+        /// Operations:
+        /// - Generate a Salt for existing APIUser objects.
+        /// - Hash existing APIKeys using the new Salt and store in new field.
+        /// - Encrypt existing EncryptionKeys using plain text APIKey and
+        ///     store in new field.
+        /// </summary>
+        private void Upgrade_00_07_00()
+        {
+            APIUserDataController dc = new APIUserDataController();
+
+            foreach(APIUser apiUser in dc.Get())
+            {
+                // Generate a salt.
+                byte[] saltBytes = Cantarus.Libraries.Encryption.Utilities.GenerateRandomBytes(32);
+                apiUser.Salt = BitConverter.ToString(saltBytes);
+
+                // Use existing plain text api key and salt to create a hashed api key.
+                apiUser.APIKey_Sha = Cantarus.Libraries.Encryption.Utilities.SHA256Hash(apiUser.APIKey + apiUser.Salt);
+
+                // Encrypt existing plain text encryption key and store in new field.
+                apiUser.EncryptionKey_Enc = Crypto.Encrypt(apiUser.EncryptionKey, apiUser.APIKey);
+            }
+        }
+
+        #endregion
     }
 
 }
