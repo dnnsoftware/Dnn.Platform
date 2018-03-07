@@ -254,6 +254,7 @@
     <Content Include="SqlDataProviders\00.03.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.04.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.06.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.07.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Clients\Deploy\Deploy.ascx" />
