@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import utils from "utils";
 
 import "./styles.less";
+import SingleLineInput from "dnn-single-line-input";
 
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
@@ -15,12 +16,23 @@ export class PersonaBarPageTreeview extends Component {
     }
 
     trimName(item) {
-        let maxLength = 16;
-        let { name } = item;
-        return name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
+        if (item.name){
+            let tabPath = "";
+            if (item.tabpath) {
+                tabPath = item.tabpath;
+            }
+            let maxLength = 18;
+            let { name } = item;
+            let newLength = tabPath.split(/\//).length * 2 + 1;
+            newLength--;
+            let depth = (newLength < maxLength) ? newLength : 1;
+            return (name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
+        } else {
+            return item.name;
+        }
     }
 
-    renderTree(item, childListItems) {
+    render_tree(item, childListItems) {
         const {
             draggedItem,
             droppedItem,
@@ -122,7 +134,8 @@ export class PersonaBarPageTreeview extends Component {
             onDragOver,
             onDragEnd,
             draggedItem,
-            Localization } = this.props;
+            Localization, 
+            selectedPageDirty } = this.props;
 
         let index = 0;
         let total = listItems.length;
@@ -163,7 +176,14 @@ export class PersonaBarPageTreeview extends Component {
                             <span
                                 className={`item-name`}
                                 onClick={e => item.canManagePage ? onSelection(item) : onNoPermissionSelection(item)}>
-                                {name}
+                                { (item.tabId === 0) || (item.selected && selectedPageDirty) ? 
+                                    (
+                                        <SingleLineInput 
+                                            style={{ marginBottom: "0px", width:"80%", height:"100%"}}
+                                            value={name}/>
+                                    ):
+                                    name
+                                }
                             </span>
                             <div className="draft-pencil">
                                 <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
@@ -171,7 +191,7 @@ export class PersonaBarPageTreeview extends Component {
                         </div>
                         {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.renderDropZone("after", item)}
                     </div>
-                    {item.childListItems && item.isOpen ? this.renderTree(item, item.childListItems) : null}
+                    {item.childListItems && item.isOpen ? this.render_tree(item, item.childListItems) : null}
                 </li>
             );
         });
@@ -208,5 +228,6 @@ PersonaBarPageTreeview.propTypes = {
     onSelect: PropTypes.func.isRequired,
     setEmptyPageMessage: PropTypes.func.isRequired,
     Localization: PropTypes.func.isRequired,
-    parentItem: PropTypes.object
+    parentItem: PropTypes.object,
+    selectedPageDirty: PropTypes.bool
 };
