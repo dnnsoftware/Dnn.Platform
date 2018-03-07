@@ -1,6 +1,7 @@
 module.exports = {
     "plugins": [
-        "react"
+        "react",
+        "spellcheck"
     ],
     "env": {
         "browser": true,
@@ -21,7 +22,21 @@ module.exports = {
         "VERSION": false,
         "process": false
     },
-    "rules": {      
+    "rules": {
+       "spellcheck/spell-checker": [1,
+        {
+            "comments": "true",
+            "strings": "true",
+            "identifiers": "true",
+            "skipWords": require("./.eslintskipwords"),
+            "skipIfMatch": [
+                "http://[^s]*",
+                "https://[^s]*",
+                "lodash",
+                "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
+            ]
+        }
+      ],      
       "semi": "error",
       "no-var": "error",
       "indent": ["warn", 4, {"SwitchCase": 1}],
