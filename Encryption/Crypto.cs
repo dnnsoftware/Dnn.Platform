@@ -189,12 +189,7 @@ namespace Cantarus.Libraries.Encryption
 
         private static byte[] Generate256BitsOfRandomEntropy()
         {
-            byte[] randomBytes = new byte[32];
-
-            using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetBytes(randomBytes);
-            }
+            byte[] randomBytes = Utilities.GenerateRandomBytes(32);
 
             return randomBytes;
         }

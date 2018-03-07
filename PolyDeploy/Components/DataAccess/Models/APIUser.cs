@@ -10,8 +10,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
     [PrimaryKey("APIUserID")]
     internal class APIUser
     {
-        private static RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
-
         private bool authenticated;
         private string apiKey;
         private string encryptionKey;
@@ -108,20 +106,14 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
 
         private static byte[] GenerateHash(string value)
         {
-            SHA256 sha = new SHA256Managed();
-
-            byte[] bytes = Encoding.UTF8.GetBytes(value);
-
-            return sha.ComputeHash(bytes);
+            // Hash and return.
+            return Cantarus.Libraries.Encryption.Utilities.SHA256Hash(value);
         }
 
         private static string GenerateSalt(int length)
         {
-            // Create a new array of the size requested.
-            byte[] salt = new byte[length];
-
-            // Fill it with random bytes.
-            Rng.GetBytes(salt);
+            // Generate random bytes.
+            byte[] salt = Cantarus.Libraries.Encryption.Utilities.GenerateRandomBytes(length);
 
             // Convert to a string and return.
             return BitConverter.ToString(salt);
