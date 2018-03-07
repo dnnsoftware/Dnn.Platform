@@ -4,17 +4,13 @@ using DotNetNuke.Services.Search;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Controller class for PolyDeploy
     /// </summary>
     /// -----------------------------------------------------------------------------
-
-    //uncomment the interfaces to add the support.
-    public class FeatureController //: IPortable, ISearchable, IUpgradeable
+    public class FeatureController : IUpgradeable
     {
-
 
         #region Optional Interfaces
 
