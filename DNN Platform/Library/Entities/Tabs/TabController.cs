@@ -1470,6 +1470,33 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
+        /// Get the actual visible tabs for a given portal id. 
+        /// System Tabs and Admin Tabs are excluded from the result set.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="adminTabId"></param>
+        /// <returns></returns>
+        public TabCollection GetTabsByPortal(int portalId, int adminTabId)
+        {
+            string cacheKey = string.Format(DataCache.TabCacheKey, portalId);
+            return CBO.GetCachedObject<TabCollection>(new CacheItemArgs(cacheKey,
+                                                                    DataCache.TabCacheTimeOut,
+                                                                    DataCache.TabCachePriority),
+                                                            c =>
+                                                            {
+                                                                List<TabInfo> tabs = CBO.FillCollection<TabInfo>(_dataProvider.GetTabs(portalId));
+                                                                IEnumerable<TabInfo> filteredList = from tab in tabs
+                                                                                             where
+                                                                                             tab.TabID != adminTabId
+                                                                                             && tab.ParentId != adminTabId
+                                                                                             && !tab.IsSystem
+                                                                                             select tab;
+
+                                                                return new TabCollection(filteredList);
+                                                            });
+        }
+
+        /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
         /// <param name="tabId">ID of the Tab to query</param>

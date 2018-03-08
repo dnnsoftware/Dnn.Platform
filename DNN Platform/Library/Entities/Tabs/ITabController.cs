@@ -246,6 +246,16 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>tab collection</returns>
         TabCollection GetTabsByPortal(int portalId);
 
+
+        /// <summary>
+        /// Get the actual visible tabs for a given portal id. 
+        /// System Tabs and Admin Tabs are excluded from the result set.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="adminTabId"></param>
+        /// <returns>tab collection</returns>
+        TabCollection GetTabsByPortal(int portalId, int adminTabId);
+
         /// <summary>
         /// Gets the tabs which use the module.
         /// </summary>
