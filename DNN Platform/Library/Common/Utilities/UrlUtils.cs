@@ -405,5 +405,16 @@ namespace DotNetNuke.Common.Utilities
                 response.End();
             }
         }
+
+        /// <summary>
+        /// Detect whether current page is custom error page.
+        /// </summary>
+        /// <param name="portalSettings"></param>
+        /// <returns></returns>
+        public static bool InErrorPageRequest(PortalSettings portalSettings)
+        {
+            return portalSettings.ActiveTab.TabID == portalSettings.ErrorPage404
+                   || portalSettings.ActiveTab.TabID == portalSettings.ErrorPage500;
+        }
     }
 }

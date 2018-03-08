@@ -141,9 +141,21 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <summary>
+        /// set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.GetResourceFile(this, MyFileName)); 
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            Visible = !UrlUtils.InErrorPageRequest(PortalSettings) || ShowInErrorPage;
         }
 
         protected override void OnLoad(EventArgs e)

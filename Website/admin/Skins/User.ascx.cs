@@ -72,6 +72,18 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string URL { get; set; }
 
+        /// <summary>
+        /// set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            Visible = !UrlUtils.InErrorPageRequest(PortalSettings) || ShowInErrorPage;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -68,6 +68,11 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool LegacyMode { get; set; }
 
+        /// <summary>
+        /// set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
 		#endregion
 
 		#region Event Handlers
@@ -76,7 +81,8 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			base.OnInit(e);
 
-			Visible = !PortalSettings.HideLoginControl || Request.IsAuthenticated;
+			Visible = (!PortalSettings.HideLoginControl || Request.IsAuthenticated)
+		                && (!UrlUtils.InErrorPageRequest(PortalSettings) || ShowInErrorPage);
 		}
 
         protected override void OnLoad(EventArgs e)
