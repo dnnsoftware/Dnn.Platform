@@ -1474,26 +1474,18 @@ namespace DotNetNuke.Entities.Tabs
         /// System Tabs and Admin Tabs are excluded from the result set.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="adminTabId"></param>
+        /// 
         /// <returns></returns>
-        public TabCollection GetTabsByPortal(int portalId, int? adminTabId)
+        public TabCollection GetUserTabsByPortal(int portalId)
         {
             var tabs = GetTabsByPortal(portalId);
-          
-            if (adminTabId != null)
-            {
-                IEnumerable<TabInfo> filteredList = from tab in tabs
-                                                    where
-                                                    tab.Value.TabID != adminTabId
-                                                    && tab.Value.ParentId != adminTabId
-                                                    && !tab.Value.IsSystem
-                                                    select tab.Value;
-                return new TabCollection(filteredList);
-            }
-            else {
-                return tabs;
-            }
 
+            IEnumerable<TabInfo> filteredList = from tab in tabs
+                                                where
+                                                !tab.Value.IsSystem
+                                                && !tab.Value.TabPath.StartsWith("//Admin")
+                                                select tab.Value;
+            return new TabCollection(filteredList);
         }
 
         /// <summary>

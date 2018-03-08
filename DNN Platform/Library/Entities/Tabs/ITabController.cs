@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>tab collection</returns>
-        TabCollection GetTabsByPortal(int portalId);
+        TabCollection GetUserTabsByPortal(int portalId);
 
 
         /// <summary>
@@ -252,9 +252,9 @@ namespace DotNetNuke.Entities.Tabs
         /// System Tabs and Admin Tabs are excluded from the result set.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="adminTabId"></param>
+        /// 
         /// <returns>tab collection</returns>
-        TabCollection GetTabsByPortal(int portalId, int? adminTabId);
+        TabCollection GetTabsByPortal(int portalId);
 
         /// <summary>
         /// Gets the tabs which use the module.
