@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId"></param>
         /// <param name="adminTabId"></param>
         /// <returns>tab collection</returns>
-        TabCollection GetTabsByPortal(int portalId, int adminTabId);
+        TabCollection GetTabsByPortal(int portalId, int? adminTabId);
 
         /// <summary>
         /// Gets the tabs which use the module.
