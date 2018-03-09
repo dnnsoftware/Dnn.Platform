@@ -76,10 +76,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             Salt = GenerateSalt();
 
             // Hash api key with salt.
-            APIKey_Sha = GenerateHash(APIKey, Salt);
+            APIKey_Sha = GenerateHash(apiKey, Salt);
 
             // Encrypt encryption key with api key.
-            EncryptionKey_Enc = Crypto.Encrypt(EncryptionKey, APIKey);
+            EncryptionKey_Enc = Crypto.Encrypt(encryptionKey, apiKey);
         }
 
         public bool Authenticate(string apiKey)
