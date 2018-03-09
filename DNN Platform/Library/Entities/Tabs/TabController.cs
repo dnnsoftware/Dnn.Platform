@@ -1479,11 +1479,13 @@ namespace DotNetNuke.Entities.Tabs
         public TabCollection GetUserTabsByPortal(int portalId)
         {
             var tabs = GetTabsByPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
 
             IEnumerable<TabInfo> filteredList = from tab in tabs
                                                 where
                                                 !tab.Value.IsSystem
-                                                && !tab.Value.TabPath.StartsWith("//Admin")
+                                                && tab.Value.TabID != portal.AdminTabId
+                                                && tab.Value.ParentId != portal.AdminTabId
                                                 select tab.Value;
             return new TabCollection(filteredList);
         }
