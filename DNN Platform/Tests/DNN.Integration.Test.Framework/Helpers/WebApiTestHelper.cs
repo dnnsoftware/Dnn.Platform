@@ -59,7 +59,10 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             username = $"testuser{Rnd.Next(1000, 9999)}";
             var email = $"{username}@dnn.com";
 
-            WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email);
+            using (WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email))
+            {
+
+            }
 
             userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
 

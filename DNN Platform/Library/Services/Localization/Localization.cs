@@ -1012,7 +1012,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalId">Id of current portal</param>
         /// <param name="language">Language to be parsed</param>
         /// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
-        private static CultureInfo GetCultureFromString(int portalId, string language)
+        internal static CultureInfo GetCultureFromString(int portalId, string language)
         {
             CultureInfo culture = null;
             if (!String.IsNullOrEmpty(language))
