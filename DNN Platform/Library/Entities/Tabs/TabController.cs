@@ -1470,6 +1470,27 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
+        /// Get the actual visible tabs for a given portal id. 
+        /// System Tabs and Admin Tabs are excluded from the result set.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// 
+        /// <returns></returns>
+        public TabCollection GetUserTabsByPortal(int portalId)
+        {
+            var tabs = GetTabsByPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
+
+            IEnumerable<TabInfo> filteredList = from tab in tabs
+                                                where
+                                                !tab.Value.IsSystem
+                                                && tab.Value.TabID != portal.AdminTabId
+                                                && tab.Value.ParentId != portal.AdminTabId
+                                                select tab.Value;
+            return new TabCollection(filteredList);
+        }
+
+        /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
         /// <param name="tabId">ID of the Tab to query</param>
