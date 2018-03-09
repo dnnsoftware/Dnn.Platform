@@ -4,6 +4,7 @@ using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Membership;
 
 namespace Dnn.PersonaBar.Users.Components
 {
@@ -22,6 +23,7 @@ namespace Dnn.PersonaBar.Users.Components
         {
             var settings = new Dictionary<string, object>();
             settings.Add("userId", UserController.Instance.GetCurrentUserInfo().UserID);
+            settings.Add("requiresQuestionAndAnswer", MembershipProviderConfig.RequiresQuestionAndAnswer);
             return settings;
         }
     }
