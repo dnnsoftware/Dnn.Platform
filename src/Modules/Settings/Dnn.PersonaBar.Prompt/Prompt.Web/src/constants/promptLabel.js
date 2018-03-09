@@ -6,7 +6,6 @@ export const commands = {
     RELOAD:"RELOAD",
     CLH:"CLH",
     CLEAR_HISTORY:"CLEAR-HISTORY",
-    CONFIG:"CONFIG",
     SET_MODE:"SET-MODE"
 };
 
