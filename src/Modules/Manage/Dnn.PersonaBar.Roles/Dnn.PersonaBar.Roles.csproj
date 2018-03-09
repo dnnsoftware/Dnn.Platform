@@ -101,6 +101,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\Exceptions\SetRoleException.cs" />
     <Compile Include="Components\IRolesController.cs" />
     <Compile Include="Components\Prompt\Commands\DeleteRole.cs" />
     <Compile Include="Components\Prompt\Commands\GetRole.cs" />
@@ -131,7 +132,9 @@
     <Content Include="Dnn.PersonaBar.Roles.dnn" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Roles.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Roles.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
