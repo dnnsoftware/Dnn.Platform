@@ -29,12 +29,26 @@ namespace Cantarus.Libraries.Encryption
             return bytes;
         }
 
+        public static string SHA256HashString(string value)
+        {
+            byte[] bytes = SHA256HashBytes(value);
+
+            string hash = "";
+
+            for(int i = 0; i< bytes.Length; i++)
+            {
+                hash = string.Format("{0}{1:X2}", hash, bytes[i]);
+            }
+
+            return hash;
+        }
+
         /// <summary>
         /// Hashes the passed value using the SHA256 algorithm.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static byte[] SHA256Hash(string value)
+        public static byte[] SHA256HashBytes(string value)
         {
             // Convert string to byte array.
             byte[] bytes = Encoding.UTF8.GetBytes(value);

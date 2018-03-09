@@ -16,7 +16,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
 
         public int APIUserId { get; set; }
         public string Name { get; set; }
-        public byte[] APIKey_Sha { get; set; }
+        public string APIKey_Sha { get; set; }
         public string EncryptionKey_Enc { get; set; }
         public string Salt { get; set; }
 
@@ -73,10 +73,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             encryptionKey = GenerateKey();
 
             // Generate salt.
-            Salt = GenerateSalt(32);
+            Salt = GenerateSalt();
 
             // Hash api key with salt.
-            APIKey_Sha = GenerateHash(APIKey + Salt);
+            APIKey_Sha = GenerateHash(APIKey, Salt);
 
             // Encrypt encryption key with api key.
             EncryptionKey_Enc = Crypto.Encrypt(EncryptionKey, APIKey);
@@ -85,7 +85,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         public bool Authenticate(string apiKey)
         {
             // Hash the passed api key with the salt.
-            byte[] apiKeyHash = GenerateHash(apiKey + Salt);
+            string apiKeyHash = GenerateHash(apiKey, Salt);
 
             // Does it match the stored hash?
             if (!APIKey_Sha.Equals(apiKeyHash))
@@ -104,19 +104,33 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             return authenticated;
         }
 
-        private static byte[] GenerateHash(string value)
+        internal static string GenerateHash(string value, string salt)
         {
-            // Hash and return.
-            return CryptoUtilities.SHA256Hash(value);
+            // Hash.
+            string hash = CryptoUtilities.SHA256HashString(value + salt);
+
+            // Return upper case.
+            return hash.ToUpper();
         }
 
-        private static string GenerateSalt(int length)
+        internal static string GenerateSalt()
         {
-            // Generate random bytes.
-            byte[] salt = CryptoUtilities.GenerateRandomBytes(length);
+            // Salt length of 16 bytes should be fine for now.
+            int saltLength = 16;
 
-            // Convert to a string and return.
-            return BitConverter.ToString(salt);
+            // Generate random bytes.
+            byte[] bytes = CryptoUtilities.GenerateRandomBytes(saltLength);
+
+            // Convert to string.
+            string salt = "";
+
+            for(int i = 0; i < bytes.Length; i++)
+            {
+                salt = string.Format("{0}{1:X2}", salt, bytes[i]);
+            }
+
+            // Return upper case.
+            return salt.ToUpper();
         }
 
         private static string GenerateKey()
