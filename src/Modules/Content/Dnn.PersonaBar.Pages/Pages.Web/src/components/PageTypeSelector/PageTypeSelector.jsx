@@ -1,10 +1,19 @@
 import React, {Component, PropTypes} from "react";
+import ReactDOM from "react-dom";
 import styles from "./style.less";
 import Localization from "../../localization";
 import RadioButtons from "dnn-radio-buttons";
 import utils from "../../utils";
 
+
+const MAX_PAGE_PARENT_SIZE_TOOGLE = 180;
+
 class PageTypeSelector extends Component {
+
+    constructor(props) {
+        super(props);
+        this.pageParentLarge = false;
+    }
 
     getComponents() {
         const {props} = this;
@@ -24,15 +33,32 @@ class PageTypeSelector extends Component {
             return page.hierarchy;
         }
     }
+
+    componentDidMount() {
+        const pageSelectorDOM = ReactDOM.findDOMNode(this);
+        if (pageSelectorDOM.querySelector("#parentPageValue").offsetWidth > MAX_PAGE_PARENT_SIZE_TOOGLE) {
+            pageSelectorDOM.querySelector("#pageParent").className = "page-info-item page-parent-info-style-large";
+            pageSelectorDOM.querySelector("#pageParentLabel").className = "page-info-item-label parent-page-style-label-large";
+            pageSelectorDOM.querySelector("#pageParentContent").className = "page-info-item-value parent-page-name parent-page-style-content-large";
+        }
+    }
+
+    _calculateParentPageSize(parentPageRef) {
+        if (parentPageRef !== null) {
+            this.pageParentLarge = (parentPageRef.offsetWidth > MAX_PAGE_PARENT_SIZE_TOOGLE);
+        }
+    }
+
+
     render() {
-        const {page, onChangePageType} = this.props;
+        const { page, onChangePageType } = this.props;
         const createdDate = Localization.get("CreatedValue")
                                 .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
                                 .replace("[CREATEDUSER]", page.created || "System");
         
         const hierarchy = this._getHierarchyLabel();        
-        const components = this.getComponents(); 
-
+        const components = this.getComponents();
+                
         return (
             <div className={styles.pageTypeSelector}>
                 <div>
@@ -51,12 +77,14 @@ class PageTypeSelector extends Component {
                                 {createdDate}
                             </span>
                         </div>
-                        <div className="page-info-item">
-                            <span className="page-info-item-label">
+                        <div id="pageParent" className={this.pageParentLarge ? "page-info-item page-parent-info-style-large" : "page-info-item"}>
+                            <span id="pageParentLabel" className={this.pageParentLarge ? "page-info-item-label parent-page-style-label-large" : "page-info-item-label"}>
                                 {Localization.get("PageParent") + ": "}
                             </span>
-                            <span className="page-info-item-value parent-page-name">
-                                {hierarchy}
+                            <span id="pageParentContent" className={this.pageParentLarge ? "page-info-item-value parent-page-name parent-page-style-content-large" : "page-info-item-value parent-page-name"}>
+                                 <span id="parentPageValue" ref={(parentPageRef)=>this._calculateParentPageSize(parentPageRef)} >
+                                    {hierarchy}
+                                </span>
                             </span>
                         </div>
                         <div className="page-info-item">
