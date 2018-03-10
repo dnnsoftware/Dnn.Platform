@@ -1,5 +1,6 @@
 
 import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -419,9 +420,37 @@ class App extends Component {
                 callback(data);
         });
     }
-    onCancelPage(pageId) {
+
+    _removePageFromTree(parentId) {
+        this._traverse((item, list, updateStore) => {
+            if (item.id === parentId && parentId !== undefined) {
+                let itemIndex = null;
+                item.childCount--;
+                (item.childCount === 0) ? item.isOpen = false : null;
+
+                item.childListItems.forEach((child, index) => {
+                    if (child.tabId !== undefined) {
+                        itemIndex = index;
+                    }
+                });
+                const arr1 = item.childListItems.slice(0, itemIndex);
+                const arr2 = item.childListItems.slice(itemIndex + 1);
+                item.childListItems = [...arr1, ...arr2];
+                updateStore(list);
+            }
+            if (parentId === undefined && item.tabId !== undefined) {
+                const newPageList = list.slice(0,list.length-1);
+                updateStore(newPageList);
+            }
+        });
+
+
+    }
+
+    onCancelPage(parentPageId) {
+        this._removePageFromTree(parentPageId);
         this.props.changeSelectedPagePath("");
-        this.props.onCancelPage(pageId);
+        this.props.onCancelPage(parentPageId);
     }
 
     onChangeParentId(newParentId) {
@@ -429,11 +458,13 @@ class App extends Component {
     }
 
     onAddMultiplePage() {
-        this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0);
-        this.props.clearSelectedPage();
-
-        this.props.onLoadAddMultiplePages();
+        this._testDirtyPage(()=>{
+            this.clearEmptyStateMessage();
+            this.selectPageSettingTab(0);
+            this.props.clearSelectedPage();
+    
+            this.props.onLoadAddMultiplePages();
+        });  
         
     }
     
@@ -441,8 +472,8 @@ class App extends Component {
      * When on edit mode
      */
     onEditMode() {
-        const {selectedPage, selectedView} = this.props;
-        return (selectedPage && selectedPage.tabId === 0 
+        const {selectedPage, selectedView, selectedPageDirty} = this.props;
+        return ((selectedPage && selectedPage.tabId === 0) || selectedPageDirty
             || selectedView === panels.SAVE_AS_TEMPLATE_PANEL
             || selectedView === panels.ADD_MULTIPLE_PAGES_PANEL 
             || selectedView === panels.CUSTOM_PAGE_DETAIL_PANEL);
@@ -450,23 +481,52 @@ class App extends Component {
 
     onAddPage(parentPage) {
         this.clearEmptyStateMessage();
-        this.selectPageSettingTab(0); 
+        this.selectPageSettingTab(0);
+        
         const addPage = () => {
             const { props } = this;
             const { selectedPage } = props;
             let runUpdateStore = null;
             let pageList = null;
-
+        
             this._traverse((item, list, updateStore) => {
                 item.selected = false;
                 pageList = list;
                 runUpdateStore = updateStore;
             });
-
             runUpdateStore(pageList);
-            const onConfirm = () => { this.props.changeSelectedPagePath(""); this.props.getNewPage(parentPage); };
-            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
 
+            const onConfirm = () => {
+                this.props.changeSelectedPagePath("");
+                
+                this.props.getNewPage(parentPage).then(()=>{
+                    if (parentPage && parentPage.id) {
+                        this.props.getChildPageList(parentPage.id)
+                        .then(pageChildItems => {
+                            this._traverse((item, list, update) => {
+                                const updateChildItems = () => {
+                                    const newPageChildItems = pageChildItems.concat(this.props.selectedPage);
+                                    item.childListItems = newPageChildItems;
+                                    item.isOpen = true;
+                                    item.hasChildren = true;
+                                    update(list);
+                                };
+                                (item.id === parentPage.id) ? updateChildItems() : null;
+                            });
+                        });
+                    } else {
+                        this._traverse((item, list, updateStore) => {
+                            pageList = list;
+                            runUpdateStore = updateStore;
+                        });
+                        const newPageList = pageList.concat(this.props.selectedPage);    
+                        runUpdateStore(newPageList);
+                    }
+                }); 
+            };
+       
+
+            if (selectedPage && selectedPage.tabId !== 0 && props.selectedPageDirty) {
                 utils.confirm(
                     Localization.get("CancelWithoutSaving"),
                     Localization.get("Close"),
@@ -476,6 +536,12 @@ class App extends Component {
             } else {
                 onConfirm();
             }
+            
+            setTimeout(()=>{
+                if (ReactDOM.findDOMNode(this).querySelector("#name")) {
+                    ReactDOM.findDOMNode(this).querySelector("#name").focus();
+                }    
+            },100);
         };
 
         const noPermission = () => this.setEmptyStateMessage("You do not have permission to add a child page to this parent");
@@ -485,6 +551,7 @@ class App extends Component {
     onCancelSettings() {
         const { props } = this;
         if (props.selectedPageDirty) {
+            
             this.showCancelWithoutSavingDialog();
         }
         else {
@@ -574,6 +641,7 @@ class App extends Component {
                 this.onCancelPage();
             }
         };
+
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -597,6 +665,7 @@ class App extends Component {
                     });
                 });
             };
+
 
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
@@ -622,6 +691,38 @@ class App extends Component {
             Localization.get("AddPage") :
             selectedPage.name;
     }
+    
+    _testDirtyPage(callback) {
+        const {selectedPage, selectedPageDirty} = this.props;
+        const onConfirm = () => {
+            callback();
+            this.onLoadPage(selectedPage.tabId, () => {
+                this._traverse((item, list) => {
+                    if (item.id === selectedPage.tabId) {
+                        Object.keys(this.props.selectedPage).forEach((key) => item[key] = this.props.selectedPage[key]);
+                        this.props.updatePageListStore(list);
+                        this.selectPageSettingTab(0);
+                        this.lastActivePageId = null;
+                    }
+                });
+            });
+        };
+
+        if (selectedPage && selectedPage.tabId !== 0 && selectedPageDirty) {
+            utils.confirm(
+                Localization.get("CancelWithoutSaving"),
+                Localization.get("Close"),
+                Localization.get("Cancel"),
+                onConfirm);
+
+        } else {
+            return onConfirm();
+        }
+    }
+
+    onLoadSavePageAsTemplate() {
+        this._testDirtyPage(this.props.onLoadSavePageAsTemplate.bind(this));
+    }
 
     getSettingsButtons() {
         const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPageSettings, onHidePageSettings } = this.props;
@@ -634,7 +735,7 @@ class App extends Component {
                         type="secondary"
                         size="large"
                         disabled={this.onEditMode() || this.state.inSearch}
-                        onClick={onLoadSavePageAsTemplate}
+                        onClick={this.onLoadSavePageAsTemplate.bind(this)}
                         onShowPageSettingsCallback={onShowPageSettings}
                         onHidePageSettings={onHidePageSettings}
                         onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
@@ -733,6 +834,7 @@ class App extends Component {
     }
 
     getSaveAsTemplatePage() {
+        
         return (
                 <SaveAsTemplate
                     onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
@@ -809,6 +911,18 @@ class App extends Component {
         if (this.props.selectedPage[key] !== value) {
             this.props.onChangePageField(key, value);
         }
+        this.updatePageNameOnList(key, value);
+    }
+
+    updatePageNameOnList(key, value) {
+        this._traverse((item, list, updateStore) => {
+            if ((item.tabId === 0 || item.id === this.props.selectedPage.tabId) && key === "name") {
+                item.name = value;
+                item.selected = true;
+                item.isOpen = true;
+                updateStore(list);
+            } 
+        });
     }
 
     onMovePage({ Action, PageId, ParentId, RelatedPageId }) {
@@ -861,7 +975,7 @@ class App extends Component {
         const { selectedPageDirty } = this.props;
         const viewPage = () => PageActions.viewPage(item.id, item.url);
 
-        const left = () => {
+        const showConfirmationDialog = () => {
             utils.confirm(
                 Localization.get("CancelWithoutSaving"),
                 Localization.get("Close"),
@@ -869,8 +983,7 @@ class App extends Component {
                 viewPage);
         };
 
-        const right = () => viewPage();
-        const proceed = () => selectedPageDirty ? left() : right();
+        const proceed = () => selectedPageDirty ? showConfirmationDialog() : viewPage();
 
         this.clearEmptyStateMessage();
         const message = Localization.get("NoPermissionEditPage");
@@ -1399,7 +1512,7 @@ class App extends Component {
                 return this.render_PagesDetailEditor();
         }
     }
-   
+
     render() {
         const { props } = this;
         const { selectedPage } = props;
@@ -1415,8 +1528,8 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
                                 <div> 
-                                    <Button type="primary" disabled={ (this.onEditMode() || this.state.inSearch) } size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                                    <Button type="secondary" disabled={ (this.onEditMode() || this.state.inSearch) } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
+                                    <Button type="primary" disabled={ this.onEditMode()  || this.state.inSearch} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                                    <Button type="secondary" disabled={ this.onEditMode() || this.state.inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
                             }
                             { 
@@ -1620,5 +1733,7 @@ function mapDispatchToProps(dispatch) {
 
     }, dispatch);
 }
-
+App.contextTypes = {
+    scrollArea: PropTypes.object
+};
 export default connect(mapStateToProps, mapDispatchToProps)(App);

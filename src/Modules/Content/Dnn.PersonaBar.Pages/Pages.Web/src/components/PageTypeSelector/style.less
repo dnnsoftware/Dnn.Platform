@@ -21,10 +21,10 @@
             display: inline-block;
             word-break: keep-all;
             white-space: nowrap;
-            overflow-x: hidden;
-            max-width: ~"calc(100% - 80px)";
-            text-overflow: ellipsis;
-
+            &.page-parent-info-style-large {
+                margin: 10px 0px 10px 0px;
+            }
+            
             &.page-type {
                 text-overflow: clip;
                 -ms-text-overflow: clip;
@@ -32,6 +32,10 @@
 
             .page-info-item-label{
                 font-weight: bold;
+
+                &.parent-page-style-label-large {
+                    display: inline-block;
+                }
             }
 
             .page-info-item-value{
@@ -39,6 +43,15 @@
                 margin-right: 30px;
                 &.parent-page-name {
                     word-break: break-all;
+                    white-space: normal;
+                    min-width: 50px;
+
+                    &.parent-page-style-content-large {
+                        display: inline-block;
+                        vertical-align: top;
+                        max-width: 650px;
+
+                    }
                 }
 
                 .dnn-radio-buttons {

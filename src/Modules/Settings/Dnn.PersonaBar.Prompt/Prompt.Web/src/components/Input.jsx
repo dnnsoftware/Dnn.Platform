@@ -9,14 +9,6 @@ import {commands as Cmd, modes as Mode} from "../constants/promptLabel";
 
 class Input extends Component {
 
-    componentDidUpdate() {
-        //This should be replaced by User Personalization API
-        const consoleHeight = cookies.get("dnn-prompt-console-height");
-        if (consoleHeight) {
-            this.configConsole(["config", consoleHeight]);
-        }
-    }
-
     setValue(value) {
         this.cmdPromptInput.value = value;
     }
@@ -70,9 +62,6 @@ class Input extends Component {
             case Cmd.CLEAR_HISTORY:
                 props.updateHistory("", true);
                 actions.runLocalCommand(cmd, Localization.get("SessionHistoryCleared"));
-                break;
-            case Cmd.CONFIG:
-                this.configConsole(tokens);
                 break;
             case Cmd.SET_MODE:
                 this.changeUserMode(tokens);
@@ -165,24 +154,6 @@ class Input extends Component {
     getFlag(flag, tokens) {
         if (!tokens || tokens.length === 0) { return null; }
         return tokens.find((token) => this.isFlag(token) && flag.toUpperCase() === token.toUpperCase());
-    }
-
-    configConsole(tokens) {
-        const { props } = this;
-        const { actions } = props;
-        let height = null;
-        if (this.hasFlag("--height")) {
-            height = this.getFlag("--height", tokens);
-        } else if (!this.isFlag(tokens[1])) {
-            height = tokens[1];
-        }
-
-        if (height) {
-            props.setHeight(height);
-            cookies.set("dnn-prompt-console-height", height, { path: "/" });
-        } else {
-            actions.runLocalCommand("ERROR", formatString(Localization.get("Prompt_FlagIsRequired"), "Height"));
-        }
     }
 
     hasFlag(flag, tokens) {

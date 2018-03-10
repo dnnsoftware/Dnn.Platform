@@ -37,7 +37,6 @@ export class PersonaBarPageTreeviewInteractor extends Component {
 
     componentDidMount() {
         this.init();
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -698,6 +697,7 @@ export class PersonaBarPageTreeviewInteractor extends Component {
                         onDrop={this.props.enabled && this.onDrop.bind(this)}
                         onMovePage={this.props.enabled && this.onMovePage.bind(this)}
                         getPageInfo={this.getPageInfo.bind(this)}
+                        selectedPageDirty={this.props.selectedPageDirty}
                         Localization={this.props.Localization}
                     />
                     : null}
@@ -822,4 +822,8 @@ PersonaBarPageTreeviewInteractor.propTypes = {
 
 PersonaBarPageTreeviewInteractor.defaultProps = {
     enabled: true
+};
+
+PersonaBarPageTreeviewInteractor.contextTypes = {
+    scrollArea: PropTypes.object
 };

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import InputGroup from "dnn-input-group";
@@ -75,7 +76,8 @@ class PageDetails extends Component {
                             errorMessage={errors.name}
                             value={page.name}
                             onChange={this.onChangeField.bind(this, "name")}
-                            maxLength="200" />
+                            maxLength="200"
+                            inputId="name" />
                     </GridCell>
                     <GridCell className="right-column">
                         <SingleLineInputWithError

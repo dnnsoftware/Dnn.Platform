@@ -5,6 +5,7 @@ using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Roles.Components.Prompt.Models;
+using Dnn.PersonaBar.Roles.Components.Prompt.Exceptions;
 using Dnn.PersonaBar.Roles.Services.DTO;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -76,7 +77,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         {
             try
             {
+
                 var existingRole = RoleController.Instance.GetRoleById(PortalId, RoleId);
+                if (existingRole.IsSystemRole)
+                {
+                    throw new SetRoleException("Cannot modify System Roles.");
+                }
                 var roleDto = new RoleDto
                 {
                     Id = RoleId,
@@ -98,6 +104,11 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     new RoleModel(RoleController.Instance.GetRoleById(PortalId, roleDto.Id))
                 };
                 return new ConsoleResultModel(LocalizeString("RoleUpdated.Message")) { Data = lstResults, Records = lstResults.Count };
+            }
+            catch (SetRoleException se)
+            {
+                Logger.Error(se);
+                return new ConsoleErrorResultModel(LocalizeString("RoleUpdated.SystemRoleError"));
             }
             catch (Exception ex)
             {
