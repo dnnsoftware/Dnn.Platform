@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            Visible = !UrlUtils.InErrorPageRequest(PortalSettings) || ShowInErrorPage;
+            Visible = !PortalSettings.InErrorPageRequest() || ShowInErrorPage;
         }
 
         protected override void OnLoad(EventArgs e)

@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.Skins.Controls
 			base.OnInit(e);
 
 			Visible = (!PortalSettings.HideLoginControl || Request.IsAuthenticated)
-		                && (!UrlUtils.InErrorPageRequest(PortalSettings) || ShowInErrorPage);
+		                && (!PortalSettings.InErrorPageRequest() || ShowInErrorPage);
 		}
 
         protected override void OnLoad(EventArgs e)
