@@ -650,6 +650,10 @@ namespace DotNetNuke.Entities.Portals
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
 					break;
+			    case "fullurl": //return portal alias with protocol
+			        propertyNotFound = false;
+			        result = PropertyAccess.FormatString(Globals.AddHTTP(PortalAlias.HTTPAlias), format);
+			        break;
                 case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page.
                     propertyNotFound = false;
 			        var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
