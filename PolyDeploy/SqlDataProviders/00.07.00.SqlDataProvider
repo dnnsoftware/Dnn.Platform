@@ -11,6 +11,21 @@
 /************************************************************/
 
 /*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/*********************************************************************************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
+    BEGIN
+        CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
+            @ApiKey [NVARCHAR](64)
+        AS
+            SELECT *
+            FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
+            WHERE [APIKey_Sha] = CONVERT([NVARCHAR](64), HASHBYTES('SHA2_256', CONCAT(@ApiKey, [Salt])), 2)
+    END
+GO
+
+/*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
 /*********************************************************************************************************/
 
