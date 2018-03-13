@@ -313,7 +313,7 @@ namespace DotNetNuke.Web.InternalServices
                     var title = showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
                     var detail = new DetailedView
                     {
-                        Title = title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
+                        Title = title != null && title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
