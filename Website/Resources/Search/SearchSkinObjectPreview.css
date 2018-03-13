@@ -49,6 +49,7 @@ ul.searchSkinObjectPreview li {
         position: relative;
         margin: 0;
         text-transform: none;
+        word-wrap: break-word;
     }
 
         ul.searchSkinObjectPreview > li:hover {

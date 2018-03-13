@@ -8,8 +8,12 @@
         %> 
                 <li class="userRegister"><asp:HyperLink ID="registerLink" runat="server"><% =LocalizeString("Register") %></asp:HyperLink>
         <%      } %>
+        <%      if (!PortalSettings.HideLoginControl)
+                {
+        %>
                 <li class="userLogin"><asp:HyperLink ID="loginLink" runat="server"><% =LocalizeString("Login") %></asp:HyperLink>
-        <%  }
+        <%      }
+            }
             else
             {
         %>

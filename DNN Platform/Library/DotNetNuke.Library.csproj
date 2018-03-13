@@ -203,6 +203,7 @@
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
     <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
@@ -495,7 +496,7 @@
     <Compile Include="Entities\Urls\ParameterReplaceAction.cs" />
     <Compile Include="Entities\Urls\ParameterRewriteAction.cs" />
     <Compile Include="Entities\Urls\PathSizes.cs" />
-    <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsExtensions.cs" />
     <Compile Include="Entities\Urls\RedirectController.cs" />
     <Compile Include="Entities\Urls\RedirectReason.cs" />
     <Compile Include="Entities\Urls\RedirectTokens.cs" />

@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -190,9 +191,35 @@ namespace DotNetNuke.UI.WebControls
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnLeft");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-			//Render the Select Tag
-			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+		    IList<CultureInfo> cultures = new List<CultureInfo>();
+		    switch (ListType)
+		    {
+		        case LanguagesListType.All:
+		            var culturesArray = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+		            Array.Sort(culturesArray, new CultureInfoComparer(DisplayMode));
+		            cultures = culturesArray.ToList();
+                    break;
+		        case LanguagesListType.Supported:
+		            cultures = LocaleController.Instance.GetLocales(Null.NullInteger).Values
+		                .Select(c => CultureInfo.GetCultureInfo(c.Code))
+		                .ToList();
+		            break;
+		        case LanguagesListType.Enabled:
+		            cultures = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values
+		                .Select(c => CultureInfo.GetCultureInfo(c.Code))
+		                .ToList();
+		            break;
+		    }
+
+		    var promptValue = StringValue == Null.NullString && cultures.Count > 1 && !Required;
+
+            //Render the Select Tag
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+		    if (promptValue)
+		    {
+                writer.AddAttribute(HtmlTextWriterAttribute.Onchange, "onLocaleChanged(this)");
+		    }
 			writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
 			//Render None selected option
@@ -208,40 +235,15 @@ namespace DotNetNuke.UI.WebControls
 			writer.Write(Localization.GetString("Not_Specified", Localization.SharedResourceFile));
 			writer.RenderEndTag();
 
-			int languageCount = 0;
-			switch (ListType)
-			{
-				case LanguagesListType.All:
-					CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-					Array.Sort(cultures, new CultureInfoComparer(DisplayMode));
+		    foreach (var culture in cultures)
+		    {
+		        RenderOption(writer, culture);
+		    }
 
-					foreach (CultureInfo culture in cultures)
-					{
-						RenderOption(writer, culture);
-					}
-					languageCount = cultures.Length;
-					break;
-				case LanguagesListType.Supported:
-					Dictionary<string, Locale> cultures1 = LocaleController.Instance.GetLocales(Null.NullInteger);
-					foreach (Locale language in cultures1.Values)
-					{
-                        RenderOption(writer, CultureInfo.GetCultureInfo(language.Code));
-					}
-					languageCount = cultures1.Count;
-					break;
-				case LanguagesListType.Enabled:
-					Dictionary<string, Locale> cultures2 = LocaleController.Instance.GetLocales(PortalSettings.PortalId);
-					foreach (Locale language in cultures2.Values)
-					{
-                        RenderOption(writer, CultureInfo.GetCultureInfo(language.Code));
-					}
-					languageCount = cultures2.Count;
-					break;
-			}
-			//Close Select Tag
-			writer.RenderEndTag();
+            //Close Select Tag
+            writer.RenderEndTag();
 
-			if (StringValue == Null.NullString && languageCount > 1)
+			if (promptValue)
 			{
 				writer.WriteBreak();
 
@@ -249,7 +251,19 @@ namespace DotNetNuke.UI.WebControls
 				writer.RenderBeginTag(HtmlTextWriterTag.Span);
 				writer.Write(Localization.GetString("LanguageNotSelected", Localization.SharedResourceFile));
 				writer.RenderEndTag();
-			}
+
+			    writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
+			    writer.RenderBeginTag(HtmlTextWriterTag.Script);
+			    writer.Write(@"
+function onLocaleChanged(element){
+    var $this = $(element);
+    var $error = $this.next().next();
+    var value = $this.val();
+    value ? $error.hide() : $error.show();
+};
+");
+			    writer.RenderEndTag();
+            }
 
 			//Render break
 			writer.Write("<br />");
