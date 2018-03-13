@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.Entities.Controllers;
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -230,8 +231,11 @@ namespace DotNetNuke.Entities.Portals
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
             portalSettings.Registration = new RegistrationSettings(settings);
 
+            var cdfVersion = HostController.Instance.GetInteger("CrmVersion");
+
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
-            portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            // we must read CdfVersion from HostSettings table since data from PortalSettings are not up to date
+            portalSettings.CdfVersion = cdfVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
             portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
             portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
