@@ -163,6 +163,12 @@ namespace DotNetNuke.Entities.Portals
         public string BackgroundFile { get; set; }
 
         /// <summary>
+        /// Current host version 
+        /// </summary>
+        [XmlElement("crmversion")]
+        public string CrmVersion { get; set; }
+
+        /// <summary>
         /// Setting for the type of banner advertising in the portal
         /// </summary>
         /// <value>Type of banner advertising</value>
@@ -705,7 +711,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (_pages < 0)
                 {
-                    _pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
+                    _pages = TabController.Instance.GetUserTabsByPortal(PortalID).Count;
                 }
                 return _pages;
             }
