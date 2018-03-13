@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke_Symbols" type="Library" version="09.02.00">
+    <package name="DotNetNuke_Symbols" type="Library" version="09.02.01">
       <friendlyName>DNN @@VER_NAME@@ Symbols</friendlyName>
       <description>This package contains Debug Symbols and Intellisense files for DNN @@VER_NAME@@ Edition.</description>
       <owner>

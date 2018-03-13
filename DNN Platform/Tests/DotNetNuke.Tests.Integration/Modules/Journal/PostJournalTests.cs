@@ -475,7 +475,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
 
         private IDictionary<string, string> GetRequestHeaders(string moduleName = "Journal")
         {
-            return WebApiTestHelper.GetRequestHeaders(moduleName, PortalId);
+            return WebApiTestHelper.GetRequestHeaders("//ActivityFeed", moduleName, PortalId);
         }
 
         #endregion

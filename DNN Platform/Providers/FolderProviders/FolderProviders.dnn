@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" version="09.02.00" isSystem="true">
+    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" version="09.02.01" isSystem="true">
       <friendlyName>DotNetNuke Folder Providers</friendlyName>
       <description>Azure Folder Providers for DotNetNuke.</description>
       <dependencies />
@@ -59,7 +59,7 @@
             </uninstall>
           </config>
         </component>
-        <component type="Cleanup" version="09.02.00" fileName ="09.02.00.txt" />
+        <component type="Cleanup" version="09.02.01" fileName ="09.02.00.txt" />
         <component type="File">
           <files>
             <basePath>Providers\FolderProviders\AzureFolderProvider</basePath>
