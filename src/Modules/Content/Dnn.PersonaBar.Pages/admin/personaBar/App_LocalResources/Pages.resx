@@ -822,6 +822,9 @@
   <data name="Prompt_PageNotFound.Text" xml:space="preserve">
     <value>Page not found.</value>
   </data>
+  <data name="Prompt_PageFound.Text" xml:space="preserve">
+    <value>Page found.</value>
+  </data>
   <data name="Prompt_InvalidPageId.Text" xml:space="preserve">
     <value>You must specify a valid number for Page ID</value>
   </data>

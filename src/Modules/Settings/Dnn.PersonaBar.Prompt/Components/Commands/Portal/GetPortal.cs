@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_GetPortal_NotFound"), PortalIdFlagValue));
             }
             lst.Add(new PortalModel(portal));
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_GetPortal_Found"), PortalIdFlagValue) };
         }
 
 

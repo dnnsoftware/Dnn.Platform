@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
 
             lst.Add(new PageModel(tab));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count };
+            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output =  LocalizeString("Prompt_PageFound") };
         }
     }
 }

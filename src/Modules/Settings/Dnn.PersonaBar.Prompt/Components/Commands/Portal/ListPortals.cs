@@ -32,10 +32,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 
             var alPortals = pc.GetPortals();
             var lst = (from PortalInfo portal in alPortals select new PortalModelBase(portal)).ToList();
-
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count };
+            var count = lst.Count() > 0 ? lst.Count().ToString() : "No";
+            var pluralSuffix = lst.Count() > 1 ? "s" : "";
+            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix) };
         }
-
-
     }
 }

@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 return new ConsoleErrorResultModel(message.Value);
             }
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(moduleInfo));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count };
+            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_GetModule_Result"), ModuleId, PageId)};
         }
     }
 }
