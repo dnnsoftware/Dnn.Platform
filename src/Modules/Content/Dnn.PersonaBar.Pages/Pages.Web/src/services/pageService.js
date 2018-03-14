@@ -18,22 +18,8 @@ const PageService = function () {
     };
 
     const savePage = function (page) {
-        const api = getOverridablePagesApi();        
-        let additionalParams = null;
-
-        if (page.tabId === 0 && !securityService.isSuperUser()) {
-            additionalParams = {
-                parentId: page.parentId !== undefined && page.parentId !== null ? utils.getCurrentPageId() : page.parentId
-            };
-        }
-        else {
-            additionalParams = {
-                url: ""
-            };
-        }
-
-        let request = { ...page, ...additionalParams };
-
+        const api = getOverridablePagesApi();            
+        let request = { ...page,  url: "" };
         return api.post("SavePageDetails", toBackEndPage(request));
     };
 
