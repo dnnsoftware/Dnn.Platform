@@ -34,6 +34,8 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Web.Client;
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -230,8 +232,22 @@ namespace DotNetNuke.Entities.Portals
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
             portalSettings.Registration = new RegistrationSettings(settings);
 
+            var clientResourcesSettings = new ClientResourceSettings();
+            Boolean overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+
+            int crmVersion;
+            if(overridingDefaultSettings)
+            {
+                int? globalVersion = new ClientResourceSettings().GetVersion();
+                crmVersion = globalVersion ?? default(int);
+            }
+            else
+            {
+                crmVersion = HostController.Instance.GetInteger("CrmVersion");
+            }
+            
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
-            portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            portalSettings.CdfVersion = crmVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
             portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
             portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);

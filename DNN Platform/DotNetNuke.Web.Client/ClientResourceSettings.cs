@@ -61,6 +61,20 @@ namespace DotNetNuke.Web.Client
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsOverridingDefaultSettingsEnabled()
+        {
+            var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
+            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+
+            // if portal version is set
+            // and the portal "override default settings" flag is set and set to true
+            return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
+        }
+
         public int? GetVersion()
         {
             var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
