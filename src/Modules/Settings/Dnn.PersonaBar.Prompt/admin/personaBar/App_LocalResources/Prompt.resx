@@ -1095,9 +1095,6 @@
   <data name="Prompt_GetPortal_Found.Text" xml:space="preserve">
     <value>Portal '{0}' has been found.</value>
   </data>
-  <data name="Prompt_GetPortal_Found.Text" xml:space="preserve">
-    <value>Portal {0} has been found.</value>
-  </data>
   <data name="Prompt_ListCommands_Error.Text" xml:space="preserve">
     <value>An error occurred while attempting to list the commands.</value>
   </data>
