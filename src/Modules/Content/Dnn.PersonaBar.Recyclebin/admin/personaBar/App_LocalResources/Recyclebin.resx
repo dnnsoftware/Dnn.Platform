@@ -271,7 +271,7 @@
     <value>The {0} is required. Please use the --{1} flag or pass it as the first argument after the command name\n</value>
   </data>
   <data name="ModuleNotFound.Text" xml:space="preserve">
-    <value>Module with id "{0}" not found.</value>
+    <value>Module with id "{0}" not found on page "{1}".</value>
   </data>
   <data name="Prompt_ModulePurgedSuccessfully.Text" xml:space="preserve">
     <value>Module with id "{0}" purged successfully.</value>

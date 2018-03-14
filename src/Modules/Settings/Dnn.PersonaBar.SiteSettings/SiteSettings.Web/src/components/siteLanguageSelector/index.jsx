@@ -6,6 +6,7 @@ import {
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import Dropdown from "dnn-dropdown";
+import Flag from "dnn-flag";
 import Label from "dnn-label";
 import "./style.less";
 import resx from "../../resources";
@@ -127,7 +128,7 @@ class SiteLanguageSelector extends Component {
             options = props.languages.map((item) => {
                 return (
                     <div className={"language-flag" + (item.Code === this.state.cultureCode ? " selected": "")} onClick={this.onLanguageChange.bind(this, { value: item.Code })}>
-                        <img src={item.Icon} alt={item.Code} />
+                        <Flag culture={item.Code} title={item.Name} />
                     </div>
                 );
             });

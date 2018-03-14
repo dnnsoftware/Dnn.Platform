@@ -126,7 +126,7 @@ class UserTable extends Component {
                     id={"add"}
                     addIsOpened={addIsOpened ? "add-opened" : "closed"}
                     filter={props.filter}>
-                 <CollapsibleSwitcher children={[<CreateUserBox filter={props.filter} onCancel={this.collapse.bind(this) }/>]}/>
+                 <CollapsibleSwitcher children={[<CreateUserBox filter={props.filter} onCancel={this.collapse.bind(this) } appSettings={props.appSettings}/>]}/>
                 </DetailRow>
                 {
                     props.users && props.users.length>0 && props.users.map((user, index) => {

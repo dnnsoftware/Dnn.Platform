@@ -7,6 +7,7 @@ import InputGroup from "dnn-input-group";
 import Languages from "./languages";
 import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
+import Flag from "dnn-flag";
 import RadioButtons from "dnn-radio-buttons";
 import Switch from "dnn-switch";
 import Tooltip from "dnn-tooltip";
@@ -137,9 +138,9 @@ class LanguageSettingsPanelBody extends Component {
             options = props.languages.map((item) => {
                 if (state.languageSettings.LanguageDisplayMode === "NATIVE") {
                     return {
-                        label: <div style={{ float: "left", display: "flex" }}>
+                        label: <div title={item.NativeName} style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} alt={item.NativeName} />
+                                <Flag culture={item.Name} title={item.NativeName}/>
                             </div>
                             <div className="language-name">{item.NativeName}</div>
                         </div>, value: item.Name
@@ -147,9 +148,9 @@ class LanguageSettingsPanelBody extends Component {
                 }
                 else {
                     return {
-                        label: <div style={{ float: "left", display: "flex" }}>
+                        label: <div title={item.EnglishName} style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} alt={item.EnglishName} />
+                                <Flag culture={item.Name} title={item.EnglishName}/>
                             </div>
                             <div className="language-name">{item.EnglishName}</div>
                         </div>, value: item.Name
@@ -242,6 +243,7 @@ class LanguageSettingsPanelBody extends Component {
                         value={state.languageSettings.SiteDefaultLanguage}
                         onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
                         enabled={!state.languageSettings.ContentLocalizationEnabled}
+                        getLabelText={(label) => label.props.title}
                         />
                     <RadioButtons
                         onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}

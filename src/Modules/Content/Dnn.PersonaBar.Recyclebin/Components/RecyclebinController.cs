@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     var moduleInfo = ModuleController.Instance.GetModule(mod.Id, mod.TabID, true);
                     if (moduleInfo == null)
                     {
-                        errors.AppendFormat(LocalizeString("ModuleNotFound"), mod.Id);
+                        errors.AppendFormat(LocalizeString("ModuleNotFound"), mod.Id, mod.TabID);
                     }
                     else
                     {
@@ -284,7 +284,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             else
             {
-                errorMessage = string.Format(LocalizeString("ModuleNotFound"), moduleId);
+                errorMessage = string.Format(LocalizeString("ModuleNotFound"), moduleId, tabId);
                 return false;
             }
             return true;
