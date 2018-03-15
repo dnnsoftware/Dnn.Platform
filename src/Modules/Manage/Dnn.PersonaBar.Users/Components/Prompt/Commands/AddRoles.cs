@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+using Dnn.PersonaBar.Roles.Components;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -32,6 +35,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private DateTime? StartDate { get; set; }
         private DateTime? EndDate { get; set; }
 
+        private void checkRoles()
+        {
+            List<string> notFound;
+            List<RoleInfo> foundRoles = RolesController.Instance.GetRolesByNames(PortalSettings, -1, Roles, out notFound);
+
+            if (notFound != null && notFound.Count() > 0)
+            {
+                throw new Exception(string.Format(LocalizeString("Prompt_AddRoles_NotFound"), notFound.Count() > 1 ? "s" : "", string.Join(",", notFound)));
+            }
+        }
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
@@ -53,6 +67,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
+
+            checkRoles();
+            
             if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
             try
             {

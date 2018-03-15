@@ -21,10 +21,6 @@
 
 #region Usings
 
-
-
-#endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +33,8 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 
+#endregion
+
 namespace Dnn.PersonaBar.Roles.Components
 {
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
@@ -47,6 +45,16 @@ namespace Dnn.PersonaBar.Roles.Components
         }
 
         #region Public Methods
+        /// <summary>
+        /// Gets a paginated list of Roles matching given search criteria
+        /// </summary>
+        /// <param name="portalSettings"></param>
+        /// <param name="groupId"></param>
+        /// <param name="keyword"></param>
+        /// <param name="total"></param>
+        /// <param name="startIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize)
         {
             var isAdmin = IsAdmin(portalSettings);
@@ -62,6 +70,50 @@ namespace Dnn.PersonaBar.Roles.Components
             var roleInfos = roles as IList<RoleInfo> ?? roles.ToList();
             total = roleInfos.Count;
             return roleInfos.Skip(startIndex).Take(pageSize);
+        }
+
+        /// <summary>
+        /// Gets a list (not paginated) of Roles given a comma separated list of Roles' names.
+        /// </summary>
+        /// <param name="portalSettings"></param>
+        /// <param name="groupId"></param>
+        /// <param name="commaSeparatedRoles"></param>
+        /// <param name="notFound">List of "not found roles"</param>
+        /// <returns>List of found Roles</returns>
+        public List<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, string commaSeparatedRoles, out List<string> notFound)
+        {
+            var isAdmin = IsAdmin(portalSettings);
+            HashSet<string> rolesList = new HashSet<string>();
+            if (!string.IsNullOrWhiteSpace(commaSeparatedRoles))
+            {
+                commaSeparatedRoles.Split(',').ToList().ForEach((item) => rolesList.Add(item.Trim()));
+            }
+
+            List<RoleInfo> foundRoles = null;
+            HashSet<string> foundNames = new HashSet<string>();
+            if (rolesList.Count() > 0)
+            {
+                var allRoles = (groupId < Null.NullInteger
+                ? RoleController.Instance.GetRoles(portalSettings.PortalId)
+                : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == groupId));
+                
+                foundRoles = allRoles.Where(r => 
+                {
+                    bool adminCheck = isAdmin || r.RoleID != portalSettings.AdministratorRoleId;
+                    if (adminCheck && rolesList.Contains(r.RoleName))
+                    {
+                        foundNames.Add(r.RoleName);
+                        return true;
+                    }
+                    return false;
+                }).ToList();
+            
+            }
+
+            rolesList.ExceptWith(foundNames);
+            notFound = rolesList.ToList();
+
+            return foundRoles;
         }
 
         public RoleInfo GetRole(PortalSettings portalSettings, int roleId)

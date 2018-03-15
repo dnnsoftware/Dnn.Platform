@@ -639,6 +639,9 @@
   <data name="Prompt_AddRoles_FlagStart.Text" xml:space="preserve">
     <value>Effective date of the role.</value>
   </data>
+  <data name="Prompt_AddRoles_NotFound.Text" xml:space="preserve">
+    <value>Cannot find role{0} '{1}'. --roles parameter only accepts existent roles.</value>
+  </data>
   <data name="Prompt_DeleteUser_Description.Text" xml:space="preserve">
     <value>Deletes the specified user from the portal. After deletion, the user can still be recovered. To delete the user permanently, follow this command with the &lt;code&gt;purge-user&lt;/code&gt; command.</value>
   </data>
