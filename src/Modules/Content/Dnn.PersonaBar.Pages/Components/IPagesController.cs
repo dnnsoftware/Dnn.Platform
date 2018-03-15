@@ -11,10 +11,10 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage);
 
-        IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false);
+        IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false, bool includeSubpages = false);
 
         IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath,
-            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10);
+            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false);
 
         IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "",
             string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1);

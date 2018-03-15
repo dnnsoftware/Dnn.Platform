@@ -41,6 +41,12 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         [DataMember(Name = "password")]
         public string Password { get; set; }
 
+        [DataMember(Name = "question")]
+        public string Question { get; set; }
+
+        [DataMember(Name = "answer")]
+        public string Answer { get; set; }
+
         [DataMember(Name = "randomPassword")]
         public bool RandomPassword { get; set; }
 

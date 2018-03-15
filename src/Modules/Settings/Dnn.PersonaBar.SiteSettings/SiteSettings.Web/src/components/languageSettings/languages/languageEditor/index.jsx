@@ -7,6 +7,7 @@ import Button from "dnn-button";
 import Switch from "dnn-switch";
 import InputGroup from "dnn-input-group";
 import Dropdown from "dnn-dropdown";
+import Flag from "dnn-flag";
 import Roles from "./roles";
 import {
     languages as LanguagesActions
@@ -52,6 +53,14 @@ class LanguageEditor extends Component {
         });
     }
 
+    getFlagItem(name, code) {
+        return (
+            <div title={name}>
+                <Flag culture={code} title={name}/>
+                <div style={{display:"inline-block"}}>{name}</div>
+            </div>);
+    }
+
     getLanguageOptions() {
         let {props, state} = this;
         let options = [];
@@ -60,12 +69,7 @@ class LanguageEditor extends Component {
                 options = props.fullLanguageList.map((item) => {
                     if (props.languageDisplayMode === "NATIVE") {
                         return {
-                            label: <div style={{ float: "left", display: "flex" }}>
-                                <div className="language-flag">
-                                    <img src={item.Icon} alt={item.NativeName} />
-                                </div>
-                                <div className="language-name">{item.NativeName}</div>
-                            </div>,
+                            label: this.getFlagItem(item.NativeName, item.Name),
                             searchableValue: item.NativeName,
                             value: item.Name,
                             text: item.NativeName
@@ -73,12 +77,7 @@ class LanguageEditor extends Component {
                     }
                     else {
                         return {
-                            label: <div style={{ float: "left", display: "flex" }}>
-                                <div className="language-flag">
-                                    <img src={item.Icon} alt={item.EnglishName} />
-                                </div>
-                                <div className="language-name">{item.EnglishName}</div>
-                            </div>,
+                            label: this.getFlagItem(item.EnglishName, item.Name),
                             searchableValue: item.EnglishName,
                             value: item.Name, text: item.EnglishName
                         };
@@ -114,24 +113,14 @@ class LanguageEditor extends Component {
             options = props.fallbacks.map((item) => {
                 if (props.languageDisplayMode === "NATIVE") {
                     return {
-                        label: <div style={{ float: "left", display: "flex" }}>
-                            <div className="language-flag">
-                                <img src={item.Icon} alt={item.NativeName} />
-                            </div>
-                            <div className="language-name">{item.NativeName}</div>
-                        </div>,
+                        label: this.getFlagItem(item.NativeName, item.Name),
                         searchableValue: item.NativeName,
                         value: item.Name
                     };
                 }
                 else {
                     return {
-                        label: <div style={{ float: "left", display: "flex" }}>
-                            <div className="language-flag">
-                                <img src={item.Icon} alt={item.EnglishName} />
-                            </div>
-                            <div className="language-name">{item.EnglishName}</div>
-                        </div>,
+                        label: this.getFlagItem(item.EnglishName, item.Name),
                         searchableValue: item.EnglishName,
                         value: item.Name
                     };
@@ -267,6 +256,7 @@ class LanguageEditor extends Component {
                     value={this.getLanguageValue(state.languageDetail.Code)}
                     onSelect={this.onSettingChange.bind(this, "Code")}
                     enabled={props.id === "add"}
+                    getLabelText={(label) => label.props.title}
                     />
             </InputGroup>
         </div>;
@@ -282,6 +272,7 @@ class LanguageEditor extends Component {
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={true}
+                    getLabelText={(label) => label.props.title}
                     />
             </InputGroup>
         </div>;
@@ -318,6 +309,7 @@ class LanguageEditor extends Component {
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={isHost}
+                    getLabelText={(label) => label.props.title}
                     />
             </InputGroup>
         </div>;

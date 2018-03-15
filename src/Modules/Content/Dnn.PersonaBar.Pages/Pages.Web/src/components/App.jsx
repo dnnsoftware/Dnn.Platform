@@ -966,6 +966,7 @@ class App extends Component {
             } else {
                 this.props.onDuplicatePage(false);
             }
+            this.props.onChangePageField('parentId', selectedPage.tabId);
         };
         const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();

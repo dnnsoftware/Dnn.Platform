@@ -242,7 +242,8 @@ namespace Dnn.PersonaBar.Users.Components
             newUser.Membership.Approved = 
                 (registerationDetails.IgnoreRegistrationMode || 
                 portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
-
+            newUser.Membership.PasswordQuestion = registerationDetails.Question;
+            newUser.Membership.PasswordAnswer = registerationDetails.Answer;
             //final creation of user
             var createStatus = UserController.CreateUser(ref newUser);
 
