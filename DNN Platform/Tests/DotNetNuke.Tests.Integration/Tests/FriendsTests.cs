@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.Integration.Tests
 
         private IDictionary<string, string> GetRequestHeaders()
         {
-            return WebApiTestHelper.GetRequestHeaders("Member Directory", PortalId);
+            return WebApiTestHelper.GetRequestHeaders("//ActivityFeed", "Member Directory", PortalId);
         }
     }
 }
