@@ -130,6 +130,21 @@
     </CreateItem>
     <Zip Files="@(NewtonsoftContent)" WorkingDirectory="..\Components\Newtonsoft\Package" ZipFileName="$(WebsiteInstallPath)\Module\Newtonsoft.Json_$(NewtonsoftVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Newtonsoft\Package" />
+      
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\SharpZipLib-0.81.0\DotNetNuke.SharpZipLib.BackwardCompatible.dnn">
+      <Output TaskParameter="Value" PropertyName="SharpZipLibVersion" />
+    </XmlRead>
+    <Copy SourceFiles="..\Components\SharpZipLib-0.81.0\SharpZipLib.dll" DestinationFolder="..\Components\SharpZipLib-0.81.0\Package\bin" />
+    <Copy SourceFiles="..\Components\SharpZipLib-0.81.0\DotNetNuke.SharpZipLib.BackwardCompatible.dnn" DestinationFolder="..\Components\SharpZipLib-0.81.0\Package" />
+    <Copy SourceFiles="..\Components\SharpZipLib-0.81.0\License.txt" DestinationFolder="..\Components\SharpZipLib-0.81.0\Package" />
+    <CreateItem Include="..\Components\SharpZipLib-0.81.0\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="SharpZipLibContent" />
+    </CreateItem>
+    <Zip Files="@(SharpZipLibContent)" WorkingDirectory="..\Components\SharpZipLib-0.81.0\Package" ZipFileName="$(WebsiteInstallPath)\Module\SharpZipLib.BackwardCompatible_$(SharpZipLibVersion)_Install.zip" />
+    <RemoveDir Directories ="..\Components\SharpZipLib-0.81.0\Package" />
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

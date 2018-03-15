@@ -1,0 +1,57 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="DotNetNuke.SharpZipLib.BackwardCompatible" type="Library" version="0.81.0" isSystem="false">
+            <friendlyName>SharpZipLib Backward Compatible</friendlyName>
+            <description>SharpZipLib of 0.81.0.1407 version for backward compatible.</description>
+            <dependencies/>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license>License.txt</license>
+            <releaseNotes>
+                This package includes SharpZipLib assembly version 0.81.0.1407.
+            </releaseNotes>
+            <components>
+                <component type="File">
+                    <files>
+                        <basePath>bin\SharpZipLib-0.81.0</basePath>
+                        <file>
+                            <name>SharpZipLib.dll</name>
+                            <sourceFileName>bin\SharpZipLib.dll</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/runtime/ab:assemblyBinding" action="update" targetpath="/configuration/runtime/ab:assemblyBinding[ab:dependentAssembly/ab:assemblyIdentity/@name='SharpZipLib']" collision="ignore"  nameSpace="urn:schemas-microsoft-com:asm.v1" nameSpacePrefix="ab">
+                                        <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                                            <assemblyIdentity name="SharpZipLib" publicKeyToken="null" culture="neutral" />
+                                            <codeBase version="0.81.0.1407" href="bin\SharpZipLib-0.81.0\SharpZipLib.dll" />
+                                        </dependentAssembly>
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='SharpZipLib']" 
+                                          action="remove" 
+                                          nameSpace="urn:schemas-microsoft-com:asm.v1" 
+                                          nameSpacePrefix="ab" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>
