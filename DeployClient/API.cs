@@ -47,7 +47,7 @@ namespace DeployClient
             }
         }
 
-        public static Dictionary<string, dynamic> GetSession(string sessionGuid)
+        public static bool GetSession(string sessionGuid, out Dictionary<string, dynamic> results)
         {
             string endpoint = string.Format("Remote/GetSession?sessionGuid={0}", sessionGuid);
 
@@ -55,9 +55,24 @@ namespace DeployClient
 
             using (HttpClient client = BuildClient())
             {
-                string json = client.GetStringAsync(endpoint).Result;
-
-                return jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                bool success;
+                var httpResponse = client.GetAsync(endpoint).Result;
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    string json = httpResponse.Content.ReadAsStringAsync().Result;
+                    results = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
+                    success = true;
+                }
+                else if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    results = new Dictionary<string, dynamic>();
+                    success = false;
+                }
+                else
+                {
+                    throw new Exception($"Invalid status code returned from remote api: {httpResponse.StatusCode}");
+                }
+                return success;
             }
         }
 
