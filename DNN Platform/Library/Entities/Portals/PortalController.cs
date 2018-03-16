@@ -2046,6 +2046,13 @@ namespace DotNetNuke.Entities.Portals
                         httpContext.Items[dictionaryKey] = null;
                     }
                 }
+
+                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
+                {
+                    PortalId = portalID,
+                    SettingName = settingName,
+                    SettingValue = settingValue
+                });
             }
         }
 
