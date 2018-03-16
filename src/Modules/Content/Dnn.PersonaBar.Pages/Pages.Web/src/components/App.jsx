@@ -76,7 +76,9 @@ class App extends Component {
             tags: "",
             filters: [],
             pageIndex:0,
-            searchFields: {}
+            searchFields: {},
+
+            inDuplicateMode: false
         };
         this.lastActivePageId = null;
         this.shouldRunRecursive = true;
@@ -409,6 +411,7 @@ class App extends Component {
                 this.buildTree(update.tabId);
                 //this.onLoadPage(update.tabId);
                 resolve();
+                this.setState({inDuplicateMode: false});
             });
         });
     }
@@ -448,9 +451,13 @@ class App extends Component {
     }
 
     onCancelPage(parentPageId) {
-        this._removePageFromTree(parentPageId);
+        const {props, state} = this;
+        if(!state.inDuplicateMode){
+            this._removePageFromTree(parentPageId);
+        }
         this.props.changeSelectedPagePath("");
         this.props.onCancelPage(parentPageId);
+        this.setState({inDuplicateMode: false});
     }
 
     onChangeParentId(newParentId) {
@@ -522,6 +529,8 @@ class App extends Component {
                         const newPageList = pageList.concat(this.props.selectedPage);    
                         runUpdateStore(newPageList);
                     }
+
+                    this.setState({inDuplicateMode: false});
                 }); 
             };
        
@@ -967,6 +976,7 @@ class App extends Component {
                 this.props.onDuplicatePage(false);
             }
             this.props.onChangePageField('parentId', selectedPage.tabId);
+            this.setState({inDuplicateMode: true});
         };
         const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();
