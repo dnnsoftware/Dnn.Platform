@@ -136,7 +136,7 @@ namespace DeployClient
                     TimeSpan interval = new TimeSpan(0, 0, 0, 2);
                     Dictionary<string, dynamic> response;
                     var successfullyReachedApi = false;
-                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout?? 60);
+                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout ?? 60);
 
                     // Attempt to get the status of the session from the remote api. 
                     // This can fail shortly after an installation as the api has not yet been initialised,
