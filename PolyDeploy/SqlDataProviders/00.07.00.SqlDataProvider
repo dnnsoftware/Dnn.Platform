@@ -79,7 +79,7 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
     BEGIN
         EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = 'Sessions', @ColumnName = 'Guid'
 
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Guid] [CHAR](32)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Guid] [CHAR](32) NOT NULL
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Response] [NVARCHAR](MAX)
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_Sessions_Guid] UNIQUE ([Guid])
