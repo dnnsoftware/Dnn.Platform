@@ -172,6 +172,18 @@ class Input extends Component {
         return IS_LAST_PAGE;
     }
 
+    isPaging() {
+        const { props } = this;
+        const IS_PAGING = props.paging !== null && props.paging.pageNo <= props.paging.totalPages;
+        return IS_PAGING;
+    }
+
+    isLastPage() {
+        const { props } = this;
+        const IS_LAST_PAGE = props.paging !== null && props.paging.pageNo == props.paging.totalPages;
+        return IS_LAST_PAGE;
+    }
+
     render() {
 
         const IS_PAGING = this.isPaging();

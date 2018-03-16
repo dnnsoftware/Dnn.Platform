@@ -72,6 +72,8 @@ namespace Dnn.PersonaBar.Users.Services
                     LastName = contract.LastName,
                     UserName = contract.UserName,
                     Password = contract.Password,
+                    Question = contract.Question,
+                    Answer = contract.Answer,
                     Notify = contract.Notify,
                     Authorize = contract.Authorize,
                     RandomPassword = contract.RandomPassword,
