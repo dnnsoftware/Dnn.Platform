@@ -41,8 +41,8 @@ namespace DeployClient
         [Option("installation-status-timeout",
             Required = false,
             HelpText = "The number of seconds to ignore 404 errors when checking installation status",
-            DefaultValue = null)]
-        public double? InstallationStatusTimeout { get; set; }
+            DefaultValue = 60)]
+        public double InstallationStatusTimeout { get; set; }
 
         [HelpOption]
         public string GetUsage()

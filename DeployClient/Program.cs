@@ -136,7 +136,7 @@ namespace DeployClient
                     TimeSpan interval = new TimeSpan(0, 0, 0, 2);
                     Dictionary<string, dynamic> response;
                     var successfullyReachedApi = false;
-                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout ?? 60);
+                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout);
 
                     // Attempt to get the status of the session from the remote api. 
                     // This can fail shortly after an installation as the api has not yet been initialised,
@@ -259,14 +259,6 @@ namespace DeployClient
                 if (string.IsNullOrWhiteSpace(Options.EncryptionKey))
                 {
                     Options.EncryptionKey = Properties.Settings.Default.EncryptionKey;
-                }
-                if (Options.InstallationStatusTimeout == null)
-                {
-                    double settingsFileTimeout;
-                    if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.InstallationStatusTimeout) && double.TryParse(Properties.Settings.Default.InstallationStatusTimeout, out settingsFileTimeout))
-                    {
-                        Options.InstallationStatusTimeout = settingsFileTimeout;
-                    }
                 }
             }
         }

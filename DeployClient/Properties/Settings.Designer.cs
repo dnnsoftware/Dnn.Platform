@@ -49,14 +49,5 @@ namespace DeployClient.Properties {
                 return ((string)(this["EncryptionKey"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string InstallationStatusTimeout {
-            get {
-                return ((string)(this["InstallationStatusTimeout"]));
-            }
-        }
     }
 }
