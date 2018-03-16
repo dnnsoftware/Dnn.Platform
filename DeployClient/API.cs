@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Script.Serialization;
 
 namespace DeployClient
@@ -70,7 +71,7 @@ namespace DeployClient
                 }
                 else
                 {
-                    throw new Exception($"Invalid status code returned from remote api: {httpResponse.StatusCode}");
+                    throw new HttpException($"Invalid status code returned from remote api: {httpResponse.StatusCode}");
                 }
                 return success;
             }

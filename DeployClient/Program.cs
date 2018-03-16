@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Web;
 using System.Web.Script.Serialization;
 
 namespace DeployClient
@@ -155,7 +156,7 @@ namespace DeployClient
                     // If the api couldn't be reached by the given time, something has gone wrong
                     if (!successfullyReachedApi)
                     {
-                        throw new Exception("Remote API returned status 404");
+                        throw new HttpException("Remote API returned status 404");
                     }
 
                     int status = -1;
@@ -206,7 +207,7 @@ namespace DeployClient
                         // The api should not be returning a 404 status at this point
                         if (!success)
                         {
-                            throw new Exception("Remote API returned status 404");
+                            throw new HttpException("Remote API returned status 404");
                         }
                     } while (status < 2 && DateTime.Now < abortTime);
                     
