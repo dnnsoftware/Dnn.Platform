@@ -49,7 +49,7 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
 
         EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = 'APIUsers', @ColumnName = 'Name'
 
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [Name] [NVARCHAR](64)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [Name] [NVARCHAR](64) NOT NULL
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_Name] UNIQUE ([Name])
 
