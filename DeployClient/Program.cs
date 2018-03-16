@@ -230,6 +230,14 @@ namespace DeployClient
                 {
                     Options.EncryptionKey = Properties.Settings.Default.EncryptionKey;
                 }
+                if (Options.InstallationStatusTimeout == null)
+                {
+                    double settingsFileTimeout;
+                    if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.InstallationStatusTimeout) && double.TryParse(Properties.Settings.Default.InstallationStatusTimeout, out settingsFileTimeout))
+                    {
+                        Options.InstallationStatusTimeout = settingsFileTimeout;
+                    }
+                }
             }
         }
 
