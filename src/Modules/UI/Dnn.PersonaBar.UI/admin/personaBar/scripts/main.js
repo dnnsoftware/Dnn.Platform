@@ -898,9 +898,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 }());
 
                                 (function setupHoverMenu() {
-                                    if (onTouch) {
-                                        return;
-                                    }
+
 
                                     var showMenuHandlers = [];
                                     var leaveSubMenuHandlers = [];
