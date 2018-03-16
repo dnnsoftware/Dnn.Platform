@@ -70,6 +70,8 @@ namespace DotNetNuke.Entities
 
         void OnPortalCreated(PortalCreatedEventArgs args);
 
+        void OnPortalSettingUpdated(PortalSettingUpdatedEventArgs args);
+
         void OnPortalTemplateCreated(PortalTemplateEventArgs args);
 
         void OnProfileUpdated(ProfileEventArgs args);

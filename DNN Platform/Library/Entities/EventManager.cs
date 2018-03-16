@@ -64,6 +64,7 @@ namespace DotNetNuke.Entities
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
         private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
+        private event EventHandler<PortalSettingUpdatedEventArgs> PortalSettingUpdated;
 
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
@@ -133,6 +134,11 @@ namespace DotNetNuke.Entities
             foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
             {
                 PortalCreated += handler.Value.PortalCreated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalSettingHandlers>.Instance.EventHandlers)
+            {
+                PortalSettingUpdated += handler.Value.PortalSettingUpdated;
             }
 
             foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
@@ -367,6 +373,14 @@ namespace DotNetNuke.Entities
             if (PortalCreated != null)
             {
                 PortalCreated(this, args);
+            }
+        }
+
+        public virtual void OnPortalSettingUpdated(PortalSettingUpdatedEventArgs args)
+        {
+            if (PortalSettingUpdated != null)
+            {
+                PortalSettingUpdated(this, args);
             }
         }
 
