@@ -1,10 +1,9 @@
 using Cantarus.Libraries.Encryption;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Search;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
@@ -136,17 +135,32 @@ namespace Cantarus.Modules.PolyDeploy.Components
         {
             APIUserDataController dc = new APIUserDataController();
 
-            foreach(APIUser apiUser in dc.Get())
+            using (IDataContext context = DataContext.Instance())
             {
-                // Generate a salt.
-                byte[] saltBytes = CryptoUtilities.GenerateRandomBytes(32);
-                apiUser.Salt = BitConverter.ToString(saltBytes);
+                foreach (APIUser apiUser in dc.Get())
+                {
+                    // Read old data, no longer accessible through the model.
+                    string plainApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] WHERE APIUserID = @0", apiUser.APIUserId).FirstOrDefault();
+                    string plainEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] WHERE APIUserID = @0", apiUser.APIUserId).FirstOrDefault();
 
-                // Use existing plain text api key and salt to create a hashed api key.
-                apiUser.APIKey_Sha = CryptoUtilities.SHA256Hash(apiUser.APIKey + apiUser.Salt);
+                    // Generate a salt
+                    apiUser.Salt = APIUser.GenerateSalt();
 
-                // Encrypt existing plain text encryption key and store in new field.
-                apiUser.EncryptionKey_Enc = Crypto.Encrypt(apiUser.EncryptionKey, apiUser.APIKey);
+                    // Use existing plain text api key and salt to create a hashed api key.
+                    apiUser.APIKey_Sha = APIUser.GenerateHash(plainApiKey, apiUser.Salt);
+
+                    // Encrypt existing plain text encryption key and store in new field.
+                    apiUser.EncryptionKey_Enc = Crypto.Encrypt(plainEncryptionKey, plainApiKey);
+
+                    // Update user in database.
+                    dc.Update(apiUser);
+                }
+
+                // Call stored procedure to complete database changes.
+                context.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]");
+
+                // Drop the stored procedure.
+                context.Execute(System.Data.CommandType.Text, "DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]");
             }
         }
 

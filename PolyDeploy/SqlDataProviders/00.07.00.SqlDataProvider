@@ -11,18 +11,30 @@
 /************************************************************/
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/*** Cantarus_PolyDeploy_DropUQConstraints STORED PROCEDURE **********************************************/
 /*********************************************************************************************************/
 
-IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
-    BEGIN
-        CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
-            @ApiKey [NVARCHAR](64)
-        AS
-            SELECT *
-            FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
-            WHERE [APIKey_Sha] = CONVERT([NVARCHAR](64), HASHBYTES('SHA2_256', CONCAT(@ApiKey, [Salt])), 2)
-    END
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]
+    @TableName [NVARCHAR](64),
+    @ColumnName [NVARCHAR](32)
+AS
+    DECLARE @ConstraintName [NVARCHAR](128)
+
+    SET @ConstraintName = (
+        SELECT [con].[CONSTRAINT_NAME]
+            FROM [INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] AS [con]
+            JOIN [sys].[key_constraints] AS [syscon]
+                ON [syscon].[name] = [con].[CONSTRAINT_NAME]
+            WHERE [con].[TABLE_NAME] = CONCAT('{objectQualifier}Cantarus_PolyDeploy_', @TableName)
+                AND [con].[COLUMN_NAME] = @ColumnName
+                AND [con].[TABLE_SCHEMA] = LEFT('{databaseOwner}', CHARINDEX('.', '{databaseOwner}') - 1)
+                AND [syscon].[type] = 'UQ'
+    )
+
+    IF (@ConstraintName IS NOT NULL)
+        BEGIN
+            EXEC('ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_' + @TableName + '] DROP CONSTRAINT ' + @ConstraintName);
+        END
 GO
 
 /*********************************************************************************************************/
@@ -35,7 +47,17 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [EncryptionKey_Enc] [NVARCHAR](172)
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [Salt] [NVARCHAR](32)
 
+        EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = N'APIUsers', @ColumnName = N'Name'
+        EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = N'APIUsers', @ColumnName = N'APIKey'
+        EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = N'APIUsers', @ColumnName = N'EncryptionKey'
+
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [Name] [NVARCHAR](64)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [APIKey] [NVARCHAR](32)
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [EncryptionKey] [NVARCHAR](32)
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_Name] UNIQUE ([Name])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_APIKey] UNIQUE ([APIKey])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_EncryptionKey] UNIQUE ([EncryptionKey])
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] REBUILD
     END
@@ -47,7 +69,11 @@ GO
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
+        EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = N'IPSpecs', @ColumnName = N'Address'
+
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] ALTER COLUMN [Address] [NVARCHAR](15)
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_IPSpecs_Address] UNIQUE ([Address])
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] REBUILD
     END
@@ -59,8 +85,12 @@ GO
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
+        EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = N'Sessions', @ColumnName = N'Guid'
+
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Guid] [NVARCHAR](32)
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Response] [NVARCHAR](MAX)
+
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_Sessions_Guid] UNIQUE ([Guid])
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] REBUILD
     END
@@ -78,4 +108,49 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs] REBUILD
     END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
+    @ApiKey [NVARCHAR](64)
+AS
+    SELECT *
+        FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
+        WHERE [APIKey_Sha] = CONVERT([NVARCHAR](64), HASHBYTES('SHA2_256', CONCAT(@ApiKey, [Salt])), 2)
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade7.0.0 STORED PROCEDURE ***********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]
+AS
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] DROP COLUMN [APIKey]
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] DROP COLUMN [EncryptionKey]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [APIKey_Sha] [NVARCHAR](64) NOT NULL
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ALTER COLUMN [EncryptionKey_Enc] [NVARCHAR](172) NOT NULL
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_APIKey_Sha] UNIQUE ([APIKey_Sha])
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_EncryptionKey_Enc] UNIQUE ([EncryptionKey_Enc])
+    ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_Salt] UNIQUE ([Salt])
 GO

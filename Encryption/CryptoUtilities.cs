@@ -51,7 +51,7 @@ namespace Cantarus.Libraries.Encryption
         public static byte[] SHA256HashBytes(string value)
         {
             // Convert string to byte array.
-            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            byte[] bytes = Encoding.Unicode.GetBytes(value);
 
             byte[] hashedBytes;
 
