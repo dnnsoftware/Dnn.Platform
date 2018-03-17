@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Roles.Components
     {
         bool SaveRole(PortalSettings portalSettings, RoleDto roleDto, bool assignExistUsers, out KeyValuePair<HttpStatusCode, string> message);
         IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize);
-        List<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, string commaSeparatedRoles, out List<string> notFound);
+        IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter);
         RoleInfo GetRole(PortalSettings portalSettings, int roleId);
         string DeleteRole(PortalSettings portalSettings, int roleId, out KeyValuePair<HttpStatusCode, string> message);
     }

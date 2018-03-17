@@ -37,12 +37,27 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private void checkRoles()
         {
-            List<string> notFound;
-            List<RoleInfo> foundRoles = RolesController.Instance.GetRolesByNames(PortalSettings, -1, Roles, out notFound);
 
-            if (notFound != null && notFound.Count() > 0)
+            IList<string> rolesFilter = new List<string>();
+            if (!string.IsNullOrWhiteSpace(Roles))
             {
-                throw new Exception(string.Format(LocalizeString("Prompt_AddRoles_NotFound"), notFound.Count() > 1 ? "s" : "", string.Join(",", notFound)));
+                Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
+            }
+            if (rolesFilter.Count() > 0)
+            {
+                IList<RoleInfo> foundRoles = RolesController.Instance.GetRolesByNames(PortalSettings, -1, rolesFilter);
+            
+                HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
+
+                HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
+                roleFiltersSet.ExceptWith(foundRolesNames);
+
+                int notFoundCount = roleFiltersSet.Count();
+
+                if (notFoundCount > 0)
+                {
+                    throw new Exception(string.Format(LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : "", string.Join(",", roleFiltersSet)));
+                }
             }
         }
 

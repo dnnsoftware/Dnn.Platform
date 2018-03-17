@@ -77,21 +77,15 @@ namespace Dnn.PersonaBar.Roles.Components
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
-        /// <param name="commaSeparatedRoles"></param>
+        /// <param name="rolesFilter"></param>
         /// <param name="notFound">List of "not found roles"</param>
         /// <returns>List of found Roles</returns>
-        public List<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, string commaSeparatedRoles, out List<string> notFound)
+        public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {
             var isAdmin = IsAdmin(portalSettings);
-            HashSet<string> rolesList = new HashSet<string>();
-            if (!string.IsNullOrWhiteSpace(commaSeparatedRoles))
-            {
-                commaSeparatedRoles.Split(',').ToList().ForEach((item) => rolesList.Add(item.Trim()));
-            }
 
             List<RoleInfo> foundRoles = null;
-            HashSet<string> foundNames = new HashSet<string>();
-            if (rolesList.Count() > 0)
+            if (rolesFilter.Count() > 0)
             {
                 var allRoles = (groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
@@ -100,19 +94,11 @@ namespace Dnn.PersonaBar.Roles.Components
                 foundRoles = allRoles.Where(r => 
                 {
                     bool adminCheck = isAdmin || r.RoleID != portalSettings.AdministratorRoleId;
-                    if (adminCheck && rolesList.Contains(r.RoleName))
-                    {
-                        foundNames.Add(r.RoleName);
-                        return true;
-                    }
-                    return false;
+                    return adminCheck && rolesFilter.Contains(r.RoleName);
                 }).ToList();
             
             }
-
-            rolesList.ExceptWith(foundNames);
-            notFound = rolesList.ToList();
-
+            
             return foundRoles;
         }
 
