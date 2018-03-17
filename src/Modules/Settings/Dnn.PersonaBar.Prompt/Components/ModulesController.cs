@@ -188,11 +188,6 @@ namespace Dnn.PersonaBar.Prompt.Components
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
                     return null;
                 }
-                else
-                {
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
-                    return null;
-                }
             }
             else
             {
