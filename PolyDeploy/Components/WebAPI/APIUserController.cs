@@ -21,12 +21,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         {
             List<APIUser> apiUsers = APIUserManager.GetAll().ToList();
 
-            foreach(APIUser apiUser in apiUsers)
-            {
-                apiUser.APIKey = string.Format("****************************{0}", apiUser.APIKey.Substring(apiUser.APIKey.Length - 4));
-                apiUser.EncryptionKey = string.Format("****************************{0}", apiUser.EncryptionKey.Substring(apiUser.EncryptionKey.Length - 4));
-            }
-
             return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
         }
 
