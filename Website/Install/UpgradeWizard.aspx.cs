@@ -40,7 +40,7 @@ using DotNetNuke.Application;
 using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
-
+using DotNetNuke.Services.UserRequest;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -441,7 +441,9 @@ namespace DotNetNuke.Services.Install
             errorMsg = string.Empty;
 
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", "", "", AuthenticationLoginBase.GetIPAddress(), ref loginStatus);
+            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
+            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", "", "", ipAddress, ref loginStatus);
 
             if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
             {

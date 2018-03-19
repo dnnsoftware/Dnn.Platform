@@ -454,7 +454,6 @@ namespace DotNetNuke.Framework
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
-        /// <param name="Skin">The currently loading skin</param>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
