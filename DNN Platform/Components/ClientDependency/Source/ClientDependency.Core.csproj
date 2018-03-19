@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\ClientDependency.Core.XML</DocumentationFile>
-    <NoWarn>1591,1573</NoWarn>
+    <NoWarn>1591,1573,618</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,7 +40,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\ClientDependency.Core.XML</DocumentationFile>
-    <NoWarn>1591,1573</NoWarn>
+    <NoWarn>1591,1573,618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

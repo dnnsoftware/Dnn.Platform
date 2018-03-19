@@ -50,6 +50,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
+using DotNetNuke.Services.UserRequest;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
@@ -847,7 +848,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     AuthenticationController.SetAuthenticationType(AuthenticationType);
 
                     //Complete Login
-                    UserController.UserLogin(PortalId, objUser, PortalSettings.PortalName, AuthenticationLoginBase.GetIPAddress(), RememberMe);
+                    var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                    var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
+                    UserController.UserLogin(PortalId, objUser, PortalSettings.PortalName, ipAddress, RememberMe);
 
                     //redirect browser
                     var redirectUrl = RedirectURL;
@@ -1049,13 +1052,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
             if ((UseCaptcha && ctlCaptcha.IsValid) || (!UseCaptcha))
             {
                 UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
                 UserInfo objUser = UserController.ValidateUser(PortalId,
                                                                txtUsername.Text,
                                                                txtPassword.Text,
                                                                "DNN",
                                                                "",
                                                                PortalSettings.PortalName,
-                                                               AuthenticationLoginBase.GetIPAddress(),
+                                                               ipAddress,
                                                                ref loginStatus);
                 if (loginStatus == UserLoginStatus.LOGIN_SUCCESS)
                 {

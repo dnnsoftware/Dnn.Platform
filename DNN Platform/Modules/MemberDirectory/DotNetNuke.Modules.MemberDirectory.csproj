@@ -132,6 +132,7 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="Module.build" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-member-directory.css" />

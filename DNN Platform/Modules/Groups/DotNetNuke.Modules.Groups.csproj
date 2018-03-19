@@ -207,6 +207,7 @@
     <None Include="module.css" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Create.ascx" />

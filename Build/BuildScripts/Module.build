@@ -1,5 +1,5 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
@@ -52,5 +52,7 @@
     <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)/Views" />
     <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)/Views/%(RecursiveDir)" />
     <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)/Views" />
-  </Target> 
+  </Target>
+  <Target Name="UpdateFiles">
+  </Target>
 </Project>

@@ -204,6 +204,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">

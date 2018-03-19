@@ -201,6 +201,7 @@
     <Content Include="packages.config" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit.ascx" />

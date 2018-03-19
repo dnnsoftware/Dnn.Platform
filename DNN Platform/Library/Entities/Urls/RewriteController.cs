@@ -786,7 +786,6 @@ namespace DotNetNuke.Entities.Urls
             int maxTabPathDepth;
             int minAliasPathDepth;
             int minTabPathDepth;
-            bool triedFixingSubdomain = false;
             int curAliasPathDepth = 0;
 
             var tabDict = TabIndexController.FetchTabDictionary(result.PortalId,

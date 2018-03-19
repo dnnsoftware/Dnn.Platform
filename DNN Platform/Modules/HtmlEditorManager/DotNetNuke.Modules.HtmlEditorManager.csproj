@@ -121,6 +121,7 @@
     <Content Include="Images\HtmlEditorManager_Standard_16x16.png" />
     <Content Include="packages.config" />
     <Content Include="Module.build" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />

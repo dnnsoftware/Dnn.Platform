@@ -612,7 +612,7 @@ namespace DotNetNuke.Services.Installer
                         break;
                     }
                 }
-                catch (IOException ex)
+                catch (IOException)
                 {
                     // Init only once and only if needed. Prevent against many instantiation in case of multhreaded 
                     // file access concurrency (if file is frequently accessed by someone else). Better memory usage.

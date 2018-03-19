@@ -15,6 +15,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
@@ -144,7 +145,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             context.Response.Clear();
 
-            string ipAddress = IPCount.GetVisitorIPAddress(context);
+            string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
 
             // Check if allowed standalone
             if (!AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
