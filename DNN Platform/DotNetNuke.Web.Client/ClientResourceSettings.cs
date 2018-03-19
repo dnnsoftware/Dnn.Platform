@@ -160,7 +160,8 @@ namespace DotNetNuke.Web.Client
 
         private static string GetSetting(string dictionaryKey, string settingKey)
         {
-            var settings = HttpContext.Current.Items[dictionaryKey];
+            bool isHttpContext = HttpContext.Current != null && HttpContext.Current.Items.Contains(dictionaryKey);
+            var settings = isHttpContext ? HttpContext.Current.Items[dictionaryKey] : null;
             if (settings == null)
             {
                 if (dictionaryKey == HostSettingsDictionaryKey)
