@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.IO;
 
 namespace DotNetNuke.Web.Client.Providers
@@ -33,6 +34,31 @@ namespace DotNetNuke.Web.Client.Providers
     public class DnnCompositeFileProcessingProvider : CompositeFileProcessingProvider
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();
+
+        public override string MinifyFile(Stream fileStream, ClientDependencyType type)
+        {
+            Func<Stream, string> streamToString = stream =>
+            {
+                if (!stream.CanRead)
+                    throw new InvalidOperationException("Cannot read input stream");
+
+                if (stream.CanSeek)
+                    stream.Position = 0;
+
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            };
+
+            switch (type)
+            {
+                case ClientDependencyType.Css:
+                    return MinifyCss ? CssHelper.MinifyCss(fileStream) : streamToString(fileStream);
+                case ClientDependencyType.Javascript:
+                    return MinifyJs ? JSMin.CompressJS(fileStream) : streamToString(fileStream);
+                default:
+                    return streamToString(fileStream);
+            }
+        }
 
         public override string MinifyFile(string fileContents, ClientDependencyType type)
         {
