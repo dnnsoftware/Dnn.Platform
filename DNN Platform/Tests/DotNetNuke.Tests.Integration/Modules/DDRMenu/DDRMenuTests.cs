@@ -41,8 +41,6 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         private readonly string _hostName;
         private readonly string _hostPass;
 
-        private readonly int PortalId = 0;
-
         #endregion
 
         #region SetUp

@@ -127,6 +127,7 @@
     </None>
     <Content Include="Module.build" />
     <Content Include="packages.config" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-messages.css" />

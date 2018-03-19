@@ -378,7 +378,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, true, selectedCultureCode);
                         }
                     }
                     else
@@ -389,7 +389,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, true, selectedCultureCode);
                         }
                     }
                     break;
@@ -402,7 +402,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, true, selectedCultureCode);
                         }
                     }
                     else
@@ -413,7 +413,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, true, selectedCultureCode);
                         }
                     }
                     break;

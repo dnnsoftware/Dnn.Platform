@@ -177,6 +177,7 @@
     <None Include="Scripts\_TabInfo.cshtml" />
     <Content Include="Scripts\Shared\_Header.cshtml" />
     <Content Include="Scripts\_3c_UsingSections.cshtml" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">

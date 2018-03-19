@@ -37,7 +37,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Modules.MemberDirectory.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>1591,618</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DotNetNuke.Modules.MemberDirectory.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>1591,618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
@@ -132,6 +132,7 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="Module.build" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-member-directory.css" />

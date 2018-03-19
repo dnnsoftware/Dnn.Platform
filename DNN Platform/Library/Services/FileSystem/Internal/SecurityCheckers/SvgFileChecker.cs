@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers
 
                 return PortalSecurity.Instance.ValidateInput(svgContent, PortalSecurity.FilterFlag.NoScripting);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //when there have exception occur, just return false as not validated, no need log the error.
             }
