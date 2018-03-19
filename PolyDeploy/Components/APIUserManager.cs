@@ -81,5 +81,26 @@ namespace Cantarus.Modules.PolyDeploy.Components
         {
             APIUserDC.Delete(apiUser);
         }
+
+        /// <summary>
+        /// Looks up an APIUser by its api key and prepares it for use.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
+        public static APIUser FindAndPrepare(string apiKey)
+        {
+            // Lookup user by api key.
+            APIUser apiUser = APIUserDC.Get(apiKey);
+
+            // Verify and prepare for use.
+            if (apiUser != null && apiUser.PrepareForUse(apiKey))
+            {
+                // Return api user.
+                return apiUser;
+            }
+
+            // Didn't find api user or preparation failed.
+            return null;
+        }
     }
 }
