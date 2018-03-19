@@ -10,7 +10,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
     [PrimaryKey("APIUserID")]
     internal class APIUser
     {
-        private bool authenticated;
+        private bool prepared;
         private string apiKey;
         private string encryptionKey;
 
@@ -21,11 +21,11 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         public string Salt { get; set; }
 
         [IgnoreColumn]
-        public bool Authenticated
+        public bool Prepared
         {
             get
             {
-                return authenticated;
+                return prepared;
             }
         }
 
@@ -52,7 +52,9 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         /// </summary>
         public APIUser()
         {
-            authenticated = false;
+            apiKey = "********************************";
+            encryptionKey = "********************************";
+            prepared = false;
         }
 
         /// <summary>
@@ -71,6 +73,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             // Create keys and place them in the readable fields.
             apiKey = GenerateKey();
             encryptionKey = GenerateKey();
+            prepared = true;
 
             // Generate salt.
             Salt = GenerateSalt();
@@ -82,7 +85,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             EncryptionKey_Enc = Crypto.Encrypt(encryptionKey, apiKey);
         }
 
-        public bool Authenticate(string apiKey)
+        public bool PrepareForUse(string apiKey)
         {
             // Hash the passed api key with the salt.
             string apiKeyHash = GenerateHash(apiKey, Salt);
@@ -90,7 +93,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             // Does it match the stored hash?
             if (!APIKey_Sha.Equals(apiKeyHash))
             {
-                // No, authentication failure.
+                // No, verification failure.
                 return false;
             }
 
@@ -98,10 +101,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             this.apiKey = apiKey;
             this.encryptionKey = Crypto.Decrypt(EncryptionKey_Enc, this.apiKey);
 
-            // Authenticated.
-            authenticated = true;
+            // Prepared.
+            prepared = true;
 
-            return authenticated;
+            return prepared;
         }
 
         internal static string GenerateHash(string value, string salt)
