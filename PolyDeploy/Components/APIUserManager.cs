@@ -9,6 +9,11 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         private static APIUserDataController APIUserDC = new APIUserDataController();
 
+        /// <summary>
+        /// Creates a new APIUser with the passed name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static APIUser Create(string name)
         {
             APIUser newApiUser;
@@ -27,21 +32,40 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return newApiUser;
         }
 
+        /// <summary>
+        /// Gets all APIUsers.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<APIUser> GetAll()
         {
             return APIUserDC.Get();
         }
 
+        /// <summary>
+        /// Retrieves a single APIUser by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static APIUser GetById(int id)
         {
             return APIUserDC.Get(id);
         }
 
+        /// <summary>
+        /// Retrieves a single APIUser by its api key.
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
         public static APIUser GetByAPIKey(string apiKey)
         {
             return APIUserDC.Get(apiKey);
         }
 
+        /// <summary>
+        /// Updates the passed APIUser.
+        /// </summary>
+        /// <param name="apiUser"></param>
+        /// <returns></returns>
         public static APIUser Update(APIUser apiUser)
         {
             APIUserDC.Update(apiUser);
@@ -49,6 +73,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
             return APIUserDC.Get(apiUser.APIUserId);
         }
 
+        /// <summary>
+        /// Deletes the passed APIUser.
+        /// </summary>
+        /// <param name="apiUser"></param>
         public static void Delete(APIUser apiUser)
         {
             APIUserDC.Delete(apiUser);
