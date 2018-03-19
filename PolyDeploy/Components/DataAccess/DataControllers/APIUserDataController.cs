@@ -47,9 +47,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
         {
             using (IDataContext context = DataContext.Instance())
             {
-                var repo = context.GetRepository<APIUser>();
-
-                return repo.Find("WHERE APIKey = @0", apiKey).FirstOrDefault<APIUser>();
+                return context.ExecuteSingleOrDefault<APIUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]", apiKey);
             }
         }
 
