@@ -384,6 +384,9 @@
   <data name="Prompt_NoRoleWithId.Text" xml:space="preserve">
     <value>No role found with the ID {0}</value>
   </data>
+  <data name="Prompt_RoleFound.Text" xml:space="preserve">
+    <value>Role '{0}' has been found.</value>
+  </data>
   <data name="Prompt_NothingToUpdate.Text" xml:space="preserve">
     <value>Nothing to Update!</value>
   </data>
