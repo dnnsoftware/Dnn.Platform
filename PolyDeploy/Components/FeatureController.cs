@@ -1,8 +1,8 @@
 using Cantarus.Libraries.Encryption;
-using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Cantarus.Modules.PolyDeploy.Components
@@ -126,41 +126,43 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// Upgrades to 00.07.00
         /// 
         /// Operations:
-        /// - Generate a Salt for existing APIUser objects.
-        /// - Hash existing APIKeys using the new Salt and store in new field.
-        /// - Encrypt existing EncryptionKeys using plain text APIKey and
-        ///     store in new field.
+        /// - Generate a Salt.
+        /// - Hash existing APIKeys using the new Salt.
+        /// - Encrypt existing EncryptionKeys using plain text APIKey.
+        /// - Insert in to new table.
         /// </summary>
         private void Upgrade_00_07_00()
         {
-            APIUserDataController dc = new APIUserDataController();
-
             using (IDataContext context = DataContext.Instance())
             {
-                foreach (APIUser apiUser in dc.Get())
-                {
-                    // Read old data, no longer accessible through the model.
-                    string plainApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] WHERE APIUserID = @0", apiUser.APIUserId).FirstOrDefault();
-                    string plainEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] WHERE APIUserID = @0", apiUser.APIUserId).FirstOrDefault();
+                // Get all existing api user ids.
+                IEnumerable<int> apiUserIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT [APIUserID] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0]");
 
-                    // Generate a salt
-                    apiUser.Salt = APIUser.GenerateSalt();
+                foreach (int apiUserId in apiUserIds)
+                {
+                    // Read old data.
+                    string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [Name] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+
+                    // Generate a salt.
+                    string auSalt = APIUser.GenerateSalt();
 
                     // Use existing plain text api key and salt to create a hashed api key.
-                    apiUser.APIKey_Sha = APIUser.GenerateHash(plainApiKey, apiUser.Salt);
+                    string auApiKeySha = APIUser.GenerateHash(auApiKey, auSalt);
 
                     // Encrypt existing plain text encryption key and store in new field.
-                    apiUser.EncryptionKey_Enc = Crypto.Encrypt(plainEncryptionKey, plainApiKey);
+                    string auEncryptionKeyEnc = Crypto.Encrypt(auEncryptionKey, auApiKey);
 
-                    // Update user in database.
-                    dc.Update(apiUser);
+                    // Insert in to new table.
+                    context.Execute(System.Data.CommandType.Text, "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ON; INSERT INTO {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt]) VALUES (@0, @1, @2, @3, @4); SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] OFF;", apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
                 }
 
-                // Call stored procedure to complete database changes.
-                context.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]");
+                // Call stored procedure which completes the upgrade.
+                context.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]");
 
                 // Drop the stored procedure.
-                context.Execute(System.Data.CommandType.Text, "DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade7.0.0]");
+                context.Execute(System.Data.CommandType.Text, "DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]");
             }
         }
 
