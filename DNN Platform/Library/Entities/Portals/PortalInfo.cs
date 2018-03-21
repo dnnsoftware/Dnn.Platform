@@ -22,6 +22,7 @@
 
 using System;
 using System.Data;
+using System.Security.Cryptography;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common;
@@ -161,6 +162,12 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks></remarks>
         [XmlElement("backgroundfile")]
         public string BackgroundFile { get; set; }
+
+        /// <summary>
+        /// Current host version 
+        /// </summary>
+        [XmlElement("crmversion")]
+        public string CrmVersion { get; set; }
 
         /// <summary>
         /// Setting for the type of banner advertising in the portal
@@ -705,7 +712,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (_pages < 0)
                 {
-                    _pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
+                    _pages = TabController.Instance.GetUserTabsByPortal(PortalID).Count;
                 }
                 return _pages;
             }
@@ -805,7 +812,7 @@ namespace DotNetNuke.Entities.Portals
                     ? p
                     : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
             }
-            catch(FormatException)
+            catch (Exception ex) when (ex is FormatException || ex is CryptographicException)
             {
                 // for backward compatibility
                 ProcessorPassword = p;
