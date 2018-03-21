@@ -12,6 +12,8 @@
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_DropUQConstraints STORED PROCEDURE **********************************************/
+/***                                                                                                   ***/
+/*** Add stored procedure for dropping unnamed unique constraints.                                     ***/
 /*********************************************************************************************************/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]'))
@@ -62,6 +64,9 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
+/***                                                                                                   ***/
+/*** Rename existing APIUsers table so it can be used in the upgrade process after the application     ***/
+/*** restarts. Create new APIUsers table with the new structure.                                       ***/
 /*********************************************************************************************************/
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
@@ -93,6 +98,8 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_IPSpecs TABLE *******************************************************************/
+/***                                                                                                   ***/
+/*** Replace the unnamed unique constraint on the Address column with a named one.                     ***/
 /*********************************************************************************************************/
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
@@ -107,6 +114,9 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_Sessions TABLE ******************************************************************/
+/***                                                                                                   ***/
+/*** Replace the unnamed unique constraint on the Guid column with a named one. Modify the data types  ***/
+/*** of the Guid and Response columns.                                                                 ***/
 /*********************************************************************************************************/
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
@@ -124,6 +134,8 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_DropUQConstraints STORED PROCEDURE **********************************************/
+/***                                                                                                   ***/
+/*** Drop thie DropUQConstraints procedure as it's no longer needed after this point.                  ***/
 /*********************************************************************************************************/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]'))
@@ -132,6 +144,8 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
+/***                                                                                                   ***/
+/*** Create the stored procedure needed to retrieve APIUsers from the database.                        ***/
 /*********************************************************************************************************/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
@@ -173,12 +187,20 @@ GO
 
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_PostUpgrade0.7.0 STORED PROCEDURE ***********************************************/
+/***                                                                                                   ***/
+/*** Create the stored procedure that will be called by the upgrade process after application restart. ***/
 /*********************************************************************************************************/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]
 GO
 
+/*
+    This procedure makes any neccesary database changes that are needed after
+    the post upgrade code has been run on application restart.
+
+    This procedure should be dropped by the upgrade code after it has been executed.
+*/
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]
 AS
     IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0]'))
