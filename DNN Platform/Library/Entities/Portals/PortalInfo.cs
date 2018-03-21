@@ -806,12 +806,7 @@ namespace DotNetNuke.Entities.Portals
                     ? p
                     : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
             }
-            catch (FormatException)
-            {
-                // for backward compatibility
-                ProcessorPassword = p;
-            }
-            catch(CryptographicException)
+            catch (Exception ex) when (ex is FormatException || ex is CryptographicException)
             {
                 // for backward compatibility
                 ProcessorPassword = p;
