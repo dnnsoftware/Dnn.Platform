@@ -18,6 +18,25 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]
 GO
 
+/*
+    This procedure allows the easy deletion of unnamed unique constraints.
+
+    When a constraint is created without a name being specified SQL server will
+    generate a random name for the constraint based on the constraint type, the
+    table name and a random number. It's difficult to drop these constraints
+    using statements as the constraint will have a different name on every
+    installation.
+
+    This procedure allows you to pass a table name (without the
+    'Cantarus_PolyDeploy_' prefix) and a column name within that table. It will
+    look up the name of the unique constraint (if there is one) and
+    automatically execute the statement required to drop the constraint.
+
+    Note: The second AND statment within the WHERE clause makes use of the LEFT
+    operator. This is because when the database owner token is replaced it
+    includes the trailing '.'. Using LEFT with CHARINDEX allows us to use the
+    database owner token to match the appropriate schema.
+*/
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints]
     @TableName [VARCHAR](64),
     @ColumnName [VARCHAR](32)
