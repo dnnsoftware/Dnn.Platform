@@ -101,7 +101,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// -----------------------------------------------------------------------------
         public string UpgradeModule(string version)
         {
-            string result = string.Format("Upgrade logic for {0} completed.", version);
+            string result = $"Upgrade logic for {version} completed.";
 
             switch (version)
             {
@@ -110,7 +110,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     break;
 
                 default:
-                    result = string.Format("No upgrade logic for {0}.", version);
+                    result = $"No upgrade logic for {version}.";
                     break;
 
             }
