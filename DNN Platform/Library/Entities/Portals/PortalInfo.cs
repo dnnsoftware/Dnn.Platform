@@ -22,6 +22,7 @@
 
 using System;
 using System.Data;
+using System.Security.Cryptography;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common;
@@ -805,7 +806,7 @@ namespace DotNetNuke.Entities.Portals
                     ? p
                     : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
             }
-            catch(FormatException)
+            catch (Exception ex) when (ex is FormatException || ex is CryptographicException)
             {
                 // for backward compatibility
                 ProcessorPassword = p;
