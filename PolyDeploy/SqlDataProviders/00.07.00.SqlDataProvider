@@ -114,11 +114,35 @@ GO
 /*********************************************************************************************************/
 /*** Cantarus_PolyDeploy_APIUserByAPIKey STORED PROCEDURE ************************************************/
 /*********************************************************************************************************/
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
 GO
 
+/*
+    This procedure provides a mechanism to easily retrieve an APIUser by its
+    api key.
+
+    As each APIUser's api key is only stored as a salted and hashed value in
+    the APIKey_Sha field it's not possible to just use a plain api key to
+    retrieve that user from the database. The plain api key must be salted and
+    hashed using the stored salt for the APIUser before a comparison can be
+    made. Performing this within the application would involve retrieving all
+    the APIUser objects from the database and testing them individually.
+
+    This procedure allows the application to pass a plain api key in and have
+    it tested against every APIUser object in the database. As this is
+    happening within the database engine rather than the application, it should
+    perform much better.
+
+    The basic procedure is as follows:
+    - Concatenate plain api key with stored salt
+    - Produce hashed bytes of the concatenated value using SHA256
+    - Convert the hashed bytes to a string for comparison
+
+    Note: The third paramater passed to CONVERT removes the leading '0x' from
+    the returned value.
+    (https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql#binary-styles)
+*/
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
     @ApiKey [VARCHAR](64)
 AS
