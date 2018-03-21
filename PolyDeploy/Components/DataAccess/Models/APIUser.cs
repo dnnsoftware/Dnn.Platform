@@ -1,8 +1,6 @@
 ﻿using Cantarus.Libraries.Encryption;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
 {
