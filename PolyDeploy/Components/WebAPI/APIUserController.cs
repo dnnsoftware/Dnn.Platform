@@ -21,6 +21,14 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         {
             List<APIUser> apiUsers = APIUserManager.GetAll().ToList();
 
+            // Loop and remove sensitive information.
+            foreach (APIUser apiUser in apiUsers)
+            {
+                apiUser.APIKey_Sha = null;
+                apiUser.EncryptionKey_Enc = null;
+                apiUser.Salt = null;
+            }
+
             return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
         }
 
