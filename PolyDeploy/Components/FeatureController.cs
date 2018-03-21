@@ -155,7 +155,12 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     string auEncryptionKeyEnc = Crypto.Encrypt(auEncryptionKey, auApiKey);
 
                     // Insert in to new table.
-                    context.Execute(System.Data.CommandType.Text, "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ON; INSERT INTO {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt]) VALUES (@0, @1, @2, @3, @4); SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] OFF;", apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
+                    string insertSql = "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ON;"
+                        + "INSERT INTO {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt])"
+                        + "VALUES (@0, @1, @2, @3, @4);"
+                        + "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] OFF;";
+
+                    context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
                 }
 
                 // Call stored procedure which completes the upgrade.
