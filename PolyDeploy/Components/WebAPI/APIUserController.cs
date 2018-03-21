@@ -44,6 +44,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             // Create user.
             APIUser apiUser = APIUserManager.Create(name);
 
+            apiUser.APIKey_Sha = null;
+            apiUser.EncryptionKey_Enc = null;
+            apiUser.Salt = null;
+
             return Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }
 
@@ -68,6 +72,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             try
             {
                 apiUser = APIUserManager.Update(apiUser);
+
+                apiUser.APIKey_Sha = null;
+                apiUser.EncryptionKey_Enc = null;
+                apiUser.Salt = null;
             }
             catch(Exception ex)
             {
