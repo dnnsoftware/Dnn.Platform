@@ -84,15 +84,20 @@ IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner
             [Name]              [NVARCHAR](64) NOT NULL,
             [APIKey_Sha]        [CHAR](64) NOT NULL,
             [EncryptionKey_Enc] [CHAR](172) NOT NULL,
-            [Salt]              [CHAR](32) NOT NULL
-        )
+            [Salt]              [CHAR](32) NOT NULL,
 
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers] PRIMARY KEY CLUSTERED ([APIUserID])
-        
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_Name] UNIQUE ([Name])
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_APIKey_Sha] UNIQUE ([APIKey_Sha])
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_EncryptionKey_Enc] UNIQUE ([EncryptionKey_Enc])
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_APIUsers_Salt] UNIQUE ([Salt])
+            CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers]
+                PRIMARY KEY CLUSTERED ([APIUserID]),
+
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_APIUsers_Name]
+                UNIQUE ([Name]),
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_APIUsers_APIKey_Sha]
+                UNIQUE ([APIKey_Sha]),
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_APIUsers_EncryptionKey_Enc]
+                UNIQUE ([EncryptionKey_Enc]),
+            CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_APIUsers_Salt]
+                UNIQUE ([Salt])
+        )
     END
 GO
 
@@ -106,7 +111,7 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
     BEGIN
         EXEC {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_DropUQConstraints] @TableName = 'IPSpecs', @ColumnName = 'Address'
 
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_IPSpecs_Address] UNIQUE ([Address])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] ADD CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_IPSpecs_Address] UNIQUE ([Address])
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs] REBUILD
     END
@@ -126,7 +131,7 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Guid] [CHAR](32) NOT NULL
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ALTER COLUMN [Response] [NVARCHAR](MAX)
 
-        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD CONSTRAINT [UQ_Cantarus_PolyDeploy_Sessions_Guid] UNIQUE ([Guid])
+        ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] ADD CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_Sessions_Guid] UNIQUE ([Guid])
 
         ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Sessions] REBUILD
     END
