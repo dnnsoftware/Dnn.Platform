@@ -35,7 +35,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                         // Attempt to look up the api user.
                         APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
 
-                        // Did we find one and double check the api key.
+                        // Did we find one and is it ready to use?
                         if (apiUser != null && apiUser.Prepared)
                         {
                             // Genuine API user.
