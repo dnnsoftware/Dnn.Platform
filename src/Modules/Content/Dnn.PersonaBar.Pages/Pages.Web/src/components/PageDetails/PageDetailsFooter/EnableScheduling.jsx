@@ -29,6 +29,7 @@ class EnableScheduling extends Component {
                         <DatePicker
                             date={props.startDate}
                             updateDate={props.onChangeStartDate}
+                            calendarPosition={"top"}
                             isDateRange={false}
                             hasTimePicker={true}
                             showClearDateButton={false} />
@@ -39,6 +40,7 @@ class EnableScheduling extends Component {
                         <DatePicker
                             date={props.endDate}
                             updateDate={props.onChangeEndDate}
+                            calendarPosition={"top"}
                             isDateRange={false}
                             hasTimePicker={true}
                             showClearDateButton={false} />
