@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
+import { EditIcon, SettingsIcon, TrashIcon } from "dnn-svg-icons";
 import Checkbox from "dnn-checkbox";
 import RadioButtons from "dnn-radio-buttons";
 import styles from "./style.less";
@@ -19,7 +19,7 @@ class ModuleRow extends Component {
     }
 
     render() {
-        const { module, onDelete, onEditing, isEditingModule, showCopySettings, onCopyChange } = this.props;
+        const { module, onDelete, onEditing, onSetting, isEditingModule, showCopySettings, onCopyChange } = this.props;
         const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
         return (
             /* eslint-disable react/no-danger */
@@ -39,7 +39,15 @@ class ModuleRow extends Component {
                 {!showCopySettings &&
                     <GridCell columnSize={10} >
                         <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete.bind(this, module)}></div>
-                        <div className={editClassName} onClick={onEditing.bind(this, module)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                        <div 
+                            className={editClassName} 
+                            onClick={onSetting.bind(this, module)} 
+                            dangerouslySetInnerHTML={{ __html: SettingsIcon }}></div>
+                        {module.editContentUrl && 
+                            <div 
+                                className={editClassName} 
+                                onClick={onEditing.bind(this, module)} 
+                                dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
                     </GridCell>
                 }
                 {showCopySettings &&
@@ -62,6 +70,7 @@ ModuleRow.propTypes = {
     isEditingModule: PropTypes.bool.isRequired,
     onDelete: PropTypes.func.isRequired,
     onEditing: PropTypes.func.isRequired,
+    onSetting: PropTypes.func.isRequired,
     onCopyChange: PropTypes.func,
     showCopySettings: PropTypes.bool
 };

@@ -10,6 +10,14 @@ import ModuleEdit from "./ModuleEdit/ModuleEdit";
 
 class Modules extends Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            editType: ''
+        };
+    }
+
     onDeleteModule(module) {
         const {onDeleteModule} = this.props;
         utils.confirm(
@@ -21,8 +29,15 @@ class Modules extends Component {
             });
     }
 
+    onEditingModule(editType, module){
+        const { onEditingModule } = this.props;
+        this.setState({editType: editType}, () => {
+            onEditingModule(module);
+        });
+    }
+
     getModules() {
-        const {modules, onEditingModule, editingSettingModuleId, showCopySettings, onModuleCopyChange} = this.props;
+        const {modules, editingSettingModuleId, showCopySettings, onModuleCopyChange} = this.props;
 
         if (modules.length === 0) {
             return <GridCell className="no-modules" columnSize={100} >
@@ -37,8 +52,9 @@ class Modules extends Component {
                     key={index}
                     module={module} 
                     onDelete={this.onDeleteModule.bind(this)}
-                    onEditing={onEditingModule}
-                    isEditingModule={isEditingModule} 
+                    onEditing={this.onEditingModule.bind(this, 'content')}
+                    onSetting={this.onEditingModule.bind(this, 'settings')}
+                    isEditingModule={isEditingModule}
                     onCopyChange={onModuleCopyChange}
                     showCopySettings={showCopySettings} />
             );
@@ -46,6 +62,7 @@ class Modules extends Component {
     }
 
     render() {
+        const { state } = this;
         const {modules, onCancelEditingModule, editingSettingModuleId, showCopySettings, selectedPage} = this.props;
         const moduleRows = this.getModules();
         const editingModule = modules.find(m => m.id === editingSettingModuleId);
@@ -70,10 +87,14 @@ class Modules extends Component {
                     </div>
                     {moduleRows}
                 </div>
-                <Modal isOpen={editingModule} header={Localization.get("ModuleSettings")} onRequestClose={onCancelEditingModule}>
+                <Modal 
+                    isOpen={editingModule && state.editType !== ''} 
+                    header={state.editType === "content" ? Localization.get("EditContent") : Localization.get("ModuleSettings")} 
+                    onRequestClose={onCancelEditingModule}>
                     {editingModule && 
                         <ModuleEdit 
-                            module={editingModule} 
+                            module={editingModule}
+                            editType={state.editType}
                             onUpdatedModuleSettings={onCancelEditingModule}
                             selectedPage={selectedPage}
                             /> }
