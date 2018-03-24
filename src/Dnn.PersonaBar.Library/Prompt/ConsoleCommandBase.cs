@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
             ValidationMessage += message;
         }
-
+        
         /// <summary>
         /// Get the flag value
         /// </summary>
@@ -60,7 +60,14 @@ namespace Dnn.PersonaBar.Library.Prompt
             {
                 if (HasFlag(flag))
                 {
-                    value = Flag<T>(flag, defaultVal);
+                    if (isBoolean<T>())
+                    {
+                        value = Flag<Boolean>(flag, true);
+                    }
+                    else
+                    {
+                        value = Flag<T>(flag, defaultVal);
+                    }
                 }
                 else
                 {
@@ -170,6 +177,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             return tc.ConvertFrom(retVal);
         }
 
+        private Boolean isBoolean<T>()
+        {
+            return typeof(T) == typeof(Boolean);
+        }
 
         #endregion
 
