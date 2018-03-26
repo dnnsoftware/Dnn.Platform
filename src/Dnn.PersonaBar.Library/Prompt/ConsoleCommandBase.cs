@@ -179,7 +179,7 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         private Boolean isBoolean<T>()
         {
-            return typeof(T) == typeof(Boolean);
+            return typeof(T) == typeof(bool?);
         }
 
         #endregion
