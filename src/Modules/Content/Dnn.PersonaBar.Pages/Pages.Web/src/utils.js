@@ -1,4 +1,5 @@
 import Moment from "moment";
+import UrlParse from "url-parse";
 let utilities = null;
 let config = null;
 let moduleName = null;
@@ -189,6 +190,14 @@ function formatDate(dateValue, longformat) {
 function getUserMode(){
     return config.userMode;
 }
+const url = {
+    appendQueryString: function(url, params){
+        let urlParse = new UrlParse(url, true);
+        let newParams = Object.assign({}, urlParse.query, params);
+        urlParse.set('query', newParams);
+        return urlParse.href;
+    }
+};
 const utils = {
     init,
     load,
@@ -220,7 +229,8 @@ const utils = {
     isPlatform,
     getIsAdminHostSystemPage,
     formatDate,
-    getUserMode
+    getUserMode,
+    url
 };
 
 export default utils;

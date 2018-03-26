@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {pageActions as PageActions} from "../../../actions";
 import utils from "../../../utils";
 
-const queryString = "HideCancel=true&HideDelete=true&NoRedirectOnUpdate=true";
+const queryString = {"HideCancel": "true", "HideDelete": "true", "NoRedirectOnUpdate": "true"};
 
 const iFrameStyle = { 
     width: "100%", 
@@ -83,7 +83,7 @@ class ModuleEdit extends Component {
             if(editUrl.indexOf('popUp') === -1){
                 this.redirectUrl(editUrl);
             } else {
-                editUrl += (editUrl.indexOf("?") > -1 ? "&" : "?") + queryString;
+                editUrl = utils.url.appendQueryString(editUrl, queryString);
                 this.setState({editUrl: editUrl});
             }
             
