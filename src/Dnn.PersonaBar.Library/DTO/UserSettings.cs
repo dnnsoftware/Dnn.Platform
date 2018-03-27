@@ -39,8 +39,14 @@ namespace Dnn.PersonaBar.Library.DTO
         [IgnoreDataMember]
         public bool ExpandPersonaBar
         {
-            get => Convert.ToBoolean(this["expandPersonaBar"]);
-            set => this["expandPersonaBar"] = value;
+            get
+            {
+                return Convert.ToBoolean(this["expandPersonaBar"]);
+            }
+            set
+            {
+                this["expandPersonaBar"] = value;
+            } 
         }
 
         public XmlSchema GetSchema()
