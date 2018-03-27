@@ -65,6 +65,7 @@
     "prop-types": "^15.5.10",
     "react-day-picker": "^6.1.0",
     "react-dnd": "^2.4.0",
-    "react-dnd-html5-backend": "^2.4.1"
+    "react-dnd-html5-backend": "^2.4.1",
+    "url-parse": "^1.2.0"
   }
 }
