@@ -94,6 +94,7 @@
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Dto\Localization.cs" />
+    <Compile Include="Dto\PersistSettings.cs" />
     <Compile Include="Helper\PortalHelper.cs" />
     <Compile Include="Helper\TimeZoneHelper.cs" />
     <Compile Include="Controllers\IExtensionController.cs" />

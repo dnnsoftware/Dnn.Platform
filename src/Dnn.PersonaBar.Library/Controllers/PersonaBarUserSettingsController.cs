@@ -32,57 +32,60 @@ namespace Dnn.PersonaBar.Library.Controllers
         private const string UserSettingsKey = "UserSettings";
 
         #region IUserSettingsController Implementation
-        public void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId)
+        public void UpdatePersonaBarUserSettings(PersistSettings settings, int userId, int portalId)
         {
             var controller = new PersonalizationController();
             var personalizationInfo = controller.LoadProfile(userId, portalId);
-            FixUserSettingsDates(settings);
             Personalization.SetProfile(personalizationInfo, ContainerName, UserSettingsKey, settings);
             controller.SaveProfile(personalizationInfo);
         }
 
-        public UserSettings GetPersonaBarUserSettings()
+        public PersistSettings GetPersonaBarUserSettings()
         {
-            var settings = (UserSettings) Personalization.GetProfile(ContainerName, UserSettingsKey);
-            FixUserSettingsDates(settings);
-            return settings ?? GetDefaultSettings();
+            var settings = Personalization.GetProfile(ContainerName, UserSettingsKey);
+            PersistSettings persistSettings = null;
+            //sync the old settings data into new version.
+#pragma warning disable 618
+            if (settings is UserSettings)
+            {
+                persistSettings = MigrationUserSettings(settings as UserSettings);
+            }
+#pragma warning restore 618
+            else
+            {
+                persistSettings = settings as PersistSettings;
+            }
+            return persistSettings ?? GetDefaultSettings();
         }
         #endregion
 
         #region private methods
 
-        private static UserSettings GetDefaultSettings()
+        private static PersistSettings GetDefaultSettings()
         {
-            return new UserSettings
-                {
-                    Period = "Week", //TODO Set Default AnalyticPeriod
-                    ComparativeTerm = "1 w",
-                    ExpandPersonaBar = false,
-                    ExpandTasksPane = true,
-                    Legends = new string[] {},
-                    StartDate = DateTime.Today,
-                    EndDate = DateTime.Today
-                };
-        }
-
-        private static void FixUserSettingsDates(UserSettings userSettings)
-        {
-            if (userSettings != null)
+            return new PersistSettings
             {
-                userSettings.StartDate = FixDate(userSettings.StartDate);
-                userSettings.EndDate = FixDate(userSettings.EndDate);
-            }
+                ExpandPersonaBar = false
+            };
         }
 
-        private static DateTime FixDate(DateTime date)
+#pragma warning disable 618
+        private PersistSettings MigrationUserSettings(UserSettings settings)
         {
-            if (date == DateTime.MinValue || date == DateTime.MaxValue)
-            {
-                return DateTime.Today;
-            }
+            var persistSettings = new PersistSettings();
+            persistSettings.SetValue("activeIdentifier", settings.ActiveIdentifier);
+            persistSettings.SetValue("activePath", settings.ActivePath);
+            persistSettings.SetValue("comparativeTerm", settings.ComparativeTerm);
+            persistSettings.SetValue("endDate", settings.EndDate);
+            persistSettings.SetValue("expandPersonaBar", settings.ExpandPersonaBar);
+            persistSettings.SetValue("expandTasksPane", settings.ExpandTasksPane);
+            persistSettings.SetValue("legends", settings.Legends);
+            persistSettings.SetValue("period", settings.Period);
+            persistSettings.SetValue("startDate", settings.StartDate);
 
-            return date;
+            return persistSettings;
         }
+#pragma warning restore 618
 
         #endregion
 

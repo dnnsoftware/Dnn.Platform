@@ -27,6 +27,7 @@ namespace Dnn.PersonaBar.Library.DTO
     /// <summary>
     /// Persona Bar User Settings
     /// </summary>
+    [Obsolete("Deprecated in 9.2.1, use PersistSettings instead.")]
     [DataContract]
     public class UserSettings
     {
