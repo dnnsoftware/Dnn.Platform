@@ -94,6 +94,7 @@
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Dto\Localization.cs" />
+    <Compile Include="Dto\UserSettings.cs" />
     <Compile Include="Helper\PortalHelper.cs" />
     <Compile Include="Helper\TimeZoneHelper.cs" />
     <Compile Include="Controllers\IExtensionController.cs" />
@@ -109,7 +110,6 @@
     <Compile Include="Dto\RolePermission.cs" />
     <Compile Include="Dto\Tabs\TabDto.cs" />
     <Compile Include="Dto\UserPermission.cs" />
-    <Compile Include="Dto\UserSettings.cs" />
     <Compile Include="Helper\IPermissionGridApi.cs" />
     <Compile Include="Helper\PermissionHelper.cs" />
     <Compile Include="HttpRequestMessageExtensions.cs" />

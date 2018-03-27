@@ -36,7 +36,6 @@ namespace Dnn.PersonaBar.Library.Controllers
         {
             var controller = new PersonalizationController();
             var personalizationInfo = controller.LoadProfile(userId, portalId);
-            FixUserSettingsDates(settings);
             Personalization.SetProfile(personalizationInfo, ContainerName, UserSettingsKey, settings);
             controller.SaveProfile(personalizationInfo);
         }
@@ -44,7 +43,6 @@ namespace Dnn.PersonaBar.Library.Controllers
         public UserSettings GetPersonaBarUserSettings()
         {
             var settings = (UserSettings) Personalization.GetProfile(ContainerName, UserSettingsKey);
-            FixUserSettingsDates(settings);
             return settings ?? GetDefaultSettings();
         }
         #endregion
@@ -54,34 +52,9 @@ namespace Dnn.PersonaBar.Library.Controllers
         private static UserSettings GetDefaultSettings()
         {
             return new UserSettings
-                {
-                    Period = "Week", //TODO Set Default AnalyticPeriod
-                    ComparativeTerm = "1 w",
-                    ExpandPersonaBar = false,
-                    ExpandTasksPane = true,
-                    Legends = new string[] {},
-                    StartDate = DateTime.Today,
-                    EndDate = DateTime.Today
-                };
-        }
-
-        private static void FixUserSettingsDates(UserSettings userSettings)
-        {
-            if (userSettings != null)
             {
-                userSettings.StartDate = FixDate(userSettings.StartDate);
-                userSettings.EndDate = FixDate(userSettings.EndDate);
-            }
-        }
-
-        private static DateTime FixDate(DateTime date)
-        {
-            if (date == DateTime.MinValue || date == DateTime.MaxValue)
-            {
-                return DateTime.Today;
-            }
-
-            return date;
+                ExpandPersonaBar = false
+            };
         }
 
         #endregion

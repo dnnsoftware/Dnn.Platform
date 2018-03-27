@@ -3,13 +3,7 @@ define(['jquery'], function ($) {
     return {
         init: function (cfg, sf) {
             var defaultSettings = {
-                period: 'Week',
-                comparativeTerm: '1 w',
-                startDate: '',
-                endDate: '',
-                expandPersonaBar: true,
-                expandTasksPane: true,
-                legends: []
+                expandPersonaBar: true
             };
 
             var settings = null;
