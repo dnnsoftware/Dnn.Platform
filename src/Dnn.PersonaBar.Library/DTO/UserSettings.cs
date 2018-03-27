@@ -37,7 +37,8 @@ namespace Dnn.PersonaBar.Library.DTO
     public class UserSettings : Dictionary<string, object>, IXmlSerializable
     {
         [IgnoreDataMember]
-        public bool ExpandPersonaBar{
+        public bool ExpandPersonaBar
+        {
             get => Convert.ToBoolean(this["expandPersonaBar"]);
             set => this["expandPersonaBar"] = value;
         }
@@ -61,8 +62,7 @@ namespace Dnn.PersonaBar.Library.DTO
                     ReadSettings(reader);
                     break;
                 default:
-                    //the method add for backward compatible, should remove this in future release.
-                    ReadLegencySettings(reader);
+                    ReadLegacySettings(reader);
                     break;
 
             }
@@ -89,7 +89,8 @@ namespace Dnn.PersonaBar.Library.DTO
             reader.ReadEndElement();
         }
 
-        private void ReadLegencySettings(XmlReader reader)
+        [Obsolete("The method add for backward compatible, should remove this in future release.")]
+        private void ReadLegacySettings(XmlReader reader)
         {
             while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
             {
