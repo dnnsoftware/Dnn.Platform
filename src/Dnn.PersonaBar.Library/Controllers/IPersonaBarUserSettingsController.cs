@@ -28,11 +28,11 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <summary>
         /// Updates the PersonaBar user settings
         /// </summary>
-        void UpdatePersonaBarUserSettings(PersistSettings settings, int userId, int portalId);
+        void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId);
 
         /// <summary>
         /// Gets the PersonaBar user settings
         /// </summary>
-        PersistSettings GetPersonaBarUserSettings();
+        UserSettings GetPersonaBarUserSettings();
     }
 }

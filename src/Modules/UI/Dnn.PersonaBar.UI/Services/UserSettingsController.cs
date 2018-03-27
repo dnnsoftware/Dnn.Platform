@@ -50,13 +50,13 @@ namespace Dnn.PersonaBar.UI.Services
                 var controller = PersonaBarUserSettingsController.Instance;
                 var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
 
-                var persistSettings = new PersistSettings();
+                var userSettings = new UserSettings();
                 settings.ForEach(kvp =>
                 {
-                    persistSettings.Add(kvp.Key, kvp.Value);
+                    userSettings.Add(kvp.Key, kvp.Value);
                 });
 
-                controller.UpdatePersonaBarUserSettings(persistSettings, UserInfo.UserID, portalId);
+                controller.UpdatePersonaBarUserSettings(userSettings, UserInfo.UserID, portalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new {});
             }
             catch (Exception ex)

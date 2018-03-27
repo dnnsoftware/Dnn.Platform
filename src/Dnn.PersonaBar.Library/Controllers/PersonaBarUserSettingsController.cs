@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         private const string UserSettingsKey = "UserSettings";
 
         #region IUserSettingsController Implementation
-        public void UpdatePersonaBarUserSettings(PersistSettings settings, int userId, int portalId)
+        public void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId)
         {
             var controller = new PersonalizationController();
             var personalizationInfo = controller.LoadProfile(userId, portalId);
@@ -40,52 +40,22 @@ namespace Dnn.PersonaBar.Library.Controllers
             controller.SaveProfile(personalizationInfo);
         }
 
-        public PersistSettings GetPersonaBarUserSettings()
+        public UserSettings GetPersonaBarUserSettings()
         {
-            var settings = Personalization.GetProfile(ContainerName, UserSettingsKey);
-            PersistSettings persistSettings = null;
-            //sync the old settings data into new version.
-#pragma warning disable 618
-            if (settings is UserSettings)
-            {
-                persistSettings = MigrationUserSettings(settings as UserSettings);
-            }
-#pragma warning restore 618
-            else
-            {
-                persistSettings = settings as PersistSettings;
-            }
-            return persistSettings ?? GetDefaultSettings();
+            var settings = (UserSettings) Personalization.GetProfile(ContainerName, UserSettingsKey);
+            return settings ?? GetDefaultSettings();
         }
         #endregion
 
         #region private methods
 
-        private static PersistSettings GetDefaultSettings()
+        private static UserSettings GetDefaultSettings()
         {
-            return new PersistSettings
+            return new UserSettings
             {
                 ExpandPersonaBar = false
             };
         }
-
-#pragma warning disable 618
-        private PersistSettings MigrationUserSettings(UserSettings settings)
-        {
-            var persistSettings = new PersistSettings();
-            persistSettings.SetValue("activeIdentifier", settings.ActiveIdentifier);
-            persistSettings.SetValue("activePath", settings.ActivePath);
-            persistSettings.SetValue("comparativeTerm", settings.ComparativeTerm);
-            persistSettings.SetValue("endDate", settings.EndDate);
-            persistSettings.SetValue("expandPersonaBar", settings.ExpandPersonaBar);
-            persistSettings.SetValue("expandTasksPane", settings.ExpandTasksPane);
-            persistSettings.SetValue("legends", settings.Legends);
-            persistSettings.SetValue("period", settings.Period);
-            persistSettings.SetValue("startDate", settings.StartDate);
-
-            return persistSettings;
-        }
-#pragma warning restore 618
 
         #endregion
 
