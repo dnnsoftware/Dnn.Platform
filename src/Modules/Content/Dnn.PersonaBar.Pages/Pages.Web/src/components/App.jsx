@@ -267,15 +267,20 @@ class App extends Component {
                                         this.onNoPermissionSelection(page.id);
                                     }
                                     break;
-                                case Array.isArray(item.childListItems) === true:
-                                    item.childCount++;
-                                    item.childListItems.push(page);
-                                    if (page.canAddContentToPage)
-                                        this.onLoadPage(page.id);
-                                    else {
-                                        this.onNoPermissionSelection(page.id);
+                                case Array.isArray(item.childListItems) === true: {
+                                        const lastIndex = item.childListItems.length - 1;
+                                        if (item.childListItems[lastIndex].name === page.name) {
+                                            item.childListItems.pop();
+                                        }
+                                        item.childListItems.push(page);
+                                        item.childCount = item.childListItems.length;
+                                        if (page.canAddContentToPage)
+                                            this.onLoadPage(page.id);
+                                        else {
+                                            this.onNoPermissionSelection(page.id);
+                                        }
+                                        break;
                                     }
-                                    break;
                             }
                             item.isOpen = true;
                             updateStore(list);
