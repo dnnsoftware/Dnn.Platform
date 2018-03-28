@@ -424,6 +424,33 @@ class App extends Component {
         });
     }
 
+    _addPageToTree(parentId) {
+        let runUpdateStore = null;
+        let pageList = null;
+        
+        if(parentId !== null && parentId !== -1) {
+            this._traverse((item, list, updateStore) => {
+                if (item.id === parentId) {
+                    item.isOpen = true;
+                    item.hasChildren = true;
+                    item.childCount++;
+                    const newPageChildItems = item.childListItems.concat(this.props.selectedPage);
+                    item.childListItems = newPageChildItems;
+                    updateStore(list);        
+                }
+            });
+
+        } else {
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                runUpdateStore = updateStore;
+                pageList = list;                
+            });
+            const newPageList = pageList.concat(this.props.selectedPage);    
+            runUpdateStore(newPageList);
+        }
+    }
+
     _removePageFromTree(parentId) {
         this._traverse((item, list, updateStore) => {
             if (item.id === parentId && parentId !== undefined) {
@@ -441,7 +468,7 @@ class App extends Component {
                 item.childListItems = [...arr1, ...arr2];
                 updateStore(list);
             }
-            if (parentId === undefined && item.tabId !== undefined) {
+            if ((parentId === undefined || parentId === -1) && item.tabId !== undefined) {
                 const newPageList = list.slice(0,list.length-1);
                 updateStore(newPageList);
             }
@@ -452,11 +479,9 @@ class App extends Component {
 
     onCancelPage(parentPageId) {
         const {props, state} = this;
-        if(!state.inDuplicateMode){
-            this._removePageFromTree(parentPageId);
-        }
+        this._removePageFromTree(parentPageId);
         this.props.changeSelectedPagePath("");
-        this.props.onCancelPage(parentPageId);
+        (parentPageId !== -1) ? this.props.onCancelPage(parentPageId) : this.props.onCancelPage();
         this.setState({inDuplicateMode: false});
     }
 
@@ -565,7 +590,7 @@ class App extends Component {
         }
         else {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.parentId);
             }
             else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
                 this.onCancelPage(props.selectedPage.referralTabId);
@@ -641,7 +666,7 @@ class App extends Component {
         const { props } = this;
         const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.parentId);
             }
             else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
                 this.onCancelPage(props.selectedPage.referralTabId);
@@ -973,9 +998,11 @@ class App extends Component {
                     onConfirm);
 
             } else {
-                this.props.onDuplicatePage(false);
+                this.props.onDuplicatePage(false).then(data=>{
+                    
+                    this._addPageToTree(data.parentId);
+                });
             }
-            this.props.onChangePageField('parentId', selectedPage.tabId);
             this.setState({inDuplicateMode: true});
         };
         const noPermission = () => this.setEmptyStateMessage(message);
