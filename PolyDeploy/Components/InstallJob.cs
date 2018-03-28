@@ -55,9 +55,9 @@ namespace Cantarus.Modules.PolyDeploy.Components
             {
                 foreach (PackageDependency packageDependency in package.Dependencies)
                 {
-                    if (packageDependency.Type.Equals("package"))
+                    if (packageDependency.IsPackageDependency)
                     {
-                        if (FindDependency(packageDependency.Value, packageJobs))
+                        if (FindDependency(packageDependency.PackageName, packageJobs))
                         {
                             packageDependency.DeployMet = true;
                         }
