@@ -11,6 +11,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public bool IsPackageDependency { get; set; }
         public string PackageName { get; set; }
+        public string DependencyVersion { get; set; }
         internal bool DnnMet { get; set; }
         internal bool DeployMet { get; set; }
 
@@ -26,6 +27,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         {
             IsPackageDependency = PackageTypes.Contains(dependencyRoot.GetAttribute("type", ""));
             PackageName = dependencyRoot.Value;
+            DependencyVersion = dependencyRoot.GetAttribute("version", "");
             DnnMet = false;
             DeployMet = false;
 

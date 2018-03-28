@@ -57,7 +57,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 {
                     if (packageDependency.IsPackageDependency)
                     {
-                        if (FindDependency(packageDependency.PackageName, packageJobs))
+                        if (FindDependency(packageDependency, packageJobs))
                         {
                             packageDependency.DeployMet = true;
                         }
@@ -107,11 +107,23 @@ namespace Cantarus.Modules.PolyDeploy.Components
             }
         }
 
-        private bool FindDependency(string name, List<PackageJob> packageJobs)
+        private bool FindDependency(PackageDependency dependency, List<PackageJob> packageJobs)
         {
             foreach (PackageJob pj in packageJobs)
             {
-                if (pj.Name.ToLower().Equals(name.ToLower()))
+                if (!pj.Name.Equals(dependency.PackageName, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                Version requiredVersion;
+                if (!Version.TryParse(dependency.DependencyVersion, out requiredVersion))
+                {
+                    return true;
+                }
+
+                Version packageVersion;
+                if (Version.TryParse(pj.VersionStr, out packageVersion) && packageVersion >= requiredVersion)
                 {
                     return true;
                 }
