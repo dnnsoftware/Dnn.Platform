@@ -48,14 +48,14 @@ namespace DotNetNuke.Tests.Integration.Tests
 
         }
 
-#if false
-        //Disable temporarily to pass Jenkins build.
         [Test]
         public void Friend_Request_Should_Match_Target_User_Culture()
         {
             PrepareSecondLanguage();
-            CreateNewUser(out var userId1, out var userName1, out var fileId1);
-            CreateNewUser(out var userId2, out var userName2, out var fileId2);
+            int userId1, userId2, fileId1, fileId2;
+            string userName1, userName2;
+            CreateNewUser(out userId1, out userName1, out fileId1);
+            CreateNewUser(out userId2, out userName2, out fileId2);
 
             UpdateUserProfile(userId1, UserProfile.USERPROFILE_PreferredLocale, FirstLanguage);
             UpdateUserProfile(userId2, UserProfile.USERPROFILE_PreferredLocale, SecondLanguage);
@@ -72,7 +72,6 @@ namespace DotNetNuke.Tests.Integration.Tests
             //the notification should use french language: testuser8836 veut être amis avec vous
             Assert.AreEqual($"{userName1} veut être amis", notificationTitle);
         }
-#endif
 
         private void UpdateUserProfile(int userId, string propertyName, string propertyValue)
         {
