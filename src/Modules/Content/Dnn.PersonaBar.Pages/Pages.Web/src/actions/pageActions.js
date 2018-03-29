@@ -181,14 +181,10 @@ const pageActions = {
                     selectedPageSettingTab: 0
                 });
             };
-            if (reloadTemplate) {
-                loadPage(dispatch, pages.selectedPage.tabId, (page) => {
-                    duplicate(page);
-                });
-            }
-            else {
-                duplicate(pages.selectedPage);
-            }
+
+            return loadPage(dispatch, pages.selectedPage.tabId, (page) => {
+                duplicate(page);
+            });
         };
     },
 
