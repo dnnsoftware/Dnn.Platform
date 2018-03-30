@@ -1,0 +1,9 @@
+{
+	"instructions": {
+		"purpose": "This file is placed in the folder of DNN skins/themes. It tells the Koi system, what the primary CSS framework is for the themes in this folder.",
+		"discoverMore": "https://connect-koi.net/"
+	},
+	"default": {
+		"cssFramework": "bs3"
+	}
+}

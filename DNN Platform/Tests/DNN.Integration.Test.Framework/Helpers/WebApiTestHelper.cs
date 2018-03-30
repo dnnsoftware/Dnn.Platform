@@ -37,9 +37,9 @@ namespace DNN.Integration.Test.Framework.Helpers
                 (_anonymousConnector = WebApiConnector.GetWebConnector(url, null));
         }
 
-        public static IDictionary<string, string> GetRequestHeaders(string moduleName, int portalId = 0)
+        public static IDictionary<string, string> GetRequestHeaders(string tabPath, string moduleName, int portalId = 0)
         {
-            var tabId = DatabaseHelper.ExecuteScalar<int>($"SELECT * FROM {{objectQualifier}}Tabs WHERE TabPath = '//ActivityFeed' AND PortalId = {portalId}");
+            var tabId = DatabaseHelper.ExecuteScalar<int>($"SELECT * FROM {{objectQualifier}}Tabs WHERE TabPath = '{tabPath}' AND PortalId = {portalId}");
             var moduleId = DatabaseHelper.ExecuteScalar<int>(
                 $@"
 SELECT TOP 1 m.ModuleID FROM {{objectQualifier}}TabModules tm
@@ -59,7 +59,10 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             username = $"testuser{Rnd.Next(1000, 9999)}";
             var email = $"{username}@dnn.com";
 
-            WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email);
+            using (WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email))
+            {
+
+            }
 
             userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");
 
