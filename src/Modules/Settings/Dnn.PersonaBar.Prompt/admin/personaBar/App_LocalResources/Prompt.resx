@@ -1086,6 +1086,9 @@
   <data name="Prompt_GetHost__NoArgs.Text" xml:space="preserve">
     <value>The get-host command does not take any arguments or flags.</value>
   </data>
+  <data name="Prompt_GetHost_OkMessage.Text" xml:space="preserve">
+    <value>get-host command executed successfully.</value>
+  </data>
   <data name="Prompt_GetPortal_NoArgs.Text" xml:space="preserve">
     <value>The get-portal command does not take any arguments or flags.</value>
   </data>
