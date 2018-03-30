@@ -415,7 +415,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <summary>
-        /// Handle access denied errors by displayign an error message 
+        /// Handle access denied errors by displaying an error message 
         /// or by performing a redirect to a predefined "access denied URL"
         /// </summary>
         /// <param name="redirect"></param>
@@ -452,8 +452,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!TabVersionUtils.CanSeeVersionedPages())
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
-                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                         return true;
                     }
 
@@ -475,7 +474,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"), ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                     }
                 }
                 else
