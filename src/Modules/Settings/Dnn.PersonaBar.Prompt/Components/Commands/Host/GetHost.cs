@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
                 lst.Add(HostModel.Current());
             }
 
-            return new ConsoleResultModel(string.Empty) { Data = lst };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Output = LocalizeString("Prompt_GetHost_OkMessage") };
         }
 
 

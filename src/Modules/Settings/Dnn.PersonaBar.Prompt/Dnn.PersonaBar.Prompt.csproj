@@ -176,7 +176,9 @@
     <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js.map" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Prompt.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Prompt.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Providers\DataProviders\SqlDataProvider\01.05.00.SqlDataProvider" />
