@@ -444,7 +444,7 @@ namespace DotNetNuke.UI.Skins
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
-                    HandleAccesDenied(false);
+                    HandleAccesDenied(true);
                 }
 
                 int urlVersion;
