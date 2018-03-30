@@ -14,6 +14,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "friendlyName")]
         public string FriendlyName { get; set; }
 
+        [DataMember(Name = "editContentUrl")]
+        public string EditContentUrl { get; set; }
+
         [DataMember(Name="editSettingUrl")]
         public string EditSettingUrl { get; set; }
 
