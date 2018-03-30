@@ -189,12 +189,14 @@ namespace DNN.Integration.Test.Framework
             var excludedInputPrefixes = new List<string>();
 
             //CombineUrlPath(_domain, LoginPath);
-            var httpResponse2 = PostUserForm(LoginPath, postData, excludedInputPrefixes, false);
-            if (httpResponse2 != null && httpResponse2.StatusCode < HttpStatusCode.BadRequest) // < 400
+            using (var httpResponse2 = PostUserForm(LoginPath, postData, excludedInputPrefixes, false))
             {
-                using (httpResponse2)
+                if (httpResponse2 != null && httpResponse2.StatusCode < HttpStatusCode.BadRequest) // < 400
                 {
-                    VerifyLogInCookie(httpResponse2);
+                    using (httpResponse2)
+                    {
+                        VerifyLogInCookie(httpResponse2);
+                    }
                 }
             }
 
@@ -318,7 +320,7 @@ namespace DNN.Integration.Test.Framework
 
         private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
         {
-            using (var client = CreateHttpClient("/", false))
+            using (var client = CreateHttpClient("/", true))
             {
                
                 var headers = client.DefaultRequestHeaders;

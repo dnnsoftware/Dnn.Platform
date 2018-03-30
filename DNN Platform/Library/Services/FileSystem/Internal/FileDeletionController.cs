@@ -52,6 +52,8 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             DeleteFileData(file);
+
+            DataCache.RemoveCache("GetFileById" + file.FileId);
         }
 
         public void UnlinkFile(IFileInfo file)
