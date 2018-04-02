@@ -45,7 +45,7 @@ export default class FileUpload extends Component {
         this.compareTimeout = setTimeout(this.compareDimensions.bind(this), 2000);
     }
 
-    updateStateAndReloadImage(file){
+    updateStateAndReloadImage(file) {
         const selectedFolder = { value: file.folderPath, key: file.folderId };
         const selectedFile = { value: file.fileName, key: file.fileId };
         const fileExist = true;
@@ -73,6 +73,9 @@ export default class FileUpload extends Component {
                 const file = nextProps.selectedFile;
                 this.updateStateAndReloadImage(file);
             }
+        }
+        if (nextProps.portalId !== this.props.portalId) {         
+            this.setState({ showFolderPicker: false });
         }
     }
 
@@ -384,6 +387,7 @@ export default class FileUpload extends Component {
                     onChange={this.onChangeUrl.bind(this)}
                 />}
                 {state.showFolderPicker && <Browse
+                    portalId = {props.portalId}
                     browseActionText = {props.browseActionText}
                     fileText = {props.fileText}
                     folderText = {props.folderText}
