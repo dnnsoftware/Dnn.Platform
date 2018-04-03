@@ -56,6 +56,12 @@ export default class Browse extends Component {
         return this.props.onSave(this.state.selectedFolder, this.state.selectedFile);
     }
 
+    componentWillReceiveProps(nextProps) {        
+        if (nextProps.portalId !== this.props.portalId) {
+            this.getFolders();
+        }
+    }
+
     componentWillUnmount() {
         document.removeEventListener("keyup", this.onKeyDown, false);
     }
@@ -74,8 +80,12 @@ export default class Browse extends Component {
 
     getFolders(searchText) {
         const sf = this.getServiceFramework();
+        let portalIdParams = this.props.portalId && this.props.portalId != -1
+                ? { portalId: this.props.portalId }
+                : {};
+                    
         if (!searchText) {
-            return sf.get("GetFolders", {}, this.setFolders.bind(this), this.handleError.bind(this));
+            return sf.get("GetFolders", portalIdParams, this.setFolders.bind(this), this.handleError.bind(this));
         }
         sf.get("SearchFolders", { searchText }, this.setFolders.bind(this), this.handleError.bind(this));
     }
@@ -180,7 +190,7 @@ export default class Browse extends Component {
 }
 
 
-Browse.propTypes = {
+Browse.propTypes = {    
     utils: PropTypes.object.isRequired,
     selectedFile: PropTypes.object.isRequired,
     selectedFolder: PropTypes.object.isRequired,
@@ -188,6 +198,7 @@ Browse.propTypes = {
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 
+    portalId: PropTypes.number,
     browseActionText: PropTypes.string,
     fileText: PropTypes.string,
     folderText: PropTypes.string,
