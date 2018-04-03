@@ -1392,6 +1392,26 @@ namespace DotNetNuke.Entities.Urls
             return rewritePath;
         }
 
+        /// <summary>
+        /// Returns whether the portal specified exists in the Tab index or not.
+        /// </summary>
+        /// <param name="portalDepths">The current portalDepths dictionary.</param>
+        /// <param name="portalId">The id of the portal to search for.</param>
+        /// <returns></returns>
+        private static bool PortalExistsInIndex(SharedDictionary<int, PathSizes> portalDepths, int portalId)
+        {
+            bool result = false;    
+
+            if (portalDepths != null)
+            {
+                using (portalDepths.GetReadLock())
+                {
+                    result = portalDepths.ContainsKey(portalId);
+                }
+            }
+            return result;
+        }
+
         /// <summary> 
         /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one 
         /// </summary>
@@ -1421,48 +1441,50 @@ namespace DotNetNuke.Entities.Urls
                                                                                 bool bypassCache,
                                                                                 Guid parentTraceId)
         {
-            SharedDictionary<int, PathSizes> portalDepths;
-            SharedDictionary<string, string> dict;
-
-            //place threadlock to prevent two threads getting a null object
-            //check for the tab dictionary in the DataCache
-            var cc = new CacheController();
-            cc.GetPageIndexFromCache(out dict, out portalDepths, settings);
-
+            PathSizes depthInfo;
+            SharedDictionary<int, PathSizes> portalDepths = null; 
+            SharedDictionary<string, string> dict = null;
+            SharedDictionary<string, string> portalTabPathDictionary = null;
             string reason = "";
-            if (dict == null)
+
+            var cc = new CacheController();
+            if (bypassCache == false)
             {
-                reason += "No Page index in cache;";
-            }
-            if (forceRebuild)
-            {
-                reason += "Force Rebuild;";
-            }
-            if (bypassCache)
-            {
-                reason += "Bypass Cache;";
-            }
-            if (dict != null)
-            {
-                using (dict.GetReadLock())
-                {
-                    reason += "Existing Page Index=" + dict.Count.ToString() + " items;";
-                }
+                cc.GetPageIndexFromCache(out dict, out portalDepths, settings);
+                portalTabPathDictionary = FetchTabPathDictionary(portalId);
             }
 
-            Hashtable homePageSkins; //keeps a list of skins set per home page and culture
-            SharedDictionary<string, string> portalTabPathDictionary;
-            if (dict != null && portalDepths != null && forceRebuild == false && bypassCache == false)
+            if (dict == null || portalDepths == null || portalTabPathDictionary == null || !PortalExistsInIndex(portalDepths, portalId) || forceRebuild)
             {
-                PathSizes depthInfo;
-                bool changed = false;
-                using (portalDepths.GetWriteLock())
+                //place threadlock to prevent two threads getting a null object. Use the same lock object that is used to 
+                lock (tabPathDictBuildLock)
                 {
-                    if (!portalDepths.ContainsKey(portalId))
+                    //check for the tab dictionary in the DataCache again as it could have been cached by another thread 
+                    //while waiting for the lock to become available.
+                    if (bypassCache == false)
                     {
-                        reason += "Portal " + portalId.ToString() + " added to index;";
+                        cc.GetPageIndexFromCache(out dict, out portalDepths, settings);
+                        portalTabPathDictionary = FetchTabPathDictionary(portalId);
+                    }
 
-                        //tab dictionary built, but portal not in it
+                    if (dict == null || portalDepths == null || portalTabPathDictionary == null || !PortalExistsInIndex(portalDepths, portalId) || forceRebuild)
+                    {
+                        Hashtable homePageSkins; //keeps a list of skins set per home page and culture
+
+                        if (!bypassCache && dict == null)
+                        {
+                            reason += "No Page index in cache;";
+                        }
+                        if (forceRebuild)
+                        {
+                            reason += "Force Rebuild;";
+                        }
+                        if (bypassCache)
+                        {
+                            reason += "Bypass Cache;";
+                        }
+                        //PathSizes depthInfo;
+                        //the cached dictionary was null or forceRebuild = true or bypassCache = true, so go get a new dictionary
                         dict = BuildTabDictionary(out depthInfo,
                                                     settings,
                                                     portalId,
@@ -1471,72 +1493,55 @@ namespace DotNetNuke.Entities.Urls
                                                     out portalTabPathDictionary,
                                                     parentTraceId);
 
-                        //recheck portal add, when running with locks can get duplicate key exceptions
-                        if (portalDepths.ContainsKey(portalId) == false)
+                        if (portalDepths == null || forceRebuild)
                         {
-                            portalDepths.Add(portalId, depthInfo);
-                            changed = true;
+                            portalDepths = new SharedDictionary<int, PathSizes>();
                         }
 
-                        cc.StoreTabPathsInCache(portalId, portalTabPathDictionary, settings);
-                        CacheController.StoreHomePageSkinsInCache(portalId, homePageSkins);
-                    }
-                    else
-                    {
-                        depthInfo = portalDepths[portalId];
-                    }
-                }
-                if (changed)
-                {
-                    //restash dictionary
-                    cc.StorePageIndexInCache(dict, portalDepths, settings, reason);
-                }
+                        //store the fact that this portal has been built
+                        using (portalDepths.GetWriteLock())
+                        {
+                            //depthInfo may already exist in index so use indexer to Add/Update rather than using Add method which
+                            //would throw an exception if the portal already existed in the dictionary.
+                            portalDepths[portalId] = depthInfo;
+                        }
 
-                if (depthInfo != null)
+                        if (bypassCache == false) //only cache if bypass not switched on
+                        {
+                            reason += "Portal " + portalId + " added to index;";
+                            using (dict.GetReadLock())
+                            {
+                                reason += "Existing Page Index=" + dict.Count + " items;";
+                            }
+
+                            cc.StorePageIndexInCache(dict, portalDepths, settings, reason);
+                            cc.StoreTabPathsInCache(portalId, portalTabPathDictionary, settings);
+                            CacheController.StoreHomePageSkinsInCache(portalId, homePageSkins);
+                        }
+                    }
+                }
+            }
+
+            if (PortalExistsInIndex(portalDepths, portalId))
+            {
+                using (portalDepths.GetReadLock())
                 {
+                    depthInfo = portalDepths[portalId];
                     minTabPathDepth = depthInfo.MinTabPathDepth;
                     maxTabPathDepth = depthInfo.MaxTabPathDepth;
                     minAliasPathDepth = depthInfo.MinAliasDepth;
                     maxAliasPathDepth = depthInfo.MaxAliasDepth;
                 }
-                else
-                {
-                    //fallback values, should never get here: mainly for compiler wranings
-                    minTabPathDepth = 1;
-                    maxTabPathDepth = 10;
-                    minAliasPathDepth = 1;
-                    maxAliasPathDepth = 4;
-                }
             }
             else
             {
-                //the cached dictionary was null or forceRebuild = true or bypassCache = true, so go get a new dictionary
-                PathSizes depthInfo;
-                dict = BuildTabDictionary(out depthInfo,
-                                            settings,
-                                            portalId,
-                                            null,
-                                            out homePageSkins,
-                                            out portalTabPathDictionary,
-                                            parentTraceId);
-
-                //store the fact that this portal has been built
-                portalDepths = new SharedDictionary<int, PathSizes>();
-                using (portalDepths.GetWriteLock())
-                {
-                    portalDepths.Add(portalId, depthInfo);
-                }
-                if (bypassCache == false) //only cache if bypass not switched on
-                {
-                    cc.StorePageIndexInCache(dict, portalDepths, settings, reason);
-                }
-                cc.StoreTabPathsInCache(portalId, portalTabPathDictionary, settings);
-                CacheController.StoreHomePageSkinsInCache(portalId, homePageSkins);
-                minTabPathDepth = depthInfo.MinTabPathDepth;
-                maxTabPathDepth = depthInfo.MaxTabPathDepth;
-                minAliasPathDepth = depthInfo.MinAliasDepth;
-                maxAliasPathDepth = depthInfo.MaxAliasDepth;
+                //fallback values, should never get here: mainly for compiler wranings
+                minTabPathDepth = 1;
+                maxTabPathDepth = 10;
+                minAliasPathDepth = 1;
+                maxAliasPathDepth = 4;
             }
+
             return dict;
         }
 
