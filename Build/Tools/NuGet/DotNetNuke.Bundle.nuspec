@@ -27,8 +27,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\ClientDependency.Core\Bin\ClientDependency.Core.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\ClientDependency.Core\Bin\ClientDependency.Core.pdb" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\ClientDependency.Core\Bin\Release\ClientDependency.Core.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\ClientDependency.Core\Bin\Release\ClientDependency.Core.pdb" target="lib\"/>
 
     <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\"/>
