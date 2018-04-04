@@ -170,6 +170,15 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
+        internal void RemoveAll(List<MenuNode> filteredNodes)
+        {
+            this.Children.RemoveAll(filteredNodes.Contains);
+            foreach (var child in Children)
+            {
+                child.RemoveAll(filteredNodes);
+            }
+        }        
+
         public bool HasChildren()
         {
             return (Children.Count > 0);
