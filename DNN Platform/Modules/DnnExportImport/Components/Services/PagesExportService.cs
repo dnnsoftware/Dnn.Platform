@@ -143,11 +143,17 @@ namespace Dnn.ExportImport.Components.Services
 
             var localTabs = _tabController.GetTabsByPortal(portalId).Values.ToList();
 
-            var exportedTabs = Repository.GetItems<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates)).ToList(); // ordered by TabID
+            var exportedTabs = Repository.GetItems<ExportTab>(
+                x => x.IsSystem == (Category == Constants.Category_Templates), 
+                t => t.ParentId).ToList(); 
+
+            var newTabId = 1;
+            exportedTabs.ForEach(t => t.Id = newTabId++);
+
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportedTabs.Count : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
-            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);
+            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);            
 
             foreach (var otherTab in exportedTabs)
             {
