@@ -145,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var exportedTabs = Repository.GetItems<ExportTab>(
                 x => x.IsSystem == (Category == Constants.Category_Templates), 
-                t => t.ParentId).ToList(); // ordered by ParentId
+                t => t.ParentId).ToList(); 
 
             var newTabId = 1;
             exportedTabs.ForEach(t => t.Id = newTabId++);
