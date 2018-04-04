@@ -1127,27 +1127,33 @@ namespace DNNConnect.CKEditorProvider.Web
             _settings = new NameValueCollection();
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-            var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+            if (providerConfiguration.Providers.ContainsKey(providerConfiguration.DefaultProvider)) {
+                var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
-            if (objProvider == null)
-            {
-                return;
-            }
-
-            foreach (string key in objProvider.Attributes)
-            {
-                if (!key.ToLower().StartsWith("ck_"))
+                if (objProvider == null)
                 {
-                    continue;
+                    return;
                 }
 
-                string sAdjustedKey = key.Substring(3, key.Length - 3).ToLower();
-
-                if (sAdjustedKey != string.Empty)
+                foreach (string key in objProvider.Attributes)
                 {
-                    _settings[sAdjustedKey] = objProvider.Attributes[key];
+                    if (!key.ToLower().StartsWith("ck_"))
+                    {
+                        continue;
+                    }
+
+                    string sAdjustedKey = key.Substring(3, key.Length - 3).ToLower();
+
+                    if (sAdjustedKey != string.Empty)
+                    {
+                        _settings[sAdjustedKey] = objProvider.Attributes[key];
+                    }
                 }
+            } else
+            {
+                throw new Exception(string.Format("Configuration error: default provider {0} doesn't exist in {1} providers",providerConfiguration.DefaultProvider,ProviderType));
             }
+            
         }
 
         /// <summary>
