@@ -69,9 +69,9 @@
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Providers\ClientCapabilityProviders\Provider.AspNetClientCapabilityProvider\DotNetNuke.Providers.AspNetClientCapabilityProvider.csproj">
+    <ProjectReference Include="..\..\Providers\ClientCapabilityProviders\Provider.AspNetCCP\DotNetNuke.Providers.AspNetCCP.csproj">
       <Project>{a3b3f1e8-6c1a-4e35-a5b4-51ecc5a43af7}</Project>
-      <Name>DotNetNuke.Providers.AspNetClientCapabilityProvider</Name>
+      <Name>DotNetNuke.Providers.AspNetCCP</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
       <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
