@@ -197,15 +197,21 @@ namespace DotNetNuke.Web.DDRMenu
 			    }
 				else
 				{
-					var nodeText2 = nodeText;                    
-                    filteredNodes.Add(RootNode.FindByNameOrId(nodeText2));
+                    filteredNodes.Add(RootNode.FindByNameOrId(nodeText));
 				}
 			}
 
             // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
 		    if (flattenedNodes.HasChildren())
 		        RootNode = flattenedNodes;
-			RootNode.RemoveAll(filteredNodes);
+            if (exclude)
+            {
+                RootNode.RemoveAll(filteredNodes);
+            }
+            else
+            {
+                RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
+            }
 		}
 
         private void FilterHiddenNodes(MenuNode parentNode)
