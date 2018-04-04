@@ -73,10 +73,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ClientDependency.Core">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
-    </Reference>
     <Reference Include="CountryListBox">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
@@ -1819,6 +1815,10 @@
     <Folder Include="UI\Internal\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\ClientDependency\ClientDependency.Core\ClientDependency.Core.csproj">
+      <Project>{ea35b06d-0cc8-4830-a3f7-9bb3d36d0faf}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">
       <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>
       <Name>CountryListBox</Name>
