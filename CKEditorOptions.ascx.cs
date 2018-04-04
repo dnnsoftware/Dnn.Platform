@@ -137,13 +137,9 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                var o = ViewState["CurrentTabId"];
-                if (o != null)
-                {
-                    return (int)o;
-                }
+                var currentTabId = ViewState["CurrentTabId"] ?? TabController.CurrentPage?.TabID;
 
-                return 1;
+                return currentTabId != null ? (int)currentTabId : -1;
             }
 
             set
