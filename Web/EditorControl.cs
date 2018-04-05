@@ -1130,12 +1130,7 @@ namespace DNNConnect.CKEditorProvider.Web
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
             if (providerConfiguration.Providers.ContainsKey(providerConfiguration.DefaultProvider)) {
                 var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
-
-                if (objProvider == null)
-                {
-                    return;
-                }
-
+                
                 foreach (string key in objProvider.Attributes)
                 {
                     if (key.IndexOf("ck_", StringComparison.OrdinalIgnoreCase) == 0)
