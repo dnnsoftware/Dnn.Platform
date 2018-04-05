@@ -435,7 +435,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             _settings["filebrowserBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId,
                                         parentModulId,
@@ -445,7 +445,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             _settings["filebrowserImageBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId,
                                         parentModulId,
@@ -455,7 +455,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             _settings["filebrowserFlashBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId,
                                         parentModulId,
@@ -468,7 +468,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                 _settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId,
                                             parentModulId,
@@ -478,7 +478,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                 _settings["filebrowserFlashUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId,
                                             parentModulId,
@@ -488,7 +488,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                 _settings["filebrowserImageUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId,
                                             parentModulId,
@@ -514,19 +514,19 @@ namespace DNNConnect.CKEditorProvider.Web
                             _settings["filebrowserBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?tabid={0}&PortalID={1}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?tabid={0}&PortalID={1}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId));
                             _settings["filebrowserImageBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Images&tabid={0}&PortalID={1}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Images&tabid={0}&PortalID={1}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId));
                             _settings["filebrowserFlashBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Flash&tabid={0}&PortalID={1}",
+                                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Flash&tabid={0}&PortalID={1}",
                                         _portalSettings.ActiveTab.TabID,
                                         _portalSettings.PortalId));
 
@@ -535,19 +535,19 @@ namespace DNNConnect.CKEditorProvider.Web
                                 _settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files&tabid={0}&PortalID={1}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files&tabid={0}&PortalID={1}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId));
                                 _settings["filebrowserFlashUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash&tabid={0}&PortalID={1}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash&tabid={0}&PortalID={1}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId));
                                 _settings["filebrowserImageUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images&tabid={0}&PortalID={1}",
+                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images&tabid={0}&PortalID={1}",
                                             _portalSettings.ActiveTab.TabID,
                                             _portalSettings.PortalId));
                             }
@@ -1048,9 +1048,9 @@ namespace DNNConnect.CKEditorProvider.Web
                              setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
 
                 currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                    _portalSettings, 
-                    currentSettings, 
-                    settingsDictionary, 
+                    _portalSettings,
+                    currentSettings,
+                    settingsDictionary,
                     portalKey,
                     portalRoles);
 
@@ -1128,9 +1128,10 @@ namespace DNNConnect.CKEditorProvider.Web
             _settings = new NameValueCollection();
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-            if (providerConfiguration.Providers.ContainsKey(providerConfiguration.DefaultProvider)) {
+            if (providerConfiguration.Providers.ContainsKey(providerConfiguration.DefaultProvider))
+            {
                 var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
-                
+
                 foreach (string key in objProvider.Attributes)
                 {
                     if (key.IndexOf("ck_", StringComparison.OrdinalIgnoreCase) == 0)
@@ -1143,11 +1144,15 @@ namespace DNNConnect.CKEditorProvider.Web
                         }
                     }
                 }
-            } else
-            {
-                throw new ConfigurationErrorsException(string.Format("Configuration error: default provider {0} doesn't exist in {1} providers",providerConfiguration.DefaultProvider,ProviderType));
             }
-            
+            else
+            {
+                throw new ConfigurationErrorsException(string.Format(
+                    "Configuration error: default provider {0} doesn't exist in {1} providers",
+                    providerConfiguration.DefaultProvider,
+                    ProviderType));
+            }
+
         }
 
         /// <summary>
@@ -1308,7 +1313,7 @@ namespace DNNConnect.CKEditorProvider.Web
             if (
                 File.Exists(
                     Context.Server.MapPath(
-						"~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"))
+                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsAdaptName))
             {
                 cs.RegisterClientScriptInclude(
@@ -1355,13 +1360,13 @@ namespace DNNConnect.CKEditorProvider.Web
 
             //if (HasMsAjax)
             //{
-                var postBackScript =
-                    string.Format(
-                         @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return; CKEDITOR.instances.{0}.destroy(); }}",
-                        editorFixedId);
+            var postBackScript =
+                string.Format(
+                     @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return; CKEDITOR.instances.{0}.destroy(); }}",
+                    editorFixedId);
 
-                RegisterOnSubmitStatement(
-                    GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
+            RegisterOnSubmitStatement(
+                GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
             //}
 
             var editorScript = new StringBuilder();
