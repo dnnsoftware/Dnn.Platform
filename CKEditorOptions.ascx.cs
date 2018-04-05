@@ -98,6 +98,8 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private ToolbarSet toolbarSets;
 
+        private const string KeyCurrentTabId = "CurrentTabId";
+
         #endregion
 
         #region Properties
@@ -137,14 +139,14 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                var currentTabId = ViewState["CurrentTabId"] ?? TabController.CurrentPage?.TabID;
+                var currentTabId = ViewState[KeyCurrentTabId] ?? TabController.CurrentPage?.TabID;
 
                 return currentTabId != null ? (int)currentTabId : -1;
             }
 
             set
             {
-                ViewState["CurrentTabId"] = value;
+                ViewState[KeyCurrentTabId] = value;
             }
         }
 
