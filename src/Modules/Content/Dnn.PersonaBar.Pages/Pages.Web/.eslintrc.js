@@ -20,7 +20,9 @@ module.exports = {
         "__": false,
         "Promise": false,
         "VERSION": false,
-        "process": false
+        "process": false,
+        "test":false,
+        "expect":false
     },
     "rules": {
        "spellcheck/spell-checker": [1,
