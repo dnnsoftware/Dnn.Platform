@@ -414,6 +414,25 @@ namespace DotNetNuke.UI.Skins
             return success;
         }
 
+        /// <summary>
+        /// Handle access denied errors by displaying an error message 
+        /// or by performing a redirect to a predefined "access denied URL"
+        /// </summary>
+        /// <param name="redirect"></param>
+        private void HandleAccesDenied(bool redirect = false)
+        {
+            var message = Localization.GetString("TabAccess.Error");
+            if (redirect)
+            {
+                var redirectUrl = Globals.AccessDeniedURL(message);
+                Response.Redirect(redirectUrl, true);
+            }
+            else
+            {
+                AddPageMessage(this, "", message, ModuleMessage.ModuleMessageType.YellowWarning);
+            }
+        }
+
         private bool ProcessMasterModules()
         {
             bool success = true;
@@ -425,7 +444,7 @@ namespace DotNetNuke.UI.Skins
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    HandleAccesDenied(true);
                 }
 
                 int urlVersion;
@@ -433,8 +452,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!TabVersionUtils.CanSeeVersionedPages())
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
-                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                         return true;
                     }
 
@@ -456,7 +474,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"), ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                     }
                 }
                 else

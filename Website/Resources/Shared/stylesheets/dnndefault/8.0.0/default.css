@@ -1365,6 +1365,7 @@ div.dnnTagsInput span.tag {
     -ms-word-wrap: break-word;
     word-wrap: break-word;
     box-sizing: border-box;
+    word-break: break-word;
 }
 
     div.dnnTagsInput span.tag:hover {

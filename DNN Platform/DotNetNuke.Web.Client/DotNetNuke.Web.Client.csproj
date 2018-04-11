@@ -36,10 +36,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
@@ -79,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Components\ClientDependency\ClientDependency.Core\ClientDependency.Core.csproj">
+      <Project>{ea35b06d-0cc8-4830-a3f7-9bb3d36d0faf}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">

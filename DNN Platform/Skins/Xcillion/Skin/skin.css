@@ -1526,3 +1526,25 @@ footer .links-list ul li a:before {
     z-index: 1;
     display: block
 }
+
+#dnnMenu .menuItem {
+    word-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+    #dnnMenu .menuItem {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px){
+    #dnnMenu .menuItem {
+        max-width: 940px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #dnnMenu .menuItem {
+        max-width: 1138px;
+    }
+}

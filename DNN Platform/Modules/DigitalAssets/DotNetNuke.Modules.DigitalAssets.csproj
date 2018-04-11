@@ -33,7 +33,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.DigitalAssets.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>default</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

@@ -49,7 +49,7 @@
     <DocumentationFile>bin\DotNetNuke.Website.Deprecated.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>default</LangVersion>
+    <LangVersion>6</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

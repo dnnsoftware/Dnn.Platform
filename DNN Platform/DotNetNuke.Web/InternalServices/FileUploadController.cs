@@ -429,17 +429,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
 
-                // Check if this is a User Folder                
-                int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                if (IsUserFolder(folder, out userId))
-                {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
-                    if (user != null)
-                    {
-                        folderInfo = folderManager.GetUserFolder(user);
-                    }
-                }
 
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
