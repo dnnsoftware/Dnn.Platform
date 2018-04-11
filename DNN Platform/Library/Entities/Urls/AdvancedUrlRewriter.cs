@@ -2339,6 +2339,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool IgnoreRequestForWebServer(string requestedPath)
         {
             if (requestedPath.ToLowerInvariant().IndexOf("synchronizecache.aspx", StringComparison.Ordinal) > 1
+                || requestedPath.ToLowerInvariant().IndexOf("synchronizeoutputcache.aspx", StringComparison.Ordinal) > 1
                 || requestedPath.EndsWith("keepalive.aspx", true, CultureInfo.InvariantCulture))
             {
                 return true;

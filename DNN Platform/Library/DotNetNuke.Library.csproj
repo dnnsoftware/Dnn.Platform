@@ -774,6 +774,7 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
+    <Compile Include="Services\OutputCache\Providers\MemoryCacheSynchonizationHandler.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseProvider.cs" />
     <Compile Include="Services\OutputCache\Providers\DatabaseResponseFilter.cs" />
     <Compile Include="Services\OutputCache\Providers\FileProvider.cs" />
