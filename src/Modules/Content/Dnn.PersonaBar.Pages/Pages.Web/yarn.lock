@@ -21,8 +21,8 @@
   resolved "https://www.myget.org/F/dnn-software-public/npm/@types/knockout/-/@types/knockout-3.4.36.tgz#4b8cc1afbaf735ae63cb8e62b69451e17474e489"
 
 "@types/node@*":
-  version "9.6.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@types/node/-/@types/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
+  version "9.6.3"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/@types/node/-/@types/node-9.6.3.tgz#f5fd440f8a9867b65ae76d442e269622a1db00b5"
 
 "@types/redux@3.6.31":
   version "3.6.31"
@@ -302,8 +302,8 @@ aws-sign2@~0.7.0:
   resolved "https://www.myget.org/F/dnn-software-public/npm/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
 
 aws4@^1.2.1, aws4@^1.6.0:
-  version "1.6.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
+  version "1.7.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/aws4/-/aws4-1.7.0.tgz#d4d0e9b9dbfca77bf08eeb0a8a471550fe39e289"
 
 babel-code-frame@^6.26.0, babel-code-frame@^6.8.0:
   version "6.26.0"
@@ -487,12 +487,13 @@ babel-plugin-check-es2015-constants@^6.3.13:
     babel-runtime "^6.22.0"
 
 babel-plugin-istanbul@^4.1.5:
-  version "4.1.5"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/babel-plugin-istanbul/-/babel-plugin-istanbul-4.1.5.tgz#6760cdd977f411d3e175bb064f2bc327d99b2b6e"
+  version "4.1.6"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/babel-plugin-istanbul/-/babel-plugin-istanbul-4.1.6.tgz#36c59b2192efce81c5b378321b74175add1c9a45"
   dependencies:
+    babel-plugin-syntax-object-rest-spread "^6.13.0"
     find-up "^2.1.0"
-    istanbul-lib-instrument "^1.7.5"
-    test-exclude "^4.1.1"
+    istanbul-lib-instrument "^1.10.1"
+    test-exclude "^4.2.1"
 
 babel-plugin-jest-hoist@^22.4.3:
   version "22.4.3"
@@ -927,16 +928,14 @@ braces@^1.8.2:
     repeat-element "^1.1.2"
 
 braces@^2.3.1:
-  version "2.3.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/braces/-/braces-2.3.1.tgz#7086c913b4e5a08dbe37ac0ee6a2500c4ba691bb"
+  version "2.3.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/braces/-/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
   dependencies:
     arr-flatten "^1.1.0"
     array-unique "^0.3.2"
-    define-property "^1.0.0"
     extend-shallow "^2.0.1"
     fill-range "^4.0.0"
     isobject "^3.0.1"
-    kind-of "^6.0.2"
     repeat-element "^1.1.2"
     snapdragon "^0.8.1"
     snapdragon-node "^2.0.1"
@@ -1038,8 +1037,8 @@ caniuse-api@^1.5.2:
     lodash.uniq "^4.5.0"
 
 caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30000824"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/caniuse-db/-/caniuse-db-1.0.30000824.tgz#bba3ff425296e04caa37fe426259206a7056551b"
+  version "1.0.30000827"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/caniuse-db/-/caniuse-db-1.0.30000827.tgz#bd2839dd196093b44c28c17f93513140c9d92588"
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1310,8 +1309,8 @@ core-js@^1.0.0:
   resolved "https://www.myget.org/F/dnn-software-public/npm/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.1.0, core-js@^2.4.0, core-js@^2.5.0:
-  version "2.5.4"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/core-js/-/core-js-2.5.4.tgz#f2c8bf181f2a80b92f360121429ce63a2f0aeae0"
+  version "2.5.5"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -1773,9 +1772,9 @@ entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
-enzyme-adapter-react-15.4@^1.0.5:
+enzyme-adapter-react-15@^1.0.5:
   version "1.0.5"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/enzyme-adapter-react-15.4/-/enzyme-adapter-react-15.4-1.0.5.tgz#9a0adc500e6aaf652d27b3599a50e660662f2806"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/enzyme-adapter-react-15/-/enzyme-adapter-react-15-1.0.5.tgz#99f9a03ff2c2303e517342935798a6bdfbb75fac"
   dependencies:
     enzyme-adapter-utils "^1.1.0"
     lodash "^4.17.4"
@@ -1790,12 +1789,6 @@ enzyme-adapter-utils@^1.1.0:
     lodash "^4.17.4"
     object.assign "^4.0.4"
     prop-types "^15.6.0"
-
-enzyme-to-json@^3.3.3:
-  version "3.3.3"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/enzyme-to-json/-/enzyme-to-json-3.3.3.tgz#ede45938fb309cd87ebd4386f60c754525515a07"
-  dependencies:
-    lodash "^4.17.4"
 
 enzyme@^3.3.0:
   version "3.3.0"
@@ -1935,6 +1928,10 @@ eslint-loader@1.3.0:
   dependencies:
     loader-utils "^0.2.7"
     object-assign "^4.0.1"
+
+eslint-plugin-jest@^21.15.0:
+  version "21.15.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-jest/-/eslint-plugin-jest-21.15.0.tgz#645a3f560d3e61d99611b215adc80b4f31e6d896"
 
 eslint-plugin-react@5.1.1:
   version "5.1.1"
@@ -2730,8 +2727,8 @@ iconv-lite@0.4.19:
   resolved "https://www.myget.org/F/dnn-software-public/npm/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
 iconv-lite@~0.4.13:
-  version "0.4.20"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/iconv-lite/-/iconv-lite-0.4.20.tgz#c1f7a1dbd98de51f275776575ebfa67433d01d22"
+  version "0.4.21"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/iconv-lite/-/iconv-lite-0.4.21.tgz#c47f8733d02171189ebc4a400f3218d348094798"
   dependencies:
     safer-buffer "^2.1.0"
 
@@ -2750,6 +2747,10 @@ ignore@^3.1.2:
 image-size@~0.5.0:
   version "0.5.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
+
+immutable@3.7.x:
+  version "3.7.6"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
 
 import-local@^1.0.0:
   version "1.0.0"
@@ -3139,7 +3140,7 @@ istanbul-lib-hook@^1.2.0:
   dependencies:
     append-transform "^0.4.0"
 
-istanbul-lib-instrument@^1.10.1, istanbul-lib-instrument@^1.7.5, istanbul-lib-instrument@^1.8.0:
+istanbul-lib-instrument@^1.10.1, istanbul-lib-instrument@^1.8.0:
   version "1.10.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/istanbul-lib-instrument/-/istanbul-lib-instrument-1.10.1.tgz#724b4b6caceba8692d3f1f9d0727e279c401af7b"
   dependencies:
@@ -3262,7 +3263,13 @@ jest-docblock@^22.4.3:
   dependencies:
     detect-newline "^2.1.0"
 
-jest-environment-jsdom@^22.4.3:
+jest-environment-enzyme@^6.0.0:
+  version "6.0.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/jest-environment-enzyme/-/jest-environment-enzyme-6.0.0.tgz#469ceaa0a21579af86cb01255f0591a3a5d95f40"
+  dependencies:
+    jest-environment-jsdom "^22.4.1"
+
+jest-environment-jsdom@^22.4.1, jest-environment-jsdom@^22.4.3:
   version "22.4.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/jest-environment-jsdom/-/jest-environment-jsdom-22.4.3.tgz#d67daa4155e33516aecdd35afd82d4abf0fa8a1e"
   dependencies:
@@ -3588,8 +3595,8 @@ lcid@^1.0.0:
     invert-kv "^1.0.0"
 
 left-pad@^1.2.0:
-  version "1.2.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/left-pad/-/left-pad-1.2.0.tgz#d30a73c6b8201d8f7d8e7956ba9616087a68e0ee"
+  version "1.3.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
 
 less-loader@2.2.3:
   version "2.2.3"
@@ -3695,13 +3702,13 @@ lodash.words@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
+lodash@3.10.x, lodash@^3.10.0, lodash@^3.3.1:
+  version "3.10.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
 lodash@4.16.6:
   version "4.16.6"
   resolved "https://www.myget.org/F/dnn-software-public/npm/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
-
-lodash@^3.10.0, lodash@^3.3.1:
-  version "3.10.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
   version "4.17.5"
@@ -4861,9 +4868,34 @@ react-hot-loader@1.3.0:
     react-hot-api "^0.4.5"
     source-map "^0.4.4"
 
+react-is@^16.3.1:
+  version "16.3.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-is/-/react-is-16.3.1.tgz#ee66e6d8283224a83b3030e110056798488359ba"
+
+react-shallow-testutils@2.0.x:
+  version "2.0.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-shallow-testutils/-/react-shallow-testutils-2.0.0.tgz#9087b40b368b124674c7bfcf9fdd6ad983914a97"
+
+react-test-render@^1.1.1:
+  version "1.1.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-test-render/-/react-test-render-1.1.1.tgz#35946bb383f8b82564768fd9d8eaf120c3032a9a"
+  dependencies:
+    immutable "3.7.x"
+    lodash "3.10.x"
+    react-shallow-testutils "2.0.x"
+
+react-test-renderer@^16.3.1:
+  version "16.3.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-test-renderer/-/react-test-renderer-16.3.1.tgz#d9257936d8535bd40f57f3d5a84e7b0452fb17f2"
+  dependencies:
+    fbjs "^0.8.16"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+    react-is "^16.3.1"
+
 react-tooltip@^3.3.0:
-  version "3.4.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-tooltip/-/react-tooltip-3.4.1.tgz#c72e2c0114537109dc400c75ba8963fe3205ce8a"
+  version "3.4.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-tooltip/-/react-tooltip-3.4.2.tgz#aef715d28b43b959a0a4c3501e8f121ffa644777"
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"
@@ -5212,8 +5244,8 @@ safe-regex@^1.1.0:
     ret "~0.1.10"
 
 safer-buffer@^2.1.0:
-  version "2.1.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/safer-buffer/-/safer-buffer-2.1.0.tgz#d9f653a55538c8d7829cb1a92e90bbcbc5ff5d3b"
+  version "2.1.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
 
 sane@^2.0.0:
   version "2.5.0"
@@ -5691,7 +5723,7 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-test-exclude@^4.1.1:
+test-exclude@^4.2.1:
   version "4.2.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/test-exclude/-/test-exclude-4.2.1.tgz#dfa222f03480bca69207ca728b37d74b45f724fa"
   dependencies:

@@ -1,3 +1,6 @@
 ﻿# NodeJs modules
+coverage/
 node_modules/
 .vscode/
+yarn-error.log
+dist/

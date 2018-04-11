@@ -5,7 +5,8 @@ module.exports = {
     ],
     "env": {
         "browser": true,
-        "commonjs": true
+        "commonjs": true,
+        "jest":true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parserOptions": {
@@ -21,8 +22,7 @@ module.exports = {
         "Promise": false,
         "VERSION": false,
         "process": false,
-        "test":false,
-        "expect":false
+        "describe"
     },
     "rules": {
        "spellcheck/spell-checker": [1,
