@@ -24,9 +24,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 
 namespace DotNetNuke.Services.OutputCache.Providers
 {
@@ -37,6 +43,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
     {
         protected const string cachePrefix = "DNN_OUTPUT:";
         private static System.Web.Caching.Cache runtimeCache;
+
+        private int responseTimeout = 10000;
+        private string synchronizeUrl = "{0}/SynchronizeOutputCache.aspx?data={1}";
+        private RegisteredWaitHandle _registeredWaitHandle;
 
         #region Friend Properties
 
@@ -144,6 +154,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 Cache.Remove(key);
             }
+            SendMessage(Null.NullInteger);
         }
 
         public override void PurgeExpiredItems(int portalId)
@@ -157,6 +168,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 Cache.Remove(key);
             }
+            SendMessage(tabId);
         }
 
         public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
@@ -173,6 +185,99 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
 			context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
         	return true;
+        }
+
+        private void OnSynchronizeResponseCallback(IAsyncResult asynchronousResult)
+        {
+            // State of request is asynchronous.
+            var request = (HttpWebRequest)asynchronousResult.AsyncState;
+            try
+            {
+                var response = (HttpWebResponse)(request.EndGetResponse(asynchronousResult));
+
+                if (response == null || response.StatusCode != HttpStatusCode.OK)
+                {
+                    //Log Error
+                    Exceptions.Exceptions.LogException(new Exception("Synchronization Error: Url - " + request.RequestUri.AbsoluteUri + "; Status - " + response.StatusCode + " " + response.StatusDescription));
+                }
+            }
+            catch (WebException e)
+            {
+                if (e.Status != WebExceptionStatus.RequestCanceled)
+                {
+                    Exceptions.Exceptions.LogException(new Exception("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
+                }
+            }
+            finally
+            {
+                _registeredWaitHandle?.Unregister(asynchronousResult.AsyncWaitHandle);
+            }
+        }
+
+        private static void TimeoutCallback(object state, bool timedOut)
+        {
+            if (timedOut)
+            {
+                var request = (HttpWebRequest)state;
+                request?.Abort();
+            }
+        }
+
+        private void SendMessage(int tabId)
+        {
+            //do not synchronize cache during upgrade process.
+            if (HttpContext.Current != null && IsUpgradeRequest(HttpContext.Current.Request))
+            {
+                return;
+            }
+
+            var servers = ServerController.GetServers();
+            if (servers.Count > 1)
+            {
+                var thisServer = servers.Single(s => s.ServerName == Globals.ServerName && s.IISAppName == Globals.IISAppName);
+
+                //Get the servers
+                var enabledServers = ServerController.GetEnabledServers().Where(s => !(s.ServerName == thisServer.ServerName
+                                                                            && s.IISAppName == thisServer.IISAppName)
+                                                                            && (s.ServerGroup == thisServer.ServerGroup || string.IsNullOrEmpty(thisServer.ServerGroup))
+                                                                            && !string.IsNullOrEmpty(s.Url));
+                //Iterate through the servers
+                foreach (var server in enabledServers)
+                {
+                    var dataParam = Host.DebugMode ? tabId.ToString() : UrlUtils.EncryptParameter(tabId.ToString(), Host.GUID);
+                    //build url
+                    var url = "http://" + synchronizeUrl;
+                    if (HostController.Instance.GetBoolean("UseSSLForCacheSync", false))
+                    {
+                        url = "https://" + synchronizeUrl;
+                    }
+                    var serverUrl = string.Format(url, server.Url, dataParam);
+
+                    //Create HttpWebRequest
+                    var request = WebRequest.Create(serverUrl) as HttpWebRequest;
+                    //Set cookie container for the request.
+                    var cookieContainer = new CookieContainer();
+                    request.CookieContainer = cookieContainer;
+                    request.UseDefaultCredentials = true;
+
+                    var serverRequestAdpater = ServerController.GetServerWebRequestAdapter();
+                    //call web request adapter to process the request before send.
+                    serverRequestAdpater?.ProcessRequest(request, server);
+
+                    // Start the asynchronous request.
+                    var result = request.BeginGetResponse(OnSynchronizeResponseCallback, request);
+
+                    // this line implements the timeout, if there is a timeout, the callback fires and the request aborts.
+                    _registeredWaitHandle = ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, TimeoutCallback, request, responseTimeout, true);
+                }
+            }
+        }
+
+        private static bool IsUpgradeRequest(HttpRequest request)
+        {
+            return request.Url.LocalPath.ToLower().Contains("/upgradewizard.aspx")
+                   || request.Url.AbsoluteUri.ToLower().Contains("/install.aspx?mode=upgrade")
+                   || request.Url.AbsoluteUri.ToLower().Contains("/install.aspx?mode=installresources");
         }
 
         #endregion
