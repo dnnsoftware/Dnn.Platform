@@ -22,7 +22,9 @@ module.exports = {
         "Promise": false,
         "VERSION": false,
         "process": false,
-        "describe"
+        "describe":false,
+        "it" : false,
+        "expect" :false
     },
     "rules": {
        "spellcheck/spell-checker": [1,
