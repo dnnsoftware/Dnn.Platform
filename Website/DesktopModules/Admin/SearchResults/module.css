@@ -130,6 +130,10 @@
         color: #777;
     }
 
+    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span + label {
+        font-weight: normal;
+    }
+
     .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others a {
         display: inline-block;
         margin: 0 2px 0 0;
@@ -157,6 +161,10 @@
     .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span {
         font-weight: bold;
         color: #777;
+    }
+
+    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span + label {
+        font-weight: normal;
     }
 
     .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others a {

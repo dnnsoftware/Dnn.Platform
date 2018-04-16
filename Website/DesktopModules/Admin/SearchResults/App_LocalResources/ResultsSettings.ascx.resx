@@ -135,6 +135,12 @@
   <data name="plEnableWildSearch.Text" xml:space="preserve">
     <value>Enable Wildcard Searches by Default</value>
   </data>
+  <data name="plMaxDescriptionLength.Help" xml:space="preserve">
+    <value>Max Description Length</value>
+  </data>
+  <data name="plMaxDescriptionLength.Text" xml:space="preserve">
+    <value>Max Description Length</value>
+  </data>
   <data name="plResultsScopeForFilters.Help" xml:space="preserve">
     <value>Limit the search results by selecting the content type(s).</value>
   </data>
@@ -147,17 +153,41 @@
   <data name="plResultsScopeForPortals.Text" xml:space="preserve">
     <value>Results Scope for Site(s)</value>
   </data>
-  <data name="plShowDescriptionForSnippet.Help" xml:space="preserve">
-    <value>Show description instead of snippet. Snippet will still be shown if description is not present.</value>
+  <data name="plShowDescription.Help" xml:space="preserve">
+    <value>Show Description</value>
   </data>
-  <data name="plShowDescriptionForSnippet.Text" xml:space="preserve">
-    <value>Show description in place of search snippet</value>
+  <data name="plShowDescription.Text" xml:space="preserve">
+    <value>Show Description</value>
   </data>
   <data name="plShowFriendlyTitle.Help" xml:space="preserve">
     <value>Show the page's title instead of it's internal name.</value>
   </data>
   <data name="plShowFriendlyTitle.Text" xml:space="preserve">
-    <value>Show friendly title</value>
+    <value>Show Friendly Title</value>
+  </data>
+  <data name="plShowLastUpdated.Help" xml:space="preserve">
+    <value>Show when the content was last updated, e.g. 5 days ago</value>
+  </data>
+  <data name="plShowLastUpdated.Text" xml:space="preserve">
+    <value>Show When Last Updated</value>
+  </data>
+  <data name="plShowSnippet.Help" xml:space="preserve">
+    <value>Show where the searched text appears in content.</value>
+  </data>
+  <data name="plShowSnippet.Text" xml:space="preserve">
+    <value>Show Snippet</value>
+  </data>
+  <data name="plShowSource.Help" xml:space="preserve">
+    <value>Show the source of content, e.g. Pages, Documents, etc.</value>
+  </data>
+  <data name="plShowSource.Text" xml:space="preserve">
+    <value>Show Source</value>
+  </data>
+  <data name="plShowTags.Help" xml:space="preserve">
+    <value>Show Tags</value>
+  </data>
+  <data name="plShowTags.Text" xml:space="preserve">
+    <value>Show Tags</value>
   </data>
   <data name="plTitleLinkTarget.Help" xml:space="preserve">
     <value>Choose to open the link in the same page or in a new window.</value>

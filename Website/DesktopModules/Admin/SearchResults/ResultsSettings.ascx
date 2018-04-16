@@ -33,11 +33,47 @@
         <asp:CheckBox runat="server" ID="chkEnableWildSearch" />
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="plShowDescriptionForSnippet" runat="server" ControlName="chkShowDescriptionForSnippet" />
-        <asp:CheckBox runat="server" ID="chkShowDescriptionForSnippet" />
+        <dnn:Label ID="plShowDescription" runat="server" ControlName="chkShowDescription" />
+        <asp:CheckBox runat="server" ID="chkShowDescription" />
+    </div>
+    <div class="dnnFormItem" id="maxDescriptionLengthRow">
+        <dnn:Label ID="plMaxDescriptionLength" runat="server" ControlName="txtMaxDescriptionLength" />
+        <asp:TextBox runat="server" ID="txtMaxDescriptionLength"></asp:TextBox>
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="plShowSnippet" runat="server" ControlName="chkShowSnippet" />
+        <asp:CheckBox runat="server" ID="chkShowSnippet" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="plShowFriendlyTitle" runat="server" ControlName="chkShowFriendlyTitle" />
         <asp:CheckBox runat="server" ID="chkShowFriendlyTitle" />
     </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="plShowLastUpdated" runat="server" ControlName="chkShowLastUpdated" />
+        <asp:CheckBox runat="server" ID="chkShowLastUpdated" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="plShowSource" runat="server" ControlName="chkShowSource" />
+        <asp:CheckBox runat="server" ID="chkShowSource" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:Label ID="plShowTags" runat="server" ControlName="chkShowTags" />
+        <asp:CheckBox runat="server" ID="chkShowTags" />
+    </div>
 </div>
+<script type="text/javascript">
+    (function($) {
+        $(document.body).ready(function() {
+            var $showDescription = $('#<%=chkShowDescription.ClientID%>');
+            var updateState = function() {
+                var $maxDescriptionLengthRow = $('#maxDescriptionLengthRow');
+                $maxDescriptionLengthRow.toggle($showDescription.is(':checked'));
+            }
+
+            updateState();
+            $showDescription.change(function() {
+                updateState();
+            });
+        });
+    })(jQuery);
+</script>

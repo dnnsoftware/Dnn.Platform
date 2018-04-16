@@ -135,6 +135,44 @@ namespace DotNetNuke.Web.InternalServices
             return searchModule != null ? searchModule.ModuleSettings : null;
         }
 
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
+        }
+
+        private int GetIntegerSetting(string settingName, int defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            var settingValue = Convert.ToString(settings[settingName]);
+            if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
+            {
+                return Convert.ToInt32(settingValue);
+            }
+
+            return defaultValue;
+        }
+
         private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
         {
             var list = new List<int>();
@@ -391,17 +429,28 @@ namespace DotNetNuke.Web.InternalServices
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
-            var showFriendlyTitle = GetSearchResultModuleSetting("ShowFriendlyTitle", true);
-            var showDescriptionForSnippet = GetSearchResultModuleSetting("ShowDescriptionForSnippet", false);
+            var showFriendlyTitle = GetBooleanSetting("ShowFriendlyTitle", true);
+            var showDescription = GetBooleanSetting("ShowDescription", true);
+            var showSnippet = GetBooleanSetting("ShowSnippet", true);
+            var maxDescriptionLength = GetIntegerSetting("MaxDescriptionLength", 100);
 
-            return sResult.Results.Select(result => 
-                new BasicView
-                    {
-                        Title = GetTitle(result, showFriendlyTitle),
-                        DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
-                        DocumentUrl = result.Url,
-                        Snippet = showDescriptionForSnippet ? result.Description : result.Snippet,
-                    });
+            return sResult.Results.Select(result =>
+            {
+                var description = result.Description;
+                if (!string.IsNullOrEmpty(description) && description.Length > maxDescriptionLength)
+                {
+                    description = description.Substring(0, maxDescriptionLength) + "...";
+                }
+
+                return new BasicView
+                {
+                    Title = GetTitle(result, showFriendlyTitle),
+                    DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
+                    DocumentUrl = result.Url,
+                    Snippet = showSnippet ? result.Snippet : string.Empty,
+                    Description = showDescription ? description : string.Empty
+                };
+            });
         }
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
@@ -418,22 +467,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
-        }
-
-        private bool GetSearchResultModuleSetting(string settingName, bool defaultValue)
-        {
-            if (PortalSettings == null)
-            {
-                return defaultValue;
-            }
-
-            var settings = GetSearchModuleSettings();
-            if (settings == null || !settings.ContainsKey(settingName))
-            {
-                return defaultValue;
-            }
-
-            return Convert.ToBoolean(settings[settingName]);
         }
 
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
