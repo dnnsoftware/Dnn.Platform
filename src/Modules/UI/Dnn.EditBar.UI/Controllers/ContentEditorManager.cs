@@ -28,6 +28,7 @@ using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -591,7 +592,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 panels.Add(parent as UpdatePanel);
             }
-            else
+            else if(parent != null && !(parent is DataBoundControl))
             {
                 foreach (Control childControl in parent.Controls)
                 {
