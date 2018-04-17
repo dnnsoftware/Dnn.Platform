@@ -592,7 +592,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 panels.Add(parent as UpdatePanel);
             }
-            else if(parent != null && !(parent is DataBoundControl))
+            else if(parent != null && !(parent is GridView || parent is Repeater))
             {
                 foreach (Control childControl in parent.Controls)
                 {
