@@ -592,7 +592,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 panels.Add(parent as UpdatePanel);
             }
-            else if(parent != null && !(parent is GridView || parent is Repeater))
+            else if(parent != null && !IsListControl(parent))
             {
                 foreach (Control childControl in parent.Controls)
                 {
@@ -601,6 +601,11 @@ namespace Dnn.EditBar.UI.Controllers
             }
 
             return panels;
+        }
+
+        private bool IsListControl(Control control)
+        {
+            return control is DataBoundControl || control is Repeater || control is DataGrid;
         }
 
         private void UpdatePanelUnloadEvent(object sender, EventArgs e)
