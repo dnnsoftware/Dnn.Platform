@@ -7,6 +7,7 @@ using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using Dnn.PersonaBar.Library.Helper;
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
@@ -43,19 +44,25 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             var lst = new List<PageModel>();
             var tab = PageId != -1
                 ? TabController.Instance.GetTab(PageId, PortalId)
-                : (ParentId > 0 ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId) : TabController.Instance.GetTabByName(PageName, PortalId));
+                : (ParentId > 0
+                    ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId)
+                    : TabController.Instance.GetTabByName(PageName, PortalId));
 
-            if (tab == null)
-            {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
-            }
             if (!SecurityService.Instance.CanManagePage(PageId))
             {
                 return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
 
-            lst.Add(new PageModel(tab));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output =  LocalizeString("Prompt_PageFound") };
+            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+
+            if (PortalSettings == currentPortal || PortalSettings.PortalId == tab.PortalID
+                || PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings, true))
+            {
+                lst.Add(new PageModel(tab));
+                return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
+            }
+
+            return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
         }
     }
 }
