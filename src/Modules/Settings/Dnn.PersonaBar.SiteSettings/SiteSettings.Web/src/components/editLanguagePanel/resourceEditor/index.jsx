@@ -87,9 +87,7 @@ class ResourceEditor extends Component {
             inFullMode: false
         });
 
-        setTimeout(() => {
-            window.dnn.stopEscapeFromClosingPB = false;
-        }, 500);
+        window.dnn.stopEscapeFromClosingPB = false;
     }
 
     onFullEditorChange(value){

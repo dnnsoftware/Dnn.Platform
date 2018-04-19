@@ -46,13 +46,11 @@ class App extends Component {
         if (typeof callback === "function") {
             callback();
         }
-        setTimeout(() => {
-            this.setState({
-                referrer: "",
-                referrerText: "",
-                backToReferrerFunc: null
-            });
-        }, 750);
+        this.setState({
+            referrer: "",
+            referrerText: "",
+            backToReferrerFunc: null
+        });
     }
 
     changePortalId(portalId) {
