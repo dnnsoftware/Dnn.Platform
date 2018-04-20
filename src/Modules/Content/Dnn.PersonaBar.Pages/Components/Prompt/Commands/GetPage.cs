@@ -55,8 +55,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
-            if (PortalSettings == currentPortal || PortalSettings.PortalId == tab.PortalID
-                || PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings, true))
+            if (PortalSettings == currentPortal
+                || PortalSettings.PortalId == tab.PortalID
+                || PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 lst.Add(new PageModel(tab));
                 return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
