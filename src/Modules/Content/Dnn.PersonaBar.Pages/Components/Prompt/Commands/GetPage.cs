@@ -53,11 +53,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
 
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-
-            if (PortalSettings == currentPortal
-                || PortalSettings.PortalId == tab.PortalID
-                || PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 lst.Add(new PageModel(tab));
                 return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
