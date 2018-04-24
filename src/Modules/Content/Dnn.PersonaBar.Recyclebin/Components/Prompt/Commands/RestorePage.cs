@@ -1,4 +1,5 @@
-﻿using Dnn.PersonaBar.Library.Prompt;
+﻿using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
@@ -40,29 +41,38 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override ConsoleResultModel Run()
         {
             TabInfo tab;
+            string message = string.Format(LocalizeString("PageNotFound"), PageId);
+
             if (PageId > 0)
             {
                 tab = TabController.Instance.GetTab(PageId, PortalId);
                 if (tab == null)
-                {
-                    return new ConsoleErrorResultModel(string.Format(LocalizeString("PageNotFound"), PageId));
+                {                  
+                    return new ConsoleErrorResultModel(message);
                 }
             }
             else if (!string.IsNullOrEmpty(PageName))
             {
-                tab = ParentId > 0 ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId) : TabController.Instance.GetTabByName(PageName, PortalId);
+                tab = ParentId > 0 
+                    ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId) 
+                    : TabController.Instance.GetTabByName(PageName, PortalId);
+
                 if (tab == null)
-                    return
-                        new ConsoleErrorResultModel(
-                            string.Format(
-                                LocalizeString("PageNotFoundWithName"),
-                                PageName));
+                {
+                    message = string.Format(LocalizeString("PageNotFoundWithName"), PageName);
+                    return new ConsoleErrorResultModel(message);
+                }
             }
             else
             {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
             }
-            string message;
+
+            if (!PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            {
+                return new ConsoleErrorResultModel(message);
+            }
+
             RecyclebinController.Instance.RestoreTab(tab, out message);
             return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(LocalizeString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
         }
