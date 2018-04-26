@@ -12,7 +12,14 @@ module.exports = {
             "node":{
                 "extensions":[".js", ".jsx"]
             }
-        }
+        },
+        "react": {
+            "createClass": "createReactClass",
+            "pragma": "React",  
+            "version": "15.0",
+            "flowVersion": "0.53"
+          },
+          "propWrapperFunctions": [ "forbidExtraProps" ]
     },
     "parser": "babel-eslint",
     "parserOptions": {
