@@ -994,9 +994,15 @@ namespace Dnn.PersonaBar.Pages.Components
             return _pageUrlsController.GetPageUrls(tab, portalId);
         }
 
-        public PageSettings GetPageSettings(int pageId)
+        public PageSettings GetPageSettings(int pageId, PortalSettings requestPortalSettings = null)
         {
-            var tab = GetPageDetails(pageId);
+            var tab = GetPageDetails(pageId);            
+
+            if (!PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
+            {
+                throw new PageNotFoundException();
+            }
+
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var page = Converters.ConvertToPageSettings<PageSettings>(tab);
             page.Modules = GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
