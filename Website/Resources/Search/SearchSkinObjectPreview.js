@@ -96,7 +96,9 @@
 	                    var $searchButton = $wrap.parents('.SearchContainer').length ? $wrap.parent().next() : $wrap.next();
                         var href = $searchButton.attr('href');
                         var code = href.replace('javascript:', '');
-                        eval(code);
+                        setTimeout(function(){
+							eval(code);
+						}, 0);
                         return false;
                     });
                 };
@@ -180,7 +182,9 @@
                                 href = $wrap.parent().next().attr('href');
                             }
                             var code = href.replace('javascript:', '');
-                            eval(code);
+                            setTimeout(function(){
+							    eval(code);
+						    }, 0);
                             e.preventDefault();
                         } else {
                             e.preventDefault();
