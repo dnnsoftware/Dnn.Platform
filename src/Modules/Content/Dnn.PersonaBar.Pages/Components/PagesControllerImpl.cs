@@ -206,10 +206,10 @@ namespace Dnn.PersonaBar.Pages.Components
             return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
         }
 
-        public void DeletePage(PageItem page)
+        public void DeletePage(PageItem page, PortalSettings portalSettings = null)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = TabController.Instance.GetTab(page.Id, portalSettings.PortalId);
+            var currentPortal = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+            var tab = TabController.Instance.GetTab(page.Id, currentPortal.PortalId);
             if (tab == null)
             {
                 throw new PageNotFoundException();
@@ -217,13 +217,20 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (TabPermissionController.CanDeletePage(tab))
             {
-                if (TabController.IsSpecialTab(tab.TabID, portalSettings.PortalId))
+                if (TabController.IsSpecialTab(tab.TabID, currentPortal.PortalId))
                 {
                     throw new PageException(Localization.GetString("CannotDeleteSpecialPage"));
                 }
                 else
                 {
-                    TabController.Instance.SoftDeleteTab(tab.TabID, portalSettings);
+                    if (PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
+                    {
+                        TabController.Instance.SoftDeleteTab(tab.TabID, currentPortal);
+                    }
+                    else
+                    {
+                        throw new PageNotFoundException();
+                    }
                 }
             }
             else
