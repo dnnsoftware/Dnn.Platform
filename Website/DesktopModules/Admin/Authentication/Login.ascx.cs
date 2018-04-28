@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
+        private const string LOGIN_PATH = "/login";
 
         #endregion
 
@@ -201,9 +202,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
                 var isDefaultPage = redirectURL == "/"
                     || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
+                
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
-                    if (NeedRedirectAfterLogin && isDefaultPage && Convert.ToInt32(setting) != Null.NullInteger)
+                    if (
+                        NeedRedirectAfterLogin 
+                        && (isDefaultPage || IsRedirectingFromLoginUrl()) 
+                        && Convert.ToInt32(setting) != Null.NullInteger
+                        )
                     {
                         redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
                     }
@@ -251,6 +257,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
                 return redirectURL;
             }
+        }
+
+        private bool IsRedirectingFromLoginUrl()
+        {
+            return Request.UrlReferrer != null && 
+                Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
         private bool NeedRedirectAfterLogin => 
