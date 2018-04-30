@@ -6,6 +6,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using Dnn.PersonaBar.Library.Helper;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
@@ -25,7 +26,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             PageId = GetFlagValue(FlagId, "Page Id", -1, true, true, true);
             DeleteChildren = GetFlagValue(FlagDeleteChildren, "Delete Children", false);
         }
@@ -33,7 +34,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override ConsoleResultModel Run()
         {
             var tabInfo = TabController.Instance.GetTab(PageId, PortalSettings.PortalId);
-            if (tabInfo == null)
+            if (tabInfo == null || 
+                !PortalHelper.IsContentExistsForRequestedPortal(tabInfo.PortalID, PortalSettings))
             {
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("PageNotFound"), PageId));
             }
