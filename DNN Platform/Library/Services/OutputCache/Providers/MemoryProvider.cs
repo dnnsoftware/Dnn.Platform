@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         public override int GetItemCount(int tabId)
         {
-            return GetCacheKeys().Count();
+            return GetCacheKeys(tabId).Count();
         }
 
         public override byte[] GetOutput(int tabId, string cacheKey)

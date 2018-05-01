@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         internal static int GetCachedItemCount(int tabId)
         {
-            return Directory.GetFiles(GetCacheFolder(), "*" + DataFileExtension).Length;
+            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
         }
 
         internal static string GetCachedOutputFileName(int tabId, string cacheKey)
