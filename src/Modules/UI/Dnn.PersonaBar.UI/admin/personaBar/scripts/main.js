@@ -428,16 +428,35 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     }
                 }
             },
+            /**
+             * in case path is an array, it is expected to be a sorted list of dependent sources.
+             * 
+             * @param path string|array
+             */
             loadBundleScript: function (path) {
-                if (path.indexOf('cdv=') === -1) {
-                    path += (path.indexOf('?') > -1 ? '&' : '?') + 'cdv=' + config.buildNumber;
-                }
 
-                $.ajax({
-                    dataType: "script",
-                    cache: true,
-                    url: path
-                });
+                var urls = path;
+                if(Array.isArray(urls) === false) {
+                    urls = [path];
+                }
+                function ajax(urls, build) {
+                    if(urls.length == 0) {
+                        return;
+                    }
+                    $.ajax({
+                        dataType: "script",
+                        cache: true,
+                        data: {
+                            cdv: build
+                        },
+                        url: urls.pop(),
+                        complete: function() {
+                            ajax(urls, build);
+                        }
+                    });
+                }
+                    
+                ajax(urls.reverse(), config.buildNumber);
             },
             panelViewData: function (panelId, viewData) {
                 var localStorageAllowed = function () {
