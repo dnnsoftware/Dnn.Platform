@@ -24,10 +24,11 @@ so that we can have a chance of keeping on top of things.
   * To quickly create a topic branch based on development; `git checkout -b my_contribution development`
 * Make commits of logical units.
 * Check for unnecessary whitespace with `git diff --check` before committing.
+* Make sure your pull request description tags the GitHub issue ID, so it is clear what issue you have fixed.
 * Make sure your commit messages are in the proper format.
 
 ````
-    (DNN-####) Make the example in CONTRIBUTING imperative and concrete
+    Make the example in CONTRIBUTING imperative and concrete
 
     Without this patch applied the example commit message in the CONTRIBUTING
     document is not a concrete example.  This is a problem because the
@@ -35,9 +36,13 @@ so that we can have a chance of keeping on top of things.
     based on a description rather than an example.  This patch fixes the
     problem by making the example concrete and imperative.
 
-    The first line is a real life imperative statement with a ticket number
-    from our issue tracker.  The body describes the behavior without the patch,
-    why this is a problem, and how the patch fixes the problem when applied.
+    The first line is a real life imperative statement, indicating what 
+    happens to the code when this commit is applied.  The body describes the 
+    behavior without the patch, why this is a problem, and how the patch 
+    fixes the problem when applied.  Finally, a reference to the GitHub issue
+    is made for enable better tracking.
+
+    Fixes #123 #345
 ````
 
 * For bonus points run and add unit tests
