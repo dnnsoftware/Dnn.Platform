@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Web.UI;
+
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using ClientDependency.Core.Controls;
@@ -37,6 +40,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnLoad(e);
 
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (AddTag || Context.IsDebuggingEnabled)
+            {
+                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", DependencyType, FilePath, ForceProvider, Priority);
+            }
         }
     }
 }

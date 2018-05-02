@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.Modules
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
 
-        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
+        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\|(.+?)\|(\\d+?)\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region Private Members
@@ -435,16 +435,20 @@ namespace DotNetNuke.UI.Modules
             foreach (Match match in matches)
             {
                 cachedContent = cachedContent.Replace(match.Value, string.Empty);
-                switch (match.Groups[1].Value.ToUpperInvariant())
+                var dependencyType = match.Groups[1].Value.ToUpperInvariant();
+                var filePath = match.Groups[2].Value;
+                var forceProvider = match.Groups[3].Value;
+                var priority = Convert.ToInt32(match.Groups[4].Value);
+                switch (dependencyType)
                 {
                     case "JAVASCRIPT":
-                        ClientResourceManager.RegisterScript(this.Page, match.Groups[2].Value);
+                        ClientResourceManager.RegisterScript(this.Page, filePath, priority, forceProvider);
                         break;
                     case "CSS":
-                        ClientResourceManager.RegisterStyleSheet(this.Page, match.Groups[2].Value);
+                        ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
-                        var args = match.Groups[2].Value.Split(new[] { ',', }, StringSplitOptions.None);
+                        var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
                         if (string.IsNullOrEmpty(args[1]))
                         {
                             JavaScript.RequestRegistration(args[0]);
