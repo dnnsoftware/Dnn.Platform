@@ -185,11 +185,9 @@ class PageSettings extends Component {
             tabs.push(
                 <div className="dnn-simple-tab-item">
                     <PageTypeSelector
-                        page={selectedPage}
                         onChangePageType={onChangePageType}
                         components={pageTypeSelectorComponents} />
                     <PageDetails
-                        page={selectedPage}
                         selectedParentPageName={this.props.selectedPage.hierarchy}
                         selectedParentPageId={this.props.selectedPage.tabId}
                         onSelectParentPageId={this.onSelectParentPageId.bind(this)}

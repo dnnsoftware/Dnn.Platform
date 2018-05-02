@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import styles from "./style.less";
 import Localization from "../../localization";
@@ -49,6 +51,10 @@ class PageTypeSelector extends Component {
         }
     }
 
+    _defineVisibleOrHidden(includeInMenu) {
+        return includeInMenu ? Localization.get("Status_Visible") : Localization.get("Status_Hidden");
+    }
+
 
     render() {
         const { page, onChangePageType } = this.props;
@@ -92,7 +98,7 @@ class PageTypeSelector extends Component {
                                 {Localization.get("Status") + ": "}
                             </span>
                             <span className="page-info-item-value">
-                                {Localization.get("Status_" + page.status)}
+                                {this._defineVisibleOrHidden(page.includeInMenu)}
                             </span>
                         </div>
                     </div>
@@ -124,4 +130,10 @@ PageTypeSelector.propTypes = {
     components: PropTypes.array.isRequired
 };
 
-export default PageTypeSelector;
+const mapStateToProps = (state) => {
+    return {
+        page : state.pages.selectedPage
+    };
+};
+
+export default connect(mapStateToProps)(PageTypeSelector);

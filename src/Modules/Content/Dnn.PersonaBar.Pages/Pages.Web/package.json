@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "npm run webpack",
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "set NODE_ENV=production&&webpack -p",

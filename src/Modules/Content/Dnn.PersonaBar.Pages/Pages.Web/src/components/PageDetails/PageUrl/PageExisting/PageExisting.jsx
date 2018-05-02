@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import styles from "./style.less";
 import InputGroup from "dnn-input-group";
 import PagePicker from "dnn-page-picker";
@@ -59,4 +61,8 @@ PageExisting.propTypes = {
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageExisting;
+const mapStateToProps = (state) => {
+    return ({page : state.pages.selectedPage});
+};
+
+export default connect(mapStateToProps)(PageExisting);
