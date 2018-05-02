@@ -95,6 +95,8 @@
     <Compile Include="Controllers\ModulesController.cs" />
     <Compile Include="Dto\Localization.cs" />
     <Compile Include="Dto\UserSettings.cs" />
+    <Compile Include="Helper\ContentVerifier.cs" />
+    <Compile Include="Helper\IContentVerifier.cs" />
     <Compile Include="Helper\PortalHelper.cs" />
     <Compile Include="Helper\TimeZoneHelper.cs" />
     <Compile Include="Controllers\IExtensionController.cs" />
