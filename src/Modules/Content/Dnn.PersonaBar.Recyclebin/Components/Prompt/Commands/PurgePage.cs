@@ -13,7 +13,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("purge-page", Constants.RecylcleBinCategory, "Prompt_PurgePage_Description")]
     public class PurgePage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        private readonly ITabController _tabController;
+        private readonly IRecyclebinController _recyclebinController;
+        private readonly IContentVerifier _contentVerifier;
 
         [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
         private const string FlagId = "id";
@@ -21,8 +23,25 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
         private const string FlagDeleteChildren = "deletechildren";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int PageId { get; set; }
         private bool DeleteChildren { get; set; }
+
+        public PurgePage() : this(
+            TabController.Instance,
+            RecyclebinController.Instance,
+            new ContentVerifier()
+            )
+        {
+        }
+
+        public PurgePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
+        {
+            this._tabController = tabController;
+            this._recyclebinController = recyclebinController;
+            this._contentVerifier = contentVerifier;        
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -33,14 +52,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var tabInfo = TabController.Instance.GetTab(PageId, PortalSettings.PortalId);
-            if (tabInfo == null || 
-                !PortalHelper.IsContentExistsForRequestedPortal(tabInfo.PortalID, PortalSettings))
+            var tabInfo = _tabController.GetTab(PageId, PortalSettings.PortalId);
+            if (tabInfo == null ||
+                !_contentVerifier.IsContentExistsForRequestedPortal(tabInfo.PortalID, PortalSettings))
             {
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("PageNotFound"), PageId));
             }
             var errors = new StringBuilder();
-            RecyclebinController.Instance.DeleteTabs(new List<TabInfo> { tabInfo }, errors, DeleteChildren);
+            _recyclebinController.DeleteTabs(new List<TabInfo> { tabInfo }, errors, DeleteChildren);
+
             return errors.Length > 0
                 ? new ConsoleErrorResultModel(string.Format(LocalizeString("Service_RemoveTabError"), errors))
                 : new ConsoleResultModel(string.Format(LocalizeString("Prompt_PagePurgedSuccessfully"), PageId)) { Records = 1 };

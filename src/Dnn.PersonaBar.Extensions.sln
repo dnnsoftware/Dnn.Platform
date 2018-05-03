@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{424CCB69-AD4D-4CBC-83D3-E7588343A2E4}"
 	ProjectSection(SolutionItems) = preProject
@@ -111,6 +111,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Connectors", "Modules\Settings\Dnn.PersonaBar.Connectors\Dnn.PersonaBar.Connectors.csproj", "{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Prompt", "Modules\Settings\Dnn.PersonaBar.Prompt\Dnn.PersonaBar.Prompt.csproj", "{29521C64-3269-40DA-9B4C-CD492246C889}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Modules\Content\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -251,6 +253,12 @@ Global
 		{29521C64-3269-40DA-9B4C-CD492246C889}.Npm_Release|Any CPU.Build.0 = Npm_Release|Any CPU
 		{29521C64-3269-40DA-9B4C-CD492246C889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29521C64-3269-40DA-9B4C-CD492246C889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Npm_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Npm_Release|Any CPU.Build.0 = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -281,5 +289,9 @@ Global
 		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 		{271F868B-2395-4652-B2EA-EF5FEC3CCBEA} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 		{29521C64-3269-40DA-9B4C-CD492246C889} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
+		{05515510-9979-4424-8D0A-647F32A25FE7} = {25C1958E-8E53-4819-808E-D364614A2ED7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B146CFE-74B3-4068-A229-1A396F159A3A}
 	EndGlobalSection
 EndGlobal
