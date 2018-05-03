@@ -5,6 +5,7 @@ using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -23,8 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private int PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            
+        {            
             ModuleId = GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }
@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override ConsoleResultModel Run()
         {
             KeyValuePair<HttpStatusCode, string> message;
-            ModulesController.Instance.DeleteModule(PortalSettings, ModuleId, PageId, out message);
+            ModulesControllerLibrary.Instance.DeleteModule(PortalSettings, ModuleId, PageId, out message);
             return string.IsNullOrEmpty(message.Value)
                 ? new ConsoleResultModel(LocalizeString("Prompt_ModuleDeleted"))
                 : new ConsoleErrorResultModel(message.Value) { Records = 1 };
