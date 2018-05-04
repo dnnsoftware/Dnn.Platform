@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Modules
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
 
-        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
+        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)(\|(.+?)\|(\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
@@ -443,19 +443,14 @@ namespace DotNetNuke.UI.Modules
                 var forceProvider = string.Empty;
                 var priority = Null.NullInteger;
 
-                if (filePath.Contains("|"))
+                if (!string.IsNullOrEmpty(match.Groups[4].Value))
                 {
-                    var pathParams = filePath.Split(new[] { '|', }, StringSplitOptions.None);
-                    filePath = pathParams[0];
-                    if (pathParams.Length > 1)
-                    {
-                        forceProvider = pathParams[1];
-                    }
+                    forceProvider = match.Groups[4].Value;
+                }
 
-                    if (pathParams.Length > 2)
-                    {
-                        int.TryParse(pathParams[2], out priority);
-                    }
+                if (!string.IsNullOrEmpty(match.Groups[5].Value))
+                {
+                    priority = Convert.ToInt32(match.Groups[5].Value);
                 }
 
                 switch (dependencyType)
@@ -466,7 +461,7 @@ namespace DotNetNuke.UI.Modules
                             forceProvider = DefaultJsProvider;
                         }
 
-                        if (priority <= 0)
+                        if (priority == Null.NullInteger)
                         {
                             priority = (int)FileOrder.Js.DefaultPriority;
                         }
@@ -479,7 +474,7 @@ namespace DotNetNuke.UI.Modules
                             forceProvider = DefaultCssProvider;
                         }
 
-                        if (priority <= 0)
+                        if (priority == Null.NullInteger)
                         {
                             priority = (int)FileOrder.Css.DefaultPriority;
                         }
