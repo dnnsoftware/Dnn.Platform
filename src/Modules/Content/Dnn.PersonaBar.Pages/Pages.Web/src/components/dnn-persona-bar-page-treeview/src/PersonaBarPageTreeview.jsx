@@ -108,12 +108,23 @@ export class PersonaBarPageTreeview extends Component {
         }
     }
 
+    _checkItemDisabled(item) {
+        if (item.includeInMenu) {
+            return false;
+        } else {
+            if (item.status !== "Visible") {
+                return true;
+            }  
+            return false;
+        }
+    }
+
     getClassName(item) {
         const DRAG_HOVER = item.onDragOverState === true;
         const SELECTED = item.selected === true;
-        const DISABLED = item.status !== "Visible";
-
-        if(DRAG_HOVER || SELECTED) {
+        const DISABLED = this._checkItemDisabled(item);
+        
+        if (DRAG_HOVER || SELECTED) {
             return "list-item-highlight list-item-dragover";
         } else if (DISABLED) {
             return "list-item-disabled";

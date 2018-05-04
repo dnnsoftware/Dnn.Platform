@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
             try
             {
-                PagesController.Instance.DeletePage(new PageItem { Id = PageId });
+                PagesController.Instance.DeletePage(new PageItem { Id = PageId }, PortalSettings);
             }
             catch (PageNotFoundException)
             {

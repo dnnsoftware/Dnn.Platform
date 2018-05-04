@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import styles from "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import InputGroup from "dnn-input-group";
@@ -38,4 +40,8 @@ PageExternalUrl.propTypes = {
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageExternalUrl;
+const mapStateToProps = (state) => {
+    return ({page : state.pages.selectedPage});
+};
+
+export default connect(mapStateToProps)(PageExternalUrl);

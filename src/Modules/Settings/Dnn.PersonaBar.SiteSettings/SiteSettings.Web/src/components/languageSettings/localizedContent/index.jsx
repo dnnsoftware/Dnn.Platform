@@ -32,7 +32,7 @@ class LocalizedContent extends Component {
             this.setState(data);
             const newState = Object.assign(data, { showProgressBars: true });
             this.setState(newState);
-            setTimeout(this.getProgressData, 500);
+            this.getProgressData();
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
             util.utilities.notifyError(errorMessage.Message);
@@ -59,15 +59,11 @@ class LocalizedContent extends Component {
     }
 
     doneProgress() {
-        setTimeout(() => {
-            if (this.props.isOpen) {
-                this.props.closePersonaBarPage();
-                this.onUpdateSettings();
-            }
-            setTimeout(() => {
-                this.setState({ showProgressBars: false });
-            }, 1000);
-        }, 2000);
+        if (this.props.isOpen) {
+            this.props.closePersonaBarPage();
+            this.onUpdateSettings();
+        }
+        this.setState({ showProgressBars: false });
     }
 
     getDefaultLanguage() {

@@ -15,9 +15,7 @@ class Folder extends Component {
         });
         if (!props.children) {
             props.onClick(props.folder.NewValue, () => {
-                setTimeout(() => {
-                    this.setState({ isOpen: true });
-                }, 1000);
+                this.setState({ isOpen: true });
             });
         }
     }

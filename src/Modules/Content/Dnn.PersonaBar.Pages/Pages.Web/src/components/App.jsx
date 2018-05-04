@@ -32,7 +32,7 @@ import SearchPageInput from "./SearchPage/SearchPageInput";
 
 import "./style.less";
 
-import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
+import {PersonaBarPageTreeviewInteractor} from "./dnn-persona-bar-page-treeview";
 import SearchResult from "./SearchPage/SearchResult";
 
 function getSelectedTabBeingViewed(viewTab) {
@@ -410,16 +410,18 @@ class App extends Component {
                         item.name = page.name;
                         item.pageType = page.pageType;
                         item.url = page.url;
+                        item.includeInMenu = update.includeInMenu;
                         updateStore(list);
                     }
                 });
                 this.buildTree(update.tabId);
-                //this.onLoadPage(update.tabId);
                 resolve();
                 this.setState({inDuplicateMode: false});
             });
         });
     }
+
+    
     onLoadPage(pageId, callback) {
         const self = this;
         this.props.onLoadPage(pageId).then((data) => {
@@ -1570,7 +1572,7 @@ class App extends Component {
                     <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
-                                <div> 
+                                <div>
                                     <Button type="primary" disabled={ this.onEditMode()  || this.state.inSearch} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                                     <Button type="secondary" disabled={ this.onEditMode() || this.state.inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
@@ -1598,7 +1600,6 @@ class App extends Component {
                                         _traverse={this._traverse.bind(this)}
                                         showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                         selectedPageDirty={this.props.selectedPageDirty}
-                                        activePage={this.props.selectedPage}
                                         setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}

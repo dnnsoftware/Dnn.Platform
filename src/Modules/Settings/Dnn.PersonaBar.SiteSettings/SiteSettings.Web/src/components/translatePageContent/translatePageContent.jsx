@@ -65,7 +65,7 @@ class TranslatePageContent extends Component {
             this.setState(data);
             this.getPageList();
             if (data.InProgress && !data.Error) {
-                return setTimeout(this.getProgressData, 1000);
+                return this.getProgressData();
             }
             if (data.Error) {
                 return;

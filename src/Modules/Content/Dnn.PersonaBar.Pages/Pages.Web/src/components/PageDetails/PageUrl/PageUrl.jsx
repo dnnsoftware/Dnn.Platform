@@ -1,4 +1,7 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import PageExisting from "./PageExisting/PageExisting";
 import PageFile from "./PageFile/PageFile";
 import PageExternalUrl from "./PageExternalUrl/PageExternalUrl";
@@ -23,7 +26,7 @@ class PageUrl extends Component {
         const DetailComponent = this.getDetail(this.props.page.pageType);
         return (
             <div className={styles.pageUrl}>
-                <DetailComponent {...this.props} />
+                <DetailComponent onChangeField={this.props.onChangeField} />
             </div>
         );
     }
@@ -34,4 +37,10 @@ PageUrl.propTypes = {
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageUrl;
+const mapStateToProps = (state) => {
+    return ({
+        page: state.pages.selectedPage
+    });
+};
+
+export default connect(mapStateToProps)(PageUrl);

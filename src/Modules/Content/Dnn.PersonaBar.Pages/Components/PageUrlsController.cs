@@ -33,6 +33,18 @@ namespace Dnn.PersonaBar.Pages.Components
         public PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalInfo aliasPortal = new PortalAliasController().GetPortalByPortalAliasID(dto.SiteAliasKey);
+
+            if (aliasPortal != null && portalSettings.PortalId != aliasPortal.PortalID)
+            {
+                return new PageUrlResult
+                {
+                    Success = false,
+                    ErrorMessage = Localization.GetString("CustomUrlPortalAlias.Error"),
+                    SuggestedUrlPath = String.Empty
+                    };
+            }
+
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             //Clean Url

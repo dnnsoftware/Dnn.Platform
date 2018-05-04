@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import styles from "./style.less";
 import FileUpload from "dnn-file-upload";
 import utils from "../../../../utils";
@@ -35,26 +37,26 @@ class PageFile extends Component {
                             utils={utilities}
                             selectedFile={selectedFile}
                             onSelectFile={this.onFileSelect.bind(this)}
-                            browseButtonText = {Localization.get("BrowseButton")}
-                            uploadButtonText = {Localization.get("UploadButton")}
-                            linkButtonText = {Localization.get("LinkButton")}
-                            defaultText = {Localization.get("DragDefault")}
-                            onDragOverText = {Localization.get("DragOver")}
-                            uploadFailedText = {Localization.get("UploadFailed")}
-                            wrongFormatText = {Localization.get("WrongFormat")}
-                            imageText = {Localization.get("DefaultImageTitle")}
-                            linkInputTitleText = {Localization.get("LinkInputTitle")}
-                            linkInputPlaceholderText = {Localization.get("LinkInputPlaceholder")}
-                            linkInputActionText = {Localization.get("LinkInputAction")}
-                            uploadCompleteText = {Localization.get("UploadComplete")}
-                            uploadingText = {Localization.get("Uploading")}
-                            uploadDefaultText = {selectedFile ? selectedFile.fileName : Localization.get("Uploading")}
-                            browseActionText = {Localization.get("BrowseAction")}
-                            notSpecifiedText = {Localization.get("NotSpecified")}
-                            searchFilesPlaceHolderText = {Localization.get("SearchFilesPlaceHolder")}
-                            searchFoldersPlaceHolderText = {Localization.get("SearchFoldersPlaceHolder")}
-                            fileText = {Localization.get("File")}
-                            folderText = {Localization.get("Folder")}
+                            browseButtonText={Localization.get("BrowseButton")}
+                            uploadButtonText={Localization.get("UploadButton")}
+                            linkButtonText={Localization.get("LinkButton")}
+                            defaultText={Localization.get("DragDefault")}
+                            onDragOverText={Localization.get("DragOver")}
+                            uploadFailedText={Localization.get("UploadFailed")}
+                            wrongFormatText={Localization.get("WrongFormat")}
+                            imageText={Localization.get("DefaultImageTitle")}
+                            linkInputTitleText={Localization.get("LinkInputTitle")}
+                            linkInputPlaceholderText={Localization.get("LinkInputPlaceholder")}
+                            linkInputActionText={Localization.get("LinkInputAction")}
+                            uploadCompleteText={Localization.get("UploadComplete")}
+                            uploadingText={Localization.get("Uploading")}
+                            uploadDefaultText={selectedFile ? selectedFile.fileName : Localization.get("Uploading")}
+                            browseActionText={Localization.get("BrowseAction")}
+                            notSpecifiedText={Localization.get("NotSpecified")}
+                            searchFilesPlaceHolderText={Localization.get("SearchFilesPlaceHolder")}
+                            searchFoldersPlaceHolderText={Localization.get("SearchFoldersPlaceHolder")}
+                            fileText={Localization.get("File")}
+                            folderText={Localization.get("Folder")}
                             />
                     </GridCell>
                     <GridCell className="right-column">
@@ -72,4 +74,8 @@ PageFile.propTypes = {
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageFile;
+const mapStateToProps = (state) => {
+    return ({page: state.pages.selectedPage});
+};
+
+export default connect(mapStateToProps)(PageFile);

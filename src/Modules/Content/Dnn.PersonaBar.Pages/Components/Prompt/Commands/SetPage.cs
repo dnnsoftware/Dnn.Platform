@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
             try
             {
-                var pageSettings = PagesController.Instance.GetPageSettings(PageId);
+                var pageSettings = PagesController.Instance.GetPageSettings(PageId, PortalSettings);
                 if (pageSettings == null)
                 {
                     return new ConsoleErrorResultModel(LocalizeString("PageNotFound"));

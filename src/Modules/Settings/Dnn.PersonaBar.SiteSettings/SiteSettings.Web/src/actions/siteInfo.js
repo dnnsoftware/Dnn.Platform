@@ -2,6 +2,14 @@ import { siteInfo as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const siteInfoActions = {
+    updatePortalId(portalId) {
+        return {
+          type: ActionTypes.CHANGED_PORTAL_ID,
+          data: {
+              portalId
+          }
+        };
+    },
     getPortals(callback) {
         return (dispatch) => {
             ApplicationService.getPortals(data => {

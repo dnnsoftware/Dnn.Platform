@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import InputGroup from "dnn-input-group";
-import SingleLineInput from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Localization from "../../../localization";
@@ -148,4 +148,10 @@ PageDetails.propTypes = {
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageDetails;
+const mapStateToProps = (state) => {
+    return {
+        page : state.pages.selectedPage
+    };
+};
+
+export default connect(mapStateToProps)(PageDetails);

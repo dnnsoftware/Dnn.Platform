@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 import PageStandard from "./PageStandard/PageStandard";
 import PageUrl from "./PageUrl/PageUrl";
 import PageDetailsFooter from "./PageDetailsFooter/PageDetailsFooter";
@@ -24,8 +26,8 @@ class PageDetail extends Component {
 
         return (
             <div>
-                <DetailComponent {...this.props} />
-                <PageDetailsFooter {...this.props} />
+                <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} />
+                <PageDetailsFooter components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} />
             </div>
         );
     }
@@ -38,4 +40,10 @@ PageDetail.propTypes = {
     components: PropTypes.array.isRequired
 };
 
-export default PageDetail;
+const mapStateToProps = (state) => {
+    return {
+        page: state.pages.selectedPage
+    };
+};
+
+export default connect(mapStateToProps)(PageDetail);
