@@ -3205,7 +3205,7 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName, string packageType, string version = "", bool deleteFiles = true)
+        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
         {
             var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => 
                 p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) 
@@ -5549,7 +5549,7 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Google Analytics", "Module");
             UninstallPackage("DotNetNuke.Taxonomy", "Module");
 
-            UninstallPackage("UrlManagement", "Library", string.Empty, false);
+            UninstallPackage("UrlManagement", "Library", false);
         }
 
         private static void UpgradeToVersion920()
@@ -5595,9 +5595,9 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion921()
         {
-            UninstallPackage("jQuery", "Javascript_Library", "1.9.1");
-            UninstallPackage("jQuery-UI", "Javascript_Library", "1.11.3");
-            UninstallPackage("jQuery-Migrate", "Javascript_Library", "1.2.1");
+            UninstallPackage("jQuery", "Javascript_Library", true, "1.9.1");
+            UninstallPackage("jQuery-UI", "Javascript_Library", true, "1.11.3");
+            UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
