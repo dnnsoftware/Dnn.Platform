@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Modules
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
 
-        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)(\|(.+?)\|(\d+?))?\)-->",
+        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
@@ -438,19 +438,19 @@ namespace DotNetNuke.UI.Modules
             foreach (Match match in matches)
             {
                 cachedContent = cachedContent.Replace(match.Value, string.Empty);
-                var dependencyType = match.Groups[1].Value.ToUpperInvariant();
-                var filePath = match.Groups[2].Value;
+                var dependencyType = match.Groups["type"].Value.ToUpperInvariant();
+                var filePath = match.Groups["path"].Value;
                 var forceProvider = string.Empty;
                 var priority = Null.NullInteger;
 
-                if (!string.IsNullOrEmpty(match.Groups[4].Value))
+                if (match.Groups["provider"].Success)
                 {
-                    forceProvider = match.Groups[4].Value;
+                    forceProvider = match.Groups["provider"].Value;
                 }
 
-                if (!string.IsNullOrEmpty(match.Groups[5].Value))
+                if (match.Groups["priority"].Success)
                 {
-                    priority = Convert.ToInt32(match.Groups[5].Value);
+                    priority = Convert.ToInt32(match.Groups["priority"].Value);
                 }
 
                 switch (dependencyType)
