@@ -5,6 +5,11 @@ import {
 export default function siteInfo(state = {
 }, action) {
     switch (action.type) {
+        case ActionTypes.CHANGED_PORTAL_ID:
+            return {
+                ...state,
+                portalId: action.data.portalId
+            };
         case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_SETTINGS:
             return { ...state,
                 settings: action.data.settings,

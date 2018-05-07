@@ -56,10 +56,12 @@ class Appearance extends Component {
         const { page } = this.props;
         // if is new page take current page loaded behind the persona bar for preview
         const pageUrl = page.tabId !== 0 ? page.absoluteUrl : window.parent.location.href;
-        const skinSrcQueryString = encodeURI(this.trimAscxExtension(skinSrc));
-        const containerSrcQueryString = encodeURI(this.trimAscxExtension(containerSrc));
-        const queryStringSeparator = pageUrl.indexOf("?") === -1 ? "?" : "&";
-        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrcQueryString + "&ContainerSrc=" + containerSrcQueryString;
+        const skinSrcQueryString = this.trimAscxExtension(skinSrc);
+        const containerSrcQueryString = this.trimAscxExtension(containerSrc);
+        return utils.url.appendQueryString(pageUrl, {
+            SkinSrc: skinSrcQueryString,
+            ContainerSrc: containerSrcQueryString
+        });
     }
 
     previewPage() {

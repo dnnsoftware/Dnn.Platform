@@ -525,6 +525,9 @@
   <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
     <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the Update button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
   </data>
+  <data name="CustomUrlPortalAlias.Error" xml:space="preserve">
+    <value>Please select a valid site alias for this custom URL.</value>
+  </data>
   <data name="DuplicateUrl.Error" xml:space="preserve">
     <value>The URL is a duplicate of an existing URL.</value>
   </data>
@@ -821,6 +824,9 @@
   </data>
   <data name="Prompt_PageNotFound.Text" xml:space="preserve">
     <value>Page not found.</value>
+  </data>
+  <data name="Prompt_PageFound.Text" xml:space="preserve">
+    <value>Page found.</value>
   </data>
   <data name="Prompt_InvalidPageId.Text" xml:space="preserve">
     <value>You must specify a valid number for Page ID</value>
@@ -1680,5 +1686,8 @@
   </data>
   <data name="BulkPageValidateResponseTotalMessage.Text" xml:space="preserve">
     <value>[PAGES_TOTAL] pages were validated.</value>
+  </data>
+  <data name="EditContent.Text" xml:space="preserve">
+    <value>Edit Content</value>
   </data>
 </root>

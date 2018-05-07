@@ -442,6 +442,9 @@
   <data name="Prompt_GetModule_FlagPageId.Text" xml:space="preserve">
     <value>The Page ID of the page that contains the module.</value>
   </data>
+  <data name="Prompt_GetModule_Result.Text" xml:space="preserve">
+    <value>Module '{0}' has been found in page '{1}'.</value>
+  </data>
   <data name="Prompt_GetModule_ResultHtml.Text" xml:space="preserve">
     <value>&lt;h4&gt;Get Information on a Specific Module&lt;/h4&gt;
         &lt;p&gt;The code below retrieves the details for a module whose Module ID is 345 on a page 48&lt;/p&gt;
@@ -1083,11 +1086,17 @@
   <data name="Prompt_GetHost__NoArgs.Text" xml:space="preserve">
     <value>The get-host command does not take any arguments or flags.</value>
   </data>
+  <data name="Prompt_GetHost_OkMessage.Text" xml:space="preserve">
+    <value>get-host command executed successfully.</value>
+  </data>
   <data name="Prompt_GetPortal_NoArgs.Text" xml:space="preserve">
     <value>The get-portal command does not take any arguments or flags.</value>
   </data>
   <data name="Prompt_GetPortal_NotFound.Text" xml:space="preserve">
     <value>Could not find a portal with ID of '{0}'</value>
+  </data>
+  <data name="Prompt_GetPortal_Found.Text" xml:space="preserve">
+    <value>Portal '{0}' has been found.</value>
   </data>
   <data name="Prompt_ListCommands_Error.Text" xml:space="preserve">
     <value>An error occurred while attempting to list the commands.</value>
@@ -1109,6 +1118,9 @@
   </data>
   <data name="Prompt_ListPortals_NoArgs.Text" xml:space="preserve">
     <value>The list-portal command does not take any arguments or flags</value>
+  </data>
+  <data name="Prompt_ListPortals_Results.Text" xml:space="preserve">
+    <value>'{0}' Portal{1} found.</value>
   </data>
   <data name="Prompt_SetMode_Description.Text" xml:space="preserve">
     <value>Sets the DNN View Mode. This has the same effect as clicking the appropriate options in the DNN Control Bar.</value>

@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         TabInfo MovePage(PageMoveRequest request);
 
-        void DeletePage(PageItem page);
+        void DeletePage(PageItem page, PortalSettings portalSettings = null);
 
         void EditModeForPage(int pageId, int userId);
 
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components
         void CopyPermissionsToDescendantPages(int pageId);
 
         IEnumerable<Url> GetPageUrls(int tabId);
-        PageSettings GetPageSettings(int pageId);
+        PageSettings GetPageSettings(int pageId, PortalSettings portalSettings = null);
         PageUrlResult CreateCustomUrl(SeoUrl dto);
         PageUrlResult UpdateCustomUrl(SeoUrl dto);
         PageUrlResult DeleteCustomUrl(UrlIdDto dto);

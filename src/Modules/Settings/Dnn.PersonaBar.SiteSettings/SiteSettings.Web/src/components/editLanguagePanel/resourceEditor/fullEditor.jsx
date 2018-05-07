@@ -21,9 +21,7 @@ class FullEditor extends Component {
     }
 
     componentDidMount(){
-        setTimeout(() => {
-            this.editorControl.focus();
-        }, 500);
+        this.editorControl.focus();
     }
 
     execCommand(button, e){

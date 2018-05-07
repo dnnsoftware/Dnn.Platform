@@ -362,12 +362,13 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
 
 
-                if ((updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate) ||
-                    (updatedItem.Enabled) ||
-                    (updatedItem.TimeLapse != existingItem.TimeLapse) ||
-                    (updatedItem.RetryTimeLapse != existingItem.RetryTimeLapse) ||
-                    (updatedItem.RetryTimeLapseMeasurement != existingItem.RetryTimeLapseMeasurement) ||
-                    (updatedItem.TimeLapseMeasurement != existingItem.TimeLapseMeasurement))
+                if (updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate ||
+                    updatedItem.Enabled ||
+                    updatedItem.Enabled != existingItem.Enabled ||
+                    updatedItem.TimeLapse != existingItem.TimeLapse ||
+                    updatedItem.RetryTimeLapse != existingItem.RetryTimeLapse ||
+                    updatedItem.RetryTimeLapseMeasurement != existingItem.RetryTimeLapseMeasurement ||
+                    updatedItem.TimeLapseMeasurement != existingItem.TimeLapseMeasurement)
                 {
                     SchedulingProvider.Instance().UpdateSchedule(updatedItem);
                 }

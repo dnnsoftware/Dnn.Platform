@@ -32,7 +32,7 @@ import SearchPageInput from "./SearchPage/SearchPageInput";
 
 import "./style.less";
 
-import { PersonaBarPageTreeviewInteractor } from "./dnn-persona-bar-page-treeview";
+import {PersonaBarPageTreeviewInteractor} from "./dnn-persona-bar-page-treeview";
 import SearchResult from "./SearchPage/SearchResult";
 
 function getSelectedTabBeingViewed(viewTab) {
@@ -76,7 +76,9 @@ class App extends Component {
             tags: "",
             filters: [],
             pageIndex:0,
-            searchFields: {}
+            searchFields: {},
+
+            inDuplicateMode: false
         };
         this.lastActivePageId = null;
         this.shouldRunRecursive = true;
@@ -265,15 +267,20 @@ class App extends Component {
                                         this.onNoPermissionSelection(page.id);
                                     }
                                     break;
-                                case Array.isArray(item.childListItems) === true:
-                                    item.childCount++;
-                                    item.childListItems.push(page);
-                                    if (page.canAddContentToPage)
-                                        this.onLoadPage(page.id);
-                                    else {
-                                        this.onNoPermissionSelection(page.id);
+                                case Array.isArray(item.childListItems) === true: {
+                                        const lastIndex = item.childListItems.length - 1;
+                                        if (item.childListItems[lastIndex].name === page.name) {
+                                            item.childListItems.pop();
+                                        }
+                                        item.childListItems.push(page);
+                                        item.childCount = item.childListItems.length;
+                                        if (page.canAddContentToPage)
+                                            this.onLoadPage(page.id);
+                                        else {
+                                            this.onNoPermissionSelection(page.id);
+                                        }
+                                        break;
                                     }
-                                    break;
                             }
                             item.isOpen = true;
                             updateStore(list);
@@ -403,15 +410,18 @@ class App extends Component {
                         item.name = page.name;
                         item.pageType = page.pageType;
                         item.url = page.url;
+                        item.includeInMenu = update.includeInMenu;
                         updateStore(list);
                     }
                 });
                 this.buildTree(update.tabId);
-                //this.onLoadPage(update.tabId);
                 resolve();
+                this.setState({inDuplicateMode: false});
             });
         });
     }
+
+    
     onLoadPage(pageId, callback) {
         const self = this;
         this.props.onLoadPage(pageId).then((data) => {
@@ -419,6 +429,33 @@ class App extends Component {
             if (typeof callback === "function")
                 callback(data);
         });
+    }
+
+    _addPageToTree(parentId) {
+        let runUpdateStore = null;
+        let pageList = null;
+        
+        if(parentId !== null && parentId !== -1) {
+            this._traverse((item, list, updateStore) => {
+                if (item.id === parentId) {
+                    item.isOpen = true;
+                    item.hasChildren = true;
+                    item.childCount++;
+                    const newPageChildItems = item.childListItems.concat(this.props.selectedPage);
+                    item.childListItems = newPageChildItems;
+                    updateStore(list);        
+                }
+            });
+
+        } else {
+            this._traverse((item, list, updateStore) => {
+                item.selected = false;
+                runUpdateStore = updateStore;
+                pageList = list;                
+            });
+            const newPageList = pageList.concat(this.props.selectedPage);    
+            runUpdateStore(newPageList);
+        }
     }
 
     _removePageFromTree(parentId) {
@@ -438,7 +475,7 @@ class App extends Component {
                 item.childListItems = [...arr1, ...arr2];
                 updateStore(list);
             }
-            if (parentId === undefined && item.tabId !== undefined) {
+            if ((parentId === undefined || parentId === -1) && item.tabId !== undefined) {
                 const newPageList = list.slice(0,list.length-1);
                 updateStore(newPageList);
             }
@@ -448,9 +485,11 @@ class App extends Component {
     }
 
     onCancelPage(parentPageId) {
+        const {props, state} = this;
         this._removePageFromTree(parentPageId);
         this.props.changeSelectedPagePath("");
-        this.props.onCancelPage(parentPageId);
+        (parentPageId !== -1) ? this.props.onCancelPage(parentPageId) : this.props.onCancelPage();
+        this.setState({inDuplicateMode: false});
     }
 
     onChangeParentId(newParentId) {
@@ -522,6 +561,8 @@ class App extends Component {
                         const newPageList = pageList.concat(this.props.selectedPage);    
                         runUpdateStore(newPageList);
                     }
+
+                    this.setState({inDuplicateMode: false});
                 }); 
             };
        
@@ -556,7 +597,7 @@ class App extends Component {
         }
         else {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.parentId);
             }
             else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
                 this.onCancelPage(props.selectedPage.referralTabId);
@@ -632,7 +673,7 @@ class App extends Component {
         const { props } = this;
         const onConfirm = () => {
             if (props.selectedPage.tabId === 0 && props.selectedPage.isCopy && props.selectedPage.templateTabId) {
-                this.onCancelPage(props.selectedPage.templateTabId);
+                this.onCancelPage(props.selectedPage.parentId);
             }
             else if (props.selectedPage.tabId === 0 && props.selectedPage.referralTabId) {
                 this.onCancelPage(props.selectedPage.referralTabId);
@@ -964,9 +1005,12 @@ class App extends Component {
                     onConfirm);
 
             } else {
-                this.props.onDuplicatePage(false);
+                this.props.onDuplicatePage(false).then(data=>{
+                    
+                    this._addPageToTree(data.parentId);
+                });
             }
-            this.props.onChangePageField('parentId', selectedPage.tabId);
+            this.setState({inDuplicateMode: true});
         };
         const noPermission = () => this.setEmptyStateMessage(message);
         item.canCopyPage ? duplicate() : noPermission();
@@ -1528,7 +1572,7 @@ class App extends Component {
                     <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
                             {securityService.isSuperUser() &&
-                                <div> 
+                                <div>
                                     <Button type="primary" disabled={ this.onEditMode()  || this.state.inSearch} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                                     <Button type="secondary" disabled={ this.onEditMode() || this.state.inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>
                                 </div>
@@ -1556,7 +1600,6 @@ class App extends Component {
                                         _traverse={this._traverse.bind(this)}
                                         showCancelDialog={this.showCancelWithoutSavingDialogInEditMode.bind(this)}
                                         selectedPageDirty={this.props.selectedPageDirty}
-                                        activePage={this.props.selectedPage}
                                         setEmptyPageMessage={this.setEmptyStateMessage.bind(this)}
                                         setActivePage={this.setActivePage.bind(this)}
                                         saveDropState={this.onUpdatePage.bind(this)}

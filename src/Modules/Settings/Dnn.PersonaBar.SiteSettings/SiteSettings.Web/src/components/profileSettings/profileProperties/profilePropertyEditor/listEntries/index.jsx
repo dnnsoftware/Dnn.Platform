@@ -42,11 +42,9 @@ class ListEntriesPanel extends Component {
     }
 
     uncollapse(id) {
-        setTimeout(() => {
-            this.setState({
-                openId: id
-            });
-        }, this.timeout);
+        this.setState({
+            openId: id
+        });
     }
 
     collapse() {

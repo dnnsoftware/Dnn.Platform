@@ -6,8 +6,6 @@ import PagesService from "../services/pageService";
 import utils from "../utils";
 import Localization from "../localization";
 import cloneDeep from "lodash/cloneDeep";
-import securityService from "../services/securityService";
-import permissionTypes from "../services/permissionTypes";
 import Promise from "promise";
 
 const loadPage = function (dispatch, pageId, callback) {
@@ -120,12 +118,6 @@ const pageActions = {
         return (dispatch) => PagesService.getPage(id);
     },
 
-    getCurrentSelectedPage() {
-        return (dispatch) => dispatch({
-            type: ActionTypes.GET_CURRENT_SELECTED_PAGE,
-            data: {}
-        });
-    },
     getChildPageList(id) {
         return () => PagesService.getChildPageList(id);
     },
@@ -181,14 +173,10 @@ const pageActions = {
                     selectedPageSettingTab: 0
                 });
             };
-            if (reloadTemplate) {
-                loadPage(dispatch, pages.selectedPage.tabId, (page) => {
-                    duplicate(page);
-                });
-            }
-            else {
-                duplicate(pages.selectedPage);
-            }
+
+            return loadPage(dispatch, pages.selectedPage.tabId, (page) => {
+                duplicate(page);
+            });
         };
     },
 

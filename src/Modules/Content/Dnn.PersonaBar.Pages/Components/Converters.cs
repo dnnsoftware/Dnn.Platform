@@ -12,6 +12,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 
@@ -55,13 +56,32 @@ namespace Dnn.PersonaBar.Pages.Components
             Id = module.ModuleID,
             Title = module.ModuleTitle,
             FriendlyName = module.DesktopModule.FriendlyName,
+            EditContentUrl = GetModuleEditContentUrl(module),
             EditSettingUrl = GetModuleEditSettingUrl(module),
             IsPortable = module.DesktopModule?.IsPortable
         };
 
         private static string GetModuleEditSettingUrl(ModuleInfo module)
         {
-            return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", "ModuleId=" + module.ModuleID);
+            var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
+            return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
+        }
+
+        private static string GetModuleEditContentUrl(ModuleInfo module)
+        {
+            var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
+            if(moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
+            {
+                var parameters = new List<string>{ "mid=" + module.ModuleID };
+                if (moduleControl.SupportsPopUps)
+                {
+                    parameters.Add("popUp=true");
+                }
+
+                return Globals.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
+            }
+
+            return string.Empty;
         }
 
         public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()

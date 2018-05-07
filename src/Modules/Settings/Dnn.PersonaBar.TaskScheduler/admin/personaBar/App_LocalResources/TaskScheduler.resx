@@ -624,6 +624,9 @@
   <data name="Prompt_TaskNotFound.Text" xml:space="preserve">
     <value>No task not found with id {0}.</value>
   </data>
+  <data name="Prompt_TaskFound.Text" xml:space="preserve">
+    <value>Task {0} has been found.</value>
+  </data>
   <data name="Prompt_TasksFound.Text" xml:space="preserve">
     <value>{0} tasks found.</value>
   </data>
