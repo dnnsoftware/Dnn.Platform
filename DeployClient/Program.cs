@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Web;
 using System.Web.Script.Serialization;
 
 namespace DeployClient
@@ -132,19 +133,40 @@ namespace DeployClient
 
                 if (!API.Install(sessionGuid, out results))
                 {
-                    DateTime abortTime = DateTime.Now.AddMinutes(10);
                     TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+                    Dictionary<string, dynamic> response;
+                    var successfullyReachedApi = false;
+                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout);
+
+                    // Attempt to get the status of the session from the remote api. 
+                    // This can fail shortly after an installation as the api has not yet been initialised,
+                    // so attempt to get it for the given timespan.
+                    do
+                    {
+                        // Get whether we can reach the api
+                        successfullyReachedApi = API.GetSession(sessionGuid, out response);
+
+                        if (!successfullyReachedApi)
+                        {
+                            // Api is returning a 404 - wait and try again
+                            System.Threading.Thread.Sleep(interval);
+                        }
+                    } while (!successfullyReachedApi && DateTime.Now < apiNotFoundAbortTime);
+
+                    // If the api couldn't be reached by the given time, something has gone wrong
+                    if (!successfullyReachedApi)
+                    {
+                        throw new HttpException("Remote API returned status 404");
+                    }
 
                     int status = -1;
                     string previousPrint = null;
+                    
+                    DateTime abortTime = DateTime.Now.AddMinutes(10);
 
-                    // While the process isn't complete and we haven't exceeded our abort time.
-                    while (status < 2 && DateTime.Now < abortTime)
+                    // Get the installation status from the API until it is complete or until the abort time is reached
+                    do
                     {
-                        // Get response.
-                        Dictionary<string, dynamic> response = API.GetSession(sessionGuid);
-
-                        // Is there a status key?
                         if (response.ContainsKey("Status"))
                         {
                             // Yes, get the status.
@@ -178,9 +200,17 @@ namespace DeployClient
                             break;
                         }
 
-                        // Sleep.
                         System.Threading.Thread.Sleep(interval);
-                    }
+
+                        var success = API.GetSession(sessionGuid, out response);
+
+                        // The api should not be returning a 404 status at this point
+                        if (!success)
+                        {
+                            throw new HttpException("Remote API returned status 404");
+                        }
+                    } while (status < 2 && DateTime.Now < abortTime);
+                    
                 }
                 else
                 {
