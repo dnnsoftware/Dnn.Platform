@@ -1,0 +1,13 @@
+<parameters>
+  <parameter name="AppPath" defaultValue="Default Web Site/dotnetnuke" tags="iisapp">
+    <parameterEntry type="ProviderPath" scope="iisapp" match="DotNetNuke" />
+  </parameter>
+  <parameter name="DNN Application URL" description="The URL of the application on the target box such as http://www.myserver.com/myapp ." defaultValue="" tags="AppURL,Hidden">
+    <parameterEntry type="TextFile" scope="dbFullSql " match="localhost:?[0-9]+/?" />
+  </parameter>
+  <parameter name="SetAclParameter1" defaultValue="{AppPath}" tags="Hidden">
+    <parameterEntry type="ProviderPath" scope="setAcl" match="DotNetNuke" />
+  </parameter>
+  <parameter name="Dummy parameter" description="To allow portal to identify the app requires sql database. This does not do any changes to the package" defaultValue="None"
+  tags="SQL,SQLConnectionString,Hidden,NoStore"/>
+</parameters>

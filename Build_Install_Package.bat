@@ -30,15 +30,28 @@ goto finish
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
-@echo . Building application using
+@echo . Building install package using:
 @echo .    "%builder%"
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
 
-.nuget\NuGet.exe restore DNN_Platform.sln
-"%builder%" /t:CreateInstall /v:m Build/BuildScripts/DNN_Package.build
+if not exist Artifacts mkdir Artifacts
+
+pushd Artifacts
+del /f /q *Install.zip
+popd
+pushd "DNN Platform"
+git clean -xdf
+popd
+pushd Website
+git clean -xdf
+popd
+
+set BUILD_NUMBER=9.2.1
+"%builder%" /t:CreateInstall /v:n Build/BuildScripts/CreateCommunityPackages.build
 
 :finish
 set builder=
+set BUILD_NUMBER=
 pause

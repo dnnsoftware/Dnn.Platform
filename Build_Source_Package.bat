@@ -30,14 +30,16 @@ goto finish
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
-@echo . Creating upgrade package using:
-@echo .     "%builder%"
+@echo . Creating source package using:
+@echo .    "%builder%"
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
 
+if not exist Artifacts mkdir Artifacts
+
 pushd Artifacts
-del /f /q *Upgrade.zip
+del /f /q *Source.zip
 popd
 pushd "DNN Platform"
 git clean -xdf
@@ -47,7 +49,7 @@ git clean -xdf
 popd
 
 set BUILD_NUMBER=9.2.1
-"%builder%" /t:CreateUpgrade /v:n Build/BuildScripts/CreateCommunityPackages.build
+"%builder%" /t:CreateSource /v:n Build/BuildScripts/CreateCommunityPackages.build
 
 :finish
 set builder=
