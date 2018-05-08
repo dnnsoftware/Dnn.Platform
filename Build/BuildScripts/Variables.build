@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="BlankTarget">
   <Import Project="AT.MSBuild.Tasks.Targets" />
   <PropertyGroup>
-    <DotNetNukeMSBuildTasksPath Condition="'$(DotNetNukeMSBuildTasksPath)' == ''">$(MSBuildExtensionsPath)\DotNetNuke.MSBuild.Tasks</DotNetNukeMSBuildTasksPath>
+    <DotNetNukeMSBuildTasksPath Condition="'$(DotNetNukeMSBuildTasksPath)' == ''">$(MSBuildExtensionsPath)</DotNetNukeMSBuildTasksPath>
     <DotNetNukeMSBuildTasksLib>$(DotNetNukeMSBuildTasksPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
   </PropertyGroup>
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.GenerateSolutionFiles" />
