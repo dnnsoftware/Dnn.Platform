@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="CreateInstall" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PlatformCheckout>$(MSBuildProjectDirectory)\..\..</PlatformCheckout>
-    <BuildFolder>$(PlatformCheckout)\Build\</BuildFolder>
+    <PlatformRoot>$(MSBuildProjectDirectory)\..\..</PlatformRoot>
+    <BuildFolder>$(PlatformRoot)\Build\</BuildFolder>
     <BuildScriptsPath>$(BuildFolder)\BuildScripts</BuildScriptsPath>
     <DotNetNukeMSBuildTasksLib>$(BuildScriptsPath)</DotNetNukeMSBuildTasksLib>
-    <WebsitePath>$(PlatformCheckout)\Website</WebsitePath>
+    <WebsitePath>$(PlatformRoot)\Website</WebsitePath>
     <PackageName>DNN_Platform</PackageName>
-    <checkoutDirectory>$(PlatformCheckout)</checkoutDirectory>
-    <VersionSolutionInfoPath>$(PlatformCheckout)</VersionSolutionInfoPath>
+    <checkoutDirectory>$(PlatformRoot)</checkoutDirectory>
+    <VersionSolutionInfoPath>$(PlatformRoot)</VersionSolutionInfoPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
   <Import Project="$(BuildScriptsPath)\Variables.build" />
   <ItemGroup>
     <CESourceExclude Include="$(WebsitePath)\Install\Skin\Facebook*" />
-    <CESourceExclude Include="$(PlatformCheckout)\**\.git\**\*" />
-    <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
-    <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
-    <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
-    <CESourceExclude Include="$(PlatformCheckout)\Documentation\**\*" />
+    <CESourceExclude Include="$(PlatformRoot)\**\.git\**\*" />
+    <CESourceExclude Include="$(PlatformRoot)\packages\**\*" />
+    <CESourceExclude Include="$(PlatformRoot)\Artifacts\**\*" />
+    <CESourceExclude Include="$(PlatformRoot)\DeployPackage\**\*" />
+    <CESourceExclude Include="$(PlatformRoot)\Documentation\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <InstallExclude Include="$(PlatformCheckout)\**\*.cs" />
-    <InstallExclude Include="$(PlatformCheckout)\**\*.designer.cs" />
-    <InstallExclude Include="$(PlatformCheckout)\**\*.less" />
+    <InstallExclude Include="$(PlatformRoot)\**\*.cs" />
+    <InstallExclude Include="$(PlatformRoot)\**\*.designer.cs" />
+    <InstallExclude Include="$(PlatformRoot)\**\*.less" />
     <InstallExclude Include="$(WebsitePath)\development.config" />
     <InstallExclude Include="$(WebsitePath)\release.config" />
     <InstallExclude Include="$(WebsitePath)\DotNetNuke.vstemplate" />
@@ -62,7 +62,7 @@
     <UpgradeExclude Include="@(CESourceExclude)" />
   </ItemGroup>
   <ItemGroup>
-    <UpgradeExclude Include="$(PlatformCheckout)\**\System.Web.Extensions.dll" />
+    <UpgradeExclude Include="$(PlatformRoot)\**\System.Web.Extensions.dll" />
     <UpgradeExclude Include="$(WebsitePath)\App_Data\Database.mdf" />
     <UpgradeExclude Include="$(WebsitePath)\App_Data\Database_log.LDF" />
     <UpgradeExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.Html.dll" />
@@ -103,7 +103,7 @@
     <Icon>DotNetNuke.ico</Icon>
   </PropertyGroup>
   <Target Name="PreCleanup">
-    <RemoveDir Directories="$(PlatformCheckout)\DeployPackage" />
+    <RemoveDir Directories="$(PlatformRoot)\DeployPackage" />
   </Target>
   <Target Name="CopyBrandedFiles" DependsOnTargets="VersionCheck">
     <Attrib Files="$(WebsitePath)\Images\Branding\iconbar_logo.png" ReadOnly="false" />
@@ -116,42 +116,42 @@
     <Attrib Files="$(WebsitePath)\Images\Branding\logo.gif" ReadOnly="true" />
     <Attrib Files="$(WebsitePath)\Images\Branding\DNN_logo.png" ReadOnly="true" />
     <!--Pacakge the Telerik zip-->
-    <XmlRead Prefix="n" Namespace="http://schemas.microsoft.com/developer/msbuild/2003" XPath="dotnetnuke/packages/package/@version" XmlFileName="$(PlatformCheckout)\DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn">
+    <XmlRead Prefix="n" Namespace="http://schemas.microsoft.com/developer/msbuild/2003" XPath="dotnetnuke/packages/package/@version" XmlFileName="$(PlatformRoot)\DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn">
       <Output TaskParameter="Value" PropertyName="TelerikVersion" />
     </XmlRead>
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package\bin" />
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package\bin" />
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package" />
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package\Documentation" />
-    <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package\App_Data\RadSpell" />
-    <CreateItem Include="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package\**\*.*">
+    <Copy SourceFiles="$(PlatformRoot)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(PlatformRoot)\DNN Platform\Components\Telerik\Package\bin" />
+    <Copy SourceFiles="$(PlatformRoot)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(PlatformRoot)\DNN Platform\Components\Telerik\Package\bin" />
+    <Copy SourceFiles="$(PlatformRoot)\DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="$(PlatformRoot)\DNN Platform\Components\Telerik\Package" />
+    <Copy SourceFiles="$(PlatformRoot)\DNN Platform\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="$(PlatformRoot)\DNN Platform\Components\Telerik\Package\Documentation" />
+    <Copy SourceFiles="$(PlatformRoot)\DNN Platform\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="$(PlatformRoot)\DNN Platform\Components\Telerik\Package\App_Data\RadSpell" />
+    <CreateItem Include="$(PlatformRoot)\DNN Platform\Components\Telerik\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="TelerikContent" />
     </CreateItem>
-    <Zip Files="@(TelerikContent)" WorkingDirectory="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package" ZipFileName="Telerik_$(TelerikVersion)_Install.zip" />
+    <Zip Files="@(TelerikContent)" WorkingDirectory="$(PlatformRoot)\DNN Platform\Components\Telerik\Package" ZipFileName="Telerik_$(TelerikVersion)_Install.zip" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Telerik_$(TelerikVersion)_Install.zip" DestinationFolder="$(WebsitePath)\Install\Module" />
-    <RemoveDir Directories="$(PlatformCheckout)\DNN Platform\Components\Telerik\Package" />
+    <RemoveDir Directories="$(PlatformRoot)\DNN Platform\Components\Telerik\Package" />
     <ItemGroup>
-      <WebsiteSpecialFiles Include="$(PlatformCheckout)\DNN Platform\Website\**\*" />
+      <WebsiteSpecialFiles Include="$(PlatformRoot)\DNN Platform\Website\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(WebsiteSpecialFiles)" DestinationFiles="@(WebsiteSpecialFiles-&gt;'$(WebsitePath)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
   <Target Name="NugetRestore">
-    <Exec Command="$(PlatformCheckout)\.nuget\NuGet.exe restore &quot;$(PlatformCheckout)\DNN_Platform.sln&quot; -Source https://api.nuget.org/v3/index.json"/>
+    <Exec Command="$(PlatformRoot)\.nuget\NuGet.exe restore &quot;$(PlatformRoot)\DNN_Platform.sln&quot; -Source https://api.nuget.org/v3/index.json"/>
   </Target>
   <Target Name="CompileSource" DependsOnTargets="NugetRestore">
     <Message Text="Build project folder: $(MSBuildProjectDirectory) " />
-    <MSBuild Projects="$(PlatformCheckout)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean"/>
-    <MSBuild Projects="$(PlatformCheckout)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean"/>
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
     <Message Text="DotNetNuke Compile finished" Importance="high" />
   </Target>
   <Target Name="CreateInstall" DependsOnTargets="CopyBrandedFiles;PreCleanup;NugetRestore;CompileSource">
     <!-- Copy CKEditor Provider assembly into bin folder -->
     <ItemGroup>
-      <CKEditorPackage Include="$(PlatformCheckout)\DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
+      <CKEditorPackage Include="$(PlatformRoot)\DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
     </ItemGroup>
-    <Unzip ZipFileName="@(CKEditorPackage)" TargetDirectory="$(PlatformCheckout)\CKEditorPackage" />
-    <Copy SourceFiles="$(PlatformCheckout)\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <RemoveDir Directories="$(PlatformCheckout)\CKEditorPackage" />
+    <Unzip ZipFileName="@(CKEditorPackage)" TargetDirectory="$(PlatformRoot)\CKEditorPackage" />
+    <Copy SourceFiles="$(PlatformRoot)\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <RemoveDir Directories="$(PlatformRoot)\CKEditorPackage" />
     <ItemGroup>
       <InstallPackage Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
       <InstallPackage Include="$(WebsitePath)\Install\InstallWizard.aspx.cs" />
@@ -160,20 +160,20 @@
     <Delete Files="$(MSBuildProjectDirectory)\Telerik_$(TelerikVersion)_Install.zip" />
   </Target>
   <Target Name="CreateDeploy" DependsOnTargets="VersionCheck;PreCleanup;CreateInstall">
-    <RemoveDir Directories="$(PlatformCheckout)\DeployPackage\" />
-    <MakeDir Directories="$(PlatformCheckout)\DeployPackage\" />
+    <RemoveDir Directories="$(PlatformRoot)\DeployPackage\" />
+    <MakeDir Directories="$(PlatformRoot)\DeployPackage\" />
     <ItemGroup>
       <DeploySupportFiles Include="$(BuildFolder)\Deploy\*.*" />
       <DeploySiteFiles Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
       <DeployInstallFiles Include="$(WebsitePath)\Install\InstallWizard.aspx.cs" />
     </ItemGroup>
-    <Copy SourceFiles="@(DeploySupportFiles)" DestinationFolder="$(PlatformCheckout)\DeployPackage\" />
-    <Copy SourceFiles="@(DeploySiteFiles)" DestinationFiles="@(DeploySiteFiles-&gt;'$(PlatformCheckout)\DeployPackage\DotNetNuke\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(DeployInstallFiles)" DestinationFolder="$(PlatformCheckout)\DeployPackage\DotNetNuke\Install\" />
+    <Copy SourceFiles="@(DeploySupportFiles)" DestinationFolder="$(PlatformRoot)\DeployPackage\" />
+    <Copy SourceFiles="@(DeploySiteFiles)" DestinationFiles="@(DeploySiteFiles-&gt;'$(PlatformRoot)\DeployPackage\DotNetNuke\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(DeployInstallFiles)" DestinationFolder="$(PlatformRoot)\DeployPackage\DotNetNuke\Install\" />
     <ItemGroup>
-      <DeployPackage Include="$(PlatformCheckout)\DeployPackage\**\*.*" />
+      <DeployPackage Include="$(PlatformRoot)\DeployPackage\**\*.*" />
     </ItemGroup>
-    <Zip Files="@(DeployPackage)" WorkingDirectory="$(PlatformCheckout)\DeployPackage\" ZipFileName="$(CEArtifactName)_Deploy.zip" />
+    <Zip Files="@(DeployPackage)" WorkingDirectory="$(PlatformRoot)\DeployPackage\" ZipFileName="$(CEArtifactName)_Deploy.zip" />
   </Target>
   <Target Name="CreateUpgrade" DependsOnTargets="VersionCheck;PreCleanup;NugetRestore;CompileSource">
     <ItemGroup>
@@ -186,32 +186,32 @@
     <ItemGroup>
       <SymbolsFiles Include="$(WebsitePath)\bin\*.pdb; $(WebsitePath)\bin\*.xml; $(WebsitePath)\bin\Providers\*.pdb; $(WebsitePath)\bin\Providers\*.xml" Exclude="@(SymbolsExclude)" />
     </ItemGroup>
-    <Zip Files="@(SymbolsFiles)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformCheckout)\Build\Symbols\Resources.zip" />
-    <Attrib Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" ReadOnly="false" />
-    <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="@@VER_NAME@@" ReplacementText="Community" />
+    <Zip Files="@(SymbolsFiles)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\Build\Symbols\Resources.zip" />
+    <Attrib Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" ReadOnly="false" />
+    <FileUpdate Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="@@VER_NAME@@" ReplacementText="Community" />
     <ItemGroup>
-      <SymbolsPackage Include="$(PlatformCheckout)\Build\Symbols\*.*;" />
+      <SymbolsPackage Include="$(PlatformRoot)\Build\Symbols\*.*;" />
     </ItemGroup>
-    <Zip Files="@(SymbolsPackage)" WorkingDirectory="$(PlatformCheckout)\Build\Symbols\" ZipFileName="$(CEArtifactName)_Symbols.zip" />
+    <Zip Files="@(SymbolsPackage)" WorkingDirectory="$(PlatformRoot)\Build\Symbols\" ZipFileName="$(CEArtifactName)_Symbols.zip" />
     <!--Restore manifest to original state-->
-    <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
+    <FileUpdate Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
   </Target>
   <Target Name="RepackageSymbols" DependsOnTargets="VersionCheck">
-    <Attrib Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" ReadOnly="false" />
-    <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="@@VER_NAME@@" ReplacementText="Community" />
+    <Attrib Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" ReadOnly="false" />
+    <FileUpdate Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="@@VER_NAME@@" ReplacementText="Community" />
     <ItemGroup>
-      <SymbolsPackage Include="$(PlatformCheckout)\Build\Symbols\*.*;" />
+      <SymbolsPackage Include="$(PlatformRoot)\Build\Symbols\*.*;" />
     </ItemGroup>
-    <Zip Files="@(SymbolsPackage)" WorkingDirectory="$(PlatformCheckout)\Build\Symbols\" ZipFileName="$(CEArtifactName)_Symbols.zip" />
+    <Zip Files="@(SymbolsPackage)" WorkingDirectory="$(PlatformRoot)\Build\Symbols\" ZipFileName="$(CEArtifactName)_Symbols.zip" />
     <!--Restore manifest to original state-->
-    <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
+    <FileUpdate Files="$(PlatformRoot)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
   </Target>
   <Target Name="CopySymbols" DependsOnTargets="VersionCheck">
   </Target>
   <Target Name="CreateSource" DependsOnTargets="VersionCheck;PreCleanup">
     <ItemGroup>
-      <CESource Include="$(PlatformCheckout)\**\*.*" Exclude="@(CESourceExclude)" />
+      <CESource Include="$(PlatformRoot)\**\*.*" Exclude="@(CESourceExclude)" />
     </ItemGroup>
-    <Zip Files="@(CESource)" WorkingDirectory="$(PlatformCheckout)\" ZipFileName="$(CEArtifactName)_Source.zip" />
+    <Zip Files="@(CESource)" WorkingDirectory="$(PlatformRoot)\" ZipFileName="$(CEArtifactName)_Source.zip" />
   </Target>
 </Project>

@@ -3,7 +3,7 @@
   <Import Project="AT.MSBuild.Tasks.Targets" />
   <PropertyGroup>
     <DotNetNukeMSBuildTasksPath Condition="'$(DotNetNukeMSBuildTasksPath)' == ''">$(MSBuildExtensionsPath)</DotNetNukeMSBuildTasksPath>
-    <DotNetNukeMSBuildTasksLib>$(DotNetNukeMSBuildTasksPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
+    <DotNetNukeMSBuildTasksLib>DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
   </PropertyGroup>
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.GenerateSolutionFiles" />
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ProcessSolutionFiles" />
