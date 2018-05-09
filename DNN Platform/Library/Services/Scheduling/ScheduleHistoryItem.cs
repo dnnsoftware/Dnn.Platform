@@ -82,6 +82,8 @@ namespace DotNetNuke.Services.Scheduling
                                     : Null.NullDate;
         }
 
+        public override DateTime NextStart { get; set; }
+
         public double ElapsedTime
         {
             get
