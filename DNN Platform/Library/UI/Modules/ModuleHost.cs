@@ -45,6 +45,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -64,8 +65,10 @@ namespace DotNetNuke.UI.Modules
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
 
-        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\|(.+?)\|(\\d+?)\)-->",
+        private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private const string DefaultCssProvider = "DnnPageHeaderProvider";
+        private const string DefaultJsProvider = "DnnBodyProvider";
 
         #region Private Members
 
@@ -435,17 +438,48 @@ namespace DotNetNuke.UI.Modules
             foreach (Match match in matches)
             {
                 cachedContent = cachedContent.Replace(match.Value, string.Empty);
-                var dependencyType = match.Groups[1].Value.ToUpperInvariant();
-                var filePath = match.Groups[2].Value;
-                var forceProvider = match.Groups[3].Value;
-                var priority = Convert.ToInt32(match.Groups[4].Value);
+                var dependencyType = match.Groups["type"].Value.ToUpperInvariant();
+                var filePath = match.Groups["path"].Value;
+                var forceProvider = string.Empty;
+                var priority = Null.NullInteger;
+
+                if (match.Groups["provider"].Success)
+                {
+                    forceProvider = match.Groups["provider"].Value;
+                }
+
+                if (match.Groups["priority"].Success)
+                {
+                    priority = Convert.ToInt32(match.Groups["priority"].Value);
+                }
+
                 switch (dependencyType)
                 {
                     case "JAVASCRIPT":
-                        ClientResourceManager.RegisterScript(this.Page, filePath, priority, forceProvider);
+                        if (string.IsNullOrEmpty(forceProvider))
+                        {
+                            forceProvider = DefaultJsProvider;
+                        }
+
+                        if (priority == Null.NullInteger)
+                        {
+                            priority = (int)FileOrder.Js.DefaultPriority;
+                        }
+
+                        ClientResourceManager.RegisterScript(Page, filePath, priority, forceProvider);
                         break;
                     case "CSS":
-                        ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
+                        if (string.IsNullOrEmpty(forceProvider))
+                        {
+                            forceProvider = DefaultCssProvider;
+                        }
+
+                        if (priority == Null.NullInteger)
+                        {
+                            priority = (int)FileOrder.Css.DefaultPriority;
+                        }
+
+                        ClientResourceManager.RegisterStyleSheet(Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
                         var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
