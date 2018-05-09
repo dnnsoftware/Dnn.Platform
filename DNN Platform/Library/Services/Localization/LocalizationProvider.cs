@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Localization
                         break;
                 }
                 resourceFileName = resourceFileName.TrimStart('~', '/', '\\');
-                string filePath = HostingEnvironment.MapPath("~/" + Globals.ApplicationPath + resourceFileName);
+                string filePath = HostingEnvironment.MapPath("~/" + resourceFileName);
                 XmlDocument doc = null;
                 if (File.Exists(filePath))
                 {
