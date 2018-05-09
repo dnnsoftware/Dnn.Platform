@@ -12,7 +12,7 @@ export default function configureStore(initialState) {
         enhancer = compose(applyMiddleware(thunkMiddleware, reduxImmutableStateInvariant()), DevTools.instrument());
     } else {
         enhancer = applyMiddleware(thunkMiddleware);
-    }
+}
 
     return createStore(reducers, initialState, enhancer);
 }
