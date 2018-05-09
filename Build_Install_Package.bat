@@ -41,12 +41,6 @@ if not exist Artifacts mkdir Artifacts
 pushd Artifacts
 del /f /q *Install.zip
 popd
-pushd "DNN Platform"
-git clean -xdf
-popd
-pushd Website
-git clean -xdf
-popd
 
 set BUILD_NUMBER=9.2.1
 "%builder%" /t:CreateInstall /v:n Build/BuildScripts/CreateCommunityPackages.build

@@ -39,12 +39,6 @@ goto finish
 pushd Artifacts
 del /f /q *Upgrade.zip
 popd
-pushd "DNN Platform"
-git clean -xdf
-popd
-pushd Website
-git clean -xdf
-popd
 
 set BUILD_NUMBER=9.2.1
 "%builder%" /t:CreateUpgrade /v:n Build/BuildScripts/CreateCommunityPackages.build
