@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.GeneratedImage
             var user = profileArgs.User;
             var newProfile = user.Profile;
             var oldProfile = profileArgs.OldProfile;
-            var newPhotoVisibilityMode = newProfile.GetProperty("Photo")?.ProfileVisibility.VisibilityMode;
-            var oldPhotoVisibilityMode = oldProfile.GetProperty("Photo")?.ProfileVisibility.VisibilityMode;
+            var newPhotoVisibilityMode = newProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
+            var oldPhotoVisibilityMode = oldProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
             if (newProfile.Photo != oldProfile.Photo || newPhotoVisibilityMode != oldPhotoVisibilityMode)
             {
                 var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
