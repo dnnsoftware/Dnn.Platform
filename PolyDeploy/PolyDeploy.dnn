@@ -66,31 +66,31 @@
 
         <component type="Script">
           <scripts>
-
+            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
             <!-- v0.1.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.01.00.SqlDataProvider</name>
               <version>00.01.00</version>
             </script>
 
             <!-- v0.2.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.02.00.SqlDataProvider</name>
               <version>00.02.00</version>
             </script>
 
             <!-- v0.3.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.03.00.SqlDataProvider</name>
               <version>00.03.00</version>
             </script>
 
             <!-- v0.4.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.04.00.SqlDataProvider</name>
               <version>00.04.00</version>
             </script>
@@ -100,14 +100,14 @@
 
             <!-- v0.6.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.06.00.SqlDataProvider</name>
               <version>00.06.00</version>
             </script>
 
             <!-- Uninstall -->
             <script type="Uninstall">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>Uninstall.SqlDataProvider</name>
               <version />
             </script>
