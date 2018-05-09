@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebPlatform>
+  <Links>
+    <AddLink InDashboard="True">
+      <Title>Installing DotNetNuke for the First Time</Title>
+      <Description>If this is your first time to install DotNetNuke you may wish to review this short installation video.  It will guide you through the initial setup and configuration of your new DotNetNuke site.</Description>
+      <Uri>http://www.dotnetnuke.com/Resources/Video-Library/Viewer/VideoId/408/Installing-DotNetNuke-With-WebMatrix.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/first.png</ImageUri>
+    </AddLink>
+    <AddLink InDashboard="True">
+      <Title>Using DotNetNuke</Title>
+      <Description>Now that you've successfully created your DotNetNuke site, what next?  Browse training videos and learn how to use all of the features of DotNetNuke.</Description>
+      <Uri>http://www.dotnetnuke.com/Resources/Training/Tutorials.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/using.png</ImageUri>
+    </AddLink>
+    <AddLink InDashboard="True" InLearn="True">
+      <Title>Extending DotNetNuke</Title>
+      <Description>You don't have to write any code to use or extend DotNetNuke. But if you want to create your own extensions we'll show you how.</Description>
+      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge/Development.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/extend.png</ImageUri>
+    </AddLink>
+    <AddLink InDashboard="True">
+      <Title>DotNetNuke Forge - Open Source Community Projects</Title>
+      <Description>Find a free, open source extension to use in your site or learn from for your own development. The forge includes extensions of all kinds; modules, widgets, skins, libraries, etc.</Description>
+      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/forge.png</ImageUri>
+    </AddLink>
+    <AddLink InDashboard="True">
+      <Title>Shop for DotNetNuke Apps</Title>
+      <Description>Nearly 10,000 DotNetNuke apps to enhance your site are available from hundreds of vendors.</Description>
+      <Uri>http://www.snowcovered.com/Snowcovered2/Default.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/store.png</ImageUri>
+    </AddLink>
+    <AddLink InDashboard="True">
+      <Title>DotNetNuke Professional Products</Title>
+      <Description>DotNetNuke Corporation also offers Professional and Enterprise edition products with extended features for your most important business asset.</Description>
+      <Uri>http://www.dotnetnuke.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/pro.png</ImageUri>
+    </AddLink>
+  </Links>
+  
+  <Ribbon>
+<AddRibbonButton>
+<Label>Site Admin</Label>
+<Uri>/Admin.aspx</Uri>
+<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/admin.png</ImageUri>
+</AddRibbonButton>
+    
+<AddRibbonButton>
+<Label>Get Answers</Label>
+<Uri>http://www.dotnetnuke.com/Community/Community-Exchange.aspx?from=webmatrix</Uri>
+<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/qa.png</ImageUri>
+</AddRibbonButton>
+
+<AddRibbonButton>
+<Label>Our Community</Label>
+<Uri>http://www.dotnetnuke.com/Community/Community-Overview.aspx?from=webmatrix</Uri>
+<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/triad.png</ImageUri>
+</AddRibbonButton>
+
+</Ribbon>
+
+  <PathProtection>
+    <AllowPath AllowNested="False">
+      <RelativePath>web.config</RelativePath>
+    </AllowPath>
+    <AllowPath AllowNested="False">
+      <RelativePath>robots.txt</RelativePath>
+    </AllowPath>
+    <ProtectPath>
+      <RelativePath>bin</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>admin</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>js</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>App_Browsers</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>App_Data</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>App_GlobalResources</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Config</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Components</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>controls</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Icons</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Images</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/DotNetNuke.install.config</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/install.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/install.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/install.htm</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/InstallWizard.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/InstallWizard.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/UpgradeWizard.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/UpgradeWizard.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/WizardUser.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Install/WizardUser.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DesktopModules/Admin</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DesktopModules/AuthenticationServices/DNN</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DesktopModules/DDRMenu</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DesktopModules/HTML</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Documentation</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Licenses</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Portals/_default/subhost.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Portals/_default/default.css</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Portals/_default/portal.css</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Providers</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Resources</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>403-3.gif</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Default.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Default.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DotNetNuke.config</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DotNetNuke.ico</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>DotNetNuke.log4net.config</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>ErrorPage.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>ErrorPage.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>Global.asax</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>KeepAlive.aspx</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>KeepAlive.aspx.cs</RelativePath>
+    </ProtectPath>
+    <ProtectPath>
+      <RelativePath>SiteUrls.config</RelativePath>
+    </ProtectPath>
+  </PathProtection>
+
+</WebPlatform>
