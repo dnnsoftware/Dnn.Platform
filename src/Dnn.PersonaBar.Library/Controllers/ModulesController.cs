@@ -17,7 +17,17 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));        
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
+        private IContentVerifier _contentVerifier;
+
+        public ModulesController() : this(new ContentVerifier())
+        {
+        }
+
+        public ModulesController(IContentVerifier contentVerifier)
+        {
+            this._contentVerifier = contentVerifier;
+        }
 
         protected override Func<IModulesController> GetFactory()
         {
@@ -115,7 +125,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
 
-            if (PortalHelper.IsContentExistsForRequestedPortal(targetPage.PortalID, portalSettings))
+            if (_contentVerifier.IsContentExistsForRequestedPortal(targetPage.PortalID, portalSettings))
             {
                 try
                 {
@@ -170,7 +180,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 {
                     var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
-                    if (PortalHelper.IsContentExistsForRequestedPortal(module.PortalID, portalSettings,true))
+                    if (_contentVerifier.IsContentExistsForRequestedPortal(module.PortalID, portalSettings, true))
                     {
                         return module;
                     }
