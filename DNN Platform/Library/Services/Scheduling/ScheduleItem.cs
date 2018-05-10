@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public string FriendlyName { get; set; }
 
-        public DateTime NextStart
+        public virtual DateTime NextStart
         {
             get
             {

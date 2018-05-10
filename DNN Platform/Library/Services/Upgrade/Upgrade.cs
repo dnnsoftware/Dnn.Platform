@@ -3205,9 +3205,12 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true)
+        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase));
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => 
+                p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) 
+                && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase)
+                && (string.IsNullOrEmpty(version) || p.Version.ToString() == version));
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
@@ -5355,6 +5358,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.2.0":
                             UpgradeToVersion920();
                             break;
+                        case "9.2.1":
+                            UpgradeToVersion921();
+                            break;
                     }
                 }
                 else
@@ -5585,6 +5591,13 @@ namespace DotNetNuke.Services.Upgrade
                     portalController.UpdatePortalInfo(portal);
                 }
             }
+        }
+
+        private static void UpgradeToVersion921()
+        {
+            UninstallPackage("jQuery", "Javascript_Library", true, "1.9.1");
+            UninstallPackage("jQuery-UI", "Javascript_Library", true, "1.11.3");
+            UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

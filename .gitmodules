@@ -1,3 +1,3 @@
 [submodule "DNN Platform/Components/ClientDependency"]
 	path = DNN Platform/Components/ClientDependency
-	url = git@github.com:dnnsoftware/ClientDependency.git
+	url = https://github.com/dnnsoftware/ClientDependency.git
