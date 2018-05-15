@@ -251,7 +251,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
                 else
                 {
-                    if (PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
+                    if (new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
                     {
                         TabController.Instance.SoftDeleteTab(tab.TabID, currentPortal);
                     }
@@ -1025,7 +1025,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var tab = GetPageDetails(pageId);            
 
-            if (!PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
+            if (!new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
             {
                 throw new PageNotFoundException();
             }

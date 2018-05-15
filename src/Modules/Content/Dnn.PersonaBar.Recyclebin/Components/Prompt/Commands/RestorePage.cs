@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
             }
 
-            if (!PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (!new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 return new ConsoleErrorResultModel(message);
             }
