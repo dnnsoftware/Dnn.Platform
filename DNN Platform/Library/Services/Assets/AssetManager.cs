@@ -160,6 +160,8 @@ namespace DotNetNuke.Services.Assets
                     return OrderBy(files, f => f.Size, sortProperties.Ascending);
                 case "ParentFolder":
                     return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
+                case "CreatedOnDate":
+                    return OrderBy(files, f => f.CreatedOnDate, sortProperties.Ascending);
                 default:
                     return files;
             }
