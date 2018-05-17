@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Prompt.Components
 {
+    [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
     public interface IModulesController
     {
         List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId,

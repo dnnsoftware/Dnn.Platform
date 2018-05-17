@@ -5,6 +5,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -57,16 +58,22 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
             int total;
             var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(PortalId);
-            var modules =
-                ModulesController.Instance.GetModules(PortalSettings, Deleted, out total, ModuleName, ModuleTitle,
-                    PageId, (Page > 0 ? Page - 1 : 0), max).Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted))
-                    .Where(m =>
+            var modules = ModulesControllerLibrary.Instance
+                .GetModules(
+                    PortalSettings,
+                    Deleted,
+                    out total, ModuleName,
+                    ModuleTitle,
+                    PageId, (Page > 0 ? Page - 1 : 0),
+                    max)
+                .Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted))
+                .Where(m =>
                     {
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(m.ModuleDefId);
                         return portalDesktopModules.Any(kvp =>
                             kvp.Value.DesktopModuleID == moduleDefinition?.DesktopModuleID);
                     })
-                    .ToList();
+                .ToList();
             var totalPages = total / max + (total % max == 0 ? 0 : 1);
             var pageNo = Page > 0 ? Page : 1;
             return new ConsoleResultModel

@@ -6,6 +6,7 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Prompt.Components.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -49,7 +50,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         {
             var modules = new List<ModuleInfoModel>();
             KeyValuePair<HttpStatusCode, string> message;
-            var movedModule = ModulesController.Instance.CopyModule(PortalSettings, ModuleId, PageId, TargetPageId, Pane, true, out message, true);
+            var movedModule = ModulesControllerLibrary.Instance.CopyModule(
+                PortalSettings,
+                ModuleId,
+                PageId,
+                TargetPageId,
+                Pane,
+                true,
+                out message,
+                true
+                );
             if (movedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             modules.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));

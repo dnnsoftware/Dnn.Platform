@@ -10,6 +10,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
@@ -57,7 +58,17 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 }
 
                 KeyValuePair<HttpStatusCode, string> message;
-                var addedModules = ModulesController.Instance.AddNewModule(PortalSettings, ModuleTitle, desktopModule.DesktopModuleID, PageId, Pane, 0, 0, null, out message);
+                var addedModules = ModulesControllerLibrary.Instance.AddNewModule(
+                    PortalSettings,
+                    ModuleTitle,
+                    desktopModule.DesktopModuleID,
+                    PageId,
+                    Pane,
+                    0,
+                    0,
+                    null,
+                    out message
+                    );
                 if (addedModules == null)
                 {
                     return new ConsoleErrorResultModel(message.Value);
