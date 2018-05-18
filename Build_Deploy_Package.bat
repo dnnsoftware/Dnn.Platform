@@ -43,6 +43,7 @@ del /f /q *Deploy.zip
 popd
 
 set BUILD_NUMBER=9.2.1
+"%builder%" /t:CompileSource /v:n Build/BuildScripts/CreateCommunityPackages.build
 "%builder%" /t:CreateDeploy /v:n Build/BuildScripts/CreateCommunityPackages.build
 
 :finish
