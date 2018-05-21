@@ -24,9 +24,11 @@ namespace DotNetNuke.Services.GeneratedImage
             if (profileArgs?.User == null || profileArgs.OldProfile == null) return;
             //extract old and new user profile from args and clear both client and server caching
             var user = profileArgs.User;
+            var newProfile = user.Profile;
             var oldProfile = profileArgs.OldProfile;
-            if (user.Profile.Photo != oldProfile.Photo || user.Profile.GetProperty("Photo").ProfileVisibility.VisibilityMode !=
-                oldProfile.ProfileProperties["Photo"].ProfileVisibility.VisibilityMode)
+            var newPhotoVisibilityMode = newProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
+            var oldPhotoVisibilityMode = oldProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
+            if (newProfile.Photo != oldProfile.Photo || newPhotoVisibilityMode != oldPhotoVisibilityMode)
             {
                 var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
                 Dictionary<int, DateTime> userIds;
