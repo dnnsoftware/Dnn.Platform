@@ -107,5 +107,12 @@ namespace DotNetNuke.Entities.Users
         /// in background threads or scheduler jobs. 
         /// </remarks>
         string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
+
+        /// <summary>
+        /// Check username against
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>true/false</returns>
+        bool IsValidUserName(string userName);
     }
 }
