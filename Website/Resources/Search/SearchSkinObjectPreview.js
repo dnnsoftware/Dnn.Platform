@@ -93,12 +93,11 @@
 
                     //attach see more       
                     $('.searchSkinObjectPreview_more', $wrap).on('click', function () {
-	                    var $searchButton = $wrap.parents('.SearchContainer').length ? $wrap.parent().next() : $wrap.next();
-                        var href = $searchButton.attr('href');
-                        var code = href.replace('javascript:', '');
-                        setTimeout(function(){
-                            eval(code);
-                        }, 0);
+                        var $searchButton = $wrap.next();
+                        if (!$searchButton.length) {
+                            $searchButton = $wrap.parent().next();
+                        }
+                        $searchButton[0].click();
                         return false;
                     });
                 };
@@ -176,15 +175,11 @@
                         var $wrap = $this.parent();
                         var val = $this.val();
                         if (val.length) {
-                            var href = $wrap.next().attr('href');
-                            if (!href) {
-                                // dropdown search
-                                href = $wrap.parent().next().attr('href');
+                            var $searchButton = $wrap.next();
+                            if (!$searchButton.length) {
+                                $searchButton = $wrap.parent().next();
                             }
-                            var code = href.replace('javascript:', '');
-                            setTimeout(function(){
-                                eval(code);
-                            }, 0);
+                            $searchButton[0].click();
                             e.preventDefault();
                         } else {
                             e.preventDefault();
