@@ -582,7 +582,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Validate username against bad characters; it must not start or end with space, 
                 // must not contain control characters, and not contain special punctuations
                 // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-                char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
+                char[] unallowedAscii = Globals.USERNAME_UNALLOWED_ASCII.ToCharArray();
 		        
 		        var valid = name.Length >= 5 &&
 		                    name == name.Trim() &&
