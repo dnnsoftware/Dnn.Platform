@@ -3318,10 +3318,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DNN Platform\Components\ClientDependency\Source\ClientDependency.Core.csproj">
-      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
-      <Name>ClientDependency.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
