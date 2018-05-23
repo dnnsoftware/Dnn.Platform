@@ -109,9 +109,12 @@ namespace DotNetNuke.Entities.Users
         string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
 
         /// <summary>
-        /// Check username against
+        /// Check username parameter against :
+        /// Invalid charaters, 
+        /// length check for 5 chars, 
+        /// for space between username
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="userName">UserName as string</param>
         /// <returns>true/false</returns>
         bool IsValidUserName(string userName);
     }
