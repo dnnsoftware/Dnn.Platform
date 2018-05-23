@@ -22,10 +22,20 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private const string FlagId = "id";
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
+        private readonly IContentVerifier _contentVerifier;
 
         private int PageId { get; set; } = -1;
         private string PageName { get; set; }
         private int ParentId { get; set; } = -1;
+
+        public GetPage() : this(new ContentVerifier())
+        {
+        }
+
+        public GetPage(IContentVerifier contentVerifier)
+        {
+            this._contentVerifier = contentVerifier;
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -53,7 +63,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
             }
 
-            if (new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 lst.Add(new PageModel(tab));
                 return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };

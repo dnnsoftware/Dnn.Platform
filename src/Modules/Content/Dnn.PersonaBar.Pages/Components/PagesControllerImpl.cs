@@ -61,6 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly ICloneModuleExecutionContext _cloneModuleExecutionContext;
         private readonly IUrlRewriterUtilsWrapper _urlRewriterUtilsWrapper;
         private readonly IFriendlyUrlWrapper _friendlyUrlWrapper;
+        private readonly IContentVerifier _contentVerifier;
 
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };        
@@ -76,7 +77,8 @@ namespace Dnn.PersonaBar.Pages.Components
                   DefaultPortalThemeController.Instance,
                   CloneModuleExecutionContext.Instance,
                   new UrlRewriterUtilsWrapper(),
-                  new FriendlyUrlWrapper()
+                  new FriendlyUrlWrapper(),
+                  new ContentVerifier()
                   )
         {
         }
@@ -89,7 +91,8 @@ namespace Dnn.PersonaBar.Pages.Components
             IDefaultPortalThemeController defaultPortalThemeController,
             ICloneModuleExecutionContext cloneModuleExecutionContext,
             IUrlRewriterUtilsWrapper urlRewriterUtilsWrapper,
-            IFriendlyUrlWrapper friendlyUrlWrapper
+            IFriendlyUrlWrapper friendlyUrlWrapper,
+            IContentVerifier contentVerifier
             )
         {
             _tabController = tabController;
@@ -100,6 +103,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _cloneModuleExecutionContext = cloneModuleExecutionContext;
             _urlRewriterUtilsWrapper = urlRewriterUtilsWrapper;
             _friendlyUrlWrapper = friendlyUrlWrapper;
+            _contentVerifier = contentVerifier;
         }
 
 
@@ -251,7 +255,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
                 else
                 {
-                    if (new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
+                    if (_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
                     {
                         TabController.Instance.SoftDeleteTab(tab.TabID, currentPortal);
                     }
@@ -1025,7 +1029,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var tab = GetPageDetails(pageId);            
 
-            if (!new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
+            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
             {
                 throw new PageNotFoundException();
             }

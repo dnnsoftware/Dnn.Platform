@@ -1,12 +1,13 @@
-﻿using Dnn.PersonaBar.Pages.Components;
-using Dnn.PersonaBar.Pages.Services.Dto;
+﻿using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
-using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
+using Dnn.PersonaBar.Pages.Components;
+using Dnn.PersonaBar.Pages.Services.Dto;
+using Dnn.PersonaBar.Library.Helper;
 
 namespace Dnn.PersonaBar.Pages.Tests
 {
@@ -21,6 +22,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         Mock<ICloneModuleExecutionContext> _cloneModuleExecutionContextMock;
         Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
         Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
+        Mock<IContentVerifier> _contentVerifierMock;
 
         PagesControllerImpl _pagesController;
 
@@ -35,6 +37,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             _cloneModuleExecutionContextMock = new Mock<ICloneModuleExecutionContext>();
             _urlRewriterUtilsWrapperMock = new Mock<IUrlRewriterUtilsWrapper>();
             _friendlyUrlWrapperMock = new Mock<IFriendlyUrlWrapper>();
+            _contentVerifierMock = new Mock<IContentVerifier>();
         }
 
         [TestCase("http://www.websitename.com/home/", "/home")]
@@ -59,7 +62,8 @@ namespace Dnn.PersonaBar.Pages.Tests
                 _defaultPortalThemeControllerMock.Object,
                 _cloneModuleExecutionContextMock.Object,
                 _urlRewriterUtilsWrapperMock.Object,
-                _friendlyUrlWrapperMock.Object
+                _friendlyUrlWrapperMock.Object,
+                _contentVerifierMock.Object
                 );
 
             PortalSettings portalSettings = new PortalSettings();

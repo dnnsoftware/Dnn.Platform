@@ -21,10 +21,20 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
         private const string FlagId = "id";
+        private readonly IContentVerifier _contentVerifier;
 
         private int PageId { get; set; }
         private string PageName { get; set; }
         private int ParentId { get; set; }
+
+        public RestorePage() : this(new ContentVerifier())
+        {
+        }
+
+        public RestorePage(IContentVerifier contentVerifier)
+        {
+            this._contentVerifier = contentVerifier;
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -68,7 +78,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
             }
 
-            if (!new ContentVerifier().IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 return new ConsoleErrorResultModel(message);
             }
