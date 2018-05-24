@@ -616,8 +616,6 @@ namespace DotNetNuke.Security
 
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
-            InvalidateAspNetSession(HttpContext.Current);
-
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
                 //Create a custom auth cookie
