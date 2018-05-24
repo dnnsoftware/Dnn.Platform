@@ -44,7 +44,7 @@
                                          '</li></ul><div style="clear:both"></div></li>');
 
             EnableSorting();
-            $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+            $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
         });
 
         $('#SettingsTabs').tabs({
@@ -127,7 +127,7 @@
             connectWith: ".groups, .availableButtons",
             placeholder: "ui-state-highlight",
             update: function () {
-                $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+                $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
             }
         });
 
@@ -139,7 +139,7 @@
                 $('.groupButtons').sortable('refreshPositions');
             },
             update: function () {
-                $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+                $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
             }
         });
 
@@ -158,7 +158,7 @@
                 }
                 ui.item.prepend('<span class="ui-icon ui-icon-cancel" title="Delete this Toolbar"></span>');
                 EnableSorting();
-                $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+                $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
             },
             update: function (e, ui) {
 
@@ -185,7 +185,7 @@
 
             $(this).hide();
 
-            $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+            $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
         });
 
         $(".groupItem .groupName").not(".rowBreakItem .groupName").click(function () {
@@ -219,7 +219,7 @@
                     $(".availableButtons").children(".separator").before($item);
                 }
 
-                $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+                $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
 
             });
 
@@ -237,7 +237,7 @@
                 $item.remove();
             }
 
-            $('[id*="CKEditor_Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
+            $('[id*="Options_ToolbarSet"]').val($('.groups').SerializeToolbars());
         });
 
         $('.panelLoading').hide();
