@@ -89,16 +89,19 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
             _recyclebinController.RestoreTab(tab, out message);
 
-            return string.IsNullOrEmpty(message)
-                ? new ConsoleResultModel(
-                    string.Format(
-                        LocalizeString("Prompt_PageRestoredSuccessfully"),
-                        tab.TabID,
-                        tab.TabName
-                        )
-                    )
-                { Records = 1 }
-                : new ConsoleErrorResultModel(message);
+            if (string.IsNullOrEmpty(message))
+            {
+                var successMessage = string.Format(
+                    LocalizeString("Prompt_PageRestoredSuccessfully"),
+                    tab.TabID,
+                    tab.TabName
+                    );
+                return new ConsoleResultModel(successMessage) { Records = 1 };
+            }
+            else
+            {
+                return new ConsoleErrorResultModel(message);
+            }
         }
     }
 }

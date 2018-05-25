@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         Mock<ITabController> _tabControllerMock;
         Mock<IRecyclebinController> _recyclebinControllerMock;
         Mock<IContentVerifier> _contentVerifierMock;
-        
+
         int _tabId = 91;
         int _testPortalId = 1;
 
@@ -40,16 +40,16 @@ namespace Dnn.PersonaBar.Pages.Tests
             _tabControllerMock = new Mock<ITabController>();
             _recyclebinControllerMock = new Mock<IRecyclebinController>();
             _contentVerifierMock = new Mock<IContentVerifier>();
+
+            _tabControllerMock.SetReturnsDefault(_tab);
+            _contentVerifierMock.SetReturnsDefault(true);
+            _recyclebinControllerMock.Setup(r => r.RestoreTab(_tab, out _message));
         }
 
         [Test]
         public void Run_RestorePage_WithValidCommand_ShouldReturnSuccessResponse()
         {
-            // Arrange            
-            _tabControllerMock.SetReturnsDefault(_tab);
-            _contentVerifierMock.SetReturnsDefault(true);
-            _recyclebinControllerMock.Setup(r => r.RestoreTab(_tab, out _message));
-
+            // Arrange                      
             SetupCommand();
 
             // Act
@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             Assert.IsFalse(result.IsError);
             Assert.AreEqual(1, result.Records);
             Assert.IsFalse(result is ConsoleErrorResultModel);
-        }    
+        }
 
         [Test]
         public void Run_RestorePage_WithValidCommandForNonExistingTab_ShouldReturnErrorResponse()
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Arrange
             _tab = null;
 
-            _tabControllerMock.SetReturnsDefault(_tab);
+            _tabControllerMock.Setup(t => t.GetTab(_tabId, _testPortalId)).Returns(_tab);
 
             SetupCommand();
 
@@ -83,8 +83,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void Run_RestorePage_WithValidCommandForRequestedPortalNotAllowed_ShouldReturnErrorResponse()
         {
             // Arrange
-            _tabControllerMock.SetReturnsDefault(_tab);
-            _contentVerifierMock.SetReturnsDefault(false);
+            _contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(_testPortalId, _portalSettings, false)).Returns(false);
 
             SetupCommand();
 
@@ -102,8 +101,6 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Arrange
             _message = "Tab not found";
 
-            _tabControllerMock.SetReturnsDefault(_tab);
-            _contentVerifierMock.SetReturnsDefault(true);
             _recyclebinControllerMock.Setup(r => r.RestoreTab(_tab, out _message));
 
             SetupCommand();
