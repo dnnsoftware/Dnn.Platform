@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetPageUnitTests.cs" />
     <Compile Include="PagesControllerUnitTests.cs" />
     <Compile Include="PurgePageUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
