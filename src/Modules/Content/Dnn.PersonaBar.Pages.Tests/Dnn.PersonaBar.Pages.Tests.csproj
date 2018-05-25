@@ -58,6 +58,7 @@
     <Compile Include="PagesControllerUnitTests.cs" />
     <Compile Include="PurgePageUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestorePageUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj">
