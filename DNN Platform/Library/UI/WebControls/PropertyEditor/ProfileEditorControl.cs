@@ -50,8 +50,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
     {
-
-        
         #region Protected Methods
 
         /// -----------------------------------------------------------------------------
