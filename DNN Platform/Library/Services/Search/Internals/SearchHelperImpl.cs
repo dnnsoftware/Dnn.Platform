@@ -428,7 +428,7 @@ namespace DotNetNuke.Services.Search.Internals
             string output = FoldToASCII(searchPhrase);
             
             // we have a quotation marks and/or wildcard search, adjust accordingly
-            var chars = output.TrimEnd('\0').ToCharArray();
+            var chars = output.ToCharArray();
             var insideQuote = false;
             var newPhraseBulder = new StringBuilder();
             var currentWord = new StringBuilder();
@@ -712,7 +712,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
 
-            return sb.ToString();
+            return sb.ToString().TrimEnd('\0');
         }
 
         #endregion

@@ -418,19 +418,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(expected, analyzed);
         }
 
-        //[Test]
-        //public void SearchHelper_Rephrase_##()
-        //{
-        //    //Arrange            
-        //    const string inPhrase = "";
-        //    const string expected = "";
+        [Test]
+        //Arrange
+        [TestCase("Cäu","(Cau OR Cau*)")]
+        [TestCase("Cäutätörül", "(Cautatorul OR Cautatorul*)")]
+        [TestCase("Ãbcdef", "(Abcdef OR Abcdef*)")]
+        public void SearchHelper_Rephrase_AccentedCharsReplaced_Replaced(string inPhrase, string expected)
+        {
+            //Act
+            var analyzed = _searchHelper.RephraseSearchText(inPhrase, true);
 
-        //    //Act
-        //    var analyzed = _searchHelper.AnalyzeSearchText(inPhrase, false);
-
-        //    //Assert
-        //    Assert.AreEqual(expected, analyzed);
-        //}
+            //Assert
+            Assert.AreEqual(expected, analyzed);
+        }
 
         #endregion
     }
