@@ -256,7 +256,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets a value indicating whether this instance is all instances.</summary>
         /// <value><c>true</c> if this instance is all instances; otherwise, <c>false</c>.</value>
-        private bool IsAllInstances => _portalSettings == null;
+        private bool IsAllInstances => IsHostMode && !CurrentPortalOnly;
 
         /// <summary>Gets the home directory.</summary>
         /// <value>The home directory.</value>
@@ -370,10 +370,10 @@ namespace DNNConnect.CKEditorProvider
         {
             AddJavaScripts();
             LocalResourceFile = ResXFile;
+            _portalSettings = GetPortalSettings();
 
             if (IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
             {
-                _portalSettings = GetPortalSettings();
                 listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
 
                 if (Page.IsPostBack)
