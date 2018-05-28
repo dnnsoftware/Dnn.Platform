@@ -19,6 +19,7 @@
     <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Documentation\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
   </ItemGroup>
   <ItemGroup>
     <InstallExclude Include="$(PlatformCheckout)\**\*.cs" />
@@ -59,7 +60,7 @@
     <InstallExclude Include="$(WebsitePath)\bin\Dnn.AuthServices.Jwt.*" />
     <InstallExclude Include="$(WebsitePath)\bin\System.IdentityModel.Tokens.Jwt.*" />
     <InstallExclude Include="$(WebsitePath)\obj\**\*.*" />
-    <UpgradeExclude Include="@(CESourceExclude)" />
+    <InstallExclude Include="@(CESourceExclude)" />
   </ItemGroup>
   <ItemGroup>
     <UpgradeExclude Include="$(PlatformCheckout)\**\System.Web.Extensions.dll" />
@@ -102,9 +103,11 @@
     <LocationField>Hidden</LocationField>
     <Icon>DotNetNuke.ico</Icon>
   </PropertyGroup>
+
   <Target Name="PreCleanup">
     <RemoveDir Directories="$(PlatformCheckout)\DeployPackage" />
   </Target>
+
   <Target Name="CopyBrandedFiles" DependsOnTargets="VersionCheck">
     <Attrib Files="$(WebsitePath)\Images\Branding\iconbar_logo.png" ReadOnly="false" />
     <Attrib Files="$(WebsitePath)\Images\Branding\logo.gif" ReadOnly="false" />
@@ -135,16 +138,23 @@
     </ItemGroup>
     <Copy SourceFiles="@(WebsiteSpecialFiles)" DestinationFiles="@(WebsiteSpecialFiles-&gt;'$(WebsitePath)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
+
   <Target Name="NugetRestore">
     <Exec Command="$(PlatformCheckout)\.nuget\NuGet.exe restore &quot;$(PlatformCheckout)\DNN_Platform.sln&quot; -Source https://api.nuget.org/v3/index.json"/>
   </Target>
-  <Target Name="CompileSource" DependsOnTargets="NugetRestore">
+
+  <!--
+    Must perform this one time only before any of CreateInstall / CreateDeploy / CreateUpgrade
+    But we didn't add them as dependencies so that we don't compile the code multiple times
+   -->
+  <Target Name="CompileSource" DependsOnTargets="CopyBrandedFiles;PreCleanup;NugetRestore">
     <Message Text="Build project folder: $(MSBuildProjectDirectory) " />
     <MSBuild Projects="$(PlatformCheckout)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean"/>
     <MSBuild Projects="$(PlatformCheckout)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
     <Message Text="DotNetNuke Compile finished" Importance="high" />
   </Target>
-  <Target Name="CreateInstall" DependsOnTargets="CopyBrandedFiles;PreCleanup;NugetRestore;CompileSource">
+
+  <Target Name="CreateInstall">
     <!-- Copy CKEditor Provider assembly into bin folder -->
     <ItemGroup>
       <CKEditorPackage Include="$(PlatformCheckout)\DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
@@ -159,7 +169,8 @@
     <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(CEArtifactName)_Install.zip" />
     <Delete Files="$(MSBuildProjectDirectory)\Telerik_$(TelerikVersion)_Install.zip" />
   </Target>
-  <Target Name="CreateDeploy" DependsOnTargets="VersionCheck;PreCleanup;CreateInstall">
+
+  <Target Name="CreateDeploy" DependsOnTargets="CreateInstall">
     <RemoveDir Directories="$(PlatformCheckout)\DeployPackage\" />
     <MakeDir Directories="$(PlatformCheckout)\DeployPackage\" />
     <ItemGroup>
@@ -175,13 +186,19 @@
     </ItemGroup>
     <Zip Files="@(DeployPackage)" WorkingDirectory="$(PlatformCheckout)\DeployPackage\" ZipFileName="$(CEArtifactName)_Deploy.zip" />
   </Target>
-  <Target Name="CreateUpgrade" DependsOnTargets="VersionCheck;PreCleanup;NugetRestore;CompileSource">
+
+  <Target Name="CreateUpgrade">
     <ItemGroup>
       <FilteredExclude Include="@(UpgradeExclude)" Exclude="@(UpgradeOnly)" />
       <UpgradePackage Include="$(WebsitePath)\**\*.*" Exclude="@(FilteredExclude);" />
     </ItemGroup>
     <Zip Files="@(UpgradePackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(CEArtifactName)_Upgrade.zip" />
   </Target>
+
+  <Target Name="Create3Packages" DependsOnTargets="CompileSource;CreateDeploy;CreateUpgrade">
+    <!-- this will create all the 3 installation packages in one target -->
+  </Target>
+
   <Target Name="CreateSymbols" DependsOnTargets="VersionCheck">
     <ItemGroup>
       <SymbolsFiles Include="$(WebsitePath)\bin\*.pdb; $(WebsitePath)\bin\*.xml; $(WebsitePath)\bin\Providers\*.pdb; $(WebsitePath)\bin\Providers\*.xml" Exclude="@(SymbolsExclude)" />
@@ -196,6 +213,7 @@
     <!--Restore manifest to original state-->
     <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
   </Target>
+
   <Target Name="RepackageSymbols" DependsOnTargets="VersionCheck">
     <Attrib Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" ReadOnly="false" />
     <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="@@VER_NAME@@" ReplacementText="Community" />
@@ -206,8 +224,10 @@
     <!--Restore manifest to original state-->
     <FileUpdate Files="$(PlatformCheckout)\Build\Symbols\DotNetNuke_Symbols.dnn" Regex="Community" ReplacementText="@@VER_NAME@@" />
   </Target>
+
   <Target Name="CopySymbols" DependsOnTargets="VersionCheck">
   </Target>
+
   <Target Name="CreateSource" DependsOnTargets="VersionCheck;PreCleanup">
     <ItemGroup>
       <CESource Include="$(PlatformCheckout)\**\*.*" Exclude="@(CESourceExclude)" />

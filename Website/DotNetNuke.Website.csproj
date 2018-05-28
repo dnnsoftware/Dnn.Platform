@@ -40,6 +40,7 @@
     <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
@@ -3314,10 +3318,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DNN Platform\Components\ClientDependency\ClientDependency.Core\ClientDependency.Core.csproj">
-      <Project>{ea35b06d-0cc8-4830-a3f7-9bb3d36d0faf}</Project>
-      <Name>ClientDependency.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DNN Platform\Components\ClientDependency\Source\ClientDependency.Core.csproj">
       <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
       <Name>ClientDependency.Core</Name>
