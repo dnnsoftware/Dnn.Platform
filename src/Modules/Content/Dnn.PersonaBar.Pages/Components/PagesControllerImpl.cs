@@ -1027,14 +1027,15 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public PageSettings GetPageSettings(int pageId, PortalSettings requestPortalSettings = null)
         {
-            var tab = GetPageDetails(pageId);            
+            var tab = GetPageDetails(pageId);
 
-            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, requestPortalSettings))
+            var portalSettings = requestPortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+
+            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, portalSettings))
             {
                 throw new PageNotFoundException();
             }
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+           
             var page = Converters.ConvertToPageSettings<PageSettings>(tab);
             page.Modules = GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
             page.PageUrls = GetPageUrls(page.TabId);
