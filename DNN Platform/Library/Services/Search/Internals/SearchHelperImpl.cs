@@ -425,10 +425,8 @@ namespace DotNetNuke.Services.Search.Internals
                 return searchPhrase;
             }
             
-            string output = FoldToASCII(searchPhrase);
-            
             // we have a quotation marks and/or wildcard search, adjust accordingly
-            var chars = output.ToCharArray();
+            var chars = FoldToASCII(searchPhrase).ToCharArray();
             var insideQuote = false;
             var newPhraseBulder = new StringBuilder();
             var currentWord = new StringBuilder();
@@ -695,24 +693,25 @@ namespace DotNetNuke.Services.Search.Internals
 
             return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
         }
-
+        
         private string FoldToASCII(string searchPhrase)
         {
             var sb = new StringBuilder();
-            var asciiFilter = new ASCIIFoldingFilter(new StandardTokenizer(Constants.LuceneVersion, (TextReader)new StringReader(searchPhrase)));
+
+            var cleanedPhrase = searchPhrase.Trim('\0');
+            
+            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
 
             string space = string.Empty;
             while(asciiFilter.IncrementToken())
             {
-                if(string.IsNullOrEmpty(space))
+                sb.AppendFormat("{0}{1}", space ?? "", asciiFilter.GetAttribute<ITermAttribute>().Term);
+                if (string.IsNullOrEmpty(space))
                 {
                     space = " ";
                 }
-                sb.AppendFormat("{0}{1}", space ?? "", asciiFilter.GetAttribute<ITermAttribute>().Term);
             }
-
-
-            return sb.ToString().TrimEnd('\0');
+            return sb.ToString();
         }
 
         #endregion
