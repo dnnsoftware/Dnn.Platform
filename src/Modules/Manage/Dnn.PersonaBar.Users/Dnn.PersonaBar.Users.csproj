@@ -105,6 +105,7 @@
     <Compile Include="Components\Contracts\CreateUserContract.cs" />
     <Compile Include="Components\Contracts\GetUsersContract.cs" />
     <Compile Include="Components\Contracts\RegisterationDetails.cs" />
+    <Compile Include="Components\Dto\PasswordSettingsDto.cs" />
     <Compile Include="Components\Dto\ProfileDefinitionDto.cs" />
     <Compile Include="Components\Dto\ChangePasswordDto.cs" />
     <Compile Include="Components\Dto\RelationshipDto.cs" />

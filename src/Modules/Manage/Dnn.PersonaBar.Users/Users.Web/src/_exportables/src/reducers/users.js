@@ -157,6 +157,14 @@ const switchCase = [
                 userRoles: removeUserRoleFromList(state.userRoles, action.payload.roleId)
             };
         }
+    },
+    {
+        condition: ActionTypes.RETRIEVED_PASSWORD_STRENGTH_OPTIONS,
+        functionToRun: (state, action) => {
+            return {
+                passwordStrengthOptions: action.payload
+            };
+        }
     }
 ];
 function getFinalSwitchCase(switchCase, additionalCases) {
@@ -188,7 +196,8 @@ export default function getReducer(initialState, additionalCases) {
         userRoles: [],
         matchedRoles: [],
         userRolesCount: 0,
-        userDetails: {}
+        userDetails: {},
+        passwordStrengthOptions: {}
     }, initialState), action) {
         let _switchCase = getFinalSwitchCase(switchCase, additionalCases);
 
