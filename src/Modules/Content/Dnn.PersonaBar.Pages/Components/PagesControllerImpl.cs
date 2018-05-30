@@ -62,6 +62,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IUrlRewriterUtilsWrapper _urlRewriterUtilsWrapper;
         private readonly IFriendlyUrlWrapper _friendlyUrlWrapper;
         private readonly IContentVerifier _contentVerifier;
+        private readonly IPortalController _portalController;
 
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };        
@@ -78,7 +79,8 @@ namespace Dnn.PersonaBar.Pages.Components
                   CloneModuleExecutionContext.Instance,
                   new UrlRewriterUtilsWrapper(),
                   new FriendlyUrlWrapper(),
-                  new ContentVerifier()
+                  new ContentVerifier(),
+                  PortalController.Instance
                   )
         {
         }
@@ -92,8 +94,8 @@ namespace Dnn.PersonaBar.Pages.Components
             ICloneModuleExecutionContext cloneModuleExecutionContext,
             IUrlRewriterUtilsWrapper urlRewriterUtilsWrapper,
             IFriendlyUrlWrapper friendlyUrlWrapper,
-            IContentVerifier contentVerifier
-            )
+            IContentVerifier contentVerifier,
+            IPortalController portalController)
         {
             _tabController = tabController;
             _moduleController = moduleController;
@@ -104,6 +106,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _urlRewriterUtilsWrapper = urlRewriterUtilsWrapper;
             _friendlyUrlWrapper = friendlyUrlWrapper;
             _contentVerifier = contentVerifier;
+            _portalController = portalController;
         }
 
 
@@ -470,8 +473,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private TabInfo GetPageDetails(int pageId)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = TabController.Instance.GetTab(pageId, portalSettings.PortalId);
+            var portalSettings = _portalController.GetCurrentPortalSettings();
+            var tab = _tabController.GetTab(pageId, portalSettings.PortalId);
             if (tab == null)
             {
                 throw new PageNotFoundException();
@@ -1029,7 +1032,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var tab = GetPageDetails(pageId);
 
-            var portalSettings = requestPortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = requestPortalSettings ?? _portalController.GetCurrentPortalSettings();
 
             if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, portalSettings))
             {
