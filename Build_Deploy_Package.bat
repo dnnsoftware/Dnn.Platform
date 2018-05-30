@@ -1,5 +1,9 @@
 @echo off
 
+set builder=MSBuild.exe
+where /q "%builder%"
+if %ERRORLEVEL% == 0 goto build
+
 set builder=%ProgramFiles(x86)%\MSBuild\15.0\Bin\MSBuild.exe
 if exist "%builder%" goto build
 
