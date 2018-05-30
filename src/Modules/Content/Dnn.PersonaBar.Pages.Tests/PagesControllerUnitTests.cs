@@ -27,9 +27,6 @@ namespace Dnn.PersonaBar.Pages.Tests
         PagesControllerImpl _pagesController;
         Mock<IPortalController> _portalControllerMock;
 
-        TabInfo _tab = new TabInfo();
-        PortalSettings _portalSettings = new PortalSettings();
-
         [SetUp]
         public void RunBeforeEachTest()
         {
@@ -52,9 +49,11 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void ValidatePageUrlSettings_CleanNameForUrl_URLArgumentShouldBeLocalPath(string inputUrl, string expected)
         {
             // Arrange
-            var friendlyOptions = new FriendlyUrlOptions();
             var modified = false;
-
+            var tab = new TabInfo();
+            var portalSettings = new PortalSettings();
+            var friendlyOptions = new FriendlyUrlOptions();
+            
             _urlRewriterUtilsWrapperMock.Setup(d => d.GetExtendOptionsForURLs(It.IsAny<int>())).Returns(friendlyOptions);
             _friendlyUrlWrapperMock.Setup(d => d.CleanNameForUrl(It.IsAny<string>(), friendlyOptions, out modified)).Returns(expected);
             _friendlyUrlWrapperMock.Setup(d => d.ValidateUrl(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<PortalSettings>(), out modified));
@@ -68,7 +67,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             string errorMessage = string.Empty;
 
             // Act
-            bool result = _pagesController.ValidatePageUrlSettings(_portalSettings, pageSettings, _tab, ref inValidField, ref errorMessage);
+            bool result = _pagesController.ValidatePageUrlSettings(portalSettings, pageSettings, tab, ref inValidField, ref errorMessage);
 
             // Assert
             Assert.IsTrue(result);
@@ -79,13 +78,17 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void GetPageSettings_CallGetCurrentPortalSettings_WhenSettingParameterIsNull()
         {
-            int tabId = 0;
-            int portalId = 0;
-            _tab.PortalID = portalId;
+            var tabId = 0;
+            var portalId = 0;
+
+            var tab = new TabInfo();
+            tab.PortalID = portalId;
+
+            var portalSettings = new PortalSettings();
 
             // Arrange
-            _tabControllerMock.Setup(t => t.GetTab(It.IsAny<int>(), It.IsAny<int>())).Returns(_tab);
-            _portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(_portalSettings);
+            _tabControllerMock.Setup(t => t.GetTab(It.IsAny<int>(), It.IsAny<int>())).Returns(tab);
+            _portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(portalSettings);
             _contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(It.IsAny<int>(), It.IsAny<PortalSettings>(), false)).Returns(false);
 
             InitializePageController();
@@ -96,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Assert
             Assert.Throws<PageNotFoundException>(pageSettingsCall);
             _portalControllerMock.Verify(p => p.GetCurrentPortalSettings(), Times.Exactly(2));
-            _contentVerifierMock.Verify(c => c.IsContentExistsForRequestedPortal(portalId, _portalSettings, false));
+            _contentVerifierMock.Verify(c => c.IsContentExistsForRequestedPortal(portalId, portalSettings, false));
         }
 
         private void InitializePageController()
