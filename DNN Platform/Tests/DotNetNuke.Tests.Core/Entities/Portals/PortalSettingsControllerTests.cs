@@ -97,6 +97,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                             .Returns((string s, bool b) => Boolean.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => Int32.Parse(hostSettings[s]));
+            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
+                            .Returns((string s) => Int32.Parse(hostSettings[s]));
             HostController.RegisterInstance(mockHostController.Object);
 
             if (isHostDefault)
