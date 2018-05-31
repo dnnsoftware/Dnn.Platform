@@ -120,10 +120,10 @@ namespace DotNetNuke.Services.GeneratedImage
             SetupCulture();
 
             //which type of image should be generated ?
-            string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLower();
+            string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
             // We need to determine the output format		
-            string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLower();
+            string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
             Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
@@ -250,12 +250,12 @@ namespace DotNetNuke.Services.GeneratedImage
                             if (string.IsNullOrEmpty(parameters["Url"]))
                             {
                                 var fi = new System.IO.FileInfo(imgFile);
-                                extension = fi.Extension.ToLower();
+                                extension = fi.Extension.ToLowerInvariant();
                             }
                             else
                             {
                                 string[] parts = parameters["Url"].Split('.');
-                                extension = parts[parts.Length - 1].ToLower();
+                                extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
                             ContentType = GetImageFormat(extension);
                         }
@@ -277,7 +277,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             var pi = t.GetProperty(key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                             if (pi != null && key != "mode")
                             {
-                                switch (key.ToLower())
+                                switch (key.ToLowerInvariant())
                                 {
                                     case "color":
                                         pi.SetValue(imageTransform, color, null);
@@ -488,7 +488,7 @@ namespace DotNetNuke.Services.GeneratedImage
             foreach (string value in values)
             {
                 string[] setting = value.Split('=');
-                string name = setting[0].ToLower();
+                string name = setting[0].ToLowerInvariant();
                 switch (name)
                 {
                     case "enableclientcache":
@@ -542,7 +542,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static ImageFormat GetImageFormat(string extension)
         {
-            switch (extension.ToLower())
+            switch (extension.ToLowerInvariant())
             {
                 case "jpg":
                 case "jpeg":

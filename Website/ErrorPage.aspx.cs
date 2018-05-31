@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Exceptions
                 var exc = Server.GetLastError();
                 try
                 {
-                    if (Request.Url.LocalPath.ToLower().EndsWith("installwizard.aspx"))
+                    if (Request.Url.LocalPath.ToLowerInvariant().EndsWith("installwizard.aspx"))
                     {
                         ErrorPlaceHolder.Controls.Add(new LiteralControl(HttpUtility.HtmlEncode(exc.ToString())));
                     }

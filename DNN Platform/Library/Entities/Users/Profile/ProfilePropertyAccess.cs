@@ -161,7 +161,7 @@ namespace DotNetNuke.Entities.Users
 					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 					if (CheckAccessLevel(portalSettings, property, accessingUser, user))
                     {
-                        switch (property.PropertyName.ToLower())
+                        switch (property.PropertyName.ToLowerInvariant())
                         {
                             case "photo":
                                 return user.Profile.PhotoURL;

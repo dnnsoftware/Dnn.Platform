@@ -173,7 +173,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(1, synonyms.Count());
-            Assert.AreEqual(TermDotNetNuke.ToLower(), synonyms[0]);
+            Assert.AreEqual(TermDotNetNuke.ToLowerInvariant(), synonyms[0]);
         }
 
         [Test]
@@ -186,8 +186,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(2, synonyms.Count());
-            Assert.AreEqual(TermJump.ToLower(), synonyms[0]);
-            Assert.AreEqual(TermLeap.ToLower(), synonyms[1]);
+            Assert.AreEqual(TermJump.ToLowerInvariant(), synonyms[0]);
+            Assert.AreEqual(TermLeap.ToLowerInvariant(), synonyms[1]);
         }
 
         #endregion

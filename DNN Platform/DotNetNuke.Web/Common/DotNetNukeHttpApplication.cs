@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.Common.Internal
                 }
             }
 
-            var requestUrl = app.Request.Url.LocalPath.ToLower();
+            var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
             if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") &&  Endings.Any(requestUrl.EndsWith))
             {
                 return;
@@ -230,7 +230,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static bool IsInstallOrUpgradeRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLower();
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
             return url.EndsWith("webresource.axd")
                    || url.EndsWith("scriptresource.axd")

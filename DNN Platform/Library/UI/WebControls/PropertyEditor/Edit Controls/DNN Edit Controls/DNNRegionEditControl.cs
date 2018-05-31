@@ -252,7 +252,7 @@ namespace DotNetNuke.UI.WebControls
 			writer.AddAttribute("data-name", Name);
 			writer.AddAttribute("data-list", "Region");
 			writer.AddAttribute("data-category", Category);
-			writer.AddAttribute("data-required", Required.ToString().ToLower());
+			writer.AddAttribute("data-required", Required.ToString().ToLowerInvariant());
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 			RenderChildren(writer);
 			writer.RenderEndTag();

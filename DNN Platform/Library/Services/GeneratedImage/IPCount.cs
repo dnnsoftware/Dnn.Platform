@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var toTryDeleteAgain = new List<FileInfo>();
                         foreach (var fileinfo in files)
                         {
-                            if (fileinfo.Name.ToLower() != "_lastpurge" && fileinfo.LastWriteTime < threshold)
+                            if (fileinfo.Name.ToLowerInvariant() != "_lastpurge" && fileinfo.LastWriteTime < threshold)
                             {
                                 try
                                 {

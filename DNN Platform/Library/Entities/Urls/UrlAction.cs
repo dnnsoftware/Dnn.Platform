@@ -219,9 +219,9 @@ namespace DotNetNuke.Entities.Urls
             }
             foreach (string lp in licensedProviders)
             {
-                if (_licensedProviders.Contains(lp.ToLower()) == false)
+                if (_licensedProviders.Contains(lp.ToLowerInvariant()) == false)
                 {
-                    _licensedProviders.Add(lp.ToLower());
+                    _licensedProviders.Add(lp.ToLowerInvariant());
                 }
             }
         }
@@ -232,9 +232,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 _licensedProviders = new List<string>();
             }
-            if (_licensedProviders.Contains(providerName.ToLower()) == false)
+            if (_licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
-                _licensedProviders.Add(providerName.ToLower());
+                _licensedProviders.Add(providerName.ToLowerInvariant());
             }
         }
 
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return false;
             }
-            return _licensedProviders.Contains(providerName.ToLower());
+            return _licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
         /// <summary>

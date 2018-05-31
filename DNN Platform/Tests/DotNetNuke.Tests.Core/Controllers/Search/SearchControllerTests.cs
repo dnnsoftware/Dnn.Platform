@@ -1622,7 +1622,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             AddStandardSearchDocs();
 
             //Act
-            var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { TagNeutral.ToLower() } };
+            var query = new SearchQuery { SearchTypeIds = new List<int> { ModuleSearchTypeId }, Tags = new List<string> { TagNeutral.ToLowerInvariant() } };
             var search = _searchController.SiteSearch(query);
 
             //Assert
@@ -1776,7 +1776,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             Assert.AreEqual(Tag2, search.Results[0].Tags.ElementAt(0));
             Assert.AreEqual(Tag3, search.Results[0].Tags.ElementAt(1));
-            Assert.AreEqual(TagIt.ToLower(), search.Results[0].Tags.ElementAt(2));
+            Assert.AreEqual(TagIt.ToLowerInvariant(), search.Results[0].Tags.ElementAt(2));
         }
 
         [Test]
@@ -2568,7 +2568,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     UniqueKey = Guid.NewGuid().ToString(),
                     SearchTypeId = OtherSearchTypeId,
                     ModifiedTimeUtc = DateTime.UtcNow,
-                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLower() } }
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } }
                 };
                 _internalSearchController.AddSearchDocument(doc);
             }

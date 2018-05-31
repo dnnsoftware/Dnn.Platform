@@ -281,7 +281,7 @@ namespace DotNetNuke.Common
 
         private static bool IsUpgradeOrInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLower();
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
             return url.EndsWith("/install.aspx")
                 || url.Contains("/upgradewizard.aspx")
@@ -443,7 +443,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
-            var toLowerLocalPath = request.Url.LocalPath.ToLower();
+            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
 
             if (toLowerLocalPath.EndsWith("webresource.axd")
                     || toLowerLocalPath.EndsWith("scriptresource.axd")

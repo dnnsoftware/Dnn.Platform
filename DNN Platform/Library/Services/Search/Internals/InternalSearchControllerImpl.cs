@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var kvp in searchDocument.Keywords)
             {
-                var key = kvp.Key.ToLower();
+                var key = kvp.Key.ToLowerInvariant();
                 var needAnalyzed = Constants.FieldsNeedAnalysis.Contains(key);
                 var field = new Field(SearchHelper.Instance.StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, needAnalyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
                 switch (key)
@@ -479,7 +479,7 @@ namespace DotNetNuke.Services.Search.Internals
             bool tagBoostApplied = false;
             foreach (var tag in searchDocument.Tags)
             {
-                var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLowerInvariant(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (!tagBoostApplied)
                 {
                     if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost)

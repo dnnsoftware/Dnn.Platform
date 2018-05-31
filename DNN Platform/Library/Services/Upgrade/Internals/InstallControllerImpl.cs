@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     string key = connectionParam.Substring(0, index);
                     string value = connectionParam.Substring(index + 1);
-                    switch (key.ToLower())
+                    switch (key.ToLowerInvariant())
                     {
                         case "server":
                         case "data source":
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = (value.ToLower() == "true");
+                            connectionConfig.Integrated = (value.ToLowerInvariant() == "true");
                             break;
                         case "attachdbfilename":
                             connectionConfig.File = value.Replace("|DataDirectory|", "");
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "description", portalConfig.Description);
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "keywords", portalConfig.Keywords);
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "templatefile", portalConfig.TemplateFileName);
-                    AppendNewXmlNode(ref installTemplate, ref portalNode, "ischild", portalConfig.IsChild.ToString().ToLower());
+                    AppendNewXmlNode(ref installTemplate, ref portalNode, "ischild", portalConfig.IsChild.ToString().ToLowerInvariant());
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "homedirectory", portalConfig.HomeDirectory);
 
                     foreach (string portalAliase in portalConfig.PortAliases)
@@ -265,10 +265,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "server", installConfig.Connection.Server);
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "database", installConfig.Connection.Database);
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "file", installConfig.Connection.File);
-                AppendNewXmlNode(ref installTemplate, ref connectionNode, "integrated", installConfig.Connection.Integrated.ToString().ToLower());
+                AppendNewXmlNode(ref installTemplate, ref connectionNode, "integrated", installConfig.Connection.Integrated.ToString().ToLowerInvariant());
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "user", installConfig.Connection.User);
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "password", installConfig.Connection.Password);
-                AppendNewXmlNode(ref installTemplate, ref connectionNode, "runasdbowner", installConfig.Connection.RunAsDbowner.ToString().ToLower());
+                AppendNewXmlNode(ref installTemplate, ref connectionNode, "runasdbowner", installConfig.Connection.RunAsDbowner.ToString().ToLowerInvariant());
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "qualifier", installConfig.Connection.Qualifier);
                 AppendNewXmlNode(ref installTemplate, ref connectionNode, "upgradeconnectionstring", installConfig.Connection.UpgradeConnectionString);
             }
@@ -338,10 +338,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
                 connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
                 connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
-                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLower() == "true";
+                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true";
                 connectionConfig.User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user");
                 connectionConfig.Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password");
-                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLower() == "true";
+                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true";
                 connectionConfig.Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier");
                 connectionConfig.UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring");
 
@@ -360,7 +360,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 superUserConfig.Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password");
                 superUserConfig.Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email");
                 superUserConfig.Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale");
-                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLower() == "true";
+                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true";
 
                 installConfig.SuperUser = superUserConfig;
             }
@@ -398,7 +398,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
                             if ((secureAttrib != null))
                             {
-                                if (secureAttrib.Value.ToLower() == "true")
+                                if (secureAttrib.Value.ToLowerInvariant() == "true")
                                 {
                                     settingIsSecure = true;
                                 }
@@ -434,7 +434,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
-                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLower() == "true";
+                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLowerInvariant() == "true";
                         ;
                         portalConfig.HomeDirectory = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "homedirectory");
 
@@ -529,7 +529,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
-            if (dbo.Trim().ToLower() != "dbo.")
+            if (dbo.Trim().ToLowerInvariant() != "dbo.")
             {
                 return true;
             }

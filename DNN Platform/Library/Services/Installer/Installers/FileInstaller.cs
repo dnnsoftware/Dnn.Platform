@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 Files.Add(file);
 
                 //Add to the
-                Package.InstallerInfo.Files[file.FullName.ToLower()] = file;
+                Package.InstallerInfo.Files[file.FullName.ToLowerInvariant()] = file;
             }
         }
 

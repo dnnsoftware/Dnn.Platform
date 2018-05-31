@@ -209,13 +209,13 @@ namespace DotNetNuke.UI.Skins
         /// <param name="strSkinFile">The File Name without extension</param>
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
-            if (strSkinFolder.ToLower() == "_default") //host folder
+            if (strSkinFolder.ToLowerInvariant() == "_default") //host folder
             {
                 return strSkinFile;
             }
 			
 			//portal folder
-            switch (strSkinFile.ToLower())
+            switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
                 case "container":
@@ -302,7 +302,7 @@ namespace DotNetNuke.UI.Skins
 					Logger.Error(ex);
 				}
             }
-            strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.ToLower().IndexOf("portals\\"));
+            strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.ToLowerInvariant().IndexOf("portals\\"));
             return strThumbnail;
         }
 

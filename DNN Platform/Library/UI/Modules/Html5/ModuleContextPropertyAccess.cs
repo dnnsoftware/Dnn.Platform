@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "moduleid":
                     return _moduleContext.ModuleId.ToString();

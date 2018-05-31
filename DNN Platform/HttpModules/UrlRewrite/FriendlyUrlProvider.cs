@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
             if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
-                switch (objProvider.Attributes["urlFormat"].ToLower())
+                switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
                         _urlFormat = UrlFormatType.SearchFriendly;

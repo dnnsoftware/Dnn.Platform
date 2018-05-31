@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             string controlKey = (routeValues.ContainsKey("ctl")) ? (string)routeValues["ctl"] : String.Empty;
 
             List<string> additionalParams = (from routeValue in routeValues 
-                                             where !ExcludedRouteValues.Split(',').ToList().Contains(routeValue.Key.ToLower()) 
+                                             where !ExcludedRouteValues.Split(',').ToList().Contains(routeValue.Key.ToLowerInvariant()) 
                                              select routeValue.Key + "=" + routeValue.Value)
                                              .ToList();
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 foreach (var param in httpContext.Request.QueryString.AllKeys)
                 {
-                    if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
+                    if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLowerInvariant()))
                     {
                         routeData.Values.Add(param, httpContext.Request.QueryString[param]);
                     }

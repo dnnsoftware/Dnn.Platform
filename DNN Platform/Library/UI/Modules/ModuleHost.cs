@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.Modules
             var content = PortalSettings.UserMode != PortalSettings.Mode.Layout;
             if (Page.Request.QueryString["content"] != null)
             {
-                switch (Page.Request.QueryString["Content"].ToLower())
+                switch (Page.Request.QueryString["Content"].ToLowerInvariant())
                 {
                     case "1":
                     case "true":

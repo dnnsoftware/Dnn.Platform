@@ -635,7 +635,7 @@ namespace DotNetNuke.Entities.Portals
 			{
 				outputFormat = "g";
 			}
-			var lowerPropertyName = propertyName.ToLower();
+			var lowerPropertyName = propertyName.ToLowerInvariant();
 			if (accessLevel == Scope.NoSettings)
 			{
 				propertyNotFound = true;

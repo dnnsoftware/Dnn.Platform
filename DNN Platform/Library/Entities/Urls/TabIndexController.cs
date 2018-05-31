@@ -785,7 +785,7 @@ namespace DotNetNuke.Entities.Urls
                                             bool isDeleted)
         {
             //remove leading '/' and convert to lower for all keys 
-            string tabPathSimple = tabPath.Replace("//", "/").ToLower();
+            string tabPathSimple = tabPath.Replace("//", "/").ToLowerInvariant();
             //the tabpath depth is only set if it's higher than the running highest tab path depth
             int thisTabPathDepth = tabPathSimple.Length - tabPathSimple.Replace("/", "").Length;
             if (thisTabPathDepth > tabPathDepth)
@@ -798,10 +798,10 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //Contruct the tab key for the dictionary. Using :: allows for separation of portal alias and tab path. 
-            string tabKey = (httpAlias + "::" + tabPathSimple).ToLower();
+            string tabKey = (httpAlias + "::" + tabPathSimple).ToLowerInvariant();
 
             //construct the duplicate key check
-            string dupKey = (httpAlias + "/" + tabPathSimple).ToLower();
+            string dupKey = (httpAlias + "/" + tabPathSimple).ToLowerInvariant();
             if (dupKey[dupKey.Length - 1] != '/')
             {
                 dupKey += "/";
@@ -957,7 +957,7 @@ namespace DotNetNuke.Entities.Urls
                 string escapedAlias = Regex.Escape(plainAlias);
                 var aliasesToAdd = new List<string> { escapedAlias };
                 //check for existence of www. version of domain, if it doesn't have a www.
-                if (plainAlias.ToLower().StartsWith("www."))
+                if (plainAlias.ToLowerInvariant().StartsWith("www."))
                 {
                     if (plainAlias.Length > 4)
                     {
@@ -1356,7 +1356,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (tab.CustomAliases.ContainsKey(currentCulture))
             {
-                customHttpAlias = tab.CustomAliases[currentCulture].ToLower();
+                customHttpAlias = tab.CustomAliases[currentCulture].ToLowerInvariant();
             }
             customAliasUsed = httpAliases.Contains(customHttpAlias);
             //if there is a custom alias for this tab, and it's not one of the ones in the alias list, put it in 
@@ -1573,7 +1573,7 @@ namespace DotNetNuke.Entities.Urls
             bool foundAlias = false;
 
             //Do a specified PortalAlias check first
-            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == portalAlias.ToLower());
+            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == portalAlias.ToLowerInvariant());
             if (portalAliasInfo != null)
             {
                 if (portalAliasInfo.PortalID == portalId)
@@ -1606,14 +1606,14 @@ namespace DotNetNuke.Entities.Urls
                     portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == currentAlias);
                     if (portalAliasInfo != null)
                     {
-                        string httpAlias = portalAliasInfo.HTTPAlias.ToLower();
-                        if (httpAlias.StartsWith(portalAlias.ToLower()) && portalAliasInfo.PortalID == portalId)
+                        string httpAlias = portalAliasInfo.HTTPAlias.ToLowerInvariant();
+                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
                         }
                         httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", "") : string.Concat("www.", httpAlias);
-                        if (httpAlias.StartsWith(portalAlias.ToLower()) && portalAliasInfo.PortalID == portalId)
+                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;

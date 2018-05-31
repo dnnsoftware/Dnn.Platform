@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 if ((Request.QueryString["ftype"] != null))
                 {
 					//The select statement ensures that the parameter can be converted to UploadType
-                    switch (Request.QueryString["ftype"].ToLower())
+                    switch (Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
                             _FileType = (UploadType) Enum.Parse(typeof (UploadType), Request.QueryString["ftype"]);

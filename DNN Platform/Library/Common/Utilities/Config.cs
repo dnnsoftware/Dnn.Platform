@@ -392,7 +392,7 @@ namespace DotNetNuke.Common.Utilities
                 string urlFormat = provider.Attributes["urlFormat"];
                 if (string.IsNullOrEmpty(urlFormat) == false)
                 {
-                    switch (urlFormat.ToLower())
+                    switch (urlFormat.ToLowerInvariant())
                     {
                         case "advanced":
                         case "customonly":

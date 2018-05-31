@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var terms = GetSynonymTerms(portalId, cultureCode);
             IList<string> synonyms;
-            if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLower(), out synonyms))
+            if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLowerInvariant(), out synonyms))
             {
                 synonyms = _emptySynonums;
             }

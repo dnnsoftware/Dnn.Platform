@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Install
 
                         if ((Request.QueryString["ignoreWarning"] != null))
                         {
-                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLower();
+                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLowerInvariant();
                         }
                         strWarning = Upgrade.Upgrade.CheckUpgrade();
                     }
@@ -552,7 +552,7 @@ namespace DotNetNuke.Services.Install
             string mode = "";
             if ((Request.QueryString["mode"] != null))
             {
-                mode = Request.QueryString["mode"].ToLower();
+                mode = Request.QueryString["mode"].ToLowerInvariant();
             }
 
             //Disable Client side caching

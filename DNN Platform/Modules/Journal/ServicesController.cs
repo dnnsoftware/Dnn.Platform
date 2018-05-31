@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Journal
 
             
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
-            StringComparison.Ordinal) + 1).ToLower();
+            StringComparison.Ordinal) + 1).ToLowerInvariant();
             return AcceptedFileExtensions.Contains(extension);
         }
 
@@ -249,8 +249,8 @@ namespace DotNetNuke.Modules.Journal
                     ji.ItemData.Url = Globals.LinkClick(ji.ItemData.Url, Null.NullInteger, Null.NullInteger);
 
                     if (string.IsNullOrEmpty(ji.ItemData.ImageUrl) &&
-                        originalImageUrl.ToLower().StartsWith("/linkclick.aspx?") &&
-                        AcceptedFileExtensions.Contains(file.Extension.ToLower()))
+                        originalImageUrl.ToLowerInvariant().StartsWith("/linkclick.aspx?") &&
+                        AcceptedFileExtensions.Contains(file.Extension.ToLowerInvariant()))
                     {
                         ji.ItemData.ImageUrl = originalImageUrl;
                     }

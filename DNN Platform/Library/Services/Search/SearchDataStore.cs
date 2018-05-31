@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Search
             Hashtable commonWords = GetCommonWords(portalSettings.DefaultLanguage);
 
             //clean criteria
-            criteria = criteria.ToLower();
+            criteria = criteria.ToLowerInvariant();
 
             //split search criteria into words
             var searchWords = new SearchCriteriaCollection(criteria);

@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Modules
 
         private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
-            string extension = Path.GetExtension(controlSrc.ToLower());
+            string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
 
             IModuleControlFactory controlFactory = null;
             Type factoryType;
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Modules
 
         public static Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
-            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLower());
+            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
             var moduleControl = new ModuleControlBase();
             moduleControl.ModuleContext.Configuration = moduleConfiguration;
 

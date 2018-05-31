@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Utilities
         public static string GetFileName(string testFilesFolder, string fileName)
         {
             string fullName = String.Format("{0}\\{1}", testFilesFolder, fileName);
-            if (!fullName.ToLower().EndsWith(".csv") && !fullName.ToLower().EndsWith(".sql"))
+            if (!fullName.ToLowerInvariant().EndsWith(".csv") && !fullName.ToLowerInvariant().EndsWith(".sql"))
             {
                 fullName += ".csv";
             }

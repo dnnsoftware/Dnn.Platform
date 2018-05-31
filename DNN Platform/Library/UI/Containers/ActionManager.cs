@@ -290,7 +290,7 @@ namespace DotNetNuke.UI.Containers
             if (!String.IsNullOrEmpty(action.ClientScript))
             {
                 string Script = action.ClientScript;
-                int JSPos = Script.ToLower().IndexOf("javascript:");
+                int JSPos = Script.ToLowerInvariant().IndexOf("javascript:");
                 if (JSPos > -1)
                 {
                     Script = Script.Substring(JSPos + 11);
