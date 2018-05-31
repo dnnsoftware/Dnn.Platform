@@ -29,11 +29,21 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
         private const string FlagEnd = "end";
 
+        private IUserValidator _userValidator;
 
         private int UserId { get; set; }
         private string Roles { get; set; }
         private DateTime? StartDate { get; set; }
         private DateTime? EndDate { get; set; }
+
+        public AddRoles() : this(new UserValidator())
+        {
+        }
+
+        public AddRoles(IUserValidator userValidator)
+        {
+            this._userValidator = userValidator;
+        }
 
         private void checkRoles()
         {
@@ -84,8 +94,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserInfo userInfo;
 
             checkRoles();
-            
-            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+
+            if ((errorResultModel = _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null)
+            {
+                return errorResultModel;
+            }
+
             try
             {
                 UsersController.Instance.AddUserToRoles(User, userInfo.UserID, PortalId, Roles, ",", StartDate, EndDate);

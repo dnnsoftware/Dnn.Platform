@@ -34,6 +34,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
         private const string FlagPassword = "password";
 
+        private IUserValidator _userValidator;
 
         private int? UserId { get; set; }
         private string Email { get; set; }
@@ -43,6 +44,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private string LastName { get; set; }
         private bool? Approved { get; set; }
         private string Password { get; set; }
+
+        public SetUser(): this(new UserValidator())
+        {
+        }
+
+        public SetUser(IUserValidator userValidator)
+        {
+            this._userValidator = userValidator;
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -75,7 +85,18 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
-            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+
+            if (
+                (errorResultModel = _userValidator.ValidateUser(
+                    UserId,
+                    PortalSettings,
+                    User,
+                    out userInfo)
+                ) != null
+               )
+            {
+                return errorResultModel;
+            }
 
             // Update the User
             // process the password first. If invalid, we can abort other changes to the user

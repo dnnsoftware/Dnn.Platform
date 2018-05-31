@@ -115,6 +115,8 @@
     <Compile Include="Components\Dto\UserBasicDto.cs" />
     <Compile Include="Components\Dto\UserFilters.cs" />
     <Compile Include="Components\Dto\UserRoleDto.cs" />
+    <Compile Include="Components\IUserControllerWrapper.cs" />
+    <Compile Include="Components\IUserValidator.cs" />
     <Compile Include="Components\Helpers\SearchTextFilter.cs" />
     <Compile Include="Components\Prompt\Commands\AddRoles.cs" />
     <Compile Include="Components\Prompt\Commands\DeleteUser.cs" />
@@ -127,11 +129,13 @@
     <Compile Include="Components\Prompt\Models\UserModelBase.cs" />
     <Compile Include="Components\Prompt\Models\UserRoleModel.cs" />
     <Compile Include="Components\Prompt\Utilities.cs" />
+    <Compile Include="Components\UserControllerWrapper.cs" />
     <Compile Include="Components\UsersMenuController.cs" />
     <Compile Include="Components\IRegisterController.cs" />
     <Compile Include="Components\IUsersController.cs" />
     <Compile Include="Components\RegisterController.cs" />
     <Compile Include="Components\UsersController.cs" />
+    <Compile Include="Components\UserValidator.cs" />
     <Compile Include="Data\IUsersDataService.cs" />
     <Compile Include="Data\UsersDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
