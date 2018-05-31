@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Portals
             }
             else
             {
-                crmVersion = HostController.Instance.GetInteger("CrmVersion");
+                crmVersion = settings.GetValueOrDefault("CrmVersion", HostController.Instance.GetInteger("CrmVersion"));
             }
             
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
