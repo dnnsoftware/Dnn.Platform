@@ -665,7 +665,7 @@ namespace DotNetNuke.Modules.Html
                 HtmlTextInfo htmlContent;
 
                 //disable delete button if user doesn't have delete rights???
-                switch (e.CommandName.ToLower())
+                switch (e.CommandName.ToLowerInvariant())
                 {
                     case "remove":
                         htmlContent = GetHTMLContent(e);
@@ -685,7 +685,7 @@ namespace DotNetNuke.Modules.Html
                         break;
                 }
 
-                if ((e.CommandName.ToLower() != "preview"))
+                if ((e.CommandName.ToLowerInvariant() != "preview"))
                 {
                     var latestContent = _htmlTextController.GetTopHtmlText(ModuleId, false, WorkflowID);
                     if (latestContent == null)
@@ -737,7 +737,7 @@ namespace DotNetNuke.Modules.Html
                         {
                             var imageButton = cellControl as ImageButton;
                             imageButton.CommandArgument = htmlContent.ItemID.ToString();
-                            switch (imageButton.CommandName.ToLower())
+                            switch (imageButton.CommandName.ToLowerInvariant())
                             {
                                 case "rollback":
                                     //hide rollback for the first item

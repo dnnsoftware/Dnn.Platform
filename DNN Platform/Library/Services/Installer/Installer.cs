@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.ToLower() == "languagepack")
+            else if (rootNav.Name.ToLowerInvariant() == "languagepack")
             {
                 packageType = "LanguagePack";
             }
@@ -309,7 +309,7 @@ namespace DotNetNuke.Services.Installer
             {
                 InstallerInfo.Log.AddFailure(Util.PACKAGE_UnRecognizable);
             }
-            switch (packageType.ToLower())
+            switch (packageType.ToLowerInvariant())
             {
                 case "package":
                     InstallerInfo.IsLegacyMode = false;
@@ -353,14 +353,14 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.ToLower() == "languagepack")
+            else if (rootNav.Name.ToLowerInvariant() == "languagepack")
             {
                 packageType = "LanguagePack";
             }
 
             XPathDocument legacyDoc;
             string legacyManifest;
-            switch (packageType.ToLower())
+            switch (packageType.ToLowerInvariant())
             {
                 case "module":
                     var sb = new StringBuilder();

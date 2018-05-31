@@ -186,8 +186,8 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
-            if (containerPath.ToLower().IndexOf("/skins/") != -1 || containerPath.ToLower().IndexOf("/skins\\") != -1 || containerPath.ToLower().IndexOf("\\skins\\") != -1 ||
-                containerPath.ToLower().IndexOf("\\skins/") != -1)
+            if (containerPath.ToLowerInvariant().IndexOf("/skins/") != -1 || containerPath.ToLowerInvariant().IndexOf("/skins\\") != -1 || containerPath.ToLowerInvariant().IndexOf("\\skins\\") != -1 ||
+                containerPath.ToLowerInvariant().IndexOf("\\skins/") != -1)
             {
                 throw new Exception();
             }
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.Skins
             else
             {
                 containerSrc = PaneControl.Attributes["ContainerSrc"];
-                if (containerSrc.Contains("/") && !(containerSrc.ToLower().StartsWith("[g]") || containerSrc.ToLower().StartsWith("[l]")))
+                if (containerSrc.Contains("/") && !(containerSrc.ToLowerInvariant().StartsWith("[g]") || containerSrc.ToLowerInvariant().StartsWith("[l]")))
                 {
                     containerSrc = string.Format(SkinController.IsGlobalSkin(PortalSettings.ActiveTab.SkinSrc) ? "[G]containers/{0}" : "[L]containers/{0}", containerSrc.TrimStart('/'));
                     validSrc = true;

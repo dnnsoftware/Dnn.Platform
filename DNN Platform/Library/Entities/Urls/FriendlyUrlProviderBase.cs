@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Urls
         {
             if (!String.IsNullOrEmpty(attributes["urlFormat"]))
             {
-                switch (attributes["urlFormat"].ToLower())
+                switch (attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
                         UrlFormat = UrlFormatType.SearchFriendly;

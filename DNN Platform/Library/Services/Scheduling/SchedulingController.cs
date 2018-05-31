@@ -264,9 +264,9 @@ namespace DotNetNuke.Services.Scheduling
             string lwrServers = "";
             if (servers != null)
             {
-                lwrServers = servers.ToLower();
+                lwrServers = servers.ToLowerInvariant();
             }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
+            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLowerInvariant()))
             {
                 return true;
             }

@@ -162,7 +162,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 foreach (var b in hashedByteArray)
                 {
                     //append it to our StringBuilder
-                    stringBuilder.Append(b.ToString("x2").ToLower());
+                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
                 }
 
                 //return the hashed value

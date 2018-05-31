@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 {
                                     var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
                                     // DNN26810 if rootnode = "content", import only content(the old way)
-                                    if (xmlDoc.DocumentElement.Name.ToLower() == "content" )
+                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content" )
                                     {
                                         ((IPortable)objObject).ImportModule(ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, UserInfo.UserID);
                                     }

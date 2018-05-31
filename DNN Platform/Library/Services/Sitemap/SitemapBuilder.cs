@@ -359,7 +359,7 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteStartElement("url");
             writer.WriteElementString("loc", sitemapUrl.Url);
             writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
-            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
+            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
 
             //if (sitemapUrl.AlternateUrls != null)

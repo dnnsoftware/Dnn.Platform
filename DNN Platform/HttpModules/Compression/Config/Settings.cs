@@ -98,7 +98,7 @@ namespace DotNetNuke.HttpModules.Compression
                     var doc = new XPathDocument(fileReader);
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
                     {
-                        settings._excludedPaths.Add(nav.Value.ToLower());
+                        settings._excludedPaths.Add(nav.Value.ToLowerInvariant());
                     }
                 }
                 if ((File.Exists(filePath)))
@@ -120,7 +120,7 @@ namespace DotNetNuke.HttpModules.Compression
             bool match = false;
             foreach (string path in _excludedPaths)
             {
-                if (relUrl.ToLower().Contains(path))
+                if (relUrl.ToLowerInvariant().Contains(path))
                 {
                     match = true;
                     break;

@@ -306,11 +306,11 @@ namespace DotNetNuke.UI.ControlPanel
 
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
-            if (strSkinFolder.ToLower() == "_default")
+            if (strSkinFolder.ToLowerInvariant() == "_default")
             {
                 return strSkinFile;
             }
-            switch (strSkinFile.ToLower())
+            switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
                 case "container":

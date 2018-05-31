@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(defaultValue, actualValue.ToString().ToLower());
+                Assert.AreEqual(defaultValue, actualValue.ToString().ToLowerInvariant());
             }
             else
             {
@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(propertyValue, actualValue.ToString().ToLower());
+                Assert.AreEqual(propertyValue, actualValue.ToString().ToLowerInvariant());
             }
             else
             {

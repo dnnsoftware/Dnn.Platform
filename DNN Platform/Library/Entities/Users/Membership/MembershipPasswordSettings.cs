@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
         private static bool IsInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLower();
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
             return url.EndsWith("/install.aspx")
                    || url.Contains("/installwizard.aspx");

@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.ModuleCache
                 SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
                 while ((varyByParms.MoveNext()))
                 {
-                    string key = varyByParms.Current.Key.ToLower();
+                    string key = varyByParms.Current.Key.ToLowerInvariant();
                     cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
                 }
             }

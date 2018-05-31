@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.Localization
                     }
                     else
                     {
-                        _showMissingKeys = bool.Parse(Config.GetSetting("ShowMissingKeys".ToLower()));
+                        _showMissingKeys = bool.Parse(Config.GetSetting("ShowMissingKeys".ToLowerInvariant()));
                     }
                 }
 
@@ -1661,11 +1661,11 @@ namespace DotNetNuke.Services.Localization
         public static string LocalizeControlTitle(IModuleControl moduleControl)
         {
             string controlTitle = moduleControl.ModuleContext.Configuration.ModuleTitle;
-            string controlKey = moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLower();
+            string controlKey = moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLowerInvariant();
 
             if (!string.IsNullOrEmpty(controlKey))
             {
-                string reskey = "ControlTitle_" + moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLower() + ".Text";
+                string reskey = "ControlTitle_" + moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLowerInvariant() + ".Text";
                 string localizedvalue = GetString(reskey, moduleControl.LocalResourceFile);
                 if (string.IsNullOrEmpty(localizedvalue))
                 {

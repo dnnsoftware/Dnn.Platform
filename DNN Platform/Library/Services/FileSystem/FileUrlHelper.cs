@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public static bool IsStandardFileURLFormat(string requestPath, out IFileInfo fileRequested)
         {
-            var match = RegexStandardFile.Match(requestPath.ToLower());
+            var match = RegexStandardFile.Match(requestPath.ToLowerInvariant());
             if (match.Success)
             {
                 var filePath = match.Groups["filePath"].Value;

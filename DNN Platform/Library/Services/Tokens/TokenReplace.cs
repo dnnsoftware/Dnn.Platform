@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption)
         {
-            PropertySource[customCaption.ToLower()] = new ArrayListPropertyAccess(custom);
+            PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
             return ReplaceTokens(sourceText);
         }
 
@@ -277,7 +277,7 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText, IDictionary custom, string customCaption)
         {
-            PropertySource[customCaption.ToLower()] = new DictionaryPropertyAccess(custom);
+            PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
             return ReplaceTokens(sourceText);
         }
 
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Tokens
         {
             foreach (var customCaption in customCaptions)
             {
-                PropertySource[customCaption.ToLower()] = new DictionaryPropertyAccess(custom);    
+                PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);    
             }           
             return ReplaceTokens(sourceText);
         }
@@ -310,7 +310,7 @@ namespace DotNetNuke.Services.Tokens
             var rowProperties = new DataRowPropertyAccess(row);
             PropertySource["field"] = rowProperties;
             PropertySource["row"] = rowProperties;
-            PropertySource[customCaption.ToLower()] = new ArrayListPropertyAccess(custom);
+            PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
             return ReplaceTokens(sourceText);
         }
 

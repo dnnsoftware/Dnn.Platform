@@ -340,7 +340,7 @@ namespace DotNetNuke.UI.Skins
                         case "article":
                         case "aside":
                             //content pane
-                            if (objPaneControl.ID.ToLower() != "controlpanel")
+                            if (objPaneControl.ID.ToLowerInvariant() != "controlpanel")
                             {
                                 //Add to the PortalSettings (for use in the Control Panel)
                                 PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
@@ -365,7 +365,7 @@ namespace DotNetNuke.UI.Skins
             try
             {
                 string skinSrc = skinPath;
-                if (skinPath.ToLower().IndexOf(Globals.ApplicationPath, StringComparison.Ordinal) != -1)
+                if (skinPath.ToLowerInvariant().IndexOf(Globals.ApplicationPath, StringComparison.Ordinal) != -1)
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }

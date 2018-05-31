@@ -667,7 +667,7 @@ namespace DotNetNuke.Entities.Modules
             propertyNotFound = true;
             string result = string.Empty;
             bool isPublic = true;
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "portalid":
                     propertyNotFound = false;

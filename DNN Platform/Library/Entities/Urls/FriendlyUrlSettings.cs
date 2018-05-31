@@ -157,7 +157,7 @@ namespace DotNetNuke.Entities.Urls
                     var processRequests = GetStringSetting(ProcessRequestsSetting, null);
                     if (processRequests != null)
                     {
-                        processRequests = processRequests.ToLower();
+                        processRequests = processRequests.ToLowerInvariant();
                         _processRequestList = !string.IsNullOrEmpty(processRequests)
                             ? new List<string>(processRequests.Split(';'))
                             : new List<string>();

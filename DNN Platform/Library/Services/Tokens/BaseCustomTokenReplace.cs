@@ -59,9 +59,9 @@ namespace DotNetNuke.Services.Tokens
         {
             string result = string.Empty;
             bool propertyNotFound = false;
-            if (PropertySource.ContainsKey(objectName.ToLower()))
+            if (PropertySource.ContainsKey(objectName.ToLowerInvariant()))
             {
-                result = PropertySource[objectName.ToLower()].GetProperty(propertyName, format, FormatProvider, AccessingUser, CurrentAccessLevel, ref propertyNotFound);
+                result = PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, FormatProvider, AccessingUser, CurrentAccessLevel, ref propertyNotFound);
             }
             else
             {
@@ -119,12 +119,12 @@ namespace DotNetNuke.Services.Tokens
                         {
                             //nothing
                         }
-                        else if (!PropertySource.ContainsKey(strObjectName.ToLower()))
+                        else if (!PropertySource.ContainsKey(strObjectName.ToLowerInvariant()))
                         {
                         }
                         else
                         {
-                            CacheLevel c = PropertySource[strObjectName.ToLower()].Cacheability;
+                            CacheLevel c = PropertySource[strObjectName.ToLowerInvariant()].Cacheability;
                             if (c < isSafe)
                             {
                                 isSafe = c;

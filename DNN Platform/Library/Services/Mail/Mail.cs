@@ -373,7 +373,7 @@ namespace DotNetNuke.Services.Mail
             MailFormat bodyFormat = MailFormat.Text;
             if (!String.IsNullOrEmpty(bodyType))
             {
-                switch (bodyType.ToLower())
+                switch (bodyType.ToLowerInvariant())
                 {
                     case "html":
                         bodyFormat = MailFormat.Html;

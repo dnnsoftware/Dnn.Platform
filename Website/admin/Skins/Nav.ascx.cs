@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (blnIndicateChildren)
                 {
                     IndicateChildImageSub = strRightArrow;
-                    if (ControlOrientation.ToLower() == "vertical")
+                    if (ControlOrientation.ToLowerInvariant() == "vertical")
                     {
                         IndicateChildImageRoot = strRightArrow;
                     }

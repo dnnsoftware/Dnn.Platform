@@ -373,7 +373,7 @@ namespace DotNetNuke.Services.Installer
                     }
                     else
                     {
-                        Files[file.FullName.ToLower()] = file;
+                        Files[file.FullName.ToLowerInvariant()] = file;
                         if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
                         {
                             if (ManifestFile == null)

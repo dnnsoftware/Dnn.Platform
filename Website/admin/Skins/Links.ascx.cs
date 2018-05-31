@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             set
             {
-                _alignment = value.ToLower();
+                _alignment = value.ToLowerInvariant();
             }
         }
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             set
             {
-                _level = value.ToLower();
+                _level = value.ToLowerInvariant();
             }
         }
 

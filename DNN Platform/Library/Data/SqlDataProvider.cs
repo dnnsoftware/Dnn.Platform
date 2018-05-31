@@ -387,7 +387,7 @@ namespace DotNetNuke.Data
             string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLower() != "dbo.")
+            if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLowerInvariant() != "dbo.")
             {
                 try
                 {

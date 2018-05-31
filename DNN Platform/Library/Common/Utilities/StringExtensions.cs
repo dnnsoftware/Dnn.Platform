@@ -38,7 +38,7 @@ namespace DotNetNuke.Common.Utilities
 		{
 			return string.IsNullOrEmpty(input)
                 ? input
-                : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLower();
+                : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLowerInvariant();
 		}
 
         private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
