@@ -951,13 +951,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                         var startFolder = StartingDir();
 
-                        if (!Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
-                        {
-                            // Hide physical file Path
-                            lblCurrentDir.Visible = false;
-                            lblCurrent.Visible = false;
-                        }
-
                         FillFolderTree(startFolder);
 
                         bool folderSelected = false;
