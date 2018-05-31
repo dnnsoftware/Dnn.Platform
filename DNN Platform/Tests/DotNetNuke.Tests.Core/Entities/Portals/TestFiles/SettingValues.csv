@@ -1,5 +1,5 @@
 ﻿Test,							PropertyName,					SettingName,					SettingValue,			PropertyValue
-Cdf Version,					CdfVersion,						CdfVersion,						-1
+Cdf Version,					CdfVersion,						CrmVersion,						-1
 DefaultAdminContainer,			DefaultAdminContainer,			DefaultAdminContainer,			AdminContainer
 DefaultAdminSkin,				DefaultAdminSkin,				DefaultAdminSkin,				AdminSkin
 DefaultIconLocation,			DefaultIconLocation,			DefaultIconLocation,			icons/sigma
