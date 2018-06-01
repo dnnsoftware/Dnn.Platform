@@ -28,7 +28,8 @@ export default function siteInfo(state = {
             };
         case ActionTypes.RETRIEVED_PORTALS:
             return { ...state,
-                portals: action.data.portals
+                portals: action.data.portals,
+                portalId: action.data.portals[0].PortalID
             };
         default:
             return state;
