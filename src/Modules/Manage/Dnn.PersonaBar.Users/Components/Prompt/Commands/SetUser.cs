@@ -61,8 +61,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
             DisplayName = GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
-            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
-            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty, true);
+            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty);
+            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty);
             Password = GetFlagValue(FlagPassword, "Password", string.Empty);
             Approved = GetFlagValue<bool?>(FlagApproved, "Approved", null);
 
