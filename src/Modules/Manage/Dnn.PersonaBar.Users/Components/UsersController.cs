@@ -156,16 +156,25 @@ namespace Dnn.PersonaBar.Users.Components
             }
         }
 
-        public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto)
+        public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
-            var user = UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId);
             int portalId = PortalSettings.PortalId;
+            PortalSettings requestPortalSettings = PortalSettings;
+
+            if (requestPortalId != -1)
+            {
+                portalId = requestPortalId;
+                requestPortalSettings = new PortalSettings(portalId);
+            }
+
+            var user = UserController.Instance.GetUser(portalId, userBasicDto.UserId);
+
             if (user == null)
             {
                 throw new ArgumentException("UserNotExist");
             }
 
-            if (userBasicDto.UserId == PortalSettings.AdministratorId)
+            if (userBasicDto.UserId == requestPortalSettings.AdministratorId)
             {
                 //Clear the Portal Cache
                 DataCache.ClearPortalCache(portalId, true);
@@ -179,20 +188,20 @@ namespace Dnn.PersonaBar.Users.Components
             user.FirstName = !string.IsNullOrEmpty(userBasicDto.Firstname) ? userBasicDto.Firstname : user.FirstName;
             user.LastName = !string.IsNullOrEmpty(userBasicDto.Lastname) ? userBasicDto.Lastname : user.LastName;
             //Update DisplayName to conform to Format
-            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            if (!string.IsNullOrEmpty(requestPortalSettings.Registration.DisplayNameFormat))
             {
-                user.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+                user.UpdateDisplayName(requestPortalSettings.Registration.DisplayNameFormat);
             }
             //either update the username or update the user details
 
-            if (CanUpdateUsername(user) && !PortalSettings.Registration.UseEmailAsUserName)
+            if (CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
                 UserController.ChangeUsername(user.UserID, userBasicDto.Username);
                 user.Username = userBasicDto.Username;
             }
 
             //DNN-5874 Check if unique display name is required
-            if (PortalSettings.Registration.RequireUniqueDisplayName)
+            if (requestPortalSettings.Registration.RequireUniqueDisplayName)
             {
                 var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(portalId, 0, 2, "DisplayName", true, "DisplayName", user.DisplayName);
                 if (usersWithSameDisplayName.Any(u => u.UserID != user.UserID))
@@ -203,12 +212,12 @@ namespace Dnn.PersonaBar.Users.Components
 
             UserController.UpdateUser(portalId, user);
 
-            if (PortalSettings.Registration.UseEmailAsUserName && (user.Username.ToLowerInvariant() != user.Email.ToLowerInvariant()))
+            if (requestPortalSettings.Registration.UseEmailAsUserName && (user.Username.ToLowerInvariant() != user.Email.ToLowerInvariant()))
             {
                 UserController.ChangeUsername(user.UserID, user.Email);
             }
             return
-                UserBasicDto.FromUserInfo(UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId));
+                UserBasicDto.FromUserInfo(UserController.Instance.GetUser(requestPortalSettings.PortalId, userBasicDto.UserId));
         }
 
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,

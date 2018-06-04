@@ -17,9 +17,9 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
         private Mock<IContentVerifier> _contentVerifierMock;
 
- 
+
         private UserValidator _userValidator;
- 
+
         [SetUp]
         public void RunBeforeEachTest()
         {
@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange
             int? userId = 1;
             var userInfo = GetUserInfoWithProfile(userId.Value);
-            SetupUserControllerWrapperMock(userInfo);            
+            SetupUserControllerWrapperMock(userInfo);
 
             // Act
             var result = _userValidator.ValidateUser(userId, null, null, out userInfo);
@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange
             int? userId = 1;
             SetupForSiteGroup(false, userId.Value);
-            UserInfo userInfo;          
+            UserInfo userInfo;
 
             // Act
             var result = _userValidator.ValidateUser(userId, null, null, out userInfo);
@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
-        }       
+        }
 
         private void SetupUserControllerWrapperMock(UserInfo userInfo)
         {
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.Users.Tests
             var portals = new ArrayList();
             portals.Add(new PortalInfo() { PortalID = otherPortalId });
             _portalControllerMock.Setup(p => p.GetPortals()).Returns(portals);
-         
+
             _userControllerWrapperMock.Setup(u => u.GetUserById(It.IsAny<int>(), userId)).Returns(userInfo);
             _contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(It.IsAny<int>(), It.IsAny<PortalSettings>(), true)).Returns(isAllowed);
         }

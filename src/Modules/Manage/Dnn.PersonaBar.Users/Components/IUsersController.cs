@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Users.Components
         IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false);
         UserDetailDto GetUserDetail(int portalId, int userId);
         bool ChangePassword(int portalId, int userId, string newPassword);
-        UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto);
+        UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int portalId = -1);
 
         UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,
             bool isOwner);

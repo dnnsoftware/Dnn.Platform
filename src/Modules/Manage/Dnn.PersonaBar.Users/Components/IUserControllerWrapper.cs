@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Users.Components
     public interface IUserControllerWrapper
     {
         UserInfo GetUser(int value, PortalSettings portalSettings, UserInfo currentUserInfo, out KeyValuePair<HttpStatusCode, string> response);
-        UserInfo GetUserById(int portalID, int value);
+        UserInfo GetUserById(int portalId, int userId);
         int? GetUsersByUserName(int portalId, string searchTerm, int pageIndex, int pageSize, ref int recCount, bool includeDeleted, bool isSuperUserOnly);
         int? GetUsersByEmail(int portalId, string searchTerm, int pageIndex, int pageSize, ref int recCount, bool includeDeleted, bool isSuperUserOnly);
     }
