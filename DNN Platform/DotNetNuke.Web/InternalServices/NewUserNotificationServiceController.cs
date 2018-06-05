@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Services.Mail;
@@ -74,6 +75,32 @@ namespace DotNetNuke.Web.InternalServices
             UserController.RemoveUser(user);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+        }
+
+        [HttpPost]
+        [DnnAuthorize]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SendVerificationMail(NotificationDTO postData)
+        {
+            if (UserInfo.Membership.Approved)
+            {
+                throw new UserAlreadyVerifiedException();
+            }
+
+            if (!UserInfo.IsInRole("Unverified Users"))
+            {
+                throw new InvalidVerificationCodeException();
+            }
+
+            var message = Mail.SendMail(UserInfo, MessageType.UserRegistrationVerified, PortalSettings);
+            if (string.IsNullOrEmpty(message))
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new {Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            }
         }
 
         private UserInfo GetUser(NotificationDTO notificationDto)
