@@ -9,13 +9,13 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         private static APIUserDataController APIUserDC = new APIUserDataController();
 
-        public static APIUser Create(string name)
+        public static APIUser Create(string name, bool bypass)
         {
             APIUser newApiUser;
 
             try
             {
-                newApiUser = new APIUser(name);
+                newApiUser = new APIUser(name, bypass);
 
                 APIUserDC.Create(newApiUser);
             }

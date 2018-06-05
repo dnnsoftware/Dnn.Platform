@@ -31,7 +31,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         }
 
         [HttpPost]
-        public HttpResponseMessage Create(string name)
+        public HttpResponseMessage Create(string name, bool bypass = false)
         {
             // Check we have a name.
             if (string.IsNullOrEmpty(name))
@@ -40,7 +40,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
 
             // Create user.
-            APIUser apiUser = APIUserManager.Create(name);
+            APIUser apiUser = APIUserManager.Create(name, bypass);
 
             return Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }

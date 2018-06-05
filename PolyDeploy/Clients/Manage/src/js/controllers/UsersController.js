@@ -5,11 +5,11 @@
         refreshUsers();
 
         // Create user.
-        $scope.createUser = function (name) {
+        $scope.createUser = function (name, bypass) {
 
             // Create the new user and append it, if you call for a refresh
             // the API key and encryption keys will be obfuscated.
-            APIUserDataService.createUser(name).then(
+            APIUserDataService.createUser(name, bypass).then(
                 function (createdUser) {
 
                     // Push on to users.
