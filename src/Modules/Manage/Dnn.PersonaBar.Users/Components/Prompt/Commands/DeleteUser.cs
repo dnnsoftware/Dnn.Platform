@@ -66,11 +66,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             // We must clear User cache or else, when the user is 'removed' (so it can't be restored), you 
             // will not be able to create a new user with the same username -- even though no user with that username
             // exists.
-            DotNetNuke.Common.Utilities.DataCache.ClearUserCache(PortalId, userInfo.Username);
+            DotNetNuke.Common.Utilities.DataCache.ClearUserCache(userInfo.PortalID, userInfo.Username);
             // attempt to retrieve the user from the dB
-            userInfo = UserController.GetUserById(PortalId, userInfo.UserID);
+            userInfo = UserController.GetUserById(userInfo.PortalID, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
-            return new ConsoleResultModel(LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };
+            return new ConsoleResultModel(LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };            
         }
     }
 }
