@@ -878,7 +878,7 @@ namespace DotNetNuke.Security.Membership
 
             if (requireUniqueDisplayName)
             {
-                UserInfo duplicateUser = GetUserByDisplayName(Null.NullInteger, user.DisplayName);
+                UserInfo duplicateUser = GetUserByDisplayName(user.PortalID, user.DisplayName);
                 if (duplicateUser != null)
                 {
                     createStatus = UserCreateStatus.DuplicateDisplayName;
