@@ -93,15 +93,15 @@ namespace DeployClient
                     WriteLine();
                 }
 
-                // Inform user of encryption.
-                WriteLine("Starting encryption and upload...");
-
                 // Get a session.
                 string sessionGuid = await API.CreateSessionAsync();
 
                 WriteLine(string.Format("Got session: {0}", sessionGuid));
 
                 DateTime startTime = DateTime.Now;
+
+                // Inform user of encryption.
+                WriteLine("Starting encryption and upload...");
 
                 foreach (string zipFile in zipFiles)
                 {
