@@ -1,6 +1,7 @@
 ﻿using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
@@ -13,8 +14,18 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        private IUserValidator _userValidator;
 
         private int UserId { get; set; }
+
+        public RestoreUser(): this (new UserValidator())
+        {
+        }
+
+        public RestoreUser(IUserValidator userValidator)
+        {
+            this._userValidator = userValidator;
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -24,7 +35,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override ConsoleResultModel Run()
         {
-            var userInfo = UserController.Instance.GetUser(PortalId, UserId);
+            UserInfo userInfo;
+            _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo);
+                
             if (userInfo == null)
                 return new ConsoleErrorResultModel(string.Format(LocalizeString("UserNotFound"), UserId));
 

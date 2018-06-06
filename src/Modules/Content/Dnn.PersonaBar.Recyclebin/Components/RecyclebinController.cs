@@ -353,7 +353,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
             errorMessage = null;
-            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser).ToList();
+            var deletedusers = UserController.GetDeletedUsers(user.PortalID).Cast<UserInfo>().Where(CanManageUser).ToList();
             if ((user != null) && deletedusers.Any(u => u.UserID == user.UserID))
             {
                 UserController.RestoreUser(ref user);
@@ -380,5 +380,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return false;
         }
         #endregion
+
+        public void partFirst(string checkStatus)
+        {
+            var user = new UserInfo();
+            if (user.IsSuperUser)
+            {
+
+            }
+        }
     }
 }
