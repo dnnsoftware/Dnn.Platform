@@ -25,13 +25,13 @@ namespace DeployClient
             return client;
         }
 
-        public static string CreateSession()
+        public static async Task<string> CreateSessionAsync()
         {
             string endpoint = "Remote/CreateSession";
 
             using (HttpClient client = BuildClient())
             {
-                string json = client.GetStringAsync(endpoint).Result;
+                string json = await client.GetStringAsync(endpoint);
 
                 JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
@@ -48,7 +48,7 @@ namespace DeployClient
             }
         }
 
-        public static bool GetSession(string sessionGuid, out Dictionary<string, dynamic> results)
+        public static async Task<(bool success, Dictionary<string, dynamic> results)> GetSessionAsync(string sessionGuid)
         {
             string endpoint = string.Format("Remote/GetSession?sessionGuid={0}", sessionGuid);
 
@@ -56,28 +56,23 @@ namespace DeployClient
 
             using (HttpClient client = BuildClient())
             {
-                bool success;
-                var httpResponse = client.GetAsync(endpoint).Result;
+                var httpResponse = await client.GetAsync(endpoint);
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
                     string json = httpResponse.Content.ReadAsStringAsync().Result;
-                    results = jsonSer.Deserialize<Dictionary<string, dynamic>>(json);
-                    success = true;
+                    return (true, jsonSer.Deserialize<Dictionary<string, dynamic>>(json));
                 }
-                else if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+
+                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                 {
-                    results = new Dictionary<string, dynamic>();
-                    success = false;
+                    return (false, new Dictionary<string, dynamic>(0));
                 }
-                else
-                {
-                    throw new HttpException($"Invalid status code returned from remote api: {httpResponse.StatusCode}");
-                }
-                return success;
+
+                throw new HttpException($"Invalid status code returned from remote api: {httpResponse.StatusCode}");
             }
         }
 
-        public static void AddPackages(string sessionGuid, List<KeyValuePair<string, Stream>> streams)
+        public static async Task AddPackagesAsync(string sessionGuid, List<KeyValuePair<string, Stream>> streams)
         {
             string endpoint = string.Format("Remote/AddPackages?sessionGuid={0}", sessionGuid);
 
@@ -90,11 +85,11 @@ namespace DeployClient
                     form.Add(new StreamContent(keyValuePair.Value), "none", keyValuePair.Key);
                 }
 
-                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+                await client.PostAsync(endpoint, form);
             }
         }
 
-        public static void AddPackageAsync(string sessionGuid, Stream stream, string filename)
+        public static async Task AddPackageAsync(string sessionGuid, Stream stream, string filename)
         {
             string endpoint = string.Format("Remote/AddPackages?sessionGuid={0}", sessionGuid);
 
@@ -104,31 +99,26 @@ namespace DeployClient
 
                 form.Add(new StreamContent(stream), "none", filename);
 
-                HttpResponseMessage response = client.PostAsync(endpoint, form).Result;
+                await client.PostAsync(endpoint, form);
             }
         }
 
-        public static bool Install(string sessionGuid, out SortedList<string, dynamic> response)
+        public static async Task<(bool success, SortedList<string, dynamic> response)> InstallAsync(string sessionGuid)
         {
             string endpoint = string.Format("Remote/Install?sessionGuid={0}", sessionGuid);
 
-            bool success = false;
-
             JavaScriptSerializer jsonSer = new JavaScriptSerializer();
-
-            response = null;
 
             using (HttpClient client = BuildClient())
             {
                 try
                 {
-                    HttpResponseMessage httpResponse = client.GetAsync(endpoint).Result;
+                    HttpResponseMessage httpResponse = await client.GetAsync(endpoint);
 
                     if (httpResponse.StatusCode.Equals(HttpStatusCode.OK))
                     {
-                        success = true;
-                        string json = httpResponse.Content.ReadAsStringAsync().Result;
-                        response = jsonSer.Deserialize<SortedList<string, dynamic>>(json);
+                        string json = await httpResponse.Content.ReadAsStringAsync();
+                        return (true, jsonSer.Deserialize<SortedList<string, dynamic>>(json));
                     }
                 }
                 catch (Exception ex)
@@ -137,7 +127,7 @@ namespace DeployClient
                 }
 
                 // Always fail.
-                return false;
+                return (false, null);
             }
         }
     }
