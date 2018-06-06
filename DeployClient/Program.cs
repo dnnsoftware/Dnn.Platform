@@ -134,7 +134,7 @@ namespace DeployClient
                 (bool installSuccess,  SortedList<string, dynamic> results) = await API.InstallAsync(sessionGuid);
                 if (!installSuccess)
                 {
-                    TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+                    TimeSpan interval = TimeSpan.FromSeconds(2);
                     Dictionary<string, dynamic> response;
                     var successfullyReachedApi = false;
                     DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout);
