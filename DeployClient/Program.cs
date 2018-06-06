@@ -298,10 +298,23 @@ namespace DeployClient
 
         private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
         {
-            WriteLine(ex.Message);
+            WriteLine($"{ex.GetType()} | {ex.Message}");
             WriteLine(ex.StackTrace);
 
-            if (depth < maxDepth && ex.InnerException != null)
+            if (depth >= maxDepth)
+            {
+                return;
+            }
+
+            if (ex is AggregateException aggregate && aggregate.InnerExceptions.Any())
+            {
+                depth++;
+                foreach (Exception inner in aggregate.InnerExceptions)
+                {
+                    WriteException(inner, maxDepth, depth);
+                }
+            }
+            else if (ex.InnerException != null)
             {
                 depth++;
                 WriteException(ex.InnerException, maxDepth, depth);
