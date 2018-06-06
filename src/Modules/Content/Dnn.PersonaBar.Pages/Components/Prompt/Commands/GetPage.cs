@@ -23,13 +23,33 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
+        private readonly ITabController _tabController;
+        private readonly ISecurityService _securityService;
+        private readonly IContentVerifier _contentVerifier;
+
         private int PageId { get; set; } = -1;
         private string PageName { get; set; }
         private int ParentId { get; set; } = -1;
 
+        public GetPage() :
+            this(TabController.Instance, SecurityService.Instance, new ContentVerifier())
+        {
+        }
+
+        public GetPage(
+            ITabController tabController,
+            ISecurityService securityService,
+            IContentVerifier contentVerifier
+            )
+        {
+            this._tabController = tabController;
+            this._securityService = securityService;
+            this._contentVerifier = contentVerifier;
+        }
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
             PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
             ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
@@ -43,20 +63,23 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         {
             var lst = new List<PageModel>();
             var tab = PageId != -1
-                ? TabController.Instance.GetTab(PageId, PortalId)
+                ? _tabController.GetTab(PageId, PortalId)
                 : (ParentId > 0
-                    ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId)
-                    : TabController.Instance.GetTabByName(PageName, PortalId));
+                    ? _tabController.GetTabByName(PageName, PortalId, ParentId)
+                    : _tabController.GetTabByName(PageName, PortalId));
 
-            if (!SecurityService.Instance.CanManagePage(PageId))
+            if (tab != null)
             {
-                return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
-            }
+                if (!_securityService.CanManagePage(PageId))
+                {
+                    return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
+                }
 
-            if (PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
-            {
-                lst.Add(new PageModel(tab));
-                return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
+                if (_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+                {
+                    lst.Add(new PageModel(tab));
+                    return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
+                }
             }
 
             return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));

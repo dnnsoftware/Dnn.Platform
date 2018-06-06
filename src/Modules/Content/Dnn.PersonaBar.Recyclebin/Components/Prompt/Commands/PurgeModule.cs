@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using System.Net;
-using Dnn.PersonaBar.Prompt.Components;
+using Dnn.PersonaBar.Library.Controllers;
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {

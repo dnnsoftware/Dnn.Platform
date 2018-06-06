@@ -115,11 +115,14 @@
     <Compile Include="Components\Exceptions\PageNotFoundException.cs" />
     <Compile Include="Components\Exceptions\PageValidationException.cs" />
     <Compile Include="Components\Exceptions\TemplateException.cs" />
+    <Compile Include="Components\FriendlyUrlWrapper.cs" />
     <Compile Include="Components\IBulkPagesController.cs" />
     <Compile Include="Components\ICloneModuleExecutionContext.cs" />
+    <Compile Include="Components\IFriendlyUrlWrapper.cs" />
     <Compile Include="Components\IPageManagementController.cs" />
     <Compile Include="Components\IPagesController.cs" />
     <Compile Include="Components\IPageUrlsController.cs" />
+    <Compile Include="Components\IUrlRewriterUtilsWrapper.cs" />
     <Compile Include="Components\ITemplateController.cs" />
     <Compile Include="Components\IDefaultPortalThemeController.cs" />
     <Compile Include="Components\Localization.cs" />
@@ -136,6 +139,7 @@
     <Compile Include="Components\Prompt\Models\PageModel.cs" />
     <Compile Include="Components\Prompt\Models\PageModelBase.cs" />
     <Compile Include="Components\PublishStatus.cs" />
+    <Compile Include="Components\UrlRewriterUtilsWrapper.cs" />
     <Compile Include="Components\WorkflowHelper.cs" />
     <Compile Include="Components\XssCleaner.cs" />
     <Compile Include="Components\PageUrlsController.cs" />

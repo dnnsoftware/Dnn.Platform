@@ -197,6 +197,16 @@ const userActions = {
             }, errorCallback);
         };
     },
+    passwordStrength() {
+        return (dispatch) => {
+            UserService.passwordStrengthOptions(pStrength=>{
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PASSWORD_STRENGTH_OPTIONS,
+                    payload: pStrength
+                });
+            });
+        };
+    },
     getSuggestRoles(searchParameters, callback) {
         return (dispatch) => {
             UserService.getSuggestRoles(searchParameters, data => {

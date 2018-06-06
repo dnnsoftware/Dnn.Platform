@@ -18,9 +18,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
+        private IUserValidator _userValidator;
 
         private int UserId { get; set; }
         private bool Notify { get; set; }
+
+        public DeleteUser() : this(new UserValidator())
+        {
+        }
+
+        public DeleteUser(IUserValidator userValidator)
+        {
+            this._userValidator = userValidator;
+        }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -33,10 +43,18 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
-            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
+
+            if ((errorResultModel = _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null)
+            {
+                return errorResultModel;
+            }
+
             var userModels = new List<UserModel> { new UserModel(userInfo) };
+
             if (userInfo.IsDeleted)
+            {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_UserAlreadyDeleted"));
+            }
 
             if (!UserController.DeleteUser(ref userInfo, Notify, false))
             {

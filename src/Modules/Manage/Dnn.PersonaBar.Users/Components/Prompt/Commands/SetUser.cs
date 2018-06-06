@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
 using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Users.Components.Dto;
 using Dnn.PersonaBar.Users.Components.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
@@ -34,6 +34,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
         private const string FlagPassword = "password";
 
+        private readonly IUserValidator _userValidator;
+        private readonly IUsersController _usersController;
+        private readonly IUserControllerWrapper _userControllerWrapper;
 
         private int? UserId { get; set; }
         private string Email { get; set; }
@@ -44,6 +47,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private bool? Approved { get; set; }
         private string Password { get; set; }
 
+        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
+        {
+        }
+
+        public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
+        {
+            this._userValidator = userValidator;
+            this._usersController = usersController;
+            this._userControllerWrapper = userControllerWrapper;
+        }
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
@@ -51,8 +65,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             Email = GetFlagValue(FlagEmail, "Email", string.Empty);
             Username = GetFlagValue(FlagUsername, "Username", string.Empty);
             DisplayName = GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
-            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
-            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty, true);
+            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty);
+            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty);
             Password = GetFlagValue(FlagPassword, "Password", string.Empty);
             Approved = GetFlagValue<bool?>(FlagApproved, "Approved", null);
 
@@ -75,15 +89,26 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
-            if ((errorResultModel = Utilities.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null) return errorResultModel;
 
+            if (
+                (errorResultModel = _userValidator.ValidateUser(
+                    UserId,
+                    PortalSettings,
+                    User,
+                    out userInfo)
+                ) != null
+               )
+            {
+                return errorResultModel;
+            }                        
+          
             // Update the User
             // process the password first. If invalid, we can abort other changes to the user
             if (!string.IsNullOrEmpty(Password))
             {
                 try
-                {
-                    UsersController.Instance.ChangePassword(PortalId, userInfo.UserID, Password);
+                {                    
+                    _usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, Password);
                     sbResults.Append(LocalizeString("ChangeSuccessful"));
                 }
                 catch (Exception ex)
@@ -91,12 +116,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     return new ConsoleErrorResultModel(ex.Message);
                 }
             }
+
             if (Approved.HasValue && userInfo.Membership.Approved != Approved.Value)
             {
-                UsersController.Instance.UpdateAuthorizeStatus(userInfo, PortalId, Approved.Value);
+                _usersController.UpdateAuthorizeStatus(userInfo, userInfo.PortalID, Approved.Value);
                 sbResults.Append(LocalizeString(Approved.Value ? "UserAuthorized" : "UserUnAuthorized"));
-
             }
+
             var basicUpdated = !string.IsNullOrEmpty(Username) || !string.IsNullOrEmpty(DisplayName) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(Email);
             var userBasicDto = new UserBasicDto
             {
@@ -124,7 +150,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 try
                 {
-                    UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
+                    _usersController.UpdateUserBasicInfo(userBasicDto, userInfo.PortalID);
                 }
                 catch (SqlException)
                 {
@@ -136,7 +162,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
             }
             // retrieve the updated user
-            var updatedUser = UserController.GetUserById(PortalId, userInfo.UserID);
+            var updatedUser = _userControllerWrapper.GetUserById(userInfo.PortalID, userInfo.UserID);
 
             var lst = new List<UserModel> { new UserModel(updatedUser) };
 
@@ -148,7 +174,5 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Output = LocalizeString("UserUpdated")
             };
         }
-
-
     }
 }

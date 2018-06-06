@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
@@ -11,6 +12,8 @@ import { CommonUsersActions } from "../../actions";
 import {validateEmail} from "../../helpers";
 import utilities from "utils";
 import styles from "./style.less";
+import Password from "../common/Password";
+
 
 const inputStyle = { width: "100%" };
 const newUserRegistrationDetails = {
@@ -46,6 +49,17 @@ class CreateUserBox extends Component {
         };
         this.submitted = false;
     }
+
+    onChangePassword(event) {
+        this.setState({
+            UserDetails:{
+                ...this.state.UserDetails,password: event.target.value
+            },
+            errors:{...this.state.errors, password:false}
+        }); 
+    }
+
+
     onChange(key, item) {
         let {UserDetails} = this.state;
         if (key === "randomPassword" || key === "authorize" || key === "notify") {
@@ -65,7 +79,7 @@ class CreateUserBox extends Component {
     save() {
         this.submitted = true;
         if (this.validateForm()) {
-            this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, this.props.filter, () => {
+            this.props.save(CommonUsersActions.createUser(this.state.UserDetails, this.props.filter, () => {
                 this.cancel();
                 utilities.notify(Localization.get("UserCreated"), 3000);
             }));
@@ -102,7 +116,7 @@ class CreateUserBox extends Component {
         });
     }
     validateForm() {
-        const {props, state } = this;
+        const {props } = this;
 
         let valid = true;
         let requiresQuestionAndAnswer = props.appSettings.applicationSettings.settings.requiresQuestionAndAnswer;
@@ -147,7 +161,7 @@ class CreateUserBox extends Component {
                 valid = false;
             }
 
-            if(requiresQuestionAndAnswer){
+            if (requiresQuestionAndAnswer) {
                 if (UserDetails.question === "") {
                     errors.question = true;
                     valid = false;
@@ -220,29 +234,27 @@ class CreateUserBox extends Component {
                     </GridSystem>
                     {!state.UserDetails.randomPassword && <GridCell><hr/></GridCell>}
                     {!state.UserDetails.randomPassword && <GridSystem>
-                        <div>
-                            <SingleLineInputWithError label={Localization.get("Password") }
-                                error={state.errors.password}
-                                onChange={this.onChange.bind(this, "password") }
-                                tooltipMessage={Localization.get("Password.Help")}
-                                errorMessage={Localization.get("Password.Required") }
-                                style={inputStyle}
+
+
+                            <Password 
+                                error={state.errors} 
+                                onChangePassword={this.onChangePassword.bind(this)} 
+                                style={inputStyle} 
                                 inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
-                                type="password"
-                                autoComplete="off"
-                                value={state.UserDetails.password}  tabIndex={7}/>
-                        </div>
-                        <div>
+                                UserDetails={this.state.UserDetails}
+                            />
+                           
                             <SingleLineInputWithError label={Localization.get("Confirm") }
                                 error={state.errors.confirmPassword || state.errors.passwordsMatch}
-                                onChange={this.onChange.bind(this, "confirmPassword") }
+                                onChange={this.onChange.bind(this,"confirmPassword") }
                                 tooltipMessage={Localization.get("Confirm.Help")}
                                 errorMessage={state.errors.confirmPassword ? Localization.get("Confirm.Required") : Localization.get("ConfirmMismatch.ErrorMessage") }
                                 style={inputStyle}
                                 type="password"
                                 autoComplete="off"
                                 inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
-                                value={state.confirmPassword}  tabIndex={8}/></div>
+                                value={state.confirmPassword}  tabIndex={8}/>
+
                     </GridSystem>
                     }
                     {requiresQuestionAndAnswer && <GridSystem>
@@ -285,15 +297,19 @@ class CreateUserBox extends Component {
 }
 
 CreateUserBox.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    save: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     style: PropTypes.object,
     filter: PropTypes.number,
     appSettings: PropTypes.object
 };
 
-function mapStateToProps() {
-    return {};
-}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        save : (callback) =>{
+            dispatch(callback);
+        }
+    };
+};
 
-export default connect(mapStateToProps)(CreateUserBox);
+export default connect(()=>{},mapDispatchToProps)(CreateUserBox);

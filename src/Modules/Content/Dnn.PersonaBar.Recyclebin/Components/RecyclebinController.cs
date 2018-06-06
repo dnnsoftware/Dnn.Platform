@@ -38,7 +38,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using System.Net;
-using Dnn.PersonaBar.Prompt.Components;
+using Dnn.PersonaBar.Library.Controllers;
 
 namespace Dnn.PersonaBar.Recyclebin.Components
 {

@@ -22,13 +22,27 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
         private const string FlagId = "id";
 
+        private readonly ITabController _tabController;
+        private readonly IContentVerifier _contentVerifier;
+        private readonly IRecyclebinController _recyclebinController;
+
         private int PageId { get; set; }
         private string PageName { get; set; }
         private int ParentId { get; set; }
 
+        public RestorePage() : this(TabController.Instance, RecyclebinController.Instance, new ContentVerifier())
+        {
+        }
+
+        public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
+        {
+            this._tabController = tabController;
+            this._recyclebinController = recyclebinController;
+            this._contentVerifier = contentVerifier;
+        }
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
             PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
             ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
             PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
@@ -45,17 +59,17 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
             if (PageId > 0)
             {
-                tab = TabController.Instance.GetTab(PageId, PortalId);
+                tab = _tabController.GetTab(PageId, PortalId);
                 if (tab == null)
-                {                  
+                {
                     return new ConsoleErrorResultModel(message);
                 }
             }
             else if (!string.IsNullOrEmpty(PageName))
             {
-                tab = ParentId > 0 
-                    ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId) 
-                    : TabController.Instance.GetTabByName(PageName, PortalId);
+                tab = ParentId > 0
+                    ? _tabController.GetTabByName(PageName, PortalId, ParentId)
+                    : _tabController.GetTabByName(PageName, PortalId);
 
                 if (tab == null)
                 {
@@ -68,13 +82,26 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
             }
 
-            if (!PortalHelper.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
             {
                 return new ConsoleErrorResultModel(message);
             }
 
-            RecyclebinController.Instance.RestoreTab(tab, out message);
-            return string.IsNullOrEmpty(message) ? new ConsoleResultModel(string.Format(LocalizeString("Prompt_PageRestoredSuccessfully"), tab.TabID, tab.TabName)) { Records = 1 } : new ConsoleErrorResultModel(message);
+            _recyclebinController.RestoreTab(tab, out message);
+
+            if (string.IsNullOrEmpty(message))
+            {
+                var successMessage = string.Format(
+                    LocalizeString("Prompt_PageRestoredSuccessfully"),
+                    tab.TabID,
+                    tab.TabName
+                    );
+                return new ConsoleResultModel(successMessage) { Records = 1 };
+            }
+            else
+            {
+                return new ConsoleErrorResultModel(message);
+            }
         }
     }
 }

@@ -35,6 +35,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
@@ -614,6 +615,26 @@ namespace Dnn.PersonaBar.Users.Services
         //        }
 
         #endregion
+
+        /// <summary>
+        /// Return Password security options from server 
+        /// </summary>
+        /// <returns>MembershipPasswordSettings</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
+        public HttpResponseMessage PasswordStrengthOptions()
+        {
+            var settings = new MembershipPasswordSettings(PortalId);
+
+            var passwordSettings = new PasswordSettingsDto{
+                MinLength = settings.MinPasswordLength,
+                MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters,
+                ValidationExpression = settings.ValidationExpression
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, passwordSettings);
+        }
 
         private void Validate(UserRoleDto userRoleDto)
         {
