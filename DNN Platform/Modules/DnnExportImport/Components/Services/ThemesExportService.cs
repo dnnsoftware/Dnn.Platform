@@ -6,6 +6,7 @@ using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
@@ -206,7 +207,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var theme in exportThemes)
             {
                 var packageName = theme.Substring(0, theme.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                if (!themePackages.Contains(packageName))
+                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     themePackages.Add(packageName);
                 }
