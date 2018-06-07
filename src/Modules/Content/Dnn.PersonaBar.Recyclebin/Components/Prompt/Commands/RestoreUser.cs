@@ -15,16 +15,18 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
         private IUserValidator _userValidator;
+        private IRecyclebinController _recyclebinController;
 
         private int UserId { get; set; }
 
-        public RestoreUser(): this (new UserValidator())
+        public RestoreUser(): this (new UserValidator(), RecyclebinController.Instance)
         {
         }
 
-        public RestoreUser(IUserValidator userValidator)
+        public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
             this._userValidator = userValidator;
+            this._recyclebinController = instance;
         }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -45,7 +47,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_RestoreNotRequired"));
 
             string message;
-            var restoredUser = RecyclebinController.Instance.RestoreUser(userInfo, out message);
+            var restoredUser = _recyclebinController.RestoreUser(userInfo, out message);
             return restoredUser
                 ? new ConsoleResultModel(LocalizeString("UserRestored")) { Records = 1 }
                 : new ConsoleErrorResultModel(message);
