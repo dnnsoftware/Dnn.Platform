@@ -99,6 +99,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.FiftyOneClientCapabilityProvider", "DNN Platform\Tests\DotNetNuke.Tests.FiftyOneClientCapabilityProvider\DotNetNuke.Tests.FiftyOneClientCapabilityProvider.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetCPP", "DNN Platform\Tests\DotNetNuke.Tests.AspNetCPP\DotNetNuke.Tests.AspNetCPP.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
 	ProjectSection(ProjectDependencies) = postProject
