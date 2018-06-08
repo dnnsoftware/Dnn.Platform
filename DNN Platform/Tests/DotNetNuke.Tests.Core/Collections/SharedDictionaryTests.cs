@@ -64,14 +64,6 @@ namespace DotNetNuke.Tests.Core.Collections
             CollectionAssert.AreEqual(new Dictionary<string, string> {{KEY, VALUE}}, sharedDictionary.BackingDictionary);
         }
 
-        /*
-        [Test, ExpectedException(typeof (ReadLockRequiredException)), TestCaseSource("GetReadMethods")]
-        public void ReadRequiresLock(Action<SharedDictionary<string, string>> readAction)
-        {
-            readAction.Invoke(InitSharedDictionary("key", "value"));
-        }
-        */
-
         [Test, ExpectedException(typeof (ReadLockRequiredException))]
         public void DisposedReadLockDeniesRead()
         {
@@ -118,18 +110,6 @@ namespace DotNetNuke.Tests.Core.Collections
 
             Assert.AreEqual("value", actualValue);
         }
-
-        /*
-        [Test]
-        public void CanGetAnotherLockAfterDisposingLock()
-        {
-            var d = new SharedDictionary<string, string>(LockingStrategy);
-            ISharedCollectionLock l = d.GetReadLock();
-            l.Dispose();
-
-            l = d.GetReadLock();
-            l.Dispose();
-        }*/
 
         [Test]
         public void DoubleDispose()
