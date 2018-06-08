@@ -37,6 +37,7 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [
                         [$class: 'CleanBeforeCheckout'],
+                        [$class: 'MessageExclusion', excludedMessage: /\[ci\s+skip\\?\]|\[skip\s+ci\\?\]/],
                         [$class: 'SubmoduleOption', recursive: false, parentCredentials: true],
                         [$class: 'CloneOption', noTags: true],
                         [$class: 'LocalBranch', localBranch: "${env.platformBranch}"],
