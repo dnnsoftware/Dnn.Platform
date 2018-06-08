@@ -74,6 +74,8 @@ namespace DotNetNuke.Collections.Internal
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
+            EnsureNotDisposed();
+            EnsureWriteAccess();
             _dict.TryAdd(item.Key, item.Value);
         }
 
@@ -233,7 +235,7 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureReadAccess()
         {
-            if (!(_lockController.ThreadCanRead))
+            if (!(_fakeLockController.ThreadCanRead))
             {
                 throw new ReadLockRequiredException();
             }

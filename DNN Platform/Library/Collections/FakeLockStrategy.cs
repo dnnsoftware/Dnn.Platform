@@ -1,9 +1,4 @@
-﻿using DotNetNuke.Collections.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace DotNetNuke.Collections.Internal
 {
@@ -34,6 +29,54 @@ namespace DotNetNuke.Collections.Internal
         {
             return new FakeDisposable();
         }
+
+        #region ILockStrategy Members
+
+        public ISharedCollectionLock GetReadLock()
+        {
+            return GetReadLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetReadLock(TimeSpan timeout)
+        {
+            return new FakeDisposable();
+        }
+
+        public ISharedCollectionLock GetWriteLock()
+        {
+            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
+        {
+            return new FakeDisposable();
+        }
+
+        public bool ThreadCanRead
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public bool ThreadCanWrite
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public bool SupportsConcurrentReads
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        #endregion
 
         #region IDisposable Support
         private bool disposedValue = false;
