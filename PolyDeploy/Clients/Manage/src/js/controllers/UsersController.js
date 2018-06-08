@@ -4,12 +4,17 @@
         // Load users.
         refreshUsers();
 
+        $scope.newUser = {
+            name: '',
+            bypassIPWhitelist: false
+        };
+
         // Create user.
-        $scope.createUser = function (name, bypass) {
+        $scope.createUser = function (newUser) {
 
             // Create the new user and append it, if you call for a refresh
             // the API key and encryption keys will be obfuscated.
-            APIUserDataService.createUser(name, bypass).then(
+            APIUserDataService.createUser(newUser.name, newUser.bypassIPWhitelist).then(
                 function (createdUser) {
 
                     // Push on to users.
