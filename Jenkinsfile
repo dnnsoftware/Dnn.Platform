@@ -22,37 +22,33 @@ pipeline {
     stages {
 
         stage('Environment') {
-            steps {
-
-                bat "set"
-
+            steps { 
+                bat "set" 
+                
+                dir(env.RELPlatformCheckout) {
+                    deleteDir()
+                }
             }
         }
 
         stage('Checkout DNN.Platform') {
             steps {
                 // Check out DNN.Platform
-                checkout([$class: 'GitSCM',
-                    branches: [[name: "${env.platformBranch}"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [
-                        [$class: 'CleanBeforeCheckout'],
-                        [$class: 'MessageExclusion', excludedMessage: /\[ci\s+skip\\?\]|\[skip\s+ci\\?\]/],
-                        [$class: 'SubmoduleOption', recursive: false, parentCredentials: true],
-                        [$class: 'CloneOption', noTags: true],
-                        [$class: 'LocalBranch', localBranch: "${env.platformBranch}"],
-                        [$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.RELPlatformCheckout}"],
-                        [$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[
-                            [$class:'SparseCheckoutPath', path:'/DNN Platform/Website/Install']
-                        ]]
-                    ],
-                    submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        credentialsId: 'github-access',
-                        url: 'git@github.com:dnnsoftware/Dnn.Platform.git',
-                        permissions: 'WRITABLE'
-                    ]]
-                ])
+                dir(env.RELPlatformCheckout) {
+
+                    // we don't use
+                    // if we use it, Jenkins triggers this jobs when DNN.Platform reposiroy updated
+                    sshagent(['github-access']) {
+                        bat """
+git init
+git config core.sparseCheckout true
+git remote add -f origin git@github.com:dnnsoftware/Dnn.Platform.git
+SET SPARSE_CONFIG=/DNN Platform/Website/Install
+echo %SPARSE_CONFIG% > .git/info/sparse-checkout
+git checkout ${env.platformBranch}
+"""
+                    }
+                }
             }
         }
 
