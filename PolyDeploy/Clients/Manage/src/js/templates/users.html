@@ -10,22 +10,23 @@
                     <h3 class="panel-title">New API User</h3>
                 </div>
                 <div class="panel-body">
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="newUserName" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" ng-model="newUserName" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 control-label">Bypass IP Whitelist</label>
-                        <div class="col-sm-10">
-                            <input type="checkbox" ng-model="bypassWhitelist" />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Bypass IP Whitelist</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" ng-model="bypassWhitelist" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-success" ng-click="createUser(newUserName, bypassWhitelist)">Create</button>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button type="button" class="btn btn-success" ng-click="createUser(newUserName, bypassWhitelist)">Create</button>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
