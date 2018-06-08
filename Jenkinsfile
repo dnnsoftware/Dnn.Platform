@@ -29,62 +29,34 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+        stage('Checkout DNN.Platform') {
             steps {
-
-                parallel (
-                    "DNNConnect.CKEditorProvider": {
-                        // Check out DNNConnect.CKEditorProvider
-                        checkout([$class: 'GitSCM',
-                            branches: [[name: "${env.sha1}"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            extensions: [
-                                [$class: 'CleanBeforeCheckout'],
-                                [$class: 'LocalBranch', localBranch: "${env.ghprbSourceBranch}"],
-                                [$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.RELCKEditorCheckout}"],
-                            ],
-                            submoduleCfg: [],
-                            userRemoteConfigs: [[
-                                credentialsId: 'github-access',
-                                url: 'git@github.com:trilogy-group/CKEditorProvider-Security.git',
-                                permissions: 'WRITABLE',
-                                refspec: '+refs/pull/*:refs/remotes/origin/pr/*'
-                            ]]
-                        ])
-                    },
-
-                    "DNN.Platform": {
-
-                        // Check out DNN.Platform
-                        checkout([$class: 'GitSCM',
-                            branches: [[name: "${env.platformBranch}"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            extensions: [
-                                [$class: 'CleanBeforeCheckout'],
-                                [$class: 'SubmoduleOption', recursive: false, parentCredentials: true],
-                                [$class: 'CloneOption', noTags: true],
-                                [$class: 'LocalBranch', localBranch: "${env.platformBranch}"],
-                                [$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.RELPlatformCheckout}"],
-                                [$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[
-                                        [$class:'SparseCheckoutPath', path:'/DNN Platform/Website/Install']
-                                ]
-                                ]
-                            ],
-                            submoduleCfg: [],
-                            userRemoteConfigs: [[
-                                credentialsId: 'github-access',
-                                url: 'git@github.com:dnnsoftware/Dnn.Platform.git',
-                                permissions: 'WRITABLE'
-                            ]]
-                        ])
-                    }
-                )
+                // Check out DNN.Platform
+                checkout([$class: 'GitSCM',
+                    branches: [[name: "${env.platformBranch}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'CleanBeforeCheckout'],
+                        [$class: 'SubmoduleOption', recursive: false, parentCredentials: true],
+                        [$class: 'CloneOption', noTags: true],
+                        [$class: 'LocalBranch', localBranch: "${env.platformBranch}"],
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: "${env.RELPlatformCheckout}"],
+                        [$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[
+                            [$class:'SparseCheckoutPath', path:'/DNN Platform/Website/Install']
+                        ]]
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: 'github-access',
+                        url: 'git@github.com:dnnsoftware/Dnn.Platform.git',
+                        permissions: 'WRITABLE'
+                    ]]
+                ])
             }
         }
 
         stage('Build') {
             steps {
-
                 dir("${env.RELCKEditorCheckout}") {
                     // Nuget Restore
                     bat "nuget restore DNNConnect.CKEditorProvider.sln -Source https://api.nuget.org/v3/index.json -Source https://www.myget.org/F/dnn-software-public/api/v3/index.json"
@@ -98,13 +70,12 @@ pipeline {
             }
         }
 
-    }
-
-    post {
-        success {
-
-               // Copy to Platform, commit, and push to GitHub
-                bat """
+        stage('Commit&Push To DNN.Platform') {
+            when { not { environment name: 'buildType', value: 'CI' } }
+            steps {
+                sshagent(['github-access']) {
+                    // Copy to Platform, commit, and push to GitHub
+                    bat """
 mkdir "${env.RELPlatformCheckout}\\DNN Platform\\Website\\Install\\Provider"
 del /Q "${env.RELPlatformCheckout}\\DNN Platform\\Website\\Install\\Provider\\DNNConnect.CKEditorProvider_*.zip"
 copy /Y "${env.RELCKEditorCheckout}\\packages\\*.zip" "${env.RELPlatformCheckout}\\DNN Platform\\Website\\Install\\Provider\\"
@@ -118,7 +89,12 @@ git push origin HEAD
 
 popd
 """
+                }
+            }
         }
+    }
+
+    post {
         always {
             updateGithubCommitStatus(
                 status: currentBuild.currentResult,
