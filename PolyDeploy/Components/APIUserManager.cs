@@ -1,4 +1,4 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,11 @@ namespace Cantarus.Modules.PolyDeploy.Components
     internal static class APIUserManager
     {
         private static APIUserDataController APIUserDC = new APIUserDataController();
+
+        public static APIUser Create(string name)
+        {
+            return Create(name, bypass: false);
+        }
 
         public static APIUser Create(string name, bool bypass)
         {
