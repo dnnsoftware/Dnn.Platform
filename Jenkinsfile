@@ -82,7 +82,7 @@ copy /Y "${env.RELCKEditorCheckout}\\packages\\*.zip" "${env.RELPlatformCheckout
 
 pushd ${env.RELPlatformCheckout}
 git add -f "DNN Platform\\Website\\Install\\Provider\\DNNConnect.CKEditorProvider_*.zip"
-git commit -am "CI/CD agent auto-commit of CKEditor build #${env.BUILD_NUMBER} for Platform ${env.PlatformVersion}"
+git commit -am "CI/CD agent auto-commit of CKEditor build #${env.BUILD_NUMBER} for Platform ${env.PlatformVersion} [ci skip]"
 
 git pull --rebase origin ${env.platformBranch}
 git push origin HEAD
