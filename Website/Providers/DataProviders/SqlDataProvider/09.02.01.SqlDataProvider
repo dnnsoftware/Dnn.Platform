@@ -103,6 +103,7 @@ ELSE
 GO
 
 
+/*** [DNN-18327]:[ISSUE-2096] Replace underscores with spaces. ***/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddPropertyDefinition]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddPropertyDefinition]
 GO
@@ -126,10 +127,13 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPropertyDefinition]
 AS
 	DECLARE @PropertyDefinitionId int
 
+	SET @PropertyName = Replace(LTrim(RTrim(Replace(@PropertyName,'_',' '))), '_', ' ')
+
+
 	SELECT @PropertyDefinitionId = PropertyDefinitionId
 		FROM   {databaseOwner}{objectQualifier}ProfilePropertyDefinition
 		WHERE  (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
-			AND (PropertyName = @PropertyName OR PropertyName = REPLACE(@PropertyName,' ','_') OR PropertyName = REPLACE(@PropertyName,'_',' '))
+			AND PropertyName = @PropertyName
 			
 	IF @vieworder=-1
 		BEGIN
