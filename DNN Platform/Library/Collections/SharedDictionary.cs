@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 #endregion
@@ -31,10 +32,11 @@ namespace DotNetNuke.Collections.Internal
     [Serializable]
     public class SharedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable
     {
-        private IDictionary<TKey, TValue> _dict;
+        private ConcurrentDictionary<TKey, TValue> _dict;
 
         private bool _isDisposed;
         private ILockStrategy _lockController;
+        private ILockStrategy _fakeLockController = new FakeLockStrategy();
 
         public SharedDictionary() : this(LockingStrategy.ReaderWriter)
         {
@@ -42,7 +44,7 @@ namespace DotNetNuke.Collections.Internal
 
         public SharedDictionary(ILockStrategy lockStrategy)
         {
-            _dict = new Dictionary<TKey, TValue>();
+            _dict = new ConcurrentDictionary<TKey, TValue>();
             _lockController = lockStrategy;
         }
 
@@ -50,7 +52,7 @@ namespace DotNetNuke.Collections.Internal
         {
         }
 
-        internal IDictionary<TKey, TValue> BackingDictionary
+        internal ConcurrentDictionary<TKey, TValue> BackingDictionary
         {
             get
             {
@@ -74,35 +76,31 @@ namespace DotNetNuke.Collections.Internal
         {
             EnsureNotDisposed();
             EnsureWriteAccess();
-            _dict.Add(item);
+            _dict.TryAdd(item.Key, item.Value);
         }
 
         public void Clear()
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
             _dict.Clear();
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             EnsureNotDisposed();
-            EnsureReadAccess();
-            return _dict.Contains(item);
+            return _dict.ContainsKey(item.Key);
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             EnsureNotDisposed();
-            EnsureReadAccess();
-            _dict.CopyTo(array, arrayIndex);
+            _dict.ToArray().CopyTo(array, arrayIndex);
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _dict.Remove(item);
+            TValue value;
+            return _dict.TryRemove(item.Key, out value);
         }
 
         public int Count
@@ -110,7 +108,6 @@ namespace DotNetNuke.Collections.Internal
             get
             {
                 EnsureNotDisposed();
-                EnsureReadAccess();
                 return _dict.Count;
             }
         }
@@ -119,16 +116,22 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict.IsReadOnly;
+                /**
+                 * Kept only for compatibility
+                 * even if it was uselss.
+                 * Actually we don't have control over 
+                 * readability of the _dict instance, since
+                 * the Dictionary class is instatiated in the 
+                 * constructor as ReadWrite.
+                 * Actually it is alwyas false
+                 */
+                return false; // _dict.IsReadOnly;
             }
         }
 
         public bool ContainsKey(TKey key)
         {
             EnsureNotDisposed();
-            EnsureReadAccess();
             return _dict.ContainsKey(key);
         }
 
@@ -136,20 +139,19 @@ namespace DotNetNuke.Collections.Internal
         {
             EnsureNotDisposed();
             EnsureWriteAccess();
-            _dict.Add(key, value);
+            _dict.TryAdd(key, value);
         }
 
         public bool Remove(TKey key)
         {
             EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _dict.Remove(key);
+            TValue value;
+            return _dict.TryRemove(key, out value);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
             EnsureNotDisposed();
-            EnsureReadAccess();
             return _dict.TryGetValue(key, out value);
         }
 
@@ -158,14 +160,14 @@ namespace DotNetNuke.Collections.Internal
             get
             {
                 EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict[key];
+                TValue value;
+                _dict.TryGetValue(key, out value);
+                return value;
             }
             set
             {
                 EnsureNotDisposed();
-                EnsureWriteAccess();
-                _dict[key] = value;
+                _dict.TryAdd(key, value);
             }
         }
 
@@ -174,7 +176,6 @@ namespace DotNetNuke.Collections.Internal
             get
             {
                 EnsureNotDisposed();
-                EnsureReadAccess();
                 return _dict.Keys;
             }
         }
@@ -184,7 +185,6 @@ namespace DotNetNuke.Collections.Internal
             get
             {
                 EnsureNotDisposed();
-                EnsureReadAccess();
                 return _dict.Values;
             }
         }
@@ -209,8 +209,7 @@ namespace DotNetNuke.Collections.Internal
 
         public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
         {
-            EnsureNotDisposed();
-            return _lockController.GetReadLock(timeOut);
+            return _fakeLockController.GetReadLock(timeOut);
         }
 
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
@@ -234,10 +233,9 @@ namespace DotNetNuke.Collections.Internal
             return GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-
         private void EnsureReadAccess()
         {
-            if (!(_lockController.ThreadCanRead))
+            if (!(_fakeLockController.ThreadCanRead))
             {
                 throw new ReadLockRequiredException();
             }
@@ -250,11 +248,9 @@ namespace DotNetNuke.Collections.Internal
                 throw new WriteLockRequiredException();
             }
         }
-
         public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
         {
             EnsureNotDisposed();
-            EnsureReadAccess();
 
             //todo nothing ensures read lock is held for life of enumerator
             return _dict.GetEnumerator();
@@ -284,7 +280,7 @@ namespace DotNetNuke.Collections.Internal
                 _isDisposed = true;
             }
         }
-
+        
         ~SharedDictionary()
         {
             Dispose(false);
