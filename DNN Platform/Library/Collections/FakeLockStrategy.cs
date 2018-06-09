@@ -4,11 +4,11 @@ namespace DotNetNuke.Collections.Internal
 {
     class FakeLockStrategy : ILockStrategy
     {
-        bool ILockStrategy.ThreadCanRead => throw new NotImplementedException();
+        bool ILockStrategy.ThreadCanRead => true;
 
-        bool ILockStrategy.ThreadCanWrite => throw new NotImplementedException();
+        bool ILockStrategy.ThreadCanWrite => true;
 
-        bool ILockStrategy.SupportsConcurrentReads => throw new NotImplementedException();
+        bool ILockStrategy.SupportsConcurrentReads => true;
 
         ISharedCollectionLock ILockStrategy.GetReadLock()
         {
