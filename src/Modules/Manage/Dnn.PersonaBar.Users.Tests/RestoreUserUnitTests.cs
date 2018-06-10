@@ -53,9 +53,8 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsFalse(result.IsError);
         }
 
-
         [Test]
-        public void Run_RestoreUserRestoringError_ReturnErrorResponse()
+        public void Run_RecycleBindControllerRestoringError_ReturnErrorResponse()
         {
             // Arrange        
 

@@ -379,15 +379,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             return false;
         }
-        #endregion
-
-        public void partFirst(string checkStatus)
-        {
-            var user = new UserInfo();
-            if (user.IsSuperUser)
-            {
-
-            }
-        }
+        #endregion        
     }
 }
