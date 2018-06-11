@@ -3897,6 +3897,10 @@ moment@2.13.0:
   version "2.13.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/moment/-/moment-2.13.0.tgz#24162d99521e6d40f99ae6939e806d2139eaac52"
 
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -4890,7 +4894,7 @@ react-widgets@3.4.4:
     deconstruct-number-format "0.0.1"
     format-number-with-string "0.0.2"
 
-react@^15.5.4:
+react@^15.5.0, react@^15.5.4:
   version "15.6.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
