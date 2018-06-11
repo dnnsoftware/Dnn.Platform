@@ -17,3 +17,16 @@
 * [x] 9.1.1
 * [ ] 9.1
 * [ ] 9.0
+
+## Affected browser
+
+<!-- 
+  Check all that apply and add more if necessary.
+  If possible, please also specify exact versions and mention the operating system
+-->
+
+* [ ] Chrome
+* [ ] Firefox
+* [ ] Safari
+* [ ] Internet Explorer
+* [ ] Edge
