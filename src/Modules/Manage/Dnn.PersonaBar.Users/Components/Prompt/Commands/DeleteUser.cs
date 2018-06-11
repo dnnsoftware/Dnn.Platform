@@ -19,17 +19,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private const string FlagNotify = "notify";
 
         private IUserValidator _userValidator;
+        private IUserControllerWrapper _userControllerWrapper;
 
         private int UserId { get; set; }
         private bool Notify { get; set; }
 
-        public DeleteUser() : this(new UserValidator())
+        public DeleteUser() : this(new UserValidator(), new UserControllerWrapper())
         {
         }
 
-        public DeleteUser(IUserValidator userValidator)
+        public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
             this._userValidator = userValidator;
+            this._userControllerWrapper = userControllerWrapper;
         }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -49,26 +51,25 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 return errorResultModel;
             }
 
-            var userModels = new List<UserModel> { new UserModel(userInfo) };
+            var userModels = new List<UserModel> { new UserModel(userInfo) };            
 
             if (userInfo.IsDeleted)
             {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_UserAlreadyDeleted"));
             }
 
-            if (!UserController.DeleteUser(ref userInfo, Notify, false))
+            var validPortalId = userInfo.PortalID;
+
+            if (!_userControllerWrapper.DeleteUserAndClearCache(ref userInfo, Notify, false))
             {
                 return new ConsoleErrorResultModel(LocalizeString("Prompt_UserDeletionFailed"))
                 {
                     Data = userModels
                 };
             }
-            // We must clear User cache or else, when the user is 'removed' (so it can't be restored), you 
-            // will not be able to create a new user with the same username -- even though no user with that username
-            // exists.
-            DotNetNuke.Common.Utilities.DataCache.ClearUserCache(userInfo.PortalID, userInfo.Username);
-            // attempt to retrieve the user from the dB
-            userInfo = UserController.GetUserById(userInfo.PortalID, userInfo.UserID);
+
+            // attempt to retrieve the user from the dB 
+            userInfo = _userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
             return new ConsoleResultModel(LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };            
         }
