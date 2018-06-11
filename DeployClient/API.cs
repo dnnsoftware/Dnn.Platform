@@ -16,11 +16,12 @@ namespace DeployClient
 
         private static HttpClient BuildClient()
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient()
+            {
+                BaseAddress = new Uri(new Uri(Program.Options.TargetUri), "DesktopModules/PolyDeploy/API/")
+            };
 
-            client.BaseAddress = new Uri(new Uri(Program.Options.TargetUri), "DesktopModules/PolyDeploy/API/");
             client.DefaultRequestHeaders.Add("x-api-key", APIKey);
-            client.Timeout = TimeSpan.FromSeconds(25);
 
             return client;
         }
