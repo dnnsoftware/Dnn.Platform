@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-        public void Run_RecycleBindControllerRestoringError_ReturnErrorResponse()
+        public void Run_RecycleBinControllerRestoringError_ReturnErrorResponse()
         {
             // Arrange        
 
