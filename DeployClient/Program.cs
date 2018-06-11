@@ -1,9 +1,11 @@
-﻿using Cantarus.Libraries.Encryption;
+using Cantarus.Libraries.Encryption;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -22,7 +24,7 @@ namespace DeployClient
             InstallFailure = 4
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -31,7 +33,7 @@ namespace DeployClient
                 // Output start.
                 WriteLine("*** PolyDeploy Client ***");
                 WriteLine();
-                
+
                 // Do we have a target uri.
                 if (Options.TargetUri.Equals(string.Empty))
                 {
@@ -91,15 +93,15 @@ namespace DeployClient
                     WriteLine();
                 }
 
-                // Inform user of encryption.
-                WriteLine("Starting encryption and upload...");
-
                 // Get a session.
-                string sessionGuid = API.CreateSession();
+                string sessionGuid = await API.CreateSessionAsync();
 
                 WriteLine(string.Format("Got session: {0}", sessionGuid));
 
                 DateTime startTime = DateTime.Now;
+
+                // Inform user of encryption.
+                WriteLine("Starting encryption and upload...");
 
                 foreach (string zipFile in zipFiles)
                 {
@@ -113,7 +115,7 @@ namespace DeployClient
                         {
                             Write("uploading...");
 
-                            API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
+                            await API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
                         }
 
                         WriteLine("done.");
@@ -129,22 +131,23 @@ namespace DeployClient
                 JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
                 // Start.
-                SortedList<string, dynamic> results = null;
-
-                if (!API.Install(sessionGuid, out results))
+                (bool installSuccess,  SortedList<string, dynamic> results) = await API.InstallAsync(sessionGuid);
+                if (!installSuccess)
                 {
-                    TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+                    TimeSpan interval = TimeSpan.FromSeconds(2);
                     Dictionary<string, dynamic> response;
                     var successfullyReachedApi = false;
                     DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout);
 
-                    // Attempt to get the status of the session from the remote api. 
+                    // Attempt to get the status of the session from the remote api.
                     // This can fail shortly after an installation as the api has not yet been initialised,
                     // so attempt to get it for the given timespan.
                     do
                     {
                         // Get whether we can reach the api
-                        successfullyReachedApi = API.GetSession(sessionGuid, out response);
+                        (bool getSessionSuccess, Dictionary<string, dynamic> getSessionResponse) = await API.GetSessionAsync(sessionGuid);
+                        successfullyReachedApi = getSessionSuccess;
+                        response = getSessionResponse;
 
                         if (!successfullyReachedApi)
                         {
@@ -161,7 +164,7 @@ namespace DeployClient
 
                     int status = -1;
                     string previousPrint = null;
-                    
+
                     DateTime abortTime = DateTime.Now.AddMinutes(10);
 
                     // Get the installation status from the API until it is complete or until the abort time is reached
@@ -202,7 +205,8 @@ namespace DeployClient
 
                         System.Threading.Thread.Sleep(interval);
 
-                        var success = API.GetSession(sessionGuid, out response);
+                        (bool success, Dictionary<string, dynamic> getSessionResponse) = await API.GetSessionAsync(sessionGuid);
+                        response = getSessionResponse;
 
                         // The api should not be returning a 404 status at this point
                         if (!success)
@@ -210,7 +214,7 @@ namespace DeployClient
                             throw new HttpException("Remote API returned status 404");
                         }
                     } while (status < 2 && DateTime.Now < abortTime);
-                    
+
                 }
                 else
                 {
@@ -294,10 +298,23 @@ namespace DeployClient
 
         private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
         {
-            WriteLine(ex.Message);
+            WriteLine($"{ex.GetType()} | {ex.Message}");
             WriteLine(ex.StackTrace);
 
-            if (depth < maxDepth && ex.InnerException != null)
+            if (depth >= maxDepth)
+            {
+                return;
+            }
+
+            if (ex is AggregateException aggregate && aggregate.InnerExceptions.Any())
+            {
+                depth++;
+                foreach (Exception inner in aggregate.InnerExceptions)
+                {
+                    WriteException(inner, maxDepth, depth);
+                }
+            }
+            else if (ex.InnerException != null)
             {
                 depth++;
                 WriteException(ex.InnerException, maxDepth, depth);
