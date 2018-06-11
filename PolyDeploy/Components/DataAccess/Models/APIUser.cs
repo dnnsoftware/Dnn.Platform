@@ -11,10 +11,11 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         public string Name { get; set; }
         public string APIKey { get; set; }
         public string EncryptionKey { get; set; }
+        public bool BypassIPWhitelist { get; set; }
 
         public APIUser() { }
 
-        public APIUser(string name)
+        public APIUser(string name, bool bypass)
         {
             if(string.IsNullOrEmpty(name))
             {
@@ -22,6 +23,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             }
 
             Name = name;
+            BypassIPWhitelist = bypass;
             APIKey = GenerateKey();
             EncryptionKey = GenerateKey();
         }
