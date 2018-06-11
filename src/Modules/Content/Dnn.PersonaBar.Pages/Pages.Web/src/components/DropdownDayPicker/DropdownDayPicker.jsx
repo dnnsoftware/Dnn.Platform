@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 
-import DayPicker from "../DayPicker/src/DayPicker.jsx";
+import DayPicker from "../DayPicker/DayPicker.jsx";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 
