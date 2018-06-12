@@ -1490,6 +1490,7 @@
     <Compile Include="Services\UserProfile\UserProfilePicHandler.cs" />
     <Compile Include="Services\UserRequest\IUserRequestIPAddressController.cs" />
     <Compile Include="Services\UserRequest\UserRequestIPAddressController.cs" />
+    <Compile Include="Services\Zip\SharpZipLibRedirect.cs" />
     <Compile Include="UI\Containers\ActionBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1723,6 +1724,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Services\Zip\readme.md" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>
