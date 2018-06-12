@@ -9,9 +9,9 @@ The following items must all be true prior to a pull request being submitted to 
 * Change should have a supporting issue logged on the DNN_Platform GitHub account, documenting the issue resolved, following the procedures outlined on the [Contribute Page](CONTRIBUTING.md)
 * Exception: Security items can be addressed individually, and should be initially communicated to the security@dnnsoftware.com email address for coordination
 * Pull request comment should contain at a minimum the following details (When creating, a default template will also prompt you for the proper information)
--* Issue #, referenced such as “Fixes #24”
--* Release Note: Suggested release note for the change such as “Improvement of user profile to improve performance when searching.”
--* Testing Steps: Suggested testing steps for validation of the change
+--* Issue #, referenced such as “Fixes #24”
+--* Release Note: Suggested release note for the change such as “Improvement of user profile to improve performance when searching.”
+--* Testing Steps: Suggested testing steps for validation of the change
 * Pull request must pass the Continuous Integration (CI) Build.  Failure of the build will result in no futher review of the pull request until the build has been corrected.
 
 ## Code Review Process
