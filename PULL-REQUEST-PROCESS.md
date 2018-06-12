@@ -17,12 +17,12 @@ The following items must all be true prior to a pull request being submitted to 
 ## Code Review Process
 Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** community approvers before the change can be approved.  Once approved by two unique individuals the change can be merged by the secondary approval.  At the current time the following community members are designated approvers.
 
-* Mitchel Sellers (mitchelsellers) - Community Technology Advisory Group Lead
-* Oliver Hine (ohine)
-* Brian Dukes (bdukes)
-* Peter Donker (donker) - Community Developer Advisory Group Lead
-* Vicnec Masanas (vmasanas)
-* Erik van Ballegoij (erikvb)
+* Mitchel Sellers ([mitchelsellers](https://github.com/mitchelsellers)) - Community Technology Advisory Group Lead
+* Oliver Hine ([ohine](https://github.com/ohine))
+* Brian Dukes ([bdukes](https://github.com/bdukes))
+* Peter Donker ([donker](https://github.com/donker)) - Community Developer Advisory Group Lead
+* Vicnec Masanas ([vmasanas](https://github.com/vmasanas))
+* Erik van Ballegoij ([erikvb](https://github.com/erikvb))
 
 An individual performing the code review should validate at a minimum the following.
 
