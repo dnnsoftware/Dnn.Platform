@@ -9,12 +9,17 @@ so that we can have a chance of keeping on top of things.
 
 ## Getting Started
 
-* Make sure you have a [DNN Tracker account](https://dnntracker.atlassian.net/secure/Signup!default.jspa)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
-* [Submit a ticket](https://dnntracker.atlassian.net/secure/CreateIssue!default.jspa) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
+* [Submit a ticket](https://github.com/dnnsoftware/Dnn.Platform/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.
-* Fork the repository on GitHub
+
+## Fork the repository on GitHub
+If this is your first time working with Dnn:Platform. You will need to fork the repository to get your system configured for local development.
+* Click fork on the main Dnn:Platform project
+* Clone your fork locally with `git clone https://github.com/[username]/Dnn.Platform.git` replacing [username] with your account information.
+* Add the upstream connection so you can rebase and update your fork with `git remote add upstream https://github.com/dnnsoftware/Dnn.Platform.git`
+  * To update your fork to the latest, you can then run `git fetch upstream` followed by `git push`
 
 ## Making Changes
 
@@ -24,6 +29,7 @@ so that we can have a chance of keeping on top of things.
   * To quickly create a topic branch based on development; `git checkout -b my_contribution development`
 * Make commits of logical units.
 * Check for unnecessary whitespace with `git diff --check` before committing.
+* When ready to publish your changes, you can with `git push -u origin my_contribution`
 * Make sure your pull request description tags the GitHub issue ID, so it is clear what issue you have fixed.
 * Make sure your commit messages are in the proper format.
 
@@ -92,7 +98,7 @@ a ticket number.
 
 # Additional Resources
 
-* [Issue tracker (Jira)](https://dnntracker.atlassian.net/)
+* [Issue tracker](https://github.com/dnnsoftware/Dnn.Platform/issues)
 * [Contributor License Agreement](http://www.dnnsoftware.com/Portals/0/Community/CLA/DNN - CLA.docx)
 * [General GitHub documentation](http://help.github.com/)
 * [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
