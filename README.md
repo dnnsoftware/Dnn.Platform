@@ -26,7 +26,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 
 * [Contribute](CONTRIBUTING.md)
 * [Pull Request Procedures](PULL-REQUEST-PROCESS.md)
-* [Versioning Policy](.github/VERSIONING-POLICY.md)
+* [Versioning Policy](.github/VERSIONING_POLICY.md)
 * [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
 * [Questions & Answers](http://answers.dnnsoftware.com/)
 * [Showcase](http://www.dnnsoftware.com/community/participate/community-showcase)
