@@ -39,7 +39,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 ## How to Contribute
 
 We encourage everyone to contribute.
-All the details on contributing with Git and on our working methods can be found on [Contributions Information Page] (CONTRIBUTING.md)
+All the details on contributing with Git and on our working methods can be found on the [Contribute Page](CONTRIBUTING.md)
 
 In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
 
