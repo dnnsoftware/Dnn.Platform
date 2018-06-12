@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -71,6 +71,18 @@ namespace DotNetNuke.UI.Skins.Controls
         public string Text { get; set; }
 
         public string URL { get; set; }
+
+        /// <summary>
+        /// set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            Visible = !PortalSettings.InErrorPageRequest() || ShowInErrorPage;
+        }
 
         protected override void OnLoad(EventArgs e)
         {

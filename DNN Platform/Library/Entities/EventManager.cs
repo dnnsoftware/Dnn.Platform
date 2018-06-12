@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.EventArgs;
+using DotNetNuke.Services.Log.EventLog;
 
 // ReSharper disable UseNullPropagation
 
@@ -63,6 +64,7 @@ namespace DotNetNuke.Entities
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
         private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
+        private event EventHandler<PortalSettingUpdatedEventArgs> PortalSettingUpdated;
 
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
@@ -134,6 +136,11 @@ namespace DotNetNuke.Entities
                 PortalCreated += handler.Value.PortalCreated;
             }
 
+            foreach (var handler in EventHandlersContainer<IPortalSettingHandlers>.Instance.EventHandlers)
+            {
+                PortalSettingUpdated += handler.Value.PortalSettingUpdated;
+            }
+
             foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
             {
                 PortalTemplateCreated += handler.Value.TemplateCreated;
@@ -191,6 +198,8 @@ namespace DotNetNuke.Entities
             {
                 FileAdded(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_ADDED);
         }
 
         public virtual void OnFileChanged(FileChangedEventArgs args)
@@ -199,6 +208,8 @@ namespace DotNetNuke.Entities
             {
                 FileChanged(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_CHANGED);
         }
 
         public virtual void OnFileDeleted(FileDeletedEventArgs args)
@@ -207,6 +218,8 @@ namespace DotNetNuke.Entities
             {
                 FileDeleted(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DELETED);
         }
 
         public virtual void OnFileMetadataChanged(FileChangedEventArgs args)
@@ -215,6 +228,8 @@ namespace DotNetNuke.Entities
             {
                 FileMetadataChanged(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_METADATACHANGED);
         }
 
         public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
@@ -223,6 +238,8 @@ namespace DotNetNuke.Entities
             {
                 FileDownloaded(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_DOWNLOADED);
         }
 
         public virtual void OnFileMoved(FileMovedEventArgs args)
@@ -231,6 +248,8 @@ namespace DotNetNuke.Entities
             {
                 FileMoved(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_MOVED);
         }
 
         public virtual void OnFileOverwritten(FileChangedEventArgs args)
@@ -239,6 +258,8 @@ namespace DotNetNuke.Entities
             {
                 FileOverwritten(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_OVERWRITTEN);
         }
 
         public virtual void OnFileRenamed(FileRenamedEventArgs args)
@@ -247,6 +268,8 @@ namespace DotNetNuke.Entities
             {
                 FileRenamed(this, args);
             }
+
+            AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_RENAMED);
         }
 
         public virtual void OnFolderAdded(FolderChangedEventArgs args)
@@ -350,6 +373,14 @@ namespace DotNetNuke.Entities
             if (PortalCreated != null)
             {
                 PortalCreated(this, args);
+            }
+        }
+
+        public virtual void OnPortalSettingUpdated(PortalSettingUpdatedEventArgs args)
+        {
+            if (PortalSettingUpdated != null)
+            {
+                PortalSettingUpdated(this, args);
             }
         }
 
@@ -528,6 +559,16 @@ namespace DotNetNuke.Entities
                 TabSerialize += handlers.Value.TabSerialize;
                 TabDeserialize += handlers.Value.TabDeserialize;
             }
+        }
+
+        private static void AddLog(IFileInfo fileInfo, int userId, EventLogController.EventLogType logType)
+        {
+            if (fileInfo == null)
+            {
+                return;
+            }
+
+            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, "", logType);
         }
     }
 }

@@ -1199,6 +1199,29 @@ DELETE	dbo.aspnet_Applications
 WHERE   (ApplicationName LIKE N'{objectQualifier}%')
 GO
 
+/*************************************/
+/***** DNN-8014: login cookies   *****/
+/*************************************/
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Add]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Add]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_Find]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_Find]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteByValue]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AuthCookies]', N'U') IS NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}AuthCookies]
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -30,7 +30,7 @@ namespace Dnn.ExportImport.Components.Common
         /// This is the currently supported schema version support as of this release.
         /// In future releases thi must be updated to be compatible wiht th e
         /// </summary>
-        public const string CurrentSchemaVersion = "1.0.1";
+        public const string CurrentSchemaVersion = "1.0.2";
 
         internal const string ExportFolder = @"\App_Data\ExportImport\";
         internal const string ExportManifestName = "export.json"; // export manifest file name

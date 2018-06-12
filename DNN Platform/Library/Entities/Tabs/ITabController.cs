@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -243,6 +243,16 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets the tabs by portal.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
+        /// <returns>tab collection</returns>
+        TabCollection GetUserTabsByPortal(int portalId);
+
+
+        /// <summary>
+        /// Get the actual visible tabs for a given portal id. 
+        /// System Tabs and Admin Tabs are excluded from the result set.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// 
         /// <returns>tab collection</returns>
         TabCollection GetTabsByPortal(int portalId);
 

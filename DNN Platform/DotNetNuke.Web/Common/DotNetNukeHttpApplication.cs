@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -48,6 +49,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Installer.Blocker;
 
 #endregion
@@ -61,7 +63,7 @@ namespace DotNetNuke.Web.Common.Internal
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
 
-        void Application_Error(object sender, EventArgs eventArgs)
+        private void Application_Error(object sender, EventArgs eventArgs)
         {
             // Code that runs when an unhandled error occurs
             if (HttpContext.Current != null)
@@ -111,6 +113,7 @@ namespace DotNetNuke.Web.Common.Internal
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
+            //DotNetNukeSecurity.Initialize();
         }
         
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
@@ -185,7 +188,18 @@ namespace DotNetNuke.Web.Common.Internal
         private void Application_BeginRequest(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
-            var requestUrl = app.Request.Url.LocalPath.ToLower();
+            var authCookie = app.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null && !IsInstallOrUpgradeRequest(app.Request))
+            {
+                // if the cookie is not in the database, then it is from before upgrading to 9.2.0 and don't fail
+                var persisted = AuthCookieController.Instance.Find(authCookie.Value);
+                if (persisted != null && persisted.ExpiresOn <= DateTime.UtcNow)
+                {
+                    app.Request.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                }
+            }
+
+            var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
             if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") &&  Endings.Any(requestUrl.EndsWith))
             {
                 return;
@@ -214,5 +228,16 @@ namespace DotNetNuke.Web.Common.Internal
             return InstallBlocker.Instance.IsInstallInProgress();
         }
 
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLowerInvariant();
+
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
+        }
     }
 }

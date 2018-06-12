@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null)
             {
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 return ps.DecryptString(personalization.Profile[namingContainer + ":" + key].ToString(), Config.GetDecryptionkey());
             }
             return "";
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null)
             {
-                var ps = new PortalSecurity();
+                var ps = PortalSecurity.Instance;
                 personalization.Profile[namingContainer + ":" + key] = ps.EncryptString(value.ToString(), Config.GetDecryptionkey());
                 personalization.IsModified = true;
             }

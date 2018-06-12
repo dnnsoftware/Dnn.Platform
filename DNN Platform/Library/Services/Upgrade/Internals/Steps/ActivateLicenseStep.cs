@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
                     var activationResult = "";
                     activationResult = Upgrade.ActivateLicense();
 
-                    if (!activationResult.ToLower().Contains("success"))
+                    if (!activationResult.ToLowerInvariant().Contains("success"))
                     {
                         Errors.Add(Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile) + ": " + activationResult);
                         Logger.TraceFormat("ActivateLicense Status - {0}", activationResult);

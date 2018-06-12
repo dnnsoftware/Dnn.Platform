@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
@@ -119,10 +120,10 @@ namespace DotNetNuke.Services.GeneratedImage
             SetupCulture();
 
             //which type of image should be generated ?
-            string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLower();
+            string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
             // We need to determine the output format		
-            string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLower();
+            string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
             Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
@@ -233,11 +234,14 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
-                            if (!parameters["Url"].StartsWith("http"))
+                            var url = parameters["Url"];
+                            // allow only site resources when using the url parameter
+                            if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {
                                 return GetEmptyImageInfo();
                             }
-                            imgUrl = parameters["Url"];
+
+                            imgUrl = url;
                         }
 
                         if (string.IsNullOrEmpty(parameters["format"]))
@@ -246,12 +250,12 @@ namespace DotNetNuke.Services.GeneratedImage
                             if (string.IsNullOrEmpty(parameters["Url"]))
                             {
                                 var fi = new System.IO.FileInfo(imgFile);
-                                extension = fi.Extension.ToLower();
+                                extension = fi.Extension.ToLowerInvariant();
                             }
                             else
                             {
                                 string[] parts = parameters["Url"].Split('.');
-                                extension = parts[parts.Length - 1].ToLower();
+                                extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
                             ContentType = GetImageFormat(extension);
                         }
@@ -273,7 +277,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             var pi = t.GetProperty(key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                             if (pi != null && key != "mode")
                             {
-                                switch (key.ToLower())
+                                switch (key.ToLowerInvariant())
                                 {
                                     case "color":
                                         pi.SetValue(imageTransform, color, null);
@@ -484,7 +488,7 @@ namespace DotNetNuke.Services.GeneratedImage
             foreach (string value in values)
             {
                 string[] setting = value.Split('=');
-                string name = setting[0].ToLower();
+                string name = setting[0].ToLowerInvariant();
                 switch (name)
                 {
                     case "enableclientcache":
@@ -538,7 +542,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static ImageFormat GetImageFormat(string extension)
         {
-            switch (extension.ToLower())
+            switch (extension.ToLowerInvariant())
             {
                 case "jpg":
                 case "jpeg":
@@ -554,6 +558,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 default:
                     return ImageFormat.Png;
             }
+        }
+
+        // checks whether the uri belongs to any of the site-wide aliases
+        private static bool UriBelongsToSite(Uri uri)
+        {
+            IEnumerable<string> hostAliases =
+                from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
+                 select alias.HTTPAlias.ToLowerInvariant();
+
+            // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
+            // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
+            // uriNoScheme2 = "mydomain:80/dnndev/mypage"  -- lower case
+            var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
+            var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
+            return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
         }
     }
 }

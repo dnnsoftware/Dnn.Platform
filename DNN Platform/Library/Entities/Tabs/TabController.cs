@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -417,7 +417,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         else
                         {
-                            if (isAdminTemplate && roleName.ToLower() == "administrators")
+                            if (isAdminTemplate && roleName.ToLowerInvariant() == "administrators")
                             {
                                 roleID = portal.AdministratorRoleId;
                             }
@@ -899,7 +899,7 @@ namespace DotNetNuke.Entities.Tabs
                     // we are adding missing languages to a single culture page that is not in the default language
                     // so we must first add a page in the default culture
 
-                    CreateLocalizedCopy(workingTab, defaultLocale, false);
+                    CreateLocalizedCopyInternal(workingTab, defaultLocale, false, true);
                 }
 
                 if (currentTab.DefaultLanguageTab != null)
@@ -918,7 +918,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         if (missing)
                         {
-                            CreateLocalizedCopy(workingTab, locale, false);
+                            CreateLocalizedCopyInternal(workingTab, locale, false, true);
                         }
                     }
                 }
@@ -1470,6 +1470,27 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
+        /// Get the actual visible tabs for a given portal id. 
+        /// System Tabs and Admin Tabs are excluded from the result set.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// 
+        /// <returns></returns>
+        public TabCollection GetUserTabsByPortal(int portalId)
+        {
+            var tabs = GetTabsByPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
+
+            IEnumerable<TabInfo> filteredList = from tab in tabs
+                                                where
+                                                !tab.Value.IsSystem
+                                                && tab.Value.TabID != portal.AdminTabId
+                                                && tab.Value.ParentId != portal.AdminTabId
+                                                select tab.Value;
+            return new TabCollection(filteredList);
+        }
+
+        /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
         /// <param name="tabId">ID of the Tab to query</param>
@@ -1661,6 +1682,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -1684,6 +1709,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -1704,6 +1733,10 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear the Cache
             ClearCache(tab.PortalID);
+
+            var portalId = GetPortalId(tab.TabID, -1);
+            var updatedTab = GetTab(tab.TabID, portalId, true);
+            EventManager.Instance.OnTabUpdated(new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
@@ -2708,7 +2741,7 @@ namespace DotNetNuke.Entities.Tabs
                     // for some reason serialization of permissions did not work
                     // we are using a different method here to make sure that 
                     // permissions are included in the tabinfo xml
-                    XmlDocument tabPermissions = new XmlDocument();
+                    XmlDocument tabPermissions = new XmlDocument { XmlResolver = null };
                     CBO.SerializeObject(tab.TabPermissions, tabPermissions);
 
                     XmlNode permissionsNode = tabXml.CreateElement("tabpermissions");
@@ -2846,7 +2879,10 @@ namespace DotNetNuke.Entities.Tabs
                     newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.DefaultLanguageTab.TabID].ToString());
                     tabNode.AppendChild(newnode);
                 }
-                catch { }
+                catch
+                {
+                    //ignore
+                }
             }
 
             XmlNode panesNode;
@@ -2864,7 +2900,7 @@ namespace DotNetNuke.Entities.Tabs
                 module = kvp.Value;
                 if (!module.IsDeleted)
                 {
-                    moduleXml = new XmlDocument();
+                    moduleXml = new XmlDocument { XmlResolver = null };
                     moduleNode = ModuleController.SerializeModule(moduleXml, module, includeContent);
                     if (panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']") == null)
                     {
@@ -2884,7 +2920,7 @@ namespace DotNetNuke.Entities.Tabs
             var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
 			foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
             {
-                var tabUrlXml = new XmlDocument();
+                var tabUrlXml = new XmlDocument { XmlResolver = null };
                 XmlNode tabUrlNode = tabUrlXml.CreateElement("tabUrl");
                 tabUrlNode.AddAttribute("SeqNum", tabUrl.SeqNum.ToString(CultureInfo.InvariantCulture));
                 tabUrlNode.AddAttribute("Url", tabUrl.Url);

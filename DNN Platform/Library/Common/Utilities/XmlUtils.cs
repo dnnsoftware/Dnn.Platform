@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -89,12 +89,6 @@ namespace DotNetNuke.Common.Utilities
             objNode.Attributes.Append(attribute);
         }
 
-        [Obsolete("Removed in DotNetNuke 5.5")]
-        public static XmlElement CreateElement(XmlDocument document, string nodeName)
-        {
-            return document.CreateElement(nodeName);
-        }
-
         public static XmlElement CreateElement(XmlDocument document, string nodeName, string nodeValue)
         {
             XmlElement element = document.CreateElement(nodeName);
@@ -107,16 +101,6 @@ namespace DotNetNuke.Common.Utilities
             XmlElement element = document.CreateElement(nodeName);
             element.AppendChild(document.CreateCDataSection(nodeValue));
             return element;
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 with CBO.DeserializeObject")]
-        public static object Deserialize(string xmlObject, Type type)
-        {
-            var ser = new XmlSerializer(type);
-            var sr = new StringReader(xmlObject);
-            object obj = ser.Deserialize(sr);
-            sr.Close();
-            return obj;
         }
 
         public static object Deserialize(Stream objStream, Type type)
@@ -157,7 +141,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static Dictionary<int, TValue> DeSerializeDictionary<TValue>(Stream objStream, string rootname)
         {
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(objStream);
 
             var objDictionary = new Dictionary<int, TValue>();
@@ -172,7 +156,11 @@ namespace DotNetNuke.Common.Utilities
                 var xser = new XmlSerializer(objValue.GetType());
 
                 //A reader is needed to read the XML document.
-                var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml));
+                var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
 
                 //Use the Deserialize method to restore the object's state, and store it
                 //in the Hashtable
@@ -189,7 +177,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 try
                 {
-                    var xmlDoc = new XmlDocument();
+                    var xmlDoc = new XmlDocument { XmlResolver = null };
                     xmlDoc.LoadXml(xmlSource);
 
                     foreach (XmlElement xmlItem in xmlDoc.SelectNodes(rootname + "/item"))
@@ -201,7 +189,11 @@ namespace DotNetNuke.Common.Utilities
                         var xser = new XmlSerializer(Type.GetType(typeName));
 
                         //A reader is needed to read the XML document.
-                        var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml));
+                        var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
+                        {
+                            XmlResolver = null,
+                            DtdProcessing = DtdProcessing.Prohibit
+                        };
 
                         //Use the Deserialize method to restore the object's state, and store it
                         //in the Hashtable
@@ -639,7 +631,7 @@ namespace DotNetNuke.Common.Utilities
                 XmlSerializer xser;
                 StringWriter sw;
 
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xmlRoot = xmlDoc.CreateElement(rootName);
                 xmlDoc.AppendChild(xmlRoot);
 
@@ -653,7 +645,7 @@ namespace DotNetNuke.Common.Utilities
                     xmlItem.SetAttribute("type", source[key].GetType().AssemblyQualifiedName);
 
                     //Serialize the object
-                    var xmlObject = new XmlDocument();
+                    var xmlObject = new XmlDocument { XmlResolver = null };
                     xser = new XmlSerializer(source[key].GetType());
                     sw = new StringWriter();
                     xser.Serialize(sw, source[key]);
@@ -757,7 +749,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 var xser = new XmlSerializer(obj.GetType());
                 var sw = new StringWriter();
 
@@ -837,10 +829,14 @@ namespace DotNetNuke.Common.Utilities
         {
             //This function reads an Xml document via a Url and returns it as an XmlDocument object
 
-            var functionReturnValue = new XmlDocument();
+            var functionReturnValue = new XmlDocument { XmlResolver = null };
             var req = WebRequest.Create(contentUrl);
             var result = req.GetResponse();
-            var objXmlReader = new XmlTextReader(result.GetResponseStream());
+            var objXmlReader = new XmlTextReader(result.GetResponseStream())
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             functionReturnValue.Load(objXmlReader);
             return functionReturnValue;
         }

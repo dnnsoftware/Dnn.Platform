@@ -2,7 +2,7 @@
 
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -158,6 +159,18 @@ namespace DotNetNuke.Modules.SearchResults
                 return string.IsNullOrEmpty(settings) || settings == "0" ? string.Empty : " target=\"_blank\" ";
             }
         }
+
+        protected string ShowDescription => GetBooleanSetting("ShowDescription", true).ToString().ToLowerInvariant();
+
+        protected string ShowSnippet => GetBooleanSetting("ShowSnippet", true).ToString().ToLowerInvariant();
+
+        protected string ShowSource => GetBooleanSetting("ShowSource", true).ToString().ToLowerInvariant();
+
+        protected string ShowLastUpdated => GetBooleanSetting("ShowLastUpdated", true).ToString().ToLowerInvariant();
+
+        protected string ShowTags => GetBooleanSetting("ShowTags", true).ToString().ToLowerInvariant();
+
+        protected string MaxDescriptionLength => GetIntegerSetting("MaxDescriptionLength", 100).ToString();
 
         private IList<int> SearchPortalIds
         {
@@ -390,6 +403,27 @@ namespace DotNetNuke.Modules.SearchResults
                     item.Selected = true;
                 }
             }
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (Settings.ContainsKey(settingName) && !string.IsNullOrEmpty(Convert.ToString(Settings[settingName])))
+            {
+                return Convert.ToBoolean(Settings[settingName]);
+            }
+
+            return defaultValue;
+        }
+
+        private int GetIntegerSetting(string settingName, int defaultValue)
+        {
+            var settingValue = Convert.ToString(Settings[settingName]);
+            if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
+            {
+                return Convert.ToInt32(settingValue);
+            }
+
+            return defaultValue;
         }
     }
 }

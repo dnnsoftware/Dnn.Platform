@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Journal {
             ProfileId = Null.SetNullInteger(dr["ProfileId"]);
             SocialGroupId = Null.SetNullInteger(dr["GroupId"]);
             if (!String.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"]))) {
-                JournalXML = new XmlDocument();
+                JournalXML = new XmlDocument { XmlResolver = null };
                 JournalXML.LoadXml(dr["JournalXML"].ToString());
                 XmlNode xRoot = JournalXML.DocumentElement;
                 XmlNode xNode = xRoot.SelectSingleNode("//items/item/body");

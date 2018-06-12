@@ -45,6 +45,7 @@ input[type="image"] + span.Head, input[type="image"] + span.SubHead {
     font-size: 12px;
     font-weight: normal;
     line-height: 18px;
+    word-wrap: break-word;
 }
 
 /* disabled text styles */
@@ -703,7 +704,7 @@ ul.dnnAdminTabNav {
     margin-top: 5px;
     margin-left: 0;
     width: 100%;
-    height: 37px;
+    min-height: 37px;
     border-bottom: 1px solid #c2c2c2;
     padding: 0;
 }
@@ -1364,6 +1365,7 @@ div.dnnTagsInput span.tag {
     -ms-word-wrap: break-word;
     word-wrap: break-word;
     box-sizing: border-box;
+    word-break: break-word;
 }
 
     div.dnnTagsInput span.tag:hover {
@@ -3048,7 +3050,7 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 }
 
 /* used to collapse panes without any content in them */
-.DNNEmptyPane {
+body:not(.dnnEditState) .DNNEmptyPane {
     width: 0px;
 }
 
@@ -3581,3 +3583,10 @@ div.dnnSliderInput .dnnTooltip .dnnFormHelpContent {
 	z-index: 1;
 }
 /*END DNN Slider Input Style*/
+
+/* Overflow for dnnMenu dropdown */
+#dnnMenu .dropdown-menu {
+    word-wrap: break-word;
+}
+
+/* End Overflow for dnnMenu dropdown */

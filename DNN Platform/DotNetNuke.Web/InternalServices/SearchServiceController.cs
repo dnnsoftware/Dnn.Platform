@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Caching;
 using System.Web.Http;
 
@@ -132,6 +133,44 @@ namespace DotNetNuke.Web.InternalServices
 
             var searchModule = GetSearchModule();
             return searchModule != null ? searchModule.ModuleSettings : null;
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
+        }
+
+        private int GetIntegerSetting(string settingName, int defaultValue)
+        {
+            if (PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            var settingValue = Convert.ToString(settings[settingName]);
+            if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
+            {
+                return Convert.ToInt32(settingValue);
+            }
+
+            return defaultValue;
         }
 
         private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
@@ -265,13 +304,16 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
+            var showFriendlyTitle = ActiveModule == null
+                                    || !ActiveModule.ModuleSettings.ContainsKey("ShowFriendlyTitle")
+                                    || Convert.ToBoolean(ActiveModule.ModuleSettings["ShowFriendlyTitle"]);
             foreach (var results in tabGroups.Values)
             {
                 var group = new GroupedDetailView();
 
                 //first entry
                 var first = results[0];
-                group.Title = first.Title;
+                group.Title = showFriendlyTitle ? GetFriendlyTitle(first) : first.Title;
                 group.DocumentUrl = first.Url;
 
                 //Find a different title for multiple entries with same url
@@ -281,7 +323,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
-                            group.Title = tab.TabName;
+                            group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
                     }
                     else if (first.ModuleId > 0)
                     {
@@ -306,12 +348,14 @@ namespace DotNetNuke.Web.InternalServices
 
                 foreach (var result in results)
                 {
+                    var title = showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
                     var detail = new DetailedView
                     {
-                        Title = result.Title,
+                        Title = title != null && title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
                         DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                         DocumentUrl = result.Url,
                         Snippet = result.Snippet,
+                        Description = result.Description,
                         DisplayModifiedTime = result.DisplayModifiedTime,
                         Tags = result.Tags.ToList(),
                         AuthorProfileUrl = result.AuthorUserId > 0 ? Globals.UserProfileURL(result.AuthorUserId) : string.Empty,
@@ -324,6 +368,16 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return groups;
+        }
+
+        private string GetFriendlyTitle(SearchResult result)
+        {
+            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
+            {
+                return result.Keywords["title"];
+            }
+
+            return result.Title;
         }
 
         internal List<GroupedBasicView> GetGroupedBasicViews(SearchQuery query, SearchContentSource userSearchSource, int portalId)
@@ -355,8 +409,9 @@ namespace DotNetNuke.Web.InternalServices
                     if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
                         groupedResult.Results.Add(new BasicView
                         {
-                            Title = preview.Title,
+                            Title = preview.Title.Contains("<") ? HttpUtility.HtmlEncode(preview.Title) : preview.Title,
                             Snippet = preview.Snippet,
+                            Description = preview.Description,
                             DocumentUrl = preview.DocumentUrl,
                             Attributes = preview.Attributes
                         });
@@ -374,18 +429,31 @@ namespace DotNetNuke.Web.InternalServices
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
+            var showFriendlyTitle = GetBooleanSetting("ShowFriendlyTitle", true);
+            var showDescription = GetBooleanSetting("ShowDescription", true);
+            var showSnippet = GetBooleanSetting("ShowSnippet", true);
+            var maxDescriptionLength = GetIntegerSetting("MaxDescriptionLength", 100);
 
-            return sResult.Results.Select(result => 
-                new BasicView
-                    {
-                        Title = GetTitle(result),
-                        DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
-                        DocumentUrl = result.Url,
-                        Snippet = result.Snippet,
-                    });
+            return sResult.Results.Select(result =>
+            {
+                var description = result.Description;
+                if (!string.IsNullOrEmpty(description) && description.Length > maxDescriptionLength)
+                {
+                    description = description.Substring(0, maxDescriptionLength) + "...";
+                }
+
+                return new BasicView
+                {
+                    Title = GetTitle(result, showFriendlyTitle),
+                    DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
+                    DocumentUrl = result.Url,
+                    Snippet = showSnippet ? result.Snippet : string.Empty,
+                    Description = showDescription ? description : string.Empty
+                };
+            });
         }
 
-        private string GetTitle(SearchResult result)
+        private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
             if (result.ModuleDefId > 0 && result.ModuleDefId == HtmlModuleDefitionId) //special handling for Html module
             {
@@ -398,7 +466,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return result.Title;
+            return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
         }
 
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
@@ -419,7 +487,9 @@ namespace DotNetNuke.Web.InternalServices
             var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             if (moduleInfo != null)
             {
-                return moduleInfo.ParentTab.TabName;
+                var tab = moduleInfo.ParentTab;
+
+                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
             }
 
             return string.Empty;

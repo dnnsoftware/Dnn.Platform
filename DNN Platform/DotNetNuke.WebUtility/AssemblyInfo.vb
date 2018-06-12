@@ -1,6 +1,6 @@
 '
 ' DotNetNuke? - http://www.dotnetnuke.com
-' Copyright (c) 2002-2017
+' Copyright (c) 2002-2018
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,7 +32,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Open Source Web Application Framework")> 
 <Assembly: AssemblyCompany("DotNetNuke Corporation")> 
 <Assembly: AssemblyProduct("DotNetNuke.WebUtility")> 
-<Assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.")> 
+<Assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DotNetNuke Corporation. All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 <Assembly: CLSCompliant(True)> 
 

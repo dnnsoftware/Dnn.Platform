@@ -721,7 +721,7 @@ Username: [User:UserName]
 
 You can use the following link to complete your verified registration:
 
-http://[Portal:URL]/default.aspx?ctl=Login&amp;username=[Custom:0]&amp;verificationcode=[Custom:1]
+[Portal:FULLURL]/default.aspx?ctl=Login&amp;username=[Custom:0]&amp;verificationcode=[Custom:1]
 
 Thank you, we appreciate your support...
 
@@ -740,7 +740,7 @@ We are pleased to advise that you have been added as a Registered User to [Porta
 Portal Website Address: [Portal:URL]
 Username: [User:UserName]
 
-If you do not know, or cannot remember, your password, please go to http://[Portal:URL]/default.aspx?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken] to reset it.
+If you do not know, or cannot remember, your password, please go to [Portal:FULLURL]/default.aspx?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken] to reset it.
 Thank you, we appreciate your support...
 
 [Portal:PortalName]
@@ -984,7 +984,7 @@ Operation Completed:  [Custom:3]
   </data>
   <data name="License.Text" xml:space="preserve">
     <value>&lt;p&gt;DotNetNuke&amp;reg; - http://www.dotnetnuke.com&lt;br /&gt;
-Copyright (c) 2002-2017&lt;br/&gt;
+Copyright (c) 2002-2018&lt;br/&gt;
     by DotNetNuke Corporation&lt;/p&gt;
     &lt;p&gt;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -1525,7 +1525,7 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;br/&gt;[DISPLAYNAME]&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="[PROFILEURL]"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;br/&gt;[DISPLAYNAME]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;

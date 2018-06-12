@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -353,7 +353,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    switch (value.ToLower())
+                    switch (value.ToLowerInvariant())
                     {
                         case "horizontal":
                             Control.ControlOrientation = NavigationProvider.Orientation.Horizontal;
@@ -403,7 +403,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    switch (value.ToLower())
+                    switch (value.ToLowerInvariant())
                     {
                         case "left":
                             Control.ControlAlignment = NavigationProvider.Alignment.Left;
@@ -534,7 +534,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    switch (value.ToLower())
+                    switch (value.ToLowerInvariant())
                     {
                         case "highlight":
                             Control.MouseOverDisplay = NavigationProvider.HoverDisplay.Highlight;
@@ -2261,7 +2261,7 @@ namespace DotNetNuke.UI.Skins
             Navigation.ToolTipSource eToolTips;
             int intNavNodeOptions = 0;
             int intDepth = ExpandDepth;
-            switch (Level.ToLower())
+            switch (Level.ToLowerInvariant())
             {
                 case "child":
                     break;
@@ -2279,7 +2279,7 @@ namespace DotNetNuke.UI.Skins
 
             if (ShowHiddenTabs) intNavNodeOptions += (int) Navigation.NavNodeOptions.IncludeHiddenNodes;
 
-            switch (ToolTip.ToLower())
+            switch (ToolTip.ToLowerInvariant())
             {
                 case "name":
                     eToolTips = Navigation.ToolTipSource.TabName;
@@ -2372,7 +2372,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (!String.IsNullOrEmpty(m_strControlOrientation))
             {
-                switch (m_strControlOrientation.ToLower())
+                switch (m_strControlOrientation.ToLowerInvariant())
                 {
                     case "horizontal":
                         Control.ControlOrientation = NavigationProvider.Orientation.Horizontal;
@@ -2384,7 +2384,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (!String.IsNullOrEmpty(m_strControlAlignment))
             {
-                switch (m_strControlAlignment.ToLower())
+                switch (m_strControlAlignment.ToLowerInvariant())
                 {
                     case "left":
                         Control.ControlAlignment = NavigationProvider.Alignment.Left;
@@ -2408,7 +2408,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (!String.IsNullOrEmpty(m_strMouseOverDisplay))
             {
-                switch (m_strMouseOverDisplay.ToLower())
+                switch (m_strMouseOverDisplay.ToLowerInvariant())
                 {
                     case "highlight":
                         Control.MouseOverDisplay = NavigationProvider.HoverDisplay.Highlight;

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 foreach (KeyValuePair<string, string> kvp in varyBy)
                 {
-                    cacheKey.Append(string.Concat(kvp.Key.ToLower(), "=", kvp.Value, "|"));
+                    cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
                 }
             }
             return string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());

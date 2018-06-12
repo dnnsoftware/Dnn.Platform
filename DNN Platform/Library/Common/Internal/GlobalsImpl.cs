@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Common.Internal
             string hostHeader = Config.GetSetting("HostHeader");
             if (!String.IsNullOrEmpty(hostHeader))
             {
-                uri = uri.ToLower().Replace(hostHeader.ToLower(), "");
+                uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), "");
             }
             int queryIndex = uri.IndexOf("?", StringComparison.Ordinal);
             if (queryIndex > -1)
@@ -104,7 +104,7 @@ namespace DotNetNuke.Common.Internal
             for (queryIndex = 2; queryIndex <= url.GetUpperBound(0); queryIndex++)
             {
                 bool needExit = false;
-                switch (url[queryIndex].ToLower())
+                switch (url[queryIndex].ToLowerInvariant())
                 {
                     case "":
                         continue;
@@ -124,9 +124,9 @@ namespace DotNetNuke.Common.Internal
                         //   - and to do that, we need to ensure the string we test against is long enough;
                         if ((url[queryIndex].Length >= ".aspx".Length))
                         {
-                            if (url[queryIndex].ToLower().LastIndexOf(".aspx", StringComparison.Ordinal) == (url[queryIndex].Length - (".aspx".Length)) ||
-                                url[queryIndex].ToLower().LastIndexOf(".axd", StringComparison.Ordinal) == (url[queryIndex].Length - (".axd".Length)) ||
-                                url[queryIndex].ToLower().LastIndexOf(".ashx", StringComparison.Ordinal) == (url[queryIndex].Length - (".ashx".Length)))
+                            if (url[queryIndex].ToLowerInvariant().LastIndexOf(".aspx", StringComparison.Ordinal) == (url[queryIndex].Length - (".aspx".Length)) ||
+                                url[queryIndex].ToLowerInvariant().LastIndexOf(".axd", StringComparison.Ordinal) == (url[queryIndex].Length - (".axd".Length)) ||
+                                url[queryIndex].ToLowerInvariant().LastIndexOf(".ashx", StringComparison.Ordinal) == (url[queryIndex].Length - (".ashx".Length)))
                             {
                                 break;
                             }

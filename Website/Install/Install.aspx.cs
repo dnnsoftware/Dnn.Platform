@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -254,6 +254,11 @@ namespace DotNetNuke.Services.Install
         { 
             try
             {
+                if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
+                {
+                    Response.Redirect(Request.RawUrl, true);
+                }
+
                 var databaseVersion = DataProvider.Instance().GetVersion();
 
                 //Start Timer
@@ -300,7 +305,7 @@ namespace DotNetNuke.Services.Install
 
                         if ((Request.QueryString["ignoreWarning"] != null))
                         {
-                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLower();
+                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLowerInvariant();
                         }
                         strWarning = Upgrade.Upgrade.CheckUpgrade();
                     }
@@ -381,7 +386,7 @@ namespace DotNetNuke.Services.Install
             string strNewFile = Globals.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
             if (File.Exists(strNewFile))
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(strNewFile);
 
                 //parse portal(s) if available
@@ -523,6 +528,12 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                Response.Redirect(Request.RawUrl, true);
+            }
+
             //if previous config deleted create new empty one
             string installConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config");
             if (!File.Exists(installConfig))
@@ -541,7 +552,7 @@ namespace DotNetNuke.Services.Install
             string mode = "";
             if ((Request.QueryString["mode"] != null))
             {
-                mode = Request.QueryString["mode"].ToLower();
+                mode = Request.QueryString["mode"].ToLowerInvariant();
             }
 
             //Disable Client side caching

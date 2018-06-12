@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Groups
         }
         private void Create_Click(object sender, EventArgs e)
         {
-            var ps = new Security.PortalSecurity();
+            var ps = Security.PortalSecurity.Instance;
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 

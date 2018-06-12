@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -163,9 +163,9 @@ namespace DotNetNuke.Tests.Urls
             }
 
             SetDefaultAlias(DefaultAlias);
-            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", _redirectMode, "en-us");
-            PortalController.UpdatePortalSetting(PortalId, "SSLEnforced", _sslEnforced.ToString(), "en-us");
-            PortalController.UpdatePortalSetting(PortalId, "SSLEnabled", _sslEnabled.ToString(), "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", _redirectMode, true, "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "SSLEnforced", _sslEnforced.ToString(), true, "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "SSLEnabled", _sslEnabled.ToString(), true, "en-us");
 
             foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(PortalId)))
             {
@@ -577,7 +577,7 @@ namespace DotNetNuke.Tests.Urls
                 testFields["Final Url"] = testFields["Final Url"].Replace("{useAlias}", defaultAlias);
             }
 
-            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", "REDIRECT", "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", "REDIRECT", true, "en-us");
             var alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, PortalId);
             if (alias == null)
             {
@@ -642,8 +642,8 @@ namespace DotNetNuke.Tests.Urls
 
             _securePageName = testFields["Page Name"].Trim();
 
-            PortalController.UpdatePortalSetting(PortalId, "SSLEnforced", testFields["Enforced"].Trim(), "en-us");
-            PortalController.UpdatePortalSetting(PortalId, "SSLEnabled", testFields["Enabled"].Trim(), "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "SSLEnforced", testFields["Enforced"].Trim(), true, "en-us");
+            PortalController.UpdatePortalSetting(PortalId, "SSLEnabled", testFields["Enabled"].Trim(), true, "en-us");
 
             var isSecure = Convert.ToBoolean(testFields["IsSecure"].Trim());
 

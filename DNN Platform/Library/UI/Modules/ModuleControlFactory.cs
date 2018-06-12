@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Modules
 
         private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
-            string extension = Path.GetExtension(controlSrc.ToLower());
+            string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
 
             IModuleControlFactory controlFactory = null;
             Type factoryType;
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Modules
 
         public static Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
-            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLower());
+            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
             var moduleControl = new ModuleControlBase();
             moduleControl.ModuleContext.Configuration = moduleConfiguration;
 

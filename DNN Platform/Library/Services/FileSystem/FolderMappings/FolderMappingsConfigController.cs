@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
             {                
                 if (File.Exists(defaultConfigFilePath))
                 {
-                    var configDocument = new XmlDocument();
+                    var configDocument = new XmlDocument { XmlResolver = null };
                     configDocument.Load(defaultConfigFilePath);
                     FillFolderMappings(configDocument);
                     FillFolderTypes(configDocument);
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var folderMappingsConfigContent = "<" + ConfigNode + ">" + folderMappinsSettings + "</" + ConfigNode +">";
                 File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
-                var configDocument = new XmlDocument();
+                var configDocument = new XmlDocument { XmlResolver = null };
                 configDocument.LoadXml(folderMappingsConfigContent);
                 FillFolderMappings(configDocument);
                 FillFolderTypes(configDocument);

@@ -30,15 +30,21 @@ goto finish
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
-@echo . Building application using
+@echo . Creating upgrade package using:
 @echo .     "%builder%"
 @echo .
 @echo .-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
 @echo .
 
-.nuget\NuGet.exe restore DNN_Platform.sln
-"%builder%" /t:CreateUpgrade /v:m Build/BuildScripts/DNN_Package.build
+pushd Artifacts
+del /f /q *Upgrade.zip
+popd
+
+set BUILD_NUMBER=9.2.1
+"%builder%" /t:CompileSource /v:n Build/BuildScripts/CreateCommunityPackages.build
+"%builder%" /t:CreateUpgrade /v:n Build/BuildScripts/CreateCommunityPackages.build
 
 :finish
 set builder=
+set BUILD_NUMBER=
 pause

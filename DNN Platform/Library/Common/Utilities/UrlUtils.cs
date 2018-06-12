@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DecryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace("_", "/");
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string EncryptParameter(string value, string encryptionKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
 
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
@@ -131,7 +131,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (keys[i] != null)
                 {
-                    switch (keys[i].ToLower())
+                    switch (keys[i].ToLowerInvariant())
                     {
                         case "tabid":
                         case "ctl":
@@ -139,7 +139,7 @@ namespace DotNetNuke.Common.Utilities
                             //skip parameter
                             break;
                         default:
-                            if ((keys[i].ToLower() == "portalid") && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if ((keys[i].ToLowerInvariant() == "portalid") && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
                                 //skip parameter
                                 //navigateURL adds portalid to querystring if tab is superTab
@@ -247,18 +247,18 @@ namespace DotNetNuke.Common.Utilities
                 {
                     popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : String.Empty;
-                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLower(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
                 }
                 else
                 {
                     //Determines if the resulting JS call should return or not.
                     if (popUpUrl.Contains("/*showReturn*/false"))
                     {
-                        popUpUrl = popUpUrl.Replace("/*showReturn*/false", "/*showReturn*/" + onClickEvent.ToString().ToLower());
+                        popUpUrl = popUpUrl.Replace("/*showReturn*/false", "/*showReturn*/" + onClickEvent.ToString().ToLowerInvariant());
                     }
                     else
                     {
-                        popUpUrl = popUpUrl.Replace("/*showReturn*/true", "/*showReturn*/" + onClickEvent.ToString().ToLower());
+                        popUpUrl = popUpUrl.Replace("/*showReturn*/true", "/*showReturn*/" + onClickEvent.ToString().ToLowerInvariant());
                     }
                 }
             }
@@ -272,7 +272,7 @@ namespace DotNetNuke.Common.Utilities
         public static string ClosePopUp(Boolean refresh, string url, bool onClickEvent)
         {
             var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
-            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLower(), "'" + url + "'");
+            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
 
             // Removes the javascript txt for onClick scripts)
             if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", "");
@@ -306,57 +306,82 @@ namespace DotNetNuke.Common.Utilities
 
         public static string ValidReturnUrl(string url)
         {
-            if (string.IsNullOrEmpty(url))
+            try
             {
+                if (string.IsNullOrEmpty(url))
+                {
+                    //DNN-10193: returns the same value as passed in rather than empty string
+                    return url;
+                }
+
+                url = url.Replace("\\", "/");
+                if (url.ToLowerInvariant().Contains("data:"))
+                {
+                    return "";
+                }
+
+                //clean the return url to avoid possible XSS attack.
+                var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+                if (url != cleanUrl)
+                {
+                    return "";
+                }
+
+                //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                var urlWithNoQuery = url;
+                if (urlWithNoQuery.Contains("?"))
+                {
+                    urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                if (urlWithNoQuery.Contains("://"))
+                {
+                    var portalSettings = PortalSettings.Current;
+                    var aliasWithHttp = Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias);
+                    var uri1 = new Uri(url);
+                    var uri2 = new Uri(aliasWithHttp);
+
+                    // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
+                    if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        return "";
+                    }
+
+                    // this check is mainly for child portals
+                    if (!uri1.AbsolutePath.StartsWith(uri2.AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return "";
+                    }
+                }
+
+                while (url.StartsWith("///"))
+                {
+                    url = url.Substring(1);
+                }
+
+                if (url.StartsWith("//"))
+                {
+                    var urlWithNoProtocol = url.Substring(2);
+                    var portalSettings = PortalSettings.Current;
+                    // note: this can redirict from parent to childe and vice versa
+                    if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return "";
+                    }
+                }
+
                 return url;
             }
-
-            if (url.ToLowerInvariant().Contains("data:"))
+            catch (UriFormatException)
             {
-                url = string.Empty;
+                return "";
             }
-
-            //clean the return url to avoid possible XSS attack.
-            var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
-            if (url != cleanUrl)
-            {
-                url = string.Empty;
-            }
-
-            //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-            var urlWithNoQuery = url;
-            if (urlWithNoQuery.Contains("?"))
-            {
-                urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
-            }
-            if (urlWithNoQuery.Contains("://"))
-            {
-                var portalSettings = PortalSettings.Current;
-                if (portalSettings == null ||
-                        !url.StartsWith(Globals.AddHTTP(portalSettings.PortalAlias.HTTPAlias), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    url = string.Empty;
-                }
-            }
-
-            if (url.StartsWith("//"))
-            {
-                var urlWithNoProtocol = url.Substring(2);
-                var portalSettings = PortalSettings.Current;
-                if (portalSettings == null ||
-                        !urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    url = string.Empty;
-                }
-
-            }
-            return url;
         }
 
         //Whether current page is show in popup.
         public static bool InPopUp()
         {
-            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
+            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>

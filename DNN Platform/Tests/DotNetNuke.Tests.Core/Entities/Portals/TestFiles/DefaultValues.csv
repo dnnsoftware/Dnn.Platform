@@ -26,8 +26,8 @@ SSLURL,							SSLURL,							SSLURL,							false,
 STDURL,							STDURL,							STDURL,							false,
 EnableRegisterNotification,		EnableRegisterNotification,		EnableRegisterNotification,		false,				true
 DefaultAuthProvider,			DefaultAuthProvider,			DefaultAuthProvider,			false,				DNN
-SMTPConnectionLimit,			SMTPConnectionLimit,			SMTPConnectionLimit,			false,				1
-SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				false,				0
+SMTPConnectionLimit,			SMTPConnectionLimit,			SMTPConnectionLimit,			false,				2
+SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				false,				100000
 ControlPanelSecurity,			ControlPanelSecurity,			ControlPanelSecurity,			false,				ModuleEditor
 DefaultControlPanelMode,		DefaultControlPanelMode,		ControlPanelMode,				false,				View
 DefaultControlPanelVisibility,	DefaultControlPanelVisibility,	ControlPanelVisibility,			false,				true

@@ -164,6 +164,20 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             Assert.AreEqual(controller.ViewEngineCollection, dnnViewResult.ViewEngineCollection);
         }
 
+        [Test]
+        public void Initialize_CreatesInstance_Of_DnnUrlHelper()
+        {
+            //Arrange
+            HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
+
+            //Act
+            var controller = SetupController(httpContextBase);
+            controller.MockInitialize(httpContextBase.Request.RequestContext);
+
+            //Assert
+            Assert.NotNull(controller.Url);
+        }
+
         private FakeDnnController SetupController(HttpContextBase context)
         {
             var controller = new FakeDnnController();

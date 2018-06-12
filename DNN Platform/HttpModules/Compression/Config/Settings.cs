@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -98,7 +98,7 @@ namespace DotNetNuke.HttpModules.Compression
                     var doc = new XPathDocument(fileReader);
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
                     {
-                        settings._excludedPaths.Add(nav.Value.ToLower());
+                        settings._excludedPaths.Add(nav.Value.ToLowerInvariant());
                     }
                 }
                 if ((File.Exists(filePath)))
@@ -120,7 +120,7 @@ namespace DotNetNuke.HttpModules.Compression
             bool match = false;
             foreach (string path in _excludedPaths)
             {
-                if (relUrl.ToLower().Contains(path))
+                if (relUrl.ToLowerInvariant().Contains(path))
                 {
                     match = true;
                     break;

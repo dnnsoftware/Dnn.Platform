@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -161,7 +161,7 @@ namespace DotNetNuke.Entities.Users
 					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 					if (CheckAccessLevel(portalSettings, property, accessingUser, user))
                     {
-                        switch (property.PropertyName.ToLower())
+                        switch (property.PropertyName.ToLowerInvariant())
                         {
                             case "photo":
                                 return user.Profile.PhotoURL;
@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Users
                         }
                         break;
                     case "richtext":
-                        var objSecurity = new PortalSecurity();
+                        var objSecurity = PortalSecurity.Instance;
                         result = PropertyAccess.FormatString(objSecurity.InputFilter(HttpUtility.HtmlDecode(property.PropertyValue), PortalSecurity.FilterFlag.NoScripting), formatString);
                         break;
                     default:

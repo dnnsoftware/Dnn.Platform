@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -210,7 +210,7 @@ namespace DotNetNuke.Framework
                     var parameters = new List<string>(); //maximum number of elements
                     for (int intParam = 0; intParam <= Request.QueryString.Count - 1; intParam++)
                     {
-                        switch (Request.QueryString.Keys[intParam].ToLower())
+                        switch (Request.QueryString.Keys[intParam].ToLowerInvariant())
                         {
                             case "tabid":
                             case "tabname":
@@ -261,7 +261,7 @@ namespace DotNetNuke.Framework
                                          Environment.NewLine,
                                          "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2017, by DNN Corporation -->",
+                                         "<!-- Copyright (c) 2002-2018, by DNN Corporation -->",
                                          Environment.NewLine,
                                          "<!--*********************************************-->",
                                          Environment.NewLine);
@@ -291,7 +291,7 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
-                    string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLower());
+                    string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLowerInvariant());
                     switch (extension)
                     {
                         case ".mvc":
@@ -454,7 +454,6 @@ namespace DotNetNuke.Framework
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
         /// Adds xmlns and lang parameters when appropiate.
         /// </summary>
-        /// <param name="Skin">The currently loading skin</param>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         private void SetSkinDoctype()
@@ -666,8 +665,9 @@ namespace DotNetNuke.Framework
             if (Request.IsAuthenticated && string.IsNullOrEmpty(Request.QueryString["runningDefault"]) == false)
             {
                 var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
+                var usernameLower = userInfo?.Username?.ToLowerInvariant();
                 //only show message to default users
-                if ((userInfo.Username.ToLower() == "admin") || (userInfo.Username.ToLower() == "host"))
+                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
                 {
                     var messageText = RenderDefaultsWarning();
                     var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);

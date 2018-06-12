@@ -1,6 +1,6 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
 //
-// Copyright (c) 2002-2017 DotNetNuke Corporation
+// Copyright (c) 2002-2018 DotNetNuke Corporation
 // All rights reserved.
 
 (function ($) {

@@ -52,16 +52,20 @@
                                     var item = group.Results[j];
                                     var itemTitle = item.Title;
                                     var itemUrl = item.DocumentUrl;
+                                    var itemDescription = item.Description;
                                     var itemSnippet = item.Snippet;
                                     markup += '<li data-url="' + itemUrl + '">';
                                     if (item.Attributes.Avatar) {
                                         markup += '<span><img src="' + item.Attributes.Avatar + '" class="userpic" /></span>';
                                     }
                                     markup += '<span>' + itemTitle + '</span>';
-                                    if (itemSnippet)
-                                        markup += '<p>' + itemSnippet + '</p></li>';
-                                    else
-                                        markup += '</li>';
+                                    if (itemDescription) {
+                                        markup += '<p>' + itemDescription + '</p>';
+                                    }
+                                    if (itemSnippet) {
+                                        markup += '<p>' + itemSnippet + '</p>';
+                                    }
+                                    markup += '</li>';
                                 } // end for group items
                             }
                         } // end for group
@@ -89,10 +93,11 @@
 
                     //attach see more       
                     $('.searchSkinObjectPreview_more', $wrap).on('click', function () {
-	                    var $searchButton = $wrap.parents('.SearchContainer').length ? $wrap.parent().next() : $wrap.next();
-                        var href = $searchButton.attr('href');
-                        var code = href.replace('javascript:', '');
-                        eval(code);
+                        var $searchButton = $wrap.next();
+                        if (!$searchButton.length) {
+                            $searchButton = $wrap.parent().next();
+                        }
+                        $searchButton[0].click();
                         return false;
                     });
                 };
@@ -170,13 +175,11 @@
                         var $wrap = $this.parent();
                         var val = $this.val();
                         if (val.length) {
-                            var href = $wrap.next().attr('href');
-                            if (!href) {
-                                // dropdown search
-                                href = $wrap.parent().next().attr('href');
+                            var $searchButton = $wrap.next();
+                            if (!$searchButton.length) {
+                                $searchButton = $wrap.parent().next();
                             }
-                            var code = href.replace('javascript:', '');
-                            eval(code);
+                            $searchButton[0].click();
                             e.preventDefault();
                         } else {
                             e.preventDefault();

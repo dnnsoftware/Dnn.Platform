@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Portals
 		{
 			get
 			{
-				if (HttpContext.Current.Request.IsAuthenticated)
+				if (HttpContext.Current!= null && HttpContext.Current.Request.IsAuthenticated)
 				{
 					return UserInfo.UserID;
 				}
@@ -635,7 +635,7 @@ namespace DotNetNuke.Entities.Portals
 			{
 				outputFormat = "g";
 			}
-			var lowerPropertyName = propertyName.ToLower();
+			var lowerPropertyName = propertyName.ToLowerInvariant();
 			if (accessLevel == Scope.NoSettings)
 			{
 				propertyNotFound = true;
@@ -650,6 +650,10 @@ namespace DotNetNuke.Entities.Portals
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
 					break;
+			    case "fullurl": //return portal alias with protocol
+			        propertyNotFound = false;
+			        result = PropertyAccess.FormatString(Globals.AddHTTP(PortalAlias.HTTPAlias), format);
+			        break;
                 case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page.
                     propertyNotFound = false;
 			        var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -431,7 +431,7 @@ namespace DotNetNuke.Entities.Modules
                     var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
-                        var xmlDocument = new XmlDocument();
+                        var xmlDocument = new XmlDocument { XmlResolver = null };
                         xmlDocument.LoadXml(package.Manifest);
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)

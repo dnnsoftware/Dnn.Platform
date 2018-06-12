@@ -22,8 +22,6 @@
 #endregion
 
 using System;
-
-using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Tests.Data.Models;
 using DotNetNuke.Tests.Utilities;

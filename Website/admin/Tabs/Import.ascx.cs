@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 if (selectedFolder == null) return;
 
                 var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 using (var content = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
                 {
                     xmlDoc.Load(content);
@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 if (cboTemplate.SelectedIndex > 0 && cboFolders.SelectedItem != null)
                 {
                     var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
-                    var xmldoc = new XmlDocument();
+                    var xmldoc = new XmlDocument { XmlResolver = null };
                     using (var fileContent = Services.FileSystem.FileManager.Instance.GetFileContent(selectedFile))
                     {
                         xmldoc.Load(fileContent);

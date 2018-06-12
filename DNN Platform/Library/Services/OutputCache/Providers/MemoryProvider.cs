@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         public override int GetItemCount(int tabId)
         {
-            return GetCacheKeys().Count();
+            return GetCacheKeys(tabId).Count();
         }
 
         public override byte[] GetOutput(int tabId, string cacheKey)

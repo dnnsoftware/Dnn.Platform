@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -474,7 +474,7 @@ namespace DotNetNuke.Modules.Html
             if (!string.IsNullOrEmpty(strHTML))
             {
                 tLen = strToken.Length + 2;
-                string uploadDirectory = strUploadDirectory.ToLower();
+                string uploadDirectory = strUploadDirectory.ToLowerInvariant();
 
                 //find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
@@ -488,11 +488,11 @@ namespace DotNetNuke.Modules.Html
                     //end of URL
                     if (R >= 0)
                     {
-                        strURL = strHTML.Substring(S, R - S).ToLower();
+                        strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
                     }
                     else
                     {
-                        strURL = strHTML.Substring(S).ToLower();
+                        strURL = strHTML.Substring(S).ToLowerInvariant();
                     }
 
                     if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))

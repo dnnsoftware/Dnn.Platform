@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private bool IsValidScript(string fileExtension)
         {
-            return ProviderConfiguration.DefaultProvider.ToLower() == fileExtension.ToLower() || fileExtension.ToLower() == "sql";
+            return ProviderConfiguration.DefaultProvider.ToLowerInvariant() == fileExtension.ToLowerInvariant() || fileExtension.ToLowerInvariant() == "sql";
         }
 		
 		#endregion
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bSuccess = InstallFile(scriptFile);
 
             //Process the file if it is an Install Script
-            var extension = Path.GetExtension(scriptFile.Name.ToLower());
+            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
             if (extension != null)
             {
                 string fileExtension = extension.Substring(1);
@@ -250,16 +250,16 @@ namespace DotNetNuke.Services.Installer.Installers
             string type = nav.GetAttribute("type", "");
             if (file != null && IsCorrectType(file.Type))
             {
-                if (file.Name.ToLower().StartsWith("install."))
+                if (file.Name.ToLowerInvariant().StartsWith("install."))
                 {
 					//This is the initial script when installing
                     _installScript = file;
                 }
-                else if (file.Name.ToLower().StartsWith("upgrade."))
+                else if (file.Name.ToLowerInvariant().StartsWith("upgrade."))
                 {
                     _upgradeScript = file;
                 }
-                else if (type.ToLower() == "install")
+                else if (type.ToLowerInvariant() == "install")
                 {
 					//These are the Install/Upgrade scripts
                     InstallScripts[file.Version] = file;
@@ -278,11 +278,11 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override void UnInstallFile(InstallFile scriptFile)
         {
 			//Process the file if it is an UnInstall Script
-            var extension = Path.GetExtension(scriptFile.Name.ToLower());
+            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
             if (extension != null && (UnInstallScripts.ContainsValue(scriptFile) ))
             {
                 string fileExtension = extension.Substring(1);
-                if (scriptFile.Name.ToLower().StartsWith("uninstall.") && IsValidScript(fileExtension))
+                if (scriptFile.Name.ToLowerInvariant().StartsWith("uninstall.") && IsValidScript(fileExtension))
                 {
 					//Install Script
                     Log.AddInfo(Util.SQL_Executing + scriptFile.Name);

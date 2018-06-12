@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLogType(string configFile, string fallbackConfigFile)
         {
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             try
             {
                 xmlDoc.Load(configFile);

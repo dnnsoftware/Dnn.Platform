@@ -40,8 +40,9 @@
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +82,10 @@
     <Compile Include="Fakes\Dog.cs" />
     <Compile Include="Fakes\FakeController.cs" />
     <Compile Include="Fakes\FakeDnnController.cs" />
+    <Compile Include="Fakes\Filters\FakeHandleExceptionRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeOnExecutedRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeOnExecutingRedirectAttribute.cs" />
+    <Compile Include="Fakes\Filters\FakeRedirectAttribute.cs" />
     <Compile Include="Framework\Attributes\DnnModuleAuthorizeAttributeTests.cs" />
     <Compile Include="Framework\Attributes\DnnAuthorizeAttributeTests.cs" />
     <Compile Include="Framework\Attributes\DnnHandleErrorAttributeTests.cs" />
@@ -116,6 +121,9 @@
       <Project>{68368906-57DD-40D1-AC10-35211A17D617}</Project>
       <Name>DotNetNuke.Tests.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

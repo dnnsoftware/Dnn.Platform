@@ -287,3 +287,11 @@ GO
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabModuleUniqueIdExists]
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_CheckTabUniqueIdExists]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUniqueId]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUniqueId]
+GO

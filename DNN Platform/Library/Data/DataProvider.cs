@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -693,9 +693,9 @@ namespace DotNetNuke.Data
         }
 
         public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
-                                                string cultureCode)
+                                                string cultureCode, bool isSecure)
         {
-            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode, isSecure);
         }
 
         public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
@@ -1150,9 +1150,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeleteModuleSettings", moduleId);
         }
 
-        public virtual void DeleteTabModule(int tabId, int moduleId, bool softDelete)
+        public virtual void DeleteTabModule(int tabId, int moduleId, bool softDelete, int lastModifiedByUserId = -1)
         {
-            ExecuteNonQuery("DeleteTabModule", tabId, moduleId, softDelete);
+            ExecuteNonQuery("DeleteTabModule", tabId, moduleId, softDelete, lastModifiedByUserId);
         }
 
         public virtual void DeleteTabModuleSetting(int tabModuleId, string settingName)
@@ -2310,7 +2310,7 @@ namespace DotNetNuke.Data
                                                           bool sortAscending,
                                                             string propertyNames, string propertyValues)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             string filterSort = ps.InputFilter(sortColumn, PortalSecurity.FilterFlag.NoSQL);
             string filterName = ps.InputFilter(propertyNames, PortalSecurity.FilterFlag.NoSQL);
             string filterValue = ps.InputFilter(propertyValues, PortalSecurity.FilterFlag.NoSQL);
@@ -2321,7 +2321,7 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                     bool sortAscending, string propertyName, string propertyValue)
         {
-            var ps = new PortalSecurity();
+            var ps = PortalSecurity.Instance;
             string filterSort = ps.InputFilter(sortColumn, PortalSecurity.FilterFlag.NoSQL);
             string filterName = ps.InputFilter(propertyName, PortalSecurity.FilterFlag.NoSQL);
             string filterValue = ps.InputFilter(propertyValue, PortalSecurity.FilterFlag.NoSQL);
@@ -3317,14 +3317,26 @@ namespace DotNetNuke.Data
 
         #region Password History
 
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes passwordsRetained and daysRetained")]
         public virtual IDataReader GetPasswordHistory(int userId)
         {
-            return ExecuteReader("GetPasswordHistory", GetNull(userId));
+            return this.GetPasswordHistory(userId, int.MaxValue, int.MaxValue);
         }
 
+        public virtual IDataReader GetPasswordHistory(int userId, int passwordsRetained, int daysRetained)
+        {
+            return ExecuteReader("GetPasswordHistory", GetNull(userId), passwordsRetained, daysRetained);
+        }
+
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes daysRetained")]
         public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
-            ExecuteNonQuery("AddPasswordHistory", GetNull(userId), password, passwordHistory, retained, GetNull(userId));
+            this.AddPasswordHistory(userId, password, passwordHistory, retained, int.MaxValue);
+        }
+
+        public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int passwordsRetained, int daysRetained)
+        {
+            ExecuteNonQuery("AddPasswordHistory", GetNull(userId), password, passwordHistory, passwordsRetained, daysRetained, GetNull(userId));
         }
 
         #endregion
@@ -4274,6 +4286,30 @@ namespace DotNetNuke.Data
         public virtual void DeleteOldRedirectMessage(DateTime cutofDateTime)
         {
             ExecuteNonQuery("DeleteOldRedirectMessage", FixDate(cutofDateTime));
+        }
+
+        #endregion
+
+        #region User Cookies persistence
+
+        public virtual void UpdateAuthCookie(string cookieValue, DateTime utcExpiry, int userId)
+        {
+            ExecuteNonQuery("AuthCookies_Update", cookieValue, FixDate(utcExpiry), userId);
+        }
+
+        public virtual IDataReader FindAuthCookie(string cookieValue)
+        {
+            return ExecuteReader("AuthCookies_Find", cookieValue);
+        }
+
+        public virtual void DeleteAuthCookie(string cookieValue)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteByValue", cookieValue);
+        }
+
+        public virtual void DeleteExpiredAuthCookies(DateTime utcExpiredBefore)
+        {
+            ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
         }
 
         #endregion

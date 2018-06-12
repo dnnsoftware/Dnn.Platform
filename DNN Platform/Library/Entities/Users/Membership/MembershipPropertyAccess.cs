@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Users
             bool UserQueriesHimself = (objUser.UserID == AccessingUser.UserID && objUser.UserID != -1);
             if (CurrentScope < Scope.DefaultSettings || (CurrentScope == Scope.DefaultSettings && !UserQueriesHimself) ||
                 ((CurrentScope != Scope.SystemMessages || objUser.IsSuperUser) 
-                    && (propertyName.ToLower() == "password" || propertyName.ToLower() == "passwordanswer" || propertyName.ToLower() == "passwordquestion")
+                    && (propertyName.ToLowerInvariant() == "password" || propertyName.ToLowerInvariant() == "passwordanswer" || propertyName.ToLowerInvariant() == "passwordquestion")
                 ))
             {
                 PropertyNotFound = true;
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Users
             {
                 OutputFormat = "g";
             }
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "approved":
                     return (PropertyAccess.Boolean2LocalizedYesNo(objMembership.Approved, formatProvider));

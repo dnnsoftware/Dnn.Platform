@@ -55,23 +55,29 @@ namespace DotNetNuke.Web.DDRMenu
 		public static List<ClientOption> ClientOptionsFromSettingString(string s)
 		{
 			var result = new List<ClientOption>();
-			foreach (var clientOption in SplitIntoStrings(s))
-			{
-				var n = clientOption.IndexOf('=');
-				result.Add(new ClientOption(clientOption.Substring(0, n), clientOption.Substring(n + 1)));
-			}
-			return result;
+		    if (!string.IsNullOrEmpty(s))
+		    {
+		        foreach (var clientOption in SplitIntoStrings(s))
+		        {
+		            var n = clientOption.IndexOf('=');
+		            result.Add(new ClientOption(clientOption.Substring(0, n), clientOption.Substring(n + 1)));
+		        }
+		    }
+		    return result;
 		}
 
 		public static List<TemplateArgument> TemplateArgumentsFromSettingString(string s)
 		{
 			var result = new List<TemplateArgument>();
-			foreach (var templateArgument in SplitIntoStrings(s))
-			{
-				var n = templateArgument.IndexOf('=');
-				result.Add(new TemplateArgument(templateArgument.Substring(0, n), templateArgument.Substring(n + 1)));
-			}
-			return result;
+		    if (!string.IsNullOrEmpty(s))
+		    {
+		        foreach (var templateArgument in SplitIntoStrings(s))
+		        {
+		            var n = templateArgument.IndexOf('=');
+		            result.Add(new TemplateArgument(templateArgument.Substring(0, n), templateArgument.Substring(n + 1)));
+		        }
+		    }
+		    return result;
 		}
 
 		public static string ToSettingString(List<ClientOption> clientOptions)

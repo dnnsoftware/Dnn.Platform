@@ -13,11 +13,11 @@
             var clickEvent = function(e) {
                 if (isDropDownVisible && e.target.id != "SearchIcon" && e.target.id.indexOf("downArrow") == -1) {
                     toggleDropDown();
-                    $(document).unbind("click", clickEvent);
+                    $(document).off("click", clickEvent);
                 }
             };
 
-            $(document).bind("click", clickEvent);
+            $(document).on("click", clickEvent);
         }
     };
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -177,18 +177,7 @@ namespace DotNetNuke.Data
                     connectionString = builder.ConnectionString;
                 }
 
-                SqlConnection connection = null;
-                try
-                {
-                    connection = new SqlConnection(connectionString);
-                    connection.Open();
-                    return SqlHelper.ExecuteReader(connection, CommandType.Text, sql);
-                }
-                catch (Exception)
-                {
-                    connection?.Dispose();
-                    throw;
-                }
+                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {
@@ -398,7 +387,7 @@ namespace DotNetNuke.Data
             string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLower() != "dbo.")
+            if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLowerInvariant() != "dbo.")
             {
                 try
                 {

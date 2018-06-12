@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -10,9 +11,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
@@ -141,9 +144,8 @@ namespace DotNetNuke.Services.GeneratedImage
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
         {
             context.Response.Clear();
-            context.Response.ContentType = GetImageMimeType(ContentType);
 
-            string ipAddress = IPCount.GetVisitorIPAddress(context);
+            string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
 
             // Check if allowed standalone
             if (!AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
@@ -171,7 +173,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Check if domain is allowed to embed image
             if (!string.IsNullOrEmpty(AllowedDomains[0]) &&
                 context.Request.UrlReferrer != null &&
-                context.Request.UrlReferrer.Host.ToLower() != context.Request.Url.Host.ToLower())
+                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
                 string allowedDomains = "";
@@ -180,7 +182,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
                         allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.ToLower().Contains(allowedDomain.ToLower()))
+                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
                             allowed = true;
                     }
                 }
@@ -212,6 +214,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
             // Generate Image
             var imageMethodData = imageGenCallback(context.Request.QueryString);
+
+            context.Response.ContentType = GetImageMimeType(ContentType);
             if (imageMethodData == null)
             {
                 throw new InvalidOperationException("The DnnImageHandler cannot return null.");
@@ -230,12 +234,20 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
+            var cacheCleared = false;
+            var profilepic = context.Request.QueryString["mode"];
+            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
+            {
+                int userId;
+                if (int.TryParse(context.Request.QueryString["userId"], out userId))
+                    cacheCleared = ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+            }
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
             if (EnableClientCache)
             {
-                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]))
+                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
                 {
                     var provider = CultureInfo.InvariantCulture;
                     var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
@@ -372,6 +384,22 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+        private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
+        {
+            var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
+            Dictionary<int, DateTime> userIds;
+            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
+            ImageStore.ForcePurgeFromServerCache(cacheId);
+            DateTime expiry;
+            //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
+            //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+            userIds.Remove(userId);
+            DataCache.SetCache(cacheKey, userIds);
+            return true;
+        }
+
         private Image GetImageThroughTransforms(byte[] buffer)
         {
             using (var memoryStream = new MemoryStream(buffer))
@@ -396,10 +424,10 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = {[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression)}
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(ContentType));
-                    image.Save(outStream, ici, eps);
+                    image?.Save(outStream, ici, eps);
                 }
             }
             finally

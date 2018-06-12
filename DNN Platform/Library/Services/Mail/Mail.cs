@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,6 +48,8 @@ namespace DotNetNuke.Services.Mail
     {
         #region Private Methods
 
+        private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
+
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,  
                                 MailFormat bodyFormat, Encoding bodyEncoding, IEnumerable<Attachment> attachments, 
                                 string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -57,33 +59,40 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
             mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
 
-            //if the senderAddress is the email address of the Host then switch it smtpUsername if different
-            //if display name of senderAddress is empty, then use Host.HostTitle for it
-            if (mailMessage.Sender != null)
+
+            // Only modify senderAdress if smtpAuthentication is enabled
+            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM. 
+            if (smtpAuthentication == "1" || smtpAuthentication == "2")
             {
-                var senderAddress = mailMessage.Sender.Address;
-                var senderDisplayName = mailMessage.Sender.DisplayName;
-                var needUpdateSender = false;
-                if (smtpUsername.Contains("@") && senderAddress == Host.HostEmail &&
-                    !senderAddress.Equals(smtpUsername, StringComparison.InvariantCultureIgnoreCase))
+                //if the senderAddress is the email address of the Host then switch it smtpUsername if different
+                //if display name of senderAddress is empty, then use Host.HostTitle for it
+                if (mailMessage.Sender != null)
                 {
-                    senderAddress = smtpUsername;
-                    needUpdateSender = true;
+                    var senderAddress = mailMessage.Sender.Address;
+                    var senderDisplayName = mailMessage.Sender.DisplayName;
+                    var needUpdateSender = false;
+                    if (smtpUsername.Contains("@") && senderAddress == Host.HostEmail &&
+                        !senderAddress.Equals(smtpUsername, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        senderAddress = smtpUsername;
+                        needUpdateSender = true;
+                    }
+                    if (string.IsNullOrEmpty(senderDisplayName))
+                    {
+                        senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
+                        needUpdateSender = true;
+                    }
+                    if (needUpdateSender)
+                    {
+                        mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
+                    }
                 }
-                if (string.IsNullOrEmpty(senderDisplayName))
+                else if (smtpUsername.Contains("@"))
                 {
-                    senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
-                    needUpdateSender = true;
-                }
-                if (needUpdateSender)
-                {
-                    mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
+                    mailMessage.Sender = new MailAddress(smtpUsername, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
                 }
             }
-            else if (smtpUsername.Contains("@"))
-            {
-                mailMessage.Sender = new MailAddress(smtpUsername, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
-            }
+
             //attachments
             foreach (var attachment in attachments)
             {
@@ -104,8 +113,9 @@ namespace DotNetNuke.Services.Mail
                 var HTMLView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
                 mailMessage.AlternateViews.Add(HTMLView);
             }
-            
-            if (!String.IsNullOrEmpty(smtpServer))
+
+            smtpServer = smtpServer.Trim();
+            if (SmtpServerRegex.IsMatch(smtpServer))
             {
                 try
                 {
@@ -114,7 +124,18 @@ namespace DotNetNuke.Services.Mail
                     {
                         var smtpHostParts = smtpServer.Split(':');
                         smtpClient.Host = smtpHostParts[0];
-                        smtpClient.Port = smtpHostParts.Length > 1 ? Convert.ToInt32(smtpHostParts[1]) : 25;
+                        if (smtpHostParts.Length > 1)
+                        {
+                            // port is guaranteed to be of max 5 digits numeric by the RegEx check
+                            var port = Convert.ToInt32(smtpHostParts[1]);
+                            if (port < 1 || port > 65535)
+                            {
+                                return Localize.GetString("SmtpInvalidPort");
+                            }
+
+                            smtpClient.Port = port;
+                        }
+                        // else the port defaults to 25 by .NET when not set
 
                         smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
                         smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
@@ -207,7 +228,7 @@ namespace DotNetNuke.Services.Mail
 
         public static void SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body)
         {
-			if (string.IsNullOrEmpty(Host.SMTPServer) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(senderAddress) || string.IsNullOrEmpty(toAddress))
+			if (string.IsNullOrWhiteSpace(Host.SMTPServer) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(senderAddress) || string.IsNullOrEmpty(toAddress))
             {
                 return;
             }
@@ -224,7 +245,7 @@ namespace DotNetNuke.Services.Mail
 
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
-            if ((string.IsNullOrEmpty(Host.SMTPServer)))
+            if ((string.IsNullOrWhiteSpace(Host.SMTPServer)))
             {
                 return "SMTP Server not configured";
             }
@@ -321,10 +342,10 @@ namespace DotNetNuke.Services.Mail
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
 
-            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email)!=null)?
+            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
                 String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
             SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
-
+            
             return Null.NullString;
         }
 
@@ -352,7 +373,7 @@ namespace DotNetNuke.Services.Mail
             MailFormat bodyFormat = MailFormat.Text;
             if (!String.IsNullOrEmpty(bodyType))
             {
-                switch (bodyType.ToLower())
+                switch (bodyType.ToLowerInvariant())
                 {
                     case "html":
                         bodyFormat = MailFormat.Html;
@@ -521,7 +542,7 @@ namespace DotNetNuke.Services.Mail
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             //SMTP server configuration
-            if (string.IsNullOrEmpty(smtpServer) && !string.IsNullOrEmpty(Host.SMTPServer))
+            if (string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 smtpServer = Host.SMTPServer;
             }
@@ -591,16 +612,5 @@ namespace DotNetNuke.Services.Mail
         }
 
         #endregion
-
-        #region Obsolete Methods
-
-        [Obsolete("Obsoleted in DotNetNuke 5.5. Use DotNetNuke.Common.Utilities.HtmlUtils.IsHtml()")]
-        public static bool IsHTMLMail(string Body)
-        {
-            return HtmlUtils.IsHtml(Body);
-        }
-
-        #endregion
-
     }
 }

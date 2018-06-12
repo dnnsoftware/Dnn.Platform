@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     if (Package != null)
                     {
-                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
                         if ((pkgType != null) && (!string.IsNullOrEmpty(pkgType.EditorControlSrc)))
                         {
                             _control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
@@ -290,6 +290,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             switch (DisplayMode)
             {
                 case "editor":
+                    cmdCancel.Visible = cmdCancel.Enabled = false;
+                    cmdUpdate.Visible = cmdUpdate.Enabled = false;
+                    cmdPackage.Visible = cmdPackage.Enabled = false;
+                    cmdDelete.Visible = cmdDelete.Enabled = false;
+                    break;
                 case "settings":
                     cmdCancel.Visible = cmdCancel.Enabled = false;
                     break;

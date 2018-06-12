@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
@@ -94,7 +95,7 @@ namespace DotNetNuke.Admin.Containers
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterStyleSheet(Page, "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -187,7 +188,9 @@ namespace DotNetNuke.Admin.Containers
                             }
                         }
                     }
-                    IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
+                    IsShared = ModuleContext.Configuration.AllTabs
+                        || PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId))
+                        || TabController.Instance.GetTabsByModuleID(ModuleContext.ModuleId).Count > 1;
                 }
             }
             catch (Exception exc) //Module failed to load

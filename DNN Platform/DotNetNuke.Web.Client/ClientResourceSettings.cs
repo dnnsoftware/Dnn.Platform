@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,7 +57,22 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
+                //ignore
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsOverridingDefaultSettingsEnabled()
+        {
+            var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
+            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+
+            // if portal version is set
+            // and the portal "override default settings" flag is set and set to true
+            return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
         }
 
         public int? GetVersion()
@@ -145,7 +160,8 @@ namespace DotNetNuke.Web.Client
 
         private static string GetSetting(string dictionaryKey, string settingKey)
         {
-            var settings = HttpContext.Current.Items[dictionaryKey];
+            bool isHttpContext = HttpContext.Current != null && HttpContext.Current.Items.Contains(dictionaryKey);
+            var settings = isHttpContext ? HttpContext.Current.Items[dictionaryKey] : null;
             if (settings == null)
             {
                 if (dictionaryKey == HostSettingsDictionaryKey)
@@ -183,6 +199,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }
@@ -201,6 +218,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }
@@ -221,6 +239,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
+                //ignore
             }
             return null;
         }

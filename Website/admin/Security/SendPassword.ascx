@@ -26,7 +26,7 @@
 
 	<ul class="dnnActions dnnClear">
 	    <li id="liSend" runat="server"><asp:LinkButton id="cmdSendPassword" cssclass="dnnPrimaryAction" runat="server" /></li>
-	    <li id="liCancel" runat="server"><asp:LinkButton id="cancelButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
+	    <li id="liCancel" runat="server"><asp:HyperLink id="lnkCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" /></li>
 	</ul>
 
 </div>

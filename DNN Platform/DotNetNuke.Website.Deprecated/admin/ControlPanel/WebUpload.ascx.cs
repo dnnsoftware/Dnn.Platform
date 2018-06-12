@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 if ((Request.QueryString["ftype"] != null))
                 {
 					//The select statement ensures that the parameter can be converted to UploadType
-                    switch (Request.QueryString["ftype"].ToLower())
+                    switch (Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
                             _FileType = (UploadType) Enum.Parse(typeof (UploadType), Request.QueryString["ftype"]);
@@ -251,7 +251,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <summary>
         /// The Page_Load runs when the page loads
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

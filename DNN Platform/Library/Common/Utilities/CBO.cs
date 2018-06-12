@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -147,8 +147,8 @@ namespace DotNetNuke.Common.Utilities
                         {
                             keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof (TKey));
                         }
-                        else if (typeof (TKey).Name.ToLower() == "string" &&
-                                 dr[keyField].GetType().Name.ToLower() == "dbnull")
+                        else if (typeof (TKey).Name.ToLowerInvariant() == "string" &&
+                                 dr[keyField].GetType().Name.ToLowerInvariant() == "dbnull")
                         {
                             keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof (TKey));
                         }

@@ -10,3 +10,4 @@ SearchIncludeNumeric,					true
 SearchIncludedTagInfoFilter,			a
 MaxSearchWordLength,					25
 MinSearchWordLength,					3
+CrmVersion, -1

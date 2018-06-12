@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -340,7 +340,7 @@ namespace DotNetNuke.UI.Skins
                         case "article":
                         case "aside":
                             //content pane
-                            if (objPaneControl.ID.ToLower() != "controlpanel")
+                            if (objPaneControl.ID.ToLowerInvariant() != "controlpanel")
                             {
                                 //Add to the PortalSettings (for use in the Control Panel)
                                 PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
@@ -365,7 +365,7 @@ namespace DotNetNuke.UI.Skins
             try
             {
                 string skinSrc = skinPath;
-                if (skinPath.ToLower().IndexOf(Globals.ApplicationPath, StringComparison.Ordinal) != -1)
+                if (skinPath.ToLowerInvariant().IndexOf(Globals.ApplicationPath, StringComparison.Ordinal) != -1)
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }
@@ -414,6 +414,25 @@ namespace DotNetNuke.UI.Skins
             return success;
         }
 
+        /// <summary>
+        /// Handle access denied errors by displaying an error message 
+        /// or by performing a redirect to a predefined "access denied URL"
+        /// </summary>
+        /// <param name="redirect"></param>
+        private void HandleAccesDenied(bool redirect = false)
+        {
+            var message = Localization.GetString("TabAccess.Error");
+            if (redirect)
+            {
+                var redirectUrl = Globals.AccessDeniedURL(message);
+                Response.Redirect(redirectUrl, true);
+            }
+            else
+            {
+                AddPageMessage(this, "", message, ModuleMessage.ModuleMessageType.YellowWarning);
+            }
+        }
+
         private bool ProcessMasterModules()
         {
             bool success = true;
@@ -425,7 +444,7 @@ namespace DotNetNuke.UI.Skins
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    HandleAccesDenied(true);
                 }
 
                 int urlVersion;
@@ -433,8 +452,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!TabVersionUtils.CanSeeVersionedPages())
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
-                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                         return true;
                     }
 
@@ -456,7 +474,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"), ModuleMessage.ModuleMessageType.YellowWarning);
+                        HandleAccesDenied(false);
                     }
                 }
                 else
@@ -471,11 +489,13 @@ namespace DotNetNuke.UI.Skins
             {
 				//If request localized page which haven't complete translate yet, redirect to default language version.
 	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.PortalId);
+                
+                // Current locale will use default if did'nt find any
+                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(PortalSettings.PortalId);
 	            if (PortalSettings.ContentLocalizationEnabled &&
-	                TabController.CurrentPage.CultureCode != defaultLocale.Code)
+	                TabController.CurrentPage.CultureCode != currentLocale.Code)
 	            {
-		            redirectUrl = new LanguageTokenReplace {Language = defaultLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+		            redirectUrl = new LanguageTokenReplace {Language = currentLocale.Code}.ReplaceEnvironmentTokens("[URL]");
 	            }
 
 				Response.Redirect(redirectUrl, true);

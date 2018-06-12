@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -500,6 +500,16 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool SupportsFullControl()
         {
             return true;
+        }
+
+        /// <summary>
+        /// The portal editor can edit whole site's content, it should be only administrators by default.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsPortalEditor()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
         #region FolderPermission Methods

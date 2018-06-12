@@ -246,7 +246,7 @@
             }
         };
 
-        $('body').bind('click.coremessaging', function (event) {
+        $('body').on('click.coremessaging', function (event) {
             if (!$(event.target).closest('#SelectMenu').length) {
                 self.selectMenuOn(false);
             };

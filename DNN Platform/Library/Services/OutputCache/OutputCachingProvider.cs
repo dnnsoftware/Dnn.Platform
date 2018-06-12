@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.OutputCache
                 SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
                 while ((varyByParms.MoveNext()))
                 {
-                    string key = varyByParms.Current.Key.ToLower();
+                    string key = varyByParms.Current.Key.ToLowerInvariant();
                     if (includeVaryByKeys.Contains(key) && !excludeVaryByKeys.Contains(key))
                     {
                         cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
@@ -145,20 +145,6 @@ namespace DotNetNuke.Services.OutputCache
         }
 
         public virtual void PurgeExpiredItems(int portalId)
-        {
-        }
-
-        #endregion
-
-        #region "Obsolete Methods"
-
-        [Obsolete("This method was deprecated in 5.2.1")]
-        public virtual void PurgeCache()
-        {
-        }
-
-        [Obsolete("This method was deprecated in 5.2.1")]
-        public virtual void PurgeExpiredItems()
         {
         }
 

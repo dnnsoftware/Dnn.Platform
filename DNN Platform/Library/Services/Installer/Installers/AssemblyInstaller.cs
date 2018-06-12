@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return "dll";
+                return "dll,pdb";
             }
         }
 		
@@ -255,7 +255,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <returns>An <see cref="XmlDocument"/> instance.</returns>
         private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
         {
-            var xmlMergeDoc = new XmlDocument();
+            var xmlMergeDoc = new XmlDocument { XmlResolver = null };
             xmlMergeDoc.Load(xmlMergePath);
 
             var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);

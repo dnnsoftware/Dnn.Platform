@@ -255,6 +255,17 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>Usuario</value>
   </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Programa de mejora del producto</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>El programa de mejora del producto nos permite comprender mejor cómo podemos
+mejora DNN para ti Los datos nos ayudarán a analizar el uso y lo que es importante
+para las personas que usan el producto. Todos los datos son anónimos y solo para uso interno. Conozca más sobre el &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de mejora del producto&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Enviar información de uso anónima a DNN</value>
+  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Borrando archivos anteriores de </value>
   </data>
@@ -518,6 +529,18 @@ Utilize el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
   </data>
   <data name="WebsiteTemplate.Text" xml:space="preserve">
     <value>Plantilla</value>
+  </data>
+  <data name="Email.Help" xml:space="preserve">
+    <value>Ingrese una dirección de correo electrónico para este usuario.</value>
+  </data>
+  <data name="Email.Invalid" xml:space="preserve">
+    <value>La dirección de correo electrónico ingresada no es válida</value>
+  </data>
+  <data name="Email.Required" xml:space="preserve">
+    <value>Se requiere una dirección de correo electrónico</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>Dirección de correo electrónico:</value>
   </data>
   <data name="AcceptTerms.Required" xml:space="preserve">
     <value>Accept the terms of the license agreement to continue.</value>

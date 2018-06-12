@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,6 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.IO;
+
 namespace DotNetNuke.Web.Client.Providers
 {
     using ClientDependency.Core;
@@ -32,6 +35,31 @@ namespace DotNetNuke.Web.Client.Providers
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();
 
+        public override string MinifyFile(Stream fileStream, ClientDependencyType type)
+        {
+            Func<Stream, string> streamToString = stream =>
+            {
+                if (!stream.CanRead)
+                    throw new InvalidOperationException("Cannot read input stream");
+
+                if (stream.CanSeek)
+                    stream.Position = 0;
+
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            };
+
+            switch (type)
+            {
+                case ClientDependencyType.Css:
+                    return MinifyCss ? CssHelper.MinifyCss(fileStream) : streamToString(fileStream);
+                case ClientDependencyType.Javascript:
+                    return MinifyJs ? JSMin.CompressJS(fileStream) : streamToString(fileStream);
+                default:
+                    return streamToString(fileStream);
+            }
+        }
+
         public override string MinifyFile(string fileContents, ClientDependencyType type)
         {
             switch (type)
@@ -39,7 +67,18 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Css:
                     return MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
-                    return MinifyJs ? JSMin.CompressJS(fileContents) : fileContents;
+                {
+                    if (!MinifyJs)
+                        return fileContents;
+
+                    using (var ms = new MemoryStream())
+                    using (var writer = new StreamWriter(ms))
+                    {
+                        writer.Write(fileContents);
+                        writer.Flush();
+                        return JSMin.CompressJS(ms);
+                    }
+                }
                 default:
                     return fileContents;
             }

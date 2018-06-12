@@ -31,12 +31,14 @@
         </component>
         <component type="Script">
           <scripts>
-            <basePath>DesktopModules\AuthenticationServices\JWTAuth\Data\Scripts</basePath>
+            <basePath>DesktopModules\AuthenticationServices\JWTAuth</basePath>
             <script type="Install">
+              <path>Data\Scripts</path>
               <name>01.00.00.SqlDataProvider</name>
               <version>01.00.00</version>
             </script>
             <script type="UnInstall">
+              <path>Data\Scripts</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>01.00.00</version>
             </script>

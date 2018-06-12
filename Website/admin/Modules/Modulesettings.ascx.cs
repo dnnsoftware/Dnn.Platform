@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -418,7 +418,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     //only Portal Administrators can manage the visibility on all Tabs
-                    var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    var isAdmin = PermissionProvider.Instance().IsPortalEditor();
                     rowAllTabs.Visible = isAdmin;
                     chkAllModules.Enabled = isAdmin;
 

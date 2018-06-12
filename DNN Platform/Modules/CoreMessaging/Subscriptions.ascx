@@ -14,7 +14,7 @@
                 <div class="subscription-table-container">
                     <div class="loading-panel" data-bind="visible: isLoading"></div>
 
-                    <table class="dnnTableDisplay fixed" id="subscription-table">
+                    <table class="dnnTableDisplay" id="subscription-table">
                         <colgroup>
                             <col class="subscriptions-col-subscribed-description"/>
                             <col class="subscriptions-col-subscription-type"/>                    

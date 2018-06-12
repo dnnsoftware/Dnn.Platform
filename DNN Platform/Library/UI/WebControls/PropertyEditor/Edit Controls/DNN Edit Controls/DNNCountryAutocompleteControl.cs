@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.WebControls
 			CountryName.Attributes.Add("data-list", "Country");
 			CountryName.Attributes.Add("data-category", Category);
 			CountryName.Attributes.Add("data-editor", "DnnCountryAutocompleteControl");
-			CountryName.Attributes.Add("data-required", Required.ToString().ToLower());
+			CountryName.Attributes.Add("data-required", Required.ToString().ToLowerInvariant());
 			Controls.Add(CountryName);
 
 			CountryId.ID = ID + "_id";

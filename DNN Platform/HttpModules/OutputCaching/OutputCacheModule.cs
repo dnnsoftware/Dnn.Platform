@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -69,7 +69,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
-            if (_app == null || _app.Context == null || _app.Response.ContentType.ToLower() != "text/html" || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
+            if (_app == null || _app.Context == null || _app.Response.ContentType.ToLowerInvariant() != "text/html" || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
             {
                 return;
             }
@@ -79,7 +79,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 return;
             }
 
-            if (_app.Context.Request.RequestType == "POST" || ! (_app.Context.Request.Url.LocalPath.ToLower().EndsWith(Globals.glbDefaultPage.ToLower())))
+            if (_app.Context.Request.RequestType == "POST" || ! (_app.Context.Request.Url.LocalPath.ToLowerInvariant().EndsWith(Globals.glbDefaultPage.ToLowerInvariant())))
             {
                 return;
             }

@@ -121,7 +121,8 @@
     <value>User Name:</value>
   </data>
   <data name="Username.Help" xml:space="preserve">
-    <value>Enter a user name.  It must be at least five characters long and is must be an alphanumeric value.</value>
+    <value>Enter a user name.  It must be at least five characters long, must be an alphanumeric value,
+    must not start/end with a space, and must not contain any of these characters !"#$%&amp;'()*+,/:;&lt;=&gt;?@[\]^`{|}</value>
   </data>
   <data name="FirstName.Text" xml:space="preserve">
     <value>First Name:</value>

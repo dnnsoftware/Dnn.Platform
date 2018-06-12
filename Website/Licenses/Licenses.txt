@@ -119,11 +119,6 @@ Used throughout UI
 License Type: MIT or GPL
 License Link: http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js
 
-51Degrees.mobi
-Used throughout UI
-License Type: Mozilla Public License 1.1 (MPL)
-License Link: http://51degrees.codeplex.com/license
-
 Client Dependency Framework
 Combining, compressing & minifying JavaScript and CSS files
 License Type: Microsoft Public License (Ms-PL)

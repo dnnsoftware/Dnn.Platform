@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -453,6 +453,10 @@
             $img.removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
             var path = result.path;
             if (this._isValidExtension(result.fileName, [".bmp", ".gif", ".png", ".jpg", ".jpeg"])) {
+                if (result.fileId) {
+                    var thumbnailImage = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + result.fileId + '&MaxWidth=74&MaxHeight=42';
+                    path = thumbnailImage;
+                }
                 $img.prop("src", path);
             }
             else {

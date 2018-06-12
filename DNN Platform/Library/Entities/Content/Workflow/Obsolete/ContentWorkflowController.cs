@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var user = UserController.GetUserById(portalID, userID);
             var datetime = DateTime.Now;
             var result = text.Replace("[USER]", user != null ? user.DisplayName : "");
-            result = result.Replace("[DATE]", datetime.ToString("d-MMM-yyyy hh:mm") + datetime.ToString("tt").ToLower());
+            result = result.Replace("[DATE]", datetime.ToString("d-MMM-yyyy hh:mm") + datetime.ToString("tt").ToLowerInvariant());
             result = result.Replace("[STATE]", state != null ? state.StateName : "");
             result = result.Replace("[WORKFLOW]", workflow != null ? workflow.WorkflowName : "");
             result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : "");

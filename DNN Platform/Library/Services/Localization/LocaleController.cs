@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Localization
         /// </returns>
         public bool CanDeleteLanguage(int languageId)
         {
-            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack")
+            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
                         .Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID))
                         .All(languagePack => languagePack.LanguageID != languageId);
         }

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -59,6 +59,11 @@ namespace Dnn.ExportImport.Components.Providers
         {
             _dataProvider.ExecuteNonQuery(
                 "Export_GenericUpdateRecordChangers", tableName, primaryKeyName, primaryKeyId, createdBy, modifiedBy);
+        }
+
+        public void UpdateUniqueId(string tableName, string primaryKeyName, int primaryKeyId, Guid uniqueId)
+        {
+            _dataProvider.ExecuteNonQuery("Export_UpdateUniqueId", tableName, primaryKeyName, primaryKeyId, uniqueId);
         }
 
         public void UpdateSettingRecordChangers(string tableName, string primaryKeyName, int parentKeyId, string settingName, int? createdBy, int? modifiedBy)
@@ -282,8 +287,8 @@ namespace Dnn.ExportImport.Components.Providers
                         CBO.FillCollection<PermissionInfo>(
                             _dataProvider.ExecuteReader("GetPermissions")))
                     .FirstOrDefault(x => x.PermissionCode == permissionCode &&
-                                         x.PermissionKey == permissionKey
-                                         && x.PermissionName == permissionName)?.PermissionID;
+                    x.PermissionKey == permissionKey
+                    && x.PermissionName.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase))?.PermissionID;
         }
 
         public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
@@ -329,6 +334,11 @@ namespace Dnn.ExportImport.Components.Providers
         public bool CheckTabModuleUniqueIdExists(Guid uniqueId)
         {
             return _dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabModuleUniqueIdExists", uniqueId) > 0;
+        }
+
+        public bool CheckTabUniqueIdExists(Guid uniqueId)
+        {
+            return _dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabUniqueIdExists", uniqueId) > 0;
         }
 
         public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)

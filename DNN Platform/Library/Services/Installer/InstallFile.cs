@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -293,13 +293,13 @@ namespace DotNetNuke.Services.Installer
                 Name = fileName.Substring(10, fileName.Length - 10);
                 Path = fileName.Substring(0, 10);
             }
-            if (Name.ToLower() == "manifest.xml")
+            if (Name.ToLowerInvariant() == "manifest.xml")
             {
                 Type = InstallFileType.Manifest;
             }
             else
             {
-                switch (Extension.ToLower())
+                switch (Extension.ToLowerInvariant())
                 {
                     case "ascx":
                         Type = InstallFileType.Ascx;
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Installer
                         Type = InstallFileType.Resources;
                         break;
                     default:
-                        if (Extension.ToLower().EndsWith("dataprovider") || Extension.ToLower() == "sql")
+                        if (Extension.ToLowerInvariant().EndsWith("dataprovider") || Extension.ToLowerInvariant() == "sql")
                         {
                             Type = InstallFileType.Script;
                         }

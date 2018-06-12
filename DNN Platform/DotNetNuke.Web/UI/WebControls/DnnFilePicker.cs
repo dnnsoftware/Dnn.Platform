@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -379,30 +379,6 @@ namespace DotNetNuke.Web.UI.WebControls
 			}
 		}
 
-		/// <summary>
-		///   Gets or sets whether to Show Database Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowDatabase
-		{
-			get
-			{
-			    if (ViewState["ShowDatabase"] == null)
-				{
-					return false;
-				}
-			    return Convert.ToBoolean(ViewState["ShowDatabase"]);
-			}
-		    set
-			{
-				ViewState["ShowDatabase"] = value;
-			}
-		}
-
 		public bool ShowFolders
 		{
 			get
@@ -412,26 +388,6 @@ namespace DotNetNuke.Web.UI.WebControls
 			set
 			{
 				ViewState["ShowFolders"] = value;
-			}
-		}
-
-		/// <summary>
-		///   Gets or sets whether to Show Secure Folders
-		/// </summary>
-		/// <remarks>
-		///   Defaults to false
-		/// </remarks>
-		/// <value>A Boolean</value>
-		[Obsolete("Deprecated in DNN 6.0")]
-		public bool ShowSecure
-		{
-			get
-			{
-				return ViewState["ShowSecure"] != null && Convert.ToBoolean(ViewState["ShowSecure"]);
-			}
-			set
-			{
-				ViewState["ShowSecure"] = value;
 			}
 		}
 
@@ -864,7 +820,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			{
 				var extension = Path.GetExtension(_txtFile.PostedFile.FileName).Replace(".", "");
 
-				if (!string.IsNullOrEmpty(FileFilter) && !FileFilter.ToLower().Contains(extension.ToLower()))
+				if (!string.IsNullOrEmpty(FileFilter) && !FileFilter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
 				{
 					// trying to upload a file not allowed for current filter
 					var localizedString = Localization.GetString("UploadError", LocalResourceFile);

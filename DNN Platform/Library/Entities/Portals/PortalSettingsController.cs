@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,6 +34,8 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Web.Client;
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -230,8 +232,22 @@ namespace DotNetNuke.Entities.Portals
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
             portalSettings.Registration = new RegistrationSettings(settings);
 
+            var clientResourcesSettings = new ClientResourceSettings();
+            Boolean overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+
+            int crmVersion;
+            if(overridingDefaultSettings)
+            {
+                int? globalVersion = new ClientResourceSettings().GetVersion();
+                crmVersion = globalVersion ?? default(int);
+            }
+            else
+            {
+                crmVersion = settings.GetValueOrDefault("CrmVersion", HostController.Instance.GetInteger("CrmVersion"));
+            }
+            
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
-            portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            portalSettings.CdfVersion = crmVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
             portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
             portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
@@ -259,8 +275,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.STDURL = settings.GetValueOrDefault("STDURL", Null.NullString);
             portalSettings.EnableRegisterNotification = settings.GetValueOrDefault("EnableRegisterNotification", true);
             portalSettings.DefaultAuthProvider = settings.GetValueOrDefault("DefaultAuthProvider", "DNN");
-            portalSettings.SMTPConnectionLimit = settings.GetValueOrDefault("SMTPConnectionLimit", 1);
-            portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 0);
+            portalSettings.SMTPConnectionLimit = settings.GetValueOrDefault("SMTPConnectionLimit", 2);
+            portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 100000);
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
             string setting = settings.GetValueOrDefault("ControlPanelSecurity", "");

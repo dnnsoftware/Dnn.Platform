@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -98,6 +98,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             //handle case where script has no javascript library
             switch (jsname)
             {
+                case CommonJs.jQuery:
+                    RequestRegistration(CommonJs.jQueryMigrate);
+                    break;
                 case CommonJs.DnnPlugins:
                     RequestRegistration(CommonJs.jQueryUI);
                     RequestRegistration(CommonJs.HoverIntent);

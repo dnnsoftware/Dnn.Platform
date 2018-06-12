@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -24,7 +24,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-using DotNetNuke.Tests.Integration.Framework;
+using DNN.Integration.Test.Framework;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
@@ -59,19 +59,8 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
         {
             var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
-            ShowInfo(@"content => " + content);
+            LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-        }
-
-        #endregion
-
-        #region helpers
-
-        private static void ShowInfo(string info)
-        {
-            // Don't write anything to console when we run in TeamCity
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
-                Console.WriteLine(info);
         }
 
         #endregion

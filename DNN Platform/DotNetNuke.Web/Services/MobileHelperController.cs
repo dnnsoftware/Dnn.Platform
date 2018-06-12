@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by Ash Prasad
 // by DotNetNuke Corporation
 //

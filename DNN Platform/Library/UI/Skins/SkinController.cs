@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -161,17 +161,17 @@ namespace DotNetNuke.UI.Skins
             if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
-                skinFolder = folderPath.ToLower().Replace(Globals.HostMapPath.ToLower(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), "").Replace("\\", "/");
             }
             else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "S";
-                skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
             }
             else //to be compliant with all versions
             {
                 skinType = "L";
-                skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
             }
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
@@ -330,7 +330,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="skinFile">The File Name without extension</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
-            if (skinFolder.ToLower() == "_default")
+            if (skinFolder.ToLowerInvariant() == "_default")
             {
                 // host folder
                 return skinFile;
@@ -338,7 +338,7 @@ namespace DotNetNuke.UI.Skins
             }
 			
 			//portal folder
-            switch (skinFile.ToLower())
+            switch (skinFile.ToLowerInvariant())
             {
                 case "skin":
                 case "container":
@@ -378,7 +378,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, true, selectedCultureCode);
                         }
                     }
                     else
@@ -389,7 +389,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, true, selectedCultureCode);
                         }
                     }
                     break;
@@ -402,7 +402,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, true, selectedCultureCode);
                         }
                     }
                     else
@@ -413,7 +413,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, selectedCultureCode);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, true, selectedCultureCode);
                         }
                     }
                     break;
@@ -475,7 +475,7 @@ namespace DotNetNuke.UI.Skins
                     if(Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
                         //process embedded zip files
-						if (objZipEntry.Name.ToLower() == RootSkin.ToLower() + ".zip")
+						if (objZipEntry.Name.ToLowerInvariant() == RootSkin.ToLowerInvariant() + ".zip")
                         {
                             using (var objMemoryStream = new MemoryStream())
                             {
@@ -489,7 +489,7 @@ namespace DotNetNuke.UI.Skins
                                 strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                             }
                         }
-                        else if (objZipEntry.Name.ToLower() == RootContainer.ToLower() + ".zip")
+                        else if (objZipEntry.Name.ToLowerInvariant() == RootContainer.ToLowerInvariant() + ".zip")
                         {
                             using(var objMemoryStream = new MemoryStream())
                             {
@@ -541,7 +541,7 @@ namespace DotNetNuke.UI.Skins
                                 case ".html":
                                 case ".ascx":
                                 case ".css":
-                                    if (strFileName.ToLower().IndexOf(Globals.glbAboutPage.ToLower()) < 0)
+                                    if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
                                     {
                                         arrSkinFiles.Add(strFileName);
                                     }
@@ -582,27 +582,6 @@ namespace DotNetNuke.UI.Skins
 
             }
             return strMessage;
-        }
-		
-		#endregion
-
-		#region Obsolete
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, string path)
-        {
-            using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                string strMessage = UploadLegacySkin(rootPath, skinRoot, skinName, fileStream);
-                fileStream.Close();
-                return strMessage;
-            }
-        }
-
-        [Obsolete("In DotNetNuke 5.0, the Skins are uploaded by using the new Installer")]
-        public static string UploadSkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
-        {
-            return UploadLegacySkin(rootPath, skinRoot, skinName, inputStream);
         }
 		
 		#endregion

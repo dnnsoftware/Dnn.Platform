@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -668,11 +669,20 @@ namespace DotNetNuke.Entities.Modules
                         var portableModule = businessController as IPortable;
                         if (portableModule != null)
                         {
-                            string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
-                            if (!string.IsNullOrEmpty(moduleContent))
+                            try
                             {
-                                portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                SetCloneModuleContext(true);
+                                string moduleContent = portableModule.ExportModule(sourceModule.ModuleID);
+                                if (!string.IsNullOrEmpty(moduleContent))
+                                {
+                                    portableModule.ImportModule(newModule.ModuleID, moduleContent, newModule.DesktopModule.Version, currentUser.UserID);
+                                }
                             }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
+                            }
+                            
                         }
                     }
                     catch (Exception ex)
@@ -689,6 +699,12 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return moduleId;
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
         private static Hashtable ParsedLocalizedModuleGuid
@@ -810,7 +826,7 @@ namespace DotNetNuke.Entities.Modules
             if (moduleInfo != null)
             {
                 //delete the module instance for the tab
-                dataProvider.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, softDelete);
+                dataProvider.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, softDelete, UserController.Instance.GetCurrentUserInfo().UserID);
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.TABMODULE_DELETED.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("tabId", moduleInfo.TabID.ToString(CultureInfo.InvariantCulture)));
                 log.LogProperties.Add(new LogDetailInfo("moduleId", moduleInfo.ModuleID.ToString(CultureInfo.InvariantCulture)));
@@ -1140,7 +1156,7 @@ namespace DotNetNuke.Entities.Modules
                         var newModule = sourceModule.Clone();
                         newModule.ModuleID = Null.NullInteger;
                         newModule.TabID = destinationTab.TabID;
-                        AddModule(sourceModule);
+                        AddModule(newModule);
                     }
                     else
                     {
@@ -2187,7 +2203,7 @@ namespace DotNetNuke.Entities.Modules
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
             // Create dummy pane node for private DeserializeModule method
-            var docPane = new XmlDocument();
+            var docPane = new XmlDocument { XmlResolver = null };
             docPane.LoadXml(String.Format("<pane><name>{0}</name></pane>", module.PaneName));
 
             // Create ModuleInfo of Xml

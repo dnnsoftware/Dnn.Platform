@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -103,7 +103,7 @@ namespace DotNetNuke.UI
             T ctrl;
 
             //load the control dynamically
-            if (ControlSrc.ToLower().EndsWith(".ascx"))
+            if (ControlSrc.ToLowerInvariant().EndsWith(".ascx"))
             {
 				//load from a user control on the file system
                 ctrl = (T) containerControl.LoadControl("~/" + ControlSrc);

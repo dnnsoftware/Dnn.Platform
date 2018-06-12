@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -140,9 +141,21 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <summary>
+        /// set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.GetResourceFile(this, MyFileName)); 
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            Visible = !PortalSettings.InErrorPageRequest() || ShowInErrorPage;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -185,6 +198,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 profilePicture.ImageUrl = AvatarImageUrl;
                 profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
+
+                if (AlwaysShowCount())
+                {
+                    messageCount.Visible = notificationCount.Visible = true;
+                }
             }
 
             if (UsePopUp)
@@ -248,6 +266,26 @@ namespace DotNetNuke.UI.Skins.Controls
                                   : !string.IsNullOrEmpty(a.LoginControlSrc) && (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
                     where a.AuthenticationType != "DNN" && enabled
                     select a).Any();
+        }
+
+        private bool AlwaysShowCount()
+        {
+            const string SettingKey = "UserAndLogin_AlwaysShowCount";
+            var alwaysShowCount = false;
+
+            var portalSetting = PortalController.GetPortalSetting(SettingKey, PortalSettings.PortalId, string.Empty);
+            if (!string.IsNullOrEmpty(portalSetting) && bool.TryParse(portalSetting, out alwaysShowCount))
+            {
+                return alwaysShowCount;
+            }
+
+            var hostSetting = HostController.Instance.GetString(SettingKey, string.Empty);
+            if (!string.IsNullOrEmpty(hostSetting) && bool.TryParse(hostSetting, out alwaysShowCount))
+            {
+                return alwaysShowCount;
+            }
+
+            return false;
         }
     }
 }

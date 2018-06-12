@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,7 +53,7 @@ namespace DotNetNuke.Common.Lists
             try
             {
                 index = base.List.Add(value);
-                mKeyIndexLookup.Add(key.ToLower(), index);
+                mKeyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
             {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Common.Lists
             object obj;
             try //Do validation first
             {
-                if (mKeyIndexLookup[key.ToLower()] == null)
+                if (mKeyIndexLookup[key.ToLowerInvariant()] == null)
                 {
                     return null;
                 }
@@ -92,7 +92,7 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
-            index = Convert.ToInt32(mKeyIndexLookup[key.ToLower()]);
+            index = Convert.ToInt32(mKeyIndexLookup[key.ToLowerInvariant()]);
             obj = base.List[index];
             return obj;
         }
@@ -105,7 +105,7 @@ namespace DotNetNuke.Common.Lists
             bool itemExists = false;
             try //Do validation first
             {
-                if (mKeyIndexLookup[key.ToLower()] != null)
+                if (mKeyIndexLookup[key.ToLowerInvariant()] != null)
                 {
                     itemExists = true;
                 }
@@ -130,7 +130,7 @@ namespace DotNetNuke.Common.Lists
             }
             else
             {
-                index = Convert.ToInt32(mKeyIndexLookup[key.ToLower()]);
+                index = Convert.ToInt32(mKeyIndexLookup[key.ToLowerInvariant()]);
                 obj = base.List[index];
             }
             return obj;
@@ -141,7 +141,7 @@ namespace DotNetNuke.Common.Lists
             var childList = new ArrayList();
             foreach (object child in List)
             {
-                if (((ListInfo) child).Key.IndexOf(ParentKey.ToLower()) > -1)
+                if (((ListInfo) child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
                 {
                     childList.Add(child);
                 }

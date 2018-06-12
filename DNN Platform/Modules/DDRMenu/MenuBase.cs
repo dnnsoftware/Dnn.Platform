@@ -14,6 +14,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.UI;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 using DotNetNuke.Web.DDRMenu.Localisation;
 using DotNetNuke.Web.DDRMenu.TemplateEngine;
@@ -87,6 +88,11 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				ApplyNodeManipulator();
 			}
+
+		    if (!menuSettings.IncludeHidden)
+		    {
+		        FilterHiddenNodes(RootNode);
+		    }
 
 			var imagePathOption =
 				menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
@@ -184,32 +190,48 @@ namespace DotNetNuke.Web.DDRMenu
                                 n =>
                                 {
                                     var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
-                                    return (tab.Terms.Any(x => x.Name.ToLower() == tagName));
+                                    return (tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName));
                                 }));
 			        }
 
 			    }
 				else
 				{
-					var nodeText2 = nodeText;
-					filteredNodes.AddRange(
-						RootNode.Children.FindAll(
-							n =>
-							{
-								var nodeName = n.Text.ToLowerInvariant();
-								var nodeId = n.TabId.ToString();
-								return (nodeText2 == nodeName || nodeText2 == nodeId);
-							}));
+                    filteredNodes.Add(RootNode.FindByNameOrId(nodeText));
 				}
 			}
 
             // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
 		    if (flattenedNodes.HasChildren())
 		        RootNode = flattenedNodes;
-			RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
+            if (exclude)
+            {
+                RootNode.RemoveAll(filteredNodes);
+            }
+            else
+            {
+                RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
+            }
 		}
 
-		private void ApplyNodeSelector()
+        private void FilterHiddenNodes(MenuNode parentNode)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var filteredNodes = new List<MenuNode>();
+            filteredNodes.AddRange(
+                parentNode.Children.FindAll(
+                    n =>
+                    {                     
+                        var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
+                        return tab == null || !tab.IsVisible;
+                    }));
+
+            parentNode.Children.RemoveAll(n => filteredNodes.Contains(n));
+
+            parentNode.Children.ForEach(FilterHiddenNodes);
+        }
+
+        private void ApplyNodeSelector()
 		{
 			string selector;
 			if (!nodeSelectorAliases.TryGetValue(menuSettings.NodeSelector.ToLowerInvariant(), out selector))

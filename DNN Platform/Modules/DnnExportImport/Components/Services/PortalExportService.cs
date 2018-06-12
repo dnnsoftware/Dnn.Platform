@@ -1,7 +1,7 @@
 ﻿#region Copyright
 //
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -185,7 +185,7 @@ namespace Dnn.ExportImport.Components.Services
                     exportPortalSetting.PortalSettingId = existingPortalSetting.PortalSettingId;
                     DotNetNuke.Data.DataProvider.Instance()
                         .UpdatePortalSetting(importJob.PortalId, exportPortalSetting.SettingName,
-                            exportPortalSetting.SettingValue, modifiedBy, exportPortalSetting.CultureCode);
+                            exportPortalSetting.SettingValue, modifiedBy, exportPortalSetting.CultureCode, exportPortalSetting.IsSecure);
                     Result.AddLogEntry("Updated portal settings", exportPortalSetting.SettingName);
                 }
                 else
@@ -194,7 +194,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     DotNetNuke.Data.DataProvider.Instance()
                         .UpdatePortalSetting(importJob.PortalId, exportPortalSetting.SettingName,
-                            exportPortalSetting.SettingValue, createdBy, exportPortalSetting.CultureCode);
+                            exportPortalSetting.SettingValue, createdBy, exportPortalSetting.CultureCode, exportPortalSetting.IsSecure);
 
                     Result.AddLogEntry("Added portal settings", exportPortalSetting.SettingName);
                 }

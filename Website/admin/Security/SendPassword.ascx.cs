@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,6 +38,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Services.UserRequest;
 
 #endregion
 
@@ -222,13 +223,9 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
-			cancelButton.Click += cancelButton_Click;
+            lnkCancel.NavigateUrl = Globals.NavigateURL();
 
-            if (Request.UserHostAddress != null)
-            {
-                _ipAddress = Request.UserHostAddress;
-            }
-
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
 
 			divEmail.Visible = ShowEmailField;
 			divUsername.Visible = !UsernameDisabled;
@@ -331,7 +328,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
-						cancelButton.Attributes["resourcekey"] = "cmdClose";
+                        lnkCancel.Attributes["resourcekey"] = "cmdClose";
                     }
                     else
                     {
@@ -373,7 +370,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
 
 			var log = new LogInfo
             {
@@ -397,11 +394,6 @@ namespace DotNetNuke.Modules.Admin.Security
             
             LogController.Instance.AddLog(log);
 
-        }
-			
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(RedirectURL, true);
         }
 
         #endregion

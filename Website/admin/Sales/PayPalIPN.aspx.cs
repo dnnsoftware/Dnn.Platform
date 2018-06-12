@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -177,15 +177,15 @@ namespace DotNetNuke.Modules.Admin.Sales
                     if (objPortalInfo != null)
                     {
                         intAdministratorRoleId = objPortalInfo.AdministratorRoleId;
-                        strProcessorID = objPortalInfo.ProcessorUserId.ToLower();
+                        strProcessorID = objPortalInfo.ProcessorUserId.ToLowerInvariant();
                     }
 
                     if (intRoleID == intAdministratorRoleId)
                     {
 						//admin portal renewal
-                        strProcessorID = Host.ProcessorUserId.ToLower();
+                        strProcessorID = Host.ProcessorUserId.ToLowerInvariant();
                         float portalPrice = objPortalInfo.HostFee;
-                        if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
+                        if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
                         {
                             PortalController.Instance.UpdatePortalExpiry(intPortalID, PortalController.GetActivePortalLanguage(intPortalID));
                         }
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         RoleInfo objRoleInfo = RoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
                         float rolePrice = objRoleInfo.ServiceFee;
                         float trialPrice = objRoleInfo.TrialFee;
-                        if ((rolePrice.ToString() == dblAmount.ToString() || trialPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
+                        if ((rolePrice.ToString() == dblAmount.ToString() || trialPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
                         {
                             RoleController.Instance.UpdateUserRole(intPortalID, intUserID, intRoleID, RoleStatus.Approved, false, blnCancel);
                         }

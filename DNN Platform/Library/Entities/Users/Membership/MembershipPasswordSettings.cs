@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Users.Membership
         public bool EnablePasswordHistory { get; set; }
 
         public int NumberOfPasswordsStored { get; set; }
+        public int NumberOfDaysBeforePasswordReuse { get; set; }
         public int ResetLinkValidity { get; set; }
 
         /// <summary>
@@ -111,6 +112,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
                 ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
                 NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
             else //setup default values during install process.
             {
@@ -128,7 +130,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
         private static bool IsInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLower();
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
             return url.EndsWith("/install.aspx")
                    || url.Contains("/installwizard.aspx");

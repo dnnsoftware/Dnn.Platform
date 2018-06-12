@@ -137,7 +137,7 @@
             }
 
             var onCompareHandler = $.proxy(this._onCompare, this);
-            $(this._comparer).bind("on-compare", onCompareHandler);
+            $(this._comparer).on("on-compare", onCompareHandler);
 
             this._$confirmElement = this._$container.find(this.options.secondElementSelector);
 

@@ -15,7 +15,7 @@
         },
 
         bindIframeLoadEvent: function (iframe, callback) {
-            $(iframe).bind('load', function () {
+            $(iframe).on('load', function () {
                 // when we remove iframe from dom the request stops, but in IE load event fires
                 if (!iframe.parentNode) {
                     return;

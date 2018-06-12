@@ -87,12 +87,12 @@ namespace DotNetNuke.Web.Api
         {
             string value = null;
             IEnumerable<string> values;
-            if (requestMessage.Headers.TryGetValues(key, out values))
+            if (requestMessage != null && requestMessage.Headers.TryGetValues(key, out values))
             {
                 value = values.FirstOrDefault();
             }
 
-            if (string.IsNullOrEmpty(value) && requestMessage.RequestUri != null)
+            if (string.IsNullOrEmpty(value) && requestMessage?.RequestUri != null)
             {
                 var queryString = HttpUtility.ParseQueryString(requestMessage.RequestUri.Query);
                 value = queryString[key];
@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.Api
         {
             IEnumerable<string> values;
             string value = null;
-            if (requestMessage.Headers.TryGetValues(key, out values))
+            if (requestMessage != null && requestMessage.Headers.TryGetValues(key, out values))
             {
                 value = values.FirstOrDefault();
             }

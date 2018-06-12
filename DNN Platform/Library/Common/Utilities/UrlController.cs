@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Common.Utilities
         public void UpdateUrlTracking(int PortalID, string Url, int ModuleId, int UserID)
         {
             TabType UrlType = Globals.GetURLType(Url);
-            if (UrlType == TabType.File && Url.ToLower().StartsWith("fileid=") == false)
+            if (UrlType == TabType.File && Url.ToLowerInvariant().StartsWith("fileid=") == false)
             {
 				//to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(Url);

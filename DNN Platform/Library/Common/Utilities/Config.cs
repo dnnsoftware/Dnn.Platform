@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -392,7 +392,7 @@ namespace DotNetNuke.Common.Utilities
                 string urlFormat = provider.Attributes["urlFormat"];
                 if (string.IsNullOrEmpty(urlFormat) == false)
                 {
-                    switch (urlFormat.ToLower())
+                    switch (urlFormat.ToLowerInvariant())
                     {
                         case "advanced":
                         case "customonly":
@@ -526,7 +526,7 @@ namespace DotNetNuke.Common.Utilities
         public static XmlDocument Load(string filename)
         {
             //open the config file
-            var xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
             //test for namespace added by Web Admin Tool
             if (!String.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
@@ -704,7 +704,7 @@ namespace DotNetNuke.Common.Utilities
         public static string UpdateMachineKey()
         {
 			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-            var xmlConfig = new XmlDocument();
+            var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
             //save the current config files
@@ -735,7 +735,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static XmlDocument UpdateMachineKey(XmlDocument xmlConfig)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string validationKey = portalSecurity.CreateKey(20);
             string decryptionKey = portalSecurity.CreateKey(24);
 
@@ -751,7 +751,7 @@ namespace DotNetNuke.Common.Utilities
         public static string UpdateValidationKey()
         {
 			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-            var xmlConfig = new XmlDocument();
+            var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
             //save the current config files
@@ -783,7 +783,7 @@ namespace DotNetNuke.Common.Utilities
             XmlNode xmlMachineKey = xmlConfig.SelectSingleNode("configuration/system.web/machineKey");
             if (xmlMachineKey.Attributes["validationKey"].Value == "F9D1A2D3E1D3E2F7B3D9F90FF3965ABDAC304902")
             {
-                var objSecurity = new PortalSecurity();
+                var objSecurity = PortalSecurity.Instance;
                 string validationKey = objSecurity.CreateKey(20);
                 XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             }
@@ -855,7 +855,7 @@ namespace DotNetNuke.Common.Utilities
                 // we need to add the InstallVersion
 
 				string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-                var xmlConfig = new XmlDocument();
+                var xmlConfig = new XmlDocument { XmlResolver = null };
                 //save the current config files
                 BackupConfig();
                 try

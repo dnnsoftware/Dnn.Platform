@@ -89,7 +89,7 @@ namespace Dnn.Module.ModuleCreator
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
-                if (Path.GetFileName(folderPath).ToLower().StartsWith("module"))
+                if (Path.GetFileName(folderPath).ToLowerInvariant().StartsWith("module"))
                 {
                     cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
                 }
@@ -154,7 +154,7 @@ namespace Dnn.Module.ModuleCreator
                 fileName = fileName.Replace("_MODULE_", GetModule());
                 fileName = fileName.Replace("_CONTROL_", GetControl());
 
-                switch (Path.GetExtension(filePath).ToLower())
+                switch (Path.GetExtension(filePath).ToLowerInvariant())
                 {
                     case ".ascx":
                         controlName = fileName;
@@ -169,13 +169,13 @@ namespace Dnn.Module.ModuleCreator
                         modulePath = modulePath + "\\App_LocalResources\\";
                         break;
                     case ".vb":
-                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
                         break;
                     case ".cs":
-                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }

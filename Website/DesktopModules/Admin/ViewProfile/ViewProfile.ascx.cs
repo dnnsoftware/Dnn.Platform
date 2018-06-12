@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -160,6 +160,13 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 }
                 else
                 {
+                    if (template.IndexOf("[PROFILE:PHOTO]") > -1)
+                    {
+                        var profileImageHandlerBasedURL =
+                            UserController.Instance?.GetUserProfilePictureUrl(ProfileUserId, 120, 120);
+                        template = template.Replace("[PROFILE:PHOTO]", profileImageHandlerBasedURL);
+                    }
+
                     var token = new TokenReplace { User = ProfileUser, AccessingUser = ModuleContext.PortalSettings.UserInfo };
                     profileOutput.InnerHtml = token.ReplaceEnvironmentTokens(template);
                     noPropertiesLabel.Visible = false;
@@ -279,13 +286,13 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 if (friendRelationship != null)
                 {                   
-                    if (action.ToLower() == "acceptfriend")
+                    if (action.ToLowerInvariant() == "acceptfriend")
                     {
                         var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
                         FriendsController.Instance.AcceptFriend(friend);                        
                     }
 
-                    if (action.ToLower() == "followback")
+                    if (action.ToLowerInvariant() == "followback")
                     {
                         var follower = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
                         try
@@ -297,10 +304,10 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                                 NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
                             }
                         }
-                        catch 
-                        {}
-
-
+                        catch
+                        {
+                            //ignore
+                        }
                     }                    
                 }
 

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -383,31 +383,31 @@ namespace DotNetNuke.Entities.Urls
                 if (actionMatch.Success)
                 {
                     found = true;
-                    string tk = actionMatch.Groups["tk"].Value;
-                    string val = actionMatch.Groups["val"].Value;
-                    switch (tk.ToLower())
+                    string tk = actionMatch.Groups["tk"].Value.ToLowerInvariant();
+                    string val = actionMatch.Groups["val"].Value.ToLowerInvariant();
+                    switch (tk)
                     {
                         case "do301":
-                            if (val.ToLower() == "true")
+                            if (val == "true")
                             {
                                 action = ActionType.Redirect301;
                             }
                             else
                             {
-                                if (val.ToLower() == "check")
+                                if (val == "check")
                                 {
                                     action = ActionType.CheckFor301;
                                 }
                             }
                             break;
                         case "do404":
-                            if (val.ToLower() == "true")
+                            if (val == "true")
                             {
                                 action = ActionType.Output404;
                             }
                             break;
                         case "do302":
-                            if (val.ToLower() == "true")
+                            if (val == "true")
                             {
                                 action = ActionType.Redirect302;
                             }

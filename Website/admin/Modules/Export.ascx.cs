@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 						//Double-check
 						if (objObject is IPortable)
                         {
-                            XmlDocument moduleXml = new XmlDocument();
+                            XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
                             XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, Module, true);
 
                             //add attributes to XML document

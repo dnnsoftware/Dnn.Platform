@@ -137,6 +137,12 @@
                 resultsCountText: '<%= ResultsCountText %>',
                 currentPageIndexText: '<%= CurrentPageIndexText %>',
                 linkTarget: '<%= LinkTarget %>',
+                showDescription: <%= ShowDescription %>,
+                maxDescriptionLength: <%= MaxDescriptionLength %>,
+                showSnippet: <%= ShowSnippet %>,
+                showSource: <%= ShowSource %>,
+                showLastUpdated: <%= ShowLastUpdated %>,
+                showTags: <%= ShowTags %>,
                 cultureCode: '<%= CultureCode %>'
 
             });

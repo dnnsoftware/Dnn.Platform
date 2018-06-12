@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -205,10 +205,10 @@ namespace DotNetNuke.Common.Utilities
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
             return String.IsNullOrEmpty(folderPath) ||
-                   folderPath.ToLower() == "skins" ||
-                   folderPath.ToLower() == "containers" ||
-                   folderPath.ToLower().StartsWith("skins/") ||
-                   folderPath.ToLower().StartsWith("containers/");
+                   folderPath.ToLowerInvariant() == "skins" ||
+                   folderPath.ToLowerInvariant() == "containers" ||
+                   folderPath.ToLowerInvariant().StartsWith("skins/") ||
+                   folderPath.ToLowerInvariant().StartsWith("containers/");
         }
 
         /// <summary>

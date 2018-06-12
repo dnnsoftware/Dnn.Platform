@@ -113,7 +113,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <param name="image">Input image</param>
         /// <returns>Image result after image transformation</returns>
         public override Image ProcessImage(Image image)
-		{
+        {
+            if (image == null)
+                return null;    
+
             if (MaxWidth > 0)
             {
                 Width = image.Width > MaxWidth ? MaxWidth : image.Width;

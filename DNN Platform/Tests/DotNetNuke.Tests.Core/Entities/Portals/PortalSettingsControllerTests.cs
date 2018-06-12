@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -97,6 +97,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                             .Returns((string s, bool b) => Boolean.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => Int32.Parse(hostSettings[s]));
+            mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
+                            .Returns((string s) => Int32.Parse(hostSettings[s]));
             HostController.RegisterInstance(mockHostController.Object);
 
             if (isHostDefault)
@@ -113,7 +115,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(defaultValue, actualValue.ToString().ToLower());
+                Assert.AreEqual(defaultValue, actualValue.ToString().ToLowerInvariant());
             }
             else
             {
@@ -159,7 +161,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var actualValue = property.GetValue(settings, null);
             if (actualValue is bool)
             {
-                Assert.AreEqual(propertyValue, actualValue.ToString().ToLower());
+                Assert.AreEqual(propertyValue, actualValue.ToString().ToLowerInvariant());
             }
             else
             {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -101,12 +101,12 @@ namespace DotNetNuke.Services.Installer.Writers
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.ToLower() == "uninstall") //UnInstall.SqlDataprovider
+            if (fileName.ToLowerInvariant() == "uninstall") //UnInstall.SqlDataprovider
             {
                 type = "UnInstall";
                 version = Package.Version.ToString(3);
             }
-            else if (fileName.ToLower() == "install") //Install.SqlDataprovider
+            else if (fileName.ToLowerInvariant() == "install") //Install.SqlDataprovider
             {
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);

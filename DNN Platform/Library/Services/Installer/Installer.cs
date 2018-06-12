@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.ToLower() == "languagepack")
+            else if (rootNav.Name.ToLowerInvariant() == "languagepack")
             {
                 packageType = "LanguagePack";
             }
@@ -309,7 +309,7 @@ namespace DotNetNuke.Services.Installer
             {
                 InstallerInfo.Log.AddFailure(Util.PACKAGE_UnRecognizable);
             }
-            switch (packageType.ToLower())
+            switch (packageType.ToLowerInvariant())
             {
                 case "package":
                     InstallerInfo.IsLegacyMode = false;
@@ -353,14 +353,14 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.ToLower() == "languagepack")
+            else if (rootNav.Name.ToLowerInvariant() == "languagepack")
             {
                 packageType = "LanguagePack";
             }
 
             XPathDocument legacyDoc;
             string legacyManifest;
-            switch (packageType.ToLower())
+            switch (packageType.ToLowerInvariant())
             {
                 case "module":
                     var sb = new StringBuilder();

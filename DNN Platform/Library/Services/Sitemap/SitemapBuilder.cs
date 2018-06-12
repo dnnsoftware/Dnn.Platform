@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -359,7 +359,7 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteStartElement("url");
             writer.WriteElementString("loc", sitemapUrl.Url);
             writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
-            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
+            writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
 
             //if (sitemapUrl.AlternateUrls != null)

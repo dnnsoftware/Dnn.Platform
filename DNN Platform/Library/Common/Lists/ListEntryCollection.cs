@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Common.Lists
             //<tam:note key to be lowercase for appropiated seeking>
             try
             {
-                if (_keyIndexLookup[key.ToLower()] == null)
+                if (_keyIndexLookup[key.ToLowerInvariant()] == null)
                 {
                     return null;
                 }
@@ -66,7 +66,7 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
-            index = Convert.ToInt32(_keyIndexLookup[key.ToLower()]);
+            index = Convert.ToInt32(_keyIndexLookup[key.ToLowerInvariant()]);
             return (ListEntryInfo) base.List[index];
         }
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Common.Lists
             try //Do validation first
             {
                 index = base.List.Add(value);
-                _keyIndexLookup.Add(key.ToLower(), index);
+                _keyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
             {

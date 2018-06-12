@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -579,10 +579,22 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
             var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
+            body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
 
             Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
 
             MarkMessagesAsDispatched(messageRecipients);
+        }
+
+        private static string RemoveHttpUrlsIfSiteisSSLEnabled(string stringContainingHttp, PortalSettings portalSettings)
+        {
+            if (stringContainingHttp.IndexOf("http") > -1 && portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
+            {
+                var urlToReplace = GetPortalHomeUrl(portalSettings);
+                var urlReplaceWith = $"https://{portalSettings.DefaultPortalAlias}";
+                stringContainingHttp = stringContainingHttp.Replace(urlToReplace, urlReplaceWith);
+            }
+            return stringContainingHttp;
         }
 
         /// <summary>Gets the schedule item date setting.</summary>
@@ -680,17 +692,19 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             var author = UserController.Instance.GetUser(message.PortalID, message.SenderUserID);
             var portalSettings = new PortalSettings(message.PortalID);
-            var fromAddress = portalSettings.Email;
+            var fromAddress = (UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email) != null) ?
+                String.Format("{0} < {1} >", UserController.GetUserByEmail(portalSettings.PortalId, portalSettings.Email).DisplayName, portalSettings.Email) : portalSettings.Email;
             var toAddress = toUser.Email;
 
             if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
             {
                 var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
-                var senderAddress = GetSenderAddress(senderName, fromAddress);
+                var senderAddress = GetSenderAddress(senderName, portalSettings.Email);
                 var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
                 var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
                 var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-                
+                body = RemoveHttpUrlsIfSiteisSSLEnabled(body, portalSettings);
+
                 // Include the attachment in the email message if configured to do so
                 if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
                 {

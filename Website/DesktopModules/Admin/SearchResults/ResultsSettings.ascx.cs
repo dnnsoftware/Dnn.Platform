@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -106,15 +107,15 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    if (!string.IsNullOrEmpty(Convert.ToString(Settings["EnableWildSearch"])))
-                    {
-                        var enableWildSearch = Convert.ToBoolean(Settings["EnableWildSearch"]);
-                        chkEnableWildSearch.Checked = enableWildSearch;
-                    }
-                    else
-                    {
-                        chkEnableWildSearch.Checked = true;
-                    }
+                    chkEnableWildSearch.Checked = GetBooleanSetting("EnableWildSearch", true);
+                    chkShowDescription.Checked = GetBooleanSetting("ShowDescription", true);
+                    chkShowFriendlyTitle.Checked = GetBooleanSetting("ShowFriendlyTitle", true);
+                    chkShowSnippet.Checked = GetBooleanSetting("ShowSnippet", true);
+                    chkShowLastUpdated.Checked = GetBooleanSetting("ShowLastUpdated", true);
+                    chkShowSource.Checked = GetBooleanSetting("ShowSource", true);
+                    chkShowTags.Checked = GetBooleanSetting("ShowTags", true);
+
+                    txtMaxDescriptionLength.Text = GetStringSetting("MaxDescriptionLength", "100");
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -140,6 +141,19 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowDescription", chkShowDescription.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowFriendlyTitle", chkShowFriendlyTitle.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowSnippet", chkShowSnippet.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowLastUpdated", chkShowLastUpdated.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowSource", chkShowSource.Checked.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowTags", chkShowTags.Checked.ToString());
+
+                    var maxDescriptionLength = txtMaxDescriptionLength.Text;
+                    if (string.IsNullOrEmpty(maxDescriptionLength) || !Regex.IsMatch(maxDescriptionLength, "^\\d+$"))
+                    {
+                        maxDescriptionLength = "100";
+                    }
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "MaxDescriptionLength", maxDescriptionLength);
                 }
             }
             catch (Exception exc)
@@ -193,6 +207,26 @@ namespace DotNetNuke.Modules.SearchResults
                 }
             }
             return result;
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (!string.IsNullOrEmpty(Convert.ToString(Settings[settingName])))
+            {
+                return Convert.ToBoolean(Settings[settingName]);
+            }
+
+            return defaultValue;
+        }
+
+        private string GetStringSetting(string settingName, string defaultValue)
+        {
+            if (!string.IsNullOrEmpty(Convert.ToString(Settings[settingName])))
+            {
+                return Convert.ToString(Settings[settingName]);
+            }
+
+            return defaultValue;
         }
     }
 }

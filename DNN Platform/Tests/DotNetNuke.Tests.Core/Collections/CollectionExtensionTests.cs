@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -246,7 +246,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void get_from_xmlnode()
         {
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { XmlResolver = null };
             doc.LoadXml(@"
 <parent>
     <id>13</id>
@@ -442,7 +442,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void can_get_value_without_default_from_xmlnode()
         {
-            var doc = new XmlDocument();
+            var doc = new XmlDocument { XmlResolver = null };
             doc.LoadXml(@"
 <parent>
     <id>123</id>

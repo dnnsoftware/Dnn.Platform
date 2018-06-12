@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -835,6 +835,17 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
+        /// Gets the number of days that must pass before a password can be reused - default is 0 (i.e. password reuse is only governed by <see cref="EnablePasswordHistory"/> and <see cref="MembershipNumberPasswords"/>)
+        /// </summary>
+        public static int MembershipDaysBeforePasswordReuse
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("MembershipDaysBeforePasswordReuse", 0);
+            }
+        }
+
+        /// <summary>
         /// sets the HTTP Status code returned if IP address filtering is enabled on login
         /// and the users IP does not meet criteria -default is 403
         /// </summary>
@@ -992,7 +1003,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetString("ProcessorPassword");
+                return HostController.Instance.GetEncryptedString("ProcessorPassword", Config.GetDecryptionkey());
             }
         }
 
@@ -1388,9 +1399,9 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 1);
+                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 2);
                 }
-                return HostController.Instance.GetInteger("SMTPConnectionLimit", 1);
+                return HostController.Instance.GetInteger("SMTPConnectionLimit", 2);
             }
         }
         /// -----------------------------------------------------------------------------
@@ -1404,9 +1415,9 @@ namespace DotNetNuke.Entities.Host
             {
                 if (SMTPPortalEnabled)
                 {
-                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 0);
+                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 100000);
                 }
-                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 0);
+                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 100000);
             }
         }
         /// -----------------------------------------------------------------------------
@@ -1673,149 +1684,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-
-        #endregion
-
-        #region Obsolete Members
-
-        [Obsolete("Replaced in DotNetNuke 6.0 by AllowedExtensionWhitelist")]
-        public static string FileExtensions
-        {
-            get
-            {
-                return HostController.Instance.GetString("FileExtensions");
-            }
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSettingsDictionary()")]
-        public static Dictionary<string, string> GetHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.UnSecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!dr.IsDBNull(1))
-                        {
-                            dicSettings.Add(dr.GetString(0), dr.GetString(1));
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.UnSecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSetting()")]
-        public static string GetSecureHostSetting(string key)
-        {
-            return HostController.Instance.GetString(key);
-        }
-
-        [Obsolete("Replaced in DotNetNuke 5.5 by HostController.GetSecureHostSettingsDictionary()")]
-        public static Dictionary<string, string> GetSecureHostSettingsDictionary()
-        {
-            var dicSettings = DataCache.GetCache<Dictionary<string, string>>(DataCache.SecureHostSettingsCacheKey);
-
-            if (dicSettings == null)
-            {
-                dicSettings = new Dictionary<string, string>();
-                IDataReader dr = DataProvider.Instance().GetHostSettings();
-                try
-                {
-                    while (dr.Read())
-                    {
-                        if (!Convert.ToBoolean(dr[2]))
-                        {
-                            string settingName = dr.GetString(0);
-                            if (settingName.ToLower().IndexOf("password") == -1)
-                            {
-                                if (!dr.IsDBNull(1))
-                                {
-                                    dicSettings.Add(settingName, dr.GetString(1));
-                                }
-                                else
-                                {
-                                    dicSettings.Add(settingName, "");
-                                }
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-
-                //Save settings to cache
-                DNNCacheDependency objDependency = null;
-                DataCache.SetCache(DataCache.SecureHostSettingsCacheKey,
-                                   dicSettings,
-                                   objDependency,
-                                   Cache.NoAbsoluteExpiration,
-                                   TimeSpan.FromMinutes(DataCache.HostSettingsCacheTimeOut),
-                                   DataCache.HostSettingsCachePriority,
-                                   null);
-            }
-
-            return dicSettings;
-        }
-
-        [Obsolete("Deprecated in 5.5.  This setting was never used and has been replaced in 5.5 by a Portal Setting as Content Localization is Portal based.")]
-        public static bool ContentLocalization
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("ContentLocalization", false);
-            }
-        }
-
-        [Obsolete("property obsoleted in 5.4.0 - code updated to use portalcontroller method")]
-        public static string ContentLocale
-        {
-            get
-            {
-                return "en-us";
-            }
-        }
-
-        [Obsolete("MS AJax is now required for DotNetNuke 5.0 and above")]
-        public static bool EnableAJAX
-        {
-            get
-            {
-                return HostController.Instance.GetBoolean("EnableAJAX", true);
-            }
-        }
-
-        [Obsolete("Deprecated in DotNetNuke 6.1")]
-        public static bool WhitespaceFilter
-        {
-            get
-            {
-                return false;
-            }
-        }
-
 
         #endregion
     }

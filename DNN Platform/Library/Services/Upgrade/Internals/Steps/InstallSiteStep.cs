@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.PortAliases.Count > 0) portalAlias = portal.PortAliases[0];
 
             //Verify that portal alias is not present
-            if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLower()) != null)
+            if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
                 string description = Localization.Localization.GetString("SkipCreatingSite", LocalInstallResourceFile);
                 Details = string.Format(description, portalAlias);

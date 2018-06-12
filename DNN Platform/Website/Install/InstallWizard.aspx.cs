@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (_installTemplate == null)
                 {
-                    _installTemplate = new XmlDocument();
+                    _installTemplate = new XmlDocument { XmlResolver = null };
                     Upgrade.Upgrade.GetInstallTemplate(_installTemplate);
                 }
                 return _installTemplate;
@@ -693,7 +693,7 @@ namespace DotNetNuke.Services.Install
                 languageList.Items.Clear();
 
                 //Loading into XML doc
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(myResponseReader);
                 var languages = xmlDoc.SelectNodes("available/language");
 	            var packages = new List<PackageInfo>();

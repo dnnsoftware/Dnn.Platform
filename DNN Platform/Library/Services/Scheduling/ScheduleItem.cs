@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public string FriendlyName { get; set; }
 
-        public DateTime NextStart
+        public virtual DateTime NextStart
         {
             get
             {
@@ -146,17 +146,17 @@ namespace DotNetNuke.Services.Scheduling
             if (strObjectDependencies.IndexOf(",") > -1)
             {
                 string[] a;
-                a = strObjectDependencies.ToLower().Split(',');
+                a = strObjectDependencies.ToLowerInvariant().Split(',');
                 int i;
                 for (i = 0; i <= a.Length - 1; i++)
                 {
-                    if (ObjectDependencies.ToLower().IndexOf(a[i].Trim()) > -1)
+                    if (ObjectDependencies.ToLowerInvariant().IndexOf(a[i].Trim()) > -1)
                     {
                         return true;
                     }
                 }
             }
-            else if (ObjectDependencies.ToLower().IndexOf(strObjectDependencies.ToLower()) > -1)
+            else if (ObjectDependencies.ToLowerInvariant().IndexOf(strObjectDependencies.ToLowerInvariant()) > -1)
             {
                 return true;
             }

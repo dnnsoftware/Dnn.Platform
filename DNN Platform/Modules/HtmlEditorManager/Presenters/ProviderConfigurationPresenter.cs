@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,11 +38,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
     using DotNetNuke.Web.UI;
     using DotNetNuke.Web.UI.WebControls;
 
-
-
     /// <summary>
     /// Presenter for Provider Configuration
     /// </summary>
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public class ProviderConfigurationPresenter : ModulePresenter<IProviderConfigurationView, ProviderConfigurationViewModel>
     {
         /// <summary>The HTML editor node</summary>

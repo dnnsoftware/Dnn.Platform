@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -423,7 +423,7 @@ namespace DotNetNuke.UI.Utilities
                         ClientAPI.RegisterClientVariable(objButton.Page, objButton.ClientID + ":exp", Convert.ToInt32(value).ToString(), true);
                         break;
                     case MinMaxPersistanceType.Cookie:
-                        var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLower())
+                        var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLowerInvariant())
                         {
                             Expires = DateTime.MaxValue,
                             Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")

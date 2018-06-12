@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             try
             {
-                var cacheKey = CreateCacheKey(controllerContext, "View", viewName, masterName);
+                var cacheKey = CreateCacheKey(controllerContext, "View", viewName, masterName, (controllerContext.Controller as IDnnController)?.ModuleContext.PortalId ?? 0);
                 var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default,
                     "Find", viewEngineCollection,
                     new object[]
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             try
             {
-                var cacheKey = CreateCacheKey(controllerContext, "Partial", partialViewName, string.Empty);
+                var cacheKey = CreateCacheKey(controllerContext, "Partial", partialViewName, string.Empty, (controllerContext.Controller as IDnnController)?.ModuleContext.PortalId ?? 0);
                 var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default,
                     "Find", viewEngineCollection,
                     new object[]
@@ -77,10 +77,10 @@ namespace DotNetNuke.Web.Mvc.Framework
                     as ViewEngineResult;
         }
 
-        private static string CreateCacheKey(ControllerContext controllerContext, string section, string name, string areaName)
+        private static string CreateCacheKey(ControllerContext controllerContext, string section, string name, string areaName, int portalId)
         {
-            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:",
-                ((string[])controllerContext.RouteData.DataTokens["namespaces"]).FirstOrDefault(), section, name, controllerContext.RouteData.Values["controller"], areaName);
+            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}",
+                ((string[])controllerContext.RouteData.DataTokens["namespaces"]).FirstOrDefault(), section, name, controllerContext.RouteData.Values["controller"], areaName, portalId);
         }
     }
 }

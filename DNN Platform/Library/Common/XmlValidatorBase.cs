@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -119,7 +119,11 @@ namespace DotNetNuke.Common
         public virtual bool Validate(Stream xmlStream)
         {
             xmlStream.Seek(0, SeekOrigin.Begin);
-            _reader = new XmlTextReader(xmlStream);
+            _reader = new XmlTextReader(xmlStream)
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             return IsValid();
         }
 
@@ -130,7 +134,11 @@ namespace DotNetNuke.Common
 		/// <returns></returns>
         public virtual bool Validate(string filename)
         {
-            _reader = new XmlTextReader(filename);
+            _reader = new XmlTextReader(filename)
+            {
+                XmlResolver = null,
+                DtdProcessing = DtdProcessing.Prohibit
+            };
             return IsValid();
         }
     }

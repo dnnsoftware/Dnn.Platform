@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -97,7 +97,18 @@ namespace DotNetNuke.Services.Localization
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
-            return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(portalSettings, resourceValue);
+        }
+
+        private string RemoveHttpUrlsIfSiteisSSLEnabled(PortalSettings portalSettings, string resourceValue)
+        {
+
+            if (portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
+            {
+                resourceValue = resourceValue.Replace(@"http:", @"https:");
+            }
+
+            return resourceValue;
         }
 
         /// <summary>
@@ -122,7 +133,7 @@ namespace DotNetNuke.Services.Localization
                     key += ".Text";
                 }
                 string resourceFileName = GetResourceFileName(resourceFileRoot, language);
-                resourceFileName = resourceFileName.Replace("." + language.ToLower() + ".", "." + language + ".");
+                resourceFileName = resourceFileName.Replace("." + language.ToLowerInvariant() + ".", "." + language + ".");
                 switch (resourceType)
                 {
                     case CustomizedLocale.Host:
@@ -133,18 +144,18 @@ namespace DotNetNuke.Services.Localization
                         break;
                 }
                 resourceFileName = resourceFileName.TrimStart('~', '/', '\\');
-                string filePath = HostingEnvironment.MapPath("~/" + Globals.ApplicationPath + resourceFileName);
+                string filePath = HostingEnvironment.MapPath("~/" + resourceFileName);
                 XmlDocument doc = null;
                 if (File.Exists(filePath))
                 {
-                    doc = new XmlDocument();
+                    doc = new XmlDocument { XmlResolver = null };
                     doc.Load(filePath);
                 }
                 else
                 {
                     if (createFile)
                     {
-                        doc = new System.Xml.XmlDocument();
+                        doc = new XmlDocument { XmlResolver = null };
                         doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
                         XmlNode root = doc.CreateElement("root");
                         doc.AppendChild(root);
@@ -173,7 +184,7 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
                 doc.Save(filePath);
-                DataCache.RemoveCache("/" + resourceFileName.ToLower());
+                DataCache.RemoveCache("/" + resourceFileName.ToLowerInvariant());
                 return true;
             }
             catch (Exception ex)
@@ -372,12 +383,12 @@ namespace DotNetNuke.Services.Localization
         private static string GetResourceFileName(string resourceFileRoot, string language)
         {
             string resourceFile;
-            language = language.ToLower();
+            language = language.ToLowerInvariant();
             if (resourceFileRoot != null)
             {
-                if (language == Localization.SystemLocale.ToLower() || String.IsNullOrEmpty(language))
+                if (language == Localization.SystemLocale.ToLowerInvariant() || String.IsNullOrEmpty(language))
                 {
-                    switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLower())
+                    switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLowerInvariant())
                     {
                         case ".resx":
                             resourceFile = resourceFileRoot;
@@ -395,7 +406,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLower())
+                    switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLowerInvariant())
                     {
                         case ".resx":
                             resourceFile = resourceFileRoot.Replace(".resx", "." + language + ".resx");
@@ -414,7 +425,7 @@ namespace DotNetNuke.Services.Localization
             }
             else
             {
-                if (language == Localization.SystemLocale.ToLower() || String.IsNullOrEmpty(language))
+                if (language == Localization.SystemLocale.ToLowerInvariant() || String.IsNullOrEmpty(language))
                 {
                     resourceFile = Localization.SharedResourceFile;
                 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -339,7 +339,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (!string.IsNullOrEmpty(Level))
                 {
-                    switch (Level.ToLower())
+                    switch (Level.ToLowerInvariant())
                     {
                         case "root":
                             break;
@@ -347,7 +347,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             blnAddUpNode = true;
                             break;
                         default:
-                            if (Level.ToLower() != "root" && PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
+                            if (Level.ToLowerInvariant() != "root" && PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
                             {
                                 blnAddUpNode = true;
                             }
@@ -477,7 +477,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// The Page_Load server event handler on this user control is used
         /// to populate the tree with the Pages.
         /// </summary>
-        /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>

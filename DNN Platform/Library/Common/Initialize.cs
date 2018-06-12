@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
@@ -57,21 +58,6 @@ namespace DotNetNuke.Common
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
-
-        private static void CacheMappedDirectory()
-        {
-            //This code is only retained for binary compatability.
-#pragma warning disable 612,618
-            var objFolderController = new FolderController();
-            ArrayList arrPortals = PortalController.Instance.GetPortals();
-            int i;
-            for (i = 0; i <= arrPortals.Count - 1; i++)
-            {
-                var objPortalInfo = (PortalInfo)arrPortals[i];
-                objFolderController.SetMappedDirectory(objPortalInfo, HttpContext.Current);
-            }
-#pragma warning restore 612,618
-        }
 
         private static string CheckVersion(HttpApplication app)
         {
@@ -251,9 +237,6 @@ namespace DotNetNuke.Common
                 if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
-
-                    //Cache Mapped Directory(s)
-                    CacheMappedDirectory();
                     //Set globals
                     Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                     Globals.OperatingSystemVersion = Environment.OSVersion.Version;
@@ -276,6 +259,8 @@ namespace DotNetNuke.Common
 
                     ModuleInjectionManager.RegisterInjectionFilters();
 
+                    ConnectionsManager.Instance.RegisterConnections();
+
                     //Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
@@ -296,7 +281,7 @@ namespace DotNetNuke.Common
 
         private static bool IsUpgradeOrInstallRequest(HttpRequest request)
         {
-            var url = request.Url.LocalPath.ToLower();
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
             return url.EndsWith("/install.aspx")
                 || url.Contains("/upgradewizard.aspx")
@@ -458,7 +443,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
-            var toLowerLocalPath = request.Url.LocalPath.ToLower();
+            var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
 
             if (toLowerLocalPath.EndsWith("webresource.axd")
                     || toLowerLocalPath.EndsWith("scriptresource.axd")

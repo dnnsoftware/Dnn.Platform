@@ -1,0 +1,7 @@
+﻿<configuration>
+    <appSettings>
+      <add key="DNN-8604.key1" value="value0" />
+      <add key="DNN-8604.key2" value="value2" />
+      <add key="DNN-8604.key3" value="value3" />
+    </appSettings>
+</configuration>

@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Journal {
             DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
             DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
             if (!String.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"]))) {
-                CommentXML = new XmlDocument();
+                CommentXML = new XmlDocument { XmlResolver = null };
                 CommentXML.LoadXml(dr["CommentXML"].ToString());
             }
             UserId = Null.SetNullInteger(dr["UserId"]);

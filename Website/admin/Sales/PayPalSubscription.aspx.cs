@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 if (intUserID != -1 && intRoleId != -1 && !String.IsNullOrEmpty(strProcessorUserId))
                 {
                     // Sandbox mode
-                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLower() == "true")
+                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLowerInvariant() == "true")
                     {
                         strPayPalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?";
                     }

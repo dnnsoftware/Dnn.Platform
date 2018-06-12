@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,7 +57,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             var userInfo = UserController.Instance.GetUser(portalId, userId);
             var username = objSecurity.InputFilter(userInfo.Username,
@@ -182,7 +182,7 @@ namespace Dnn.ExportImport.Components.Controllers
             summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
             {
                 TotalItems = checkpoint.TotalItems,
-                ProcessedItems = checkpoint.ProcessedItems,
+                ProcessedItems = checkpoint.ProcessedItems <= checkpoint.TotalItems ? checkpoint.ProcessedItems : checkpoint.TotalItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,

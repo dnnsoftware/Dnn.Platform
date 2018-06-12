@@ -1,0 +1,49 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Newtonsoft.Json" type="Library" version="10.00.03" isSystem="true">
+      <friendlyName>Newtonsoft Json Components</friendlyName>
+      <description>Provides Newtonsoft Json Components for DotNetNuke.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license>License.txt</license>
+      <releaseNotes>
+        This package includes Newtonsoft.Json assembly version 10.0.3.
+        Please go to https://www.newtonsoft.com/json to view release notes on this particular version.</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Newtonsoft.Json.dll</name>
+              <version>10.0.3</version>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']" action="update" targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Newtonsoft.Json']/ab:bindingRedirect" collision="save"  nameSpace="urn:schemas-microsoft-com:asm.v1" nameSpacePrefix="ab">
+                    <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="10.0.0.0" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes />
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

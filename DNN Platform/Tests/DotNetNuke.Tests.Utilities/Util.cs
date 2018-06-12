@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Utilities
         public static string GetFileName(string testFilesFolder, string fileName)
         {
             string fullName = String.Format("{0}\\{1}", testFilesFolder, fileName);
-            if (!fullName.ToLower().EndsWith(".csv") && !fullName.ToLower().EndsWith(".sql"))
+            if (!fullName.ToLowerInvariant().EndsWith(".csv") && !fullName.ToLowerInvariant().EndsWith(".sql"))
             {
                 fullName += ".csv";
             }

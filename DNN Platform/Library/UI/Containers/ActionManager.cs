@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -290,7 +290,7 @@ namespace DotNetNuke.UI.Containers
             if (!String.IsNullOrEmpty(action.ClientScript))
             {
                 string Script = action.ClientScript;
-                int JSPos = Script.ToLower().IndexOf("javascript:");
+                int JSPos = Script.ToLowerInvariant().IndexOf("javascript:");
                 if (JSPos > -1)
                 {
                     Script = Script.Substring(JSPos + 11);

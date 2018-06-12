@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                if (string.IsNullOrEmpty(_FileName))
+                if (string.IsNullOrEmpty(_FileName) && _xmlMerge.ConfigUpdateChangedNodes)
                 {
                     //Save the XmlDocument
                     Config.Save(TargetConfig, TargetFile.FullName);
@@ -160,14 +160,14 @@ namespace DotNetNuke.Services.Installer.Installers
                     Util.BackupFile(TargetFile, PhysicalSitePath, Log);
 
                     //Create an XmlDocument for the config file
-                    _TargetConfig = new XmlDocument();
+                    _TargetConfig = new XmlDocument { XmlResolver = null };
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from InstallConfig source
-                    var merge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
+                    _xmlMerge = new XmlMerge(new StringReader(InstallConfig), Package.Version.ToString(), Package.Name);
 
                     //Update the Config file - Note that this method does not save the file - we will save it in Commit
-                    merge.UpdateConfig(TargetConfig);
+                    _xmlMerge.UpdateConfig(TargetConfig);
                     Completed = true;
                     Log.AddInfo(Util.CONFIG_Updated + " - " + TargetFile.Name);
                 }
@@ -252,7 +252,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (!string.IsNullOrEmpty(UnInstallConfig))
                 {
                     //Create an XmlDocument for the config file
-                    _TargetConfig = new XmlDocument();
+                    _TargetConfig = new XmlDocument { XmlResolver = null };
                     TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
                     //Create XmlMerge instance from UnInstallConfig source

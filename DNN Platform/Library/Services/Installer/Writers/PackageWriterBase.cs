@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -607,19 +607,19 @@ namespace DotNetNuke.Services.Installer.Writers
             switch (file.Type)
             {
                 case InstallFileType.AppCode:
-                    _AppCodeFiles[file.FullName.ToLower()] = file;
+                    _AppCodeFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Assembly:
-                    _Assemblies[file.FullName.ToLower()] = file;
+                    _Assemblies[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.CleanUp:
-                    _CleanUpFiles[file.FullName.ToLower()] = file;
+                    _CleanUpFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Script:
-                    _Scripts[file.FullName.ToLower()] = file;
+                    _Scripts[file.FullName.ToLowerInvariant()] = file;
                     break;
                 default:
-                    _Files[file.FullName.ToLower()] = file;
+                    _Files[file.FullName.ToLowerInvariant()] = file;
                     break;
             }
             if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
@@ -634,7 +634,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public void AddResourceFile(InstallFile file)
         {
-            _Resources[file.FullName.ToLower()] = file;
+            _Resources[file.FullName.ToLowerInvariant()] = file;
         }
 
         public void CreatePackage(string archiveName, string manifestName, string manifest, bool createManifest)

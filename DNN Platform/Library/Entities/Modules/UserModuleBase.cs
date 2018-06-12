@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -498,28 +498,6 @@ namespace DotNetNuke.Entities.Modules
             }
            
             return strMessage;
-        }
-
-
-        [Obsolete("In DotNetNuke 5.0 there is no longer the concept of an Admin Page.  All pages are controlled by Permissions")]
-        protected bool IsAdminTab
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetDefaultUserSettings().")]
-        public static Hashtable GetDefaultSettings()
-        {
-            return UserController.GetDefaultUserSettings();
-        }
-
-        [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetUserSettings(settings).")]
-        public static Hashtable GetSettings(Hashtable settings)
-        {
-            return UserController.GetUserSettings(PortalController.Instance.GetCurrentPortalSettings().PortalId, settings);
         }
 
         #region Private methods

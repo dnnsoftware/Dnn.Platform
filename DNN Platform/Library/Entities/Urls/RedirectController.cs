@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -223,7 +223,7 @@ namespace DotNetNuke.Entities.Urls
                                 //now we need to generate the friendly Url
 
                                 //first check to see if the parameter replacement string has a destination tabid specified
-                                if (parms.ToLower().Contains("tabid/"))
+                                if (parms.ToLowerInvariant().Contains("tabid/"))
                                 {
                                     //if so, using a feature whereby the dest tabid can be changed within the parameters, which will 
                                     //redirect the page as well as redirecting the parameter values
@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
                                             //remove the tabid/xx from the path
                                             break; //that's it, we're finished
                                         }
-                                        if (parmPart.ToLower() == "tabid")
+                                        if (parmPart.ToLowerInvariant() == "tabid")
                                         {
                                             tabIdNext = true;
                                         }

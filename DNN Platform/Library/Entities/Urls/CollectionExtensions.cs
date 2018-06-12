@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,7 +41,11 @@ namespace DotNetNuke.Entities.Urls
             messages = new List<string>();
             if (File.Exists(fileName))
             {
-                var rdr = new XmlTextReader(fileName);
+                var rdr = new XmlTextReader(fileName)
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
                 while (rdr.Read())
                 {
                     switch (rdr.NodeType)
@@ -128,7 +132,11 @@ namespace DotNetNuke.Entities.Urls
             }
             if (File.Exists(fileName))
             {
-                var rdr = new XmlTextReader(fileName);
+                var rdr = new XmlTextReader(fileName)
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
                 while (rdr.Read())
                 {
                     switch (rdr.NodeType)
@@ -231,7 +239,11 @@ namespace DotNetNuke.Entities.Urls
             }
             if (File.Exists(fileName))
             {
-                var rdr = new XmlTextReader(fileName);
+                var rdr = new XmlTextReader(fileName)
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Prohibit
+                };
                 while (rdr.Read())
                 {
                     switch (rdr.NodeType)

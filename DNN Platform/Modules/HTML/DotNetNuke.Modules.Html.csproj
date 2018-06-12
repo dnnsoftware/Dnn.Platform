@@ -38,7 +38,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.Html.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>default</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,10 +73,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ClientDependency.Core">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
@@ -204,6 +200,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">

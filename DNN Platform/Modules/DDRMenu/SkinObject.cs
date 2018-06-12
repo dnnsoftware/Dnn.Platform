@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.DDRMenu
 										Navigation.ToolTipSource.None,
 										-1,
 										-1,
-										DNNAbstract.GetNavNodeOptions(IncludeHidden))));
+										DNNAbstract.GetNavNodeOptions(true))));
 					}
 
 					menu.PreRender();

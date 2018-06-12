@@ -255,6 +255,15 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>benutzerdefiniert</value>
   </data>
+  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
+    <value>Produktverbesserungsprogramm</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
+    <value>Das Produktverbesserungsprogramm ermöglicht uns, besser zu verstehen, wie wir DNN für Sie verbessern können. Die Daten helfen uns, die Nutzung zu analysieren und was für die Nutzer des Produkts wichtig ist. Alle Daten sind anonym und nur für den internen Gebrauch bestimmt. Erfahren Sie mehr über das &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Produktverbesserungsprogramm&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
+    <value>Senden Sie anonyme Nutzungsinformationen an DNN</value>
+  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Ältere Dateien löschen für </value>
   </data>
@@ -516,6 +525,18 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
   </data>
   <data name="WebsiteTemplate.Text" xml:space="preserve">
     <value>Vorlage</value>
+  </data>
+  <data name="Email.Help" xml:space="preserve">
+    <value>Geben Sie eine E-Mail-Adresse für diesen Benutzer ein.</value>
+  </data>
+  <data name="Email.Invalid" xml:space="preserve">
+    <value>Die eingegebene E-Mail-Adresse ist nicht gültig</value>
+  </data>
+  <data name="Email.Required" xml:space="preserve">
+    <value>Eine E-Mail-Adresse ist erforderlich</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>E-Mail-Addresse:</value>
   </data>
   <data name="AcceptTerms.Required" xml:space="preserve">
     <value>Accept the terms of the license agreement to continue.</value>

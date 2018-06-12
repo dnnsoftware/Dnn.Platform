@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 
@@ -215,7 +216,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string userName = objSecurity.InputFilter(user.Username,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -257,6 +258,9 @@ namespace DotNetNuke.Security.Membership
                                                           updatePassword,
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));
+
+                //Save the user password history
+                new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
             }
             catch (Exception ex)
             {
@@ -270,7 +274,7 @@ namespace DotNetNuke.Security.Membership
 
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -623,7 +627,7 @@ namespace DotNetNuke.Security.Membership
 
         private static void UpdateUserMembership(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -698,6 +702,11 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.ValidateUser(username, password);
         }
 
+        private string GetStringSetting(Hashtable settings, string settingKey)
+        {
+            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
+        }
+
         #endregion
 
         #region Public Methods
@@ -723,12 +732,50 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNull("userId", userId);
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
-            _dataProvider.ChangeUsername(userId, newUsername);
+            var userName = PortalSecurity.Instance.InputFilter(newUsername,
+                                                      PortalSecurity.FilterFlag.NoScripting |
+                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
+                                                      PortalSecurity.FilterFlag.NoMarkup);
+
+            if (!userName.Equals(newUsername))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+          
+            var valid = UserController.Instance.IsValidUserName(userName);
+
+		    if (!valid)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+            }
+
+            //read all the user account settings
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings != null)
+            {
+                var settings = UserController.GetUserSettings(portalSettings.PortalId);
+
+                //User Name Validation
+                var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
+                if (!string.IsNullOrEmpty(userNameValidator))
+                {
+                    var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                    var matches = regExp.Matches(userName);
+                    if (matches.Count == 0)
+                    {
+                        throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+                    }
+                }
+            }
+
+            _dataProvider.ChangeUsername(userId, userName);
+
             EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
+                               portalSettings,
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
+
             DataCache.ClearCache();          
         }
 
@@ -800,7 +847,7 @@ namespace DotNetNuke.Security.Membership
 
         private UserCreateStatus ValidateForProfanity(UserInfo user)
         {
-            var portalSecurity = new PortalSecurity();
+            var portalSecurity = PortalSecurity.Instance;
             var createStatus = UserCreateStatus.AddUser;
 
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
@@ -831,7 +878,7 @@ namespace DotNetNuke.Security.Membership
 
             if (requireUniqueDisplayName)
             {
-                UserInfo duplicateUser = GetUserByDisplayName(Null.NullInteger, user.DisplayName);
+                UserInfo duplicateUser = GetUserByDisplayName(user.PortalID, user.DisplayName);
                 if (duplicateUser != null)
                 {
                     createStatus = UserCreateStatus.DuplicateDisplayName;
@@ -1587,8 +1634,12 @@ namespace DotNetNuke.Security.Membership
 
 			//Get AspNet MembershipUser
 			MembershipUser aspnetUser = GetMembershipUser(user);
+            if (aspnetUser.IsLockedOut)
+            {
+                aspnetUser.UnlockUser();
+            }
 
-			string resetPassword = ResetPassword(user, answer);
+            string resetPassword = ResetPassword(user, answer);
 			return aspnetUser.ChangePassword(resetPassword, newPassword);
 		}
 
@@ -1640,7 +1691,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UpdateUser(UserInfo user)
         {
-            var objSecurity = new PortalSecurity();
+            var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(user.FirstName,
                                                        PortalSecurity.FilterFlag.NoScripting |
                                                        PortalSecurity.FilterFlag.NoAngleBrackets |
@@ -1661,7 +1712,16 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            
+
+            if (!firstName.Equals(user.FirstName))
+            {
+                user.FirstName = firstName;
+            }
+
+            if (!lastName.Equals(user.LastName))
+            {
+                user.LastName = lastName;
+            }
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1799,7 +1859,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        var ps = new PortalSecurity();
+                        var ps = PortalSecurity.Instance;
                         if (verificationCode == ps.Encrypt(Config.GetDecryptionkey(), portalId + "-" + user.UserID))
                         {
                             UserController.ApproveUser(user);
@@ -1858,57 +1918,5 @@ namespace DotNetNuke.Security.Membership
             }
             return arrUsers;
         }
-
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
-        {
-            return GetUnAuthorizedUsers(portalId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUser(int portalId, int userId, bool isHydrated)
-        {
-            return GetUser(portalId, userId);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override UserInfo GetUserByUserName(int portalId, string username, bool isHydrated)
-        {
-            return GetUserByUserName(portalId, username);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize,
-                                           ref int totalRecords)
-        {
-            return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex,
-                                                  int pageSize, ref int totalRecords)
-        {
-            return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch,
-                                                     int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in 5.1 as Ishydrated is no longer supported")]
-        public override ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName,
-                                                            string propertyValue, int pageIndex, int pageSize,
-                                                            ref int totalRecords)
-        {
-            return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords);
-        }
-
-        #endregion
     }
 }

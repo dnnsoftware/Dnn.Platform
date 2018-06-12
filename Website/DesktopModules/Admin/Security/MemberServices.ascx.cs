@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
+// Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -176,6 +176,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         ///	<param name="price">The price to format</param>
+        /// <param name="period">Period of price.</param>
+        /// <param name="frequency">Frenquency of price.</param>
         ///	<returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
@@ -211,6 +213,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         ///	<param name="price">The price to format</param>
+        /// <param name="period">Period of price.</param>
+        /// <param name="frequency">Frenquency of price.</param>
         ///	<returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
@@ -275,7 +279,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="Subscribed">The service state</param>
+        ///	<param name="subscribed">The service state</param>
+        ///	<param name="expiryDate">The service expiry date.</param>
         ///	<returns>The correctly formatted text</returns>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
@@ -466,11 +471,6 @@ namespace DotNetNuke.Modules.Admin.Security
 				//Unsubscribe
                 Subscribe(roleID, true);
             }
-            else if (commandName == Localization.GetString("Unsubscribe", LocalResourceFile))
-            {
-				//Unsubscribe
-                Subscribe(roleID, true);
-            }
             else if (commandName == "UseTrial")
             {
 				//Use Trial
@@ -498,6 +498,7 @@ namespace DotNetNuke.Modules.Admin.Security
             /// Constructs a new SubscriptionUpdatedEventArgs
             /// </summary>
             /// <param name="cancel">Whether this is a subscription cancellation</param>
+            /// <param name="roleName">The role name of subscription role.</param>
             /// -----------------------------------------------------------------------------
             public SubscriptionUpdatedEventArgs(bool cancel, string roleName)
             {
