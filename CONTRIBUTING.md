@@ -13,9 +13,12 @@ so that we can have a chance of keeping on top of things.
 * [Submit a ticket](https://github.com/dnnsoftware/Dnn.Platform/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.
+  * We have included an issue template which helps make sure all of the relevant information is included with the issue report.
 
 ## Fork the repository on GitHub
+
 If this is your first time working with Dnn:Platform. You will need to fork the repository to get your system configured for local development.
+
 * Click fork on the main Dnn:Platform project
 * Clone your fork locally with `git clone https://github.com/[username]/Dnn.Platform.git` replacing [username] with your account information.
 * Add the upstream connection so you can rebase and update your fork with `git remote add upstream https://github.com/dnnsoftware/Dnn.Platform.git`
@@ -34,14 +37,6 @@ If this is your first time working with Dnn:Platform. You will need to fork the 
 * Make sure your commit messages are in the proper format.
 
 ````
-    Make the example in CONTRIBUTING imperative and concrete
-
-    Without this patch applied the example commit message in the CONTRIBUTING
-    document is not a concrete example.  This is a problem because the
-    contributor is left to imagine what the commit message should look like
-    based on a description rather than an example.  This patch fixes the
-    problem by making the example concrete and imperative.
-
     The first line is a real life imperative statement, indicating what 
     happens to the code when this commit is applied.  The body describes the 
     behavior without the patch, why this is a problem, and how the patch 
@@ -66,12 +61,6 @@ appropriate to start the first line of a commit with '(doc)' instead of
 a ticket number. 
 
 ````
-    (doc) Add documentation commit example to CONTRIBUTING
-
-    There is no example for contributing a documentation commit
-    to the DNN repository. This is a problem because the contributor
-    is left to assume how a commit of this nature may appear.
-
     The first line is a real life imperative statement with '(doc)' in
     place of what would have been the ticket number in a 
     non-documentation related commit. The body describes the nature of
