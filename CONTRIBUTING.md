@@ -99,6 +99,6 @@ a ticket number.
 # Additional Resources
 
 * [Issue tracker](https://github.com/dnnsoftware/Dnn.Platform/issues)
-* [Contributor License Agreement](http://www.dnnsoftware.com/Portals/0/Community/CLA/DNN - CLA.docx)
+* [Contributor License Agreement](http://www.dnnsoftware.com/Portals/0/Community/CLA/DNN%20-%20CLA.docx)
 * [General GitHub documentation](http://help.github.com/)
 * [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
