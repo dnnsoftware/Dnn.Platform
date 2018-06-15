@@ -26,7 +26,6 @@ using System.Web.UI;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 
 #endregion
@@ -35,6 +34,7 @@ using DotNetNuke.Security;
 namespace DotNetNuke.UI.WebControls
 // ReSharper restore CheckNamespace
 {
+    
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
     {
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -73,8 +73,9 @@ namespace DotNetNuke.UI.WebControls
 
             foreach (FieldEditorControl editor in Fields)
             {
-                //Check whether Field is readonly
-                string fieldName = editor.Editor.Name;
+                //Check whether Field is readonly. Replace "_" with " " (Spaces) to find the correct definitions.
+                string fieldName = editor.Editor.Name.Replace("_", " ");
+
                 ProfilePropertyDefinitionCollection definitions = editor.DataSource as ProfilePropertyDefinitionCollection;
                 ProfilePropertyDefinition definition = definitions[fieldName];
 
