@@ -1724,7 +1724,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Services\Zip\readme.md" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
   <ItemGroup>

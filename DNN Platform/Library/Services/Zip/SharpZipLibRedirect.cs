@@ -2,25 +2,22 @@
 using System.Linq;
 using System.Reflection;
 
-// DNN uses SharpZipLib as the zip system of choice.Because of this, it is bundled with DNN.
-//
-// This folder here contains a fix for a breaking upgrade in DNN 9.2 regarding the ZIP.
-// The class in this folder will be used by.net when an assembly is missing.
-// It will then check if .net was looking for SharpZipLib, and if necessary,
-// redirect it to the correct (new) assembly.
-//
-// Once this remapping has been completed, this code will not be used again until the next
-// restart of the DNN application. 
-
 namespace DotNetNuke.Services.Zip
 {
     /// <summary>
-    /// This class is in charge of fixing an assembly rename which was necessary when DNN
-    /// upgraded from an older SharpZipLib. 
+    /// This class contains a fix for a breaking upgrade in DNN 9.2 regarding the ZIP.
+    /// It is in charge of fixing an assembly rename which was necessary when DNN
+    /// upgraded from an older SharpZipLib with a different DLL name. 
     /// </summary>
     /// <remarks>
+    /// The class in this folder will be used by.net when an assembly is missing.
+    /// It will then check if .net was looking for SharpZipLib, and if necessary,
+    /// redirect it to the correct (new) assembly.
+    ///
+    /// Once this remapping has been completed, this code will not be used again until the next
+    /// restart of the DNN application. 
+    /// 
     /// final solution taken from https://raw.githubusercontent.com/2sic/2sxc/master/2sxc%20Dnn/Dnn920/SharpZipLibRedirect.cs
-    /// read the readme.md in this folder for more info
     /// </remarks>
     internal class SharpZipLibRedirect
     {
