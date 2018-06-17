@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -35,7 +37,7 @@ class ProfilePropertyEditor extends Component {
             },
             propertyLocalization: undefined,
             error: {
-                name: true,
+                name: [{required:true},{noSpecialCharacter:true}],
                 category: true,
                 datatype: true,
                 localeName: false,
@@ -52,6 +54,10 @@ class ProfilePropertyEditor extends Component {
         props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
     }
 
+    componentDidMount() {
+        ReactDOM.findDOMNode(this).querySelectorAll("input")[0].focus();
+    }
+
     componentWillReceiveProps(props) {
         let { state } = this;
 
@@ -60,21 +66,29 @@ class ProfilePropertyEditor extends Component {
         }
 
         if (props.profileProperty["PropertyName"] === undefined || props.profileProperty["PropertyName"] === "") {
-            state.error["name"] = true;
+            state.error.name["required"] = true;
         }
-        else if (props.profileProperty["PropertyName"] !== "" && props.profileProperty["PropertyName"] !== undefined) {
-            state.error["name"] = false;
+        else {
+            state.error.name["required"] = false;
         }
+        
+        if (!this.isValidName(props.profileProperty["PropertyName"])) {
+            state.error.name["noSpecialCharacter"] = true; 
+        } 
+        else {
+            state.error.name["noSpecialCharacter"] = false;
+        }
+
         if (props.profileProperty["PropertyCategory"] === "" || props.profileProperty["PropertyCategory"] === undefined) {
             state.error["category"] = true;
         }
-        else if (props.profileProperty["PropertyCategory"] !== "" && props.profileProperty["PropertyCategory"] !== undefined) {
+        else {
             state.error["category"] = false;
         }
         if (props.profileProperty["DataType"] === "" || props.profileProperty["DataType"] === undefined) {
             state.error["datatype"] = true;
         }
-        else if (props.profileProperty["DataType"] !== "" && props.profileProperty["DataType"] !== undefined) {
+        else {
             state.error["datatype"] = false;
         }
         let length = props.profileProperty["Length"];
@@ -89,7 +103,7 @@ class ProfilePropertyEditor extends Component {
             if (props.propertyLocalization["PropertyName"] === "" || props.propertyLocalization["PropertyName"] === undefined) {
                 state.error["localeName"] = true;
             }
-            else if (props.propertyLocalization["PropertyName"] !== "" && props.propertyLocalization["PropertyName"] !== undefined) {
+            else {
                 state.error["localeName"] = false;
             }
         }
@@ -97,11 +111,24 @@ class ProfilePropertyEditor extends Component {
         this.setState({
             profileProperty: Object.assign({}, props.profileProperty),
             propertyLocalization: Object.assign({}, props.propertyLocalization),
-            triedToSubmit: false,
+            triedToSubmit: state.triedToSubmit,
             error: state.error
         });
     }
 
+    isValidName(name) {
+        const validatePropertyName = /^[a-zA-Z0-9 ]+$/g;
+        const isValid = validatePropertyName.test(name);
+        return isValid;
+    }
+
+    _chooseNameError() {
+        if (this.state.error.name.noSpecialCharacter) {
+            return resx.get("ProfilePropertyDefinition_PropertyName.NoSpecialCharacters");
+        }
+        return resx.get("ProfilePropertyDefinition_PropertyName.Required"); 
+    }
+    
     isValidLength(val) {
         let { props } = this;
         if (props.profileProperty) {
@@ -127,21 +154,29 @@ class ProfilePropertyEditor extends Component {
         let profileProperty = Object.assign({}, state.profileProperty);
 
         if (profileProperty[key] === "" && key === "PropertyName") {
-            state.error["name"] = true;
+            state.error.name["required"] = true;
         }
-        else if (profileProperty[key] !== "" && key === "PropertyName") {
-            state.error["name"] = false;
+        else {
+            state.error.name["required"] = false;
         }
+
+        if (!this.isValidName(profileProperty["PropertyName"])) {
+            state.error.name["noSpecialCharacter"] = true; 
+        } 
+        else {
+            state.error.name["noSpecialCharacter"] = false;
+        }
+
         if (profileProperty[key] === "" && key === "PropertyCategory") {
             state.error["category"] = true;
         }
-        else if (profileProperty[key] !== "" && key === "PropertyCategory") {
+        else {
             state.error["category"] = false;
         }
         if (profileProperty[key] === "" && key === "DataType") {
             state.error["datatype"] = true;
         }
-        else if (profileProperty[key] !== "" && key === "DataType") {
+        else {
             state.error["datatype"] = false;
         }
 
@@ -261,7 +296,7 @@ class ProfilePropertyEditor extends Component {
             triedToSubmit: true
         });
 
-        if (state.error.name || state.error.category || state.error.datatype || state.error.length) {
+        if (state.error.name.required || state.error.name.noSpecialCharacter || state.error.category || state.error.datatype || state.error.length) {
             return;
         }
 
@@ -372,11 +407,12 @@ class ProfilePropertyEditor extends Component {
                         label={resx.get("ProfilePropertyDefinition_PropertyName") + "*"}
                     />
                     <SingleLineInputWithError
+                        id="profilePropertyName"
                         enabled={this.props.id === "add" ? true : false}
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
-                        error={this.state.error.name && this.state.triedToSubmit}
-                        errorMessage={resx.get("ProfilePropertyDefinition_PropertyName.Required")}
+                        error={(this.state.error.name.required || this.state.error.name.noSpecialCharacter) && this.state.triedToSubmit}
+                        errorMessage={this._chooseNameError()}
                         value={this.state.profileProperty ? this.state.profileProperty.PropertyName : ""}
                         onChange={this.onSettingChange.bind(this, "PropertyName")}
                     />

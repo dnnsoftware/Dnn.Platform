@@ -32,6 +32,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
+using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -804,6 +805,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (ValidateProperty(property))
                 {
+                    Regex propertyNameRegex = new Regex("^[a-zA-Z0-9 ]+$");
+                    if (!propertyNameRegex.Match(property.PropertyName).Success)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("NoSpecialCharacterName.Text", Components.Constants.Constants.LocalResourcesFile)));
+                    }
+
                     var propertyId = ProfileController.AddPropertyDefinition(property);
                     if (propertyId < Null.NullInteger)
                     {
