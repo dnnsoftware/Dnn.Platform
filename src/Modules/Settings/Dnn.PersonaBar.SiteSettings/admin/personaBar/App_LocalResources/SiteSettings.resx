@@ -484,7 +484,7 @@
     <value>The field name is required.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.NoSpecialCharacters" xml:space="preserve">
-    <value>The field name does not acccept special characters.</value>
+    <value>The field name does not acccept special or space characters.</value>
   </data>
   <data name="ProfilePropertyDefinition_DataType.Required" xml:space="preserve">
     <value>The data type is required.</value>

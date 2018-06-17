@@ -805,7 +805,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (ValidateProperty(property))
                 {
-                    Regex propertyNameRegex = new Regex("^[a-zA-Z0-9 ]+$");
+                    Regex propertyNameRegex = new Regex("^[a-zA-Z0-9]+$");
                     if (!propertyNameRegex.Match(property.PropertyName).Success)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("NoSpecialCharacterName.Text", Components.Constants.Constants.LocalResourcesFile)));
