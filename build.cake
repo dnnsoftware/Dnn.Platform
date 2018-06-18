@@ -16,7 +16,7 @@ var buildNumber = Argument("buildNumber", "9.2.2");;
 // Define directories.
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
-
+var tempDir = Directory("c:\\temp\\x\\");
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -27,6 +27,7 @@ Task("Clean")
 {
     CleanDirectory(buildDir);
 	CleanDirectory(artifactDir);
+	CleanDirectory(tempDir);
 });
 
 Task("Restore-NuGet-Packages")
@@ -78,10 +79,12 @@ Task("ExternalExtensions")
 	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", "./src/Downloads/EditBar.zip");
 	
 	//todo: path too long, java requirement, verify output
-	//Unzip("./src/Downloads/AdminExperience.Library.zip", "./src/Projects/");
-	//Unzip("./src/Downloads/AdminExperience.Extensions.zip", "./src/Projects/");
-	//Unzip("./src/Downloads/EditBar.zip", "./src/Projects/");
-
+	Unzip("./src/Downloads/AdminExperience.Library.zip", "c:\\temp\\x");
+	Unzip("./src/Downloads/AdminExperience.Extensions.zip", "c:\\temp\\x");
+	Unzip("./src/Downloads/EditBar.zip", "c:\\temp\\x");
+	
+	//CopyDirectory("c:\\temp\\x", "./src/Projects/");
+	
 	var externalSolutions = GetFiles("./src/Projects/**/*.sln");
 	
 	Information("Found {0} solutions.", externalSolutions.Count);
@@ -99,11 +102,27 @@ Task("ExternalExtensions")
 		MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 	}
 	
+	externalSolutions = GetFiles("c:/temp/x/**/*.sln");
+	
+	Information("Found {0} solutions.", externalSolutions.Count);
+	
+	foreach (var solution in externalSolutions){
+		var solutionPath = solution.ToString();
+		
+		Information("File: {0}", solutionPath);
+		
+		NuGetRestore(solutionPath);
+		MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
+	}
+	
 	//grab all install zips and copy to staging directory
 	CopyFiles("./src/Projects/**/*_Install.zip", artifactDir);
 	
 	//update cdf to latest build
 	CopyFiles("./src/Projects/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
+	
+	
+	CopyFiles("c:/temp/x/**/*_Install.zip", artifactDir);
 	
 });
 
