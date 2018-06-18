@@ -39,6 +39,8 @@ Task("Restore-NuGet-Packages")
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
 	.IsDependentOn("CompileSource")
+	.IsDependentOn("ExternalExtensions")
+	.IsDependentOn("CreateInstall")
     .Does(() =>
 {
 	
@@ -57,27 +59,51 @@ Task("CompileSource")
 });
 
 Task("ExternalExtensions")
-	.IsDependentOn("Clean")
     .Does(() =>
 {
 	CreateDirectory("./src/Downloads");
 	CreateDirectory("./src/Projects");
 
+	//CKEditor
 	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", "./src/Downloads/ckeditor.zip");
 	Unzip("./src/Downloads/ckeditor.zip", "./src/Projects/");
 	
+	//cdf
+	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", "./src/Downloads/clientdependency.zip");
+	Unzip("./src/Downloads/clientdependency.zip", "./src/Projects/");
 	
+	//pb
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", "./src/Downloads/AdminExperience.Library.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Downloads/AdminExperience.Extensions.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", "./src/Downloads/EditBar.zip");
+	
+	//todo: path too long, java requirement, verify output
+	//Unzip("./src/Downloads/AdminExperience.Library.zip", "./src/Projects/");
+	//Unzip("./src/Downloads/AdminExperience.Extensions.zip", "./src/Projects/");
+	//Unzip("./src/Downloads/EditBar.zip", "./src/Projects/");
+
 	var externalSolutions = GetFiles("./src/Projects/**/*.sln");
 	
 	Information("Found {0} solutions.", externalSolutions.Count);
 	
 	foreach (var solution in externalSolutions){
-		Information("File: {0}", solution);
-		NuGetRestore(solution);
-		MSBuild(solution, settings => settings.SetConfiguration(configuration));
+		var solutionPath = solution.ToString();
 		
-		CopyFiles("./src/Projects/**/*_Install.zip", artifactDir);
+		//cdf contains two solutions, we only want the dnn solution
+		if (solutionPath.Contains("ClientDependency-dnn") && !solutionPath.EndsWith(".DNN.sln")) {
+			continue;
+		}
+		
+		Information("File: {0}", solutionPath);
+		NuGetRestore(solutionPath);
+		MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 	}
+	
+	//grab all install zips and copy to staging directory
+	CopyFiles("./src/Projects/**/*_Install.zip", artifactDir);
+	
+	//update cdf to latest build
+	CopyFiles("./src/Projects/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
 });
 
