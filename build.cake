@@ -7,7 +7,7 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.build";
-var buildNumber = Argument("buildNumber", "9.2.2");;
+var buildNumber = Argument("buildNumber", "9.2.1");;
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -38,10 +38,12 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Build")
-    .IsDependentOn("Restore-NuGet-Packages")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
+	.IsDependentOn("CreateDeploy")
+	.IsDependentOn("CreateSource")
     .Does(() =>
 {
 	
@@ -49,6 +51,7 @@ Task("Build")
 });
 
 Task("CompileSource")
+	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 {
 	MSBuild(createCommunityPackages, c =>
@@ -138,6 +141,52 @@ Task("CreateInstall")
 		c.Targets.Add("CreateInstall");
 	});
 });
+
+Task("CreateUpgrade")
+	.Does(() =>
+{
+	CreateDirectory("./Artifacts");
+	
+	MSBuild(createCommunityPackages, c =>
+	{
+		c.Configuration = configuration;
+		c.WithProperty("BUILD_NUMBER", buildNumber);
+		c.Targets.Add("CreateUpgrade");
+	});
+});
+
+Task("CreateSource")
+	.Does(() =>
+{
+	CreateDirectory("./Artifacts");
+	
+	//todo
+	//git clean -xdf
+	
+	MSBuild(createCommunityPackages, c =>
+	{
+		c.Configuration = configuration;
+		c.WithProperty("BUILD_NUMBER", buildNumber);
+		c.Targets.Add("CreateSource");
+	});
+});
+
+Task("CreateDeploy")
+	.Does(() =>
+{
+	CreateDirectory("./Artifacts");
+	
+	//todo
+	//git clean -xdf
+	
+	MSBuild(createCommunityPackages, c =>
+	{
+		c.Configuration = configuration;
+		c.WithProperty("BUILD_NUMBER", buildNumber);
+		c.Targets.Add("CreateDeploy");
+	});
+});
+
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
