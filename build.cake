@@ -42,8 +42,6 @@ Task("Build")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
-	.IsDependentOn("CreateDeploy")
-	.IsDependentOn("CreateSource")
     .Does(() =>
 {
 	
@@ -159,9 +157,12 @@ Task("CreateSource")
 	.Does(() =>
 {
 	CreateDirectory("./Artifacts");
-	
-	//todo
-	//git clean -xdf
+
+	using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf"}))
+	{
+		process.WaitForExit();
+		Information("Git Clean Exit code: {0}", process.GetExitCode());
+	};
 	
 	MSBuild(createCommunityPackages, c =>
 	{
@@ -175,10 +176,7 @@ Task("CreateDeploy")
 	.Does(() =>
 {
 	CreateDirectory("./Artifacts");
-	
-	//todo
-	//git clean -xdf
-	
+		
 	MSBuild(createCommunityPackages, c =>
 	{
 		c.Configuration = configuration;
