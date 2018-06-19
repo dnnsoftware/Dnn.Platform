@@ -116,13 +116,13 @@ Task("ExternalExtensions")
 	}
 	
 	//grab all install zips and copy to staging directory
-	CopyFiles("./src/Projects/**/*_Install.zip", artifactDir);
+	CopyFiles("./src/Projects/**/*_Install.zip", "./Website/Install/Module/");
 	
 	//update cdf to latest build
 	CopyFiles("./src/Projects/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
 	
-	CopyFiles("c:/temp/x/**/*_Install.zip", artifactDir);
+	CopyFiles("c:/temp/x/**/*_Install.zip", "./Website/Install/Module/");
 	
 });
 
