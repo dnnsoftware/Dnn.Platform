@@ -63,26 +63,25 @@ Task("CompileSource")
 Task("ExternalExtensions")
     .Does(() =>
 {
-	CreateDirectory("./src/Downloads");
 	CreateDirectory("./src/Projects");
 
 	//CKEditor
-	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", "./src/Downloads/ckeditor.zip");
-	Unzip("./src/Downloads/ckeditor.zip", "./src/Projects/");
+	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", "./src/ckeditor.zip");
+	Unzip("./src/ckeditor.zip", "./src/Projects/");
 	
 	//cdf
-	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", "./src/Downloads/clientdependency.zip");
-	Unzip("./src/Downloads/clientdependency.zip", "./src/Projects/");
+	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", "./src/clientdependency.zip");
+	Unzip("./src/clientdependency.zip", "./src/Projects/");
 	
 	//pb
-	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", "./src/Downloads/AdminExperience.Library.zip");
-	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Downloads/AdminExperience.Extensions.zip");
-	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", "./src/Downloads/EditBar.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", "./src/Dnn.AdminExperience.Library.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Dnn.AdminExperience.Extensions.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", "./src/Dnn.EditBar.zip");
 	
 	//todo: path too long, java requirement, verify output
-	Unzip("./src/Downloads/AdminExperience.Library.zip", "c:\\temp\\x");
-	Unzip("./src/Downloads/AdminExperience.Extensions.zip", "c:\\temp\\x");
-	Unzip("./src/Downloads/EditBar.zip", "c:\\temp\\x");
+	Unzip("./src/Dnn.AdminExperience.Library.zip", "c:\\temp\\x");
+	Unzip("./src/Dnn.AdminExperience.Extensions.zip", "c:\\temp\\x");
+	Unzip("./src/Dnn.EditBar.zip", "c:\\temp\\x");
 	
 	//CopyDirectory("c:\\temp\\x", "./src/Projects/");
 	
@@ -157,7 +156,8 @@ Task("CreateSource")
 	.Does(() =>
 {
 	CreateDirectory("./Artifacts");
-
+	CleanDirectory("./src/Projects/");
+	
 	using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf"}))
 	{
 		process.WaitForExit();
