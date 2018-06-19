@@ -18,7 +18,7 @@ BEGIN
     SELECT @Name = DB_NAME()
     SELECT @CompatibilityLevel = compatibility_level FROM sys.databases WHERE name = @Name
 
-    IF @CompatibilityLevel <= 100
+    IF @CompatibilityLevel < 100 -- run only, if level is less than 100
     BEGIN
 	    DECLARE @sql NVARCHAR(max)
 	    SELECT @sql = N'ALTER DATABASE [' + @Name + '] SET COMPATIBILITY_LEVEL = 100'
