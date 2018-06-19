@@ -20,6 +20,7 @@
 *.idea/
 
 # Build results
+[Tt]ools
 [Rr]elease
 *_i.c
 *_p.c
