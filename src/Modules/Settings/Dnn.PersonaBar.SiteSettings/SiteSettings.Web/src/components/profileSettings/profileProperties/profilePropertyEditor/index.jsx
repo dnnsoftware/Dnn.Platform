@@ -37,7 +37,7 @@ class ProfilePropertyEditor extends Component {
             },
             propertyLocalization: undefined,
             error: {
-                name: [{required:true},{noSpecialCharacter:true}],
+                name: [{required:true},{noSpecialCharacter:false}],
                 category: true,
                 datatype: true,
                 localeName: false,
@@ -55,7 +55,8 @@ class ProfilePropertyEditor extends Component {
     }
 
     componentDidMount() {
-        ReactDOM.findDOMNode(this).querySelectorAll("input")[0].focus();
+        const domComponent = ReactDOM.findDOMNode(this).querySelector("#profilePropertyName");
+        domComponent && domComponent.focus();
     }
 
     componentWillReceiveProps(props) {
@@ -117,16 +118,16 @@ class ProfilePropertyEditor extends Component {
     }
 
     isValidName(name) {
-        const validatePropertyName = /^[a-zA-Z0-9]+$/g;
-        const isValid = validatePropertyName.test(name);
+        const validatePropertyName = /^\w*[a-zA-Z0-9]+$/g;
+        const isValid = (name) ? validatePropertyName.test(name) : false;
         return isValid;
     }
 
     _chooseNameError() {
-        if (this.state.error.name.noSpecialCharacter) {
-            return resx.get("ProfilePropertyDefinition_PropertyName.NoSpecialCharacters");
+        if (this.state.error.name.required) {
+            return resx.get("ProfilePropertyDefinition_PropertyName.Required"); 
         }
-        return resx.get("ProfilePropertyDefinition_PropertyName.Required"); 
+        return resx.get("ProfilePropertyDefinition_PropertyName.NoSpecialCharacters");
     }
     
     isValidLength(val) {
@@ -407,7 +408,7 @@ class ProfilePropertyEditor extends Component {
                         label={resx.get("ProfilePropertyDefinition_PropertyName") + "*"}
                     />
                     <SingleLineInputWithError
-                        id="profilePropertyName"
+                        inputId="profilePropertyName"
                         enabled={this.props.id === "add" ? true : false}
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
