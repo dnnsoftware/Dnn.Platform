@@ -118,7 +118,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     isValidName(name) {
-        const validatePropertyName = /^\w*[a-zA-Z0-9]+$/g;
+        const validatePropertyName = /^[+a-zA-Z0-9]+$/g;
         const isValid = (name) ? validatePropertyName.test(name) : false;
         return isValid;
     }
@@ -311,7 +311,8 @@ class ProfilePropertyEditor extends Component {
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false,
-                        showListPage: state.profileProperty.DataType === 358 ? true : false
+                        showListPage: state.profileProperty.DataType === 358 ? true : false,
+                        triedToSubmit: false
                     });
                 }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
@@ -324,7 +325,8 @@ class ProfilePropertyEditor extends Component {
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false,
-                        showListPage: state.profileProperty.DataType === 358 ? true : false
+                        showListPage: state.profileProperty.DataType === 358 ? true : false,
+                        triedToSubmit:false
                     });
                 }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
