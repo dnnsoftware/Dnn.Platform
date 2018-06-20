@@ -118,7 +118,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     isValidName(name) {
-        const validatePropertyName = /^[+a-zA-Z0-9]+$/g;
+        const validatePropertyName = /^[a-zA-Z0-9]+$/g;
         const isValid = (name) ? validatePropertyName.test(name) : false;
         return isValid;
     }
