@@ -381,6 +381,10 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
+                BindUserGroupsGridView();
+
+                BindOptionsData();
+
                 SetLanguage();
 
                 FillInformations();
@@ -393,10 +397,6 @@ namespace DNNConnect.CKEditorProvider
                 RenderUrlControls();
 
                 FillRoles();
-
-                BindUserGroupsGridView();
-
-                BindOptionsData();
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
@@ -562,6 +562,62 @@ namespace DNNConnect.CKEditorProvider
             textReader.Close();
 
             FillSettings(importedSettings, changeMode);
+        }
+        
+        /// <summary>
+        /// Fill file upload size limit controls
+        /// </summary>
+        /// <param name="imporUploadSizeRoles"></param>
+        private void FillFileUploadSettings(List<UploadSizeRoles> imporUploadSizeRoles)
+        {
+            UploadFileLimits.DataSource = imporUploadSizeRoles;
+            UploadFileLimits.DataBind();
+
+            // Load Upload Size Setting for Each Portal Role
+            foreach (var uploadSizeRole in imporUploadSizeRoles)
+            {
+                if (uploadSizeRole.RoleId.Equals(-1))
+                {
+                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    {
+                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+
+                        if (label == null || !label.Text.Equals(UNAUTHENTICATED_USERS))
+                        {
+                            continue;
+                        }
+
+                        var sizeLimit =
+                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+
+                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
+                    }
+                }
+                else
+                {
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
+
+                    if (objRole == null)
+                    {
+                        continue;
+                    }
+
+                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    {
+                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+
+                        if (label == null || !label.Text.Equals(objRole.RoleName))
+                        {
+                            continue;
+                        }
+
+                        var sizeLimit =
+                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+
+                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -818,54 +874,8 @@ namespace DNNConnect.CKEditorProvider
             }
 
             txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
-
-            var imporUploadSizeRoles = importedSettings.UploadSizeRoles;
-
-            // Load Upload Size Setting for Each Portal Role
-            foreach (var uploadSizeRole in imporUploadSizeRoles)
-            {
-                if (uploadSizeRole.RoleId.Equals(-1))
-                {
-                    for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
-                    {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals(UNAUTHENTICATED_USERS))
-                        {
-                            continue;
-                        }
-
-                        var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
-
-                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
-                    }
-                }
-                else
-                {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
-
-                    if (objRole == null)
-                    {
-                        continue;
-                    }
-
-                    for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
-                    {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals(objRole.RoleName))
-                        {
-                            continue;
-                        }
-
-                        var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
-
-                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
-                    }
-                }
-            }
+            
+            FillFileUploadSettings(importedSettings.UploadSizeRoles);
 
             if (!string.IsNullOrEmpty(importedSettings.Config.ContentsCss))
             {
@@ -961,11 +971,7 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-
-            // Bind User Groups to UploadFileLimits GridView
-            UploadFileLimits.DataSource = lic;
-            UploadFileLimits.DataBind();
-
+            
             lblRole = (Label)UploadFileLimits.HeaderRow.FindControl("lblRole");
             lblSelToolb = (Label)UploadFileLimits.HeaderRow.FindControl("SizeLimitLabel");
 
@@ -2746,7 +2752,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             // Save Upload File Limit Setting for every Role
-            for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
+            for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
             {
                 var label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
@@ -3405,6 +3411,7 @@ namespace DNNConnect.CKEditorProvider
         private void SetUploadSizeRoles(EditorProviderSettings exportSettings)
         {
             var listUploadSizeRoles = new List<UploadSizeRoles>();
+            UploadFileLimits.DataSource = exportSettings.UploadSizeRoles;
 
             // Save Upload File Limit Setting for every Role
             for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
