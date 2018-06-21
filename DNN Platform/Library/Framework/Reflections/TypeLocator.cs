@@ -106,7 +106,7 @@ namespace DotNetNuke.Framework.Reflections
                 || assemblyName.StartsWith("icsharpcode") || assemblyName.StartsWith("fiftyone")
                 || assemblyName.StartsWith("lucene") || assemblyName.StartsWith("microsoft")
                 || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
-                || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
+                || assemblyName.StartsWith("sharpziplib")  || assemblyName.StartsWith("icsharpcode.sharpziplib")|| assemblyName.StartsWith("system")
                 || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
                 || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart")
                 );
