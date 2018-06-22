@@ -64,14 +64,16 @@ Task("ExternalExtensions")
     .Does(() =>
 {
 	CreateDirectory("./src/Projects");
+	CreateDirectory("./src/Projects/Providers");
+	CreateDirectory("./src/Projects/Modules");
 
 	//CKEditor
 	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", "./src/ckeditor.zip");
-	Unzip("./src/ckeditor.zip", "./src/Projects/");
+	Unzip("./src/ckeditor.zip", "./src/Projects/Providers/");
 	
 	//cdf
 	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", "./src/clientdependency.zip");
-	Unzip("./src/clientdependency.zip", "./src/Projects/");
+	Unzip("./src/clientdependency.zip", "./src/Modules/");
 	
 	//pb
 	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", "./src/Dnn.AdminExperience.Library.zip");
@@ -116,12 +118,14 @@ Task("ExternalExtensions")
 	}
 	
 	//grab all install zips and copy to staging directory
-	CopyFiles("./src/Projects/**/*_Install.zip", "./Website/Install/Module/");
+	CopyFiles("./src/Projects/Providers/**/*_Install.zip", "./Website/Install/Provider/");
+	CopyFiles("./src/Projects/Modules/**/*_Install.zip", "./Website/Install/Module/");
+	
 	
 	//update cdf to latest build
 	CopyFiles("./src/Projects/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-	
+	//grab all the personabar extensions
 	CopyFiles("c:/temp/x/**/*_Install.zip", "./Website/Install/Module/");
 	
 });
