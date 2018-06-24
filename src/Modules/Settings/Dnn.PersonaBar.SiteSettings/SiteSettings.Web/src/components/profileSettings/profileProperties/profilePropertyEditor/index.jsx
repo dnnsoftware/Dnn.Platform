@@ -21,6 +21,7 @@ import resx from "../../../../resources";
 
 const re = /^([0-9]+|[1-9])$/;
 
+const ADD_PROPERTY_FLAG = "add";
 class ProfilePropertyEditor extends Component {
     constructor() {
         super();
@@ -73,7 +74,7 @@ class ProfilePropertyEditor extends Component {
             state.error.name["required"] = false;
         }
         
-        if (!this.isValidName(props.profileProperty["PropertyName"])) {
+        if (this.props.id === ADD_PROPERTY_FLAG && !this.isValidName(props.profileProperty["PropertyName"])) {
             state.error.name["noSpecialCharacter"] = true; 
         } 
         else {
@@ -161,7 +162,7 @@ class ProfilePropertyEditor extends Component {
             state.error.name["required"] = false;
         }
 
-        if (!this.isValidName(profileProperty["PropertyName"])) {
+        if (this.props.id === ADD_PROPERTY_FLAG && !this.isValidName(profileProperty["PropertyName"])) {
             state.error.name["noSpecialCharacter"] = true; 
         } 
         else {
@@ -282,7 +283,7 @@ class ProfilePropertyEditor extends Component {
     getDefaultVisibility() {
         const { props, state } = this;
         if (!state.profileProperty) {
-            if (props.id === "add") {
+            if (props.id === ADD_PROPERTY_FLAG) {
                 return 2;
             }
         }
@@ -302,7 +303,7 @@ class ProfilePropertyEditor extends Component {
         }
 
         if (props.profilePropertyClientModified) {
-            if (props.id === "add") {
+            if (props.id === ADD_PROPERTY_FLAG) {
                 const property = Object.assign({}, state.profileProperty);
                 property["PortalId"] = props.portalId;
                 props.dispatch(SiteBehaviorActions.addProfileProperty(property, () => {
@@ -402,7 +403,7 @@ class ProfilePropertyEditor extends Component {
     /* eslint-disable react/no-danger */
     render() {
         /* eslint-disable react/no-danger */
-        if (this.state.profileProperty !== undefined || this.props.id === "add") {
+        if (this.state.profileProperty !== undefined || this.props.id === ADD_PROPERTY_FLAG) {
             const columnOne = <div className="left-column">
                 <InputGroup>
                     <Label
@@ -411,7 +412,7 @@ class ProfilePropertyEditor extends Component {
                     />
                     <SingleLineInputWithError
                         inputId="profilePropertyName"
-                        enabled={this.props.id === "add" ? true : false}
+                        enabled={this.props.id === ADD_PROPERTY_FLAG ? true : false}
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={(this.state.error.name.required || this.state.error.name.noSpecialCharacter) && this.state.triedToSubmit}
@@ -551,7 +552,7 @@ class ProfilePropertyEditor extends Component {
                         tooltipMessage={resx.get("ProfilePropertyDefinition_ViewOrder.Help")}
                         label={resx.get("ProfilePropertyDefinition_ViewOrder")}
                     />
-                    <div style={{ float: "right", marginTop: "2px" }}>{this.props.id === "add" ? 0 : this.state.profileProperty.ViewOrder}</div>
+                    <div style={{ float: "right", marginTop: "2px" }}>{this.props.id === ADD_PROPERTY_FLAG ? 0 : this.state.profileProperty.ViewOrder}</div>
                 </InputGroup>
             </div>;
 
