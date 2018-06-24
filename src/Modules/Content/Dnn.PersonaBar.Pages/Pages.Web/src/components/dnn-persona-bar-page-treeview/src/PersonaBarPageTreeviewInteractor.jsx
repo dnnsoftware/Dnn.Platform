@@ -28,14 +28,17 @@ class PersonaBarPageTreeviewInteractor extends Component {
             setMouseCoordDebounce: false,
             pageX: 0,
             pageY: 0,
-            isMouseInTree: false
+            isMouseInTree: false,
+            activePage: {}
         };
         this.origin = window.origin;
         this.treeContentWidth = 200;
 
         this.countTreeDepthOpen = 0;
     }
-
+    componentDidMount() {
+        this.init();
+    }
     componentWillReceiveProps(newProps) {
         let setTreeViewExpanded = null;
         const {
@@ -88,6 +91,12 @@ class PersonaBarPageTreeviewInteractor extends Component {
         });
     }
 
+    init() {
+        this.setState({
+            activePage: this.props.activePage
+        });
+    }
+
     getPageInfo(id) {
         return new Promise((resolve) => {
             const {
@@ -97,6 +106,9 @@ class PersonaBarPageTreeviewInteractor extends Component {
             
             getPage(id)
                 .then((data) => {
+                    this.setState({
+                        activePage: data
+                    });                    
                     return setActivePage(data);
                 }).then(() => resolve());
         });
@@ -302,7 +314,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
         this.removeClone();
 
         const left = () => {
-            let activePage = Object.assign({}, this.props.activePage);
+            let activePage = Object.assign({}, this.state.activePage);
             let pageList = null;
             let runUpdateStore = null;
             this.props._traverse((pageListItem, list, updateStore) => {
@@ -315,8 +327,8 @@ class PersonaBarPageTreeviewInteractor extends Component {
             }, () => runUpdateStore(pageList));
 
             this.getPageInfo(activePage.id)
-                .then((data) => {
-                    let activePage = Object.assign({}, this.props.activePage);
+                .then(() => {
+                    let activePage = Object.assign({}, this.state.activePage);
                     activePage.oldParentId = activePage.parentId;
                     activePage.parentId = item.id;
                     return this.props.saveDropState(activePage);
