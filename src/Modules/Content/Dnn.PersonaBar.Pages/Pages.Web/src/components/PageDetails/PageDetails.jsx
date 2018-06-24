@@ -26,7 +26,7 @@ class PageDetail extends Component {
 
         return (
             <div>
-                <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} />
+                <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} onSelectParentPageId={this.props.onSelectParentPageId}/>
                 <PageDetailsFooter components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} />
             </div>
         );
@@ -37,7 +37,8 @@ PageDetail.propTypes = {
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired,
-    components: PropTypes.array.isRequired
+    components: PropTypes.array.isRequired,
+    onSelectParentPageId: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {

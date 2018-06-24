@@ -111,12 +111,11 @@ export class PersonaBarPageTreeview extends Component {
     _checkItemDisabled(item) {
         if (item.includeInMenu) {
             return false;
-        } else {
-            if (item.status !== "Visible") {
-                return true;
-            }  
-            return false;
         }
+        if (item.status !== "Visible") {
+            return true;
+        }  
+        return false;
     }
 
     getClassName(item) {
