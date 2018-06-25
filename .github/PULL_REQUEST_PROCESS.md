@@ -22,7 +22,7 @@ Community review of submitted pull requests is encouraged, and all pull requests
 * Oliver Hine ([ohine](https://github.com/ohine))
 * Brian Dukes ([bdukes](https://github.com/bdukes))
 * Peter Donker ([donker](https://github.com/donker)) - Community Developer Advisory Group Lead
-* Vicnec Masanas ([vmasanas](https://github.com/vmasanas))
+* Vicenç Masanas ([vmasanas](https://github.com/vmasanas))
 * Erik van Ballegoij ([erikvb](https://github.com/erikvb))
 
 Additionally the following individuals from ESW/DNN Corp are approved reviewers.
