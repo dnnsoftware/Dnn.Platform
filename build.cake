@@ -162,7 +162,7 @@ Task("CreateSource")
 	CreateDirectory("./Artifacts");
 	CleanDirectory("./src/Projects/");
 	
-	using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf"}))
+	using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf --exclude=tools/cake/**"}))
 	{
 		process.WaitForExit();
 		Information("Git Clean Exit code: {0}", process.GetExitCode());
@@ -191,11 +191,11 @@ Task("CreateDeploy")
 
 
 Task("Run-Unit-Tests")
-    .IsDependentOn("Build")
+    
     .Does(() =>
 {
-    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
+    NUnit3("./src/**/bin/" + configuration + "/*.Test*.dll", new NUnit3Settings {
+        NoResults = false
         });
 });
 
