@@ -65,11 +65,16 @@
     <Compile Include="DeleteUserUnitTests.cs" />
     <Compile Include="GetUserUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestoreUserUnitTests.cs" />
     <Compile Include="SearchUsersBySearchTermTest.cs" />
     <Compile Include="SetUserUnitTests.cs" />
     <Compile Include="UserValidatorUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Content\Dnn.PersonaBar.Recyclebin\Dnn.PersonaBar.Recyclebin.csproj">
+      <Project>{35AD8ED3-CBC3-4208-83D1-660EBC908DE2}</Project>
+      <Name>Dnn.PersonaBar.Recyclebin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj">
       <Project>{96E8B714-A431-4CB7-A251-17F171055F64}</Project>
       <Name>Dnn.PersonaBar.Users</Name>
