@@ -76,9 +76,9 @@ Task("ExternalExtensions")
 	Unzip("./src/clientdependency.zip", "./src/Modules/");
 	
 	//pb
-	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", "./src/Dnn.AdminExperience.Library.zip");
-	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Dnn.AdminExperience.Extensions.zip");
-	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", "./src/Dnn.EditBar.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Library/archive/development.zip", "./src/Dnn.AdminExperience.Library.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Dnn.AdminExperience.Extensions.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.EditBar/archive/development.zip", "./src/Dnn.EditBar.zip");
 	
 	//todo: path too long, java requirement, verify output
 	Unzip("./src/Dnn.AdminExperience.Library.zip", "c:\\temp\\x");
