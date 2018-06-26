@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.Seo</DNNFileName>
       <PackageName>Dnn.PersonaBar.Seo</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Seo</ModuleFolderName>
+	  <YarnWorkingDirectory>Seo.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.Users</DNNFileName>
       <PackageName>Dnn.PersonaBar.Users</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Users</ModuleFolderName>
+	  <YarnWorkingDirectory>Users.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

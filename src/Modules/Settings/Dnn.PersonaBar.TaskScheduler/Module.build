@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.TaskScheduler</DNNFileName>
       <PackageName>Dnn.PersonaBar.TaskScheduler</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.TaskScheduler</ModuleFolderName>
+	  <YarnWorkingDirectory>TaskScheduler.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

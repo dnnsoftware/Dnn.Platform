@@ -5,6 +5,7 @@
     <DNNFileName>Dnn.PersonaBar.Prompt</DNNFileName>
     <PackageName>Dnn.PersonaBar.Prompt</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Prompt</ModuleFolderName>
+	<YarnWorkingDirectory>Prompt.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

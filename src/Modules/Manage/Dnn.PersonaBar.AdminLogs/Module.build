@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.AdminLogs</DNNFileName>
       <PackageName>Dnn.PersonaBar.AdminLogs</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.AdminLogs</ModuleFolderName>
+	  <YarnWorkingDirectory>AdminLogs.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

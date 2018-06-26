@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.SiteSettings</DNNFileName>
       <PackageName>Dnn.PersonaBar.SiteSettings</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.SiteSettings</ModuleFolderName>
+	  <YarnWorkingDirectory>SiteSettings.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

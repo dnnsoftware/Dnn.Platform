@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.Licensing</DNNFileName>
       <PackageName>Dnn.PersonaBar.Licensing</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Licensing</ModuleFolderName>
+	  <YarnWorkingDirectory>Licensing</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
