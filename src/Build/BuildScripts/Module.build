@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.props')" />
   <Import Project="..\..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets')" />
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;RunYarn;DebugProject;Package">
+  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package">
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
@@ -29,8 +29,10 @@
     <Copy SourceFiles="@(PersonaBar-scripts)" DestinationFolder="$(ModuleFolderName)\Scripts" />
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
   </Target>
-  <Target Name="RunYarn" Condition="Exists('$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\**\package.json')">
+  <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0">
+    <Message Text="Yarn Working Directory: $(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  Importance="high" />
     <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  />
     <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  />
+    <Message Text="Yarn Finished."  Importance="high" />
   </Target>
 </Project>
