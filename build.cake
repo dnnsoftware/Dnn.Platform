@@ -142,17 +142,26 @@ Task("ExternalExtensions")
 	
 	//grab all install zips and copy to staging directory
 
-	Information("Copying Artifacts!");
+	var fileCounter = 0;
+
+	fileCounter = GetFiles("./src/Providers/**/*_Install.zip").Count;
+	Information("Copying {1} Artifacts from {0}", "Providers", fileCounter);
 	CopyFiles("./src/Providers/**/*_Install.zip", "./Website/Install/Provider/");
+
+	fileCounter = GetFiles("./src/Modules/**/*_Install.zip").Count;
+	Information("Copying {1} Artifacts from {0}", "Modules", fileCounter);
 	CopyFiles("./src/Modules/**/*_Install.zip", "./Website/Install/Module/");
 
-	//update cdf to latest build
+	fileCounter = GetFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*").Count;
+	Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 	CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-	//grab all the personabar extensions
-    CopyFiles("c:/temp/x/**/*_Install.zip", "./Website/Install/Module/");
+	fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
+	Information("Copying {1} Artifacts from {0}", "PersonaBar", fileCounter);
+    CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
 	
 });
+
 
 Task("CreateInstall")
 	.Does(() =>
