@@ -78,9 +78,9 @@ Task("ExternalExtensions")
 	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", buildDirFullPath + "clientdependency.zip");
 
 	//pb
-	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Library/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Library.zip");
-	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Extensions/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Extensions.zip");
-	DownloadFile("https://github.com/nbrane/Dnn.EditBar/archive/development.zip", buildDirFullPath + "Dnn.EditBar.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Library.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Extensions.zip");
+	DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/development.zip", buildDirFullPath + "Dnn.EditBar.zip");
 	
 
 	Information("Decompressing: {0}", "CK Editor");
