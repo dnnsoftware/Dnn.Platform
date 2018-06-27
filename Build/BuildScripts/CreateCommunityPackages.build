@@ -14,6 +14,10 @@
   <Import Project="$(BuildScriptsPath)\Variables.build" />
   <ItemGroup>
     <CESourceExclude Include="$(PlatformCheckout)\**\.git\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\.github\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\.nuget\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\.vs\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\tools\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
