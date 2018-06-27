@@ -152,9 +152,10 @@ Task("ExternalExtensions")
 	Information("Copying {1} Artifacts from {0}", "Modules", fileCounter);
 	CopyFiles("./src/Modules/**/*_Install.zip", "./Website/Install/Module/");
 
-	fileCounter = GetFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*").Count;
-	Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
-	CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
+	//CDF is handled with nuget, and because the version isn't updated in git this builds as an "older" version and fails.
+	//fileCounter = GetFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*").Count;
+	//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
+	//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
 	fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
 	Information("Copying {1} Artifacts from {0}", "PersonaBar", fileCounter);
