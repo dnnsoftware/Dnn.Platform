@@ -16,7 +16,9 @@ var buildNumber = Argument("buildNumber", "9.2.1");;
 // Define directories.
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
-var tempDir = Directory("c:\\temp\\x\\");
+var tempDir = "C:\\temp\\x\\";
+
+var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -67,27 +69,38 @@ Task("ExternalExtensions")
 	CreateDirectory("./src/Projects/Providers");
 	CreateDirectory("./src/Projects/Modules");
 
-	//CKEditor
-	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", "./src/ckeditor.zip");
-	Unzip("./src/ckeditor.zip", "./src/Projects/Providers/");
+	Information("Downloading External Extensions to {0}", buildDirFullPath);
+
+	//ck
+	DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/development.zip", buildDirFullPath + "ckeditor.zip");
 	
 	//cdf
-	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", "./src/clientdependency.zip");
-	Unzip("./src/clientdependency.zip", "./src/Modules/");
-	
+	DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/dnn.zip", buildDirFullPath + "clientdependency.zip");
+
 	//pb
-	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Library/archive/development.zip", "./src/Dnn.AdminExperience.Library.zip");
-	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Extensions/archive/development.zip", "./src/Dnn.AdminExperience.Extensions.zip");
-	DownloadFile("https://github.com/nbrane/Dnn.EditBar/archive/development.zip", "./src/Dnn.EditBar.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Library/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Library.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.AdminExperience.Extensions/archive/development.zip", buildDirFullPath + "Dnn.AdminExperience.Extensions.zip");
+	DownloadFile("https://github.com/nbrane/Dnn.EditBar/archive/development.zip", buildDirFullPath + "Dnn.EditBar.zip");
 	
-	//todo: path too long, java requirement, verify output
-	Unzip("./src/Dnn.AdminExperience.Library.zip", "c:\\temp\\x");
-	Unzip("./src/Dnn.AdminExperience.Extensions.zip", "c:\\temp\\x");
-	Unzip("./src/Dnn.EditBar.zip", "c:\\temp\\x");
+
+	Information("Decompressing: {0}", "CK Editor");
+	Unzip(buildDirFullPath + "ckeditor.zip", buildDirFullPath + "Providers/");
+
+	Information("Decompressing: {0}", "CDF");
+	Unzip(buildDirFullPath + "clientdependency.zip", buildDirFullPath + "Modules");
 	
-	//CopyDirectory("c:\\temp\\x", "./src/Projects/");
+	Information("Decompressing: {0}", "PersonaBar Library");
+	Unzip(buildDirFullPath + "Dnn.AdminExperience.Library.zip", tempDir);
+
+	Information("Decompressing: {0}", "PersonaBar Extension");
+	Unzip(buildDirFullPath + "Dnn.AdminExperience.Extensions.zip", tempDir);
+
+	Information("Decompressing: {0}", "EditBar");
+	Unzip(buildDirFullPath + "Dnn.EditBar.zip", tempDir);
 	
-	var externalSolutions = GetFiles("./src/Projects/**/*.sln");
+
+	//look for solutions and start building them
+	var externalSolutions = GetFiles("./src/**/*.sln");
 	
 	Information("Found {0} solutions.", externalSolutions.Count);
 	
@@ -96,37 +109,48 @@ Task("ExternalExtensions")
 		
 		//cdf contains two solutions, we only want the dnn solution
 		if (solutionPath.Contains("ClientDependency-dnn") && !solutionPath.EndsWith(".DNN.sln")) {
+			Information("Ignoring Solution File: {0}", solutionPath);
 			continue;
 		}
+		else {
+			Information("Processing Solution File: {0}", solutionPath);
+		}
 		
-		Information("File: {0}", solutionPath);
+		Information("Starting NuGetRestore: {0}", solutionPath);
 		NuGetRestore(solutionPath);
+
+		Information("Starting to Build: {0}", solutionPath);
 		MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 	}
-	
-	externalSolutions = GetFiles("c:/temp/x/**/*.sln");
+
+
+	externalSolutions = GetFiles("c:\\temp\\x\\**\\*.sln");
 	
 	Information("Found {0} solutions.", externalSolutions.Count);
 	
 	foreach (var solution in externalSolutions){
 		var solutionPath = solution.ToString();
 		
-		Information("File: {0}", solutionPath);
-		
+		Information("Processing Solution File: {0}", solutionPath);
+		Information("Starting NuGetRestore: {0}", solutionPath);
 		NuGetRestore(solutionPath);
+
+		Information("Starting to Build: {0}", solutionPath);
 		MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 	}
 	
+	
 	//grab all install zips and copy to staging directory
-	CopyFiles("./src/Projects/Providers/**/*_Install.zip", "./Website/Install/Provider/");
-	CopyFiles("./src/Projects/Modules/**/*_Install.zip", "./Website/Install/Module/");
-	
-	
+
+	Information("Copying Artifacts!");
+	CopyFiles("./src/Providers/**/*_Install.zip", "./Website/Install/Provider/");
+	CopyFiles("./src/Modules/**/*_Install.zip", "./Website/Install/Module/");
+
 	//update cdf to latest build
-	CopyFiles("./src/Projects/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
+	CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
 	//grab all the personabar extensions
-	CopyFiles("c:/temp/x/**/*_Install.zip", "./Website/Install/Module/");
+    CopyFiles("c:/temp/x/**/*_Install.zip", "./Website/Install/Module/");
 	
 });
 
