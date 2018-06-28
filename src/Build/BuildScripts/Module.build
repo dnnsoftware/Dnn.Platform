@@ -30,9 +30,7 @@
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0">
-    <Message Text="Yarn Working Directory: $(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  Importance="high" />
     <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  />
     <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\"  />
-    <Message Text="Yarn Finished."  Importance="high" />
   </Target>
 </Project>
