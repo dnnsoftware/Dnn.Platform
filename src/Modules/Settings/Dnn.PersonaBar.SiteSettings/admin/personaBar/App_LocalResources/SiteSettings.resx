@@ -483,6 +483,9 @@
   <data name="ProfilePropertyDefinition_PropertyName.Required" xml:space="preserve">
     <value>The field name is required.</value>
   </data>
+  <data name="ProfilePropertyDefinition_PropertyName.NoSpecialCharacters" xml:space="preserve">
+    <value>The field name does not acccept special or space characters.</value>
+  </data>
   <data name="ProfilePropertyDefinition_DataType.Required" xml:space="preserve">
     <value>The data type is required.</value>
   </data>
@@ -539,6 +542,9 @@
   </data>
   <data name="DeleteError.Text" xml:space="preserve">
     <value>Could not delete the profile field. Please try later.</value>
+  </data>
+  <data name="NoSpecialCharacterName.Text" xml:space="preserve">
+    <value>This property does not acccept special characters.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
     <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>

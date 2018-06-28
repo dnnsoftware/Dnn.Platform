@@ -32,6 +32,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
+using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -802,7 +803,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
                 };
 
-                if (ValidateProperty(property))
+                HttpResponseMessage httpPropertyValidationError;
+
+                if (ValidateProperty(property, out httpPropertyValidationError))
                 {
                     var propertyId = ProfileController.AddPropertyDefinition(property);
                     if (propertyId < Null.NullInteger)
@@ -818,8 +821,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
                 else
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                            string.Format(Localization.GetString("RequiredTextBox", Components.Constants.Constants.LocalResourcesFile)));
+                    return httpPropertyValidationError;
                 }
             }
             catch (Exception exc)
@@ -868,7 +870,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         DefaultVisibility = (UserVisibilityMode)request.DefaultVisibility
                     };
 
-                    if (ValidateProperty(property))
+                    HttpResponseMessage httpPropertyValidationError;
+
+                    if (ValidateProperty(property, out httpPropertyValidationError))
                     {
                         ProfileController.UpdatePropertyDefinition(property);
                         DataCache.ClearDefinitionsCache(pid);
@@ -876,8 +880,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                            string.Format(Localization.GetString("RequiredTextBox", Components.Constants.Constants.LocalResourcesFile)));
+                        return httpPropertyValidationError;
                     }
                 }
                 else
@@ -3169,11 +3172,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return retValue;
         }
 
-        private bool ValidateProperty(ProfilePropertyDefinition definition)
+        private bool ValidateProperty(ProfilePropertyDefinition definition, out HttpResponseMessage httpPropertyValidationError)
         {
             bool isValid = true;
+            httpPropertyValidationError = null;
             var objListController = new ListController();
             string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+            Regex propertyNameRegex = new Regex("^[a-zA-Z0-9]+$");
+            if (!propertyNameRegex.Match(definition.PropertyName).Success)
+            {
+                isValid = false;
+                httpPropertyValidationError = Request.CreateErrorResponse(HttpStatusCode.BadRequest, 
+                    string.Format(Localization.GetString("NoSpecialCharacterName.Text", Components.Constants.Constants.LocalResourcesFile)));
+            }
 
             switch (strDataType)
             {
@@ -3183,6 +3194,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         isValid = Null.NullBoolean;
                     }
                     break;
+            }
+
+            if(isValid == false)
+            {
+                httpPropertyValidationError = Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    string.Format(Localization.GetString("RequiredTextBox", Components.Constants.Constants.LocalResourcesFile)));
             }
             return isValid;
         }
