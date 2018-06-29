@@ -475,6 +475,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleName = other.RoleName,
                             ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
                             PermissionKey = other.PermissionKey,
+                            PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
                             PermissionID = permissionId.Value
                         };
@@ -999,6 +1000,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleName = other.RoleName,
                             Username = other.Username,
                             PermissionKey = other.PermissionKey,
+                            PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
                             PermissionID = permissionId.Value
                         };
@@ -1015,15 +1017,17 @@ namespace Dnn.ExportImport.Components.Services
                             local.RoleID = roleId.Value;
                         }
 
-                        other.LocalId = localModule.ModulePermissions.Add(local);
-                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        UpdateModulePermissionChangers(local.ModulePermissionID, createdBy, modifiedBy);
+                        other.LocalId = localModule.ModulePermissions.Add(local, true);
 
                         Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
                 }
+            }
+
+            if (count > 0)
+            {
+                ModulePermissionController.SaveModulePermissions(localModule);
             }
 
             return count;
