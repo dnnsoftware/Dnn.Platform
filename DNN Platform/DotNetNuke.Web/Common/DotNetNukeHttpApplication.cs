@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNukeShutdownOverload.InitializeFcnSettings();
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
-            DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
+           // DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
             //DotNetNukeSecurity.Initialize();
         }
         
