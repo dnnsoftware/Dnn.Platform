@@ -142,7 +142,11 @@
                         <asp:Checkbox ID="OverrideFileOnUpload" runat="server"></asp:Checkbox>
 				    </div>
 				</fieldset>
-			    <h2 id="Panel-UploadFileLimits" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("UploadFileLimits.SeectionName")%><asp:label id="UploadFileLimitLabel" runat="server">Upload File Limits</asp:label></a></h2>
+			    <h2 id="Panel-UploadFileLimits" class="dnnFormSectionHead">
+                    <a href="" class="dnnSectionExpanded"><%=LocalizeString("UploadFileLimits.SeectionName")%>
+                        <asp:label id="UploadFileLimitLabel" runat="server">Upload File Limits</asp:label>
+                    </a>
+			    </h2>
 			    <fieldset>
 	                <asp:GridView id="UploadFileLimits" runat="server" AutoGenerateColumns="False" GridLines="None">
                         <Columns>
@@ -151,7 +155,7 @@
                                     <asp:Label id="lblRole" runat="server" visible="false"></asp:Label>
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:Label ID="lblRoleName" runat="server" Text="<%# Container.DataItem.ToString()%>" cssclass="dnnLabel"></asp:Label>
+                                    <asp:Label ID="lblRoleName" runat="server" Text="<%# Bind('RoleName') %>" cssclass="dnnLabel"></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -159,7 +163,7 @@
                                     <asp:Label id="SizeLimitLabel" runat="server" visible="false"></asp:Label>
                                 </HeaderTemplate>
                                 <ItemTemplate>
-                                    <asp:TextBox ID="SizeLimit" runat="server" CssClass="settingValueInputNumeric" Text="-1" />
+                                    <asp:TextBox ID="SizeLimit" runat="server" CssClass="settingValueInputNumeric" Text="<%# Bind('UploadFileLimit') %>" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

@@ -328,7 +328,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                setting =>
                                                setting.Name.Equals(
                                                    string.Format(
-                                                       "{0}{2}#{1}",
+                                                       "{0}{1}#{2}",
                                                        key,
                                                        objRole.RoleID,
                                                        SettingConstants.UPLOADFILELIMITS)))
@@ -338,7 +338,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                    s =>
                                                    s.Name.Equals(
                                                        string.Format(
-                                                           "{0}{2}#{1}",
+                                                           "{0}{1}#{2}",
                                                            key,
                                                            objRole.RoleID,
                                                            SettingConstants.UPLOADFILELIMITS))).Value)
@@ -347,21 +347,21 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                s =>
                                                s.Name.Equals(
                                                    string.Format(
-                                                       "{0}{2}#{1}",
+                                                       "{0}{1}#{2}",
                                                        key,
                                                        objRole.RoleID,
                                                        SettingConstants.UPLOADFILELIMITS))).Value
                                        select
-                                           new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
+                                           new UploadSizeRoles { RoleId = objRole.RoleID, RoleName = objRole.RoleName, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
                 .ToList();
 
             if (
                 filteredSettings.Any(
-                    setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
+                    setting => setting.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
             {
                 var settingValue =
                     filteredSettings.FirstOrDefault(
-                        s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS))).Value;
+                        s => s.Name.Equals(string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
                 {

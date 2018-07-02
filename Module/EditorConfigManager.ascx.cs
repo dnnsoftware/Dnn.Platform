@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -13,7 +14,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DNNConnect.CKEditorProvider.Module
 {
-    using DNNConnect.CKEditorProvider.Constants;
+    using DNNConnect.CKEditorProvider.Helper;
 
     /// <summary>
     /// The Editor Config Manger Module
@@ -114,6 +115,7 @@ namespace DNNConnect.CKEditorProvider.Module
                 }
 
                 PortalTabsAndModulesTree.SelectedNodeChanged += PortalTabsAndModulesTree_SelectedNodeChanged;
+                PortalTabsAndModulesTree.SelectedNodeStyle.ForeColor = Color.Gray;
                 PortalOnly.CheckedChanged += PortalOnly_CheckedChanged;
             }
             catch (Exception exception)
@@ -170,8 +172,6 @@ namespace DNNConnect.CKEditorProvider.Module
                 return;
             }
 
-            PortalTabsAndModulesTree.SelectedNode.ExpandAll();
-
             EditorOptions.IsHostMode = true;
             EditorOptions.CurrentPortalOnly = PortalOnly.Checked;
 
@@ -195,8 +195,6 @@ namespace DNNConnect.CKEditorProvider.Module
 
                 EditorOptions.DefaultHostLoadMode = -1;
 
-                BindPortalTabsAndModulesTree();
-
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
             }
@@ -214,8 +212,6 @@ namespace DNNConnect.CKEditorProvider.Module
 
                 EditorOptions.DefaultHostLoadMode = 0;
 
-                BindPortalTabsAndModulesTree();
-
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
             }
@@ -232,8 +228,6 @@ namespace DNNConnect.CKEditorProvider.Module
                 EditorOptions.CurrentOrSelectedTabId = Convert.ToInt32(tabId);
 
                 EditorOptions.DefaultHostLoadMode = 1;
-
-                BindPortalTabsAndModulesTree();
 
                 // Load Settings
                 EditorOptions.BindOptionsData(true);
@@ -296,9 +290,7 @@ namespace DNNConnect.CKEditorProvider.Module
             {
                 var portals = new PortalController().GetPortals().Cast<PortalInfo>().ToList();
                 RenderHostNode(portals, moduleController, settingsDictionary);
-            }
-
-            PortalTabsAndModulesTree.DataBind();
+            }            
         }
 
         private void RenderHostNode(IEnumerable<PortalInfo> portals, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
@@ -350,10 +342,10 @@ namespace DNNConnect.CKEditorProvider.Module
                 Expanded = PortalOnly.Checked
             };
 
-            foreach (var tabInfo in TabController.GetTabsByParent(-1, portal.PortalID))
-            {
-                RenderTabNode(portalNode, tabInfo, moduleController, editorHostSettings);
-            }
+            Dictionary<int, HashSet<TreeNode>> modulesNodes = GetModuleNodes(portal.PortalID, moduleController, editorHostSettings);
+            var tabs = TabController.GetPortalTabs(portal.PortalID, -1, false, null, true, false, true, true, false);
+
+            LoadNodesByTreeViewHelper(editorHostSettings, portalNode, modulesNodes, tabs);
 
             if (parentNode == null)
             {
@@ -365,62 +357,58 @@ namespace DNNConnect.CKEditorProvider.Module
             }
         }
 
-        /// <summary>
-        /// Renders the tab node.
-        /// </summary>
-        /// <param name="parentNode">The parent node.</param>
-        /// <param name="tabInfo">The tab info.</param>
-        /// <param name="moduleController">The module controller.</param>
-        /// <param name="editorHostSettings">The editor host settings.</param>
-        private void RenderTabNode(
-            TreeNode parentNode,
-            TabInfo tabInfo,
-            ModuleController moduleController,
-            List<EditorHostSetting> editorHostSettings)
+        private static void LoadNodesByTreeViewHelper(
+            List<EditorHostSetting> editorHostSettings, 
+            TreeNode portalNode, 
+            Dictionary<int, HashSet<TreeNode>> modulesNodes, 
+            List<TabInfo> tabs
+            )
         {
-            var tabKey = $"DNNCKT#{tabInfo.TabID}#";
+            Func<TabInfo, int> getNodeId = x => x.TabID;
+            Func<TabInfo, int> getParentId = x => x.ParentId;
+            Func<TabInfo, string> getNodeText = x => x.TabName;
+            Func<TabInfo, string> getNodeValue = x => $"t{x.TabID}";
+            Func<int, bool> getParentIdCheck = x => x != -1;
+            Func<TabInfo, string> getNodeImageURL =
+                x => SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKT#{x.TabID}#")
+                    ? "../js/ckeditor/4.5.3/images/PageHasSetting.png"
+                    : "../js/ckeditor/4.5.3/images/PageNoSetting.png";
 
-            var tabSettingsExists = SettingsUtil.CheckSettingsExistByKey(editorHostSettings, tabKey);
+            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
+            tvh.LoadNodes(tabs, portalNode.ChildNodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck, modulesNodes);
+        }
 
-            // Tabs
-            var tabNode = new TreeNode
-                              {
-                                  Text = tabInfo.TabName,
-                                  Value = $"t{tabInfo.TabID}",
-                                  ImageUrl =
-                                      tabSettingsExists
-                                          ? "../js/ckeditor/4.5.3/images/PageHasSetting.png"
-                                          : "../js/ckeditor/4.5.3/images/PageNoSetting.png"
-                              };
+        private static Dictionary<int, HashSet<TreeNode>> GetModuleNodes(int portalId, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        {
+            var portalModules = moduleController.GetModules(portalId).Cast<ModuleInfo>();
+            Dictionary<int, HashSet<TreeNode>> modulesNodes = new Dictionary<int, HashSet<TreeNode>>();
 
-            if (tabInfo.HasChildren)
+            foreach (var m in portalModules)
             {
-                foreach (var childTab in TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID))
+                var moduleNode = new TreeNode
                 {
-                    RenderTabNode(tabNode, childTab, moduleController, editorHostSettings);
+                    Value = $"m{m.ModuleID}",
+                    Text = m.ModuleTitle,
+                    ImageUrl =
+                        SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKMI#{m.ModuleID}#INS#")
+                            ? "../js/ckeditor/4.5.3/images/ModuleHasSetting.png"
+                            : "../js/ckeditor/4.5.3/images/ModuleNoSetting.png"
+                };
+
+                if (modulesNodes.ContainsKey(m.TabID))
+                {
+                    var nodes = modulesNodes[m.TabID];
+                    nodes.Add(moduleNode);
+                }
+                else
+                {
+                    var nodes = new HashSet<TreeNode>();
+                    nodes.Add(moduleNode);
+                    modulesNodes.Add(m.TabID, nodes);
                 }
             }
 
-            var modules = moduleController.GetTabModules(tabInfo.TabID).Values;
-
-            foreach (var moduleNode in from moduleInfo in modules
-                                       let moduleKey = $"DNNCKMI#{moduleInfo.ModuleID}#INS#"
-                                       let moduleSettingsExists =
-                                           SettingsUtil.CheckExistsModuleSettings(moduleKey, moduleInfo.ModuleID)
-                                       select
-                                           new TreeNode
-                                               {
-                                                   Text = moduleInfo.ModuleTitle,
-                                                   ImageUrl =
-                                                       moduleSettingsExists
-                                                           ? "../js/ckeditor/4.5.3/images/ModuleHasSetting.png"
-                                                           : "../js/ckeditor/4.5.3/images/ModuleNoSetting.png",
-                                                   Value = $"m{moduleInfo.ModuleID}" })
-            {
-                tabNode.ChildNodes.Add(moduleNode);
-            }
-
-            parentNode.ChildNodes.Add(tabNode);
+            return modulesNodes;
         }
     }
 }

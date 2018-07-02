@@ -9,12 +9,17 @@ namespace DNNConnect.CKEditorProvider.Objects
         #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether Role ID
+        /// Gets or sets a value indicating Role ID
         /// </summary>
         public int RoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Toolbar Name
+        /// Gets or sets a value for Role Name
+        /// </summary>
+        public string RoleName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating max upload file size
         /// </summary>
         public int UploadFileLimit { get; set; }
 
