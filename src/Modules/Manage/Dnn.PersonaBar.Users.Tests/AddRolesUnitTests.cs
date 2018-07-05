@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Roles.Components;
 using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Users.Components.Prompt.Commands;
@@ -14,19 +12,19 @@ using Dnn.PersonaBar.Library.Prompt.Models;
 namespace Dnn.PersonaBar.Users.Tests
 {
     [TestFixture]
-    public class AddRolesUnitTests : CommandTests
+    public class AddRolesUnitTests : CommandTests<AddRoles>
     {
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUsersController> _usersControllerMock;
         private Mock<IRolesController> _rolesControllerMock;
 
-        [SetUp]
-        public void RunBeforeEveryTest()
+        protected override string CommandName { get { return "Add-roles"; } }
+
+        protected override void ChildSetup()
         {
             _userValidatorMock = new Mock<IUserValidator>();
             _usersControllerMock = new Mock<IUsersController>();
             _rolesControllerMock = new Mock<IRolesController>();
-            Reset();
         }
 
         [TestCase]
@@ -73,7 +71,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Returns(rolesList);
 
             // Act
-            var result = SetupCommandForAddRolesAndRun(userId.ToString(), "--roles", "Tester");
+            var result = RunCommand(userId.ToString(), "--roles", "Tester");
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -93,7 +91,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Returns(errorResultModel);
 
             // Act
-            var result = SetupCommandForAddRolesAndRun(userId.ToString());
+            var result = RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -143,23 +141,15 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Returns(rolesList);
 
             // Act
-            TestDelegate ex = () =>
-            SetupCommandForAddRolesAndRun(userId.ToString(), "--roles", "Not Tester");
+            TestDelegate ex = () => RunCommand(userId.ToString(), "--roles", "Not Tester");
 
             // Assert
             Assert.Throws<Exception>(ex, "Should throw exception");
         }
 
-        protected override ConsoleCommandBase DependencyInitializer()
+        protected override AddRoles CreateCommand()
         {
             return new AddRoles(_userValidatorMock.Object, _usersControllerMock.Object, _rolesControllerMock.Object);
-        }
-
-        private ConsoleResultModel SetupCommandForAddRolesAndRun(params string[] args)
-        {
-            args = new[] { "add-roles" }.Concat(args).ToArray();
-            command = SetupCommand(args);
-            return command.Run();
         }
     }
 }
