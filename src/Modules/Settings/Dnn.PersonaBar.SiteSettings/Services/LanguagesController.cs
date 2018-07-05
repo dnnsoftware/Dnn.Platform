@@ -778,7 +778,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             var selectSingleNode = n.SelectSingleNode("value");
                             if (selectSingleNode != null)
                             {
-                                var val = HttpUtility.HtmlDecode(selectSingleNode.InnerXml);
+                                var val = selectSingleNode.InnerText;
                                 if (n.Attributes != null)
                                 {
                                     if (ht[n.Attributes["name"].Value] == null)
@@ -846,7 +846,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         {
                             node = AddResourceKey(resDoc, resourceKey);
                         }
-                        node.InnerXml = IsHtmlEncoded(txtValue) ? txtValue : HttpUtility.HtmlEncode(txtValue);
+                        node.InnerText = txtValue;
                         if (txtValue != entry.DefaultValue)
                             changedResources.Add(resourceKey, txtValue);
                         break;
@@ -859,7 +859,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             {
                                 node = AddResourceKey(resDoc, resourceKey);
                             }
-                            node.InnerXml = IsHtmlEncoded(txtValue) ? txtValue : HttpUtility.HtmlEncode(txtValue);
+                            node.InnerText = txtValue;
                             changedResources.Add(resourceKey, txtValue);
                         }
                         else
@@ -975,12 +975,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }));
             }
             return pages;
-        }
-
-        private bool IsHtmlEncoded(string text)
-        {
-            return HttpUtility.HtmlDecode(text) != text;
-        }
+        }        
     }
 
     internal static class KpvExtension
