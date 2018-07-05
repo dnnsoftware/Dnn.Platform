@@ -95,7 +95,8 @@ namespace DotNetNuke.Common
         public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
+        public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
+        
         #region PerformanceSettings enum
 
         /// <summary>
@@ -1874,7 +1875,7 @@ namespace DotNetNuke.Common
                 string ControlKey = "";
                 if (HttpContext.Current.Request.QueryString["ctl"] != null)
                 {
-                    ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLower();
+                    ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLowerInvariant();
                 }
                 int ModuleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
@@ -2036,7 +2037,7 @@ namespace DotNetNuke.Common
             if (!String.IsNullOrEmpty(strHTML))
             {
                 tLen = strToken.Length + 2;
-                string _UploadDirectory = strUploadDirectory.ToLower();
+                string _UploadDirectory = strUploadDirectory.ToLowerInvariant();
                 //find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
                 while (P != -1)
@@ -2046,11 +2047,11 @@ namespace DotNetNuke.Common
                     R = strHTML.IndexOf("\"", S); //end of URL
                     if (R >= 0)
                     {
-                        strURL = strHTML.Substring(S, R - S).ToLower();
+                        strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
                     }
                     else
                     {
-                        strURL = strHTML.Substring(S).ToLower();
+                        strURL = strHTML.Substring(S).ToLowerInvariant();
                     }
                     // add uploaddirectory if we are linking internally and the uploaddirectory is not already included
                     if (!strURL.Contains("://") && !strURL.StartsWith("/") && !strURL.StartsWith(_UploadDirectory))
@@ -2614,13 +2615,13 @@ namespace DotNetNuke.Common
             {
                 strURL += "?helpculture=";
             }
-            if (!String.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLower()))
+            if (!String.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
             {
-                strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLower();
+                strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant();
             }
             else
             {
-                strURL += objPortalSettings.DefaultLanguage.ToLower();
+                strURL += objPortalSettings.DefaultLanguage.ToLowerInvariant();
             }
             if (!String.IsNullOrEmpty(Name))
             {
@@ -2727,13 +2728,13 @@ namespace DotNetNuke.Common
             {
                 return TabType.Normal;
             }
-            if (URL.ToLower().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
+            if (URL.ToLowerInvariant().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
             {
                 if (NumberMatchRegex.IsMatch(URL))
                 {
                     return TabType.Tab;
                 }
-                if (URL.ToLower().StartsWith("userid="))
+                if (URL.ToLowerInvariant().StartsWith("userid="))
                 {
                     return TabType.Member;
                 }

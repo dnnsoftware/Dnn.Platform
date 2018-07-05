@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.Modules.Html5
             }
             else
             {
-                moduleAction.Url = model.Script.ToLower().StartsWith("javascript:") ? 
+                moduleAction.Url = model.Script.ToLowerInvariant().StartsWith("javascript:") ? 
                                     model.Script : 
                                     string.Format("javascript:{0}", model.Script);
             }

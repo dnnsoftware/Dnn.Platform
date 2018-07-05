@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -125,6 +125,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
 		Build_Install_Package.bat = Build_Install_Package.bat
 		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
@@ -394,6 +395,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{50D97EFD-A619-4B88-92F1-C68A4F2A1BF2}"
 	ProjectSection(SolutionItems) = preProject
 		Build\BuildScripts\CombineSymbols.ps1 = Build\BuildScripts\CombineSymbols.ps1
+		Build\BuildScripts\CopyPackagingFiles.build = Build\BuildScripts\CopyPackagingFiles.build
+		Build\BuildScripts\CreateCommunityPackages.build = Build\BuildScripts\CreateCommunityPackages.build
+		Build\BuildScripts\CreateDocumentation.build = Build\BuildScripts\CreateDocumentation.build
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
 		Build\BuildScripts\ExternallySourced.targets = Build\BuildScripts\ExternallySourced.targets

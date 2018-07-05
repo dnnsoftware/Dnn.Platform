@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 foreach (KeyValuePair<string, string> kvp in varyBy)
                 {
-                    cacheKey.Append(string.Concat(kvp.Key.ToLower(), "=", kvp.Value, "|"));
+                    cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
                 }
             }
             return string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());

@@ -180,10 +180,6 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
-      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
-      <Name>ClientDependency.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj">
       <Project>{9806c125-8ca9-48cc-940a-ccd0442c5993}</Project>
       <Name>DotNetNuke.Web.Razor</Name>

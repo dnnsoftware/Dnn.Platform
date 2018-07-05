@@ -658,7 +658,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     var delImage = (ImageButton)imgColumnControl;
                     var profProperty = (ProfilePropertyDefinition)item.DataItem;
 
-                    switch (profProperty.PropertyName.ToLower())
+                    switch (profProperty.PropertyName.ToLowerInvariant())
                     {
                         case "lastname":
                         case "firstname":

@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var installConfig = InstallController.Instance.GetInstallConfig();
             string culture = installConfig.InstallCulture;
           
-            if (culture.ToLower() != "en-us")
+            if (culture.ToLowerInvariant() != "en-us")
             {
 	            try
 	            {

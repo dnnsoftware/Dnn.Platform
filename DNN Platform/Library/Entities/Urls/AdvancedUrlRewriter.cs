@@ -1312,7 +1312,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            switch (debugValue.ToLower())
+            switch (debugValue.ToLowerInvariant())
             {
                 case "true":
                     retVal = true;
@@ -1342,7 +1342,7 @@ namespace DotNetNuke.Entities.Urls
                 (settings.ForwardExternalUrlsType != DNNPageForwardType.NoForward ||
                  result.Reason == RedirectReason.Tab_Permanent_Redirect))
             {
-                bool allowRedirect = !(result.RewritePath != null && result.RewritePath.ToLower().Contains("&ctl=tab"));
+                bool allowRedirect = !(result.RewritePath != null && result.RewritePath.ToLowerInvariant().Contains("&ctl=tab"));
                 //594 : do not redirect settings pages for external urls
                 if (allowRedirect)
                 {
@@ -1701,7 +1701,7 @@ namespace DotNetNuke.Entities.Urls
                                 if (!triedWWW)
                                 {
                                     triedWWW = true; //now tried adding/removing www
-                                    if (checkAlias.ToLower().StartsWith("www."))
+                                    if (checkAlias.ToLowerInvariant().StartsWith("www."))
                                     {
                                         checkAlias = checkAlias.Substring(4);
                                     }
@@ -1815,7 +1815,7 @@ namespace DotNetNuke.Entities.Urls
                         customAliasesForTabs.Remove(cpa.HTTPAlias);
                     }
                 }
-                isACustomTabAlias = customAliasesForTabs.Contains(httpAlias.ToLower());
+                isACustomTabAlias = customAliasesForTabs.Contains(httpAlias.ToLowerInvariant());
             }
             return isACustomTabAlias;
         }
@@ -2087,7 +2087,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (result.PortalId == -1)
             {
-                if (!requestUri.LocalPath.ToLower().EndsWith(Globals.glbDefaultPage.ToLower()))
+                if (!requestUri.LocalPath.ToLowerInvariant().EndsWith(Globals.glbDefaultPage.ToLowerInvariant()))
                 {
                     // allows requests for aspx pages in custom folder locations to be processed 
                     return;
@@ -2253,9 +2253,9 @@ namespace DotNetNuke.Entities.Urls
             if (result.PortalAlias != null && result.PortalAlias.HTTPAlias != null)
             {
                 string defaultPageUrl = result.Scheme + result.PortalAlias.HTTPAlias + "/" +
-                                        Globals.glbDefaultPage.ToLower(); //child alias Url with /default.aspx
+                                        Globals.glbDefaultPage.ToLowerInvariant(); //child alias Url with /default.aspx
                 //660 : look for a querystring on the site root for a child portal, and handle it if so
-                if (String.CompareOrdinal(requestUrl.ToLower(), defaultPageUrl) == 0)
+                if (String.CompareOrdinal(requestUrl.ToLowerInvariant(), defaultPageUrl) == 0)
                 {
                     //exact match : that's the alias root
                     isChildPortalRootUrl = true;
@@ -2275,7 +2275,7 @@ namespace DotNetNuke.Entities.Urls
                             isChildPortalRootUrl = true;
                             aliasQueryString = "?" + queryString;
                             //674: check for 301 if this value is a tabid/xx - otherwise the url will just evaluate as is
-                            if (queryString.ToLower().StartsWith("tabid="))
+                            if (queryString.ToLowerInvariant().StartsWith("tabid="))
                             {
                                 result.Action = ActionType.CheckFor301;
                             }
@@ -2288,7 +2288,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string MakeUrlWithAlias(Uri requestUri, string httpAlias)
         {
-            return requestUri.AbsoluteUri.ToLower().StartsWith("https://")
+            return requestUri.AbsoluteUri.ToLowerInvariant().StartsWith("https://")
                              ? "https://" + httpAlias.Replace("*.", "") + "/"
                              : "http://" + httpAlias.Replace("*.", "") + "/";
         }
@@ -2404,7 +2404,7 @@ namespace DotNetNuke.Entities.Urls
                 //ignore all install requests
                 retVal = true;
             }
-            else if (request != null && request.Path.ToLower().EndsWith("ImageChallenge.captcha.aspx".ToLower()))
+            else if (request != null && request.Path.ToLowerInvariant().EndsWith("imagechallenge.captcha.aspx"))
             {
                 retVal = true;
             }
@@ -2661,7 +2661,7 @@ namespace DotNetNuke.Entities.Urls
                             if (requestedUrlAliasEnd > Null.NullInteger)
                             {
                                 //818 : when a site root is used for a custom page Url, then check for max length within bounds
-                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).ToLower() == "default.aspx")
+                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).ToLowerInvariant() == "default.aspx")
                                 {
                                     requestedUrl = requestedUrl.Substring(0, requestedUrl.Length - 12);
                                     //12 = default.aspx length
@@ -2714,12 +2714,12 @@ namespace DotNetNuke.Entities.Urls
                             var urlDecode = HttpUtility.UrlDecode(requestedUrl);
                             if (urlDecode != null)
                             {
-                                string rawUrlWithHost = StripDebugParameter(urlDecode.ToLower());
-                                //string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLower());
+                                string rawUrlWithHost = StripDebugParameter(urlDecode.ToLowerInvariant());
+                                //string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
                                 string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, ""));
-                                string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLower().Replace(scheme, ""));
-                                string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, "").ToLower());
-                                string rawUrlLowerCase = StripDebugParameter(requestUri.AbsoluteUri.ToLower());
+                                string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, ""));
+                                string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, "").ToLowerInvariant());
+                                string rawUrlLowerCase = StripDebugParameter(requestUri.AbsoluteUri.ToLowerInvariant());
 
                                 //check to see if just an alias redirect of an internal alias
                                 var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
@@ -2729,10 +2729,10 @@ namespace DotNetNuke.Entities.Urls
                                     var cpa = primaryAliases.GetAliasByPortalIdAndSettings(result);
                                     if (cpa != null)
                                     {
-                                        string chosenAlias = cpa.HTTPAlias.ToLower();
+                                        string chosenAlias = cpa.HTTPAlias.ToLowerInvariant();
                                         foreach (InternalAlias ia in settings.InternalAliasList)
                                         {
-                                            string internalAlias = ia.HttpAlias.ToLower();
+                                            string internalAlias = ia.HttpAlias.ToLowerInvariant();
                                             if (requestedPathNoScheme.Contains(internalAlias))
                                             {
                                                 //an internal alias has been used.
@@ -2797,7 +2797,7 @@ namespace DotNetNuke.Entities.Urls
                     string urlDecodedRedirectPath = HttpUtility.UrlDecode(redirectPathOnly);
 
                     //check for wrong case redirection
-                    if (urlDecodedRedirectPath != null && (settings.RedirectWrongCase && String.CompareOrdinal(urlDecodedRedirectPath, urlDecodedRedirectPath.ToLower()) != 0))
+                    if (urlDecodedRedirectPath != null && (settings.RedirectWrongCase && String.CompareOrdinal(urlDecodedRedirectPath, urlDecodedRedirectPath.ToLowerInvariant()) != 0))
                     {
                         TabInfo tab;
                         bool allowRedirect = CheckFor301RedirectExclusion(result.TabId, result.PortalId, true, out tab, settings);
@@ -2820,7 +2820,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                redirectPath = redirectPath.Replace(redirectPathOnly, redirectPathOnly.ToLower());
+                                redirectPath = redirectPath.Replace(redirectPathOnly, redirectPathOnly.ToLowerInvariant());
                                 doRedirect = true;
                                 result.Reason = RedirectReason.Not_Lower_Case;
                             }

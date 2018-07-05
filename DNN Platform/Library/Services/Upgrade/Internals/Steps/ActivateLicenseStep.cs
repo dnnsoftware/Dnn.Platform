@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
                     var activationResult = "";
                     activationResult = Upgrade.ActivateLicense();
 
-                    if (!activationResult.ToLower().Contains("success"))
+                    if (!activationResult.ToLowerInvariant().Contains("success"))
                     {
                         Errors.Add(Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile) + ": " + activationResult);
                         Logger.TraceFormat("ActivateLicense Status - {0}", activationResult);

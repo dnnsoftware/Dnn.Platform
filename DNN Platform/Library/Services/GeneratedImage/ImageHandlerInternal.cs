@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Check if domain is allowed to embed image
             if (!string.IsNullOrEmpty(AllowedDomains[0]) &&
                 context.Request.UrlReferrer != null &&
-                context.Request.UrlReferrer.Host.ToLower() != context.Request.Url.Host.ToLower())
+                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
                 string allowedDomains = "";
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
                         allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.ToLower().Contains(allowedDomain.ToLower()))
+                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
                             allowed = true;
                     }
                 }

@@ -556,7 +556,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        if (SkinControl.ToLower().IndexOf("id=") == -1)
+                        if (SkinControl.ToLowerInvariant().IndexOf("id=") == -1)
                         {
                             SkinControl = " id=\"ContentPane\"";
                         }
@@ -761,7 +761,7 @@ namespace DotNetNuke.UI.Skins
                         Attribute = strAttribute.Split('=');
                         AttributeName = Attribute[0].Trim();
                         AttributeValue = Attribute[1].Trim().Replace("\"", "");
-                        switch (AttributeName.ToLower())
+                        switch (AttributeName.ToLowerInvariant())
                         {
                             case "id":
                                 ControlName = AttributeValue;
@@ -777,7 +777,7 @@ namespace DotNetNuke.UI.Skins
                 }
 
                 //process skin object
-                if (AttributeNode.ToLower() == "dotnetnuke/server")
+                if (AttributeNode.ToLowerInvariant() == "dotnetnuke/server")
                 {
                     //we have a valid skin object specification
                     Messages += SkinController.FormatMessage(OBJECT_PROC, Token, 2, false);
@@ -1041,7 +1041,7 @@ namespace DotNetNuke.UI.Skins
                 string strNewTag = strOldTag;
 
                 //we do not want to process object tags to DotNetNuke widgets
-                if (!m.Groups[0].Value.ToLower().Contains("codetype=\"dotnetnuke/client\""))
+                if (!m.Groups[0].Value.ToLowerInvariant().Contains("codetype=\"dotnetnuke/client\""))
                 {
                     switch (ParseOption)
                     {
@@ -1055,7 +1055,7 @@ namespace DotNetNuke.UI.Skins
                             break;
                         case SkinParser.Portable:
                             //if the tag does not contain a reference to the skinpath
-                            if (strNewTag.ToLower().IndexOf("<%= skinpath %>") == -1)
+                            if (strNewTag.ToLowerInvariant().IndexOf("<%= skinpath %>") == -1)
                             {
                                 //insert the skinpath 
                                 strNewTag = m.Groups["tag"].Value + "<%= SkinPath %>" + m.Groups["content"].Value + m.Groups["endtag"].Value;

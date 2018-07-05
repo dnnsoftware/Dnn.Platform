@@ -190,7 +190,7 @@ namespace DotNetNuke.Web.DDRMenu
                                 n =>
                                 {
                                     var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
-                                    return (tab.Terms.Any(x => x.Name.ToLower() == tagName));
+                                    return (tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName));
                                 }));
 			        }
 

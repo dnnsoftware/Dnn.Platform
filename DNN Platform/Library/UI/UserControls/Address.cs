@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.UserControls
 				var retValue = "";
 				if (cboCountry.SelectedItem != null)
 				{
-					switch (_countryData.ToLower())
+					switch (_countryData.ToLowerInvariant())
 					{
 						case "text":
 							retValue = cboCountry.SelectedIndex == 0 ? "" : cboCountry.SelectedItem.Text;
@@ -238,7 +238,7 @@ namespace DotNetNuke.UI.UserControls
 				{
 					if (cboRegion.SelectedItem != null)
 					{
-						switch (_regionData.ToLower())
+						switch (_regionData.ToLowerInvariant())
 						{
 							case "text":
 								if (cboRegion.SelectedIndex > 0)
@@ -435,7 +435,7 @@ namespace DotNetNuke.UI.UserControls
 					cboRegion.DataBind();
 					cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
 				}
-				if (countryCode.ToLower() == "us")
+				if (countryCode.ToLowerInvariant() == "us")
 				{
 					valRegion1.Enabled = true;
 					valRegion2.Enabled = false;
@@ -681,7 +681,7 @@ namespace DotNetNuke.UI.UserControls
 					cboCountry.DataBind();
 					cboCountry.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
 
-					switch (_countryData.ToLower())
+					switch (_countryData.ToLowerInvariant())
 					{
 						case "text":
 							if (String.IsNullOrEmpty(_country))
@@ -709,7 +709,7 @@ namespace DotNetNuke.UI.UserControls
 
 					if (cboRegion.Visible)
 					{
-						switch (_regionData.ToLower())
+						switch (_regionData.ToLowerInvariant())
 						{
 							case "text":
 								if (String.IsNullOrEmpty(_region))

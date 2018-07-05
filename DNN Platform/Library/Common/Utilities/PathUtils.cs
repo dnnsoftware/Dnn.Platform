@@ -205,10 +205,10 @@ namespace DotNetNuke.Common.Utilities
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
             return String.IsNullOrEmpty(folderPath) ||
-                   folderPath.ToLower() == "skins" ||
-                   folderPath.ToLower() == "containers" ||
-                   folderPath.ToLower().StartsWith("skins/") ||
-                   folderPath.ToLower().StartsWith("containers/");
+                   folderPath.ToLowerInvariant() == "skins" ||
+                   folderPath.ToLowerInvariant() == "containers" ||
+                   folderPath.ToLowerInvariant().StartsWith("skins/") ||
+                   folderPath.ToLowerInvariant().StartsWith("containers/");
         }
 
         /// <summary>

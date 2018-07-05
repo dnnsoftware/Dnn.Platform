@@ -192,6 +192,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             try
             {
+                if (!state.SendNotification)
+                {
+                    return;
+                }
+
                 var user = GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
                 if (user == null)
                 {
@@ -227,6 +232,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             try
             {
+                if (!workflow.FirstState.SendNotification)
+                {
+                    return;
+                }
+
                 var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
                 if (workflowAction == null)
                 {

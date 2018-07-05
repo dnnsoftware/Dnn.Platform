@@ -2996,7 +2996,7 @@ namespace DotNetNuke.Entities.Portals
 		/// <param name="cultureCode">The culture code.</param>
 		public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
 		{
-			DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLower());
+			DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
 			EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
 			DataCache.ClearHostCache(true);
 		}

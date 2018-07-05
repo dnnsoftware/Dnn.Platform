@@ -529,12 +529,12 @@ namespace Dnn.Modules.Console
 				tmid = TabModuleId.ToString(CultureInfo.InvariantCulture);
 			}
 			return string.Format("allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
-								 AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLower(),
-								 AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLower(),
+								 AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+								 AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
 								 DefaultSize,
 								 DefaultView,
 								 tmid,
-								 ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLower());
+								 ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
 		}
 
 	}

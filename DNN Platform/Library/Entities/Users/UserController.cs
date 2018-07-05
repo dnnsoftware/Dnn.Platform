@@ -560,6 +560,19 @@ namespace DotNetNuke.Entities.Users
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
 
+        public bool IsValidUserName(string userName)
+        {
+            // Validate username against bad characters; it must not start or end with space, 
+            // must not contain control characters, and not contain special punctuations
+            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+            char[] unallowedAscii = Globals.USERNAME_UNALLOWED_ASCII.ToCharArray();
+            return userName.Length >= 5 &&
+                        userName == userName.Trim() &&
+                        userName.All(ch => ch >= ' ') &&
+                        userName.IndexOfAny(unallowedAscii) < 0;
+
+        }
+
         public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
         {
             var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
@@ -2301,7 +2314,7 @@ namespace DotNetNuke.Entities.Users
             return httpAlias.IndexOf("/", StringComparison.InvariantCulture) != -1 ?
                 httpAlias.Substring(0, httpAlias.IndexOf("/", StringComparison.InvariantCulture)) :
                 httpAlias;
-        }
+        }      
 
         #endregion
 

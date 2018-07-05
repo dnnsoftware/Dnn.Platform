@@ -24,8 +24,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
-
+using System.Web.Http.Hosting;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -46,6 +47,7 @@ using DotNetNuke.Web.InternalServices.Views.Search;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Tests.Web.InternalServices
 {
@@ -145,7 +147,15 @@ namespace DotNetNuke.Tests.Web.InternalServices
             CBO.SetTestableInstance(_mockCBO.Object);
 
             //create instance of the SearchServiceController
-            _searchServiceController = new SearchServiceController(HtmlModDefId);
+            var request = new HttpRequestMessage();
+            var configuration = new HttpConfiguration();
+            var provider = new Mock<ITabAndModuleInfoProvider>();
+            ModuleInfo expectedModule;
+            provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
+            configuration.AddTabAndModuleInfoProvider(provider.Object);
+            request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
+            _searchServiceController = new SearchServiceController(HtmlModDefId){Request = request };
+
             CreateNewLuceneControllerInstance();
         }
         [TearDown]

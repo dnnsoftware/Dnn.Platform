@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Skins
 
         private SkinDefaults(SkinDefaultType DefaultType)
         {
-            string nodename = Enum.GetName(DefaultType.GetType(), DefaultType).ToLower();
+            string nodename = Enum.GetName(DefaultType.GetType(), DefaultType).ToLowerInvariant();
             string filePath = Config.GetPathToFile(Config.ConfigFileType.DotNetNuke);
             var dnndoc = new XmlDocument { XmlResolver = null };
             dnndoc.Load(filePath);

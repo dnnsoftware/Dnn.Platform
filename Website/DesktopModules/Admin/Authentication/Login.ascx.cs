@@ -956,7 +956,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             //Override the redirected page title if page has loaded with ctl=Login
             if (Request.QueryString["ctl"] != null)
             {
-                if (Request.QueryString["ctl"].ToLower() == "login")
+                if (Request.QueryString["ctl"].ToLowerInvariant() == "login")
                 {
                     var myPage = (CDefault)Page;
                     if (myPage.PortalSettings.LoginTabId == TabId || myPage.PortalSettings.LoginTabId == -1)

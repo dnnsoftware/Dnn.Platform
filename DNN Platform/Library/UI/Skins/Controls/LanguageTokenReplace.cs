@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     returnValue += "&";
                 }
-                returnValue += "language=" + newLanguage.ToLower();
+                returnValue += "language=" + newLanguage.ToLowerInvariant();
             }
 
             //return the new querystring as a string array

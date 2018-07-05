@@ -103,14 +103,14 @@ namespace DotNetNuke.Entities.Urls
                                 url = customHttpAlias + "::" + url;
                             }
                         }
-                        string cultureKey = redirect.CultureCode.ToLower();
+                        string cultureKey = redirect.CultureCode.ToLowerInvariant();
                         var locales = LocaleController.Instance.GetLocales(portalId).Values;
                         if (String.IsNullOrEmpty(cultureKey))
                         {
                             //Add entry for each culture
                             foreach (Locale locale in locales)
                             {
-                                AddEntryToDictionary(existingTabs, portalId, tab, locale.Code.ToLower(), url);
+                                AddEntryToDictionary(existingTabs, portalId, tab, locale.Code.ToLowerInvariant(), url);
                             }
                         }
                         else

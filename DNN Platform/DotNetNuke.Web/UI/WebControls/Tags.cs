@@ -251,7 +251,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void RenderControl(HtmlTextWriter writer)
         {
             //Render Outer Div
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, RepeatDirection.ToLower());
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, RepeatDirection.ToLowerInvariant());
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
             //Render Categories
@@ -279,7 +279,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && RepeatDirection.ToLower() == "horizontal");
+                    RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }
@@ -311,7 +311,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && RepeatDirection.ToLower() == "horizontal");
+                    RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }

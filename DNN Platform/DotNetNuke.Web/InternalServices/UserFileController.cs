@@ -157,7 +157,7 @@ namespace DotNetNuke.Web.InternalServices
         private static bool IsImageFile(string relativePath)
         {
             var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff" };
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLower();
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLowerInvariant();
             return acceptedExtensions.Contains(extension);
         }
 

@@ -131,7 +131,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (keys[i] != null)
                 {
-                    switch (keys[i].ToLower())
+                    switch (keys[i].ToLowerInvariant())
                     {
                         case "tabid":
                         case "ctl":
@@ -139,7 +139,7 @@ namespace DotNetNuke.Common.Utilities
                             //skip parameter
                             break;
                         default:
-                            if ((keys[i].ToLower() == "portalid") && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if ((keys[i].ToLowerInvariant() == "portalid") && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
                                 //skip parameter
                                 //navigateURL adds portalid to querystring if tab is superTab
@@ -247,18 +247,18 @@ namespace DotNetNuke.Common.Utilities
                 {
                     popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : String.Empty;
-                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLower(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
                 }
                 else
                 {
                     //Determines if the resulting JS call should return or not.
                     if (popUpUrl.Contains("/*showReturn*/false"))
                     {
-                        popUpUrl = popUpUrl.Replace("/*showReturn*/false", "/*showReturn*/" + onClickEvent.ToString().ToLower());
+                        popUpUrl = popUpUrl.Replace("/*showReturn*/false", "/*showReturn*/" + onClickEvent.ToString().ToLowerInvariant());
                     }
                     else
                     {
-                        popUpUrl = popUpUrl.Replace("/*showReturn*/true", "/*showReturn*/" + onClickEvent.ToString().ToLower());
+                        popUpUrl = popUpUrl.Replace("/*showReturn*/true", "/*showReturn*/" + onClickEvent.ToString().ToLowerInvariant());
                     }
                 }
             }
@@ -272,7 +272,7 @@ namespace DotNetNuke.Common.Utilities
         public static string ClosePopUp(Boolean refresh, string url, bool onClickEvent)
         {
             var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
-            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLower(), "'" + url + "'");
+            closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
 
             // Removes the javascript txt for onClick scripts)
             if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", "");

@@ -57,7 +57,7 @@ namespace DotNetNuke.UI
             {
                 Int32.TryParse(request.QueryString["mid"], out moduleId);
             }
-            if (request.QueryString["moduleid"] != null && (key.ToLower() == "module" || key.ToLower() == "help"))
+            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
             {
                 Int32.TryParse(request.QueryString["moduleid"], out moduleId);
             }
@@ -96,7 +96,7 @@ namespace DotNetNuke.UI
                 slaveModule = (new ModuleInfo {ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true});
             }
 
-            if (request.QueryString["moduleid"] != null && (key.ToLower() == "module" || key.ToLower() == "help"))
+            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
             {
                 slaveModule.ModuleDefID = -1;
             }
