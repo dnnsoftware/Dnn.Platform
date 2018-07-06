@@ -377,7 +377,7 @@ namespace DotNetNuke.Services.Installer.Packages
                     {
                         var fileName = entry.Name;
                         string extension = Path.GetExtension(fileName);
-                        if (extension != null && (extension.ToLower() == ".dnn" || extension.ToLower() == ".dnn5"))
+                        if (extension != null && (extension.ToLowerInvariant() == ".dnn" || extension.ToLowerInvariant() == ".dnn5"))
                         {
                             //Manifest
                             var manifest = manifestReader.ReadToEnd();
@@ -392,13 +392,13 @@ namespace DotNetNuke.Services.Installer.Packages
                                 {
                                     packageType = XmlUtils.GetAttributeValue(rootNav, "type");
                                 }
-                                else if (rootNav.Name.ToLower() == "languagepack")
+                                else if (rootNav.Name.ToLowerInvariant() == "languagepack")
                                 {
                                     packageType = "LanguagePack";
                                 }
 
                                 XPathNavigator nav = null;
-                                switch (packageType.ToLower())
+                                switch (packageType.ToLowerInvariant())
                                 {
                                     case "package":
                                         nav = rootNav.SelectSingleNode("packages/package");

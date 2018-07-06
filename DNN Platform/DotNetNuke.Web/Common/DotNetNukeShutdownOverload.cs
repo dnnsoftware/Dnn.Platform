@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.Common.Internal
                             if (_handleShutdowns)
                                 _shutDownDelayTimer = new Timer(InitiateShutdown);
 
-                            _binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLower();
+                            _binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLowerInvariant();
                             _binOrRootWatcher = new FileSystemWatcher
                             {
                                 Filter = "*.*",
@@ -153,7 +153,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLower().StartsWith(_binFolder))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLowerInvariant().StartsWith(_binFolder))
             {
                 ShceduleShutdown();
             }
@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLower().StartsWith(_binFolder))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLowerInvariant().StartsWith(_binFolder))
                 ShceduleShutdown();
         }
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLower().StartsWith(_binFolder))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLowerInvariant().StartsWith(_binFolder))
                 ShceduleShutdown();
         }
 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLower().StartsWith(_binFolder))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").ToLowerInvariant().StartsWith(_binFolder))
                 ShceduleShutdown();
         }
 

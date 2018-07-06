@@ -623,7 +623,7 @@ namespace DotNetNuke.Entities.Tabs
                 outputFormat = "g";
             }
 
-            string lowerPropertyName = propertyName.ToLower();
+            string lowerPropertyName = propertyName.ToLowerInvariant();
             if (currentScope == Scope.NoSettings)
             {
                 propertyNotFound = true;

@@ -92,8 +92,8 @@ namespace DotNetNuke.Entities.Urls
                     }
                     //597 : do a compare with the '=' on the end to only
                     //compare the entire parmname, not just the start
-                    string comparePath1 = "?" + parmName.ToLower();
-                    string comparePath2 = "&" + parmName.ToLower();
+                    string comparePath1 = "?" + parmName.ToLowerInvariant();
+                    string comparePath2 = "&" + parmName.ToLowerInvariant();
                     if (hasValue)
                     {
                         comparePath1 += "=";
@@ -103,8 +103,8 @@ namespace DotNetNuke.Entities.Urls
                     // we only want to add the querystring back on if the 
                     // query string keys were not already shown in the friendly
                     // url path
-                    if (!rewritePath.ToLower().Contains(comparePath1)
-                        && !rewritePath.ToLower().Contains(comparePath2))
+                    if (!rewritePath.ToLowerInvariant().Contains(comparePath1)
+                        && !rewritePath.ToLowerInvariant().Contains(comparePath2))
                     {
                         //622 : remove encoding from querystring paths
                         //699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
@@ -132,8 +132,8 @@ namespace DotNetNuke.Entities.Urls
             string newUrl = url;
             bool reWritten = false;
 
-            string defaultPage = Globals.glbDefaultPage.ToLower();
-            string portalAliasUrl = url.ToLower().Replace("/" + defaultPage, "");
+            string defaultPage = Globals.glbDefaultPage.ToLowerInvariant();
+            string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, "");
             //if there is a straight match on a portal alias, it's the home page for that portal requested 
             var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
@@ -142,14 +142,14 @@ namespace DotNetNuke.Entities.Urls
                 //on other server software installed (apparently)
                 //so check the raw Url and the url, and see if they are the same except for the /default.aspx
                 string rawUrl = result.RawUrl;
-                if (url.ToLower().EndsWith(rawUrl + defaultPage.ToLower()))
+                if (url.ToLowerInvariant().EndsWith(rawUrl + defaultPage.ToLowerInvariant()))
                 {
                     //special case - change the url to be equal to the raw Url
                     url = url.Substring(0, url.Length - defaultPage.Length);
                 }
 
                 if (settings.RedirectDefaultPage
-                    && url.ToLower().EndsWith("/" + defaultPage)
+                    && url.ToLowerInvariant().EndsWith("/" + defaultPage)
                     && result.RedirectAllowed)
                 {
                     result.Reason = RedirectReason.Site_Root_Home;
@@ -213,10 +213,10 @@ namespace DotNetNuke.Entities.Urls
                         {
                             //ok, this isnt' a chosen portal alias, check the list of custom aliases
                             List<string> customAliasesForTabs = TabIndexController.GetCustomPortalAliases(settings);
-                            if (customAliasesForTabs != null && customAliasesForTabs.Contains(portalAlias.HTTPAlias.ToLower()))
+                            if (customAliasesForTabs != null && customAliasesForTabs.Contains(portalAlias.HTTPAlias.ToLowerInvariant()))
                             {
                                 //ok, the alias is used as a custom tab, so now look in the dictionary to see if it's used a 'root' context
-                                string tabKey = url.ToLower();
+                                string tabKey = url.ToLowerInvariant();
                                 if (tabKey.EndsWith("/"))
                                 {
                                     tabKey = tabKey.TrimEnd('/');
@@ -325,7 +325,7 @@ namespace DotNetNuke.Entities.Urls
             }
             if (lastPath >= 0)
             {
-                int defaultStart = tabKeyVal.ToLower().IndexOf("default", lastPath, StringComparison.Ordinal);
+                int defaultStart = tabKeyVal.ToLowerInvariant().IndexOf("default", lastPath, StringComparison.Ordinal);
                 //no .aspx on the end anymore
                 if (defaultStart > 0 && defaultStart > lastPath)
                 //there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
@@ -507,7 +507,7 @@ namespace DotNetNuke.Entities.Urls
             //iterate the list and replace in the url is a match is found
             foreach (string requestPage in list)
             {
-                if (requestUrl.ToLower().Contains(requestPage))
+                if (requestUrl.ToLowerInvariant().Contains(requestPage))
                 {
                     url = newUrl.Replace(Globals.glbDefaultPage, requestPage);
                     break;
@@ -554,7 +554,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 string val = itemMatch.Groups["val"].Value;
                 string key = itemMatch.Groups["key"].Value;
-                switch (key.ToLower())
+                switch (key.ToLowerInvariant())
                 {
                     case "tabid":
                         int tabidtemp;
@@ -597,7 +597,7 @@ namespace DotNetNuke.Entities.Urls
         {
             bool changed = false;
             //758 : check for any language identifier in the Url before adding a new one, not just the same one
-            if (!string.IsNullOrEmpty(cultureCode) && !rewritePath.ToLower().Contains("language="))
+            if (!string.IsNullOrEmpty(cultureCode) && !rewritePath.ToLowerInvariant().Contains("language="))
             {
                 changed = true;
                 if (rewritePath.Contains("?"))
@@ -633,7 +633,7 @@ namespace DotNetNuke.Entities.Urls
             //don't overwrite specific skin at tab level for rewritten Urls
             if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
             {
-                if (!string.IsNullOrEmpty(skin) && skin != "default" && !rewritePath.ToLower().Contains("skinsrc="))
+                if (!string.IsNullOrEmpty(skin) && skin != "default" && !rewritePath.ToLowerInvariant().Contains("skinsrc="))
                 {
                     message = "Added SkinSrc : " + skin;
                     changed = true;
@@ -717,16 +717,16 @@ namespace DotNetNuke.Entities.Urls
         internal static string CleanExtension(string value, string extension, string langParms, out bool replaced)
         {
             string result = value;
-            string ext = extension.ToLower();
+            string ext = extension.ToLowerInvariant();
             replaced = false;
-            if (result.ToLower().EndsWith(ext) && ext != "")
+            if (result.ToLowerInvariant().EndsWith(ext) && ext != "")
             {
                 result = result.Substring(0, result.Length - ext.Length);
                 replaced = true;
             }
             else
             {
-                if (result.ToLower().EndsWith(".aspx"))
+                if (result.ToLowerInvariant().EndsWith(".aspx"))
                 {
                     result = result.Substring(0, result.Length - 5);
                     replaced = true;
@@ -738,7 +738,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         //safely remove .aspx from the language path without doing a full .aspx -> "" replace on the entire path
                         if (string.IsNullOrEmpty(result) == false &&
-                            result.ToLower().EndsWith(".aspx" + langParms.ToLower()))
+                            result.ToLowerInvariant().EndsWith(".aspx" + langParms.ToLowerInvariant()))
                         {
                             result = result.Substring(0, result.Length - (5 + langParms.Length)) + langParms;
                             replaced = true;
@@ -866,7 +866,7 @@ namespace DotNetNuke.Entities.Urls
                             string urlPart = aliasPath + "::" + tabPath;
                             //the :: allows separation of pagename and portal alias
 
-                            string tabKeyVal = urlPart.ToLower(); //force lower case lookup, all keys are lower case
+                            string tabKeyVal = urlPart.ToLowerInvariant(); //force lower case lookup, all keys are lower case
 
                             //Try with querystring first If last Index
                             bool found = false;
@@ -1333,7 +1333,7 @@ namespace DotNetNuke.Entities.Urls
                             for (var x = 1; x <= urlParams.Length - 1; x++)
                             {
                                 if (urlParams[x].Trim().Length > 0 &&
-                                    urlParams[x].ToLower() != Globals.glbDefaultPage.ToLower())
+                                    urlParams[x].ToLowerInvariant() != Globals.glbDefaultPage.ToLowerInvariant())
                                 {
                                     rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", "").Trim() + "=";
                                     if ((x < (urlParams.Length - 1)))
@@ -1382,7 +1382,7 @@ namespace DotNetNuke.Entities.Urls
                                                     Guid parentTraceId)
         {
             string scheme = result.Scheme;
-            if (absoluteUri.ToLower().StartsWith(scheme))
+            if (absoluteUri.ToLowerInvariant().StartsWith(scheme))
             {
                 absoluteUri = absoluteUri.Substring(scheme.Length);
             }
@@ -1475,7 +1475,7 @@ namespace DotNetNuke.Entities.Urls
         internal static bool IsExcludedFromFriendlyUrls(TabInfo tab, FriendlyUrlSettings settings, bool rewriting)
         {
             bool exclude = false;
-            string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
+            string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLowerInvariant();
             //553 change for dnn 5.0 isAdminTab no longer returns true in any case, so
             //check custom admin tab path header
             //811: allow for admin tabs to be friendly
@@ -1486,7 +1486,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (!exclude && settings.UseBaseFriendlyUrls != null)
             {
-                exclude = settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
+                exclude = settings.UseBaseFriendlyUrls.ToLowerInvariant().Contains(tabPath);
             }
 
             return exclude;
@@ -1502,7 +1502,7 @@ namespace DotNetNuke.Entities.Urls
         internal static void RequestRedirectOnBuiltInUrl(string urlParm, string rewritePath, UrlAction result)
         {
             //on the lookout for items to potentially redirect
-            if ("terms|privacy|login|register".Contains(urlParm.ToLower()))
+            if ("terms|privacy|login|register".Contains(urlParm.ToLowerInvariant()))
             {
                 //likely that this should be redirected, because we don't want ctl/terms, ctl/register, etc
                 result.Reason = RedirectReason.Built_In_Url;
@@ -1603,9 +1603,9 @@ namespace DotNetNuke.Entities.Urls
                 {
                     string thisParm = urlParms[i];
                     //here's the thing - we either take the last one and put it at the start, or just go two-by-two 
-                    if (thisParm.ToLower() != Globals.glbDefaultPage.ToLower())
+                    if (thisParm.ToLowerInvariant() != Globals.glbDefaultPage.ToLowerInvariant())
                     {
-                        if (thisParm.ToLower() == "tabid")
+                        if (thisParm.ToLowerInvariant() == "tabid")
                         {
                             skip = true;
                             //discovering the tabid in the list of parameters means that 
@@ -1649,7 +1649,7 @@ namespace DotNetNuke.Entities.Urls
                                     isUserParm = false;
                                 }
                                 //786 : redirect ctl/terms etc
-                                if (keyName != null && keyName.ToLower() == "ctl")
+                                if (keyName != null && keyName.ToLowerInvariant() == "ctl")
                                 {
                                     RequestRedirectOnBuiltInUrl(urlParm, parmString.ToString(), result);
                                 }

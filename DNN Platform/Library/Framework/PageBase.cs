@@ -288,7 +288,7 @@ namespace DotNetNuke.Framework
 
         protected override void OnInit(EventArgs e)
         {
-            var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLower().Contains("installwizard.aspx");
+            var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
             if (!isInstallPage)
             {
                 Localization.SetThreadCultures(PageCulture, PortalSettings);

@@ -418,11 +418,11 @@ namespace DotNetNuke.UI.Containers
             {
                 if (ContentPane.Attributes["class"] != null)
                 {
-                    ContentPane.Attributes["class"] = ContentPane.Attributes["class"] + " DNNAlign" + ModuleConfiguration.Alignment.ToLower();
+                    ContentPane.Attributes["class"] = ContentPane.Attributes["class"] + " DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
                 else
                 {
-                    ContentPane.Attributes["class"] = "DNNAlign" + ModuleConfiguration.Alignment.ToLower();
+                    ContentPane.Attributes["class"] = "DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
             }
         }

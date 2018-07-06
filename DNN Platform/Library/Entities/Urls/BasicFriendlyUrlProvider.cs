@@ -241,7 +241,7 @@ namespace DotNetNuke.Entities.Urls
                             if ((Regex.IsMatch(pair[1], _regexMatch) == false))
                             {
                                 //Contains Non-AlphaNumeric Characters
-                                if ((pair[0].ToLower() == "tabid"))
+                                if ((pair[0].ToLowerInvariant() == "tabid"))
                                 {
                                     if (Globals.NumberMatchRegex.IsMatch(pair[1]))
                                     {
@@ -355,14 +355,14 @@ namespace DotNetNuke.Entities.Urls
                             friendlyPath = GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
                                                 portalAlias, 
                                                 true)
-                                                .ToLower();
+                                                .ToLowerInvariant();
                         }
                         else
                         {
                             friendlyPath = GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
                                                 portalAlias, 
                                                 true)
-                                            .ToLower();
+                                            .ToLowerInvariant();
                         }
                     }
                     else

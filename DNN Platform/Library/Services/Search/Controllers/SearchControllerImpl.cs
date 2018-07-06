@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     foreach (var word in searchQuery.KeyWords.Split(' '))
                     {
-                        query.Add(new TermQuery(new Term(Constants.ContentTag, word.ToLower())), Occur.SHOULD);
+                        query.Add(new TermQuery(new Term(Constants.ContentTag, word.ToLowerInvariant())), Occur.SHOULD);
                     }
                 }
             }
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var tag in searchQuery.Tags)
             {
-                var text = tag.ToLower();
+                var text = tag.ToLowerInvariant();
                 if (HtmlUtils.ContainsEntity(text))
                 {
                     text = System.Net.WebUtility.HtmlDecode(text);

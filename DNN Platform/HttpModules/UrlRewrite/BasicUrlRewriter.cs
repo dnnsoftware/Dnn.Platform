@@ -196,7 +196,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             //if the TabId is not for the correct domain
                             //see if the correct domain can be found and redirect it 
                             portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(domainName);
-                            if (portalAliasInfo != null && !request.Url.LocalPath.ToLower().EndsWith("/linkclick.aspx"))
+                            if (portalAliasInfo != null && !request.Url.LocalPath.ToLowerInvariant().EndsWith("/linkclick.aspx"))
                             {
                                 if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                                 {
@@ -591,7 +591,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             tabPath = url.Remove(0, myAlias.Length);
                         }
                         //Default Page has been Requested
-                        if ((tabPath == "/" + Globals.glbDefaultPage.ToLower()))
+                        if ((tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant()))
                         {
                             return;
                         }
@@ -648,7 +648,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             RewriterUtils.RewriteUrl(app.Context, sendToUrl);
                             return;
                         }
-                        tabPath = tabPath.ToLower();
+                        tabPath = tabPath.ToLowerInvariant();
                         if ((tabPath.IndexOf('?') != -1))
                         {
                             tabPath = tabPath.Substring(0, tabPath.IndexOf('?'));
@@ -772,7 +772,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
                         foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
                         {
-                            if ((kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLower() == tabPath))
+                            if ((kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLowerInvariant() == tabPath))
                             {
                                 if ((!String.IsNullOrEmpty(app.Request.Url.Query)))
                                 {

@@ -3958,10 +3958,10 @@ namespace DotNetNuke.Services.Upgrade
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
-            var match = defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLower() == currentCulture);
+            var match = defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant() == currentCulture);
             if (match == null)
             {
-                match = defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLower().StartsWith(currentCulture.Substring(0, 2)));
+                match = defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant().StartsWith(currentCulture.Substring(0, 2)));
             }
             if (match == null)
             {
@@ -3993,7 +3993,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 currentCulture = Localization.Localization.SystemLocale;
             }
-            currentCulture = currentCulture.ToLower();
+            currentCulture = currentCulture.ToLowerInvariant();
 
             return FindBestTemplate(templateFileName, currentCulture);
         }
@@ -4580,7 +4580,7 @@ namespace DotNetNuke.Services.Upgrade
                         bool settingIsSecure = false;
                         if ((secureAttrib != null))
                         {
-                            if (secureAttrib.Value.ToLower() == "true")
+                            if (secureAttrib.Value.ToLowerInvariant() == "true")
                             {
                                 settingIsSecure = true;
                             }
@@ -5033,7 +5033,7 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (string file in Directory.GetFiles(installPackagePath))
                 {
 
-                    if (Path.GetExtension(file.ToLower()) == ".zip" /*|| installLanguage */)
+                    if (Path.GetExtension(file.ToLowerInvariant()) == ".zip" /*|| installLanguage */)
                     {
 
                         InstallPackage(file, packageType, writeFeedback);

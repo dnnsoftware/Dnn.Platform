@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Syndication
             if (url.Trim() == "")
             {
                 url = TestableGlobals.Instance.NavigateURL(searchResult.TabId);
-                if (url.ToLower().IndexOf(HttpContext.Current.Request.Url.Host.ToLower()) == -1)
+                if (url.ToLowerInvariant().IndexOf(HttpContext.Current.Request.Url.Host.ToLowerInvariant()) == -1)
                 {
                     url = TestableGlobals.Instance.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
                 }

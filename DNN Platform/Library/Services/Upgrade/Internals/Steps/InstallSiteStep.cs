@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.PortAliases.Count > 0) portalAlias = portal.PortAliases[0];
 
             //Verify that portal alias is not present
-            if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLower()) != null)
+            if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
                 string description = Localization.Localization.GetString("SkipCreatingSite", LocalInstallResourceFile);
                 Details = string.Format(description, portalAlias);

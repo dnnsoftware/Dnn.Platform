@@ -286,13 +286,13 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 if (friendRelationship != null)
                 {                   
-                    if (action.ToLower() == "acceptfriend")
+                    if (action.ToLowerInvariant() == "acceptfriend")
                     {
                         var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
                         FriendsController.Instance.AcceptFriend(friend);                        
                     }
 
-                    if (action.ToLower() == "followback")
+                    if (action.ToLowerInvariant() == "followback")
                     {
                         var follower = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
                         try

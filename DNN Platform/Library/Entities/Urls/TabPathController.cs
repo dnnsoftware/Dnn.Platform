@@ -198,7 +198,7 @@ namespace DotNetNuke.Entities.Urls
                 string cultureCodeKey = "";
                 if (cultureCode != null)
                 {
-                    cultureCodeKey = cultureCode.ToLower();
+                    cultureCodeKey = cultureCode.ToLowerInvariant();
                 }
 
                 bool checkForCustomHttpAlias = false;

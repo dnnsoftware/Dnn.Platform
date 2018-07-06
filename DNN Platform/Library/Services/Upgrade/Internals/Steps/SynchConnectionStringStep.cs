@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             string connection = Config.GetUpgradeConnectionString();
 
             //If connection string does not use integrated security, then get user id.
-            if (connection.ToLower().Contains("user id") || connection.ToLower().Contains("uid") || connection.ToLower().Contains("user"))
+            if (connection.ToLowerInvariant().Contains("user id") || connection.ToLowerInvariant().Contains("uid") || connection.ToLowerInvariant().Contains("user"))
             {
                 string[] connectionParams = connection.Split(';');
 
@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     {
                         string key = connectionParam.Substring(0, index);
                         string value = connectionParam.Substring(index + 1);
-                        if ("user id|uuid|user".Contains(key.Trim().ToLower()))
+                        if ("user id|uuid|user".Contains(key.Trim().ToLowerInvariant()))
                         {
                             dbUser = value.Trim();
                         }

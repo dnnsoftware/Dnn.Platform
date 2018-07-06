@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Client.Controls
         {
             base.OnPreRender(e);
             var loader = Page.FindControl("ClientResourceIncludes");
-            Name = Name.ToLower();
+            Name = Name.ToLowerInvariant();
 
             if (loader != null)
             {
@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Client.Controls
                 {
                     foreach (ClientDependencyInclude ctl in loader.Controls)
                     {
-                        if (ctl.Name.ToLower() == Name && ctl.DependencyType == DependencyType)
+                        if (ctl.Name.ToLowerInvariant() == Name && ctl.DependencyType == DependencyType)
                         {
                             ctlToRemove = ctl;
                             break;

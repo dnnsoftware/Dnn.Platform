@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Tokens
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             TimeZoneInfo userTimeZone = AccessingUser.Profile.PreferredTimeZone;
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "current":
                     if (format == string.Empty)

@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 if (intUserID != -1 && intRoleId != -1 && !String.IsNullOrEmpty(strProcessorUserId))
                 {
                     // Sandbox mode
-                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLower() == "true")
+                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLowerInvariant() == "true")
                     {
                         strPayPalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?";
                     }

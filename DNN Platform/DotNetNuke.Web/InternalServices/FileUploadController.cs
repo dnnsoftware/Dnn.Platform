@@ -53,7 +53,6 @@ using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using System.Web;
-using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -253,7 +252,7 @@ namespace DotNetNuke.Web.InternalServices
             try
             {
                 var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
-                if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
+                if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
                     return savedFileDto;
@@ -292,7 +291,7 @@ namespace DotNetNuke.Web.InternalServices
                 var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
                 var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
 
-                if (extract && extension.ToLower() == "zip")
+                if (extract && extension.ToLowerInvariant() == "zip")
                 {
                     FileManager.Instance.UnzipFile(file);
                     FileManager.Instance.DeleteFile(file);
@@ -419,17 +418,26 @@ namespace DotNetNuke.Web.InternalServices
                 var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
-                if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
+                if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {
                     result.Message = GetLocalizedString("ExtensionNotAllowed");
                     return result;
                 }
 
                 var folderManager = FolderManager.Instance;
-
-                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
-
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;                
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+
+                int userId;
+
+                if (folderInfo == null && IsUserFolder(folder, out userId))
+                {
+                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    if (user != null)
+                    {
+                        folderInfo = folderManager.GetUserFolder(user);
+                    }
+                }
 
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
@@ -452,7 +460,7 @@ namespace DotNetNuke.Web.InternalServices
                     file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
                                                         FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
                                                         userInfo.UserID);
-                    if (extract && extension.ToLower() == "zip")
+                    if (extract && extension.ToLowerInvariant() == "zip")
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
                         var invalidFiles = new List<string>();
@@ -495,7 +503,7 @@ namespace DotNetNuke.Web.InternalServices
                 result.Path = result.FileId > 0 ? path : string.Empty;
                 result.FileName = fileName;
 
-                if (extract && extension.ToLower() == "zip")
+                if (extract && extension.ToLowerInvariant() == "zip")
                 {
                     FileManager.Instance.DeleteFile(file);
                 }

@@ -86,7 +86,7 @@ namespace DotNetNuke.Tests.Urls
         internal static string GetEmbeddedFileName(string fileName)
         {
             string fullName = String.Format("{0}.{1}", EmbeddedFilePath, fileName);
-            if (!fullName.ToLower().EndsWith(".csv"))
+            if (!fullName.ToLowerInvariant().EndsWith(".csv"))
             {
                 fullName += ".csv";
             }

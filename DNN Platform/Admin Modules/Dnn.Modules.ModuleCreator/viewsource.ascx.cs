@@ -96,7 +96,7 @@ namespace Dnn.Module.ModuleCreator
                 fileList = Directory.GetFiles(modulePath, "*", SearchOption.AllDirectories);
                 foreach (string filePath in fileList)
                 {
-                    switch (Path.GetExtension(filePath).ToLower())
+                    switch (Path.GetExtension(filePath).ToLowerInvariant())
                     {
                         case ".ascx":
                             cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), filePath));
@@ -136,7 +136,7 @@ namespace Dnn.Module.ModuleCreator
                 fileList = Directory.GetFiles(modulePath);
                 foreach (string filePath in fileList)
                 {
-                    switch (Path.GetExtension(filePath).ToLower())
+                    switch (Path.GetExtension(filePath).ToLowerInvariant())
                     {
                         case ".vb":
                             cboFile.Items.Add(new ListItem(Path.GetFileName(filePath), filePath));
@@ -282,7 +282,7 @@ namespace Dnn.Module.ModuleCreator
             string[] fileList = Directory.GetFiles(templatePath);
             foreach (string filePath in fileList)
             {
-                if (Path.GetFileName(filePath).ToLower().IndexOf("template") > -1)
+                if (Path.GetFileName(filePath).ToLowerInvariant().IndexOf("template") > -1)
                 {
                     controlNameRequired = true;
                     controlName = "Edit";
@@ -299,7 +299,7 @@ namespace Dnn.Module.ModuleCreator
             txtControl.Enabled = controlNameRequired;
             if (txtControl.Enabled)
             {
-                if (!cboTemplate.SelectedItem.Value.ToLower().StartsWith("module"))
+                if (!cboTemplate.SelectedItem.Value.ToLowerInvariant().StartsWith("module"))
                 {
                     var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
                     var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
@@ -358,7 +358,7 @@ namespace Dnn.Module.ModuleCreator
                 fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
                 fileName = fileName.Replace("_CONTROL_", GetControl());
 
-                switch (Path.GetExtension(filePath).ToLower())
+                switch (Path.GetExtension(filePath).ToLowerInvariant())
                 {
                     case ".ascx":
                         controlName = fileName;
@@ -373,13 +373,13 @@ namespace Dnn.Module.ModuleCreator
                         modulePath = modulePath + "\\App_LocalResources\\";
                         break;
                     case ".vb":
-                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
                         break;
                     case ".cs":
-                        if (filePath.ToLower().IndexOf(".ascx") == -1)
+                        if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }

@@ -1087,7 +1087,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         /// <returns>The flag as a boolean value.</returns>
         public virtual bool IsImageFile(IFileInfo file)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLower().Replace(".", "") + ",") > -1;
+            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", "") + ",") > -1;
         }
 
         /// <summary>

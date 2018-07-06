@@ -143,22 +143,19 @@ namespace Dnn.ExportImport.Components.Services
 
             var localTabs = _tabController.GetTabsByPortal(portalId).Values.ToList();
 
-            var exportedTabs = Repository.GetItems<ExportTab>(
-                x => x.IsSystem == (Category == Constants.Category_Templates), 
-                t => t.ParentId).ToList(); 
-
-            var newTabId = 1;
-            exportedTabs.ForEach(t => t.Id = newTabId++);
+            var exportedTabs = Repository.GetItems<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates))
+                .OrderBy(t => t.Level).ThenBy(t => t.ParentId).ThenBy(t => t.TabOrder).ToList(); 
 
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportedTabs.Count : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
-            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);            
+            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);
 
+            var index = 0;
             foreach (var otherTab in exportedTabs)
             {
                 if (CheckCancelled(_exportImportJob)) break;
-                if (_totals.LastProcessedId > otherTab.Id) continue; // this is the exported DB row ID; not the TabID
+                if (_totals.LastProcessedId > index) continue; // this is the exported DB row ID; not the TabID
 
                 ProcessImportPage(otherTab, exportedTabs, localTabs);
 
@@ -166,7 +163,7 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.Progress += progressStep;
                 if (CheckPointStageCallback(this)) break;
 
-                _totals.LastProcessedId = otherTab.Id;
+                _totals.LastProcessedId = index++;
                 CheckPoint.StageData = JsonConvert.SerializeObject(_totals);
             }
 
@@ -478,6 +475,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleName = other.RoleName,
                             ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
                             PermissionKey = other.PermissionKey,
+                            PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
                             PermissionID = permissionId.Value
                         };
@@ -1002,6 +1000,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleName = other.RoleName,
                             Username = other.Username,
                             PermissionKey = other.PermissionKey,
+                            PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
                             PermissionID = permissionId.Value
                         };
@@ -1018,15 +1017,17 @@ namespace Dnn.ExportImport.Components.Services
                             local.RoleID = roleId.Value;
                         }
 
-                        other.LocalId = localModule.ModulePermissions.Add(local);
-                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        UpdateModulePermissionChangers(local.ModulePermissionID, createdBy, modifiedBy);
+                        other.LocalId = localModule.ModulePermissions.Add(local, true);
 
                         Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
                 }
+            }
+
+            if (count > 0)
+            {
+                ModulePermissionController.SaveModulePermissions(localModule);
             }
 
             return count;

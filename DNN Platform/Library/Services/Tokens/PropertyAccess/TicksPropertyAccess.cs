@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Tokens
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "now":
                     return DateTime.Now.Ticks.ToString(formatProvider);

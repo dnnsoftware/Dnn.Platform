@@ -458,7 +458,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         else
                         {
                             string mCustomUrl = txtUrl.Text;
-                            if (mCustomUrl.ToLower() == "http://")
+                            if (mCustomUrl.ToLowerInvariant() == "http://")
                             {
                                 r = "";
                             }
@@ -589,7 +589,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ViewState["UrlType"] = _Urltype;
                 if (_Urltype == "F")
                 {
-                    if (_Url.ToLower().StartsWith("fileid="))
+                    if (_Url.ToLowerInvariant().StartsWith("fileid="))
                     {
                         TrackingUrl = _Url;
                         var objFile = FileManager.Instance.GetFile(int.Parse(_Url.Substring(7)));
@@ -618,7 +618,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 if (_Urltype == "M")
                 {
-                    if (_Url.ToLower().StartsWith("userid="))
+                    if (_Url.ToLowerInvariant().StartsWith("userid="))
                     {
                         UserInfo objUser = UserController.GetUserById(_objPortal.PortalID, int.Parse(_Url.Substring(7)));
                         if (objUser != null)
@@ -851,10 +851,10 @@ namespace DotNetNuke.Web.UI.WebControls
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
-                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", PortalSettings.DefaultIconLocation, img).ToLower()));
+                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
                         }
 
-                        ListItem selecteItem = cboImages.Items.FindByValue(_Url.ToLower());
+                        ListItem selecteItem = cboImages.Items.FindByValue(_Url.ToLowerInvariant());
                         if (selecteItem != null)
                         {
                             selecteItem.Selected = true;

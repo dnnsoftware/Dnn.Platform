@@ -741,15 +741,9 @@ namespace DotNetNuke.Security.Membership
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
+          
+            var valid = UserController.Instance.IsValidUserName(userName);
 
-            // Validate username against bad characters; it must not start or end with space, 
-            // must not contain control characters, and not contain special punctuations
-            // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-		    char[] unallowedAscii = "!\"#$%&'()*+,/:;<=>?@[\\]^`{|}".ToCharArray();
-		    var valid = userName.Length >= 5 &&
-                        userName == userName.Trim() &&
-                        userName.All(ch => ch >= ' ') &&
-                        userName.IndexOfAny(unallowedAscii) < 0;
 		    if (!valid)
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
@@ -884,7 +878,7 @@ namespace DotNetNuke.Security.Membership
 
             if (requireUniqueDisplayName)
             {
-                UserInfo duplicateUser = GetUserByDisplayName(Null.NullInteger, user.DisplayName);
+                UserInfo duplicateUser = GetUserByDisplayName(user.PortalID, user.DisplayName);
                 if (duplicateUser != null)
                 {
                     createStatus = UserCreateStatus.DuplicateDisplayName;

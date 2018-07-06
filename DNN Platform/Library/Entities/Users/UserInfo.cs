@@ -295,7 +295,7 @@ namespace DotNetNuke.Entities.Users
                 internScope = currentScope; //admins and user himself can access all data
             }
             string outputFormat = format == string.Empty ? "g" : format;
-            switch (propertyName.ToLower())
+            switch (propertyName.ToLowerInvariant())
             {
                 case "verificationcode":
                     if (internScope < Scope.SystemMessages)

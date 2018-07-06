@@ -339,7 +339,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (!string.IsNullOrEmpty(Level))
                 {
-                    switch (Level.ToLower())
+                    switch (Level.ToLowerInvariant())
                     {
                         case "root":
                             break;
@@ -347,7 +347,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             blnAddUpNode = true;
                             break;
                         default:
-                            if (Level.ToLower() != "root" && PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
+                            if (Level.ToLowerInvariant() != "root" && PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
                             {
                                 blnAddUpNode = true;
                             }

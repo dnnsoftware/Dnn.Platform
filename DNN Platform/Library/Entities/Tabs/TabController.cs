@@ -417,7 +417,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         else
                         {
-                            if (isAdminTemplate && roleName.ToLower() == "administrators")
+                            if (isAdminTemplate && roleName.ToLowerInvariant() == "administrators")
                             {
                                 roleID = portal.AdministratorRoleId;
                             }

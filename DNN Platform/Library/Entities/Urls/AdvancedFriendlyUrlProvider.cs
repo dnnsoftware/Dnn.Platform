@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 debugValue = "false";
             }
-            return debugValue.ToLower();
+            return debugValue.ToLowerInvariant();
         }
 
         private static string CreateFriendlyUrl(string portalAlias,
@@ -367,7 +367,7 @@ namespace DotNetNuke.Entities.Urls
                         pageAndExtension = "/" + pageName;
                     }
                     else if (settings.ProcessRequestList != null &&
-                             settings.ProcessRequestList.Contains(pageName.ToLower()))
+                             settings.ProcessRequestList.Contains(pageName.ToLowerInvariant()))
                     {
                         pageAndExtension = "/" + pageName;
                     }
@@ -392,7 +392,7 @@ namespace DotNetNuke.Entities.Urls
                         pageAndExtension = "/" + pageName;
                     }
                     else if (settings.ProcessRequestList != null &&
-                             settings.ProcessRequestList.Contains(pageName.ToLower()))
+                             settings.ProcessRequestList.Contains(pageName.ToLowerInvariant()))
                     {
                         pageAndExtension = "/" + pageName;
                     }
@@ -613,13 +613,13 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         //852 : check to see if the skinSrc is explicityl specified, which we don't want to duplicate if the alias also specifies this
-                        if (path.ToLower().Contains("skinsrc=") && primaryAliases.ContainsSpecificSkins())
+                        if (path.ToLowerInvariant().Contains("skinsrc=") && primaryAliases.ContainsSpecificSkins())
                         {
                             //path has a skin specified and (at least one) alias has a skin specified
                             string[] parms = path.Split('&');
                             foreach (string parmPair in parms)
                             {
-                                if (parmPair.ToLower().Contains("skinsrc="))
+                                if (parmPair.ToLowerInvariant().Contains("skinsrc="))
                                 {
                                     //splits the key/value pair into a two-element array
                                     string[] keyValue = parmPair.Split('=');
@@ -717,9 +717,9 @@ namespace DotNetNuke.Entities.Urls
                         //Add name part of name/value pair 
                         if (friendlyPath.EndsWith("/"))
                         {
-                            if (pair[0].ToLower() == "tabid") //always lowercase the tabid part of the path
+                            if (pair[0].ToLowerInvariant() == "tabid") //always lowercase the tabid part of the path
                             {
-                                pathToAppend = pathToAppend + pair[0].ToLower();
+                                pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
                             }
                             else
                             {
@@ -739,7 +739,7 @@ namespace DotNetNuke.Entities.Urls
                                 if (rx.IsMatch(pair[1]) == false)
                                 {
                                     // Contains Non-AlphaNumeric Characters 
-                                    if (pair[0].ToLower() == "tabid")
+                                    if (pair[0].ToLowerInvariant() == "tabid")
                                     {
                                         int tabId;
                                         if (Int32.TryParse(pair[1], out tabId))
@@ -902,10 +902,10 @@ namespace DotNetNuke.Entities.Urls
             string result = friendlyPath;
             //821 : new 'CustomOnly' setting which allows keeping base Urls but also using Custom Urls.  Basically keeps search friendly 
             //but allows for customised urls and redirects
-            bool customOnly = settings.UrlFormat.ToLower() == "customonly";
+            bool customOnly = settings.UrlFormat.ToLowerInvariant() == "customonly";
             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
             //determine if an improved friendly Url is wanted at all
-            if ((settings.UrlFormat.ToLower() == "advanced" || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
+            if ((settings.UrlFormat.ToLowerInvariant() == "advanced" || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
             {
                 string newTabPath;
                 string customHttpAlias;
@@ -1200,7 +1200,7 @@ namespace DotNetNuke.Entities.Urls
                             Match sesMatch = re.Match(friendlyPath);
                             if ((sesMatch.Groups.Count > 2))
                             {
-                                switch (sesMatch.Groups[2].Value.ToLower())
+                                switch (sesMatch.Groups[2].Value.ToLowerInvariant())
                                 {
                                     case "terms":
                                         result = Globals.AddHTTP(httpAlias + "/" + sesMatch.Groups[2].Value + ".aspx");
@@ -1337,26 +1337,27 @@ namespace DotNetNuke.Entities.Urls
         {
             //615 : output simple urls for login, privacy, register and terms urls
             bool builtInUrl = false;
-            if (newPath != "/" && newPath != "" && "/ctl/privacy|/ctl/login|/ctl/register|/ctl/terms".Contains(newPath.ToLower()))
+            if (newPath != "/" && newPath != "" && "/ctl/privacy|/ctl/login|/ctl/register|/ctl/terms".Contains(newPath.ToLowerInvariant()))
             {
                 builtInUrl = true;
-                switch (newPath.ToLower())
+                var lowerNewPath = newPath.ToLowerInvariant();
+                switch (lowerNewPath)
                 {
                     case "/ctl/privacy":
                         newTabPath = "Privacy";
-                        newPath = newPath.ToLower().Replace("/ctl/privacy", "");
+                        newPath = lowerNewPath.Replace("/ctl/privacy", "");
                         break;
                     case "/ctl/login":
                         newTabPath = "Login";
-                        newPath = newPath.ToLower().Replace("/ctl/login", "");
+                        newPath = lowerNewPath.Replace("/ctl/login", "");
                         break;
                     case "/ctl/register":
                         newTabPath = "Register";
-                        newPath = newPath.ToLower().Replace("/ctl/register", "");
+                        newPath = lowerNewPath.Replace("/ctl/register", "");
                         break;
                     case "/ctl/terms":
                         newTabPath = "Terms";
-                        newPath = newPath.ToLower().Replace("/ctl/terms", "");
+                        newPath = lowerNewPath.Replace("/ctl/terms", "");
                         break;
                 }
             }
@@ -1392,7 +1393,7 @@ namespace DotNetNuke.Entities.Urls
 
                     if (forceLowerCase)
                     {
-                        url = url.ToLower();
+                        url = url.ToLowerInvariant();
                     }
                 }
             }

@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Search.Internals
             var result = DateTime.MinValue;
             if (!string.IsNullOrEmpty(date))
             {
-                switch (date.ToLower())
+                switch (date.ToLowerInvariant())
                 {
                     case "day":
                         result = DateTime.UtcNow.AddDays(-1);

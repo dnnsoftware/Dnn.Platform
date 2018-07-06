@@ -593,7 +593,7 @@ namespace DotNetNuke.Entities.Modules
                     writer.WriteStartElement("portalDesktopModulePermission");
                     writer.WriteElementString("permissioncode", permission.PermissionCode);
                     writer.WriteElementString("permissionkey", permission.PermissionKey);
-                    writer.WriteElementString("allowaccess", permission.AllowAccess.ToString().ToLower());
+                    writer.WriteElementString("allowaccess", permission.AllowAccess.ToString().ToLowerInvariant());
                     writer.WriteElementString("rolename", permission.RoleName);
                     writer.WriteEndElement();
                 }
