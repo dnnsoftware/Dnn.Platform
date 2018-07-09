@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-  </PropertyGroup>
+  </PropertyGroup>  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -62,6 +62,8 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AddRolesUnitTests.cs" />
+    <Compile Include="CommandTests.cs" />
     <Compile Include="DeleteUserUnitTests.cs" />
     <Compile Include="GetUserUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +76,10 @@
     <ProjectReference Include="..\..\Content\Dnn.PersonaBar.Recyclebin\Dnn.PersonaBar.Recyclebin.csproj">
       <Project>{35AD8ED3-CBC3-4208-83D1-660EBC908DE2}</Project>
       <Name>Dnn.PersonaBar.Recyclebin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dnn.PersonaBar.Roles\Dnn.PersonaBar.Roles.csproj">
+      <Project>{89251729-9768-4245-A657-4D822E3E9122}</Project>
+      <Name>Dnn.PersonaBar.Roles</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj">
       <Project>{96E8B714-A431-4CB7-A251-17F171055F64}</Project>

@@ -34,8 +34,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreValidUserId_ReturnSuccessResponse()
         {
-            // Arrange        
-
+            // Arrange    
             var userId = 2;
             UserInfo userInfo = GetUser(userId, true);
             _userValidatorMock

@@ -223,7 +223,14 @@ namespace Dnn.PersonaBar.Users.Components
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,
             bool isOwner)
         {
-            if (!UserRoleDto.AllowExpiredRole(PortalSettings, userRoleDto.UserId, userRoleDto.RoleId))
+            PortalSettings portalSettings = PortalSettings;
+
+            if (PortalSettings.PortalId != portalId)
+            {
+                portalSettings = GetPortalSettings(portalId);
+            }
+
+            if (!UserRoleDto.AllowExpiredRole(portalSettings, userRoleDto.UserId, userRoleDto.RoleId))
             {
                 userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
             }
@@ -235,14 +242,14 @@ namespace Dnn.PersonaBar.Users.Components
                 throw new Exception(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
             }
 
-            if (currentUserInfo.IsSuperUser || currentUserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) ||
-                (!currentUserInfo.IsSuperUser && !currentUserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) &&
+            if (currentUserInfo.IsSuperUser || currentUserInfo.Roles.Contains(portalSettings.AdministratorRoleName) ||
+                (!currentUserInfo.IsSuperUser && !currentUserInfo.Roles.Contains(portalSettings.AdministratorRoleName) &&
                  role.RoleType != RoleType.Administrator))
             {
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
                     isOwner = false;
 
-                RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
+                RoleController.AddUserRole(user, role, portalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
                 var addedRole = RoleController.Instance.GetUserRole(portalId, userRoleDto.UserId, userRoleDto.RoleId);
 
@@ -254,12 +261,12 @@ namespace Dnn.PersonaBar.Users.Components
                     RoleName = addedRole.RoleName,
                     StartTime = addedRole.EffectiveDate,
                     ExpiresTime = addedRole.ExpiryDate,
-                    AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
-                    AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
+                    AllowExpired = UserRoleDto.AllowExpiredRole(portalSettings, user.UserID, role.RoleID),
+                    AllowDelete = RoleController.CanRemoveUserFromRole(portalSettings, user.UserID, role.RoleID)
                 };
             }
             throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
-        }
+        }        
 
         public bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify)
         {
@@ -532,6 +539,15 @@ namespace Dnn.PersonaBar.Users.Components
                     includeAuthorized,
                     includeDeleted,
                     includeSuperUsers);
+        }
+
+        private PortalSettings GetPortalSettings(int portalId)
+        {
+            var portalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            portalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+            return portalSettings;
         }
 
         #endregion
