@@ -381,10 +381,6 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
-                BindUserGroupsGridView();
-
-                BindOptionsData();
-
                 SetLanguage();
 
                 FillInformations();
@@ -393,6 +389,10 @@ namespace DNNConnect.CKEditorProvider
                 FillSkinList();
 
                 FillFolders();
+
+                BindUserGroupsGridView();
+
+                BindOptionsData();
 
                 RenderUrlControls();
 
@@ -1829,16 +1829,6 @@ namespace DNNConnect.CKEditorProvider
             {
                 ConfigUrl.Url = ckeditorProvider.Attributes["ck_customConfig"];
             }
-
-            /*var configPathComplete = !string.IsNullOrEmpty(this.configFolder)
-                                         ? Path.Combine(this._portalSettings.HomeDirectoryMapPath, this.configFolder)
-                                         : this._portalSettings.HomeDirectoryMapPath;
-
-            // Load Default Settings from XML
-            if (File.Exists(Path.Combine(configPathComplete, "CKEditorDefaultSettings.xml")))
-            {
-                this.ImportXmlFile(Path.Combine(configPathComplete, "CKEditorDefaultSettings.xml"), changeMode);
-            }*/
         }
 
         /// <summary>
@@ -1891,6 +1881,10 @@ namespace DNNConnect.CKEditorProvider
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
+
+            var defaultUploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+            currentSettings.UploadSizeRoles.Clear();
+            currentSettings.UploadSizeRoles.AddRange(defaultUploadSizeRoles);
 
             switch (CurrentSettingsMode)
             {
@@ -2528,7 +2522,7 @@ namespace DNNConnect.CKEditorProvider
 
                     moduleController.UpdateModuleSetting(
                         ModuleId,
-                        string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
+                        string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
                 }
             }
@@ -3484,6 +3478,20 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
+        /// <summary>
+        /// Gets default upload size limits for each existent role
+        /// </summary>
+        /// <param name="portalRoles"></param>
+        /// <returns></returns>
+        private List<UploadSizeRoles> GetDefaultUploadFileSettings(IList<RoleInfo> portalRoles)
+        {
+            return portalRoles.Select(role => new UploadSizeRoles()
+            {
+                RoleId = role.RoleID,
+                RoleName = role.RoleName,
+                UploadFileLimit = -1
+            }).ToList();
+        }
         #endregion
     }
 }
