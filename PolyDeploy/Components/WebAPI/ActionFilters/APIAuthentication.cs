@@ -23,24 +23,19 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
 
             try
             {
-                // Is there an api key header present?
-                if (actionContext.Request.Headers.Contains("x-api-key"))
+                apiKey = actionContext.Request.GetApiKey();
+
+                // Make sure it's not null and it's 32 characters or we're wasting our time.
+                if (apiKey != null && apiKey.Length == 32)
                 {
-                    // Get the api key from the header.
-                    apiKey = actionContext.Request.Headers.GetValues("x-api-key").FirstOrDefault();
+                    // Attempt to look up the api user.
+                    APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
 
-                    // Make sure it's not null and it's 32 characters or we're wasting our time.
-                    if (apiKey != null && apiKey.Length == 32)
+                    // Did we find one and double check the api key.
+                    if (apiUser != null && apiUser.APIKey == apiKey)
                     {
-                        // Attempt to look up the api user.
-                        APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
-
-                        // Did we find one and double check the api key.
-                        if (apiUser != null && apiUser.APIKey == apiKey)
-                        {
-                            // Genuine API user.
-                            authenticated = true;
-                        }
+                        // Genuine API user.
+                        authenticated = true;
                     }
                 }
             }

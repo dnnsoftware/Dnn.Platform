@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.06.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.07.00">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
       <iconFile>Images/polydeploy-logo-icon.png</iconFile>
@@ -66,55 +66,62 @@
 
         <component type="Script">
           <scripts>
-            
+            <basePath>DesktopModules/Cantarus/PolyDeploy</basePath>
             <!-- v0.1.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.01.00.SqlDataProvider</name>
               <version>00.01.00</version>
             </script>
-            
+
             <!-- v0.2.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.02.00.SqlDataProvider</name>
               <version>00.02.00</version>
             </script>
 
             <!-- v0.3.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.03.00.SqlDataProvider</name>
               <version>00.03.00</version>
             </script>
 
             <!-- v0.4.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.04.00.SqlDataProvider</name>
               <version>00.04.00</version>
             </script>
-            
+
             <!-- v0.5.0-->
             <!-- No script. -->
 
             <!-- v0.6.0 -->
             <script type="Install">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>00.06.00.SqlDataProvider</name>
               <version>00.06.00</version>
             </script>
-            
+
+            <!-- v0.7.0 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.07.00.SqlDataProvider</name>
+              <version>00.07.00</version>
+            </script>
+
             <!-- Uninstall -->
             <script type="Uninstall">
-              <path>\SqlDataProviders</path>
+              <path>SqlDataProviders</path>
               <name>Uninstall.SqlDataProvider</name>
               <version />
             </script>
-            
+
           </scripts>
         </component>
-        
+
         <component type="Assembly">
           <assemblies>
             <basePath>bin</basePath>
@@ -126,6 +133,29 @@
             </assembly>
           </assemblies>
         </component>
+
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings" action="update" collision="overwrite" key="key">
+                    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings/add[@key='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+
       </components>
     </package>
   </packages>

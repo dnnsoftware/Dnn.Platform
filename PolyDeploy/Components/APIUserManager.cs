@@ -1,4 +1,4 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,16 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public static APIUser Create(string name)
         {
+            return Create(name, bypass: false);
+        }
+
+        public static APIUser Create(string name, bool bypass)
+        {
             APIUser newApiUser;
 
             try
             {
-                newApiUser = new APIUser(name);
+                newApiUser = new APIUser(name, bypass);
 
                 APIUserDC.Create(newApiUser);
             }
