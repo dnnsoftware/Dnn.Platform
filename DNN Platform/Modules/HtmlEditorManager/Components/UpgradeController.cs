@@ -98,6 +98,12 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                             UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
                         break;
+                    case "09.02.01":
+                        if (TelerikAssemblyExists())
+                        {
+                            UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
