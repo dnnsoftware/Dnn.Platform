@@ -298,7 +298,17 @@ namespace Dnn.PersonaBar.Security.Components
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)
         {
             //Looking at the root folder only. There should not be any permission issue here.
-            var files = Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+            IList<string> files;
+            try
+            {
+                files = Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+            }
+            catch (Exception)
+            {
+                invalidFolders.Add(path);
+                yield break;
+            }
+
             foreach (var file in files)
             {
                 yield return file;
@@ -306,7 +316,17 @@ namespace Dnn.PersonaBar.Security.Components
 
             if (searchOption == SearchOption.AllDirectories)
             {
-                var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
+                IList<string> folders;
+                try
+                {
+                    folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly).ToList();
+                }
+                catch (Exception)
+                {
+                    invalidFolders.Add(path);
+                    yield break;
+                }
+
                 foreach (var folder in folders)
                 {
                     //recursive call to the same method
@@ -316,8 +336,6 @@ namespace Dnn.PersonaBar.Security.Components
                     }
                 }
             }
-
-            invalidFolders.Add(path);
         }
 
         // This will reduce serialization thrown exceptions of anonymous type
