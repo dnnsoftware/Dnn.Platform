@@ -5,6 +5,7 @@
       <DNNFileName>Dnn.PersonaBar.Pages</DNNFileName>
       <PackageName>Dnn.PersonaBar.Pages</PackageName>
       <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Pages</ModuleFolderName>
+	  <YarnWorkingDirectory>Pages.Web</YarnWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
