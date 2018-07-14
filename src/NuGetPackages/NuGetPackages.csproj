@@ -169,7 +169,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -184,8 +186,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.props'))" />
-    <Error Condition="!Exists('..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets'))" />
   </Target>
-  <Import Project="..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets" Condition="Exists('..\packages\Yarn.MSBuild.1.5.2\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets" Condition="Exists('..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets')" />
 </Project>
