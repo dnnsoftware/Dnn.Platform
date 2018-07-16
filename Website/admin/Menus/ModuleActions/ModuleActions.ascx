@@ -66,7 +66,7 @@
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load
         var resizeThrottle;
-        $(window).resize(function () {
+        $(window).on('resize scroll', function () {
             if (resizeThrottle) {
                 clearTimeout(resizeThrottle);
                 resizeThrottle = null;
