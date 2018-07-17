@@ -228,6 +228,11 @@ namespace DeployClient
                 // Finished install.
                 WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
                 ReadLine();
+
+                int succeeded = ParseResults(results).succeeded;
+                bool allSucceeded = succeeded == results.Count;
+                ExitCode exitCode = allSucceeded ? ExitCode.Success : ExitCode.InstallFailure;
+                Environment.Exit((int)exitCode);
             }
             catch (Exception ex)
             {
@@ -269,6 +274,12 @@ namespace DeployClient
 
         private static string BuildUpdateString(SortedList<string, dynamic> results)
         {
+            var (attempted, succeeded, _) = ParseResults(results);
+            return string.Format("\t{0}/{1} module archives processed, {2}/{0} succeeded.", attempted, results.Count, succeeded);
+        }
+
+        private static (int attempted, int succeeded, int failed) ParseResults(SortedList<string, dynamic> results)
+        {
             // Get counts.
             int attempted = 0;
             int succeeded = 0;
@@ -293,7 +304,7 @@ namespace DeployClient
                 }
             }
 
-            return string.Format("\t{0}/{1} module archives processed, {2}/{0} succeeded.", attempted, results.Count, succeeded);
+            return (attempted, succeeded, failed);
         }
 
         private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
