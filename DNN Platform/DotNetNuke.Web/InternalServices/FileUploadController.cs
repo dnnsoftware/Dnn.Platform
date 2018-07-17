@@ -53,7 +53,6 @@ using DotNetNuke.Web.Api.Internal;
 using ContentDisposition = System.Net.Mime.ContentDisposition;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using System.Web;
-using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -426,10 +425,19 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 var folderManager = FolderManager.Instance;
-
-                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
-
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;                
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
+
+                int userId;
+
+                if (folderInfo == null && IsUserFolder(folder, out userId))
+                {
+                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    if (user != null)
+                    {
+                        folderInfo = folderManager.GetUserFolder(user);
+                    }
+                }
 
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))

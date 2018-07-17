@@ -168,7 +168,7 @@
   </Target>
 
   <Target Name="NugetRestore">
-    <Exec Command="$(PlatformCheckout)\.nuget\NuGet.exe restore &quot;$(PlatformCheckout)\DNN_Platform.sln&quot; -Source https://api.nuget.org/v3/index.json"/>
+    <Exec Command="$(PlatformCheckout)\.nuget\NuGet.exe restore &quot;$(PlatformCheckout)\DNN_Platform.sln&quot;"/>
   </Target>
 
   <!--
