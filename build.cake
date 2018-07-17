@@ -44,6 +44,8 @@ Task("Build")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
+	.IsDependentOn("CreateDeploy")
+	.IsDependentOn("CreateSource")
     .Does(() =>
 {
 	
