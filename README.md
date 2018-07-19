@@ -35,4 +35,4 @@ npm run build
 ```
 
 ### Note:
-[Yarn](https://yarnpkg.com/) is another dependency management tool that can be used for building these packages. If you prefer to use this tool instead of `npm`, then you need only to replace the `npm` with `yarn` in the various commnads above.
+[Yarn](https://yarnpkg.com/) is another dependency management tool that can be used for building these packages. If you prefer to use this tool instead of `npm`, then you need only to replace the `npm` with `yarn` in the various commands above.
