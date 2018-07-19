@@ -344,8 +344,9 @@ define(['jquery',
                 var sortType = table.sortType();
                 if (sortType !== 0) {
                     filterData.sort(function (left, right) {
-                        var leftData = left[table.sortColumn()];
-                        var rightData = right[table.sortColumn()];
+                        var sortColumn = table.sortColumn();
+                        var leftData = isFinite(left[sortColumn]) ? parseFloat(left[sortColumn]) : left[sortColumn];
+                        var rightData = isFinite(right[sortColumn]) ? parseFloat(right[sortColumn]) : right[sortColumn];
 
                         if (leftData && typeof leftData === "string") {
                             leftData = leftData.toLowerCase();
