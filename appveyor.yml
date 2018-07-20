@@ -1,0 +1,29 @@
+version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_tags: true
+max_jobs: 1
+configuration: Release
+platform: Any CPU
+nuget:
+  disable_publish_on_pr: true
+before_build:
+- cmd: .nuget\NuGet.exe restore DNN_Platform.sln
+build:
+  project: DNN_Platform.sln
+  parallel: true
+  verbosity: minimal
+test:
+  assemblies:
+    only:
+    - '**\Tests\DotNetNuke.Tests.Authentication\bin\$(configuration)\DotNetNuke.Tests.Authentication.dll'
+    - '**\Tests\DotNetNuke.Tests.Content\bin\$(configuration)\DotNetNuke.Tests.Content.dll'
+    - '**\Tests\DotNetNuke.Tests.Core\bin\$(configuration)\DotNetNuke.Tests.Core.dll'
+    - '**\Tests\DotNetNuke.Tests.Data\bin\$(configuration)\DotNetNuke.Tests.Data.dll'
+    - '**\Tests\DotNetNuke.Tests.FiftyOneClientCapabilityProvider\bin\$(configuration)\DotNetNuke.Tests.FiftyOneClientCapabilityProvider.dll'
+    - '**\Tests\DotNetNuke.Tests.MobileManagement\bin\$(configuration)\DotNetNuke.Tests.MobileManagement.dll'
+    - '**\Tests\DotNetNuke.Tests.PreviewProfileManagement\bin\$(configuration)\DotNetNuke.Tests.PreviewProfileManagement.dll'
+    - '**\Tests\DotNetNuke.Tests.Taxonomy\bin\$(configuration)\DotNetNuke.Tests.Taxonomy.dll'
+    - '**\Tests\DotNetNuke.Tests.UI\bin\$(configuration)\DotNetNuke.Tests.UI.dll'
+    - '**\Tests\DotNetNuke.Tests.Web.Mvc\bin\$(configuration)\DotNetNuke.Tests.Web.Mvc.dll'
+    - '**\Tests\DotNetNuke.Tests.Web\bin\$(configuration)\DotNetNuke.Tests.Web.dll'
