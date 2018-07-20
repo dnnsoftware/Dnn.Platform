@@ -164,7 +164,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 UserId = userInfo.UserID,
                 TokenExpiry = now.AddMinutes(SessionTokenTtl),
                 RenewalExpiry = now.AddDays(RenewalTokenTtl),
-                //TokenHash = GetHashedStr(accessToken), -- not computed yet
                 RenewalHash = GetHashedStr(renewalToken),
             };
 
@@ -215,7 +214,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             if (ptoken == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
-                return EmptyWithError("not-found");
+                return EmptyWithError("token-not-found");
             }
 
             if (ptoken.RenewalExpiry <= DateTime.UtcNow)
@@ -224,17 +223,29 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("not-more-renewal");
             }
 
+            if (ptoken.RenewalHash != GetHashedStr(renewalToken))
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Invalid renewal token");
+                return EmptyWithError("bad-renewal-token");
+            }
+
+            if (ptoken.TokenHash != GetHashedStr(rawToken))
+            {
+                if (Logger.IsTraceEnabled) Logger.Trace("Invalid access token");
+                return EmptyWithError("bad-access-token");
+            }
+
             var userInfo = TryGetUser(jwt, false);
             if (userInfo == null)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
-                return EmptyWithError("not-found");
+                if (Logger.IsTraceEnabled) Logger.Trace("User not found in DB");
+                return EmptyWithError("user-not-found");
             }
 
-            if ((ptoken.TokenHash != GetHashedStr(rawToken)) || (ptoken.UserId != userInfo.UserID))
+            if ((ptoken.UserId != userInfo.UserID))
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Mismatch in received token");
-                return EmptyWithError("bad-token");
+                if (Logger.IsTraceEnabled) Logger.Trace("Mismatch token and user");
+                return EmptyWithError("bad-token-user");
             }
 
             return UpdateToken(renewalToken, ptoken, userInfo);
@@ -254,7 +265,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
             var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
             var accessToken = jwt.RawData;
-            
+
             // save hash values in DB so no one with access can create JWT header from existing data
             ptoken.TokenHash = GetHashedStr(accessToken);
             DataProvider.UpdateToken(ptoken);
