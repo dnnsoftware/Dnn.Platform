@@ -1612,6 +1612,7 @@ class App extends Component {
                                         onNoPermissionSelection={this.onNoPermissionSelection.bind(this)}
                                         pageInContextComponents={props.pageInContextComponents}
                                         NoPermissionSelectionPageId={this.noPermissionSelectionPageId}
+                                        CallCustomAction={this.CallCustomAction.bind(this)}
                                         enabled={!((selectedPage && selectedPage.tabId === 0) || inSearch)} />
                                 </div>
                                 <GridCell columnSize={760} type={"px"}>
