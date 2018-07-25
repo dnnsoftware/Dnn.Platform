@@ -29,6 +29,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -64,6 +65,7 @@ namespace Dnn.PersonaBar.Extensions.Services
     public class ExtensionsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
+        private static readonly Regex ManifestExensionsRegex = new Regex(@"dnn\d*$");
         private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
@@ -982,8 +984,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         files.AddRange(GetFiles(Globals.HostMapPath + "Templates\\", ".module.template"));
                         break;
                     case FileType.Manifest:
-                        files.AddRange(GetFiles(folder, "*.dnn"));
-                        files.AddRange(GetFiles(folder, "*.dnn5"));
+                        files.AddRange(GetFiles(folder, "*.dnn*").Where(file => ManifestExensionsRegex.IsMatch(file)));
                         break;
                 }
 
