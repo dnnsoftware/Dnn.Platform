@@ -52,6 +52,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public DateTime TimeStamp { get; set; }
 
         /// <summary>
+        /// Creation date displayed in current user's preferred timezone
+        /// </summary>
+        public DateTime CreateOnUserLocalDate { get; set; }
+
+        /// <summary>
         /// True if the version is published. False if it is not published yet
         /// </summary>
         public bool IsPublished { get; set; }

@@ -25,6 +25,7 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
@@ -42,6 +43,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var userTimeZone = user.Profile.PreferredTimeZone;
+            var userUtcOffset = userTimeZone.BaseUtcOffset;
+
             //if we are not using the cache, then remove from cacehh and re-add loaded items when eeded later
             var tabCacheKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
@@ -49,10 +54,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 DataCache.RemoveCache(tabCacheKey);
             }
             
-            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
+            var tabVersions = CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
-                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));            
+                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));
+
+            return ApplyUserLocalTime(tabVersions, userUtcOffset, userTimeZone);
         }
         public void SaveTabVersion(TabVersion tabVersion)
         {
@@ -111,6 +118,34 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private static string GetTabVersionsCacheKey(int tabId)
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
+        }
+
+        private IEnumerable<TabVersion> ApplyUserLocalTime(IEnumerable<TabVersion> tabVersions, TimeSpan userUtcOffset, TimeZoneInfo userTimeZone)
+        {
+            return tabVersions.Select((tabVersion) =>
+            {
+                var serverUtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
+                if (serverUtcOffset.CompareTo(userUtcOffset) >= 0)
+                {
+                    tabVersion.CreateOnUserLocalDate = ApplyDaylightSavingHour(userTimeZone, tabVersion.CreatedOnDate.Subtract(serverUtcOffset).Add(userUtcOffset));
+                }
+                else
+                {
+                    tabVersion.CreateOnUserLocalDate = ApplyDaylightSavingHour(userTimeZone, tabVersion.CreatedOnDate.Add(serverUtcOffset).Subtract(userUtcOffset));
+                }
+                return tabVersion;
+            });
+        }
+
+        private DateTime ApplyDaylightSavingHour(TimeZoneInfo info, DateTime localTime)
+        {
+            if(info.IsDaylightSavingTime(localTime))
+            {
+                return localTime.AddHours(1);
+            } else
+            {
+                return localTime;
+            }
         }
         #endregion
 
