@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                Log.AddWarning(string.Format(Util.CLEANUP_ProcessComplete, ex.Message));
                 //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 //return false;
             }
