@@ -55,6 +55,7 @@ using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Cache;
 
 #endregion
 
@@ -505,9 +506,9 @@ namespace DotNetNuke.Modules.Admin.Users
 			var user = User;
 			CreateStatus = UserController.CreateUser(ref user);
 
-			DataCache.ClearPortalCache(PortalId, true);
+		    CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, PortalId));
 
-			try
+            try
 			{
 				if (CreateStatus == UserCreateStatus.Success)
 				{
