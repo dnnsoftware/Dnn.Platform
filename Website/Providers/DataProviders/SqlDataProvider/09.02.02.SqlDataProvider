@@ -76,6 +76,89 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/***** DNN-22117: add sp GetFilesRecursive to get files from folder and all sub folders in one time. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFilesRecursive]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFilesRecursive]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFilesRecursive]
+    @PortalId INT,
+    @ParentFolderPath NVARCHAR(300),
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+    IF @RetrieveUnpublishedFiles = 0 
+    BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
+        WHERE F.PortalId = @PortalId AND F.Folder LIKE @ParentFolderPath + '%'
+        ORDER BY [FolderID], [FileName]
+    END
+    ELSE BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        WHERE F.PortalId = @PortalId AND F.Folder LIKE @ParentFolderPath + '%'
+        ORDER BY [FolderID], [FileName]
+    END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

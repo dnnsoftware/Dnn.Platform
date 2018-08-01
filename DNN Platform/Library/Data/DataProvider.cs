@@ -1736,6 +1736,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles);
         }
 
+        public virtual IDataReader GetFilesRecursive(int portalId, string parentFolderPath, bool retrieveUnpublishedFiles = false)
+        {
+            return ExecuteReader("GetFilesRecursive", portalId, parentFolderPath, retrieveUnpublishedFiles);
+        }
+
         /// <summary>
         /// This is an internal method for communication between DNN business layer and SQL database.
         /// Do not use in custom modules, please use API (DotNetNuke.Services.FileSystem.FileManager.UpdateFile)
