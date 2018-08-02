@@ -257,11 +257,6 @@ namespace DotNetNuke.Services.Search.Internals
 
         public LuceneResults Search(LuceneSearchContext searchContext)
         {
-            return Search(searchContext, 0);
-        }
-
-        private LuceneResults Search(LuceneSearchContext searchContext, int retryTimes)
-        {
             Requires.NotNull("LuceneQuery", searchContext.LuceneQuery);
             Requires.NotNull("LuceneQuery.Query", searchContext.LuceneQuery.Query);
             Requires.PropertyNotEqualTo("LuceneQuery", "PageSize", searchContext.LuceneQuery.PageSize, 0);
@@ -282,59 +277,62 @@ namespace DotNetNuke.Services.Search.Internals
             var maxResults = searchContext.LuceneQuery.PageIndex * searchContext.LuceneQuery.PageSize;
             var minResults = maxResults - searchContext.LuceneQuery.PageSize + 1;
 
-            try
+            for (var i = 0; i < _searchRetryTimes; i++)
             {
-                var searcher = GetSearcher();
-                var searchSecurityTrimmer = new SearchSecurityTrimmer(new SearchSecurityTrimmerContext
+                try
+                {
+                    var searcher = GetSearcher();
+                    var searchSecurityTrimmer = new SearchSecurityTrimmer(new SearchSecurityTrimmerContext
                     {
                         Searcher = searcher,
                         SecurityChecker = searchContext.SecurityCheckerDelegate,
                         LuceneQuery = searchContext.LuceneQuery,
                         SearchQuery = searchContext.SearchQuery
                     });
-                searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
-                luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
+                    searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
+                    luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
 
-                if (Logger.IsDebugEnabled)
-                {
-                    var sb = GetSearcResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher);
-		            Logger.Trace(sb);
+                    if (Logger.IsDebugEnabled)
+                    {
+                        var sb = GetSearcResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher);
+                        Logger.Trace(sb);
+                    }
+
+                    //Page doesn't exist
+                    if (luceneResults.TotalHits >= minResults)
+                    {
+                        luceneResults.Results = searchSecurityTrimmer.ScoreDocs.Select(match =>
+                            new LuceneResult
+                            {
+                                Document = searcher.Doc(match.Doc),
+                                Score = match.Score,
+                                DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
+                                TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
+                                BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
+                                DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
+                                TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
+                                AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
+                                ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
+                            }).ToList();
+                    }
+                    break;
                 }
-
-                //Page doesn't exist
-                if (luceneResults.TotalHits < minResults)
-                    return luceneResults;
-
-                luceneResults.Results  = searchSecurityTrimmer.ScoreDocs.Select(match =>
-                    new LuceneResult
-                        {
-                            Document = searcher.Doc(match.Doc),
-                            Score = match.Score,
-                            DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
-                            TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
-                            DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
-                            AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
-                        }).ToList();
-                return luceneResults;
-            }
-            catch (Exception ex)
-            {
-                if (retryTimes >= _searchRetryTimes)
+                catch (IOException ex)
                 {
-                    throw;
+                    DisposeReaders();
+
+                    if (i == _searchRetryTimes - 1)
+                    {
+                        throw;
+                    }
+
+                    Logger.Error(ex);
+                    Logger.Error($"Search Index Folder Is Not Available: {ex.Message}, Retry {i + 1} time(s).");
+                    Thread.Sleep(100);
                 }
-
-                DisposeReaders();
-                retryTimes++;
-                Logger.Error(ex);
-                Logger.Error($"Search Index Folder Is Not Available: {ex.Message}, Retry {retryTimes} time(s).");
-                Thread.Sleep(100);
-
-                return Search(searchContext, retryTimes);
             }
+
+            return luceneResults;
         }
 
         private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
