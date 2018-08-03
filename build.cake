@@ -49,8 +49,7 @@ Task("Build")
     .IsDependentOn("CreateSource")
     .Does(() =>
 	{
-	
-	
+
 	});
     
 Task("BuildInstallUpgradeOnly")
@@ -61,8 +60,7 @@ Task("BuildInstallUpgradeOnly")
 
     .Does(() =>
 	{
-	
-	
+
 	});
 
 Task("BuildAll")
@@ -78,8 +76,7 @@ Task("BuildAll")
     
     .Does(() =>
 	{
-	
-	
+
 	});
 
 Task("CompileSource")
@@ -296,4 +293,3 @@ Task("Default")
 //////////////////////////////////////////////////////////////////////
 
 RunTarget(target);
-
