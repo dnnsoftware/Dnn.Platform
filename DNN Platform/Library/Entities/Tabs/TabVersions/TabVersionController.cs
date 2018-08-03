@@ -124,28 +124,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return tabVersions.Select((tabVersion) =>
             {
-                var serverUtcOffset = TimeZoneInfo.Local.BaseUtcOffset;
-                if (serverUtcOffset.CompareTo(userUtcOffset) >= 0)
-                {
-                    tabVersion.CreateOnUserLocalDate = ApplyDaylightSavingHour(userTimeZone, tabVersion.CreatedOnDate.Subtract(serverUtcOffset).Add(userUtcOffset));
-                }
-                else
-                {
-                    tabVersion.CreateOnUserLocalDate = ApplyDaylightSavingHour(userTimeZone, tabVersion.CreatedOnDate.Add(serverUtcOffset).Subtract(userUtcOffset));
-                }
+                tabVersion.CreateOnUserLocalDate = System.TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, userTimeZone);
                 return tabVersion;
             });
-        }
-
-        private DateTime ApplyDaylightSavingHour(TimeZoneInfo info, DateTime localTime)
-        {
-            if(info.IsDaylightSavingTime(localTime))
-            {
-                return localTime.AddHours(1);
-            } else
-            {
-                return localTime;
-            }
         }
         #endregion
 
