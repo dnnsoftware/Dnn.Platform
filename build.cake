@@ -7,7 +7,7 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.build";
-var buildNumber = Argument("buildNumber", "9.2.2");;
+var buildNumber = Argument("buildNumber", "9.2.2");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
