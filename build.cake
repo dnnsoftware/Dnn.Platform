@@ -45,6 +45,19 @@ Task("Build")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
 	.IsDependentOn("CreateDeploy")
+    .IsDependentOn("CreateSymbols")
+    .IsDependentOn("CreateSource")
+    .Does(() =>
+	{
+	
+	
+	});
+    
+Task("BuildInstallUpgradeOnly")
+	.IsDependentOn("CompileSource")
+	
+	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
 
     .Does(() =>
 	{
@@ -59,8 +72,10 @@ Task("BuildAll")
 
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
-	.IsDependentOn("CreateDeploy")
-
+    .IsDependentOn("CreateDeploy")
+	.IsDependentOn("CreateSymbols")
+    .IsDependentOn("CreateSource")
+    
     .Does(() =>
 	{
 	
@@ -106,18 +121,36 @@ Task("CreateUpgrade")
 			c.Targets.Add("CreateUpgrade");
 		});
 	});
+    
+Task("CreateSymbols")
+	.IsDependentOn("CompileSource")
+	.Does(() =>
+	{
+		CreateDirectory("./Artifacts");
+	
+		MSBuild(createCommunityPackages, c =>
+		{
+			c.Configuration = configuration;
+			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.Targets.Add("CreateSymbols");
+		});
+	});   
+    
+    
 
 Task("CreateSource")
 	.Does(() =>
 	{
-		CreateDirectory("./Artifacts");
+		
 		CleanDirectory("./src/Projects/");
 	
-		using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf --exclude=tools/cake/**"}))
+		using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf -e tools/ -e .vs/"}))
 		{
 			process.WaitForExit();
 			Information("Git Clean Exit code: {0}", process.GetExitCode());
 		};
+        
+        CreateDirectory("./Artifacts");
 	
 		MSBuild(createCommunityPackages, c =>
 		{
