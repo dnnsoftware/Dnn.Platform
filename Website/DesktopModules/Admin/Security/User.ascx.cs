@@ -46,6 +46,7 @@ using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Web.Client;
 
 #endregion
@@ -577,7 +578,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (IsValid)
                 {
                     CreateUser();
-                    DataCache.ClearPortalCache(PortalId, true);
+                    CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, PortalId));
                 }
             }
             else

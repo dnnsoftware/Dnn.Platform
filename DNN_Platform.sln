@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -95,7 +95,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetCPP", "DNN Platform\Tests\DotNetNuke.Tests.AspNetCPP\DotNetNuke.Tests.AspNetCPP.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetCCP", "DNN Platform\Tests\DotNetNuke.Tests.AspNetCCP\DotNetNuke.Tests.AspNetCCP.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN Platform\Tests\DotNetNuke.Tests.Web\DotNetNuke.Tests.Web.csproj", "{705708E8-6AD9-4021-9B36-EFC83AD42EE7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -125,6 +125,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
 		Build_Install_Package.bat = Build_Install_Package.bat
 		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
@@ -394,6 +395,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{50D97EFD-A619-4B88-92F1-C68A4F2A1BF2}"
 	ProjectSection(SolutionItems) = preProject
 		Build\BuildScripts\CombineSymbols.ps1 = Build\BuildScripts\CombineSymbols.ps1
+		Build\BuildScripts\CopyPackagingFiles.build = Build\BuildScripts\CopyPackagingFiles.build
+		Build\BuildScripts\CreateCommunityPackages.build = Build\BuildScripts\CreateCommunityPackages.build
+		Build\BuildScripts\CreateDocumentation.build = Build\BuildScripts\CreateDocumentation.build
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
 		Build\BuildScripts\ExternallySourced.targets = Build\BuildScripts\ExternallySourced.targets

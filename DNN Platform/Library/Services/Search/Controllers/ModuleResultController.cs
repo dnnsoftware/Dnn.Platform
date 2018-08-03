@@ -53,6 +53,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
         private static Hashtable _moduleSearchControllers = new Hashtable();
+        private static object _threadLock = new object();
 
         #region Abstract Class Implmentation
 
@@ -187,15 +188,19 @@ namespace DotNetNuke.Services.Search.Controllers
                 return null;
             }
 
-            if (_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+            if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
             {
-                return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+                lock (_threadLock)
+                {
+                    if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+                    {
+                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
+                        _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
+                    }
+                }
             }
 
-            var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
-            _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-
-            return controller;
+            return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
         }
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
