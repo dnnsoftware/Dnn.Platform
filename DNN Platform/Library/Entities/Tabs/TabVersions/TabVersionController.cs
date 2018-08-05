@@ -47,17 +47,17 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var userTimeZone = user.Profile.PreferredTimeZone;
             var userUtcOffset = userTimeZone.BaseUtcOffset;
 
-            //if we are not using the cache, then remove from cacehh and re-add loaded items when eeded later
+            //if we are not using the cache, then remove from cache and re-add loaded items when eeded later
             var tabCacheKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
                 DataCache.RemoveCache(tabCacheKey);
             }
             
-            var tabVersions = CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
+            var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
-                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));
+                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)), false);
 
             return ApplyUserLocalTime(tabVersions, userUtcOffset, userTimeZone);
         }
