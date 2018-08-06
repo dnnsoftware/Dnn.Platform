@@ -299,22 +299,22 @@ namespace DotNetNuke.Services.Search.Internals
                     }
 
                     //Page doesn't exist
-                    if (luceneResults.TotalHits >= minResults)
-                    {
-                        luceneResults.Results = searchSecurityTrimmer.ScoreDocs.Select(match =>
-                            new LuceneResult
-                            {
-                                Document = searcher.Doc(match.Doc),
-                                Score = match.Score,
-                                DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
-                                TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
-                                BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
-                                DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
-                                TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
-                                AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
-                                ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
-                            }).ToList();
-                    }
+                    if (luceneResults.TotalHits < minResults)
+                        break;
+
+                    luceneResults.Results = searchSecurityTrimmer.ScoreDocs.Select(match =>
+                        new LuceneResult
+                        {
+                            Document = searcher.Doc(match.Doc),
+                            Score = match.Score,
+                            DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
+                            TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
+                            DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
+                            AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
+                            ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
+                        }).ToList();
                     break;
                 }
                 catch (IOException ex)
