@@ -45,7 +45,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             var userTimeZone = user.Profile.PreferredTimeZone;
-            var userUtcOffset = userTimeZone.BaseUtcOffset;
 
             //if we are not using the cache, then remove from cache and re-add loaded items when eeded later
             var tabCacheKey = GetTabVersionsCacheKey(tabId);
@@ -53,13 +52,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 DataCache.RemoveCache(tabCacheKey);
             }
-            
             var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)), false);
 
-            return ApplyUserLocalTime(tabVersions, userUtcOffset, userTimeZone);
+            return ApplyUserLocalTime(tabVersions, userTimeZone);
         }
         public void SaveTabVersion(TabVersion tabVersion)
         {
@@ -119,15 +117,26 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
-
-        private IEnumerable<TabVersion> ApplyUserLocalTime(IEnumerable<TabVersion> tabVersions, TimeSpan userUtcOffset, TimeZoneInfo userTimeZone)
+        
+        protected virtual TimeZoneInfo GetDatabaseDateTimeOffset()
         {
+            var dateTimeOffset = DateUtils.GetDatabaseDateTimeOffset();
+            var offset = dateTimeOffset.Offset;
+            var id = string.Format("UTC {0}", offset.ToString());
+            return TimeZoneInfo.CreateCustomTimeZone(id, offset, id, id);
+        }
+
+        private IEnumerable<TabVersion> ApplyUserLocalTime(IEnumerable<TabVersion> tabVersions, TimeZoneInfo userTimeZone)
+        {
+            var serverTimeZone = GetDatabaseDateTimeOffset();
+            
             return tabVersions.Select((tabVersion) =>
             {
-                tabVersion.CreateOnUserLocalDate = System.TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, userTimeZone);
+                tabVersion.CreateOnUserLocalDate = TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, serverTimeZone, userTimeZone);
                 return tabVersion;
             });
         }
+
         #endregion
 
         protected override Func<ITabVersionController> GetFactory()

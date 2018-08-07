@@ -187,6 +187,7 @@ namespace DotNetNuke.Data
 
         public abstract IDataReader ExecuteSQL(string sql);
         public abstract IDataReader ExecuteSQL(string sql, int timeoutSec);
+        public abstract T ExecuteSQL<T>(string sql);
 
         #endregion
 
@@ -3351,6 +3352,14 @@ namespace DotNetNuke.Data
         public virtual DateTime GetDatabaseTime()
         {
             return ExecuteScalar<DateTime>("GetDatabaseTime");
+        }
+
+        public virtual DateTimeOffset GetDatabaseTimeOffset() {
+            var dateTimeString = ExecuteSQL<DateTimeOffset>("SELECT SYSDATETIMEOFFSET()").ToString();
+            DateTimeOffset dateTimeOffset;
+            DateTimeOffset.TryParse(dateTimeString, out dateTimeOffset);
+            
+            return dateTimeOffset;
         }
 
         #endregion

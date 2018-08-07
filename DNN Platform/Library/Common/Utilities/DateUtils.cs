@@ -52,6 +52,15 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Gets DateTime Offset of current DB 
+        /// </summary>
+        /// <returns>DateTimeOffset object</returns>
+        public static DateTimeOffset GetDatabaseDateTimeOffset()
+        {
+            return DataProvider.Instance().GetDatabaseTimeOffset();
+        }
+
+        /// <summary>
         /// Gets the database server's time in UTC.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
