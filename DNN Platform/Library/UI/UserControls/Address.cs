@@ -435,7 +435,7 @@ namespace DotNetNuke.UI.UserControls
 					cboRegion.DataBind();
 					cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
 				}
-				if (countryCode.ToLowerInvariant() == "us")
+				if (countryCode.Equals("us", StringComparison.InvariantCultureIgnoreCase))
 				{
 					valRegion1.Enabled = true;
 					valRegion2.Enabled = false;

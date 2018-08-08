@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.Syndication
                 }
 
                 // match url
-                if (urlFromOpmlFile.ToLower() == uri.AbsoluteUri.ToLower())
+                if (urlFromOpmlFile.Equals(uri.AbsoluteUri, StringComparison.OrdinalIgnoreCase))
                 {
                     // found a good one - create DOM and set expiry (as found on disk)
                     Opml opmlFeed = Opml.LoadFromXml(opmlDoc);

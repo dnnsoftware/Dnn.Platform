@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 if(objControlPanel.IncludeInControlHierarchy)
                 {
                     objControlPanel.IsDockable = IsDockable;
-                    if (!Host.ControlPanel.ToLowerInvariant().EndsWith("controlbar.ascx"))
+                    if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
                         Controls.Add(objControlPanel);
                     else
                     {

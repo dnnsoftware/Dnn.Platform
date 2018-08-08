@@ -176,9 +176,9 @@ namespace DotNetNuke.Entities.Users
             {
                 foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
                 {
-                    if (permission.PermissionKey.ToUpper() == "READ"
-                            || permission.PermissionKey.ToUpper() == "WRITE"
-                            || permission.PermissionKey.ToUpper() == "BROWSE")
+                    if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
                     {
                         var folderPermission = new FolderPermissionInfo(permission)
                         {

@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Journal
 
         private bool IsImageFile(string fileName)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).ToLowerInvariant().Replace(".", "") + ",") > -1;        
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", "") + ",", StringComparison.InvariantCultureIgnoreCase) > -1;        
         }
 
         private bool ThumbnailCallback()

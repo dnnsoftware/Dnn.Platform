@@ -957,7 +957,7 @@ namespace DotNetNuke.Entities.Urls
                 string escapedAlias = Regex.Escape(plainAlias);
                 var aliasesToAdd = new List<string> { escapedAlias };
                 //check for existence of www. version of domain, if it doesn't have a www.
-                if (plainAlias.ToLowerInvariant().StartsWith("www."))
+                if (plainAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plainAlias.Length > 4)
                     {

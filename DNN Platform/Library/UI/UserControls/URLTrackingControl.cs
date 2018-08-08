@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.UserControls
                     {
                         lblLogURL.Text = URL; //saved for loading Log grid
                         TabType URLType = Globals.GetURLType(_URL);
-                        if (URLType == TabType.File && _URL.ToLowerInvariant().StartsWith("fileid=") == false)
+                        if (URLType == TabType.File && _URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                         {
                             //to handle legacy scenarios before the introduction of the FileServerHandler
                             var fileName = Path.GetFileName(_URL);

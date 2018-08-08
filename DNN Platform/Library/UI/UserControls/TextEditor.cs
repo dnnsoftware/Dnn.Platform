@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.UserControls
             }
             set
             {
-                if (value.ToUpper() != "BASIC")
+                if (!value.Equals("BASIC", StringComparison.OrdinalIgnoreCase))
                 {
                     ViewState["DefaultMode"] = "RICH";
                 }
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
-                if (value.ToUpper() != "BASIC")
+                if (!value.Equals("BASIC", StringComparison.OrdinalIgnoreCase))
                 {
                     ViewState["DesktopMode"] = "RICH";
 

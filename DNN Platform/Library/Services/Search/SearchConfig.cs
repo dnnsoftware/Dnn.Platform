@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Search
                 }
                 else
                 {
-                    retValue = (setting.ToUpperInvariant().StartsWith("Y") || setting.ToUpperInvariant() == "TRUE");
+                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
                 }
             }
             catch (Exception exc)

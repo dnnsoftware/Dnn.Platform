@@ -154,7 +154,7 @@ namespace DotNetNuke.Entities.Users
             {
                 var profile = user.Profile;
                 var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => p.PropertyName.ToLower() == propertyName.ToLower());
+                                                        .SingleOrDefault(p => String.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
                 if(property != null)
                 {
@@ -196,7 +196,7 @@ namespace DotNetNuke.Entities.Users
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = "";
-            if (!String.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).ToLowerInvariant() == "image")
+            if (!String.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
             {
                 switch (DisplayDataType(property).ToLowerInvariant())
                 {
