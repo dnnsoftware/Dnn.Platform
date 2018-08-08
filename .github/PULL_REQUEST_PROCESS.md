@@ -14,6 +14,7 @@ The following items must all be true prior to a pull request being submitted to 
   * Release Note: Suggested release note for the change such as “Improvement of user profile to improve performance when searching.”
   * Testing Steps: Suggested testing steps for validation of the change
 * Pull request must pass the Continuous Integration (CI) Build.  Failure of the build will result in no futher review of the pull request until the build has been corrected.
+* The .NET Foundation [Contributor License Agreement (CLA)] (https://cla.dotnetfoundation.org/) must be signed prior to code review.  An automated process will prompt for this as part of the Pull Request process.
 
 ## Code Review Process
 Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** community approvers before the change can be approved.  Once approved by two unique individuals the change can be merged by the secondary approval.  At the current time the following community members are designated approvers.
@@ -25,7 +26,7 @@ Community review of submitted pull requests is encouraged, and all pull requests
 * Vicenç Masanas ([vmasanas](https://github.com/vmasanas))
 * Erik van Ballegoij ([erikvb](https://github.com/erikvb))
 
-Additionally the following individuals from ESW/DNN Corp are approved reviewers.
+Additionally, the following individuals from ESW/DNN Corp are approved reviewers.
 
 * Tomasz Pluskiewicz ([tpluscode](https://github.com/tpluscode)) - CTO
 * Ash Prasad ([ashishpd](https://github.com/ashishpd)) - VP of Engineering
@@ -35,14 +36,20 @@ An individual performing the code review should validate at a minimum the follow
 * The source should be able to be cloned, compiled, and all tests ran without error
 * The issue identified should no longer be apparent, and testing steps validated
 * The change should be free from visible errors, and adherence to recommended best practices should be validated.
-* All tests are passing successfully (Confirmed with automated build)
+* All tests are passing successfully (Confirmed with the automated build)
 
 If a reviewer has suggestions for improvement, those should be noted in the pull request and revision requested.  If the pull request is acceptable “as is” simply noting, via a comment, “I reviewed this, no concerns” will document the completion of a review, this statement is preferred to the shorthand LGTM (Looks good to me) for clarity.
 
-*If you have questions about a pull request, or an idea for a pull request, please reach out to one of the approvers before submitting to ensure a streamlined process.*
+*If you have questions about a pull request or an idea for a pull request, please reach out to one of the approvers before submitting to ensure a streamlined process.*
 
 ## Approval & Merging Process
-Once a pull request has been reviewed by two individuals it may be merged.
+Once a pull request has been reviewed by two individuals it may be merged and the pull request closed.
 
 This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
 
+## Items for Future Releases
+If an item was submitted that will be integrated into a future release that is not currently in the development pipeline it is possible that the Pull Request will remain open. 
+
+In this situation the reviewing team will approve the request, tag the request with a specific version milestone and add a comment noting when and why it will be included in the particularlly identified release.
+
+This most often will apply to technology or dependency changes that require alignment with Major, Minor, Revision build inclusion.  
