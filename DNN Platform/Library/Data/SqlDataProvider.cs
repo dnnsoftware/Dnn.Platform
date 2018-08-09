@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -199,7 +199,7 @@ namespace DotNetNuke.Data
             string DBUser = "public";
 
             //If connection string does not use integrated security, then get user id.
-            //Normalize to uppervase before all of the comparisons
+            //Normalize to uppercase before all of the comparisons
             var connectionStringUppercase = ConnectionString.ToUpper();
             if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
