@@ -50,6 +50,6 @@ This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!
 ## Items for Future Releases
 If an item was submitted that will be integrated into a future release that is not currently in the development pipeline it is possible that the Pull Request will remain open. 
 
-In this situation the reviewing team will approve the request, tag the request with a specific version milestone and add a comment noting when and why it will be included in the particularlly identified release.
+In this situation the reviewing team will approve the request, tag the request with a specific version milestone and add a comment noting when and why it will be included in the particularly identified release.
 
 This most often will apply to technology or dependency changes that require alignment with Major, Minor, Revision build inclusion.  
