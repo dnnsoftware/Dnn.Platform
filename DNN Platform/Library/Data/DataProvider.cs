@@ -3355,11 +3355,7 @@ namespace DotNetNuke.Data
         }
 
         public virtual DateTimeOffset GetDatabaseTimeOffset() {
-            var dateTimeString = ExecuteSQL<DateTimeOffset>("SELECT SYSDATETIMEOFFSET()").ToString();
-            DateTimeOffset dateTimeOffset;
-            DateTimeOffset.TryParse(dateTimeString, out dateTimeOffset);
-            
-            return dateTimeOffset;
+            return ExecuteSQL<DateTimeOffset>("SELECT SYSDATETIMEOFFSET()");
         }
 
         #endregion

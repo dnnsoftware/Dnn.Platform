@@ -11,11 +11,12 @@ using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Common;
+using System.Collections;
 
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     [TestFixture]
-    class TabVersionControllerTests
+    public class TabVersionControllerTests
     {
 
         private class TabVersionControllerTestable : TabVersionController
@@ -27,14 +28,22 @@ namespace DotNetNuke.Tests.Web.InternalServices
             }
         }
 
+        private class TestCaseFactory
+        {
+            public static IEnumerable TestCases()
+            {
+                yield return new TestCaseData("Central European Standard Time", new DateTime(2018, 08, 15, 14, 0, 0));
+                yield return new TestCaseData("Russian Standard Time", new DateTime(2018, 08, 15, 15, 0, 0));
+                yield return new TestCaseData("SE Asia Standard Time", new DateTime(2018, 08, 15, 19, 0, 0));
+            }
+        }
+
         private Mock<ICBO> _mockCBO;
         private Mock<IUserController> _mockUserController;
         private Mock<IHostController> _mockHostController;
 
         private const int UserID = 1;
         private const int TabID = 99;
-
-        private int OffsetHours { get; set; }
         
         // Assuming 12:00 Aug 15, 2018 server local time
         private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
@@ -48,49 +57,41 @@ namespace DotNetNuke.Tests.Web.InternalServices
             SetupHostController();
         }
 
-        [Test]
-        [TestCase(-11, "2018-08-15 1:00:00.0")]
-        [TestCase(-2, "2018-08-15 10:00:00.0")]
-        [TestCase(12, "2018-08-16 0:00:00.0")]
-        public void GetTabVersions_Verify_User_Preferred_TimeZone(int offsetHours, string expectedDateTimeString)
+        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        public void GetTabVersions_Verify_User_Preferred_TimeZone(string userPreferredTimeZone, DateTime expectedDateTime)
         {
 
             // Arrange
-            OffsetHours = offsetHours;
-            SetupUserController();
+            SetupUserController(userPreferredTimeZone);
 
             // Act
             var tabVersionController = new TabVersionControllerTestable();
             var tabVersions = tabVersionController.GetTabVersions(TabID);
             var tabVersion = tabVersions.FirstOrDefault();
-            var expectedDate = DateTime.Parse(expectedDateTimeString);
             
             // Assert
-            Assert.AreEqual(tabVersion.CreateOnUserLocalDate, expectedDate);
+            Assert.AreEqual(tabVersion.CreateOnUserLocalDate, expectedDateTime);
         }
 
         private void SetupCBO()
         {
             _mockCBO = new Mock<ICBO>();
             _mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
-                .Returns(() =>
-                {
-                    return GetMockedTabVersions();
-                });
+                .Returns(GetMockedTabVersions);
             CBO.SetTestableInstance(_mockCBO.Object);
         }
 
-        private void SetupUserController()
+        private void SetupUserController(string timeZoneId)
         {
             _mockUserController = new Mock<IUserController>();
-            _mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(GetMockedUser());
+            _mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(GetMockedUser(timeZoneId));
             UserController.SetTestableInstance(_mockUserController.Object);
         }
 
-        private UserInfo GetMockedUser()
+        private UserInfo GetMockedUser(string timeZoneId)
         {
             var profile = new UserProfile() {
-                PreferredTimeZone = GetMockedUserTimeZone(OffsetHours)
+                PreferredTimeZone = GetMockedUserTimeZone(timeZoneId)
             };
 
             profile.ProfileProperties.Add(new Entities.Profile.ProfilePropertyDefinition(99)
@@ -99,7 +100,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PropertyDefinitionId = 20,
                 PropertyCategory = "Preferences",
                 PropertyName = "PreferredTimeZone",
-                PropertyValue = GetMockedUserTimeZone(OffsetHours).Id
+                PropertyValue = GetMockedUserTimeZone(timeZoneId).Id
             });
             var user = new UserInfo()
             {
@@ -111,18 +112,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
             return user;
         }
 
-        private TimeZoneInfo GetMockedUserTimeZone(int offsetHours)
+        private TimeZoneInfo GetMockedUserTimeZone(string timeZoneId)
         {
-            var timeZoneKey = offsetHours != 0 ? GetTimeZoneId(offsetHours) : "UTC";
-            var timeSpan = TimeSpan.FromHours(offsetHours);
-            var timeZone = TimeZoneInfo.CreateCustomTimeZone(timeZoneKey, timeSpan, timeZoneKey, timeZoneKey);
-            return timeZone;
-        }
-
-        private string GetTimeZoneId(int offsetHours)
-        {
-            var timeZoneOffset = Math.Abs(offsetHours).ToString().PadLeft(2, '0').PadLeft(3, offsetHours > 0 ? '+' : '-');
-            return string.Format("UTC{0}", timeZoneOffset);
+            return TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
         }
 
         private TabVersion GetMockedTabVersion()
