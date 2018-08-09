@@ -448,14 +448,7 @@ namespace DotNetNuke.Data
             string errorMessage;
             return ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
-
-        public override T ExecuteSQL<T>(string sql)
-        {
-            var res = PetaPocoHelper.ExecuteScalar<T>(DataProvider.Instance().ConnectionString, CommandType.Text, Null.NullInteger, sql, new object[] { });
-            //return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.Text, sql, new object[] { });
-            return res;
-        }
-
+        
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             string errorMessage;

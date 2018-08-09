@@ -145,11 +145,6 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
-        public override T ExecuteSQL<T>(string sql)
-        {
-            throw new System.NotImplementedException();
-        }
-
         #endregion
     }
 }

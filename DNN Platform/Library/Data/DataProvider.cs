@@ -187,7 +187,6 @@ namespace DotNetNuke.Data
 
         public abstract IDataReader ExecuteSQL(string sql);
         public abstract IDataReader ExecuteSQL(string sql, int timeoutSec);
-        public abstract T ExecuteSQL<T>(string sql);
 
         #endregion
 
@@ -3354,8 +3353,24 @@ namespace DotNetNuke.Data
             return ExecuteScalar<DateTime>("GetDatabaseTime");
         }
 
-        public virtual DateTimeOffset GetDatabaseTimeOffset() {
-            return ExecuteSQL<DateTimeOffset>("SELECT SYSDATETIMEOFFSET()");
+        public virtual DateTimeOffset GetDatabaseTimeOffset()
+        {
+            try
+            {
+                using (var reader = (SqlDataReader)ExecuteSQL("SELECT SYSDATETIMEOFFSET()"))
+                {
+                    if(reader.HasRows && reader.Read())
+                    {
+                        return reader.GetDateTimeOffset(0);
+                    } else
+                    {
+                       throw new Exception("Error retrieving database UTC offset");
+                    }
+                }
+            } catch (Exception)
+            {
+                throw;
+            }
         }
 
         #endregion
