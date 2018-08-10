@@ -60,11 +60,16 @@ namespace DotNetNuke.Entities.Content
         {
             //Argument Contract
             Requires.NotNull("contentItem", contentItem);
-
-	        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, userId);
-            contentItem.CreatedByUserID = userId;
-            contentItem.LastModifiedByUserID = userId;
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            var createdByUserId = currentUser.UserID;
+            if(contentItem.CreatedByUserID != currentUser.UserID && currentUser.IsSuperUser)
+            {
+                createdByUserId = contentItem.CreatedByUserID;
+            }
+            
+            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, createdByUserId);
+            contentItem.CreatedByUserID = createdByUserId;
+            contentItem.LastModifiedByUserID = currentUser.UserID;
 
             SaveMetadataDelta(contentItem);
 
