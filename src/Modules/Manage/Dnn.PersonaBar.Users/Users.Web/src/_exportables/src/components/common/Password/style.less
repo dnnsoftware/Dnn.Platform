@@ -1,0 +1,44 @@
+@import "~dnn-global-styles/index";
+@strong: green;
+@fair: rgb(246, 213, 0);
+@weak: red;
+
+
+.passwordStrength {
+    line-height: 1.5pt;
+    height: 1.5pt;
+    position: relative;
+    top:-18px; 
+
+    &.weak {
+        background-color:@weak;
+        width: 25%;
+    }
+
+    &.fair {
+        background-color: @fair;
+        width: 75%;
+    }
+
+    &.strong {
+        background-color: @strong;
+        width: 100%;
+    }
+}
+
+.passwordStrengthLabel {
+    position: relative;
+    top: -45px;
+    left: 308px;
+    font-weight: 700;
+
+    &.weak{
+        color: @weak;
+    }
+    &.fair {
+        color:@fair;
+    }
+    &.strong {
+        color: @strong;
+    }
+}
