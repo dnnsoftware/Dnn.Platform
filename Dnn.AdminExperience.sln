@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Library\src\Modules\UI\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Library\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
 	EndProjectSection
@@ -25,20 +25,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPackages\NuGetPackages.csproj", "{5313F690-D9A3-40B1-908C-1F5A3F3EA683}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Library", "Library\src\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj", "{8B50BA8B-0A08-41B8-81B8-EA70707C7379}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Library", "Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj", "{8B50BA8B-0A08-41B8-81B8-EA70707C7379}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.Library", "EditBar\src\Dnn.EditBar.Library\Dnn.EditBar.Library.csproj", "{D6AE2D97-CCAA-4655-BE6F-6A9267431712}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.Library", "EditBar\Dnn.EditBar.Library\Dnn.EditBar.Library.csproj", "{D6AE2D97-CCAA-4655-BE6F-6A9267431712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.UI", "EditBar\src\Modules\UI\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj", "{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.UI", "EditBar\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj", "{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages", "Extensions\src\Modules\Content\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages", "Extensions\Content\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Extensions\src\Modules\Content\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Extensions\Content\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Recyclebin", "Extensions\src\Modules\Content\Dnn.PersonaBar.Recyclebin\Dnn.PersonaBar.Recyclebin.csproj", "{35AD8ED3-CBC3-4208-83D1-660EBC908DE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Recyclebin", "Extensions\Content\Dnn.PersonaBar.Recyclebin\Dnn.PersonaBar.Recyclebin.csproj", "{35AD8ED3-CBC3-4208-83D1-660EBC908DE2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{B4BE0735-4220-4FD1-BCE1-42AB9CE9D89F}"
 EndProject
@@ -52,45 +52,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EditBar", "EditBar", "{CA01
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{2D7C4965-755D-4F82-97FF-CBA77E9852DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.AdminLogs", "Extensions\src\Modules\Manage\Dnn.PersonaBar.AdminLogs\Dnn.PersonaBar.AdminLogs.csproj", "{962EE62B-2209-42B9-AB38-72E63E59DF57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.AdminLogs", "Extensions\Manage\Dnn.PersonaBar.AdminLogs\Dnn.PersonaBar.AdminLogs.csproj", "{962EE62B-2209-42B9-AB38-72E63E59DF57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Roles", "Extensions\src\Modules\Manage\Dnn.PersonaBar.Roles\Dnn.PersonaBar.Roles.csproj", "{89251729-9768-4245-A657-4D822E3E9122}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Roles", "Extensions\Manage\Dnn.PersonaBar.Roles\Dnn.PersonaBar.Roles.csproj", "{89251729-9768-4245-A657-4D822E3E9122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Sites", "Extensions\src\Modules\Manage\Dnn.PersonaBar.Sites\Dnn.PersonaBar.Sites.csproj", "{2C608115-C60B-4138-B4FA-525513E984B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Sites", "Extensions\Manage\Dnn.PersonaBar.Sites\Dnn.PersonaBar.Sites.csproj", "{2C608115-C60B-4138-B4FA-525513E984B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Themes", "Extensions\src\Modules\Manage\Dnn.PersonaBar.Themes\Dnn.PersonaBar.Themes.csproj", "{5AD58DBF-E912-46E5-8812-342BB8AF8182}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Themes", "Extensions\Manage\Dnn.PersonaBar.Themes\Dnn.PersonaBar.Themes.csproj", "{5AD58DBF-E912-46E5-8812-342BB8AF8182}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users", "Extensions\src\Modules\Manage\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj", "{96E8B714-A431-4CB7-A251-17F171055F64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users", "Extensions\Manage\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj", "{96E8B714-A431-4CB7-A251-17F171055F64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests", "Extensions\src\Modules\Manage\Dnn.PersonaBar.Users.Tests\Dnn.PersonaBar.Users.Tests.csproj", "{15506C01-A730-46B9-8571-99C20226AAE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests", "Extensions\Manage\Dnn.PersonaBar.Users.Tests\Dnn.PersonaBar.Users.Tests.csproj", "{15506C01-A730-46B9-8571-99C20226AAE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.ConfigConsole", "Extensions\src\Modules\Settings\Dnn.PersonaBar.ConfigConsole\Dnn.PersonaBar.ConfigConsole.csproj", "{A93DED6D-8696-40FE-90FC-4236F972BE41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.ConfigConsole", "Extensions\Settings\Dnn.PersonaBar.ConfigConsole\Dnn.PersonaBar.ConfigConsole.csproj", "{A93DED6D-8696-40FE-90FC-4236F972BE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Connectors", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Connectors\Dnn.PersonaBar.Connectors.csproj", "{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Connectors", "Extensions\Settings\Dnn.PersonaBar.Connectors\Dnn.PersonaBar.Connectors.csproj", "{271F868B-2395-4652-B2EA-EF5FEC3CCBEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.CssEditor", "Extensions\src\Modules\Settings\Dnn.PersonaBar.CssEditor\Dnn.PersonaBar.CssEditor.csproj", "{55BE3993-A19A-442D-9E2E-D0E8A690CFFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.CssEditor", "Extensions\Settings\Dnn.PersonaBar.CssEditor\Dnn.PersonaBar.CssEditor.csproj", "{55BE3993-A19A-442D-9E2E-D0E8A690CFFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{1762F0C8-F0B5-4D64-B8DF-23B164554D40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Extensions\Settings\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{1762F0C8-F0B5-4D64-B8DF-23B164554D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Licensing", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Licensing\Dnn.PersonaBar.Licensing.csproj", "{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Licensing", "Extensions\Settings\Dnn.PersonaBar.Licensing\Dnn.PersonaBar.Licensing.csproj", "{A8B33EDC-FE3D-4BBA-B127-13A6AD7E5C12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Prompt", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Prompt\Dnn.PersonaBar.Prompt.csproj", "{29521C64-3269-40DA-9B4C-CD492246C889}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Prompt", "Extensions\Settings\Dnn.PersonaBar.Prompt\Dnn.PersonaBar.Prompt.csproj", "{29521C64-3269-40DA-9B4C-CD492246C889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Security\Dnn.PersonaBar.Security.csproj", "{E9445FC8-2BBD-4EFD-B63D-8C7B8C6EEB50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security", "Extensions\Settings\Dnn.PersonaBar.Security\Dnn.PersonaBar.Security.csproj", "{E9445FC8-2BBD-4EFD-B63D-8C7B8C6EEB50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Seo", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Seo\Dnn.PersonaBar.Seo.csproj", "{A3DF3DFE-0A09-4D3E-9E82-A0D5EC45750E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Seo", "Extensions\Settings\Dnn.PersonaBar.Seo\Dnn.PersonaBar.Seo.csproj", "{A3DF3DFE-0A09-4D3E-9E82-A0D5EC45750E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Servers", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Servers\Dnn.PersonaBar.Servers.csproj", "{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Servers", "Extensions\Settings\Dnn.PersonaBar.Servers\Dnn.PersonaBar.Servers.csproj", "{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteImportExport", "Extensions\src\Modules\Settings\Dnn.PersonaBar.SiteImportExport\Dnn.PersonaBar.SiteImportExport.csproj", "{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteImportExport", "Extensions\Settings\Dnn.PersonaBar.SiteImportExport\Dnn.PersonaBar.SiteImportExport.csproj", "{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteSettings", "Extensions\src\Modules\Settings\Dnn.PersonaBar.SiteSettings\Dnn.PersonaBar.SiteSettings.csproj", "{C0A07377-E031-4C5B-AC56-0080555C9AC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteSettings", "Extensions\Settings\Dnn.PersonaBar.SiteSettings\Dnn.PersonaBar.SiteSettings.csproj", "{C0A07377-E031-4C5B-AC56-0080555C9AC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SqlConsole", "Extensions\src\Modules\Settings\Dnn.PersonaBar.SqlConsole\Dnn.PersonaBar.SqlConsole.csproj", "{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SqlConsole", "Extensions\Settings\Dnn.PersonaBar.SqlConsole\Dnn.PersonaBar.SqlConsole.csproj", "{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.TaskScheduler", "Extensions\src\Modules\Settings\Dnn.PersonaBar.TaskScheduler\Dnn.PersonaBar.TaskScheduler.csproj", "{EE37275B-1E65-4475-BB1E-0F8F31B3D281}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.TaskScheduler", "Extensions\Settings\Dnn.PersonaBar.TaskScheduler\Dnn.PersonaBar.TaskScheduler.csproj", "{EE37275B-1E65-4475-BB1E-0F8F31B3D281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Vocabularies", "Extensions\src\Modules\Settings\Dnn.PersonaBar.Vocabularies\Dnn.PersonaBar.Vocabularies.csproj", "{B4CBAC32-E561-4426-AD67-8A12284AAED0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Vocabularies", "Extensions\Settings\Dnn.PersonaBar.Vocabularies\Dnn.PersonaBar.Vocabularies.csproj", "{B4CBAC32-E561-4426-AD67-8A12284AAED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -387,7 +387,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7D92D57E-EB66-4816-A0FA-B39213452539} = {2D7C4965-755D-4F82-97FF-CBA77E9852DB}
-		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {424CCB69-AD4D-4CBC-83D3-E7588343A2E4}
 		{8B50BA8B-0A08-41B8-81B8-EA70707C7379} = {2D7C4965-755D-4F82-97FF-CBA77E9852DB}
 		{D6AE2D97-CCAA-4655-BE6F-6A9267431712} = {CA017058-6866-4429-AE3B-E509F3B2B594}
 		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67} = {CA017058-6866-4429-AE3B-E509F3B2B594}
