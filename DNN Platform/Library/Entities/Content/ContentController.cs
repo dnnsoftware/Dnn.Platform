@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
-            if(contentItem.CreatedByUserID != currentUser.UserID && currentUser.IsSuperUser)
+            if(contentItem.CreatedByUserID != currentUser.UserID)
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
