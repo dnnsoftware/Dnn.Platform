@@ -56,6 +56,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
         }
 
+        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
+        {
+            return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, Url);
+        }
+
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
         {
             return new DnnRedirecttoRouteResult(String.Empty, String.Empty, String.Empty, null, false);

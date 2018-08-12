@@ -1,5 +1,6 @@
 <!-- 
   Please read contribution guideline first: https://github.com/dnnsoftware/Dnn.Platform/blob/development/CONTRIBUTING.md 
+  Any potential security issues should be sent to security@dnnsoftware.com, rather than posted on GitHub
 -->
 ## Description 
 
