@@ -18,9 +18,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{59367CA7-B502-4216-A810-C940A82FA526}"
 	ProjectSection(SolutionItems) = preProject
 		Build\BuildScripts\CreateSourcePackage.build = Build\BuildScripts\CreateSourcePackage.build
+		LICENSE.txt = LICENSE.txt
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
 		Solution.build = Solution.build
+		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPackages\NuGetPackages.csproj", "{5313F690-D9A3-40B1-908C-1F5A3F3EA683}"
