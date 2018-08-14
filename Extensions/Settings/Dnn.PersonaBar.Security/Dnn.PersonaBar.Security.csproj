@@ -48,9 +48,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Dnn.PersonaBar.Library">
-      <HintPath>..\..\..\bin\Dnn.PersonaBar.Library.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
@@ -182,6 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dnn.PersonaBar.Library">
-      <HintPath>..\..\..\bin\Dnn.PersonaBar.Library.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke">
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
@@ -65,6 +62,10 @@
     <Compile Include="RestorePageUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8B50BA8B-0A08-41B8-81B8-EA70707C7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj">
       <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
       <Name>Dnn.PersonaBar.Pages</Name>

@@ -52,7 +52,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <ItemGroup>
     <Reference Include="Dnn.PersonaBar.Library">
-      <HintPath>..\..\..\bin\Dnn.PersonaBar.Library.dll</HintPath>
+      <HintPath>..\..\..\Library\Dnn.PersonaBar.Library\bin\Dnn.PersonaBar.Library.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
