@@ -57,7 +57,7 @@ namespace DotNetNuke.UI
             {
                 Int32.TryParse(request.QueryString["mid"], out moduleId);
             }
-            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
                 Int32.TryParse(request.QueryString["moduleid"], out moduleId);
             }

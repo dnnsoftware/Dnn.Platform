@@ -3374,7 +3374,7 @@ namespace DotNetNuke.Common
             else if (TrackClicks || ForceDownload || UrlType == TabType.File)
             {
                 //format LinkClick wrapper
-                if (Link.ToLowerInvariant().StartsWith("fileid="))
+                if (Link.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
                     if (PortalId == Null.NullInteger) //To track Host files
@@ -3889,7 +3889,7 @@ namespace DotNetNuke.Common
                     strExtension = File.Substring(File.LastIndexOf(".") + 1);
                 }
                 string FileName = File.Substring(CurrentDirectory.FullName.Length);
-                if (strExtensions.ToUpper().IndexOf(strExtension.ToUpper()) != -1 || string.IsNullOrEmpty(strExtensions))
+                if (strExtensions.IndexOf(strExtension, StringComparison.InvariantCultureIgnoreCase) != -1 || string.IsNullOrEmpty(strExtensions))
                 {
                     arrFileList.Add(new FileItem(FileName, FileName));
                 }

@@ -147,8 +147,8 @@ namespace DotNetNuke.Common.Utilities
                         {
                             keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof (TKey));
                         }
-                        else if (typeof (TKey).Name.ToLowerInvariant() == "string" &&
-                                 dr[keyField].GetType().Name.ToLowerInvariant() == "dbnull")
+                        else if (typeof (TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
+                                 dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
                             keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof (TKey));
                         }

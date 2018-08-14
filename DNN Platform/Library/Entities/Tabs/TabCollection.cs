@@ -142,10 +142,11 @@ namespace DotNetNuke.Entities.Tabs
         {
             List<TabInfo> localizedTabCollection;
 
-            if (!_localizedTabs.TryGetValue(cultureCode.ToLowerInvariant(), out localizedTabCollection))
+            var key = cultureCode.ToLowerInvariant();
+            if (!_localizedTabs.TryGetValue(key, out localizedTabCollection))
             {
                 localizedTabCollection = new List<TabInfo>();
-                _localizedTabs.Add(cultureCode.ToLowerInvariant(), localizedTabCollection);
+                _localizedTabs.Add(key, localizedTabCollection);
             }
 
             //Add tab to end of localized tabs

@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Modules
                             var commonValue = reader.GetAttribute("common");
                             if (!string.IsNullOrEmpty(commonValue))
                             {
-                                IsCommon = commonValue.ToLowerInvariant() == "true";
+                                IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
                             }
 
                             reader.Read();

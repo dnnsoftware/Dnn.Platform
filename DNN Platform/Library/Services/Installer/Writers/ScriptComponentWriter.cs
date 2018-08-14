@@ -101,12 +101,12 @@ namespace DotNetNuke.Services.Installer.Writers
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.ToLowerInvariant() == "uninstall") //UnInstall.SqlDataprovider
+            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase)) //UnInstall.SqlDataprovider
             {
                 type = "UnInstall";
                 version = Package.Version.ToString(3);
             }
-            else if (fileName.ToLowerInvariant() == "install") //Install.SqlDataprovider
+            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase)) //Install.SqlDataprovider
             {
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
