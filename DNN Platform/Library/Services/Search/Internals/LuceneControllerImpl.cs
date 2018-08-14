@@ -317,9 +317,10 @@ namespace DotNetNuke.Services.Search.Internals
                         }).ToList();
                     break;
                 }
-                catch (IOException ex)
+                catch (Exception ex) when (ex is IOException || ex is AlreadyClosedException)
                 {
                     DisposeReaders();
+                    DisposeWriter(false);
 
                     if (i == _searchRetryTimes - 1)
                     {
@@ -529,7 +530,7 @@ namespace DotNetNuke.Services.Search.Internals
             return analyzer;
         }
 
-        private void DisposeWriter()
+        private void DisposeWriter(bool commit = true)
         {
             if (_writer != null)
             {
@@ -540,7 +541,11 @@ namespace DotNetNuke.Services.Search.Internals
                         _idxReader.Dispose();
                         _idxReader = null;
 
-                        _writer.Commit();
+                        if (commit)
+                        {
+                            _writer.Commit();
+                        }
+
                         _writer.Dispose();
                         _writer = null;
                     }
