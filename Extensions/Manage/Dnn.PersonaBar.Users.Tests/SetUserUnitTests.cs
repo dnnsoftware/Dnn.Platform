@@ -1,8 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
-using System.Collections.Generic;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
 using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Users.Components.Prompt.Commands;
@@ -10,41 +8,38 @@ using Dnn.PersonaBar.Users.Components.Prompt.Commands;
 namespace Dnn.PersonaBar.Users.Tests
 {
     [TestFixture]
-    public class SetUserUnitTests
+    public class SetUserUnitTests : CommandTests<SetUser>
     {
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUsersController> _usersControllerMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
-        private PortalSettings _portalSettings;
-        private int _testPortalId = 0;
 
-        [SetUp]
-        public void RunBeforeAnyTest()
+        protected override string CommandName => "Set-User";
+
+        protected override void ChildSetup()
         {
             _userValidatorMock = new Mock<IUserValidator>();
             _usersControllerMock = new Mock<IUsersController>();
             _userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+        }
 
-            _portalSettings = new PortalSettings();
-            _portalSettings.PortalId = _testPortalId;
+        protected override SetUser CreateCommand()
+        {
+            return new SetUser(_userValidatorMock.Object, _usersControllerMock.Object, _userControllerWrapperMock.Object);
         }
 
         [Test]
         public void Run_UserIdNull_ReturnErrorResponse()
         {
             // Arrange          
-            UserInfo userinfo;
-            ConsoleErrorResultModel errorResponse = new ConsoleErrorResultModel();
-
+            UserInfo userInfo;
+            errorResultModel = new ConsoleErrorResultModel();
             _userValidatorMock
-                .Setup(u => u.ValidateUser(-1, _portalSettings, null, out userinfo))
-                .Returns(errorResponse);
-
-            var args = new[] { "--username", "testusername", "--firstname", "testfirstname", "--lastname", "testlastname" };
-            var command = SetupCommand(string.Empty, args);
+                .Setup(u => u.ValidateUser(-1, portalSettings, null, out userInfo))
+                .Returns(errorResultModel);
 
             // Act
-            var result = command.Run();
+            var result = RunCommand("--username", "testusername", "--firstname", "testfirstname", "--lastname", "testlastname");
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -59,46 +54,24 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange
             var userId = 4;
-
-            UserInfo userInfo = new UserInfo();
-            var profile = new UserProfile();
-            profile.FirstName = "testUser";
-            userInfo.UserID = userId;
-            userInfo.Profile = profile;
+            var userInfo = GetUser(userId, false);
             userInfo.FirstName = "userFirstName";
             userInfo.LastName = "userLastName";
             userInfo.Email = "user@email.com";
-            userInfo.IsDeleted = false;
-            userInfo.PortalID = _testPortalId;
-
-            ConsoleErrorResultModel errorResponse = null;
 
             _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, _portalSettings, null, out userInfo))
-                .Returns(errorResponse);
+                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
+                .Returns(errorResultModel);
             _userControllerWrapperMock
-                .Setup(w => w.GetUserById(_testPortalId, userId))
+                .Setup(w => w.GetUserById(testPortalId, userId))
                 .Returns(userInfo);
 
-            var args = new[] { "--firstname", "user4", "--lastname", "user4", attributeName, attributeValue };
-            var command = SetupCommand(userId.ToString(), args);
-
             // Act
-            var result = command.Run();
+            var result = RunCommand(userId.ToString(), "--firstname", "user4", "--lastname", "user4", attributeName, attributeValue);
 
             // Assert
             Assert.IsFalse(result.IsError);
             Assert.AreEqual(1, result.Records);
-        }
-
-        private SetUser SetupCommand(string userId, string[] args)
-        {
-            var command = new SetUser(_userValidatorMock.Object, _usersControllerMock.Object, _userControllerWrapperMock.Object);
-            var commandArgs = new List<string>(args);
-            commandArgs.Insert(0, userId);
-            commandArgs.Insert(0, "set-user");
-            command.Initialize(commandArgs.ToArray(), _portalSettings, null, -1);
-            return command;
         }
     }
 }
