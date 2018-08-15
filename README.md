@@ -1,3 +1,5 @@
+[![Build status](https://dotnetfoundation.visualstudio.com/DNN/_apis/build/status/Dnn.AdminExperience%20%5BCI%5D)](https://dotnetfoundation.visualstudio.com/DNN/_build/latest?definitionId=38)
+
 # Dnn.AdminExperience
 
 The Persona Bar Library, Extensions and EditBar for Dnn (DotNetNuke) is the core of the admin experience in Dnn. 
