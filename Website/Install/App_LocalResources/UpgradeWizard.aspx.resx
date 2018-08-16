@@ -144,7 +144,7 @@
     <value>Updating Extensions</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;p&gt;Welcome to the DotNetNuke Upgrade Page.&lt;/p&gt;
+    <value>&lt;p&gt;Welcome to the DNN Upgrade Page.&lt;/p&gt;
 
 &lt;p&gt;The first step is to choose the language you wish to use for the Upgrade.&lt;/p&gt;
 

@@ -238,7 +238,7 @@ The web servers firewall or another firewall is blocking access to the host or t
     <value>http://store.dotnetnuke.com/home/product-details/premium-mobile-device-data-51degreesmobi</value>
   </data>
   <data name="PurchaseInfoLink.Text" xml:space="preserve">
-    <value>DotNetNuke Store</value>
+    <value>DNN Store</value>
   </data>
   <data name="RefreshButtonText.Text" xml:space="preserve">
     <value>Refresh</value>

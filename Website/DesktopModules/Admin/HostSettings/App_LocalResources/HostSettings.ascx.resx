@@ -556,7 +556,7 @@
     <value>Help URL:</value>
   </data>
   <data name="plHelpUrl.Help" xml:space="preserve">
-    <value>Enter the URL for the Online Help you will be providing.  If you leave the entry blank then no Online Help will be offered for the Admin/Host areas of DotNetNuke.</value>
+    <value>Enter the URL for the Online Help you will be providing.  If you leave the entry blank then no Online Help will be offered for the Admin/Host areas of DNN.</value>
   </data>
   <data name="plEnableHelp.Text" xml:space="preserve">
     <value>Enable Module Online Help:</value>

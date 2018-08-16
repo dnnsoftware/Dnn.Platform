@@ -241,7 +241,7 @@
     <value>Submit</value>
   </data>
   <data name="SectionCoreSettingsLbl.Text" xml:space="preserve">
-    <value>Modify the basic settings that apply to general DotNetNuke pages.</value>
+    <value>Modify the basic settings that apply to general DNN pages.</value>
   </data>
   <data name="SectionGeneralSettingsLbl.Text" xml:space="preserve">
     <value>Configure the settings that apply to all URLs included in the Sitemap.</value>

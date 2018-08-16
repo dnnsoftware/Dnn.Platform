@@ -160,7 +160,7 @@
     <value>Total Pages</value>
   </data>
   <data name="AllPagesTranslatable.Help" xml:space="preserve">
-    <value>If checked, all pages that are in the default language will be made translatable. DotNetNuke will create a copy of all translatable pages, in all other selected languages</value>
+    <value>If checked, all pages that are in the default language will be made translatable. DNN will create a copy of all translatable pages, in all other selected languages</value>
   </data>
   <data name="AllPagesTranslatable.Text" xml:space="preserve">
     <value>Make all pages Translatable</value>

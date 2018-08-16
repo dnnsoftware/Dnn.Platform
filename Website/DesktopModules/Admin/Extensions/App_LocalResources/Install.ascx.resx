@@ -145,7 +145,7 @@
     <value>Accept License?</value>
   </data>
   <data name="Introduction.Help" xml:space="preserve">
-    <value>DotNetNuke can be extended in many ways.  This wizard helps you upload and install DotNetNuke extension packages.</value>
+    <value>DNN can be extended in many ways.  This wizard helps you upload and install DNN extension packages.</value>
   </data>
   <data name="Introduction.Title" xml:space="preserve">
     <value>Upload New Extension Package</value>
@@ -211,7 +211,7 @@
     <value>Legacy Theme/Container:</value>
   </data>
   <data name="NoManifest.Text" xml:space="preserve">
-    <value>This package does not appear to be a valid DotNetNuke Extension as it does not have a manifest.  Old (legacy) Themes and Containers do not contain manifests.  If this package is a legacy Theme or Container Package please check the appropriate radio button below, and click Next.</value>
+    <value>This package does not appear to be a valid DNN Extension as it does not have a manifest.  Old (legacy) Themes and Containers do not contain manifests.  If this package is a legacy Theme or Container Package please check the appropriate radio button below, and click Next.</value>
   </data>
   <data name="Container.Text" xml:space="preserve">
     <value>Container</value>

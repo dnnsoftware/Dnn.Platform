@@ -124,7 +124,7 @@
     <value>Create Package</value>
   </data>
   <data name="Introduction.Help" xml:space="preserve">
-    <value>In this wizard you will be able to package all the files neccessary to install the feature in a different DotNetnuke installation</value>
+    <value>In this wizard you will be able to package all the files neccessary to install the feature in a different DNN installation</value>
   </data>
   <data name="Introduction.Title" xml:space="preserve">
     <value>Create Package</value>

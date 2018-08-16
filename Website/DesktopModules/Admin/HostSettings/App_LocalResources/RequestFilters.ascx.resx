@@ -169,6 +169,6 @@
     <value>Goto &lt;a href="http://msdn.microsoft.com/en-us/library/ms524602(v=vs.90).aspx" target="_blank" &gt;MSDN&lt;/a&gt; for a list of variables.</value>
   </data>
   <data name="lblWarning.Text" xml:space="preserve">
-    <value>WARNING:  Adding an incorrect request filter rule may prevent you or your customers from being able to access your DotNetNuke website, and may require you to manually edit the DotNetNuke.config file to remove the incorrectly configured rule.</value>
+    <value>WARNING:  Adding an incorrect request filter rule may prevent you or your customers from being able to access your DNN website, and may require you to manually edit the DotNetNuke.config file to remove the incorrectly configured rule.</value>
   </data>
 </root>

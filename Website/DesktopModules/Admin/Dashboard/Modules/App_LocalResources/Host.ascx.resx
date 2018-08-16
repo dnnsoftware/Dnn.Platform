@@ -193,7 +193,7 @@
     <value>Displays selected settings that affect all websites in this installation.</value>
   </data>
   <data name="plHost.Text" xml:space="preserve">
-    <value>DotNetNuke Host Settings:</value>
+    <value>DNN Host Settings:</value>
   </data>
   <data name="HostInfo_Product.Help" xml:space="preserve">
     <value>The application you are running</value>
@@ -202,13 +202,13 @@
     <value>Product:</value>
   </data>
   <data name="HostInfo_JQueryUIVersion.Help" xml:space="preserve">
-    <value>This is the version of jQuery UI this DotNetNuke installation is running.</value>
+    <value>This is the version of jQuery UI this DNN installation is running.</value>
   </data>
   <data name="HostInfo_JQueryUIVersion.Text" xml:space="preserve">
     <value>jQuery UI Version:</value>
   </data>
   <data name="HostInfo_JQueryVersion.Help" xml:space="preserve">
-    <value>This is the version of jQuery this DotNetNuke installation is running.</value>
+    <value>This is the version of jQuery this DNN installation is running.</value>
   </data>
   <data name="HostInfo_JQueryVersion.Text" xml:space="preserve">
     <value>jQuery Version:</value>

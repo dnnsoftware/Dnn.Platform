@@ -136,7 +136,7 @@
     <value>Same As Page</value>
   </data>
   <data name="ShareableWarningAlternate.Text" xml:space="preserve">
-    <value>If you are confused by this message or are working on a site that cannot tolerate any breakage, you should click Cancel and contact the &lt;a href="mailto:support@dnnsoftware.com"&gt;DotNetNuke Support Team&lt;/a&gt;.</value>
+    <value>If you are confused by this message or are working on a site that cannot tolerate any breakage, you should click Cancel and contact the &lt;a href="mailto:support@dnnsoftware.com"&gt;DNN Support Team&lt;/a&gt;.</value>
   </data>
   <data name="ShareableWarningContent.Text" xml:space="preserve">
     <value>You are attempting to add a reference to this module that exists on another site in this group. This module may or may not support sharing across multiple sites - it doesn't explicitly state either way whether it does. &lt;br/&gt;&lt;br/&gt;If you are sure that it does, or if your intent is to test its ability to do so, then proceed with caution and be aware that certain functionality in the module - or even the entire module - may not function correctly in this configuration.</value>

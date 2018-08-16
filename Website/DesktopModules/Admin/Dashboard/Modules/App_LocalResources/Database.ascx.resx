@@ -124,13 +124,13 @@
     <value>Database Version:</value>
   </data>
   <data name="plBackups.Help" xml:space="preserve">
-    <value>Displays the last 20 database backups for this DotNetNuke installation.  This list may not be complete if you regularly clean your database backup history tables.</value>
+    <value>Displays the last 20 database backups for this DNN installation.  This list may not be complete if you regularly clean your database backup history tables.</value>
   </data>
   <data name="plBackups.Text" xml:space="preserve">
     <value>Database Backup History:</value>
   </data>
   <data name="plFiles.Help" xml:space="preserve">
-    <value>Displays a list of data and log files for this DotNetNuke installation.</value>
+    <value>Displays a list of data and log files for this DNN installation.</value>
   </data>
   <data name="plFiles.Text" xml:space="preserve">
     <value>Database Files:</value>

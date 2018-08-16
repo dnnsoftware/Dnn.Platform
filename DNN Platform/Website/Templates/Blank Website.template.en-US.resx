@@ -154,7 +154,7 @@
     <value>Let me at it</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.0.Text" xml:space="preserve">
-    <value>The video below will &lt;strong&gt; help get you started &lt;/strong&gt; building your new DotNetNuke site. Using DotNetNuke is fast and easy and you can have your new site up and running with real content in just a matter of minutes.</value>
+    <value>The video below will &lt;strong&gt; help get you started &lt;/strong&gt; building your new DNN site. Using DNN is fast and easy and you can have your new site up and running with real content in just a matter of minutes.</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.1.Text" xml:space="preserve">
     <value>Watch the Video</value>
@@ -178,7 +178,7 @@
     <value>Looking for answers?</value>
   </data>
   <data name="Tab.GettingStarted.RightPane.Module.Content.4.Text" xml:space="preserve">
-    <value>Do you have any questions, ideas for improvement or just want to meet some other DotNetNuke members?</value>
+    <value>Do you have any questions, ideas for improvement or just want to meet some other DNN members?</value>
   </data>
   <data name="Tab.GettingStarted.RightPane.Module.Content.5.Text" xml:space="preserve">
     <value>Find an Answer</value>
@@ -199,10 +199,10 @@
     <value>Learn the basics of working with DNN</value>
   </data>
   <data name="Tab.GettingStarted.Header.Module.Title.Text" xml:space="preserve">
-    <value>&lt;strong&gt;Way to go!&lt;/strong&gt; you just completed your installation of DotNetNuke; &lt;strong&gt;what whould you like to do next?&lt;/strong&gt;</value>
+    <value>&lt;strong&gt;Way to go!&lt;/strong&gt; you just completed your installation of DNN; &lt;strong&gt;what whould you like to do next?&lt;/strong&gt;</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.2.Text" xml:space="preserve">
-    <value>Find out what improvements and additions we've made to DotNetNuke 7.0.</value>
+    <value>Find out what improvements and additions we've made to DNN 7.0.</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.3.Text" xml:space="preserve">
     <value>Watch the Video</value>
@@ -214,16 +214,16 @@
     <value>Enhance your site with capabilities such as e-commerce.</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.12.Text" xml:space="preserve">
-    <value>Visit the DotNetNuke Store</value>
+    <value>Visit the DNN Store</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.13.Text" xml:space="preserve">
     <value>Sponsors</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.4.Text" xml:space="preserve">
-    <value>Personalize your DotNetNuke</value>
+    <value>Personalize your DNN</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.5.Text" xml:space="preserve">
-    <value>Are you ready to make DotNetNuke your own?</value>
+    <value>Are you ready to make DNN your own?</value>
   </data>
   <data name="Tab.GettingStarted.LeftPane.Module.Content.6.Text" xml:space="preserve">
     <value>We have the resources and tools to do just about anything you can imagine.</value>

@@ -816,7 +816,7 @@ Thank you,
   <data name="404.Error" xml:space="preserve">
     <value>&lt;div style="height: 100%; width: 90%;"&gt;
         &lt;p style="color:red; font-weight:bold;"&gt;Domain Name {0} Does Not Exist In The Database&lt;/p&gt;
-        &lt;p&gt;DotNetNuke supports multiple websites from a single database/codebase. It accomplishes
+        &lt;p&gt;DNN supports multiple websites from a single database/codebase. It accomplishes
     this by converting the URL of the client browser Request to a valid PortalID in
         the Portals database table. The following steps describe the process:&lt;/p&gt;
     &lt;ol style="text-align: left; list-style-type: decimal; list-style-position: outside;"&gt;
@@ -877,10 +877,10 @@ Thank you,
   </data>
   <data name="403_3.Error" xml:space="preserve">
     <value>&lt;div style="height: 100%; width: 90%;"&gt;
-        &lt;h3&gt;DotNetNuke Configuration Error&lt;/h3&gt;
+        &lt;h3&gt;DNN Configuration Error&lt;/h3&gt;
         &lt;p&gt;{0}&lt;/p&gt;
-        &lt;p&gt;Your DotNetNuke installation appears to have a security settings problem (most likely
-        permissions). DotNetNuke has extensive file upload capabilities for content, modules,
+        &lt;p&gt;Your DNN installation appears to have a security settings problem (most likely
+        permissions). DNN has extensive file upload capabilities for content, modules,
         and themes. These features require custom security settings so that the application
         is able to create and remove files in your website.&lt;/p&gt;
         &lt;p&gt;Using Windows Explorer, browse to the root folder of the website ( C:\DotNetNuke
@@ -1021,7 +1021,7 @@ Thank you, we appreciate your support...
     <value>This Caching Provider does not require the PurgeCache feature.</value>
   </data>
   <data name="NoLoginControl.Text" xml:space="preserve">
-    <value>You have been redirected to this default Login Page because the Login Page set for this website does not contain a valid DotNetNuke Account Login module, or the permissions have not been set correctly.</value>
+    <value>You have been redirected to this default Login Page because the Login Page set for this website does not contain a valid DNN Account Login module, or the permissions have not been set correctly.</value>
   </data>
   <data name="EMAIL_USER_UPDATED_OWN_PASSWORD_BODY.Text" xml:space="preserve">
     <value>Dear [User:DisplayName],

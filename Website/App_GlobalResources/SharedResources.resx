@@ -814,7 +814,7 @@
     <value>Install aborted - The module being installed is older than the version which is already installed in your host application</value>
   </data>
   <data name="INSTALL_Compatibility.Text" xml:space="preserve">
-    <value>Install aborted - The module being installed is not compatible with this version of DotNetNuke. An upgrade to version {0} is required.</value>
+    <value>Install aborted - The module being installed is not compatible with this version of DNN. An upgrade to version {0} is required.</value>
   </data>
   <data name="INSTALL_Dependencies.Text" xml:space="preserve">
     <value>Install aborted - The module being installed requires additional components which are not available in your environment.</value>

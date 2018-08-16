@@ -211,7 +211,7 @@
 	&lt;li&gt;
 	Added &lt;a href="http://jquery.com/" target="_blank"&gt;jQuery&lt;/a&gt; support 
 	to the core platform.&amp;#160; jQuery will now be distributed as part of the 
-	DotNetNuke installation and will be available for use by module developers.&lt;/li&gt;
+	DNN installation and will be available for use by module developers.&lt;/li&gt;
 	&lt;li&gt;
 	Added support for Internet Explorer 8 Web Slices.&amp;#160; Administrators can 
 	configure any module to use IE8 Web Slices including the ability to set 
@@ -312,8 +312,8 @@ were corrected with each release.&lt;/p&gt;
 	&lt;li&gt;Added IP logging to the User&amp;#39;s table to capture the last IP address from 
 	which a user logged in. &lt;/li&gt;
 	&lt;li&gt;Fixed breaking change with case sensitivity in the name of theme panes.&amp;nbsp; 
-	This fix restores the case-insensitivity of previous DotNetNuke releases.&lt;/li&gt;
-	&lt;li&gt;Fixed breaking change with ModuleId in DotNetNuke 5.0 which changed 
+	This fix restores the case-insensitivity of previous DNN releases.&lt;/li&gt;
+	&lt;li&gt;Fixed breaking change with ModuleId in DNN 5.0 which changed 
 	ModuleId to a readonly value.&lt;/li&gt;
 	&lt;li&gt;Fixed breaking change in CBO.FillDictionary to restore previous 
 	behavior.&lt;/li&gt;
@@ -444,7 +444,7 @@ were corrected with each release.&lt;/p&gt;
 	&lt;li&gt;Fixed issue with upgrades which would fail if .Net 3.5 was installed&lt;/li&gt;
 	&lt;li&gt;Fixed issue with themes installed using the batch installer.&lt;/li&gt;
 	&lt;li&gt;Fixed change to GetModulesByDefinition API method which resulted in 
-	breaking change from DotNetNuke 4.x&lt;/li&gt;
+	breaking change from DNN 4.x&lt;/li&gt;
 	&lt;li&gt;Fixed CloakText API method which was broken in 5.0.1&lt;/li&gt;
 	&lt;li&gt;Fixed issue with stored procedure for Dashboard which would fail with an 
 	error if database account did not have permissions to the MSDB database.&lt;/li&gt;
@@ -638,8 +638,8 @@ were corrected with each release.&lt;/p&gt;
 	created as relative which is a change from previous versions.&lt;/li&gt;
 	&lt;li&gt;Removed solution explorer page from the Admin menu and removed the 
 	Marketplace feed from the OPML file.&lt;/li&gt;
-	&lt;li&gt;Fixed issue with upgrading DotNetNuke 4.x themes when upgrading site to 
-	DotNetNuke 5.x&lt;/li&gt;
+	&lt;li&gt;Fixed issue with upgrading DNN 4.x themes when upgrading site to 
+	DNN 5.x&lt;/li&gt;
 	&lt;li&gt;Fixed issue which resulted in incorrect URL for SiteMap in a child 
 	portal&lt;/li&gt;
 	&lt;li&gt;Fixed issue which caused error when deleting files from the Host file 
@@ -1184,7 +1184,7 @@ In addition, this supports a fallback strategy where if no record exists for a l
 &lt;ul&gt;
 	&lt;li&gt;Fixed issue with ExecuteSql method overloads to be able to handle ExecuteSQL(string, 
 	nothing) again.&lt;/li&gt;
-	&lt;li&gt;Fixed issue with Indirect Reference to DotNetNuke Library errors.&lt;/li&gt;
+	&lt;li&gt;Fixed issue with Indirect Reference to DNN Library errors.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
 &lt;ul&gt;
@@ -1257,7 +1257,7 @@ corrected with each release. &lt;/p&gt;
     &lt;li&gt;Added ability to suppress auto-injected Module css class.&lt;/li&gt;
     &lt;li&gt;Added new Settings and Configuration properties to base Presenter class.&lt;/li&gt;
     &lt;li&gt;Improved logging during upgrades.&lt;/li&gt;
-    &lt;li&gt;DotNetNuke currently has 2 types of folder permissions in the open core, READ and
+    &lt;li&gt;DNN currently has 2 types of folder permissions in the open core, READ and
         WRITE. The READ permission actually serves 2 purposes. First, it defines whether
         a role or user is able to open/view the files located in a folder. Second, it defines
         whether a role or user is able to browse the list of files within a folder. Sometimes
@@ -1266,7 +1266,7 @@ corrected with each release. &lt;/p&gt;
         full URL; however, you may not want All Users to be able to browse a listing of
         all the files in the folder ( beecause exposing the full paths to all files may
         be a security concern ). Windows IIS deals with this issue by including 3 types
-        of permissions for folders: Read, Write, and Browse Directory. DotNetNuke could
+        of permissions for folders: Read, Write, and Browse Directory. DNN could
         benefit by having a browse directory permission on folders as well.&lt;/li&gt;
     &lt;li&gt;Improved GetResourceFile method.&lt;/li&gt;
     &lt;li&gt;Verify Language Resources to Verify Language Resource Files to match the wireframes
@@ -1526,10 +1526,10 @@ corrected with each release. &lt;/p&gt;
           &lt;ul&gt;
           &lt;li&gt;Updated the UI / UX to a more simplified interface that accelerates productivity
           by making it much easier to set up and maintain websites &lt;/li&gt;
-          &lt;li&gt;Updated the DotNetNuke Core to be compatible with Windows Azure and SQL
+          &lt;li&gt;Updated the DNN Core to be compatible with Windows Azure and SQL
           Azure which allows users to host their websites at Microsoft Data-centers
           &lt;/li&gt;
-          &lt;li&gt;Updated the DotNetNuke Core to C#. From this release on, every new
+          &lt;li&gt;Updated the DNN Core to C#. From this release on, every new
           feature, enhancement and bug fix will be implemented in C#&lt;/li&gt;
           &lt;li&gt;Added support for .NET/Windows TimeZones - this allow for the correct management
           of Daylight Savings.&lt;/li&gt;
@@ -1548,8 +1548,8 @@ corrected with each release. &lt;/p&gt;
           &lt;/ul&gt;
           &lt;h3 class="SubSubHead"&gt;Updated Modules/Providers&lt;/h3&gt;
           &lt;ul&gt;
-          &lt;li&gt;Added DNNWerk's Page Management Module to the DotNetNuke Core &lt;/li&gt;
-          &lt;li&gt;Added DNNWerk's RadEditor Provider to the DotNetNuke Core &lt;/li&gt;
+          &lt;li&gt;Added DNNWerk's Page Management Module to the DNN Core &lt;/li&gt;
+          &lt;li&gt;Added DNNWerk's RadEditor Provider to the DNN Core &lt;/li&gt;
           &lt;/ul&gt;
           &lt;h4 class="SubSubHead"&gt;Modules&lt;/h4&gt;
           &lt;ul&gt;
@@ -1558,7 +1558,7 @@ corrected with each release. &lt;/p&gt;
           &lt;h4 class="SubSubHead"&gt;Providers&lt;/h4&gt;
           &lt;ul&gt;
           &lt;li&gt;Implemented a folder provider that enables users to transparently integrate
-          DotNetNuke folder options and modules with Cloud Storage Services and other
+          DNN folder options and modules with Cloud Storage Services and other
           storage options through an open API &lt;/li&gt;
           &lt;/ul&gt;
       </value>
@@ -1573,7 +1573,7 @@ corrected with each release. &lt;/p&gt;
 	&lt;li&gt;Fixed issue with the Telerik Editor in full screen mode when popups are 
 	disabled &lt;/li&gt;
 	&lt;li&gt;Included the RadEditor in the upgrade package &lt;/li&gt;
-	&lt;li&gt;Fixed issue caused by loading a DotNetNuke site in an iFrame with Modal 
+	&lt;li&gt;Fixed issue caused by loading a DNN site in an iFrame with Modal 
 	Popus enabled &lt;/li&gt;
 	&lt;li&gt;Fixed issue with having the same theme in the _default folder and site skin 
 	folder &lt;/li&gt;
@@ -1930,11 +1930,11 @@ corrected with each release. &lt;/p&gt;
 &lt;li&gt;Fixed issue loading the Mobile Premium Data after upgrading from CE to PE&lt;/li&gt;
 &lt;li&gt;Fixed errors logged when updating folder provider settings&lt;/li&gt;
 &lt;li&gt;Fixed the order of the mobile device capabilities in the Site Redirection Management UI&lt;/li&gt;
-&lt;li&gt;The User Profile page was completely rebuilt.  We needed User Profiles to have multiple child pages. This would allow for the most flexibility by still following the typical DotNetNuke page and module structure&lt;/li&gt;
+&lt;li&gt;The User Profile page was completely rebuilt.  We needed User Profiles to have multiple child pages. This would allow for the most flexibility by still following the typical DNN page and module structure&lt;/li&gt;
 &lt;li&gt;The Social Groups module allows users to browse pages for viewing a group details&lt;/li&gt;
 &lt;li&gt;One of the more critical pieces to a successful collaboration platform is the activity stream. 
     We have created a Journal Module and API that will allow you to easily display and create activities within your site&lt;/li&gt;
-&lt;li&gt;User File Manager. As part of building the new Journal Module, we are providing a better way for users to manage their own files within DotNetNuke&lt;/li&gt;
+&lt;li&gt;User File Manager. As part of building the new Journal Module, we are providing a better way for users to manage their own files within DNN&lt;/li&gt;
 &lt;li&gt;A member directory that is vital to the success of any collaborative site or site that is based upon user-to-user interaction&lt;/li&gt;
 &lt;li&gt;A messaging module that similar to email, provides a mechanism for users to communicate within a site in a private manner&lt;/li&gt;
 &lt;li&gt;Implemented User Relationships functionality that allows users to connect with each other as followers or friends&lt;/li&gt;
