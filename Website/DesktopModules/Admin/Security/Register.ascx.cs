@@ -569,7 +569,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		    if (_IsValid)
 		    {
-                var name = User.Username;
+                var name = User.Username ?? User.Email;
                 var cleanUsername = PortalSecurity.Instance.InputFilter(name,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |

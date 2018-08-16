@@ -124,9 +124,9 @@ namespace DotNetNuke.Common.Internal
                         //   - and to do that, we need to ensure the string we test against is long enough;
                         if ((url[queryIndex].Length >= ".aspx".Length))
                         {
-                            if (url[queryIndex].ToLowerInvariant().LastIndexOf(".aspx", StringComparison.Ordinal) == (url[queryIndex].Length - (".aspx".Length)) ||
-                                url[queryIndex].ToLowerInvariant().LastIndexOf(".axd", StringComparison.Ordinal) == (url[queryIndex].Length - (".axd".Length)) ||
-                                url[queryIndex].ToLowerInvariant().LastIndexOf(".ashx", StringComparison.Ordinal) == (url[queryIndex].Length - (".ashx".Length)))
+                            if (url[queryIndex].LastIndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".aspx".Length)) ||
+                                url[queryIndex].LastIndexOf(".axd", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".axd".Length)) ||
+                                url[queryIndex].LastIndexOf(".ashx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".ashx".Length)))
                             {
                                 break;
                             }

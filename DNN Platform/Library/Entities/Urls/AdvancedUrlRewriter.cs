@@ -316,7 +316,7 @@ namespace DotNetNuke.Entities.Urls
 
                         //Check if we have a standard url
                         var uri = new Uri(fullUrl);
-                        if (uri.PathAndQuery.ToLowerInvariant().StartsWith("/" + Globals.glbDefaultPage.ToLowerInvariant()))
+                        if (uri.PathAndQuery.StartsWith("/" + Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                         {
                             result.DoRewrite = true;
                             result.Action = ActionType.CheckFor301;
@@ -1701,7 +1701,7 @@ namespace DotNetNuke.Entities.Urls
                                 if (!triedWWW)
                                 {
                                     triedWWW = true; //now tried adding/removing www
-                                    if (checkAlias.ToLowerInvariant().StartsWith("www."))
+                                    if (checkAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         checkAlias = checkAlias.Substring(4);
                                     }
@@ -2087,7 +2087,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (result.PortalId == -1)
             {
-                if (!requestUri.LocalPath.ToLowerInvariant().EndsWith(Globals.glbDefaultPage.ToLowerInvariant()))
+                if (!requestUri.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // allows requests for aspx pages in custom folder locations to be processed 
                     return;
@@ -2288,7 +2288,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string MakeUrlWithAlias(Uri requestUri, string httpAlias)
         {
-            return requestUri.AbsoluteUri.ToLowerInvariant().StartsWith("https://")
+            return requestUri.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
                              ? "https://" + httpAlias.Replace("*.", "") + "/"
                              : "http://" + httpAlias.Replace("*.", "") + "/";
         }
@@ -2338,8 +2338,9 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool IgnoreRequestForWebServer(string requestedPath)
         {
-            if (requestedPath.ToLowerInvariant().IndexOf("synchronizecache.aspx", StringComparison.Ordinal) > 1
-                || requestedPath.EndsWith("keepalive.aspx", true, CultureInfo.InvariantCulture))
+            //Should standardize comparison methods
+            if (requestedPath.IndexOf("synchronizecache.aspx", StringComparison.OrdinalIgnoreCase) > 1
+                || requestedPath.EndsWith("keepalive.aspx", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -2404,7 +2405,7 @@ namespace DotNetNuke.Entities.Urls
                 //ignore all install requests
                 retVal = true;
             }
-            else if (request != null && request.Path.ToLowerInvariant().EndsWith("imagechallenge.captcha.aspx"))
+            else if (request != null && request.Path.EndsWith("imagechallenge.captcha.aspx", StringComparison.InvariantCultureIgnoreCase))
             {
                 retVal = true;
             }
@@ -2661,7 +2662,7 @@ namespace DotNetNuke.Entities.Urls
                             if (requestedUrlAliasEnd > Null.NullInteger)
                             {
                                 //818 : when a site root is used for a custom page Url, then check for max length within bounds
-                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).ToLowerInvariant() == "default.aspx")
+                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).Equals("default.aspx", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     requestedUrl = requestedUrl.Substring(0, requestedUrl.Length - 12);
                                     //12 = default.aspx length

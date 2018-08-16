@@ -501,7 +501,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     filePath = "[app_code]" + filePath;
                 }
-                if (file.Extension.ToLowerInvariant() != ".dnn" && (file.Attributes & FileAttributes.Hidden) == 0)
+                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
                 {
                     AddFile(Path.Combine(filePath, file.Name));
                 }
@@ -556,8 +556,8 @@ namespace DotNetNuke.Services.Installer.Writers
                     fileName = fileName.Substring(0, fileName.IndexOf(","));
                 }
                 if (
-                    !(fileName.ToLowerInvariant().StartsWith("system") || fileName.ToLowerInvariant().StartsWith("microsoft") || fileName.ToLowerInvariant() == "dotnetnuke" ||
-                      fileName.ToLowerInvariant() == "dotnetnuke.webutility" || fileName.ToLowerInvariant() == "dotnetnuke.webcontrols"))
+                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.InvariantCultureIgnoreCase) ||
+                      fileName.Equals("dotnetnuke.webutility", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     AddFile(fileName + ".dll");
                 }

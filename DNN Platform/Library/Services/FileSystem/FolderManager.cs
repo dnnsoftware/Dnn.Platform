@@ -1282,7 +1282,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
                 {
-                    if (permission.PermissionKey.ToUpper() == "READ" || permission.PermissionKey.ToUpper() == "WRITE" || permission.PermissionKey.ToUpper() == "BROWSE")
+                    if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase) || permission.PermissionKey.Equals("WRITE", StringComparison.InvariantCultureIgnoreCase) || permission.PermissionKey.Equals("BROWSE", StringComparison.InvariantCultureIgnoreCase))
                     {
                         var folderPermission = new FolderPermissionInfo(permission)
                         {
@@ -1294,7 +1294,7 @@ namespace DotNetNuke.Services.FileSystem
 
                         folder.FolderPermissions.Add(folderPermission);
 
-                        if (permission.PermissionKey.ToUpper() == "READ")
+                        if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
                         {
                             AddAllUserReadPermission(folder, permission);
                         }

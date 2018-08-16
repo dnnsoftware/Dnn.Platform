@@ -88,7 +88,7 @@ namespace DotNetNuke.Common.Utilities
         public void UpdateUrlTracking(int PortalID, string Url, int ModuleId, int UserID)
         {
             TabType UrlType = Globals.GetURLType(Url);
-            if (UrlType == TabType.File && Url.ToLowerInvariant().StartsWith("fileid=") == false)
+            if (UrlType == TabType.File && Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
             {
 				//to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(Url);

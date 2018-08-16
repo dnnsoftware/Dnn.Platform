@@ -124,7 +124,6 @@ namespace DotNetNuke.Security.Permissions
 
         public static string BuildPermissions(IList Permissions, string PermissionKey)
         {
-            PermissionKey = PermissionKey.ToUpperInvariant();
             var permissionsBuilder = new StringBuilder();
             foreach (PermissionInfoBase permission in Permissions)
             {

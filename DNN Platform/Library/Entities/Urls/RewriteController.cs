@@ -149,7 +149,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 if (settings.RedirectDefaultPage
-                    && url.ToLowerInvariant().EndsWith("/" + defaultPage)
+                    && url.EndsWith("/" + defaultPage, StringComparison.InvariantCultureIgnoreCase)
                     && result.RedirectAllowed)
                 {
                     result.Reason = RedirectReason.Site_Root_Home;
@@ -325,7 +325,7 @@ namespace DotNetNuke.Entities.Urls
             }
             if (lastPath >= 0)
             {
-                int defaultStart = tabKeyVal.ToLowerInvariant().IndexOf("default", lastPath, StringComparison.Ordinal);
+                int defaultStart = tabKeyVal.IndexOf("default", lastPath, StringComparison.OrdinalIgnoreCase);
                 //no .aspx on the end anymore
                 if (defaultStart > 0 && defaultStart > lastPath)
                 //there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
@@ -719,14 +719,14 @@ namespace DotNetNuke.Entities.Urls
             string result = value;
             string ext = extension.ToLowerInvariant();
             replaced = false;
-            if (result.ToLowerInvariant().EndsWith(ext) && ext != "")
+            if (result.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase) && ext != "")
             {
                 result = result.Substring(0, result.Length - ext.Length);
                 replaced = true;
             }
             else
             {
-                if (result.ToLowerInvariant().EndsWith(".aspx"))
+                if (result.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = result.Substring(0, result.Length - 5);
                     replaced = true;
@@ -738,7 +738,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         //safely remove .aspx from the language path without doing a full .aspx -> "" replace on the entire path
                         if (string.IsNullOrEmpty(result) == false &&
-                            result.ToLowerInvariant().EndsWith(".aspx" + langParms.ToLowerInvariant()))
+                            result.EndsWith(".aspx" + langParms, StringComparison.InvariantCultureIgnoreCase))
                         {
                             result = result.Substring(0, result.Length - (5 + langParms.Length)) + langParms;
                             replaced = true;
@@ -1333,7 +1333,7 @@ namespace DotNetNuke.Entities.Urls
                             for (var x = 1; x <= urlParams.Length - 1; x++)
                             {
                                 if (urlParams[x].Trim().Length > 0 &&
-                                    urlParams[x].ToLowerInvariant() != Globals.glbDefaultPage.ToLowerInvariant())
+                                    !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", "").Trim() + "=";
                                     if ((x < (urlParams.Length - 1)))
@@ -1382,7 +1382,7 @@ namespace DotNetNuke.Entities.Urls
                                                     Guid parentTraceId)
         {
             string scheme = result.Scheme;
-            if (absoluteUri.ToLowerInvariant().StartsWith(scheme))
+            if (absoluteUri.StartsWith(scheme, StringComparison.InvariantCultureIgnoreCase))
             {
                 absoluteUri = absoluteUri.Substring(scheme.Length);
             }
@@ -1603,9 +1603,9 @@ namespace DotNetNuke.Entities.Urls
                 {
                     string thisParm = urlParms[i];
                     //here's the thing - we either take the last one and put it at the start, or just go two-by-two 
-                    if (thisParm.ToLowerInvariant() != Globals.glbDefaultPage.ToLowerInvariant())
+                    if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (thisParm.ToLowerInvariant() == "tabid")
+                        if (thisParm.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                         {
                             skip = true;
                             //discovering the tabid in the list of parameters means that 

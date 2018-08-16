@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Installer
                 {
 					//Add file to list
                     var file = new InstallFile(unzip, entry, this);
-                    if (file.Type == InstallFileType.Resources && (file.Name.ToLowerInvariant() == "containers.zip" || file.Name.ToLowerInvariant() == "skins.zip"))
+                    if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                     {
 						//Temporarily save the TempInstallFolder
                         string tmpInstallFolder = TempInstallFolder;

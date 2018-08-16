@@ -1860,7 +1860,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
                         {
-                            if (permission.PermissionKey.ToUpper() == "READ")
+                            if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 //Add All Users Read Access to the folder
                                 int roleId = Int32.Parse(Globals.glbRoleAllUsers);
@@ -5799,7 +5799,7 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
                 url += "&id=" + Host.GUID;
-                if (packageType.ToUpper() == DotNetNukeContext.Current.Application.Type.ToUpper())
+                if (packageType.Equals(DotNetNukeContext.Current.Application.Type, StringComparison.OrdinalIgnoreCase))
                 {
                     if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
                     {

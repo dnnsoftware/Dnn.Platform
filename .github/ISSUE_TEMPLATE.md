@@ -14,8 +14,9 @@
 
 <!-- Check all that apply and add more if necessary -->
 
-* [x] 9.2
-* [x] 9.1.1
+* [ ] 9.2.1
+* [ ] 9.2.0
+* [ ] 9.1.1
 * [ ] 9.1
 * [ ] 9.0
 

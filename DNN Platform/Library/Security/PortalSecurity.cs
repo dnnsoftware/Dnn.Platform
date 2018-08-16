@@ -243,15 +243,15 @@ namespace DotNetNuke.Security
 
         private static RoleType GetRoleType(string roleName)
         {
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFriendPrefix))
+            if (roleName.StartsWith(RoleFriendPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Friend;
             }
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFollowerPrefix))
+            if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Follower;
             }
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleOwnerPrefix))
+            if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Owner;
             }

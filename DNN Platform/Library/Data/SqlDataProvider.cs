@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -199,16 +199,18 @@ namespace DotNetNuke.Data
             string DBUser = "public";
 
             //If connection string does not use integrated security, then get user id.
-            if (ConnectionString.ToUpper().Contains("USER ID") || ConnectionString.ToUpper().Contains("UID") || ConnectionString.ToUpper().Contains("USER"))
+            //Normalize to uppercase before all of the comparisons
+            var connectionStringUppercase = ConnectionString.ToUpper();
+            if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
-                string[] ConnSettings = ConnectionString.Split(';');
+                string[] ConnSettings = connectionStringUppercase.Split(';');
 
                 foreach (string s in ConnSettings)
                 {
                     if (s != string.Empty)
                     {
                         string[] ConnSetting = s.Split('=');
-                        if ("USER ID|UID|USER".Contains(ConnSetting[0].Trim().ToUpper()))
+                        if ("USER ID|UID|USER".Contains(ConnSetting[0].Trim()))
                         {
                             DBUser = ConnSetting[1].Trim();
                         }
@@ -387,7 +389,7 @@ namespace DotNetNuke.Data
             string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLowerInvariant() != "dbo.")
+            if (UpgradeConnectionString != ConnectionString || !DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
             {
                 try
                 {

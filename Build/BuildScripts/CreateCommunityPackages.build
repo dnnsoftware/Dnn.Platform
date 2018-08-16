@@ -20,9 +20,10 @@
     <CESourceExclude Include="$(PlatformCheckout)\tools\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\Documentation\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Website\Documentation\*.doc" />
-    <CESourceExclude Include="$(PlatformCheckout)\Website\Install\Skin\Facebook*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\*.md" />
   </ItemGroup>
   <ItemGroup>
     <InstallExclude Include="$(PlatformCheckout)\**\*.cs" />

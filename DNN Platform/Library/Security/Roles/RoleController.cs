@@ -308,7 +308,7 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            roleName = roleName.ToUpperInvariant().Trim();
+            roleName = roleName.Trim();
             return GetRoles(portalId).SingleOrDefault(r => roleName.Equals(r.RoleName.Trim(), StringComparison.InvariantCultureIgnoreCase) && r.PortalID == portalId);
         }
 
