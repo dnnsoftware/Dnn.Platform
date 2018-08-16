@@ -11,7 +11,7 @@ var buildNumber = Argument("buildNumber", "9.2.2");
 
 var targetBranchCk = Argument("CkBranch", "development");
 var targetBranchCdf = Argument("CdfBranch", "dnn");
-var targetBranchCp = Argument("CpBranch", "release/1.6.0");
+var targetBranchCp = Argument("CpBranch", "development");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -200,10 +200,7 @@ Task("ExternalExtensions")
 		DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/" + targetBranchCdf + ".zip", buildDirFullPath + "clientdependency.zip");
 
 		//pb
-		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Library/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.Library.zip");
-		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience.Extensions/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.Extensions.zip");
-		DownloadFile("https://github.com/dnnsoftware/Dnn.EditBar/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.EditBar.zip");
-	
+		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.zip");
 
 		Information("Decompressing: {0}", "CK Editor");
 		Unzip(buildDirFullPath + "ckeditor.zip", buildDirFullPath + "Providers/");
@@ -211,15 +208,9 @@ Task("ExternalExtensions")
 		Information("Decompressing: {0}", "CDF");
 		Unzip(buildDirFullPath + "clientdependency.zip", buildDirFullPath + "Modules");
 	
-		Information("Decompressing: {0}", "PersonaBar Library");
-		Unzip(buildDirFullPath + "Dnn.AdminExperience.Library.zip", tempDir);
+		Information("Decompressing: {0}", "Admin Experience");
+		Unzip(buildDirFullPath + "Dnn.AdminExperience.zip", tempDir);
 
-		Information("Decompressing: {0}", "PersonaBar Extension");
-		Unzip(buildDirFullPath + "Dnn.AdminExperience.Extensions.zip", tempDir);
-
-		Information("Decompressing: {0}", "EditBar");
-		Unzip(buildDirFullPath + "Dnn.EditBar.zip", tempDir);
-	
 
 		//look for solutions and start building them
 		var externalSolutions = GetFiles("./src/**/*.sln");
@@ -280,7 +271,7 @@ Task("ExternalExtensions")
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
 		fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "PersonaBar", fileCounter);
+		Information("Copying {1} Artifacts from {0}", "AdminExperience", fileCounter);
 		CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
 	
 	});
