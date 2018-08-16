@@ -76,6 +76,32 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/* Due to DNN-21554 we could have orphaned users in apsnet tables, below script removes such users if there are some */
+IF (SELECT COUNT(*) FROM dbo.sysobjects
+	WHERE id = object_id(N'{databaseOwner}[{objectQualifier}aspnet_Users]') OR
+		  id = object_id(N'{databaseOwner}[{objectQualifier}aspnet_Membership]') OR
+		  id = object_id(N'{databaseOwner}[{objectQualifier}Users]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) = 3
+BEGIN
+	BEGIN TRANSACTION
+		-- remove temp table if exists
+		IF OBJECT_ID('tempdb..#temp_orphaned_users') IS NOT NULL
+			DROP TABLE #temp_orphaned_users
+		-- prepare orphaned users to delete
+		SELECT aspUsers.UserId INTO #temp_orphaned_users FROM {databaseOwner}{objectQualifier}aspnet_Users aspUsers
+		LEFT JOIN {databaseOwner}{objectQualifier}Users users ON aspUsers.UserName = users.Username		
+		WHERE users.Username IS NULL
+		-- remove users from asp membership
+		DELETE m FROM {databaseOwner}{objectQualifier}aspnet_Membership m
+		INNER JOIN #temp_orphaned_users o ON m.UserId = o.UserId
+		-- remove users from asp users
+		DELETE u FROM {databaseOwner}{objectQualifier}aspnet_Users u
+		INNER JOIN #temp_orphaned_users o ON u.UserId = o.UserId
+		-- remove temp table if exists
+		IF OBJECT_ID('tempdb..#temp_orphaned_users') IS NOT NULL
+			DROP TABLE #temp_orphaned_users
+	COMMIT
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

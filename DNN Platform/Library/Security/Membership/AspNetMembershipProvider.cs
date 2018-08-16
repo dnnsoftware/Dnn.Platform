@@ -1928,9 +1928,10 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
         {
-            IDataReader dr = _dataProvider.GetUserByUsername(portalId, username);
-            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
-            return objUserInfo;
+            using (var dr = _dataProvider.GetUserByUsername(portalId, username))
+            {
+                return FillUserInfo(portalId, dr, true);
+            }
         }
     }
 }
