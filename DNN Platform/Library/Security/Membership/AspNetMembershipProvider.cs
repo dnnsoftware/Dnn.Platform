@@ -1161,7 +1161,7 @@ namespace DotNetNuke.Security.Membership
         
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore
+        /// GetUserByUserName retrieves a User from the DataStore. Supports user caching in memory cache.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1176,10 +1176,7 @@ namespace DotNetNuke.Security.Membership
                     DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
                 _ =>
                 {
-                    using (var dr = _dataProvider.GetUserByUsername(portalId, username))
-                    {
-                        return FillUserInfo(portalId, dr, true);
-                    }
+                    return GetUserByUserNameFromDataStore(portalId, username);
                 });
             return objUserInfo;
         }
@@ -1580,7 +1577,7 @@ namespace DotNetNuke.Security.Membership
                 _dataProvider.RemoveUser(user.UserID, user.PortalID);
 
                 //Prior to removing membership, ensure user is not present in any other portal
-                UserInfo otherUser = GetUserByUserName(Null.NullInteger, user.Username);
+                UserInfo otherUser = GetUserByUserNameFromDataStore(Null.NullInteger, user.Username);
                 if (otherUser == null)
                 {
                     DeleteMembershipUser(user);
@@ -1917,6 +1914,23 @@ namespace DotNetNuke.Security.Membership
                 CBO.CloseDataReader(dr, true);
             }
             return arrUsers;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUserByUserNameFromDataStore retrieves a User from the DataStore.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="username">The username of the user being retrieved from the Data Store.</param>
+        /// <returns>The User as a UserInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
+        {
+            IDataReader dr = _dataProvider.GetUserByUsername(portalId, username);
+            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            return objUserInfo;
         }
     }
 }
