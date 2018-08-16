@@ -968,6 +968,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                         });
 
                                                         $hoverMenu.show();
+                                                        $this.attr('aria-expanded', 'true');
+
                                                         // Fix ie personabar hover menús
                                                         showMenuHandlers.push(setTimeout(function () {
                                                             $('.hovermenu > ul').css('list-style-type', 'square');
@@ -997,6 +999,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
                                                         $hoverMenu.hide();
+                                                        $this.attr('aria-expanded', 'false');
 
                                                         resetHandlers();
                                                     }
