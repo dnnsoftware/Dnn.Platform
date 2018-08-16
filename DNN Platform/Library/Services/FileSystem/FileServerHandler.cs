@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.FileSystem
             if (context.Request.QueryString["link"] != null)
             {
                 URL = context.Request.QueryString["link"];
-                if (URL.ToLowerInvariant().StartsWith("fileid="))
+                if (URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     URL = ""; //restrict direct access by FileID
                 }
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.FileSystem
                     URL = Globals.LinkClick(URL, TabId, ModuleId, false);
                 }
 
-                if (UrlType == TabType.File && URL.ToLowerInvariant().StartsWith("fileid=") == false)
+                if (UrlType == TabType.File && URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                 {
                     //to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(URL);

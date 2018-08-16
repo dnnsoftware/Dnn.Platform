@@ -139,7 +139,7 @@ namespace DotNetNuke.Common.Utilities
                             //skip parameter
                             break;
                         default:
-                            if ((keys[i].ToLowerInvariant() == "portalid") && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if ((keys[i].Equals("portalid", StringComparison.InvariantCultureIgnoreCase)) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
                             {
                                 //skip parameter
                                 //navigateURL adds portalid to querystring if tab is superTab

@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using System;
 using System.Globalization;
 
 using DotNetNuke.Entities.Users;
@@ -36,35 +37,35 @@ namespace DotNetNuke.Services.Tokens
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             CultureInfo ci = formatProvider;
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.EnglishName.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.EnglishName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.EnglishName), format);
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.Lcid.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.Lcid.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return ci.LCID.ToString();
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.Name.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.Name.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.Name, format);
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.NativeName.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.NativeName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.NativeName), format);
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.TwoLetterIsoCode.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.TwoLetterIsoCode.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.TwoLetterISOLanguageName, format);
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.ThreeLetterIsoCode.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.ThreeLetterIsoCode.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.ThreeLetterISOLanguageName, format);
             }
-            if (propertyName.ToLowerInvariant() == CultureDropDownTypes.DisplayName.ToString().ToLowerInvariant())
+            if (propertyName.Equals(CultureDropDownTypes.DisplayName.ToString(), StringComparison.InvariantCultureIgnoreCase))
             {
                 return PropertyAccess.FormatString(ci.DisplayName, format);
             }
-            if (propertyName.ToLowerInvariant() == "languagename")
+            if (propertyName.Equals("languagename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if(ci.IsNeutralCulture)
                 {
@@ -75,7 +76,7 @@ namespace DotNetNuke.Services.Tokens
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.Parent.EnglishName), format);
                 }
             }
-            if (propertyName.ToLowerInvariant() == "languagenativename")
+            if (propertyName.Equals("languagenativename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if(ci.IsNeutralCulture)
                 {
@@ -86,7 +87,7 @@ namespace DotNetNuke.Services.Tokens
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.Parent.NativeName), format);
                 }
             }
-            if (propertyName.ToLowerInvariant() == "countryname")
+            if (propertyName.Equals("countryname", StringComparison.InvariantCultureIgnoreCase))
             {
                 if(ci.IsNeutralCulture)
                 {
@@ -99,7 +100,7 @@ namespace DotNetNuke.Services.Tokens
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(country.EnglishName), format);
                 }
             }
-            if (propertyName.ToLowerInvariant() == "countrynativename")
+            if (propertyName.Equals("countrynativename", StringComparison.InvariantCultureIgnoreCase))
             {
                 if(ci.IsNeutralCulture)
                 {

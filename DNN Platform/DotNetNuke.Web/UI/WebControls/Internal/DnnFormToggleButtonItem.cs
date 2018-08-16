@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var stringValue = Value as string;
                     if (stringValue != null)
                     {
-                        _checkBox.Checked = stringValue.ToUpperInvariant().StartsWith("Y");
+                        _checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
                     break;
                 default:

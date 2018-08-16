@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.Assets
             {
                 return folder;
             }
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
+            if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
             {
                 folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
                 return FolderManager.Instance.UpdateFolder(folder);

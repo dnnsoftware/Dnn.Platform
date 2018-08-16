@@ -557,7 +557,7 @@ Namespace DotNetNuke.UI.Utilities
         End Function
 
         Public Shared Function IsInCallback(ByVal objPage As Page) As Boolean
-            Return Len(objPage.Request(SCRIPT_CALLBACKID)) > 0 AndAlso objPage.Request.HttpMethod.ToUpper() = "POST"
+            Return Len(objPage.Request(SCRIPT_CALLBACKID)) > 0 AndAlso objPage.Request.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase)
         End Function
 
         Public Shared Sub HandleClientAPICallbackEvent(ByVal objPage As Page)

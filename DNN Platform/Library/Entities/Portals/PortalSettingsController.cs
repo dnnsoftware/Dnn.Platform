@@ -280,20 +280,20 @@ namespace DotNetNuke.Entities.Portals
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
             string setting = settings.GetValueOrDefault("ControlPanelSecurity", "");
-            if (setting.ToUpperInvariant() == "TAB")
+            if (setting.Equals("TAB", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
 
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
             setting = settings.GetValueOrDefault("ControlPanelMode", "");
-            if (setting.ToUpperInvariant() == "EDIT")
+            if (setting.Equals("EDIT", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
 
             setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
-            portalSettings.DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
+            portalSettings.DefaultControlPanelVisibility = !setting.Equals("MIN", StringComparison.InvariantCultureIgnoreCase);
 
             setting = settings.GetValueOrDefault("TimeZone", "");
             if (!string.IsNullOrEmpty(setting))

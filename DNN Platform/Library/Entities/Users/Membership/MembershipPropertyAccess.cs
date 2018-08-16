@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Users
             bool UserQueriesHimself = (objUser.UserID == AccessingUser.UserID && objUser.UserID != -1);
             if (CurrentScope < Scope.DefaultSettings || (CurrentScope == Scope.DefaultSettings && !UserQueriesHimself) ||
                 ((CurrentScope != Scope.SystemMessages || objUser.IsSuperUser) 
-                    && (propertyName.ToLowerInvariant() == "password" || propertyName.ToLowerInvariant() == "passwordanswer" || propertyName.ToLowerInvariant() == "passwordquestion")
+                    && (propertyName.Equals("password", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.InvariantCultureIgnoreCase))
                 ))
             {
                 PropertyNotFound = true;

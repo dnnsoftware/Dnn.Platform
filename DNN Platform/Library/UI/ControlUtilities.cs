@@ -103,7 +103,7 @@ namespace DotNetNuke.UI
             T ctrl;
 
             //load the control dynamically
-            if (ControlSrc.ToLowerInvariant().EndsWith(".ascx"))
+            if (ControlSrc.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase))
             {
 				//load from a user control on the file system
                 ctrl = (T) containerControl.LoadControl("~/" + ControlSrc);

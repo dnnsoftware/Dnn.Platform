@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private bool IsValidScript(string fileExtension)
         {
-            return ProviderConfiguration.DefaultProvider.ToLowerInvariant() == fileExtension.ToLowerInvariant() || fileExtension.ToLowerInvariant() == "sql";
+            return ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
         }
 		
 		#endregion
@@ -250,16 +250,16 @@ namespace DotNetNuke.Services.Installer.Installers
             string type = nav.GetAttribute("type", "");
             if (file != null && IsCorrectType(file.Type))
             {
-                if (file.Name.ToLowerInvariant().StartsWith("install."))
+                if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))
                 {
 					//This is the initial script when installing
                     _installScript = file;
                 }
-                else if (file.Name.ToLowerInvariant().StartsWith("upgrade."))
+                else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _upgradeScript = file;
                 }
-                else if (type.ToLowerInvariant() == "install")
+                else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
 					//These are the Install/Upgrade scripts
                     InstallScripts[file.Version] = file;
@@ -282,7 +282,7 @@ namespace DotNetNuke.Services.Installer.Installers
             if (extension != null && (UnInstallScripts.ContainsValue(scriptFile) ))
             {
                 string fileExtension = extension.Substring(1);
-                if (scriptFile.Name.ToLowerInvariant().StartsWith("uninstall.") && IsValidScript(fileExtension))
+                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && IsValidScript(fileExtension))
                 {
 					//Install Script
                     Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
