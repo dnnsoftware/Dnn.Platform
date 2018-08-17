@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security;
-
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
@@ -328,6 +328,20 @@ namespace DotNetNuke.Entities.Tabs
         public TabInfo WithTabName(string tabName)
         {
             return (from t in _list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+        }
+
+        internal void RefreshCache(TabInfo tab)
+        {
+            if (ContainsKey(tab.TabID))
+            {
+                Remove(tab.TabID);
+                _list.RemoveAll(t => t.TabID == tab.TabID);
+                _localizedTabs.ForEach(kvp =>
+                {
+                    kvp.Value.RemoveAll(t => t.TabID == tab.TabID);
+                });
+            }
+            Add(tab);
         }
 
         #endregion
