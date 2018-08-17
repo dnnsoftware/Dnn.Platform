@@ -1002,6 +1002,16 @@ namespace DotNetNuke.Entities.Tabs
             CacheController.FlushPageIndexFromCache();
         }
 
+        public void RefreshCache(int portalId, int tabId)
+        {
+            var portalTabs = GetTabsByPortal(portalId);
+            if (portalTabs.WithTabId(tabId) != null)
+            {
+                var updateTab = GetTab(tabId, portalId, true);
+                portalTabs.RefreshCache(updateTab);
+            }
+        }
+
         /// <summary>
         /// Converts one single tab to a neutral culture
         /// clears the tab cache optionally
