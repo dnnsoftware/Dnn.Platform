@@ -5,7 +5,13 @@
 (function ($, Sys) {
     function setUpProfile() {
     	$('.dnnButtonDropdown').dnnSettingDropdown();
-	    $('#<%=ProfileProperties.ClientID%>').parent().dnnPanels();
+        $('#<%=ProfileProperties.ClientID%>').parent().dnnPanels();
+        $('input[data-name="Country"]').attr('autocomplete', getRandomString());
+        $('input[data-name="Region"]').attr('autocomplete', getRandomString());
+
+    }
+    function getRandomString() {
+        return (Math.random() + 1).toString(36).substring(2, 6) + (Math.random() + 1).toString(36).substring(2, 6);
     }
 
     $(document).ready(function () {
