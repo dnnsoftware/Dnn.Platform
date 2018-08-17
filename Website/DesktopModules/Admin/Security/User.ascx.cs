@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var user = User;
 
             // make sure username is set in UseEmailAsUserName" mode
-            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, true))
             {
                 user.Username = User.Email;
                 User.Username = User.Email;
