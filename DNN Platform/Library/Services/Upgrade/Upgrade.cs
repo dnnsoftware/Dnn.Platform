@@ -5361,6 +5361,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.2.1":
                             UpgradeToVersion921();
                             break;
+                        case "9.2.2":
+                            UpgradeToVersion922();
+                            break;
                     }
                 }
                 else
@@ -5598,6 +5601,28 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("jQuery", "Javascript_Library", true, "1.9.1");
             UninstallPackage("jQuery-UI", "Javascript_Library", true, "1.11.3");
             UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
+        }
+
+        private static void UpgradeToVersion922()
+        {
+            var applicationName = System.Web.Security.Membership.ApplicationName;
+            if (string.IsNullOrWhiteSpace(applicationName))
+            {
+                Logger.Warn("Unable to run orphaned user check. Application name is missing or not defined.");
+                return;
+            }
+            using (var reader = DataProvider.Instance().ExecuteReader("DeleteOrphanedAspNetUsers", applicationName))
+            {
+                while (reader.Read())
+                {
+                    var errorMsg = reader["ErrorMessage"];
+                    if (errorMsg != null)
+                    {
+                        Logger.Error("Failed to remove orphaned aspnet users. Error: " +
+                            errorMsg.ToString());
+                    }
+                }
+            }
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
