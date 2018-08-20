@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Dnn.PersonaBar.Pages</id>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <title>DNN PersonaBar Pages</title>
     <authors>DNN Corporation</authors>
     <owners>DNN Corporation</owners>
@@ -12,8 +12,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN PersonaBar Pages Module</description>
     <releaseNotes>
-      Version 1.1.0:
-      - Initial reelase.
+      Version 1.6.1:
+      - Stabilization Release for Dnn v9.2.2
     </releaseNotes>
     <copyright>Copyright (c) 2018, DNN Corporation</copyright>
     <tags>DNN PersonaBar Pages</tags>
