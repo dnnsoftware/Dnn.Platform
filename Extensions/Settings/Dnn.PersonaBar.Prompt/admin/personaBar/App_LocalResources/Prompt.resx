@@ -733,7 +733,7 @@
     &lt;/table&gt;</value>
   </data>
   <data name="Prompt_Cls_Description.Text" xml:space="preserve">
-    <value>Clears the Prompt console. &lt;code&gt;cls&lt;/code&gt; is a shortcut for &lt;a href="#clear-screen"&gt;&lt;code&gt;clear-screen&lt;/code&gt;&lt;/a&gt;</value>
+    <value>Clears the Prompt console. &lt;code&gt;cls&lt;/code&gt; is a shortcut for &lt;a href="#clear-screen" class="dnn-prompt-cmd-insert"&gt;&lt;code&gt;clear-screen&lt;/code&gt;&lt;/a&gt;</value>
   </data>
   <data name="Prompt_Echo_Description.Text" xml:space="preserve">
     <value>Echos back the first argument received</value>

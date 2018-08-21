@@ -47,9 +47,6 @@
       <HintPath>..\packages\DotNetNuke.Bundle.9.2.0.245\lib\ClientDependency.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dnn.PersonaBar.Library, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dnn.PersonaBar.Library.1.6.0.159\lib\net45\Dnn.PersonaBar.Library.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke, Version=9.2.1.360, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Core.9.2.1.360\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>

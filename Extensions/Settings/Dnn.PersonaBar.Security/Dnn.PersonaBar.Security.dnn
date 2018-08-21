@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.PersonaBar.Security" type="PersonaBar" version="01.06.00">
+    <package name="Dnn.PersonaBar.Security" type="PersonaBar" version="01.06.01">
       <friendlyName>Dnn.PersonaBar.Security</friendlyName>
       <description></description>
       <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>

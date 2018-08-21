@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Dnn.EditBar.Library</id>
-    <version>1.4.0</version>
+    <version>1.6.1</version>
     <title>DNN EditBar Library</title>
     <authors>DNN Corporation</authors>
     <owners>DNN Corporation</owners>
@@ -12,8 +12,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN EditBar Common Library</description>
     <releaseNotes>
-      Version 1.0.0:
-      - Initial reelase.
+      Version 1.6.1:
+      - Stabilization Release for Dnn v9.2.2
     </releaseNotes>
     <copyright>Copyright (c) 2016, DNN Corporation</copyright>
     <tags>DNN EditBar</tags>

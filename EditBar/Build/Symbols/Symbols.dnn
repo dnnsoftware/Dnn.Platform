@@ -1,6 +1,6 @@
-﻿<dotnetnuke type="Package" version="5.0">
+<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.EditBar.UI_Symbols" type="Library" version="01.05.00">
+    <package name="Dnn.EditBar.UI_Symbols" type="Library" version="01.06.01">
       <friendlyName>DotNetNuke Dnn.EditBar.UI Symbols</friendlyName>
       <description>This package contains Debug Symbols and Intellisense files for DotNetNuke Dnn.EditBar.UI package(s).</description>
       <owner>

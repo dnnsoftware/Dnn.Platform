@@ -48,9 +48,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Dnn.PersonaBar.Library">
-      <HintPath>..\..\..\bin\Dnn.PersonaBar.Library.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
@@ -177,6 +174,10 @@
     <Folder Include="Components\Comparers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8B50BA8B-0A08-41B8-81B8-EA70707C7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dnn.PersonaBar.Roles\Dnn.PersonaBar.Roles.csproj">
       <Project>{89251729-9768-4245-a657-4d822e3e9122}</Project>
       <Name>Dnn.PersonaBar.Roles</Name>
