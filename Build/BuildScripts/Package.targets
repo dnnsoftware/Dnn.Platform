@@ -66,7 +66,7 @@
     <Exec Command="$(yuicompressor) -v &quot;%(_CSSFilesToCompress.FullPath)&quot; &gt; &quot;$(MSBuildProjectDirectory)\Package\Resources\%(_CSSFilesToCompress.RecursiveDir)%(_CSSFilesToCompress.Filename)%(_CSSFilesToCompress.Extension)&quot;"
           Condition="Exists(%(_CSSFilesToCompress.FullPath))" ContinueOnError="false" />
 
-    <Zip Files="@(_Step2FilesToZip)" WorkingDirectory="$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar"
+    <Zip Files="@(_Step2FilesToZip)" WorkingDirectory="$(ResourceZipWorkingDirectory)"
          ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package\Resources" ContinueOnError="WarnAndContinue" />
   </Target>
