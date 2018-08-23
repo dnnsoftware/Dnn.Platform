@@ -12,15 +12,14 @@ Task("GitVersion")
     });
   });
 
-  
-//Task("UpdateVersion")
-//  .IsDependentOn("CalculateVersion")
-//  .DoesForEach(GetFiles("**/*.dnn"), (file) => 
-//  { 
-//    var transformFile = File(System.IO.Path.GetTempFileName());
-//    FileAppendText(transformFile, GetXdtTransformation());
-//    XdtTransformConfig(file, transformFile, file);
-//});
+Task("UpdateDnnManifests")
+  .IsDependentOn("CalculateVersion")
+  .DoesForEach(GetFiles("**/*.dnn"), (file) => 
+  { 
+    var transformFile = File(System.IO.Path.GetTempFileName());
+    FileAppendText(transformFile, GetXdtTransformation());
+    XdtTransformConfig(file, transformFile, file);
+});
 
 public string GetBuildNumber()
 {
@@ -34,8 +33,9 @@ public string GetXdtTransformation()
     return $@"<?xml version=""1.0""?>
 <dotnetnuke xmlns:xdt=""http://schemas.microsoft.com/XML-Document-Transform"">
   <packages>
-    <package version=""{versionString}"" xdt:Transform=""SetAttributes(version)"">
-    </package>
+    <package version=""{versionString}"" 
+             xdt:Transform=""SetAttributes(version)""
+             xdt:Locator=""Condition(not[@version])"" />
   </packages>
 </dotnetnuke>";
 }

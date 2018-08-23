@@ -1,0 +1,7 @@
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+branches:
+  development:
+    regex: development      
+    tag: ''
+    is-mainline: true
+    source-branches: []
