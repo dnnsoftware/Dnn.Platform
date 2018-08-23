@@ -1,4 +1,6 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#load "local:?path=Build/cake/version.cake"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -7,7 +9,6 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.build";
-var buildNumber = Argument("buildNumber", "9.2.2");
 
 var targetBranchCk = Argument("CkBranch", "development");
 var targetBranchCdf = Argument("CdfBranch", "dnn");
@@ -96,13 +97,14 @@ Task("BuildAll")
 	});
 
 Task("CompileSource")
+    .IsDependentOn("GitVersion")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 	{
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CompileSource");
 		});
 	});
@@ -116,7 +118,7 @@ Task("CreateInstall")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateInstall");
 		});
 	});
@@ -130,7 +132,7 @@ Task("CreateUpgrade")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateUpgrade");
 		});
 	});
@@ -144,7 +146,7 @@ Task("CreateSymbols")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateSymbols");
 		});
 	});   
@@ -156,7 +158,7 @@ Task("CreateSource")
 	{
 		
 		CleanDirectory("./src/Projects/");
-	
+
 		using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf -e tools/ -e .vs/"}))
 		{
 			process.WaitForExit();
@@ -168,7 +170,7 @@ Task("CreateSource")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateSource");
 		});
 	});
@@ -182,7 +184,7 @@ Task("CreateDeploy")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateDeploy");
 		});
 	});
