@@ -1,6 +1,6 @@
 #addin Cake.XdtTransform
 #addin "Cake.FileHelpers"
-#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=GitVersion.CommandLine&prerelease"
 
 GitVersion version;
 
