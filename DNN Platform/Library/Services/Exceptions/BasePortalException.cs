@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -180,13 +181,13 @@ namespace DotNetNuke.Services.Exceptions
 
                 if (context != null)
                 {
-                    RawURL = context.Request.RawUrl;
-                    AbsoluteURL = context.Request.Url.AbsolutePath;
+                    RawURL = PortalSecurity.Instance.InputFilter(context.Request.RawUrl, PortalSecurity.FilterFlag.NoScripting);
+                    AbsoluteURL = PortalSecurity.Instance.InputFilter(context.Request.Url.AbsolutePath, PortalSecurity.FilterFlag.NoScripting);
                     if (context.Request.UrlReferrer != null)
                     {
-                        AbsoluteURLReferrer = context.Request.UrlReferrer.AbsoluteUri;
+                        AbsoluteURLReferrer = PortalSecurity.Instance.InputFilter(context.Request.UrlReferrer.AbsoluteUri, PortalSecurity.FilterFlag.NoScripting);
                     }
-                    UserAgent = context.Request.UserAgent;
+                    UserAgent = PortalSecurity.Instance.InputFilter(context.Request.UserAgent, PortalSecurity.FilterFlag.NoScripting);
                 }
                 else
                 {
