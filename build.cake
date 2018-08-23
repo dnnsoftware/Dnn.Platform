@@ -1,4 +1,5 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#load "local:?path=Build/cake/version.cake"
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -16,8 +17,6 @@ var targetBranchCp = Argument("CpBranch", "development");
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
-
-#load "local:?path=Build/version.cake"
 
 // Define directories.
 var buildDir = Directory("./src/");
@@ -111,7 +110,7 @@ Task("CompileSource")
 
 Task("CreateInstall")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("CalculateVersion")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -126,6 +125,7 @@ Task("CreateInstall")
 
 Task("CreateUpgrade")
 	.IsDependentOn("CompileSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -140,6 +140,7 @@ Task("CreateUpgrade")
     
 Task("CreateSymbols")
 	.IsDependentOn("CompileSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -155,6 +156,7 @@ Task("CreateSymbols")
     
 
 Task("CreateSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		

@@ -13,7 +13,7 @@ Task("GitVersion")
   });
 
 Task("UpdateDnnManifests")
-  .IsDependentOn("CalculateVersion")
+  .IsDependentOn("GitVersion")
   .DoesForEach(GetFiles("**/*.dnn"), (file) => 
   { 
     var transformFile = File(System.IO.Path.GetTempFileName());
@@ -35,7 +35,7 @@ public string GetXdtTransformation()
   <packages>
     <package version=""{versionString}"" 
              xdt:Transform=""SetAttributes(version)""
-             xdt:Locator=""Condition(not[@version])"" />
+             xdt:Locator=""Condition([not(@version)])"" />
   </packages>
 </dotnetnuke>";
 }
