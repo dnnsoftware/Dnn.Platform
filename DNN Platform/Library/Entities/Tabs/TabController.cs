@@ -1008,7 +1008,7 @@ namespace DotNetNuke.Entities.Tabs
             if (portalTabs.WithTabId(tabId) != null)
             {
                 var updateTab = GetTab(tabId, portalId, true);
-                portalTabs.RefreshCache(updateTab);
+                portalTabs.RefreshCache(tabId, updateTab);
             }
         }
 
