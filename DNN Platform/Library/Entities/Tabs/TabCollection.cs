@@ -330,18 +330,22 @@ namespace DotNetNuke.Entities.Tabs
             return (from t in _list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
         }
 
-        internal void RefreshCache(TabInfo tab)
+        internal void RefreshCache(int tabId, TabInfo updatedTab)
         {
-            if (ContainsKey(tab.TabID))
+            if (ContainsKey(tabId))
             {
-                Remove(tab.TabID);
-                _list.RemoveAll(t => t.TabID == tab.TabID);
+                Remove(tabId);
+                _list.RemoveAll(t => t.TabID == tabId);
                 _localizedTabs.ForEach(kvp =>
                 {
-                    kvp.Value.RemoveAll(t => t.TabID == tab.TabID);
+                    kvp.Value.RemoveAll(t => t.TabID == tabId);
                 });
             }
-            Add(tab);
+
+            if (updatedTab != null)
+            {
+                Add(updatedTab);
+            }
         }
 
         #endregion
