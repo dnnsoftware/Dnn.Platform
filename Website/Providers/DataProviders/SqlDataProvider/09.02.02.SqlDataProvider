@@ -76,56 +76,6 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
-/* Due to DNN-21554 we could have orphaned users in apsnet tables, below SP removes such users if there are some */
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]
-    @ApplicationName NVARCHAR(256)
-AS
-
-IF (SELECT COUNT(*) FROM dbo.sysobjects
-	WHERE id = object_id(N'dbo.[aspnet_Users]') OR
-		  id = object_id(N'dbo.[aspnet_Membership]') OR
-		  id = object_id(N'{databaseOwner}[{objectQualifier}Users]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) = 3
-BEGIN
-	BEGIN TRANSACTION
-		BEGIN TRY
-			-- remove orphaned aspnet memberships
-			;WITH
-			orphaned_aspnet_memberships(UserId)
-			AS
-			(SELECT asp_memberships.UserId FROM dbo.aspnet_Membership asp_memberships
-					INNER JOIN dbo.aspnet_Applications asp_apps ON asp_apps.ApplicationId = asp_memberships.ApplicationId
-					INNER JOIN dbo.aspnet_Users asp_users ON asp_memberships.UserId = asp_users.UserId
-					LEFT JOIN {databaseOwner}{objectQualifier}Users users ON asp_users.UserName = users.Username
-					WHERE asp_apps.LoweredApplicationName = LOWER(@ApplicationName) AND users.Username IS NULL)
-			DELETE m FROM dbo.aspnet_Membership m
-			INNER JOIN orphaned_aspnet_memberships o ON m.UserId = o.UserId
-
-			-- remove orphaned aspnet users
-			;WITH
-			orphaned_aspnet_users (UserId)
-			AS 
-			(SELECT asp_users.UserId FROM dbo.aspnet_Users asp_users
-					INNER JOIN dbo.aspnet_Applications asp_apps ON asp_apps.ApplicationId = asp_users.ApplicationId
-					LEFT JOIN {databaseOwner}{objectQualifier}Users users ON asp_users.UserName = users.Username		
-					WHERE asp_apps.LoweredApplicationName = LOWER(@ApplicationName) AND users.Username IS NULL)
-			DELETE u FROM dbo.aspnet_Users u
-			INNER JOIN orphaned_aspnet_users o ON u.UserId = o.UserId
-		END TRY
-		BEGIN CATCH
-			SELECT ERROR_MESSAGE() AS ErrorMessage
-			IF @@TRANCOUNT > 0  
-				ROLLBACK TRANSACTION
-		END CATCH
-	IF @@TRANCOUNT > 0 
-	    COMMIT TRANSACTION
-END
-
-GO
-
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

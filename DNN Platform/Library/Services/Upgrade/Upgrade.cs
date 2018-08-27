@@ -5361,8 +5361,8 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.2.1":
                             UpgradeToVersion921();
                             break;
-                        case "9.2.2":
-                            UpgradeToVersion922();
+                        case "9.3.0":
+                            UpgradeToVersion930();
                             break;
                     }
                 }
@@ -5603,7 +5603,7 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
         }
 
-        private static void UpgradeToVersion922()
+        private static void UpgradeToVersion930()
         {
             var applicationName = System.Web.Security.Membership.ApplicationName;
             if (string.IsNullOrWhiteSpace(applicationName))
