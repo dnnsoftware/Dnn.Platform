@@ -3355,21 +3355,15 @@ namespace DotNetNuke.Data
 
         public virtual DateTimeOffset GetDatabaseTimeOffset()
         {
-            try
+            using (var reader = (SqlDataReader)ExecuteSQL("SELECT SYSDATETIMEOFFSET()"))
             {
-                using (var reader = (SqlDataReader)ExecuteSQL("SELECT SYSDATETIMEOFFSET()"))
+                if(reader.HasRows && reader.Read())
                 {
-                    if(reader.HasRows && reader.Read())
-                    {
-                        return reader.GetDateTimeOffset(0);
-                    } else
-                    {
-                       throw new Exception("Error retrieving database UTC offset");
-                    }
+                    return reader.GetDateTimeOffset(0);
+                } else
+                {
+                    throw new Exception("Error retrieving database UTC offset");
                 }
-            } catch (Exception)
-            {
-                throw;
             }
         }
 
