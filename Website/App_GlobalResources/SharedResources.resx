@@ -1329,6 +1329,9 @@
   <data name="CLEANUP_ProcessComplete.Text" xml:space="preserve">
     <value>Completed Processing of Cleanup File - {0}</value>
   </data>
+  <data name="CLEANUP_ProcessError.Text" xml:space="preserve">
+    <value>Non Fatal Error Cleaning Up Files: {0}</value>
+  </data>
   <data name="CLEANUP_Processing.Text" xml:space="preserve">
     <value>Processing Cleanup File - {0}</value>
   </data>
