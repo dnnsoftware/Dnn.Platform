@@ -38,7 +38,7 @@
         var $module;
 
         var getModuleId = function ($mod) {
-            var result = $mod.attr("class").match(/DnnModule-([0-9]+)/);
+            var result = $mod.attr("class").match(/DnnModule-([0-9]+)(?:\W|$)/);
             return (result && result.length === 2) ? result[1] : null;
         };
 
