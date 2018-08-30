@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 using DotNetNuke.Common.Utilities;
@@ -230,7 +231,9 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version;
+                var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                var fileVersion = FileVersionInfo.GetVersionInfo(assemblyLocation).FileVersion;
+                return new Version(fileVersion);
             }
         }
 
