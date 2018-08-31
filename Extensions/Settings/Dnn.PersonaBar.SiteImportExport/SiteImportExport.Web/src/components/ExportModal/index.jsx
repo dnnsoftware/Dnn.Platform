@@ -239,7 +239,8 @@ class ExportModal extends Component {
             excludeAdminTabs: true,
             disabledNotSelectable: false,
             roles: "",
-            sortOrder: 0
+            sortOrder: 0,
+            includeDisabled: true
         };
         const registeredItemsToExport = itemsToExportService.getRegisteredItemsToExport();
         return (
