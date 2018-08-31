@@ -31,15 +31,10 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
 AS
-	DECLARE @PurgeBatchCount INT = 150000
-	DECLARE @PurgeBatchCountSettingName NVARCHAR(50) = N'PurgeEventLogBatchCount'
-	SELECT @PurgeBatchCount = 
-		CASE WHEN ISNUMERIC(SettingValue) > 0 
-			THEN CAST(SettingValue AS INT)
-			ELSE @PurgeBatchCount 
-		END
-	FROM {databaseOwner}[{objectQualifier}HostSettings]
-	WHERE SettingName = @PurgeBatchCountSettingName
+	DECLARE @PurgeBatchCount INT = ISNULL(
+	(SELECT CAST(SettingValue AS INT) 
+		FROM {databaseOwner}[{objectQualifier}HostSettings]
+		WHERE SettingName = N'PurgeEventLogBatchCount' AND ISNUMERIC(SettingValue) > 0), 150000)
 
 	;WITH logcounts AS
 	(  
