@@ -133,7 +133,7 @@
     <value>Save Query</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
-    <value>Sql Console</value>
+    <value>SQL Console</value>
   </data>
   <data name="UploadFile.Text" xml:space="preserve">
     <value>Upload a File</value>
