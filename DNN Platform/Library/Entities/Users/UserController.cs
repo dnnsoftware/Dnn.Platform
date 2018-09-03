@@ -1885,8 +1885,8 @@ namespace DotNetNuke.Entities.Users
                 //Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                DataCache.ClearPortalUserCountCache(user.PortalID);
+                DataCache.ClearUserCache(user.PortalID, user.Username);
             }
 
             //Reset PortalId
