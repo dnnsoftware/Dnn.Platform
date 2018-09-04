@@ -462,6 +462,11 @@ define(['jquery'], function ($) {
 });
 
 define('css', {
+    normalize: function(name, normalize) {
+        name = name.replace('main/../css/', 'cssPath/');
+        name = name.replace('main/../modules/', 'modules/');
+        return normalize(name);
+    },
     load: function (name, require, load, config) {
         function inject(filename) {
             var head = document.getElementsByTagName('head')[0];
@@ -484,7 +489,7 @@ define('css', {
             path = config.baseUrl + path;
         }
 
-        inject(path + '?' + config.urlArgs);
+        inject(path + config.urlArgs(name, path));
         load(true);
     },
     pluginBuilder: './css-build'
