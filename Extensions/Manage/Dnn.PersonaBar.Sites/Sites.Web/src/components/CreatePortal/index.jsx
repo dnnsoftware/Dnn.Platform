@@ -31,7 +31,7 @@ const emptyNewPortal = {
     PasswordConfirm: ""
 };
 function extractDomain(url) {
-    let domain;
+    let domain, port;
     //find & remove protocol (http, ftp, etc.) and get domain
     if (url.indexOf("://") > -1) {
         domain = url.split("/")[2];
@@ -39,11 +39,8 @@ function extractDomain(url) {
     else {
         domain = url.split("/")[0];
     }
-
-    //find & remove port number
-    domain = domain.split(":")[0];
-
-    return domain;
+    [domain, port] = domain.split(":");
+    return port != undefined && port != 80 && port != 443 ? `${domain}:${port}` : domain;
 }
 function validateEmail(email) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
