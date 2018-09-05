@@ -425,10 +425,11 @@ namespace Dnn.PersonaBar.Sites.Components
             //Validate Home Folder
             if (!string.IsNullOrEmpty(homeDir))
             {
-                if (string.IsNullOrEmpty(string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, homeDir).Replace("/", "\\")))
+                var fullHomeDir = string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, homeDir).Replace("/", "\\");
+                if (Directory.Exists(fullHomeDir))
                 {
                     error = true;
-                    message = Localization.GetString("InvalidHomeFolder", LocalResourcesFile);
+                    message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", LocalResourcesFile), homeDir);
                 }
                 if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.ToLowerInvariant() == "portals/")
                 {

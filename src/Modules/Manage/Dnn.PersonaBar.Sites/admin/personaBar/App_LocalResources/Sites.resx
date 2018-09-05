@@ -153,6 +153,9 @@
   <data name="InvalidHomeFolder.Text" xml:space="preserve">
     <value>The home folder you specified is not valid.</value>
   </data>
+  <data name="CreatePortalHomeFolderExists.Error" xml:space="preserve">
+    <value>Portal folder {0} is already used.</value>
+  </data>
   <data name="InvalidName.Text" xml:space="preserve">
     <value>The site alias must not contain spaces or punctuation.</value>
   </data>
