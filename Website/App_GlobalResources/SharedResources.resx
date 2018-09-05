@@ -897,6 +897,9 @@
   <data name="CreatePortal.Error" xml:space="preserve">
     <value>Error creating site.</value>
   </data>
+  <data name="CreatePortalHomeFolderExists.Error" xml:space="preserve">
+    <value>Portal folder {0} is already used.</value>
+  </data>
   <data name="CreateAdminUser.Error" xml:space="preserve">
     <value>Error creating Administrator user account.</value>
   </data>
