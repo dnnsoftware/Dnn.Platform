@@ -163,6 +163,12 @@ namespace DotNetNuke.Entities.Portals
             }
             string mappedHomeDirectory = String.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
 
+            if(Directory.Exists(mappedHomeDirectory))
+            {
+                message += string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
+                throw new Exception(message);
+            }
+
             message += CreateProfileDefinitions(portalId, mergedTemplatePath);
 
             if (String.IsNullOrEmpty(message))
