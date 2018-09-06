@@ -39,6 +39,33 @@
 .dnnModuleManager .addModuleHandler.active span {
     /*display: inline-block;*/
 }
+.dnnModuleManager:before {
+    content: attr(data-name);
+    display: inline-block;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 16px;
+    line-height: 12px;
+    color: #333;
+    font-size: 9px;
+    background-color: #fff;
+    padding: 2px 4px;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition-duration: 200ms;
+    opacity: 0;
+}
+.dnnModuleManager.active-pane:before {
+    opacity: 1;
+}
 .dnnModuleDialog {
     width: 646px;
     overflow-x: hidden;
