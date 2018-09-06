@@ -1,5 +1,7 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #load "local:?path=Build/cake/version.cake"
+#load "local:?path=Build/cake/create-database.cake"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -60,6 +62,22 @@ Task("Build")
 	.IsDependentOn("CreateDeploy")
     .IsDependentOn("CreateSymbols")
     
+    .Does(() =>
+	{
+
+	});
+    
+Task("BuildWithDatabase")
+    .IsDependentOn("CleanArtifacts")
+    .IsDependentOn("CreateSource")
+
+	.IsDependentOn("CompileSource")
+	
+	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
+	.IsDependentOn("CreateDeploy")
+    .IsDependentOn("CreateSymbols")
+    .IsDependentOn("CreateDatabase")
     .Does(() =>
 	{
 
@@ -196,8 +214,13 @@ Task("ExternalExtensions")
 .IsDependentOn("Clean")
     .Does(() =>
 	{
+        Information("CK:'{0}', CDF:'{1}', CP:'{2}'", targetBranchCk, targetBranchCdf, targetBranchCp);
+
+    
 		Information("Downloading External Extensions to {0}", buildDirFullPath);
 
+        
+        
 		//ck
 		DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/" + targetBranchCk + ".zip", buildDirFullPath + "ckeditor.zip");
 	
@@ -205,6 +228,7 @@ Task("ExternalExtensions")
 		DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/" + targetBranchCdf + ".zip", buildDirFullPath + "clientdependency.zip");
 
 		//pb
+        Information("Downloading: {0}", "https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip");
 		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.zip");
 
 		Information("Decompressing: {0}", "CK Editor");
@@ -280,7 +304,8 @@ Task("ExternalExtensions")
 		CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
 	
 	});
-
+    
+    
 Task("Run-Unit-Tests")
     .IsDependentOn("CompileSource")
     .Does(() =>

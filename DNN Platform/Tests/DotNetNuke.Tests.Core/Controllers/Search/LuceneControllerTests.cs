@@ -68,6 +68,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 	    private const string EmptyCustomAnalyzer = "";
 	    private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
         private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Contrib.Analyzers";
+	    private const int DefaultSearchRetryTimes = 5;
 
         private Mock<IHostController> _mockHostController;
         private LuceneControllerImpl _luceneController;
@@ -90,6 +91,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(_readerStaleTimeSpan);
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
             HostController.RegisterInstance(_mockHostController.Object);
 
             _mockSearchHelper = new Mock<ISearchHelper>();
