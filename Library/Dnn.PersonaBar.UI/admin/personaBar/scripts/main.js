@@ -8,8 +8,9 @@
         baseUrl: 'scripts/contrib/',
         paths: {
             'templatePath': '../../',
-            'cssPath': '../../css/',
-            'main': '../../scripts'
+            'cssPath': '../../css',
+            'main': '../../scripts',
+            'modules': '../../modules'
         },
         urlArgs: (cdv ? 'cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : ''),
         shim: {
