@@ -83,6 +83,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             var usersList = new List<UserModelBase>();
             var recCount = 0;
             var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+
+            // We need to cover the site group scenario for child portal 
+            var portalId = PortalController.GetEffectivePortalId(PortalId);
             var getUsersContract = new GetUsersContract
             {
                 SearchText = null,
@@ -90,7 +93,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 PageSize = max,
                 SortColumn = "displayname",
                 SortAscending = true,
-                PortalId = PortalId,
+                PortalId = portalId,
                 Filter = UserFilters.All
             };
             if (!string.IsNullOrEmpty(Username))
