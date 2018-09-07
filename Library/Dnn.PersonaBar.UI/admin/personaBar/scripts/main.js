@@ -967,6 +967,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $('#' + hoverMenuId).hide();
                                                         });
 
+                                                        // Set aria-expanded to true when menu is shown
                                                         $hoverMenu.show();
                                                         $this.attr('aria-expanded', 'true');
 
@@ -998,6 +999,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                         if (!activePath) {
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
+                                                        // Set aria-expanded to false when menu is hidden
                                                         $hoverMenu.hide();
                                                         $this.attr('aria-expanded', 'false');
 
