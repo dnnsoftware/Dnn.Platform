@@ -210,13 +210,12 @@ namespace Dnn.ExportImport.Components.Services
                 CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
 
+            // ensure exported languages are enabled in target site
             foreach(var lang in portalLanguages)
             {
-                if (!LocaleController.Instance.IsDefaultLanguage(lang.CultureCode))
-                {
-                    LocaleController.Instance.ActivateLanguage(portalId, lang.CultureCode, true);
-                    LocaleController.Instance.PublishLanguage(portalId, lang.CultureCode, true);
-                }
+
+                LocaleController.Instance.ActivateLanguage(portalId, lang.CultureCode, true);
+                LocaleController.Instance.PublishLanguage(portalId, lang.CultureCode, true);
             }
 
             foreach (var exportPortalLanguage in portalLanguages)
