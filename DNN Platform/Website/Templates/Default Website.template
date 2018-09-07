@@ -156,15 +156,15 @@
     </profiledefinition>
     <profiledefinition>
       <propertycategory>Location</propertycategory>
-      <propertyname>Region</propertyname>
-      <datatype>Region</datatype>
+      <propertyname>Country</propertyname>
+      <datatype>Country</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>
     <profiledefinition>
       <propertycategory>Location</propertycategory>
-      <propertyname>Country</propertyname>
-      <datatype>Country</datatype>
+      <propertyname>Region</propertyname>
+      <datatype>Region</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>

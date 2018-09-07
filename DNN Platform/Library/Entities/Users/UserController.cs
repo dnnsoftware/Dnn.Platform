@@ -1045,8 +1045,9 @@ namespace DotNetNuke.Entities.Users
                     //send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                
+                CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, user.PortalID));
+                DataCache.ClearUserCache(user.PortalID, user.Username);
 
                 //also clear current portal's cache if the user is a host user
                 if (portalSettings.PortalId != portalId)

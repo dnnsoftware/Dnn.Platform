@@ -68,6 +68,7 @@ namespace DotNetNuke.Services.Installer
         public static string AUTHENTICATION_UnRegistered = GetLocalizedString("AUTHENTICATION_UnRegistered");
         public static string CLEANUP_Processing = GetLocalizedString("CLEANUP_Processing");
         public static string CLEANUP_ProcessComplete = GetLocalizedString("CLEANUP_ProcessComplete");
+        public static string CLEANUP_ProcessError = GetLocalizedString("CLEANUP_ProcessError");
         public static string COMPONENT_Installed = GetLocalizedString("COMPONENT_Installed");
         public static string COMPONENT_Skipped = GetLocalizedString("COMPONENT_Skipped");
         public static string COMPONENT_RolledBack = GetLocalizedString("COMPONENT_RolledBack");
