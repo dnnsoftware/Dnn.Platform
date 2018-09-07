@@ -2,6 +2,7 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
@@ -51,6 +52,20 @@ namespace Cantarus.Modules.PolyDeploy.Components
          */
         public static bool IsWhitelisted(string address)
         {
+            if (!IPAddress.TryParse(address, out _))
+            {
+                // see if address is an IP plus port, e.g. "1.1.1.1:58290"
+                if (Uri.TryCreate(Uri.UriSchemeHttps + Uri.SchemeDelimiter + address, UriKind.Absolute, out Uri uri))
+                {
+                    if (uri.HostNameType != UriHostNameType.IPv4 && uri.HostNameType != UriHostNameType.IPv6)
+                    {
+                        return false;
+                    }
+
+                    address = uri.Host;
+                }
+            }
+
             IPSpec ipSpec = IPSpecDC.FindByAddress(address);
 
             return ipSpec != null;
