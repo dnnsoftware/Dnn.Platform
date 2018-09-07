@@ -30,6 +30,7 @@ using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Dto.Portal;
 using DotNetNuke.Services.Localization;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -208,6 +209,16 @@ namespace Dnn.ExportImport.Components.Services
             var localPortalLanguages =
                 CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
+
+            foreach(var lang in portalLanguages)
+            {
+                if (!LocaleController.Instance.IsDefaultLanguage(lang.CultureCode))
+                {
+                    LocaleController.Instance.ActivateLanguage(portalId, lang.CultureCode, true);
+                    LocaleController.Instance.PublishLanguage(portalId, lang.CultureCode, true);
+                }
+            }
+
             foreach (var exportPortalLanguage in portalLanguages)
             {
                 if (CheckCancelled(importJob)) return;
