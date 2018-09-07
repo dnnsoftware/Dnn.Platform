@@ -80,9 +80,9 @@
 
                             angular.forEach(pkg.Dependencies, function (dep) {
 
-                                if (dep.Type === 'package') {
+                                if (dep.IsPackageDependency) {
 
-                                    dependencies.push(dep.Value);
+                                    dependencies.push(dep.PackageName);
                                 }
                             });
 

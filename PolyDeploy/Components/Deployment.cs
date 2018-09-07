@@ -156,10 +156,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 foreach (PackageDependency pd in pj.Dependencies)
                 {
                     // Is this dependency met by our deployment and is it a package dependency?
-                    if (pd.DeployMet && pd.Type.Equals("package"))
+                    if (pd.DeployMet && pd.IsPackageDependency)
                     {
                         // Try and find the install job that provides this dependency.
-                        InstallJob foundInstallDependency = FindInstallJobWithPackage(pd.Value, installJobs);
+                        InstallJob foundInstallDependency = FindInstallJobWithPackage(pd.PackageName, installJobs);
 
                         // Did we find it?
                         if (foundInstallDependency == null)
