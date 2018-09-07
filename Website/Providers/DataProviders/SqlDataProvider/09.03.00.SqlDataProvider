@@ -1,4 +1,4 @@
-﻿/************************************************************/
+/************************************************************/
 /*****              SqlDataProvider                     *****/
 /*****                                                  *****/
 /*****                                                  *****/
@@ -7,6 +7,49 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects
+	WHERE id = object_id(N'{databaseOwner}[{objectQualifier}HostSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'PurgeEventLogBatchCount')
+		INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+			([SettingName]
+			,[SettingValue]
+			,[SettingIsSecure]
+			,[CreatedByUserID]
+			,[CreatedOnDate]
+			,[LastModifiedByUserID]
+			,[LastModifiedOnDate])
+		VALUES (N'PurgeEventLogBatchCount', N'150000', 0, -1, GETDATE(), NULL, NULL)
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}PurgeEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+AS
+	DECLARE @PurgeBatchCount INT = ISNULL(
+	(SELECT CAST(SettingValue AS INT) 
+		FROM {databaseOwner}[{objectQualifier}HostSettings]
+		WHERE SettingName = N'PurgeEventLogBatchCount' AND ISNUMERIC(SettingValue) > 0), 150000)
+
+	;WITH logcounts AS
+	(  
+	  SELECT TOP(@PurgeBatchCount)
+		LogConfigID, 
+		ROW_NUMBER() OVER(PARTITION BY LogConfigID ORDER BY LogCreateDate DESC) AS logEventSequence	
+	  FROM {databaseOwner}[{objectQualifier}EventLog]
+	)
+	DELETE lc
+	FROM logcounts lc
+		INNER JOIN {databaseOwner}[{objectQualifier}EventLogConfig] elc ON elc.ID = lc.LogConfigID
+	WHERE elc.KeepMostRecent <> -1
+		AND lc.logEventSequence > elc.KeepMostRecent
+
+GO
 
 /* Due to DNN-21554 we could have orphaned users in apsnet tables, below SP removes such users if there are some */
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
@@ -61,3 +104,5 @@ GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
+/************************************************************/
+
