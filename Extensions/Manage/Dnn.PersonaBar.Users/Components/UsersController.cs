@@ -512,7 +512,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
-            usersContract.SearchText = SearchTextFilter.CleanWildcards(string.Format("{0}*", parsedSearchText));
+            usersContract.SearchText = string.Format("{0}*", parsedSearchText);
 
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 CallGetUsersBySearchTerm(
