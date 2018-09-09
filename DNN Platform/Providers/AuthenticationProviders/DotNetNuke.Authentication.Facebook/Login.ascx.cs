@@ -69,7 +69,10 @@ namespace DotNetNuke.Authentication.Facebook
         {
             base.AddCustomProperties(properties);
 
-            properties.Add("Facebook", OAuthClient.GetCurrentUser<FacebookUserData>().Link.ToString());
+            var facebookUserData = OAuthClient.GetCurrentUser<FacebookUserData>();
+            if (null != facebookUserData.Link) {
+                properties.Add("Facebook", facebookUserData.Link.ToString());
+            }
         }
 
         private void loginButton_Click(object sender, EventArgs e)
