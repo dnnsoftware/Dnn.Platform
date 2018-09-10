@@ -2245,13 +2245,14 @@ namespace DotNetNuke.Entities.Users
 
             int portalId;
             int userId;
+            var userIdString = strings[1];
 
-            if (!int.TryParse(strings[0], out portalId) || !int.TryParse(strings[1], out userId))
+            if (!int.TryParse(strings[0], out portalId) || string.IsNullOrWhiteSpace(userIdString))
             {
                 throw new InvalidVerificationCodeException();
             }
 
-            var user = GetUserById(int.Parse(strings[0]), int.Parse(strings[1]));
+            var user = int.TryParse(userIdString, out userId) ? GetUserById(portalId, userId) : GetUserByMembershipUserKey(portalId, userIdString);
 
             if (user == null)
             {
@@ -2316,7 +2317,15 @@ namespace DotNetNuke.Entities.Users
             return httpAlias.IndexOf("/", StringComparison.InvariantCulture) != -1 ?
                 httpAlias.Substring(0, httpAlias.IndexOf("/", StringComparison.InvariantCulture)) :
                 httpAlias;
-        }      
+        }
+
+        private static UserInfo GetUserByMembershipUserKey(int portalId, string membershipUserKey)
+        {
+            var masterPortalId = GetEffectivePortalId(portalId);
+            var user = MembershipProvider.Instance().GetUserByProviderUserKey(masterPortalId, membershipUserKey);
+            FixMemberPortalId(user, portalId);
+            return user;
+        }
 
         #endregion
 
