@@ -505,8 +505,8 @@ namespace DotNetNuke.Modules.Admin.Users
 			User.Membership.Approved = PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
 			var user = User;
 			CreateStatus = UserController.CreateUser(ref user);
-
-		    CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, PortalId));
+            		    
+            DataCache.ClearPortalUserCountCache(PortalId);
 
             try
 			{

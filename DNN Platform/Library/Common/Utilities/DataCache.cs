@@ -500,6 +500,11 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(String.Format(UserProfileCacheKey, PortalId, username));
         }
 
+        public static void ClearPortalUserCountCache(int portalID)
+        {
+            CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalID));
+        }
+
         public static void ClearUserPersonalizationCache(int portalId, int userId)
         {
             RemoveCache(String.Format(UserPersonalizationCacheKey, portalId, userId));
@@ -761,6 +766,6 @@ namespace DotNetNuke.Common.Utilities
                 }
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
-        }
+        }       
     }
 }
