@@ -75,10 +75,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         #region Private Members
 
+        private const char QUESTION_MARK = '?';
+        private const char SLASH_CHARACTER = '/';
+        private const string LOGIN_PATH = "/login";
+
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
-        private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
-        private const string LOGIN_PATH = "/login";
+        private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();        
 
         #endregion
 
@@ -199,10 +202,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
 
                 var alias = PortalAlias.HTTPAlias;
-                var comparison = StringComparison.InvariantCultureIgnoreCase;
-                var isDefaultPage = redirectURL == "/"
-                    || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
-                
+                var aliasWithoutDomain = alias.Substring(Request.Url.Host.Length);
+                var redirectURLTrimmed = RemoveQueryStrings(redirectURL).TrimEnd(new[] { SLASH_CHARACTER });
+
+                var isDefaultPage = redirectURL == SLASH_CHARACTER.ToString() ||
+                    (aliasWithoutDomain.Contains(SLASH_CHARACTER.ToString())
+                        && aliasWithoutDomain.Contains(redirectURLTrimmed));
+
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
                     if (
@@ -226,9 +232,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             redirectURL = Globals.NavigateURL();
                         }
                     }
-
                 }
-
 
                 //replace language parameter in querystring, to make sure that user will see page in correct language
                 if (UserId != -1 && User != null)
@@ -242,8 +246,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
 
                 //check for insecure account defaults
-                var qsDelimiter = "?";
-                if (redirectURL.Contains("?"))
+                var qsDelimiter = QUESTION_MARK.ToString();
+                if (redirectURL.Contains(QUESTION_MARK.ToString()))
                 {
                     qsDelimiter = "&";
                 }
@@ -257,6 +261,16 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
                 return redirectURL;
             }
+        }
+
+        private string RemoveQueryStrings(string urlWithQueryString)
+        {
+            var lastIndexOfQuery = urlWithQueryString.LastIndexOf(QUESTION_MARK);
+            if (lastIndexOfQuery > -1)
+            {
+                urlWithQueryString = urlWithQueryString.Remove(lastIndexOfQuery);
+            }
+            return urlWithQueryString;
         }
 
         private bool IsRedirectingFromLoginUrl()
