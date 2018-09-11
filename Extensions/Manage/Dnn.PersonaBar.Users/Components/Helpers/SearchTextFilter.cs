@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
 
         public static string CleanWildcards(string searchText)
         {
-            if (string.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText) || searchText.Equals("*") || searchText.Equals("%"))
             {
                 return null;
             }
