@@ -1881,10 +1881,8 @@ namespace DNNConnect.CKEditorProvider
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
-
-            var defaultUploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
-            currentSettings.UploadSizeRoles.Clear();
-            currentSettings.UploadSizeRoles.AddRange(defaultUploadSizeRoles);
+            
+            currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
 
             switch (CurrentSettingsMode)
             {
@@ -1922,6 +1920,12 @@ namespace DNNConnect.CKEditorProvider
 
                             currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                                 _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
+
+                            // check if UploadSizeLimits have been set
+                            if(currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
+                            {
+                                currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+                            }
 
                             // Set Current Mode to Portal
                             currentSettings.SettingMode = SettingsMode.Portal;
