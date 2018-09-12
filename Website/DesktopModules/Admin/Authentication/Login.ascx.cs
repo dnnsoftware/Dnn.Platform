@@ -387,10 +387,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     //Figure out if known Auth types are enabled (so we can improve perf and stop loading the control)
                     bool enabled = true;
-                    if (authSystem.AuthenticationType == "Facebook" || authSystem.AuthenticationType == "Google"
-                        || authSystem.AuthenticationType == "Live" || authSystem.AuthenticationType == "Twitter")
+                    if (authSystem.AuthenticationType.Equals("Facebook") || authSystem.AuthenticationType.Equals("Google")
+                        || authSystem.AuthenticationType.Equals("Live") || authSystem.AuthenticationType.Equals("Twitter"))
                     {
-                        enabled = PortalController.GetPortalSettingAsBoolean(authSystem.AuthenticationType + "_Enabled", PortalId, false);
+                        enabled = AuthenticationController.IsEnabledForPortal(authSystem, PortalSettings.PortalId);
                     }
 
                     if (enabled)
