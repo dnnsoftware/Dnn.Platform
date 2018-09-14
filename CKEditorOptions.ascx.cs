@@ -381,6 +381,10 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
+                BindUserGroupsGridView();
+
+                BindOptionsData();
+
                 SetLanguage();
 
                 FillInformations();
@@ -389,10 +393,6 @@ namespace DNNConnect.CKEditorProvider
                 FillSkinList();
 
                 FillFolders();
-
-                BindUserGroupsGridView();
-
-                BindOptionsData();
 
                 RenderUrlControls();
 
@@ -3456,6 +3456,29 @@ namespace DNNConnect.CKEditorProvider
             {
                 var objRole = RoleController.Instance.GetRoleByName(_portalSettings.PortalId, roleName);
                 listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(sizeLimit) });
+            }
+        }
+
+        /// <summary>
+        /// Adds the other toolbar roles.
+        /// </summary>
+        /// <param name="listToolbarRoles">The list toolbar roles.</param>
+        /// <param name="roleName">Name of the role.</param>
+        /// <param name="value">The value.</param>
+        private void AddOtherToolbarRoles(List<ToolbarRoles> listToolbarRoles, string roleName, string value)
+        {
+            if (IsAllInstances)
+            {
+                listToolbarRoles.AddRange(
+                    from PortalInfo portal in PortalController.Instance.GetPortals()
+                    select RoleController.Instance.GetRoleByName(portal.PortalID, roleName)
+                    into objRole
+                    select new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = value });
+            }
+            else
+            {
+                var objRole = RoleController.Instance.GetRoleByName(_portalSettings.PortalId, roleName);
+                listToolbarRoles.Add(new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = value });
             }
         }
 

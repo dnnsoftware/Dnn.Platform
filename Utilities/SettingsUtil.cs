@@ -793,6 +793,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             hshModSet = hshModSet ?? new Hashtable();
+
             var roles = new ArrayList();
 
             // Import all Editor config settings
