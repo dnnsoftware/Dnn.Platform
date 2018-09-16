@@ -1413,7 +1413,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary> 
-        /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one 
+        /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one. 
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path)</param> 
