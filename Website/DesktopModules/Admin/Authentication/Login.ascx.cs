@@ -75,8 +75,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         #region Private Members
 
-        private const char QUESTION_MARK = '?';
-        private const char SLASH_CHARACTER = '/';
+        private const string QUESTION_MARK = "?";
+        private const string SLASH = "/";
         private const string LOGIN_PATH = "/login";
 
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
@@ -203,10 +203,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 var alias = PortalAlias.HTTPAlias;
                 var aliasWithoutDomain = alias.Substring(Request.Url.Host.Length);
-                var redirectURLTrimmed = RemoveQueryStrings(redirectURL).TrimEnd(new[] { SLASH_CHARACTER });
+                var redirectURLTrimmed = RemoveQueryStrings(redirectURL).TrimEnd(SLASH.ToCharArray());
 
-                var isDefaultPage = redirectURL == SLASH_CHARACTER.ToString() ||
-                    (aliasWithoutDomain.Contains(SLASH_CHARACTER.ToString())
+                var isDefaultPage = redirectURL == SLASH ||
+                    (aliasWithoutDomain.Contains(SLASH)
                         && aliasWithoutDomain.Contains(redirectURLTrimmed));
 
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
@@ -246,8 +246,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
 
                 //check for insecure account defaults
-                var qsDelimiter = QUESTION_MARK.ToString();
-                if (redirectURL.Contains(QUESTION_MARK.ToString()))
+                var qsDelimiter = QUESTION_MARK;
+                if (redirectURL.Contains(QUESTION_MARK))
                 {
                     qsDelimiter = "&";
                 }
