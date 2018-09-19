@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Bundle</id>
-    <version>9.2.1</version>
+    <version>$version$</version>
     <title>DNN Platform (Bundle)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
@@ -17,28 +17,28 @@
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="DotNetNuke.Core" version="9.2.1" />
-      <dependency id="DotNetNuke.Instrumentation" version="9.2.1" />
-      <dependency id="DotNetNuke.Web" version="9.2.1" />
-      <dependency id="DotNetNuke.Web.Client" version="9.2.1" />
-      <dependency id="DotNetNuke.Web.Mvc" version="9.2.1" />
-      <dependency id="DotNetNuke.WebApi" version="9.2.1" />
-      <dependency id="DotNetNuke.Web.Deprecated" version="9.2.1" />
+      <dependency id="DotNetNuke.Core" version="$version$" />
+      <dependency id="DotNetNuke.Instrumentation" version="$version$" />
+      <dependency id="DotNetNuke.Web" version="$version$" />
+      <dependency id="DotNetNuke.Web.Client" version="$version$" />
+      <dependency id="DotNetNuke.Web.Mvc" version="$version$" />
+      <dependency id="DotNetNuke.WebApi" version="$version$" />
+      <dependency id="DotNetNuke.Web.Deprecated" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
   </files>
 </package>

@@ -112,6 +112,38 @@ Task("BuildAll")
 
 	});
 
+Task("CreateNugetPackages")
+
+	.Does(() =>
+	{
+		var nuGetPackSettings = new NuGetPackSettings
+		{
+			Version = buildNumber,
+			OutputDirectory = @"./Artifacts/",
+			IncludeReferencedProjects = true,
+			Properties = new Dictionary<string, string>
+			{
+				{ "Configuration", "Release" }
+			}
+		};
+
+
+
+		//look for solutions and start building them
+		var nuspecFiles = GetFiles("./Build/Tools/NuGet/DotNetNuke.*.nuspec");
+	
+		Information("Found {0} nuspec files.", nuspecFiles.Count);
+	
+		foreach (var spec in nuspecFiles){
+			var specPath = spec.ToString();
+
+			Information("Starting to pack: {0}", specPath);
+			NuGetPack(specPath, nuGetPackSettings);
+		}
+
+
+	});
+
 Task("CompileSource")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
