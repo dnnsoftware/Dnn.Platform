@@ -103,7 +103,8 @@ namespace DotNetNuke.Services.FileSystem
 			contentTypes.Add("svg", "image/svg+xml");
 			contentTypes.Add("ttf", "font/ttf");
 			contentTypes.Add("eot", "application/vnd.ms-fontobject");
-			contentTypes.Add("woff", "application/font-woff");
+			contentTypes.Add("woff", "font/font-woff");
+			contentTypes.Add("woff2", "font/woff2");
 			contentTypes.Add("mp3", "audio/mpeg");
 			contentTypes.Add("wma", "audio/x-ms-wma");
 			contentTypes.Add("mpg", "video/mpeg");
