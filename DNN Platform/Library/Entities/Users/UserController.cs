@@ -176,9 +176,9 @@ namespace DotNetNuke.Entities.Users
             {
                 foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
                 {
-                    if (permission.PermissionKey.ToUpper() == "READ"
-                            || permission.PermissionKey.ToUpper() == "WRITE"
-                            || permission.PermissionKey.ToUpper() == "BROWSE")
+                    if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
+                            || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
                     {
                         var folderPermission = new FolderPermissionInfo(permission)
                         {
@@ -1045,8 +1045,9 @@ namespace DotNetNuke.Entities.Users
                     //send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                                
+                DataCache.ClearPortalUserCountCache(user.PortalID);
+                DataCache.ClearUserCache(user.PortalID, user.Username);
 
                 //also clear current portal's cache if the user is a host user
                 if (portalSettings.PortalId != portalId)
@@ -1884,8 +1885,8 @@ namespace DotNetNuke.Entities.Users
                 //Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                DataCache.ClearPortalUserCountCache(user.PortalID);
+                DataCache.ClearUserCache(user.PortalID, user.Username);
             }
 
             //Reset PortalId

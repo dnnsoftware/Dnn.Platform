@@ -528,7 +528,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		private bool IsUserFolder(string folderPath)
 		{
             UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
-            return (folderPath.ToLowerInvariant().StartsWith("users/") && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
+            return (folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
 		}
 
 		private void LoadFiles()

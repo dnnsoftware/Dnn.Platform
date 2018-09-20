@@ -1860,7 +1860,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
                         {
-                            if (permission.PermissionKey.ToUpper() == "READ")
+                            if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 //Add All Users Read Access to the folder
                                 int roleId = Int32.Parse(Globals.glbRoleAllUsers);
@@ -5361,6 +5361,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.2.1":
                             UpgradeToVersion921();
                             break;
+                        case "9.3.0":
+                            UpgradeToVersion930();
+                            break;
                     }
                 }
                 else
@@ -5600,6 +5603,28 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
         }
 
+        private static void UpgradeToVersion930()
+        {
+            var applicationName = System.Web.Security.Membership.ApplicationName;
+            if (string.IsNullOrWhiteSpace(applicationName))
+            {
+                Logger.Warn("Unable to run orphaned user check. Application name is missing or not defined.");
+                return;
+            }
+            using (var reader = DataProvider.Instance().ExecuteReader("DeleteOrphanedAspNetUsers", applicationName))
+            {
+                while (reader.Read())
+                {
+                    var errorMsg = reader["ErrorMessage"];
+                    if (errorMsg != null)
+                    {
+                        Logger.Error("Failed to remove orphaned aspnet users. Error: " +
+                            errorMsg.ToString());
+                    }
+                }
+            }
+        }
+
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
             var stringVersion = GetStringVersionWithRevision(version);
@@ -5799,7 +5824,7 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
                 url += "&id=" + Host.GUID;
-                if (packageType.ToUpper() == DotNetNukeContext.Current.Application.Type.ToUpper())
+                if (packageType.Equals(DotNetNukeContext.Current.Application.Type, StringComparison.OrdinalIgnoreCase))
                 {
                     if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
                     {

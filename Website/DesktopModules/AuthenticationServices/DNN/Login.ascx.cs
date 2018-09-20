@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 url = Globals.RegisterURL(returnUrl, Null.NullString);
                 registerLink.NavigateUrl = url;
                 if (PortalSettings.EnablePopUps && PortalSettings.RegisterTabId == Null.NullInteger
-                    && !HasSocialAuthenticationEnabled())
+                    && !AuthenticationController.HasSocialAuthenticationEnabled(this))
                 {
                     registerLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(url, this, PortalSettings, true, false, 600, 950));
                 }
@@ -285,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
 
-                if (loginStatus != UserLoginStatus.LOGIN_FAILURE && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+                if (objUser != null && loginStatus != UserLoginStatus.LOGIN_FAILURE && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
                 {
                     //make sure internal username matches current e-mail address
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
@@ -305,19 +305,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				OnUserAuthenticated(eventArgs);
 			}
 		}
-
-        private bool HasSocialAuthenticationEnabled()
-        {
-            return (from a in AuthenticationController.GetEnabledAuthenticationServices()
-                    let enabled = (a.AuthenticationType == "Facebook"
-                                     || a.AuthenticationType == "Google"
-                                     || a.AuthenticationType == "Live"
-                                     || a.AuthenticationType == "Twitter")
-                                  ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.PortalId, false)
-                                  : !string.IsNullOrEmpty(a.LoginControlSrc) && (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
-                    where a.AuthenticationType != "DNN" && enabled
-                    select a).Any();
-        }
 		
 		#endregion
 

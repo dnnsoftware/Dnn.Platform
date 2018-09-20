@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.Installer
             DirectoryInfo[] subFolders = installFolder.GetDirectories();
             if (subFolders.Length > 0)
             {
-                if ((subFolders[0].Name.ToLowerInvariant() == "containers" || subFolders[0].Name.ToLowerInvariant() == "skins"))
+                if ((subFolders[0].Name.Equals("containers", StringComparison.InvariantCultureIgnoreCase) || subFolders[0].Name.Equals("skins", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     isCombi = true;
                 }

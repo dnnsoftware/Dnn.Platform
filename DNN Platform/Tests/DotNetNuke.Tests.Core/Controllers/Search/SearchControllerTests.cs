@@ -143,6 +143,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
+        private const int DefaultSearchRetryTimes = 5;
         #endregion
 
         #region Private Properties
@@ -235,6 +236,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
             HostController.RegisterInstance(_mockHostController.Object);
         }
 

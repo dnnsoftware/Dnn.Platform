@@ -186,8 +186,8 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
-            if (containerPath.ToLowerInvariant().IndexOf("/skins/") != -1 || containerPath.ToLowerInvariant().IndexOf("/skins\\") != -1 || containerPath.ToLowerInvariant().IndexOf("\\skins\\") != -1 ||
-                containerPath.ToLowerInvariant().IndexOf("\\skins/") != -1)
+            if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
+                containerPath.IndexOf("\\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 throw new Exception();
             }
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.Skins
             else
             {
                 containerSrc = PaneControl.Attributes["ContainerSrc"];
-                if (containerSrc.Contains("/") && !(containerSrc.ToLowerInvariant().StartsWith("[g]") || containerSrc.ToLowerInvariant().StartsWith("[l]")))
+                if (containerSrc.Contains("/") && !(containerSrc.StartsWith("[g]", StringComparison.InvariantCultureIgnoreCase) || containerSrc.StartsWith("[l]", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     containerSrc = string.Format(SkinController.IsGlobalSkin(PortalSettings.ActiveTab.SkinSrc) ? "[G]containers/{0}" : "[L]containers/{0}", containerSrc.TrimStart('/'));
                     validSrc = true;

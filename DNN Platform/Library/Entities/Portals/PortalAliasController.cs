@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Portals
             //domain.com and www.domain.com should be synonymous
             if (portalAlias == null)
             {
-                if (httpAlias.ToLowerInvariant().StartsWith("www."))
+                if (httpAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     //try alias without the "www." prefix
                     strPortalAlias = httpAlias.Replace("www.", "");

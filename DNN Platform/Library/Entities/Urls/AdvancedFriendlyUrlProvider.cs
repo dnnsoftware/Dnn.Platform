@@ -229,11 +229,11 @@ namespace DotNetNuke.Entities.Urls
         private static string CheckForDebug(HttpRequest request)
         {
             string debugValue = "";
-            const string debugToken = "_fugdebug";
+            const string debugToken = "_FUGDEBUG";
             //798 : change reference to debug parameters
             if (request != null)
             {
-                debugValue = (request.Params.Get("HTTP_" + debugToken.ToUpper()));
+                debugValue = (request.Params.Get("HTTP_" + debugToken));
             }
             if (debugValue == null)
             {
@@ -717,7 +717,7 @@ namespace DotNetNuke.Entities.Urls
                         //Add name part of name/value pair 
                         if (friendlyPath.EndsWith("/"))
                         {
-                            if (pair[0].ToLowerInvariant() == "tabid") //always lowercase the tabid part of the path
+                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase)) //always lowercase the tabid part of the path
                             {
                                 pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
                             }
@@ -902,10 +902,10 @@ namespace DotNetNuke.Entities.Urls
             string result = friendlyPath;
             //821 : new 'CustomOnly' setting which allows keeping base Urls but also using Custom Urls.  Basically keeps search friendly 
             //but allows for customised urls and redirects
-            bool customOnly = settings.UrlFormat.ToLowerInvariant() == "customonly";
+            bool customOnly = settings.UrlFormat.Equals("customonly", StringComparison.InvariantCultureIgnoreCase);
             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
             //determine if an improved friendly Url is wanted at all
-            if ((settings.UrlFormat.ToLowerInvariant() == "advanced" || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
+            if ((settings.UrlFormat.Equals("advanced", StringComparison.InvariantCultureIgnoreCase) || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
             {
                 string newTabPath;
                 string customHttpAlias;

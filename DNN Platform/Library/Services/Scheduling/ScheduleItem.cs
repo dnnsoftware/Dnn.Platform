@@ -150,13 +150,13 @@ namespace DotNetNuke.Services.Scheduling
                 int i;
                 for (i = 0; i <= a.Length - 1; i++)
                 {
-                    if (ObjectDependencies.ToLowerInvariant().IndexOf(a[i].Trim()) > -1)
+                    if (ObjectDependencies.IndexOf(a[i].Trim(), StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
                         return true;
                     }
                 }
             }
-            else if (ObjectDependencies.ToLowerInvariant().IndexOf(strObjectDependencies.ToLowerInvariant()) > -1)
+            else if (ObjectDependencies.IndexOf(strObjectDependencies, StringComparison.InvariantCultureIgnoreCase) > -1)
             {
                 return true;
             }

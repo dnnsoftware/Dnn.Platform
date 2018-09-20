@@ -505,8 +505,8 @@ namespace DotNetNuke.Modules.Admin.Users
 			User.Membership.Approved = PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
 			var user = User;
 			CreateStatus = UserController.CreateUser(ref user);
-
-		    CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, PortalId));
+            		    
+            DataCache.ClearPortalUserCountCache(PortalId);
 
             try
 			{
@@ -569,7 +569,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		    if (_IsValid)
 		    {
-                var name = User.Username;
+                var name = User.Username ?? User.Email;
                 var cleanUsername = PortalSecurity.Instance.InputFilter(name,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |

@@ -82,6 +82,8 @@ namespace Dnn.ExportImport.Components.Services
         private IList<int> _exportedModuleDefinitions = new List<int>();
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        private Dictionary<Guid, int> _partialImportedTabs = new Dictionary<Guid, int>();
+        private Dictionary<int, bool> _searchedParentTabs = new Dictionary<int, bool>();
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
@@ -179,6 +181,8 @@ namespace Dnn.ExportImport.Components.Services
                   otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
                   && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
 
+            var isParentPresent = IsParentTabPresentInExport(otherTab, exportedTabs, localTabs);
+            _searchedParentTabs.Clear();
             if (localTab != null)
             {
                 localTab.TabSettings.Remove("TabImported");
@@ -195,8 +199,12 @@ namespace Dnn.ExportImport.Components.Services
                         var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
                         {
-                            Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                            return;
+                            if (!isParentPresent)
+                            {
+                                Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                                return;
+                            }
+                            AddIntoPartialImportedTabs(otherTab);
                         }
                         var urlTabId = -1;
                         var tabType = Globals.GetURLType(otherTab.Url);
@@ -205,8 +213,12 @@ namespace Dnn.ExportImport.Components.Services
                             urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
                             if (urlTabId == -1)
                             {
-                                Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                                return;
+                                if (!isParentPresent)
+                                {
+                                    Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                                    return;
+                                }
+                                AddIntoPartialImportedTabs(otherTab);
                             }
                         }
 
@@ -231,6 +243,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 localTab.Url = otherTab.Url;
                             }
+                            SetPartialImportSettings(otherTab, localTab);
                             _tabController.UpdateTab(localTab);
                         }
                         catch (Exception ex)
@@ -257,8 +270,12 @@ namespace Dnn.ExportImport.Components.Services
                 var parentId = IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 if (parentId == -1 && otherTab.ParentId > 0)
                 {
-                    Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                    return;
+                    if (!isParentPresent)
+                    {
+                        Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                        return;
+                    }
+                    AddIntoPartialImportedTabs(otherTab);
                 }
                 var urlTabId = -1;
                 var tabType = Globals.GetURLType(otherTab.Url);
@@ -267,8 +284,12 @@ namespace Dnn.ExportImport.Components.Services
                     urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
                     if (urlTabId == -1)
                     {
-                        Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                        return;
+                        if (!isParentPresent)
+                        {
+                            Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                            return;
+                        }
+                        AddIntoPartialImportedTabs(otherTab);
                     }
                 }
 
@@ -284,6 +305,7 @@ namespace Dnn.ExportImport.Components.Services
                         localTab.Url = otherTab.Url;
                     }
                     localTab.UniqueId = Guid.NewGuid();
+                    SetPartialImportSettings(otherTab, localTab);
                     otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
                     localTabs.Add(localTab);
                 }
@@ -326,6 +348,7 @@ namespace Dnn.ExportImport.Components.Services
                     RestoreTab(tab, portalSettings);
                 }
             }
+            UpdateParentInPartialImportTabs(localTab, otherTab, portalId, exportedTabs, localTabs);
         }
 
         public void RestoreTab(TabInfo tab, PortalSettings portalSettings)
@@ -1322,7 +1345,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             _dataProvider.UpdateUniqueId("TabModules", "TabModuleID", tabModuleId, uniqueId);
         }
-        
+
 
         #endregion
 
@@ -1733,6 +1756,133 @@ namespace Dnn.ExportImport.Components.Services
             var workflow = WorkflowManager.Instance.GetWorkflow(state.WorkflowID);
             if (workflow == null) return true;
             return workflow.LastState.StateID == stateId;
+        }
+
+        private bool IsParentTabPresentInExport(ExportTab exportedTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
+        {
+            var isParentPresent = true;
+            var parentId = exportedTab.ParentId.GetValueOrDefault(Null.NullInteger);
+            int parentIdUrl;
+            var isTabUrlParsed = int.TryParse(exportedTab.Url, out parentIdUrl);
+
+            if (parentId != -1 || isTabUrlParsed)
+            {
+                if (parentId != -1)
+                {
+                    if (IsParentAlreadyCheck(parentId))
+                    {
+                        return true;
+                    }
+
+                    var localParentFound = localTabs.FirstOrDefault(t => t.TabID == parentId);
+
+                    if (localParentFound == null)
+                    {
+                        var parentFound = exportedTabs.FirstOrDefault(t => t.TabId == parentId);
+                        if (parentFound != null)
+                        {
+                            AddToParentSearched(parentFound, true);
+                            isParentPresent = IsParentTabPresentInExport(parentFound, exportedTabs, localTabs);
+                            return isParentPresent;
+                        }
+                        else
+                        {
+                            isParentPresent = false;
+                        }
+                    }
+                    else
+                    {
+                        return isParentPresent;
+                    }
+                }
+
+                if (isTabUrlParsed)
+                {
+                    if (IsParentAlreadyCheck(parentIdUrl))
+                    {
+                        return true;
+                    }
+
+                    var localParentFound = localTabs.FirstOrDefault(t => t.TabID == parentIdUrl);
+
+                    if (localParentFound == null)
+                    {
+                        var parentFound = exportedTabs.FirstOrDefault(t => t.TabId == parentIdUrl);
+                        if (parentFound != null)
+                        {
+                            AddToParentSearched(parentFound, false);
+                            isParentPresent = IsParentTabPresentInExport(parentFound, exportedTabs, localTabs);
+                        }
+                        else
+                        {
+                            isParentPresent = false;
+                        }
+                    }
+                }
+            }
+            return isParentPresent;
+        }
+
+        private bool IsParentAlreadyCheck(int parentId)
+        {
+            return _searchedParentTabs.ContainsKey(parentId);
+        }
+
+        private void AddToParentSearched(ExportTab parentFound, bool isParentId)
+        {
+            if (!_searchedParentTabs.ContainsKey(parentFound.TabId))
+            {
+                _searchedParentTabs.Add(parentFound.TabId, isParentId);
+            }
+        }
+
+        private void UpdateParentInPartialImportTabs(TabInfo localTab, ExportTab parentExportedTab, int portalId, IList<ExportTab> exportTabs, IList<TabInfo> localTabs)
+        {
+            var parentId = parentExportedTab.TabId;
+
+            var tabsToUpdateGuids = _partialImportedTabs.Where(t => t.Value == parentId).ToList();
+
+            foreach (var tabGuid in tabsToUpdateGuids)
+            {
+                var localTabToUpdate = localTabs.FirstOrDefault(t => t.LocalizedVersionGuid == tabGuid.Key);
+
+                if (localTabToUpdate != null)
+                {
+                    var tabWithoutParentId = _tabController.GetTab(localTabToUpdate.TabID, portalId);
+
+                    if (tabWithoutParentId != null)
+                    {
+                        tabWithoutParentId.ParentId = localTab.TabID;
+
+                        var exportedTab = exportTabs.FirstOrDefault(t => t.LocalizedVersionGuid == tabGuid.Key);
+                        if (exportedTab != null)
+                        {
+                            tabWithoutParentId.IsVisible = exportedTab.IsVisible;
+                        }
+
+                        _tabController.UpdateTab(tabWithoutParentId);
+                        _partialImportedTabs.Remove(tabGuid.Key);
+                    }
+                }
+            }
+        }
+
+        private void SetPartialImportSettings(ExportTab exportedTab, TabInfo localTab)
+        {
+            if (_partialImportedTabs.ContainsKey(exportedTab.LocalizedVersionGuid) && (exportedTab.ParentId.GetValueOrDefault(Null.NullInteger) != -1))
+            {
+                localTab.ParentId = -1;
+                localTab.IsVisible = false;
+            }
+        }
+
+        private void AddIntoPartialImportedTabs(ExportTab tabToExport)
+        {
+            var exportTabParentId = tabToExport.ParentId.GetValueOrDefault(Null.NullInteger);
+            if (!_partialImportedTabs.ContainsKey(tabToExport.LocalizedVersionGuid) && exportTabParentId != -1)
+            {
+                _partialImportedTabs.Add(tabToExport.LocalizedVersionGuid, exportTabParentId);
+            }
         }
 
         #endregion

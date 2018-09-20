@@ -163,6 +163,12 @@ namespace DotNetNuke.Entities.Portals
             }
             string mappedHomeDirectory = String.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
 
+            if(Directory.Exists(mappedHomeDirectory))
+            {
+                message += string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
+                throw new Exception(message);
+            }
+
             message += CreateProfileDefinitions(portalId, mergedTemplatePath);
 
             if (String.IsNullOrEmpty(message))
@@ -1012,7 +1018,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.ToUpperInvariant() == "TRUE");
+                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
                 }
             }
             catch (Exception exc)
@@ -3104,7 +3110,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.ToUpperInvariant() == "TRUE");
+                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
                 }
             }
             catch (Exception exc)
@@ -3135,7 +3141,7 @@ namespace DotNetNuke.Entities.Portals
 				}
 				else
 				{
-					retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.ToUpperInvariant() == "TRUE");
+					retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
 				}
 			}
 			catch (Exception exc)

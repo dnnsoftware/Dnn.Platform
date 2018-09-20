@@ -134,7 +134,7 @@ namespace DotNetNuke.Entities.Modules
         public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
             return (from kvp in GetModuleControls()
-                    where kvp.Value.ControlKey.ToLowerInvariant() == controlKey.ToLowerInvariant() 
+                    where kvp.Value.ControlKey.Equals(controlKey, StringComparison.InvariantCultureIgnoreCase)
                                 && kvp.Value.ModuleDefID == moduleDefID
                     select kvp.Value)
                    .FirstOrDefault();

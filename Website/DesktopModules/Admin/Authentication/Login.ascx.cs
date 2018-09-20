@@ -356,6 +356,26 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
+		/// <summary>
+		/// Gets and sets the current UserName
+		/// </summary>
+		protected string UserName
+		{
+			get
+			{
+				var userName = "";
+				if (ViewState["UserName"] != null)
+				{
+                    userName = Convert.ToString(ViewState["UserName"]);
+				}
+				return userName;
+			}
+			set
+			{
+				ViewState["UserName"] = value;
+			}
+		}
+
         #endregion
 
         #region Private Methods
@@ -387,10 +407,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     //Figure out if known Auth types are enabled (so we can improve perf and stop loading the control)
                     bool enabled = true;
-                    if (authSystem.AuthenticationType == "Facebook" || authSystem.AuthenticationType == "Google"
-                        || authSystem.AuthenticationType == "Live" || authSystem.AuthenticationType == "Twitter")
+                    if (authSystem.AuthenticationType.Equals("Facebook") || authSystem.AuthenticationType.Equals("Google")
+                        || authSystem.AuthenticationType.Equals("Live") || authSystem.AuthenticationType.Equals("Twitter"))
                     {
-                        enabled = PortalController.GetPortalSettingAsBoolean(authSystem.AuthenticationType + "_Enabled", PortalId, false);
+                        enabled = AuthenticationController.IsEnabledForPortal(authSystem, PortalSettings.PortalId);
                     }
 
                     if (enabled)
@@ -400,6 +420,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         if (authSystem.AuthenticationType == "DNN")
                         {
                             defaultLoginControl = authLoginControl;
+                            pnlLoginContainer.Visible = true;
                         }
 
                         //Check if AuthSystem is Enabled
@@ -585,7 +606,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
-            pnlLoginContainer.Visible = true;
         }
 
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
@@ -633,8 +653,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private string GenerateUserName()
         {
-            //Try the best username. Default it to UserToken
-            var userName = UserToken.Replace("http://", "").TrimEnd('/');
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                return UserName;
+            }
 
             //Try Email prefix
             var emailPrefix = string.Empty;
@@ -707,7 +729,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            return userName;
+            return UserToken.Replace("http://", "").TrimEnd('/');
         }
 
         /// -----------------------------------------------------------------------------
@@ -1236,6 +1258,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         AuthenticationType = e.AuthenticationType;
                         ProfileProperties = e.Profile;
                         UserToken = e.UserToken;
+                        UserName = e.UserName;
                         if (AutoRegister)
                         {
                             InitialiseUser();

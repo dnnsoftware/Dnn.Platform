@@ -421,5 +421,12 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="localizedTab">The localized tab.</param>
         /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
         void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
+
+        /// <summary>
+        /// Refresh the tabinfo in cache object of portal tabs collection, use this instead of clear the whole cache to improve performance.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        void RefreshCache(int portalId, int tabId);
     }
 }

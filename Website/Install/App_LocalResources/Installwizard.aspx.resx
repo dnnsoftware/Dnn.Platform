@@ -225,13 +225,13 @@ for people using the product. All of the data is anonymous and for internal use 
     <value>Your database user does not have dbo permissions</value>
   </data>
   <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DotNetNuke requires .net 4.0 or higher to work</value>
+    <value>DNN requires .net 4.0 or higher to work</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
     <value>Checking database version is SQL 2008 (express or full product) or higher to work</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke requires SQL 2008 (express or full product) to work</value>
+    <value>DNN requires SQL 2008 (express or full product) to work</value>
   </data>
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>

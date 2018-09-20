@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security;
-
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
@@ -142,10 +142,11 @@ namespace DotNetNuke.Entities.Tabs
         {
             List<TabInfo> localizedTabCollection;
 
-            if (!_localizedTabs.TryGetValue(cultureCode.ToLowerInvariant(), out localizedTabCollection))
+            var key = cultureCode.ToLowerInvariant();
+            if (!_localizedTabs.TryGetValue(key, out localizedTabCollection))
             {
                 localizedTabCollection = new List<TabInfo>();
-                _localizedTabs.Add(cultureCode.ToLowerInvariant(), localizedTabCollection);
+                _localizedTabs.Add(key, localizedTabCollection);
             }
 
             //Add tab to end of localized tabs
@@ -327,6 +328,24 @@ namespace DotNetNuke.Entities.Tabs
         public TabInfo WithTabName(string tabName)
         {
             return (from t in _list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+        }
+
+        internal void RefreshCache(int tabId, TabInfo updatedTab)
+        {
+            if (ContainsKey(tabId))
+            {
+                Remove(tabId);
+                _list.RemoveAll(t => t.TabID == tabId);
+                _localizedTabs.ForEach(kvp =>
+                {
+                    kvp.Value.RemoveAll(t => t.TabID == tabId);
+                });
+            }
+
+            if (updatedTab != null)
+            {
+                Add(updatedTab);
+            }
         }
 
         #endregion
