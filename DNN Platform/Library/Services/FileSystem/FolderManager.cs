@@ -619,12 +619,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            if (!recursive)
-            {
-                return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles));
-            }
-            
-            return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFilesRecursive(folder.PortalID, folder.FolderPath, retrieveUnpublishedFiles));
+            return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, recursive, retrieveUnpublishedFiles));
         }
 
         /// <summary>

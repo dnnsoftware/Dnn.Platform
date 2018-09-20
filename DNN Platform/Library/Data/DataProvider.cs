@@ -1733,12 +1733,12 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
         {
-            return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles);
+            return ExecuteReader("GetFiles", folderId, false, retrieveUnpublishedFiles);
         }
 
-        public virtual IDataReader GetFilesRecursive(int portalId, string parentFolderPath, bool retrieveUnpublishedFiles = false)
+        public virtual IDataReader GetFiles(int folderId, bool recusive, bool retrieveUnpublishedFiles)
         {
-            return ExecuteReader("GetFilesRecursive", portalId, parentFolderPath, retrieveUnpublishedFiles);
+            return ExecuteReader(recusive ? "GetFilesRecursive" : "GetFiles", folderId, retrieveUnpublishedFiles);
         }
 
         /// <summary>
