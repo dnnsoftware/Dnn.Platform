@@ -144,7 +144,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
     FROM  	    {databaseOwner}[{objectQualifier}Journal] AS j
 				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
 				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
-				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey
 				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
 				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
 				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
