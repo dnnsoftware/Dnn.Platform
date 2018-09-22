@@ -101,6 +101,58 @@ END
 
 GO
 
+/***** DNN-24542: Journal_GET SP Performance: Timing out when 1k+ Friends. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    DECLARE @RegisteredRoleId INT
+    SELECT  @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+    SELECT  	j.JournalId, 
+				j.JournalTypeId, 
+				j.Title, 
+				j.Summary, 
+				j.UserId, 
+				j.DateCreated, 
+				j.DateUpdated, 
+				j.PortalId,
+				j.ProfileId, 
+				j.GroupId, 
+				j.ObjectKey, 
+				j.AccessKey,
+				'JournalOwner' = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				'JournalAuthor' = CASE WHEN ISNULL(a.UserId, -1) > 0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				'JournalOwnerId' = ISNULL(j.ProfileId,j.UserId),
+				jt.Icon, 
+				jt.JournalType,
+				'Profile' = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				'SimilarCount' = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, 
+				ContentItemId, 
+				j.ItemData, 
+				j.IsDeleted, 
+				j.CommentsDisabled, 
+				j.CommentsHidden
+    FROM  	    {databaseOwner}[{objectQualifier}Journal] AS j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE		(@SecurityCheck = 0 OR (@SecurityCheck = 1 AND t.seckey IS NOT NULL)) AND
+				((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) OR 
+				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
