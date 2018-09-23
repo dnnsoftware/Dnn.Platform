@@ -75,10 +75,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         #region Private Members
 
+        private const string QUESTION_MARK = "?";
+        private const string SLASH = "/";
+        private const string LOGIN_PATH = "/login";
+
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
-        private const string LOGIN_PATH = "/login";
 
         #endregion
 
@@ -199,15 +202,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
 
                 var alias = PortalAlias.HTTPAlias;
-                var comparison = StringComparison.InvariantCultureIgnoreCase;
-                var isDefaultPage = redirectURL == "/"
-                    || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
-                
+                var aliasWithoutDomain = alias.Substring(Request.Url.Host.Length);
+                var redirectURLTrimmed = RemoveQueryStrings(redirectURL).TrimEnd(SLASH.ToCharArray());
+
+                var isDefaultPage = redirectURL == SLASH ||
+                    (aliasWithoutDomain.Contains(SLASH)
+                        && aliasWithoutDomain.Contains(redirectURLTrimmed));
+
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
                     if (
-                        NeedRedirectAfterLogin 
-                        && (isDefaultPage || IsRedirectingFromLoginUrl()) 
+                        NeedRedirectAfterLogin
+                        && (isDefaultPage || IsRedirectingFromLoginUrl())
                         && Convert.ToInt32(setting) != Null.NullInteger
                         )
                     {
@@ -226,9 +232,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             redirectURL = Globals.NavigateURL();
                         }
                     }
-
                 }
-
 
                 //replace language parameter in querystring, to make sure that user will see page in correct language
                 if (UserId != -1 && User != null)
@@ -242,8 +246,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
 
                 //check for insecure account defaults
-                var qsDelimiter = "?";
-                if (redirectURL.Contains("?"))
+                var qsDelimiter = QUESTION_MARK;
+                if (redirectURL.Contains(QUESTION_MARK))
                 {
                     qsDelimiter = "&";
                 }
@@ -259,14 +263,24 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
+        private string RemoveQueryStrings(string urlWithQueryString)
+        {
+            var lastIndexOfQuery = urlWithQueryString.LastIndexOf(QUESTION_MARK);
+            if (lastIndexOfQuery > -1)
+            {
+                urlWithQueryString = urlWithQueryString.Remove(lastIndexOfQuery);
+            }
+            return urlWithQueryString;
+        }
+
         private bool IsRedirectingFromLoginUrl()
         {
-            return Request.UrlReferrer != null && 
+            return Request.UrlReferrer != null &&
                 Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
-        private bool NeedRedirectAfterLogin => 
-               LoginStatus == UserLoginStatus.LOGIN_SUCCESS 
+        private bool NeedRedirectAfterLogin =>
+               LoginStatus == UserLoginStatus.LOGIN_SUCCESS
             || LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
@@ -356,25 +370,25 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-		/// <summary>
-		/// Gets and sets the current UserName
-		/// </summary>
-		protected string UserName
-		{
-			get
-			{
-				var userName = "";
-				if (ViewState["UserName"] != null)
-				{
+        /// <summary>
+        /// Gets and sets the current UserName
+        /// </summary>
+        protected string UserName
+        {
+            get
+            {
+                var userName = "";
+                if (ViewState["UserName"] != null)
+                {
                     userName = Convert.ToString(ViewState["UserName"]);
-				}
-				return userName;
-			}
-			set
-			{
-				ViewState["UserName"] = value;
-			}
-		}
+                }
+                return userName;
+            }
+            set
+            {
+                ViewState["UserName"] = value;
+            }
+        }
 
         #endregion
 
