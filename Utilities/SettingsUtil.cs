@@ -793,6 +793,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             hshModSet = hshModSet ?? new Hashtable();
+
             var roles = new ArrayList();
 
             // Import all Editor config settings
@@ -964,15 +965,15 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                        where
                                            !string.IsNullOrEmpty(
                                                (string)
-                                               hshModSet[string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS)])
+                                               hshModSet[string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS)])
                                        let uploadFileLimit =
                                            (string)
-                                           hshModSet[string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS)]
+                                           hshModSet[string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS)]
                                        select
                                            new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
                 .ToList();
 
-            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS)]))
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS)]))
             {
                 listUploadSizeRoles.Add(
                     new UploadSizeRoles
