@@ -1767,10 +1767,7 @@ namespace DotNetNuke.Security.Membership
             //Global Data Store but not in the Local DataStore ie. A shared Global Data Store
 
             //Initialise Login Status to Failure
-            loginStatus = UserLoginStatus.LOGIN_FAILURE;
-
-            DataCache.ClearUserCache(portalId, username);
-            DataCache.ClearCache(GetCacheKey(username));
+            loginStatus = UserLoginStatus.LOGIN_FAILURE;       
 
             //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
@@ -1794,7 +1791,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;                      
                     }
                 }
 
@@ -1830,7 +1827,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
 
-                }
+                }                
 
                 //Verify User Credentials
                 bool bValid = false;
@@ -1840,6 +1837,9 @@ namespace DotNetNuke.Security.Membership
                     //Clear the user object
                     user = null;
                 }
+
+                DataCache.ClearUserCache(portalId, username);
+                DataCache.ClearCache(GetCacheKey(username));
             }
             else
             {
