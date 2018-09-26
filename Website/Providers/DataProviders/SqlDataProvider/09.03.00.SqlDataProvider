@@ -107,8 +107,8 @@ GO
 
 CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
 AS
-    SELECT
         M.PortalID AS [OwnerPortalID],
+        DM.PackageID,
         T.PortalID,
         TM.TabID,
         TM.TabModuleID,
@@ -123,13 +123,9 @@ AS
         TM.Color,
         TM.Border,
         {databaseOwner}{objectQualifier}FilePath(T.IconFile) AS IconFile,
-        M.AllTabs,
         TM.Visibility,
-        TM.IsDeleted,
         TM.Header,
         TM.Footer,
-        M.StartDate,
-        M.EndDate,
         TM.ContainerSrc,
         TM.DisplayTitle,
         TM.DisplayPrint,
@@ -138,11 +134,27 @@ AS
         TM.WebSliceTitle,
         TM.WebSliceExpiryDate,
         TM.WebSliceTTL,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode,
+        M.AllTabs,
+        M.StartDate,
+        M.EndDate,
+        T.StartDate AS TabStartDate,
+        T.EndDate AS TabEndDate,
         M.InheritViewPermissions,
         M.IsShareable,
         M.IsShareableViewOnly,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
         MD.DesktopModuleID,
         MD.DefaultCacheTime,
+        MD.DefinitionName,
         MC.ModuleControlID,
         DM.BusinessControllerClass,
         DM.IsAdmin,
@@ -153,17 +165,10 @@ AS
         CI.ContentKey,
         CI.Indexed,
         CI.StateID,
-        M.CreatedByUserID,
-        M.CreatedOnDate,
-        M.LastModifiedByUserID,
-        M.LastModifiedOnDate,
-        M.LastContentModifiedOnDate,
-        TM.UniqueId,
-        TM.VersionGuid,
-        TM.DefaultLanguageGuid,
-        TM.LocalizedVersionGuid,
-        TM.CultureCode
-    FROM        {databaseOwner}[{objectQualifier}ModuleDefinitions] AS MD
+        TM.IsDeleted AS IsDeleted,
+        M.IsDeleted  AS IsModuleDeleted,
+	T.IsDeleted  AS IsTabDeleted
+     FROM        {databaseOwner}[{objectQualifier}ModuleDefinitions] AS MD
      INNER JOIN {databaseOwner}[{objectQualifier}Modules]           AS M  ON MD.ModuleDefID     = M.ModuleDefID
      INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls]    AS MC ON MD.ModuleDefID     = MC.ModuleDefID
      INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules]    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
