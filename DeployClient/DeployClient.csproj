@@ -68,6 +68,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="package.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -80,5 +81,15 @@
       <Name>Encryption</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="gulpfile.js" />
+    <Content Include="project.config.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>gulp post-build-$(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>gulp pre-build-$(ConfigurationName)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
