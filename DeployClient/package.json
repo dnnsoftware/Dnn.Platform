@@ -1,0 +1,12 @@
+{
+  "name": "deploy-client",
+  "version": "0.7.0",
+  "main": "gulpfile.js",
+  "license": "Apache-2.0",
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-zip": "^4.2.0"
+  }
+}
