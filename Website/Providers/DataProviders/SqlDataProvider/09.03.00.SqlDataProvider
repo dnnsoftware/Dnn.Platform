@@ -147,8 +147,7 @@ AS
             F.ContentItemID,
             F.HasBeenPublished
         FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
-        WHERE ISNULL(F.PortalId, -1) = @PortalId
-        AND ((@Recursive = 1 AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
         ORDER BY [FolderID], [FileName]
     END
     ELSE BEGIN
@@ -183,8 +182,7 @@ AS
             F.ContentItemID,
             F.HasBeenPublished
         FROM {databaseOwner}[{objectQualifier}vw_Files] F            
-        WHERE ISNULL(F.PortalId, -1) = @PortalId
-        AND ((@Recursive = 1 AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
         ORDER BY [FolderID], [FileName]
     END
 GO
