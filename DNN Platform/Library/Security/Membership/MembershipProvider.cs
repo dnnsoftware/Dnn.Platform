@@ -119,6 +119,11 @@ namespace DotNetNuke.Security.Membership
             return null;
         }
 
+        public virtual UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             throw new NotImplementedException();
@@ -182,8 +187,7 @@ namespace DotNetNuke.Security.Membership
         {
             throw new NotImplementedException();
         }
-
-
+        
         #endregion
     }
 }

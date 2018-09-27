@@ -897,6 +897,9 @@
   <data name="CreatePortal.Error" xml:space="preserve">
     <value>Error creating site.</value>
   </data>
+  <data name="CreatePortalHomeFolderExists.Error" xml:space="preserve">
+    <value>Portal folder {0} is already used.</value>
+  </data>
   <data name="CreateAdminUser.Error" xml:space="preserve">
     <value>Error creating Administrator user account.</value>
   </data>
@@ -1970,5 +1973,11 @@ If you expect this addition, then just ignore this email; otherwise, an immediat
   </data>
   <data name="ModuleShared.Text" xml:space="preserve">
     <value>Shared Module</value>
+  </data>
+  <data name="OAuthConfigBase_HostConfig.Help" xml:space="preserve">
+    <value>Check this box to store this configuration at the host level so all portals will share configuration information for this authentication provider.</value>
+  </data>
+  <data name="OAuthConfigBase_HostConfig.Text" xml:space="preserve">
+    <value>Use Host Configuration? </value>
   </data>
 </root>

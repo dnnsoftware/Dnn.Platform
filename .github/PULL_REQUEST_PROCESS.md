@@ -47,6 +47,12 @@ Once a pull request has been reviewed by two individuals it may be merged and th
 
 This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
 
+### Stale Pull Requests
+
+The review team will work to respond to all pull requests in a timely fashion.  If changes or additional information is requested a pull request will remain open allowing the submitter to update their contribution accordingly.  If a request for additional information or changes is not completed with 90 days of request the Pull Request will be closed to keep the pipeline clear.  Once the needed information has been gathered the information can be re-submitted via a new Pull Request.  
+
+For expedited processing you may reference the prior Pull Request.
+
 ## Items for Future Releases
 If an item was submitted that will be integrated into a future release that is not currently in the development pipeline it is possible that the Pull Request will remain open. 
 
