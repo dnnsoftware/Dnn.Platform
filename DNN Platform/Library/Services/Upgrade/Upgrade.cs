@@ -3797,7 +3797,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static int AddPortal(XmlNode node, bool status, int indent)
+        public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
 
             int portalId = -1;
@@ -3867,7 +3867,8 @@ namespace DotNetNuke.Services.Upgrade
                     }
 
                     var template = FindBestTemplate(templateFileName);
-                    var userInfo = CreateUserInfo(firstName, lastName, username, password, email);
+                    var userInfo = superUser ?? CreateUserInfo(firstName, lastName, username, password, email);
+
 
                     //Create Portal
                     portalId = PortalController.Instance.CreatePortal(portalName,
@@ -4700,6 +4701,7 @@ namespace DotNetNuke.Services.Upgrade
                     // parse SuperUser if Available
                     UserInfo superUser = GetSuperUser(xmlDoc, true);
                     UserController.CreateUser(ref superUser);
+                    superUsers.Add(superUser);
                 }
 
                 // parse File List if available
@@ -4753,7 +4755,8 @@ namespace DotNetNuke.Services.Upgrade
                                 HttpContext.Current.Items.Add("InstallFromWizard", true);
                             }
 
-                            int portalId = AddPortal(node, true, 2);
+                            var portalHost = superUsers[0] as UserInfo;
+                            int portalId = AddPortal(node, true, 2, portalHost);
                             if (portalId > -1)
                             {
                                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "<font color='green'>Successfully Installed Site " + portalId + ":</font><br>");
