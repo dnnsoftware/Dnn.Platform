@@ -381,10 +381,6 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
-                BindUserGroupsGridView();
-
-                BindOptionsData();
-
                 SetLanguage();
 
                 FillInformations();
@@ -393,6 +389,10 @@ namespace DNNConnect.CKEditorProvider
                 FillSkinList();
 
                 FillFolders();
+
+                BindUserGroupsGridView();
+
+                BindOptionsData();
 
                 RenderUrlControls();
 
@@ -1118,18 +1118,38 @@ namespace DNNConnect.CKEditorProvider
             chblBrowsGr.Items.Clear();
 
             var portalId = _portalSettings?.PortalId ?? Host.HostPortalID;
+
             foreach (var objRole in GetRoles(portalId))
             {
+                var isAdmin = objRole.RoleName.Equals(PortalSettings.AdministratorRoleName);
                 var roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
-
-                if (objRole.RoleName.Equals(PortalSettings.AdministratorRoleName))
-                {
-                    roleItem.Selected = true;
-                    roleItem.Enabled = false;
-                }
-
+                roleItem.Selected = isAdmin || GetActiveRolesIds().Contains(objRole.RoleID);
+                roleItem.Enabled = !isAdmin;
+              
                 chblBrowsGr.Items.Add(roleItem);
             }
+        }
+
+        /// <summary>
+        /// Gets list of currently active file browser roles
+        /// </summary>
+        /// <returns></returns>
+        private List<int> GetActiveRolesIds()
+        {
+            List<int> activeRoles = new List<int>();
+
+            if (currentSettings?.BrowserRoles != null)
+            {
+                var rolesIds = currentSettings.BrowserRoles.Split(';');
+                foreach (string roleId in rolesIds)
+                {
+                    if (!string.IsNullOrEmpty(roleId) && !string.IsNullOrWhiteSpace(roleId))
+                    {
+                        activeRoles.Add(int.Parse(roleId.Trim()));
+                    }
+                }
+            }
+            return activeRoles;
         }
 
         /// <summary>
