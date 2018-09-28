@@ -3790,6 +3790,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
         }
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   AddPortal manages the Installation of a new DotNetNuke Portal
@@ -3927,6 +3928,19 @@ namespace DotNetNuke.Services.Upgrade
                 portalId = -1;
             }
             return portalId;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Obsolete, AddPortal manages the Installation of a new DotNetNuke Portal
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in DNN 9.3.0. Use the overloaded one with the 'superUser' parameter instead.")]
+        public static int AddPortal(XmlNode node, bool status, int indent)
+        {
+            return AddPortal(node, status, indent, null);
         }
 
         internal static UserInfo CreateUserInfo(string firstName, string lastName, string userName, string password, string email)
