@@ -58,7 +58,8 @@
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
                     supportsQuickSettings: supportsQuickSettings,
                     displayQuickSettings: displayQuickSettings,
-                    isShared : <% = IsShared.ToString().ToLower() %>
+                    isShared : <% = IsShared.ToString().ToLower() %>,
+                    moduleTitle: '<% = Localization.GetSafeJSString(ModuleTitle) %>'
                 }
             );
         }
