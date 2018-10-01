@@ -1768,7 +1768,7 @@ namespace DotNetNuke.Security.Membership
 
             //Initialise Login Status to Failure
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
-
+            
             DataCache.ClearUserCache(portalId, username);
             DataCache.ClearCache(GetCacheKey(username));
 
@@ -1794,7 +1794,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;                      
                     }
                 }
 
@@ -1832,6 +1832,8 @@ namespace DotNetNuke.Security.Membership
 
                 }
 
+                DataCache.ClearUserCache(portalId, username);
+
                 //Verify User Credentials
                 bool bValid = false;
                 loginStatus = ValidateLogin(username, authType, user, loginStatus, password, ref bValid, portalId);
@@ -1839,7 +1841,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     //Clear the user object
                     user = null;
-                }
+                }                              
             }
             else
             {
