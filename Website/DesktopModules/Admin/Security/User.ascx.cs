@@ -577,8 +577,8 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (IsValid)
                 {
-                    CreateUser();
-                    CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, PortalId));
+                    CreateUser();                    
+                    DataCache.ClearPortalUserCountCache(PortalId);
                 }
             }
             else
@@ -588,7 +588,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (User.UserID == PortalSettings.AdministratorId)
                     {
 						//Clear the Portal Cache
-                        DataCache.ClearPortalCache(UserPortalID, true);
+                        DataCache.ClearPortalUserCountCache(UserPortalID);
                     }
                     try
                     {

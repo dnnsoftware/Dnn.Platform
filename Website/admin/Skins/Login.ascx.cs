@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             enhancedLoginLink.Attributes.Add("onclick", oneclick);
 			            }
                         
-				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !HasSocialAuthenticationEnabled())
+				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
 				        {
 					        //To avoid duplicated encodes of URL
                             var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
@@ -182,19 +182,6 @@ namespace DotNetNuke.UI.Skins.Controls
 			        Exceptions.ProcessModuleLoadException(this, exc);
 		        }
 	        }
-        }
-
-        private bool HasSocialAuthenticationEnabled()
-        {
-            return (from a in AuthenticationController.GetEnabledAuthenticationServices()
-                               let enabled = (a.AuthenticationType == "Facebook" 
-                                                || a.AuthenticationType == "Google"
-                                                || a.AuthenticationType == "Live" 
-                                                || a.AuthenticationType == "Twitter")
-                                             ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.PortalId, false)
-                                             : !string.IsNullOrEmpty(a.LoginControlSrc) && (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
-                               where a.AuthenticationType != "DNN" && enabled
-                               select a).Any();
         }
 
 		#endregion
