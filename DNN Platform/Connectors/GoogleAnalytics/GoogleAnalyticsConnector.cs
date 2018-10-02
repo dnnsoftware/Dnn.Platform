@@ -54,6 +54,7 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
+        // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
         #endregion
@@ -68,14 +69,15 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public void DeleteConnector(int portalId)
         {
-           
+
+
         }
 
         public bool HasConfig(int portalId)
         {
             IDictionary<string, string> config = GetConfig(portalId);
 
-            return (config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"].ToString()));
+            return (config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]));
 
         }
 
@@ -114,7 +116,8 @@ namespace DNN.Connectors.GoogleAnalytics
             {
                 { "TrackingID", trackingId },
                 { "UrlParameter", urlParameter},
-                { "TrackAdministrators", trackForAdmin.ToString()}
+                { "TrackAdministrators", trackForAdmin.ToString()},
+                { "isDeactivating", false.ToString()}
             };
 
             return configItems;
@@ -122,27 +125,59 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
+            // Delete / Deactivation functionality added into SaveConfig because
+            // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
+
             customErrorMessage = string.Empty;
             bool isValid;
 
             try
             {
 
-                string trackingID = values["TrackingID"].ToString().Trim();
-                string urlParameter = values["UrlParameter"].ToString().Trim();
-                bool trackForAdmin = false;
+                bool isDeactivating = false;
+                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
-                trackForAdmin = bool.TryParse(values["TrackAdministrators"].ToLowerInvariant(), out trackForAdmin);
+                string trackingID;
+                string urlParameter;
+                bool trackForAdmin;
 
-                if (!String.IsNullOrEmpty(trackingID) && IsValidGoogleAnalyticsCode(trackingID))
+                isValid = true;
+
+
+                if (isDeactivating)
                 {
 
-                    isValid = true;
+                    trackingID = null;
+                    urlParameter = null;
+                    trackForAdmin = false;
+
+
+                }
+                else
+                {
+
+                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToString().Trim() : String.Empty;
+                    urlParameter = values["UrlParameter"] != null ? values["UrlParameter"].ToString().Trim() : String.Empty;
+                    trackForAdmin = bool.TryParse(values["TrackAdministrators"].ToLowerInvariant(), out trackForAdmin);
+
+                    if (String.IsNullOrEmpty(trackingID))
+                    {
+
+                        isValid = false;
+                        customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
+
+                    }
+
+                }
+
+                if (isValid)
+                {
 
                     var config = new AnalyticsConfiguration
                     {
                         Settings = new AnalyticsSettingCollection()
                     };
+
 
                     var setting = new AnalyticsSetting
                     {
@@ -169,14 +204,8 @@ namespace DNN.Connectors.GoogleAnalytics
                     config.Settings.Add(setting);
 
                     AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
-
-                } else
-                {
-
-                    customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
-
-                    isValid = false;
                 }
+
 
                 return isValid;
             }
@@ -189,18 +218,5 @@ namespace DNN.Connectors.GoogleAnalytics
 
         #endregion
 
-        #region Private Methods
-
-        private bool IsValidGoogleAnalyticsCode(string trackingCode)
-        {
-
-            bool isValid = false;
-
-            isValid = Regex.IsMatch(trackingCode, "^ua-\\d{4,10}(-\\d{1,4})?$");
-
-            return isValid;
-        }
-
-        #endregion
     }
 }

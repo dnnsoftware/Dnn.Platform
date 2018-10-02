@@ -117,14 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>Delete Connection</value>
+  </data>
   <data name="ConnectorName.Text" xml:space="preserve">
-    <value>Google Analytics Connector</value>
+    <value>Google Analytics Core Connector</value>
   </data>
   <data name="TrackAdministrators.Text" xml:space="preserve">
     <value>Track for Administrators:</value>
   </data>
   <data name="TrackingCodeFormat.ErrorMessage" xml:space="preserve">
-    <value>Incorrect Tracking Code Format</value>
+    <value>Tracking Code Cannot Be Empty</value>
   </data>
   <data name="TrackingID.Text" xml:space="preserve">
     <value>Tracking ID:</value>
