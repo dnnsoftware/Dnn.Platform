@@ -4,7 +4,7 @@
     var error = true;
 
     var defaultOptions = {
-        slowOperationMessage: "It appears you have a slow connection... We are processing your content"
+        slowOperationMessage: "We are processing your content, please wait..."
     };
 
     function loading(options) {
