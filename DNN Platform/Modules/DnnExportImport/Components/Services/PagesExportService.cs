@@ -982,69 +982,40 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
                 var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
-                var local = localModulePermissions.FirstOrDefault(
-                    x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
-                    && x.PermissionName.Equals(other.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
-                    x.RoleID == roleId && x.UserID == userId);
+                var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
 
-                var isUpdate = false;
-                if (local != null)
+                if (permissionId != null)
                 {
-                    switch (_importDto.CollisionResolution)
+
+                    var local = new ModulePermissionInfo
                     {
-                        case CollisionResolution.Overwrite:
-                            isUpdate = true;
-                            break;
-                        case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored tab permission", other.PermissionKey);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
-                    }
-                }
-
-                if (isUpdate)
-                {
-                    //UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
-                }
-                else
-                {
-                    var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
-
-                    if (permissionId != null)
+                        ModuleID = localModule.ModuleID,
+                        UserID = Null.NullInteger,
+                        RoleID = noRole,
+                        RoleName = other.RoleName,
+                        Username = other.Username,
+                        PermissionKey = other.PermissionKey,
+                        PermissionName = other.PermissionName,
+                        AllowAccess = other.AllowAccess,
+                        PermissionID = permissionId.Value
+                    };
+                    if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                     {
-
-                        local = new ModulePermissionInfo
-                        {
-                            ModuleID = localModule.ModuleID,
-                            UserID = Null.NullInteger,
-                            RoleID = noRole,
-                            RoleName = other.RoleName,
-                            Username = other.Username,
-                            PermissionKey = other.PermissionKey,
-                            PermissionName = other.PermissionName,
-                            AllowAccess = other.AllowAccess,
-                            PermissionID = permissionId.Value
-                        };
-                        if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
-                        {
-                            if (userId == null)
-                                continue;
-                            local.UserID = userId.Value;
-                        }
-                        if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
-                        {
-                            if (roleId == null)
-                                continue;
-                            local.RoleID = roleId.Value;
-                        }
-
-                        other.LocalId = localModule.ModulePermissions.Add(local, true);
-
-                        Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
-                        count++;
+                        if (userId == null)
+                            continue;
+                        local.UserID = userId.Value;
                     }
+                    if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
+                    {
+                        if (roleId == null)
+                            continue;
+                        local.RoleID = roleId.Value;
+                    }
+
+                    other.LocalId = localModule.ModulePermissions.Add(local, true);
+
+                    Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
+                    count++;
                 }
             }
 
