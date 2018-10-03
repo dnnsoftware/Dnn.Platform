@@ -3937,7 +3937,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in DNN 9.3.0. Use the overloaded one with the 'superUser' parameter instead.")]
+        [Obsolete("Deprecated in DNN 9.3.0, will be removed in 11.0.0. Use the overloaded method with the 'superUser' parameter instead.")]
         public static int AddPortal(XmlNode node, bool status, int indent)
         {
             return AddPortal(node, status, indent, null);
