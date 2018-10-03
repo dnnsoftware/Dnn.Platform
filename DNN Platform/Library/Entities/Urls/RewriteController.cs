@@ -1394,9 +1394,9 @@ namespace DotNetNuke.Entities.Urls
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); //decode the incoming request
 
             // below 810 check is taking care of lanugage code
-            var absoluteUriWithLanguageCode = Regex.Replace(absoluteUri, $"\\/{result.CultureCode}", string.Empty, RegexOptions.IgnoreCase);
+            var absoluteUriWithoutLanguageCode = Regex.Replace(absoluteUri, $"\\/{result.CultureCode}", string.Empty, RegexOptions.IgnoreCase);
 
-            string rewritePath = GetTabFromDictionary(absoluteUriWithLanguageCode, queryStringCol, settings, result, parentTraceId);
+            string rewritePath = GetTabFromDictionary(absoluteUriWithoutLanguageCode, queryStringCol, settings, result, parentTraceId);
             //put the query string back on the end
             rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
             //810 : if a culture code is not specified in the rewrite path
