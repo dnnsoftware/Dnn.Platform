@@ -217,6 +217,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SearchTabId = portal.SearchTabId;
             portalSettings.ErrorPage404 = portal.Custom404TabId;
             portalSettings.ErrorPage500 = portal.Custom500TabId;
+            portalSettings.TermsTabId = portal.TermsTabId;
+            portalSettings.PrivacyTabId = portal.PrivacyTabId;
             portalSettings.DefaultLanguage = Null.IsNull(portal.DefaultLanguage) ? Localization.SystemLocale : portal.DefaultLanguage;
             portalSettings.HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
             portalSettings.HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
