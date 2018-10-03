@@ -246,19 +246,23 @@ namespace DotNetNuke.Entities.Portals
 
 		public int UserTabId { get; set; }
 
-		#endregion
+        public int TermsTabId { get; set; }
 
-		#region Read-Only Properties
+		public int PrivacyTabId { get; set; }
+        
+        #endregion
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Allows users to select their own UI culture.
-		/// When set to false (default) framework will allways same culture for both
-		/// CurrentCulture (content) and CurrentUICulture (interface)
-		/// </summary>
-		/// <remarks>Defaults to False</remarks>
-		/// -----------------------------------------------------------------------------
-		public bool AllowUserUICulture { get; internal set; }
+        #region Read-Only Properties
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Allows users to select their own UI culture.
+        /// When set to false (default) framework will allways same culture for both
+        /// CurrentCulture (content) and CurrentUICulture (interface)
+        /// </summary>
+        /// <remarks>Defaults to False</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool AllowUserUICulture { get; internal set; }
 
         public int CdfVersion { get; internal set; }
 

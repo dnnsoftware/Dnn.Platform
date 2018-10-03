@@ -653,7 +653,8 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, string defaultLanguage,
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, 
+                                             int termsTabId, int privacyTabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
@@ -686,6 +687,8 @@ namespace DotNetNuke.Data
                                       GetNull(searchTabId),
                                       GetNull(custom404TabId),
                                       GetNull(custom500TabId),
+                                      GetNull(termsTabId),
+                                      GetNull(privacyTabId),
                                       GetNull(defaultLanguage),
                                       homeDirectory,
                                       lastModifiedByUserID,
@@ -701,7 +704,8 @@ namespace DotNetNuke.Data
         public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
                                               int registeredRoleId, int splashTabId, int homeTabId, int loginTabId,
                                               int registerTabId,
-                                               int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
+                                              int userTabId, int searchTabId, int custom404TabId, int custom500TabId,
+                                              int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalSetup",
                                       portalId,
@@ -716,6 +720,8 @@ namespace DotNetNuke.Data
                                       searchTabId,
                                       custom404TabId,
                                       custom500TabId,
+                                      termsTabId,
+                                      privacyTabId,
                                       adminTabId,
                                       cultureCode);
         }
