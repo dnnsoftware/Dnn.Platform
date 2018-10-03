@@ -1758,7 +1758,9 @@ CREATE TABLE {databaseOwner}[{objectQualifier}PortalLocalization]
 [RegisterTabId] [int] NULL,
 [SearchTabId] [int] NULL,
 [Custom404TabId] [int] NULL,
-[Custom500TabId] [int] NULL
+[Custom500TabId] [int] NULL,
+[TermsTabId] [int] NULL,
+[PrivacyTabId] [int] NULL
 )
 GO
 PRINT N'Creating primary key [PK_{objectQualifier}PortalLocalization] on {databaseOwner}[{objectQualifier}PortalLocalization]'
@@ -3140,6 +3142,8 @@ AS
         PL.SearchTabId,
         PL.Custom404TabId,
         PL.Custom500TabId,
+        PL.TermsTabId,
+        PL.PrivacyTabId,
         {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
         P.CreatedByUserID,
         P.CreatedOnDate,
@@ -3304,6 +3308,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
 	@SearchTabId			INT,
     @Custom404TabId			INT,
     @Custom500TabId			INT,
+    @TermsTabId				INT,
+    @PrivacyTabId			INT,
 	@DefaultLanguage		NVARCHAR(10),
 	@HomeDirectory			VARCHAR(100),
 	@LastModifiedByUserID	INT,
@@ -3351,6 +3357,8 @@ AS
 				SearchTabId				= @SearchTabId,
                 Custom404TabId			= @Custom404TabId,
                 Custom500TabId			= @Custom500TabId,
+				TermsTabId				= @TermsTabId,
+				PrivacyTabId			= @PrivacyTabId,
 				LastModifiedByUserID	= @LastModifiedByUserID,
 				LastModifiedOnDate		= GETDATE()
 		WHERE	PortalId = @PortalID 
@@ -3380,6 +3388,8 @@ ELSE
 			[SearchTabId],
             [Custom404TabId],
             [Custom500TabId],
+			[TermsTabId],
+			[PrivacyTabId],
 			[CreatedByUserID],
 			[CreatedOnDate],
 			[LastModifiedByUserID],
@@ -3402,6 +3412,8 @@ ELSE
 			@SearchTabId,
             @Custom404TabId,
             @Custom500TabId,
+			@TermsTabId,
+			@PrivacyTabId,
 			-1,
 			GETDATE(),
 			-1,
@@ -3485,6 +3497,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetup]
 	@SearchTabId            INT,
     @Custom404TabId         INT,
     @Custom500TabId         INT,
+	@TermsTabId				INT,
+	@PrivacyTabId			INT,
 	@AdminTabId				INT,
 	@CultureCode			NVARCHAR(50)
 
@@ -3506,7 +3520,9 @@ AS
 			SplashTabId = @SplashTabId,
 			SearchTabId = @SearchTabId,
             Custom404TabId = @Custom404TabId,
-            Custom500TabId = @Custom500TabId
+            Custom500TabId = @Custom500TabId,
+			TermsTabId = @TermsTabId,
+			PrivacyTabId = @PrivacyTabId
       WHERE portalID = @PortalID
 GO
 PRINT N'Creating {databaseOwner}[{objectQualifier}UpdateFolderVersion]'
