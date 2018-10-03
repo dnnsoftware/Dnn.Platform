@@ -2819,16 +2819,13 @@ namespace DotNetNuke.Entities.Portals
                     {
                         var homeDirectory = portal.HomeDirectoryMapPath;
                         // check whether home directory is not used by other portal
-                        // it happens when new portal creation failed, but home directory defined by user is alredy in use with other portal
-                        var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(
-                            x => x.PortalID != portal.PortalID &&
+                        // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
+                        var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x => 
+                            x.PortalID != portal.PortalID &&
                             x.HomeDirectoryMapPath.Equals(homeDirectory, StringComparison.OrdinalIgnoreCase));
+
                         if (!homeDirectoryInUse)
                         {
-                            if (homeDirectory.EndsWith("\\"))
-                            {
-                                homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
-                            }
                             if (Directory.Exists(homeDirectory))
                             {
                                 Globals.DeleteFolderRecursive(homeDirectory);
