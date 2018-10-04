@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Users
 
         public ProfilePropertyAccess(UserInfo user)
         {
-            this.user = user;     
+            this.user = user;
         }
 
         #region Private Members
