@@ -1731,9 +1731,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetFileVersionContent", fileId, version);
         }
 
-        public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
+        public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles, bool recursive)
         {
-            return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles);
+            return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles, recursive);
         }
 
         /// <summary>
@@ -4353,6 +4353,12 @@ namespace DotNetNuke.Data
                 //error in SQL query
                 return null;
             }
+        }
+
+        [Obsolete("Obsoleted in 9.3.0, please use GetFiles(int, bool, boo) instead. schedule to remove in 11.0.0.")]
+        public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
+        {
+            return GetFiles(folderId, retrieveUnpublishedFiles, false);
         }
 
         #endregion
