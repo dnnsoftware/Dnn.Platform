@@ -218,6 +218,7 @@ namespace DotNetNuke.Entities.Tabs
 				TabInfo localizedCopy = originalTab.Clone();
 				localizedCopy.TabID = Null.NullInteger;
 				localizedCopy.StateID = Null.NullInteger;
+			    localizedCopy.ContentItemId = Null.NullInteger;
 
 				//Set Guids and Culture Code
 				localizedCopy.UniqueId = Guid.NewGuid();
@@ -225,7 +226,14 @@ namespace DotNetNuke.Entities.Tabs
 				localizedCopy.LocalizedVersionGuid = Guid.NewGuid();
 				localizedCopy.CultureCode = locale.Code;
 				localizedCopy.TabName = localizedCopy.TabName + " (" + locale.Code + ")";
-				if (locale == defaultLocale)
+			    
+                //copy page tags
+			    foreach (var term in originalTab.Terms)
+			    {
+			        localizedCopy.Terms.Add(term);
+			    }
+
+                if (locale == defaultLocale)
 				{
 					originalTab.DefaultLanguageGuid = localizedCopy.UniqueId;
 					UpdateTab(originalTab);
@@ -268,10 +276,10 @@ namespace DotNetNuke.Entities.Tabs
 					UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
 				}
 
-				/* Tab versioning and workflow is disabled 
+                /* Tab versioning and workflow is disabled 
 				 * during the creation of the Localized copy
 				 */
-				DisableTabVersioningAndWorkflow(localizedCopy);
+                DisableTabVersioningAndWorkflow(localizedCopy);
 
 				//Make shallow copies of all modules
 				ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, allTabsModulesFromDefault);

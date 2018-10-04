@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Providers.FolderProviders</id>
-    <version>9.2.1</version>
+    <version>$version$</version>
     <title>DotNetNuke.Providers.FolderProviders</title>
     <authors>DNN Corp.</authors>
     <owners>DNN Corp.</owners>
@@ -11,7 +11,7 @@
     <copyright>DotNetNuke is copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
-    <file src="DNN.Platform\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\"/>
   </files>
 </package>
