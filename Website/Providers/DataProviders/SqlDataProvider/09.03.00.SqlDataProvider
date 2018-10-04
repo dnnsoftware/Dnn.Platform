@@ -148,7 +148,7 @@ AS
             F.HasBeenPublished
         FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
         WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
-        ORDER BY [FolderID], [FileName]
+        ORDER BY [Folder], [FileName]
     END
     ELSE BEGIN
         SELECT
@@ -183,7 +183,7 @@ AS
             F.HasBeenPublished
         FROM {databaseOwner}[{objectQualifier}vw_Files] F            
         WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
-        ORDER BY [FolderID], [FileName]
+        ORDER BY [Folder], [FileName]
     END
 GO
 
