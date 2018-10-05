@@ -707,12 +707,6 @@ namespace DotNetNuke.Security.Membership
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
-        private bool IsUserLocked(string userName)
-        {
-            var aspnetUser = System.Web.Security.Membership.GetUser(userName);
-            return aspnetUser?.IsLockedOut ?? false;
-        }
-
         #endregion
 
         #region Public Methods
@@ -1846,12 +1840,10 @@ namespace DotNetNuke.Security.Membership
                     //Clear the user object
                     user = null;
 
-                    if (IsUserLocked(username))
-                    {
-                        DataCache.ClearUserCache(portalId, username);
-                        DataCache.ClearCache(GetCacheKey(username));
-                    }
-                }                              
+                    //Clear cache for user so that locked out & other status could be updated
+                    DataCache.ClearUserCache(portalId, username);
+                    DataCache.ClearCache(GetCacheKey(username));
+                }
             }
             else
             {
