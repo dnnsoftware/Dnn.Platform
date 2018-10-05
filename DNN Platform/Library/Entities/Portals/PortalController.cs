@@ -1423,7 +1423,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
             {
-                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", ""));
+                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
             {
