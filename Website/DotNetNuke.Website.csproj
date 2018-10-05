@@ -805,6 +805,8 @@
     <Content Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
+    <Content Include="js\Debug\dnn.cookieconsent.js" />
+    <Content Include="js\dnn.cookieconsent.js" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
