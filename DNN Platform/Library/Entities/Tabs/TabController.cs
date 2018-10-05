@@ -2849,6 +2849,18 @@ namespace DotNetNuke.Entities.Tabs
                     newnode.InnerXml = "500tab";
                     tabNode.AppendChild(newnode);
                 }
+                else if (tab.TabID == portal.TermsTabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "termstab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.PrivacyTabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "privacytab";
+                    tabNode.AppendChild(newnode);
+                }
             }
             if (tabs != null)
             {
