@@ -45,7 +45,7 @@ export function renderObject(data, fieldOrder) {
     const columns = !fieldOrder || fieldOrder.length === 0 ? getColumnsFromRow(data) : fieldOrder;
     const rows = columns.map((fldName, index) => {
         const lbl = formatLabel(fldName);
-        const fldVal = data[fldName] ? data[fldName] : "";
+        const fldVal = data[fldName] !== undefined ? data[fldName].toString() : "";
         const cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
         if (cmd) {

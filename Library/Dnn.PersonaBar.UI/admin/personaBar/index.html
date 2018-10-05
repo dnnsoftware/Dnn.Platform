@@ -42,10 +42,12 @@
                             'data-hovermenu-id': menuItem.id + 'hovermenu',
                             'data-name': menuItem.displayName,
                             'class': 'btn_panel ' + (menuItem.css || ''),
-                            'href': menuItem.link
+                            'href': menuItem.link,
+                            'aria-haspopup': menuItem.menuItems.length > 0 ? 'true' : null,
+                            'aria-expanded': menuItem.menuItems.length > 0 ? 'false' : null
                         }">
                         <span data-bind="html: menuItem.displayName"></span>
-                        <span class="icon-loader" data-bind="visible: menuItem.icon.length > 0, attr: {'data-path': menuItem.icon}"></span>
+                        <span class="icon-loader" data-bind="visible: menuItem.icon.length > 0, attr: {'data-path': menuItem.icon, 'data-name': menuItem.displayName, 'data-id': menuItem.id}"></span>
                             <!-- ko if: menuItem.menuItems.length > 0 -->
                         <div class="hovermenu" data-bind="
                              attr: { 'id': menuItem.id + 'hovermenu' }, 

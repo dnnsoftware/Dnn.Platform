@@ -5,6 +5,10 @@ be extremely difficult for the core maintainers to reproduce. We want to keep it
 
 ## Getting Started
 
+If you are new to Dnn Development, you can start by watching this video playlist which explains how to setup the required tools, your development environment and submit pull requests for modules, this repository and the Persona Bar.
+
+[How to make a pull requests playlist](https://www.youtube.com/playlist?list=PLIx1M8IdVvqZ0bnODGqJyxvONNPj5BzMP)
+
 * Make sure you have a [GitHub account](https://github.com/signup/free)
 * [Submit a ticket](https://github.com/dnnsoftware/Dnn.AdminExperience/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
   * Clearly describe the issue including steps to reproduce when it is a bug.

@@ -8,8 +8,9 @@
         baseUrl: 'scripts/contrib/',
         paths: {
             'templatePath': '../../',
-            'cssPath': '../../css/',
-            'main': '../../scripts'
+            'cssPath': '../../css',
+            'main': '../../scripts',
+            'modules': '../../modules'
         },
         urlArgs: (cdv ? 'cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : ''),
         shim: {
@@ -967,7 +968,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $('#' + hoverMenuId).hide();
                                                         });
 
+                                                        // Set aria-expanded to true when menu is shown
                                                         $hoverMenu.show();
+                                                        $this.attr('aria-expanded', 'true');
+
                                                         // Fix ie personabar hover menús
                                                         showMenuHandlers.push(setTimeout(function () {
                                                             $('.hovermenu > ul').css('list-style-type', 'square');
@@ -996,7 +1000,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                         if (!activePath) {
                                                             $iframe.width(personaBarMenuWidth);
                                                         }
+                                                        // Set aria-expanded to false when menu is hidden
                                                         $hoverMenu.hide();
+                                                        $this.attr('aria-expanded', 'false');
 
                                                         resetHandlers();
                                                     }

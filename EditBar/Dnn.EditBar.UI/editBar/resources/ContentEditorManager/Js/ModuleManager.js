@@ -49,6 +49,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
             $this.addClass('dnnModuleManager');
             $this.append(this._generateLayout());
 
+            this._initPaneName();
             this._injectVisualEffects();
 
             this._handleEvents();
@@ -72,6 +73,13 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
 
         _generateLayout: function () {
             return $('<a href="#" class="addModuleHandler" aria-label="Add Module"><span></span></a><a href="#" class="addExistingModuleHandler" aria-label="Add Existing Module"><span></span></a>');
+        },
+
+        _initPaneName: function() {
+            if (!this.$pane.attr('data-name')) {
+                var paneName = this.$pane.attr('id').replace('dnn_', '');
+                this.$pane.attr('data-name', paneName);
+            }
         },
         
         _injectVisualEffects: function () {

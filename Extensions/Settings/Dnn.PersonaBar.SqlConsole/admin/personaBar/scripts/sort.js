@@ -24,7 +24,7 @@ define(['jquery', 'knockout'], function ($, ko) {
 
     var changeSort = function (e) {
         var $element = $(e.target);
-        var viewModel = ko.dataFor($element.parent()[0]);
+        var viewModel = ko.dataFor($element.parent().parent().parent()[0]);
         var column = ko.dataFor($element[0]);
 
 
@@ -55,10 +55,10 @@ define(['jquery', 'knockout'], function ($, ko) {
         sortType = viewModel.sortType();
 
         viewModel.currentPage(1);
-        $element.addClass('current');
-        $element.find('span.sort').removeClass('asc desc');
+        $element.parent().addClass('current');
+        $element.removeClass('asc desc');
         if (sortType === 1 || sortType === 2) {
-            $element.find('span.sort').addClass(sortType === 1 ? 'asc' : 'desc');
+            $element.addClass(sortType === 1 ? 'asc' : 'desc');
         }
     }
 
