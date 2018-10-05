@@ -707,6 +707,12 @@ namespace DotNetNuke.Security.Membership
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
+        private bool IsUserLocked(string userName)
+        {
+            var aspnetUser = System.Web.Security.Membership.GetUser(userName);
+            return aspnetUser?.IsLockedOut ?? false;
+        }
+
         #endregion
 
         #region Public Methods
@@ -1830,9 +1836,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
 
-                }
-
-                DataCache.ClearUserCache(portalId, username);
+                }                
 
                 //Verify User Credentials
                 bool bValid = false;
@@ -1841,6 +1845,12 @@ namespace DotNetNuke.Security.Membership
                 {
                     //Clear the user object
                     user = null;
+
+                    if (IsUserLocked(username))
+                    {
+                        DataCache.ClearUserCache(portalId, username);
+                        DataCache.ClearCache(GetCacheKey(username));
+                    }
                 }                              
             }
             else
