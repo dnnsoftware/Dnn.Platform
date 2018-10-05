@@ -263,6 +263,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.EnablePopUps = settings.GetValueOrDefault("EnablePopUps", true);
             portalSettings.HideLoginControl = settings.GetValueOrDefault("HideLoginControl", false);
             portalSettings.EnableSkinWidgets = settings.GetValueOrDefault("EnableSkinWidgets", true);
+            portalSettings.ShowCookieConsent = settings.GetValueOrDefault("ShowCookieConsent", false);
+            portalSettings.CookieMoreLink = settings.GetValueOrDefault("CookieMoreLink", Null.NullString);
             portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
             portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
             portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);

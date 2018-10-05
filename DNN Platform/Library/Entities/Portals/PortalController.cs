@@ -1421,8 +1421,16 @@ namespace DotNetNuke.Entities.Portals
                 UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
             }
 
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
+            {
+                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", ""));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
+            {
+                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", ""), true, currentCulture);
+            }
+
             //Enable AutoSAve feature
-            //Enable Skin Widgets Setting
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
             {
                 UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));

@@ -342,12 +342,26 @@ namespace DotNetNuke.Entities.Portals
 		/// -----------------------------------------------------------------------------
         public bool EnableSkinWidgets { get; internal set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets whether enable url language.
-		/// </summary>
-		/// <remarks>Defaults to True</remarks>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether a cookie consent popup should be shown
+        /// </summary>
+        /// <remarks>Defaults to False</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool ShowCookieConsent { get; internal set; }
+
+        /// <summary>
+        /// Link for the user to find out more about cookies. If not specified the link
+        /// shown will point to cookiesandyou.com
+        /// </summary>
+        public string CookieMoreLink { get; internal set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether enable url language.
+        /// </summary>
+        /// <remarks>Defaults to True</remarks>
+        /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
         public int ErrorPage404 { get; internal set; }

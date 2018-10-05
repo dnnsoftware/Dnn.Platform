@@ -11,6 +11,7 @@
     <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
     <containersrcadmin>[G]Containers/Xcillion/Title_h2.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
+    <showcookieconsent>False</showcookieconsent>
     <portalaliasmapping>CANONICALURL</portalaliasmapping>
     <contentlocalizationenabled>False</contentlocalizationenabled>
     <timezone>Pacific Standard Time</timezone>
