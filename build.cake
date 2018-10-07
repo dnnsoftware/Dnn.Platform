@@ -222,7 +222,7 @@ Task("CreateNugetPackages")
 		//basic nuget package configuration
 		var nuGetPackSettings = new NuGetPackSettings
 		{
-			Version = buildNumber,
+			Version = GetBuildNumber(),
 			OutputDirectory = @"./Artifacts/",
 			IncludeReferencedProjects = true,
 			Properties = new Dictionary<string, string>
