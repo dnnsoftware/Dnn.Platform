@@ -40,8 +40,8 @@
             </file>
           </files>
         </component>
-        <component type="Cleanup" version="01.10.03" fileName ="01.10.03.txt" />
-        <component type="Cleanup" version="01.11.03" fileName ="01.11.03.txt" />
+        <component type="Cleanup" version="01.10.03" fileName="01.10.03.txt" />
+        <component type="Cleanup" version="01.11.03" fileName="01.11.03.txt" />
       </components>
     </package>
   </packages>
