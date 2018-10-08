@@ -265,9 +265,9 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 //DNN-6093
                 //check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var isUserEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);                
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);                
 
-                if (isUserEmailAsUserName)
+                if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
                     userByEmail = UserController.GetUserByEmail(PortalId, userName);                     
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                 UserInfo objUser = null;
 
-                if (!isUserEmailAsUserName || userByEmail != null)
+                if (!emailUsedAsUsername || userByEmail != null)
                 {
                     objUser = UserController.ValidateUser(PortalId, userName, txtPassword.Text, "DNN", string.Empty, PortalSettings.PortalName, IPAddress, ref loginStatus);
                 }
@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
 
-                if (objUser != null && loginStatus != UserLoginStatus.LOGIN_FAILURE && isUserEmailAsUserName)
+                if (objUser != null && loginStatus != UserLoginStatus.LOGIN_FAILURE && emailUsedAsUsername)
                 {
                     //make sure internal username matches current e-mail address
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
