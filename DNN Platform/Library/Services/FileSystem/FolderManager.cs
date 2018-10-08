@@ -619,7 +619,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles, recursive));
+            return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles, recursive))
+                .Cast<IFileInfo>().ToList();
         }
 
         /// <summary>
