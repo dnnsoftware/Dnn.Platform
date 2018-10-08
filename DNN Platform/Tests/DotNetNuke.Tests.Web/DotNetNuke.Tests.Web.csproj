@@ -101,6 +101,7 @@
     <Compile Include="Api\ReflectedServiceRouteMappers.cs" />
     <Compile Include="Api\ServiceRoutingManagerTests.cs" />
     <Compile Include="Api\TypeLocatorTests.cs" />
+    <Compile Include="UrlRewrite\RewriteControllerUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

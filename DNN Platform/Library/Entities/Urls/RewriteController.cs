@@ -1394,8 +1394,8 @@ namespace DotNetNuke.Entities.Urls
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); //decode the incoming request
 
             // below 810 check is taking care of lanugage code
-            var absoluteUriWithoutLanguageCode = Regex.Replace(absoluteUri, $"\\/{result.CultureCode}", string.Empty, RegexOptions.IgnoreCase);
-
+            var absoluteUriWithoutLanguageCode = GetUrlWithLanguageCode(absoluteUri, result.CultureCode);
+            
             string rewritePath = GetTabFromDictionary(absoluteUriWithoutLanguageCode, queryStringCol, settings, result, parentTraceId);
             //put the query string back on the end
             rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
@@ -1418,6 +1418,11 @@ namespace DotNetNuke.Entities.Urls
             //set the rewrite path
             result.RewritePath = rewritePath;
             return result.DoRewrite;
+        }
+
+        public static string GetUrlWithLanguageCode(string absoluteUri, string cultureCode)
+        {
+            return Regex.Replace(absoluteUri, $"\\/{cultureCode}", string.Empty, RegexOptions.IgnoreCase);
         }
 
         internal static bool IdentifyByTabQueryString(Uri requestUri, NameValueCollection queryStringCol, bool useFriendlyUrls, UrlAction result)
