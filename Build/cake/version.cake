@@ -9,7 +9,14 @@ Task("GitVersion")
     version = GitVersion(new GitVersionSettings {
         UpdateAssemblyInfo = true,
         UpdateAssemblyInfoFilePath = @"SolutionInfo.cs"
-    });
+    });        
+    
+    if (BuildSystem.IsLocalBuild == false) 
+    {
+        GitVersion(new GitVersionSettings {
+            OutputType = GitVersionOutput.BuildServer
+        });
+    }
   });
 
 Task("UpdateDnnManifests")
