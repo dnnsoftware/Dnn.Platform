@@ -17,7 +17,7 @@ Task("GitVersion")
             OutputType = GitVersionOutput.BuildServer
         });
     }
-  });
+});
 
 Task("UpdateDnnManifests")
   .IsDependentOn("GitVersion")
