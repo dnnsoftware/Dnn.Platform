@@ -536,7 +536,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var dr = files.CreateDataReader();
 
-            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(dr).Verifiable();
+            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>(), It.IsAny<bool>())).Returns(dr).Verifiable();
 
             var filesList = new List<FileInfo> { new FileInfo() { FileName = Constants.FOLDER_ValidFileName } };
 
@@ -559,7 +559,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var dr = files.CreateDataReader();
 
-            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(dr);
+            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>(), It.IsAny<bool>())).Returns(dr);
 
             var filesList = new List<FileInfo> { new FileInfo { FileName = Constants.FOLDER_ValidFileName } };
 
@@ -583,7 +583,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var dr = files.CreateDataReader();
 
-            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(dr);
+            _mockData.Setup(md => md.GetFiles(Constants.FOLDER_ValidFolderId, It.IsAny<bool>(), It.IsAny<bool>())).Returns(dr);
 
             var filesList = new List<FileInfo>
                                 {
