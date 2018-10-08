@@ -1,4 +1,5 @@
 #addin Cake.XdtTransform
+#addin Cake.Powershell
 #addin "Cake.FileHelpers"
 #tool "nuget:?package=GitVersion.CommandLine&prerelease"
 
@@ -11,12 +12,9 @@ Task("GitVersion")
         UpdateAssemblyInfoFilePath = @"SolutionInfo.cs"
     });        
     
-    if (BuildSystem.IsLocalBuild == false) 
-    {
-        GitVersion(new GitVersionSettings {
-            OutputType = GitVersionOutput.BuildServer
-        });
-    }
+    StartPowershellScript("Write-Output", args => {
+        args.AppendQuoted($"##vso[build.updatebuildnumber]{version.FullSemVer}");
+    });
 });
 
 Task("UpdateDnnManifests")
