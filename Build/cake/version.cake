@@ -4,13 +4,20 @@
 
 GitVersion version;
 
+Task("BuildServerSetVersion")
+  .Does(() => {
+    GitVersion(new GitVersionSettings {
+      OutputType = GitVersionOutput.BuildServer
+    });
+});
+
 Task("GitVersion")
   .Does(() => {
     version = GitVersion(new GitVersionSettings {
         UpdateAssemblyInfo = true,
         UpdateAssemblyInfoFilePath = @"SolutionInfo.cs"
-    });
-  });
+    });        
+});
 
 Task("UpdateDnnManifests")
   .IsDependentOn("GitVersion")
