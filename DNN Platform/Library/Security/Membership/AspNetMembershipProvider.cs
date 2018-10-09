@@ -1861,9 +1861,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
 
-                }
-
-                DataCache.ClearUserCache(portalId, username);
+                }                
 
                 //Verify User Credentials
                 bool bValid = false;
@@ -1872,7 +1870,11 @@ namespace DotNetNuke.Security.Membership
                 {
                     //Clear the user object
                     user = null;
-                }                              
+
+                    //Clear cache for user so that locked out & other status could be updated
+                    DataCache.ClearUserCache(portalId, username);
+                    DataCache.ClearCache(GetCacheKey(username));
+                }
             }
             else
             {
