@@ -5,7 +5,6 @@
 GitVersion version;
 
 Task("BuildServerSetVersion")
-  .IsDependentOn("GitVersion")
   .Does(() => {
     GitVersion(new GitVersionSettings {
       OutputType = GitVersionOutput.BuildServer
