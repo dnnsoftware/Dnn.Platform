@@ -1,5 +1,5 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
-#tool "nuget:?package=NUnitTestAdapter&version=2.2.1"
+#tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
 var testAssemblies = GetFiles(@"**\bin\**\*test*.dll");
 testAssemblies -= GetFiles(@"**\*TestAdapter.dll");
