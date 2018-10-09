@@ -1,4 +1,3 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #load "local:?path=Build/cake/version.cake"
 #load "local:?path=Build/cake/unit-tests.cake"
 //////////////////////////////////////////////////////////////////////
@@ -97,7 +96,7 @@ Task("BuildAll")
 	});
 
 Task("CompileSource")
-    .IsDependentOn("GitVersion")
+    .IsDependentOn("UpdateDnnManifests")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 	{
@@ -111,7 +110,6 @@ Task("CompileSource")
 
 Task("CreateInstall")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -126,7 +124,6 @@ Task("CreateInstall")
 
 Task("CreateUpgrade")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -141,7 +138,6 @@ Task("CreateUpgrade")
     
 Task("CreateSymbols")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
