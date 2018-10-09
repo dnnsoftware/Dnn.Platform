@@ -270,7 +270,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
             
             //Get the files
-            var files = (List<IFileInfo>)FolderManager.Instance.GetFiles(currentFolderInfo);
+            var files = FolderManager.Instance.GetFiles(currentFolderInfo).ToList();
 
             if (SortFilesDescending)
             {
