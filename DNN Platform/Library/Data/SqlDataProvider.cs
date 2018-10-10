@@ -42,7 +42,7 @@ namespace DotNetNuke.Data
     public sealed class SqlDataProvider : DataProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
-        private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance();
+        private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
 
         #region Private Members
 
