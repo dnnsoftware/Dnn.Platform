@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module" version="09.02.02">
+    <package name="DNN_HTML" type="Module">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
@@ -191,18 +191,18 @@
             </resourceFile>
           </resourceFiles>
         </component>
-        <component type="Cleanup" version="04.05.00" fileName ="04.05.00.txt" />
-        <component type="Cleanup" version="04.06.00" fileName ="04.06.00.txt" />
-        <component type="Cleanup" version="04.06.01" fileName ="04.06.01.txt" />
-        <component type="Cleanup" version="04.07.00" fileName ="04.07.00.txt" />
-        <component type="Cleanup" version="04.08.01" fileName ="04.08.01.txt" />
-        <component type="Cleanup" version="05.01.00" fileName ="05.01.00.txt" />
-        <component type="Cleanup" version="05.01.02" fileName ="05.01.02.txt" />
-        <component type="Cleanup" version="05.01.03" fileName ="05.01.03.txt" />
-        <component type="Cleanup" version="05.01.04" fileName ="05.01.04.txt" />
-        <component type="Cleanup" version="05.02.00" fileName ="05.02.00.txt" />
-        <component type="Cleanup" version="05.04.03" fileName ="05.04.03.txt" />
-        <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
+        <component type="Cleanup" version="04.05.00" fileName="04.05.00.txt" />
+        <component type="Cleanup" version="04.06.00" fileName="04.06.00.txt" />
+        <component type="Cleanup" version="04.06.01" fileName="04.06.01.txt" />
+        <component type="Cleanup" version="04.07.00" fileName="04.07.00.txt" />
+        <component type="Cleanup" version="04.08.01" fileName="04.08.01.txt" />
+        <component type="Cleanup" version="05.01.00" fileName="05.01.00.txt" />
+        <component type="Cleanup" version="05.01.02" fileName="05.01.02.txt" />
+        <component type="Cleanup" version="05.01.03" fileName="05.01.03.txt" />
+        <component type="Cleanup" version="05.01.04" fileName="05.01.04.txt" />
+        <component type="Cleanup" version="05.02.00" fileName="05.02.00.txt" />
+        <component type="Cleanup" version="05.04.03" fileName="05.04.03.txt" />
+        <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
       </components>
     </package>
   </packages>

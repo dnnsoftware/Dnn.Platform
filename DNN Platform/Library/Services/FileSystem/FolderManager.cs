@@ -619,19 +619,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            var fileCollection = CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles));
-
-            var files = fileCollection.Cast<IFileInfo>().ToList();
-
-            if (recursive)
-            {
-                foreach (var subFolder in GetFolders(folder, true))
-                {
-                    files.AddRange(GetFiles(subFolder, false, retrieveUnpublishedFiles));
-                }
-            }
-
-            return files;
+            return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles, recursive));
         }
 
         /// <summary>

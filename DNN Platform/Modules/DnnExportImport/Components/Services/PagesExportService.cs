@@ -168,7 +168,7 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.LastProcessedId = index++;
                 CheckPoint.StageData = JsonConvert.SerializeObject(_totals);
             }
-
+            _searchedParentTabs.Clear();
             ReportImportTotals();
         }
 
@@ -182,7 +182,7 @@ namespace Dnn.ExportImport.Components.Services
                   && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
 
             var isParentPresent = IsParentTabPresentInExport(otherTab, exportedTabs, localTabs);
-            _searchedParentTabs.Clear();
+            
             if (localTab != null)
             {
                 localTab.TabSettings.Remove("TabImported");
@@ -204,7 +204,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                                 return;
                             }
-                            AddIntoPartialImportedTabs(otherTab);
+                            CheckForPartialImportedTabs(otherTab);
                         }
                         var urlTabId = -1;
                         var tabType = Globals.GetURLType(otherTab.Url);
@@ -218,7 +218,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                                     return;
                                 }
-                                AddIntoPartialImportedTabs(otherTab);
+                                CheckForPartialImportedTabs(otherTab);
                             }
                         }
 
@@ -275,7 +275,7 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                         return;
                     }
-                    AddIntoPartialImportedTabs(otherTab);
+                    CheckForPartialImportedTabs(otherTab);
                 }
                 var urlTabId = -1;
                 var tabType = Globals.GetURLType(otherTab.Url);
@@ -289,7 +289,7 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                             return;
                         }
-                        AddIntoPartialImportedTabs(otherTab);
+                        CheckForPartialImportedTabs(otherTab);
                     }
                 }
 
@@ -982,69 +982,40 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var userId = UserController.GetUserByName(_importDto.PortalId, other.Username)?.UserID;
                 var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
-                var local = localModulePermissions.FirstOrDefault(
-                    x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
-                    && x.PermissionName.Equals(other.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
-                    x.RoleID == roleId && x.UserID == userId);
+                var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
 
-                var isUpdate = false;
-                if (local != null)
+                if (permissionId != null)
                 {
-                    switch (_importDto.CollisionResolution)
+
+                    var local = new ModulePermissionInfo
                     {
-                        case CollisionResolution.Overwrite:
-                            isUpdate = true;
-                            break;
-                        case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored tab permission", other.PermissionKey);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
-                    }
-                }
-
-                if (isUpdate)
-                {
-                    //UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
-                }
-                else
-                {
-                    var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
-
-                    if (permissionId != null)
+                        ModuleID = localModule.ModuleID,
+                        UserID = Null.NullInteger,
+                        RoleID = noRole,
+                        RoleName = other.RoleName,
+                        Username = other.Username,
+                        PermissionKey = other.PermissionKey,
+                        PermissionName = other.PermissionName,
+                        AllowAccess = other.AllowAccess,
+                        PermissionID = permissionId.Value
+                    };
+                    if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                     {
-
-                        local = new ModulePermissionInfo
-                        {
-                            ModuleID = localModule.ModuleID,
-                            UserID = Null.NullInteger,
-                            RoleID = noRole,
-                            RoleName = other.RoleName,
-                            Username = other.Username,
-                            PermissionKey = other.PermissionKey,
-                            PermissionName = other.PermissionName,
-                            AllowAccess = other.AllowAccess,
-                            PermissionID = permissionId.Value
-                        };
-                        if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
-                        {
-                            if (userId == null)
-                                continue;
-                            local.UserID = userId.Value;
-                        }
-                        if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
-                        {
-                            if (roleId == null)
-                                continue;
-                            local.RoleID = roleId.Value;
-                        }
-
-                        other.LocalId = localModule.ModulePermissions.Add(local, true);
-
-                        Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
-                        count++;
+                        if (userId == null)
+                            continue;
+                        local.UserID = userId.Value;
                     }
+                    if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
+                    {
+                        if (roleId == null)
+                            continue;
+                        local.RoleID = roleId.Value;
+                    }
+
+                    other.LocalId = localModule.ModulePermissions.Add(local, true);
+
+                    Result.AddLogEntry("Added module permission", $"{other.PermissionKey} - {other.PermissionID}");
+                    count++;
                 }
             }
 
@@ -1781,7 +1752,7 @@ namespace Dnn.ExportImport.Components.Services
                         var parentFound = exportedTabs.FirstOrDefault(t => t.TabId == parentId);
                         if (parentFound != null)
                         {
-                            AddToParentSearched(parentFound, true);
+                            AddToParentSearched(parentFound.TabId, true);
                             isParentPresent = IsParentTabPresentInExport(parentFound, exportedTabs, localTabs);
                             return isParentPresent;
                         }
@@ -1810,7 +1781,7 @@ namespace Dnn.ExportImport.Components.Services
                         var parentFound = exportedTabs.FirstOrDefault(t => t.TabId == parentIdUrl);
                         if (parentFound != null)
                         {
-                            AddToParentSearched(parentFound, false);
+                            AddToParentSearched(parentFound.TabId, false);
                             isParentPresent = IsParentTabPresentInExport(parentFound, exportedTabs, localTabs);
                         }
                         else
@@ -1828,16 +1799,21 @@ namespace Dnn.ExportImport.Components.Services
             return _searchedParentTabs.ContainsKey(parentId);
         }
 
-        private void AddToParentSearched(ExportTab parentFound, bool isParentId)
+        private void AddToParentSearched(int tabId, bool isParentId)
         {
-            if (!_searchedParentTabs.ContainsKey(parentFound.TabId))
+            if (!_searchedParentTabs.ContainsKey(tabId))
             {
-                _searchedParentTabs.Add(parentFound.TabId, isParentId);
+                _searchedParentTabs.Add(tabId, isParentId);
             }
         }
 
         private void UpdateParentInPartialImportTabs(TabInfo localTab, ExportTab parentExportedTab, int portalId, IList<ExportTab> exportTabs, IList<TabInfo> localTabs)
         {
+            if (!_searchedParentTabs.ContainsKey(parentExportedTab.TabId))
+            {
+                return;
+            }
+
             var parentId = parentExportedTab.TabId;
 
             var tabsToUpdateGuids = _partialImportedTabs.Where(t => t.Value == parentId).ToList();
@@ -1852,12 +1828,19 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (tabWithoutParentId != null)
                     {
-                        tabWithoutParentId.ParentId = localTab.TabID;
-
-                        var exportedTab = exportTabs.FirstOrDefault(t => t.LocalizedVersionGuid == tabGuid.Key);
-                        if (exportedTab != null)
+                        if (_searchedParentTabs[parentExportedTab.TabId])
                         {
-                            tabWithoutParentId.IsVisible = exportedTab.IsVisible;
+                            tabWithoutParentId.ParentId = localTab.TabID;
+
+                            var exportedTab = exportTabs.FirstOrDefault(t => t.LocalizedVersionGuid == tabGuid.Key);
+                            if (exportedTab != null)
+                            {
+                                tabWithoutParentId.IsVisible = exportedTab.IsVisible;
+                            }
+                        }
+                        else
+                        {
+                            tabWithoutParentId.Url = localTab.TabID.ToString();
                         }
 
                         _tabController.UpdateTab(tabWithoutParentId);
@@ -1876,12 +1859,28 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void AddIntoPartialImportedTabs(ExportTab tabToExport)
+        private void CheckForPartialImportedTabs(ExportTab tabToExport)
         {
             var exportTabParentId = tabToExport.ParentId.GetValueOrDefault(Null.NullInteger);
-            if (!_partialImportedTabs.ContainsKey(tabToExport.LocalizedVersionGuid) && exportTabParentId != -1)
+
+            if (exportTabParentId == -1)
             {
-                _partialImportedTabs.Add(tabToExport.LocalizedVersionGuid, exportTabParentId);
+                if (int.TryParse(tabToExport.Url, out exportTabParentId))
+                {
+                    AddToPartialImportedTabs(tabToExport.LocalizedVersionGuid, exportTabParentId);
+                }
+            }
+            else
+            {
+                AddToPartialImportedTabs(tabToExport.LocalizedVersionGuid, exportTabParentId);
+            }
+        }
+
+        private void AddToPartialImportedTabs(Guid localizedVersionGuid, int exportTabParentId)
+        {
+            if (!_partialImportedTabs.ContainsKey(localizedVersionGuid) && exportTabParentId != -1)
+            {
+                _partialImportedTabs.Add(localizedVersionGuid, exportTabParentId);
             }
         }
 
