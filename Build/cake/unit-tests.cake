@@ -19,7 +19,7 @@ Task("EnsureAllProjectsBuilt")
   });
 
 Task("UnitTests")
-  //.IsDependentOn("EnsureAllProjectsBuilt")
+  .IsDependentOn("EnsureAllProjectsBuilt")
   .Does(() => 
   {
     testAssemblies.ToList().ForEach(Information);
