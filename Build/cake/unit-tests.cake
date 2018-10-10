@@ -1,7 +1,7 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-var testAssemblies = GetFiles(@$"**\bin\{configuration}\**\*test*.dll");
+var testAssemblies = GetFiles($@"**\bin\{configuration}\**\*test*.dll");
 testAssemblies -= GetFiles(@"**\*TestAdapter.dll");
 testAssemblies -= GetFiles(@"**\*Integration*.dll");
 testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Data.dll");
