@@ -8283,12 +8283,13 @@ $.widget( "ui.autocomplete", {
 			}
 		} );
 
+		var liveRegionContainer = this.element.closest("div.dnnForm") || this.document[0].body;
 		this.liveRegion = $( "<div>", {
 			role: "status",
 			"aria-live": "assertive",
 			"aria-relevant": "additions"
 		} )
-			.appendTo( this.document[ 0 ].body );
+			.appendTo( liveRegionContainer );
 
 		this._addClass( this.liveRegion, null, "ui-helper-hidden-accessible" );
 
