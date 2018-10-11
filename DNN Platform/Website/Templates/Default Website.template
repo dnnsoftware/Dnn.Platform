@@ -59,7 +59,7 @@
     <profiledefinition>
       <propertycategory>Basic</propertycategory>
       <propertyname>Biography</propertyname>
-      <datatype>RichText</datatype>
+      <datatype>Multi-line Text</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>
