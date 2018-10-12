@@ -23,7 +23,7 @@ Task("UnitTests")
     testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
   
     VSTest(testAssemblies, new VSTestSettings() { 
-      Logger = "trx",
+      Logger = "trx;LogFileName=TestResults.xml",
       Parallel = true,
       EnableCodeCoverage = true,
       FrameworkVersion = VSTestFrameworkVersion.NET45,
