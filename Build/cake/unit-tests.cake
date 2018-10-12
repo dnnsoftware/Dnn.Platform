@@ -1,12 +1,6 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-var testAssemblies = GetFiles($@"**\bin\{configuration}\*test*.dll");
-testAssemblies -= GetFiles(@"**\*TestAdapter.dll");
-testAssemblies -= GetFiles(@"**\*Integration*.dll");
-testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Data.dll");
-testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
-
 Task("EnsureAllProjectsBuilt")
   .IsDependentOn("CompileSource")
   .Does(() => 
@@ -22,7 +16,11 @@ Task("UnitTests")
   .IsDependentOn("EnsureAllProjectsBuilt")
   .Does(() => 
   {
-    testAssemblies.ToList().ForEach(Information);
+    var testAssemblies = GetFiles($@"**\bin\{configuration}\*test*.dll");
+    testAssemblies -= GetFiles(@"**\*TestAdapter.dll");
+    testAssemblies -= GetFiles(@"**\*Integration*.dll");
+    testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Data.dll");
+    testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
   
     VSTest(testAssemblies, new VSTestSettings() { 
       Logger = "trx",
