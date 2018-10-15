@@ -32,7 +32,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
-using System.Runtime.CompilerServices;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -44,7 +43,6 @@ using DotNetNuke.Services.Localization;
 
 #endregion
 
-[assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 namespace DotNetNuke.Entities.Urls
 {    
     public class RewriteController
