@@ -159,6 +159,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
     WHERE		@PermissionCheck = 1 AND
 				((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) OR 
 				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
 
 /***** DNN-22117: update sp GetFiles to get files from folder and all sub folders in one time. *****/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
