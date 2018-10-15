@@ -32,6 +32,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
+using System.Runtime.CompilerServices;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -43,8 +44,9 @@ using DotNetNuke.Services.Localization;
 
 #endregion
 
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 namespace DotNetNuke.Entities.Urls
-{
+{    
     public class RewriteController
     {
         internal const int SiteRootRewrite = -3;
@@ -1394,7 +1396,7 @@ namespace DotNetNuke.Entities.Urls
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); //decode the incoming request
 
             // below 810 check is taking care of lanugage code
-            var absoluteUriWithoutLanguageCode = GetUrlWithLanguageCode(absoluteUri, result.CultureCode);
+            var absoluteUriWithoutLanguageCode = GetUrlWithoutLanguageCode(absoluteUri, result.CultureCode);
             
             string rewritePath = GetTabFromDictionary(absoluteUriWithoutLanguageCode, queryStringCol, settings, result, parentTraceId);
             //put the query string back on the end
@@ -1420,7 +1422,7 @@ namespace DotNetNuke.Entities.Urls
             return result.DoRewrite;
         }
 
-        public static string GetUrlWithLanguageCode(string absoluteUri, string cultureCode)
+        internal static string GetUrlWithoutLanguageCode(string absoluteUri, string cultureCode)
         {
             return Regex.Replace(absoluteUri, $"\\/{cultureCode}", string.Empty, RegexOptions.IgnoreCase);
         }

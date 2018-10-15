@@ -12,7 +12,7 @@ namespace DotNetNuke.Tests.Web.UrlRewrite
         public void RemoveLanguageCodeFromAbsoluteURL(string absoluteURL, string languageCode, string expectedURL)
         {
             // Act
-            var result = RewriteController.GetUrlWithLanguageCode(absoluteURL, languageCode);
+            var result = RewriteController.GetUrlWithoutLanguageCode(absoluteURL, languageCode);
 
             // Assert
             Assert.AreEqual(result, expectedURL);
