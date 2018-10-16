@@ -174,7 +174,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
-            if (request.IsSecureConnection)
+            var isRequestSSLOffloaded = IsRequestSSLOffloaded(request);
+            if (request.IsSecureConnection || isRequestSSLOffloaded)
             {
                 return true;
             }
@@ -191,6 +192,27 @@ namespace DotNetNuke.Common.Utilities
                         return true;
                     }
                     
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// check if SSL offloaded header set in application 
+        /// And also send by Load Balancer 
+        /// </summary>
+        /// <param name="request">current request</param>
+        /// <returns>true if an SSL offload header value set by application and load balancer, otherwise false</returns>
+        public static bool IsRequestSSLOffloaded(HttpRequest request)
+        {
+            var sslOffLoadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
+
+            if (!string.IsNullOrEmpty(sslOffLoadHeader))
+            {
+                string ssloffload = request.Headers[sslOffLoadHeader];
+                if (!string.IsNullOrEmpty(ssloffload))
+                {
+                    return true;
                 }
             }
             return false;
