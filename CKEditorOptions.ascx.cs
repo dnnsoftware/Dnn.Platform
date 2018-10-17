@@ -381,6 +381,10 @@ namespace DNNConnect.CKEditorProvider
                     return;
                 }
 
+                BindUserGroupsGridView();
+
+                BindOptionsData();
+
                 SetLanguage();
 
                 FillInformations();
@@ -389,10 +393,6 @@ namespace DNNConnect.CKEditorProvider
                 FillSkinList();
 
                 FillFolders();
-
-                BindUserGroupsGridView();
-
-                BindOptionsData();
 
                 RenderUrlControls();
 
@@ -563,7 +563,6 @@ namespace DNNConnect.CKEditorProvider
 
             FillSettings(importedSettings, changeMode);
         }
-        
         /// <summary>
         /// Fill file upload size limit controls
         /// </summary>
@@ -874,7 +873,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
-            
+
             FillFileUploadSettings(importedSettings.UploadSizeRoles);
 
             if (!string.IsNullOrEmpty(importedSettings.Config.ContentsCss))
@@ -971,7 +970,7 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-            
+
             lblRole = (Label)UploadFileLimits.HeaderRow.FindControl("lblRole");
             lblSelToolb = (Label)UploadFileLimits.HeaderRow.FindControl("SizeLimitLabel");
 
@@ -1125,7 +1124,7 @@ namespace DNNConnect.CKEditorProvider
                 var roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
                 roleItem.Selected = isAdmin || GetActiveRolesIds().Contains(objRole.RoleID);
                 roleItem.Enabled = !isAdmin;
-              
+
                 chblBrowsGr.Items.Add(roleItem);
             }
         }
@@ -1134,22 +1133,27 @@ namespace DNNConnect.CKEditorProvider
         /// Gets list of currently active file browser roles
         /// </summary>
         /// <returns></returns>
-        private List<int> GetActiveRolesIds()
+        private IEnumerable<int> GetActiveRolesIds()
         {
-            List<int> activeRoles = new List<int>();
-
             if (currentSettings?.BrowserRoles != null)
             {
                 var rolesIds = currentSettings.BrowserRoles.Split(';');
                 foreach (string roleId in rolesIds)
                 {
-                    if (!string.IsNullOrEmpty(roleId) && !string.IsNullOrWhiteSpace(roleId))
+                    int actualRoleId;
+
+                    if (!int.TryParse(roleId, out actualRoleId))
                     {
-                        activeRoles.Add(int.Parse(roleId.Trim()));
+                        var role = RoleController.Instance.GetRoleByName(PortalId, roleId);
+                        actualRoleId = role != null ? role.RoleID : -1;
                     }
+                    yield return actualRoleId;
                 }
             }
-            return activeRoles;
+            else
+            {
+                yield break;
+            }
         }
 
         /// <summary>
@@ -1901,7 +1905,7 @@ namespace DNNConnect.CKEditorProvider
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
-            
+
             currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
 
             switch (CurrentSettingsMode)
@@ -1942,7 +1946,7 @@ namespace DNNConnect.CKEditorProvider
                                 _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
 
                             // check if UploadSizeLimits have been set
-                            if(currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
+                            if (currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
                             {
                                 currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
                             }
