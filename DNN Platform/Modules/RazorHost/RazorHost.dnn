@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNCorp.RazorHost" type="Module" version="09.02.02">
+    <package name="DNNCorp.RazorHost" type="Module" >
       <friendlyName>Razor Host</friendlyName>
       <description>The Razor Host module allows developers to host Razor Scripts.</description>
       <owner>

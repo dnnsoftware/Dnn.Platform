@@ -1,5 +1,7 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#load "local:?path=Build/cake/version.cake"
 #load "local:?path=Build/cake/create-database.cake"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -8,7 +10,6 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.build";
-var buildNumber = Argument("buildNumber", "9.2.2");
 
 var targetBranchCk = Argument("CkBranch", "development");
 var targetBranchCdf = Argument("CdfBranch", "dnn");
@@ -105,7 +106,7 @@ Task("BuildAll")
 	.IsDependentOn("CreateUpgrade")
     .IsDependentOn("CreateDeploy")
 	.IsDependentOn("CreateSymbols")
-    
+    .IsDependentOn("CreateNugetPackages")
     
     .Does(() =>
 	{
@@ -113,19 +114,21 @@ Task("BuildAll")
 	});
 
 Task("CompileSource")
+    .IsDependentOn("GitVersion")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 	{
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CompileSource");
 		});
 	});
 
 Task("CreateInstall")
 	.IsDependentOn("CompileSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -133,13 +136,14 @@ Task("CreateInstall")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateInstall");
 		});
 	});
 
 Task("CreateUpgrade")
 	.IsDependentOn("CompileSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -147,13 +151,14 @@ Task("CreateUpgrade")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateUpgrade");
 		});
 	});
     
 Task("CreateSymbols")
 	.IsDependentOn("CompileSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -161,7 +166,7 @@ Task("CreateSymbols")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateSymbols");
 		});
 	});   
@@ -169,6 +174,7 @@ Task("CreateSymbols")
     
 
 Task("CreateSource")
+    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		
@@ -185,7 +191,7 @@ Task("CreateSource")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateSource");
 		});
 	});
@@ -199,9 +205,41 @@ Task("CreateDeploy")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", buildNumber);
+			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
 			c.Targets.Add("CreateDeploy");
 		});
+	});
+
+Task("CreateNugetPackages")
+	.IsDependentOn("CompileSource")
+	.Does(() =>
+	{
+		//look for solutions and start building them
+		var nuspecFiles = GetFiles("./Build/Tools/NuGet/DotNetNuke.*.nuspec");
+	
+		Information("Found {0} nuspec files.", nuspecFiles.Count);
+
+		//basic nuget package configuration
+		var nuGetPackSettings = new NuGetPackSettings
+		{
+			Version = GetBuildNumber(),
+			OutputDirectory = @"./Artifacts/",
+			IncludeReferencedProjects = true,
+			Properties = new Dictionary<string, string>
+			{
+				{ "Configuration", "Release" }
+			}
+		};
+	
+		//loop through each nuspec file and create the package
+		foreach (var spec in nuspecFiles){
+			var specPath = spec.ToString();
+
+			Information("Starting to pack: {0}", specPath);
+			NuGetPack(specPath, nuGetPackSettings);
+		}
+
+
 	});
 
 Task("ExternalExtensions")

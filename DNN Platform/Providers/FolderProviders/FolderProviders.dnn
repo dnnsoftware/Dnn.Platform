@@ -59,7 +59,7 @@
             </uninstall>
           </config>
         </component>
-        <component type="Cleanup" version="09.02.01" fileName ="09.02.00.txt" />
+        <component type="Cleanup" version="09.02.01" fileName="09.02.00.txt" />
         <component type="File">
           <files>
             <basePath>Providers\FolderProviders\AzureFolderProvider</basePath>

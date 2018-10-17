@@ -67,7 +67,7 @@
                         </resourceFile>
                     </resourceFiles>
                 </component>
-                <component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
+                <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
                 <component type="File">
                     <files>
                         <basePath>DesktopModules\Admin\ModuleCreator</basePath>
