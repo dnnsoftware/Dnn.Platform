@@ -138,7 +138,7 @@ namespace DotNetNuke.Collections
         public int PageIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets he size of the page in this list
+        ///   Gets or sets the size of the page in this list 
         /// </summary>
         public int PageSize { get; set; }
 
