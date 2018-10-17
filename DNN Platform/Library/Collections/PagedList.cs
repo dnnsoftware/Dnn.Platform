@@ -143,7 +143,7 @@ namespace DotNetNuke.Collections
         public int PageSize { get; set; }
 
         /// <summary>
-        ///   Gets or setshe total number of objects in the data store
+        ///   Gets or ses the total number of objects in the data store 
         /// </summary>
         public int TotalCount { get; set; }
 
