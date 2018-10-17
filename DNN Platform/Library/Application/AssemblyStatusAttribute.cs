@@ -35,7 +35,7 @@ namespace DotNetNuke.Application
 	///		<item>Alpha:Alpha release is an opportunity for customers to get an early look at a particular software feature.</item>
 	///		<item>Beta: Beta release is a mostly completed release, 
 	///				At this point we will have implemented most of the major features planned for a specific release. </item>
-	///		<item>RC: RC relase will be the Stable release if there is none major show-stopping bugs, 
+	///		<item>RC: RC release will be the Stable release if there is no major show-stopping bugs, 
 	///				We have gone through all the major test scenarios and are just running through a final set of regression 
 	///				tests and verifying the packaging.</item>
 	///		<item>Stable: Stable release is believed to be ready for use, 

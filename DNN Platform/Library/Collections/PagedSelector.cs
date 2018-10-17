@@ -17,7 +17,7 @@ namespace DotNetNuke.Collections
         #region Constructors
 
         /// <summary>
-        /// Constructs a new PageSelector for use on the specified data store
+        /// Initializes a new instanc of the <see cref="PageSelector{T}"/> a new PageSelector for use on the specified data store
         /// </summary>
         /// <param name = "source">The data store to page</param>
         /// <param name = "pageSize">The size of each page</param>
