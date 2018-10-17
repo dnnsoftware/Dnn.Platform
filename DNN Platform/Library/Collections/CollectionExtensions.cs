@@ -48,7 +48,7 @@ namespace DotNetNuke.Collections
         /// <param name="stringOfPairs">The string containing the key-value pairs</param> 
         /// <param name="pairsSeparator">The separator used to separate each key-value pair</param>
         /// <param name="pairSeparator">The separator used between the each key and value</param>
-        /// <returns>Dictionary with a string key and a sting value</returns>
+        /// <returns>Dictionary with a string key and a string value</returns> 
         public static Dictionary<String, String> CreateDictionaryFromString(string stringOfPairs, char pairsSeparator, char pairSeparator)
         {
             var dictionary = new Dictionary<String, String>();
