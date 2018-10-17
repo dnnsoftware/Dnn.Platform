@@ -128,7 +128,7 @@ namespace DotNetNuke.Collections
         public bool IsLastPage { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the no of pages in this list
+        ///   Gets or sets the number of pages in this list 
         /// </summary>
         public int PageCount { get; set; }
 
