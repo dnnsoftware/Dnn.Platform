@@ -83,7 +83,7 @@ namespace DotNetNuke.Collections
         /// <param name="dictionary">The Dictionary to convert</param>
         /// <param name="pairsSeparator">The separator to use between key-value pairs</param>
         /// <param name="pairSeparator">The separator to use between each key and value</param>
-        /// <returns></returns>
+        /// <returns>The dictionary's contents as a <see cref="string" /></returns> 
         public static string DictionaryToString(this Dictionary<String, String> dictionary, string pairsSeparator, string pairSeparator)
         {
             return String.Join(pairsSeparator, dictionary.Select(pair => pair.Key + pairSeparator + pair.Value));
