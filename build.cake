@@ -114,21 +114,20 @@ Task("BuildAll")
 	});
 
 Task("CompileSource")
-    .IsDependentOn("GitVersion")
+    .IsDependentOn("UpdateDnnManifests")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 	{
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CompileSource");
 		});
 	});
 
 Task("CreateInstall")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -136,14 +135,13 @@ Task("CreateInstall")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateInstall");
 		});
 	});
 
 Task("CreateUpgrade")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -151,14 +149,13 @@ Task("CreateUpgrade")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateUpgrade");
 		});
 	});
     
 Task("CreateSymbols")
 	.IsDependentOn("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
 	.Does(() =>
 	{
 		CreateDirectory("./Artifacts");
@@ -166,7 +163,7 @@ Task("CreateSymbols")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateSymbols");
 		});
 	});   
@@ -191,7 +188,7 @@ Task("CreateSource")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateSource");
 		});
 	});
@@ -205,7 +202,7 @@ Task("CreateDeploy")
 		MSBuild(createCommunityPackages, c =>
 		{
 			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetBuildNumber());
+			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateDeploy");
 		});
 	});
