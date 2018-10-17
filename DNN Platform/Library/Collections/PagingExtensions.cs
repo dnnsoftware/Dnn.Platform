@@ -54,7 +54,7 @@ namespace DotNetNuke.Collections
         /// <summary>
         /// Converts an <see cref="IEnumerable{T}"/> into an <see cref="IPagedList{T}"/>
         /// </summary>
-        /// <typeparam name = "T">The type of the <see cref="IEnumerable{T}"/></typeparam>
+        /// <typeparam name="T">The type of the items in the <paramref name="source"/></typeparam> 
         /// <param name = "source">The source <see cref="IEnumerable{T}"/> to convert</param>
         /// <param name = "pageIndex">The page index requested</param>
         /// <param name = "pageSize">The page size requested</param>
