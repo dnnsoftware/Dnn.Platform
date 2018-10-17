@@ -119,6 +119,21 @@ namespace DotNetNuke.Security.Membership
             return null;
         }
 
+        public virtual UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual string GetProviderUserKey(UserInfo user)
+        {
+            return null;
+        }
+
+        public virtual UserInfo GetUserByProviderUserKey(int portalId, string providerUserKey)
+        {
+            return null;
+        }
+
         public virtual ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             throw new NotImplementedException();

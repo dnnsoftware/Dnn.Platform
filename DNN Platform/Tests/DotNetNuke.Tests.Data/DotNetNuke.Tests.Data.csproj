@@ -88,6 +88,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DataAssert.cs" />
+    <Compile Include="DatabaseConnectionProviderTests.cs" />
+    <Compile Include="Fakes\FakeDbConnectionProvider.cs" />
     <Compile Include="RepositoryBaseTests.cs" />
     <Compile Include="DataContextTests.cs" />
     <Compile Include="DataProviderTests.cs" />

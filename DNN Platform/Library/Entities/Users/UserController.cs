@@ -1045,8 +1045,9 @@ namespace DotNetNuke.Entities.Users
                     //send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                                
+                DataCache.ClearPortalUserCountCache(user.PortalID);
+                DataCache.ClearUserCache(user.PortalID, user.Username);
 
                 //also clear current portal's cache if the user is a host user
                 if (portalSettings.PortalId != portalId)
@@ -1884,8 +1885,8 @@ namespace DotNetNuke.Entities.Users
                 //Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
-                DataCache.ClearPortalCache(portalId, false);
-                DataCache.ClearUserCache(portalId, user.Username);
+                DataCache.ClearPortalUserCountCache(user.PortalID);
+                DataCache.ClearUserCache(user.PortalID, user.Username);
             }
 
             //Reset PortalId
@@ -2244,13 +2245,14 @@ namespace DotNetNuke.Entities.Users
 
             int portalId;
             int userId;
+            var userIdString = strings[1];
 
-            if (!int.TryParse(strings[0], out portalId) || !int.TryParse(strings[1], out userId))
+            if (!int.TryParse(strings[0], out portalId) || string.IsNullOrWhiteSpace(userIdString))
             {
                 throw new InvalidVerificationCodeException();
             }
 
-            var user = GetUserById(int.Parse(strings[0]), int.Parse(strings[1]));
+            var user = int.TryParse(userIdString, out userId) ? GetUserById(portalId, userId) : GetUserByMembershipUserKey(portalId, userIdString);
 
             if (user == null)
             {
@@ -2315,7 +2317,15 @@ namespace DotNetNuke.Entities.Users
             return httpAlias.IndexOf("/", StringComparison.InvariantCulture) != -1 ?
                 httpAlias.Substring(0, httpAlias.IndexOf("/", StringComparison.InvariantCulture)) :
                 httpAlias;
-        }      
+        }
+
+        private static UserInfo GetUserByMembershipUserKey(int portalId, string membershipUserKey)
+        {
+            var masterPortalId = GetEffectivePortalId(portalId);
+            var user = MembershipProvider.Instance().GetUserByProviderUserKey(masterPortalId, membershipUserKey);
+            FixMemberPortalId(user, portalId);
+            return user;
+        }
 
         #endregion
 

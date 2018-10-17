@@ -35,6 +35,8 @@ namespace DotNetNuke.Data.PetaPoco
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
 
+        private const string SqlProviderName = "System.Data.SqlClient";
+
         #region Public Methods
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
@@ -44,7 +46,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
-            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            using (var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false })
             {
                 if (type == CommandType.StoredProcedure)
                 {
@@ -148,7 +150,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static IDataReader ExecuteReader(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
-            var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };
+            var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false };
 
             if (type == CommandType.StoredProcedure)
             {
@@ -182,7 +184,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
-            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            using (var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false })
             {
                 if (type == CommandType.StoredProcedure)
                 {
@@ -215,7 +217,7 @@ namespace DotNetNuke.Data.PetaPoco
         // ReSharper disable once InconsistentNaming
         public static void ExecuteSQL(string connectionString, string sql, int timeoutSec)
         {
-            using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
+            using (var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false })
             {
                 if (timeoutSec > 0)
                 {

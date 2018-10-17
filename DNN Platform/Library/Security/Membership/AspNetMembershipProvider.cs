@@ -605,9 +605,17 @@ namespace DotNetNuke.Security.Membership
                                       userName), GetMembershipUserCallBack);
         }
 
-        private static string GetCacheKey(string userName)
+        private static MembershipUser GetMembershipUserByUserKey(string userKey)
         {
-            return String.Format("MembershipUser_{0}", userName);
+            return
+                CBO.GetCachedObject<MembershipUser>(
+                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
+                        userKey), GetMembershipUserByUserKeyCallBack);
+        }
+
+        private static string GetCacheKey(string cacheKey)
+        {
+            return $"MembershipUser_{cacheKey}";
         }
 
         private static object GetMembershipUserCallBack(CacheItemArgs cacheItemArgs)
@@ -617,8 +625,15 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.GetUser(userName);
         }
 
+        private static object GetMembershipUserByUserKeyCallBack(CacheItemArgs cacheItemArgs)
+        {
+            string userKey = cacheItemArgs.ParamList[0].ToString();
+
+            return System.Web.Security.Membership.GetUser(new Guid(userKey));
+        }
+
        
-        private UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
+        public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
             IDataReader dr = _dataProvider.GetUserByAuthToken(portalId, userToken, authType);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
@@ -900,43 +915,6 @@ namespace DotNetNuke.Security.Membership
             UserCreateStatus createStatus = ValidateForProfanity(user);
             string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
-            //DNN-4016
-            //the username exists, first we check to see if this is an OAUTH user
-            bool isOAuthUser = false;
-
-            if (String.IsNullOrEmpty(service) || service.Equals("DNN"))
-            {
-                isOAuthUser = false;
-            }
-            else
-            {
-                try
-                {
-                    UserAuthenticationInfo authUser = AuthenticationController.GetUserAuthentication(user.UserID);
-
-                    // Check that the OAuth service currently being used for login is the same as was previously used (this should always be true if user authenticated to userid)
-                    if (authUser == null || authUser.AuthenticationType.Equals(service, StringComparison.OrdinalIgnoreCase))
-                    {
-                        isOAuthUser = true;
-                        //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-	                    if (!string.IsNullOrEmpty(user.Email))
-	                    {
-		                    user.Username = service + "-" + user.Email;
-	                    }
-                    }
-                    else
-                    {
-                        createStatus = UserCreateStatus.DuplicateEmail;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    createStatus = UserCreateStatus.UnexpectedError;
-                    EventLogController.Instance.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
-                }
-            }
-
             if (createStatus == UserCreateStatus.AddUser)
             {
                 ValidateForDuplicateDisplayName(user, ref createStatus);
@@ -952,7 +930,7 @@ namespace DotNetNuke.Security.Membership
                     {
                         //DNN-4016
                         //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
-                        if (isOAuthUser || ValidateUser(user.Username, user.Membership.Password))
+                        if (ValidateUser(user.Username, user.Membership.Password))
                         {
                             //check if user exists for the portal specified
                             objVerifyUser = GetUserByUserName(user.PortalID, user.Username);
@@ -1161,7 +1139,7 @@ namespace DotNetNuke.Security.Membership
         
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore
+        /// GetUserByUserName retrieves a User from the DataStore. Supports user caching in memory cache.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1176,10 +1154,7 @@ namespace DotNetNuke.Security.Membership
                     DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
                 _ =>
                 {
-                    using (var dr = _dataProvider.GetUserByUsername(portalId, username))
-                    {
-                        return FillUserInfo(portalId, dr, true);
-                    }
+                    return GetUserByUserNameFromDataStore(portalId, username);
                 });
             return objUserInfo;
         }
@@ -1224,6 +1199,22 @@ namespace DotNetNuke.Security.Membership
                 user = FillUserInfo(portalId, dr, true);
             }
             return user;
+        }
+
+        public override string GetProviderUserKey(UserInfo user)
+        {
+            return GetMembershipUser(user).ProviderUserKey?.ToString().Replace("-", string.Empty) ?? string.Empty;
+        }
+
+        public override UserInfo GetUserByProviderUserKey(int portalId, string providerUserKey)
+        {
+            var userName = GetMembershipUserByUserKey(providerUserKey)?.UserName ?? string.Empty;
+            if (string.IsNullOrEmpty(userName))
+            {
+                return null;
+            }
+
+            return GetUserByUserName(portalId, userName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1580,7 +1571,7 @@ namespace DotNetNuke.Security.Membership
                 _dataProvider.RemoveUser(user.UserID, user.PortalID);
 
                 //Prior to removing membership, ensure user is not present in any other portal
-                UserInfo otherUser = GetUserByUserName(Null.NullInteger, user.Username);
+                UserInfo otherUser = GetUserByUserNameFromDataStore(Null.NullInteger, user.Username);
                 if (otherUser == null)
                 {
                     DeleteMembershipUser(user);
@@ -1808,14 +1799,14 @@ namespace DotNetNuke.Security.Membership
 
             //Initialise Login Status to Failure
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
-
+            
             DataCache.ClearUserCache(portalId, username);
             DataCache.ClearCache(GetCacheKey(username));
 
             //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
                                 ? GetUserByUserName(portalId, username)
-                                : GetUserByAuthToken(portalId, username, authType);
+                                : GetUserByAuthToken(portalId, verificationCode, authType);
             if (user != null && !user.IsDeleted)
             {
                 //Get AspNet MembershipUser
@@ -1834,7 +1825,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;                      
                     }
                 }
 
@@ -1870,7 +1861,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
 
-                }
+                }                
 
                 //Verify User Credentials
                 bool bValid = false;
@@ -1879,6 +1870,10 @@ namespace DotNetNuke.Security.Membership
                 {
                     //Clear the user object
                     user = null;
+
+                    //Clear cache for user so that locked out & other status could be updated
+                    DataCache.ClearUserCache(portalId, username);
+                    DataCache.ClearCache(GetCacheKey(username));
                 }
             }
             else
@@ -1917,6 +1912,24 @@ namespace DotNetNuke.Security.Membership
                 CBO.CloseDataReader(dr, true);
             }
             return arrUsers;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUserByUserNameFromDataStore retrieves a User from the DataStore.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="username">The username of the user being retrieved from the Data Store.</param>
+        /// <returns>The User as a UserInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
+        {
+            using (var dr = _dataProvider.GetUserByUsername(portalId, username))
+            {
+                return FillUserInfo(portalId, dr, true);
+            }
         }
     }
 }

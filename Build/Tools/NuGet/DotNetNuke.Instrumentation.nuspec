@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Instrumentation</id>
-    <version>9.2.1</version>
+    <version>$version$</version>
     <title>DNN Platform (Instrumentation)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
@@ -17,9 +17,9 @@
     <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net40\" />
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net40\" />
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net40\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net40\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net40\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net40\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net40\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net40\"/>
   </files>
 </package>
