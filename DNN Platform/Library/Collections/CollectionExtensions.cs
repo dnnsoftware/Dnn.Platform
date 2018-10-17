@@ -45,7 +45,7 @@ namespace DotNetNuke.Collections
         /// Converts a string with multiple key-value pairs into a Dictionary, if there are duplicated keys in your string 
         /// only the first found key is kept since keys must be unique in a Dictionary
         /// </summary>
-        /// <param name="stringOfPairs">The string containaing the key-value pairs</param>
+        /// <param name="stringOfPairs">The string containing the key-value pairs</param> 
         /// <param name="pairsSeparator">The separator used to separate each key-value pair</param>
         /// <param name="pairSeparator">The separator used between the each key and value</param>
         /// <returns>Dictionary with a string key and a sting value</returns>
