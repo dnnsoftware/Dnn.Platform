@@ -1874,6 +1874,13 @@ namespace DotNetNuke.Security.Membership
                     //Clear cache for user so that locked out & other status could be updated
                     DataCache.ClearUserCache(portalId, username);
                     DataCache.ClearCache(GetCacheKey(username));
+
+                    aspnetUser = System.Web.Security.Membership.GetUser(username);
+
+                    if (aspnetUser.IsLockedOut)
+                    {
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                    }
                 }
             }
             else
