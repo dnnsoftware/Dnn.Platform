@@ -30,6 +30,11 @@ Task("UpdateDnnManifests")
 
 public string GetBuildNumber()
 {
+    return version.LegacySemVerPadded;
+}
+
+public string GetProductVersion()
+{
     return version.MajorMinorPatch;
 }
 
