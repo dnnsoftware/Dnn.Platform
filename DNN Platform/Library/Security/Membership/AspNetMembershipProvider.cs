@@ -1877,6 +1877,8 @@ namespace DotNetNuke.Security.Membership
 
                     aspnetUser = System.Web.Security.Membership.GetUser(username);
 
+                    // If user has been locked out for current invalid attempt 
+                    // show him locked out message
                     if (aspnetUser.IsLockedOut)
                     {
                         loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
