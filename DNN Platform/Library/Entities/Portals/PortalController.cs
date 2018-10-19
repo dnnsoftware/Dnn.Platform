@@ -2791,8 +2791,8 @@ namespace DotNetNuke.Entities.Portals
             string message = string.Empty;
 
             //check if this is the last portal
-            int portalCount = Instance.GetPortals().Count;
-            if (portalCount > 1)
+            var portals = Instance.GetPortals();
+            if (portals.Count > 1)
             {
                 if (portal != null)
                 {
@@ -2815,19 +2815,21 @@ namespace DotNetNuke.Entities.Portals
                         }
                     }
                     //delete upload directory
-                    Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string homeDirectory = portal.HomeDirectoryMapPath;
+                        var homeDirectory = portal.HomeDirectoryMapPath;
+                        // check whether home directory is not used by other portal
+                        // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
+                        var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x => 
+                            x.PortalID != portal.PortalID &&
+                            x.HomeDirectoryMapPath.Equals(homeDirectory, StringComparison.OrdinalIgnoreCase));
 
-                        if (homeDirectory.EndsWith("\\"))
+                        if (!homeDirectoryInUse)
                         {
-                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
-                        }
-
-                        if (Directory.Exists(homeDirectory))
-                        {
-                            Globals.DeleteFolderRecursive(homeDirectory);
+                            if (Directory.Exists(homeDirectory))
+                            {
+                                Globals.DeleteFolderRecursive(homeDirectory);
+                            }
                         }
                     }
                     //remove database references
