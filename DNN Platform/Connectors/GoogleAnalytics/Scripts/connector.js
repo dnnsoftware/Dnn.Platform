@@ -43,10 +43,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         if (wasDeactivated) {
 
             // Was this just deactivated?  clear the fields
-            conn.configurations[01].value("");
-            conn.configurations[1].value("");
-            conn.configurations[2].value(false);
-
+            conn.onDelete(conn, null, null);
             wasDeactivated = false;
             utility.notify(utility.resx.Connectors.txt_Deleted, true);
         }
