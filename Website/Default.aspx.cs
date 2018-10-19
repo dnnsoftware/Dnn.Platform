@@ -658,6 +658,11 @@ namespace DotNetNuke.Framework
                 {
                     var originalurl = Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     CanonicalLinkUrl = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
+
+                    if (UrlUtils.IsSecureConnectionOrSslOffload(Request))
+                    {
+                        CanonicalLinkUrl = CanonicalLinkUrl.Replace("http://", "https://");
+                    }
                 }
             }
 
