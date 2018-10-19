@@ -16,14 +16,13 @@ Task("UnitTests")
   .IsDependentOn("EnsureAllProjectsBuilt")
   .Does(() => 
   {
-    var testAssemblies = GetFiles($@"**\bin\{configuration}\*test*.dll");
-    testAssemblies -= GetFiles(@"**\*TestAdapter.dll");
-    testAssemblies -= GetFiles(@"**\*Integration*.dll");
+    var testAssemblies = GetFiles($@"**\bin\{configuration}\DotNetNuke.Tests.*.dll");
     testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Data.dll");
+    testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
     testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
+    testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
   
     foreach(var file in testAssemblies) {
-
         VSTest(file.FullPath, new VSTestSettings() { 
           Logger = $"trx;LogFileName={file.GetFilename()}.xml",
           Parallel = true,
