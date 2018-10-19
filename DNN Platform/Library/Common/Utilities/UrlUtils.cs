@@ -196,14 +196,8 @@ namespace DotNetNuke.Common.Utilities
             }
             return false;
         }
-
-        /// <summary>
-        /// check if SSL offloaded header set in application 
-        /// And also send by Load Balancer 
-        /// </summary>
-        /// <param name="request">current request</param>
-        /// <returns>true if an SSL offload header value set by application and load balancer, otherwise false</returns>
-        public static bool IsRequestSSLOffloaded(HttpRequest request)
+               
+        private static bool IsRequestSSLOffloaded(HttpRequest request)
         {
             var sslOffLoadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
 
