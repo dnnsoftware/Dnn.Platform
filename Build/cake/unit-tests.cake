@@ -22,11 +22,14 @@ Task("UnitTests")
     testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Data.dll");
     testAssemblies -= GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
   
-    VSTest(testAssemblies, new VSTestSettings() { 
-      Logger = "trx;LogFileName=TestResults.xml",
-      Parallel = true,
-      EnableCodeCoverage = true,
-      FrameworkVersion = VSTestFrameworkVersion.NET45,
-      TestAdapterPath = @"tools\NUnitTestAdapter.2.1.1\tools"
-    });
+    foreach(var file in testAssemblies) {
+
+        VSTest(file.FullPath, new VSTestSettings() { 
+          Logger = $"trx;LogFileName={file.GetFilename()}.xml",
+          Parallel = true,
+          EnableCodeCoverage = true,
+          FrameworkVersion = VSTestFrameworkVersion.NET45,
+          TestAdapterPath = @"tools\NUnitTestAdapter.2.1.1\tools"
+        });
+    }
   });
