@@ -76,7 +76,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             EnsureNotDisposed();
-            if (Lock.TryEnterReadLock(timeout))
+            if (Lock.IsReadLockHeld || Lock.TryEnterReadLock(timeout))
             {
                 return new ReaderWriterSlimLock(Lock);
             }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             EnsureNotDisposed();
-            if (Lock.TryEnterWriteLock(timeout))
+            if (Lock.IsWriteLockHeld || Lock.TryEnterWriteLock(timeout))
             {
                 return new ReaderWriterSlimLock(Lock);
             }
