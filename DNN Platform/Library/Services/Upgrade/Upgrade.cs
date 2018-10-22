@@ -4953,8 +4953,9 @@ namespace DotNetNuke.Services.Upgrade
 
                 var files = Directory.GetFiles(installPackagePath);
                 if (files.Length <= 0){ continue;}
+                Array.Sort(files); // The order of the returned file names is not guaranteed on certain NAS systems; use the Sort method if a specific sort order is required.
 
-	            var optionalPackages = new List<string>();
+                var optionalPackages = new List<string>();
                 foreach (var file in files)
                 {
 	                var extension = Path.GetExtension(file.ToLowerInvariant());
