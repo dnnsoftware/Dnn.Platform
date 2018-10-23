@@ -2,7 +2,8 @@
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
 Task("EnsureAllProjectsBuilt")
-  .IsDependentOn("CompileSource")
+  .IsDependentOn("UpdateDnnManifests")
+  .IsDependentOn("Restore-NuGet-Packages")
   .Does(() => 
   {
     MSBuild("DNN_Platform.sln", new MSBuildSettings {
