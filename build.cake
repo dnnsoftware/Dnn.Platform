@@ -1,7 +1,6 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
 #load "local:?path=Build/cake/version.cake"
 #load "local:?path=Build/cake/create-database.cake"
-
+#load "local:?path=Build/cake/unit-tests.cake"
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
