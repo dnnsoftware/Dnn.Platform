@@ -187,7 +187,7 @@ class UserRoles extends Component {
             <div className="header">
                 <div className="header-title">{Localization.get("Roles.Title") }</div>
                 <div className="add-box">
-                    <GridCell columnSize={50}>
+                    <GridCell columnSize={30}>
                         <div className="send-email-box">
                             <CheckBox value={this.state.sendEmail} onChange={this.onSendEmailClick.bind(this) }
                                 label={  Localization.get("SendEmail") } labelPlace="right"    />
@@ -195,7 +195,7 @@ class UserRoles extends Component {
                                 label={  Localization.get("IsOwner") } labelPlace="right"   />}
                         </div>
                     </GridCell>
-                    <GridCell columnSize={50}>
+                    <GridCell columnSize={70}>
                         <span>
                             <Combobox suggest={false}
                                 ref={(dom) => {this.comboBoxDom = dom;}}
