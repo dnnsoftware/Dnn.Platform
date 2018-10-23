@@ -563,7 +563,6 @@ namespace DNNConnect.CKEditorProvider
 
             FillSettings(importedSettings, changeMode);
         }
-        
         /// <summary>
         /// Fill file upload size limit controls
         /// </summary>
@@ -874,7 +873,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
-            
+
             FillFileUploadSettings(importedSettings.UploadSizeRoles);
 
             if (!string.IsNullOrEmpty(importedSettings.Config.ContentsCss))
@@ -971,7 +970,7 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-            
+
             lblRole = (Label)UploadFileLimits.HeaderRow.FindControl("lblRole");
             lblSelToolb = (Label)UploadFileLimits.HeaderRow.FindControl("SizeLimitLabel");
 
@@ -1118,17 +1117,42 @@ namespace DNNConnect.CKEditorProvider
             chblBrowsGr.Items.Clear();
 
             var portalId = _portalSettings?.PortalId ?? Host.HostPortalID;
+
             foreach (var objRole in GetRoles(portalId))
             {
+                var isAdmin = objRole.RoleName.Equals(PortalSettings.AdministratorRoleName);
                 var roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
-
-                if (objRole.RoleName.Equals(PortalSettings.AdministratorRoleName))
-                {
-                    roleItem.Selected = true;
-                    roleItem.Enabled = false;
-                }
+                roleItem.Selected = isAdmin || GetActiveRolesIds().Contains(objRole.RoleID);
+                roleItem.Enabled = !isAdmin;
 
                 chblBrowsGr.Items.Add(roleItem);
+            }
+        }
+
+        /// <summary>
+        /// Gets list of currently active file browser roles
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<int> GetActiveRolesIds()
+        {
+            if (currentSettings?.BrowserRoles != null)
+            {
+                var rolesIds = currentSettings.BrowserRoles.Split(';');
+                foreach (string roleId in rolesIds)
+                {
+                    int actualRoleId;
+
+                    if (!int.TryParse(roleId, out actualRoleId))
+                    {
+                        var role = RoleController.Instance.GetRoleByName(PortalId, roleId);
+                        actualRoleId = role != null ? role.RoleID : -1;
+                    }
+                    yield return actualRoleId;
+                }
+            }
+            else
+            {
+                yield break;
             }
         }
 
@@ -1881,7 +1905,7 @@ namespace DNNConnect.CKEditorProvider
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
-            
+
             currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
 
             switch (CurrentSettingsMode)
@@ -1922,7 +1946,7 @@ namespace DNNConnect.CKEditorProvider
                                 _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
 
                             // check if UploadSizeLimits have been set
-                            if(currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
+                            if (currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
                             {
                                 currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
                             }
