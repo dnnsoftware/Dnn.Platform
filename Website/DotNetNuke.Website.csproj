@@ -805,6 +805,8 @@
     <Content Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
+    <Content Include="js\Debug\dnn.cookieconsent.js" />
+    <Content Include="js\dnn.cookieconsent.js" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -3289,6 +3291,8 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.02.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.02.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

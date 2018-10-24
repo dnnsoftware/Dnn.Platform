@@ -1,0 +1,20 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Implement cookie consent */
+/*******************************************/
+UPDATE {databaseOwner}[{objectQualifier}ExportImportSettings] 
+SET [SettingValue]=[SettingValue]+',ShowCookieConsent,CookieMoreLink'
+WHERE [SettingName] = 'PortalSettingExportList';
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

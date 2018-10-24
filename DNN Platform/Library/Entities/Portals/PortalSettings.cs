@@ -246,19 +246,23 @@ namespace DotNetNuke.Entities.Portals
 
 		public int UserTabId { get; set; }
 
-		#endregion
+        public int TermsTabId { get; set; }
 
-		#region Read-Only Properties
+		public int PrivacyTabId { get; set; }
+        
+        #endregion
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Allows users to select their own UI culture.
-		/// When set to false (default) framework will allways same culture for both
-		/// CurrentCulture (content) and CurrentUICulture (interface)
-		/// </summary>
-		/// <remarks>Defaults to False</remarks>
-		/// -----------------------------------------------------------------------------
-		public bool AllowUserUICulture { get; internal set; }
+        #region Read-Only Properties
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Allows users to select their own UI culture.
+        /// When set to false (default) framework will allways same culture for both
+        /// CurrentCulture (content) and CurrentUICulture (interface)
+        /// </summary>
+        /// <remarks>Defaults to False</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool AllowUserUICulture { get; internal set; }
 
         public int CdfVersion { get; internal set; }
 
@@ -338,12 +342,26 @@ namespace DotNetNuke.Entities.Portals
 		/// -----------------------------------------------------------------------------
         public bool EnableSkinWidgets { get; internal set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets whether enable url language.
-		/// </summary>
-		/// <remarks>Defaults to True</remarks>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether a cookie consent popup should be shown
+        /// </summary>
+        /// <remarks>Defaults to False</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool ShowCookieConsent { get; internal set; }
+
+        /// <summary>
+        /// Link for the user to find out more about cookies. If not specified the link
+        /// shown will point to cookiesandyou.com
+        /// </summary>
+        public string CookieMoreLink { get; internal set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether enable url language.
+        /// </summary>
+        /// <remarks>Defaults to True</remarks>
+        /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
         public int ErrorPage404 { get; internal set; }

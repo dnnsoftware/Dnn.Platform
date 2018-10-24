@@ -1421,8 +1421,16 @@ namespace DotNetNuke.Entities.Portals
                 UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
             }
 
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
+            {
+                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
+            {
+                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", ""), true, currentCulture);
+            }
+
             //Enable AutoSAve feature
-            //Enable Skin Widgets Setting
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
             {
                 UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
@@ -1550,6 +1558,8 @@ namespace DotNetNuke.Entities.Portals
                               portal.SearchTabId,
                               portal.Custom404TabId,
                               portal.Custom500TabId,
+                              portal.TermsTabId,
+                              portal.PrivacyTabId,
                               portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
@@ -1604,6 +1614,8 @@ namespace DotNetNuke.Entities.Portals
                               portal.SearchTabId,
                               portal.Custom404TabId,
                               portal.Custom500TabId,
+                              portal.TermsTabId,
+                              portal.PrivacyTabId,
                               portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
@@ -1682,6 +1694,8 @@ namespace DotNetNuke.Entities.Portals
                                   portal.SearchTabId,
                                   portal.Custom404TabId,
                                   portal.Custom500TabId,
+                                  portal.TermsTabId,
+                                  portal.PrivacyTabId,
                                   portal.AdminTabId,
                                   GetActivePortalLanguage(portalId));
                 EventLogController.Instance.AddLog(logType,
@@ -2009,6 +2023,8 @@ namespace DotNetNuke.Entities.Portals
                                             portal.SearchTabId,
                                             portal.Custom404TabId,
                                             portal.Custom500TabId,
+                                            portal.TermsTabId,
+                                            portal.PrivacyTabId,
                                             portal.DefaultLanguage,
                                             portal.HomeDirectory,
                                             UserController.Instance.GetCurrentUserInfo().UserID,
@@ -2063,7 +2079,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
-                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
+                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(portalId,
                                                       administratorId,
@@ -2077,6 +2093,8 @@ namespace DotNetNuke.Entities.Portals
                                                       searchTabId,
                                                       custom404TabId,
                                                       custom500TabId,
+                                                      termsTabId,
+                                                      privacyTabId,
                                                       adminTabId,
                                                       cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
@@ -2604,6 +2622,22 @@ namespace DotNetNuke.Entities.Portals
                 if (tempTab != null)
                 {
                     targetPortal.Custom500TabId = tempTab.TabID;
+                }
+            }
+            if (defaultPortal.TermsTabId != Null.NullInteger)
+            {
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.TermsTabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.TermsTabId = tempTab.TabID;
+                }
+            }
+            if (defaultPortal.PrivacyTabId != Null.NullInteger)
+            {
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.PrivacyTabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.PrivacyTabId = tempTab.TabID;
                 }
             }
 
