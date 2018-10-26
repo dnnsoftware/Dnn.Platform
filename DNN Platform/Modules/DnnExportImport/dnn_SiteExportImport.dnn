@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="SiteExportImport" type="Library" version="09.02.02" isSystem="false">
+    <package name="SiteExportImport" type="Library" version="09.03.00" isSystem="false">
       <friendlyName>Site Export Import</friendlyName>
       <description>DotNetNuke Corporation Site Export Import Library</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
@@ -58,6 +58,11 @@
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>09.02.00.SqlDataProvider</name>
               <version>09.02.00</version>
+            </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>09.03.00.SqlDataProvider</name>
+              <version>09.03.00</version>
             </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
