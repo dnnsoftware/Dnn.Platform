@@ -175,5 +175,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "isspecial")]
         public bool IsSpecial { get; set; }
+
+        [DataMember(Name = "iconFile")]
+        public FileDto IconFile { get; set; }
+
+        [DataMember(Name = "iconFileLarge")]
+        public FileDto IconFileLarge { get; set; }
     }
 }
