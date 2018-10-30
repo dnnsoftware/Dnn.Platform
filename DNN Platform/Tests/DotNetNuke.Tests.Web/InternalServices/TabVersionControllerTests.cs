@@ -21,7 +21,11 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private class TabVersionControllerTestable : TabVersionController
         {
-            protected override TimeZoneInfo GetDatabaseDateTimeOffset()
+        }
+
+        private class DateUtilsTestable : DateUtils
+        {
+            public new static TimeZoneInfo GetDatabaseDateTimeOffset()
             {
                 var timeZoneId = "UTC";
                 return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, new TimeSpan(0, 0, 0), timeZoneId, timeZoneId);
@@ -68,9 +72,13 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var tabVersionController = new TabVersionControllerTestable();
             var tabVersions = tabVersionController.GetTabVersions(TabID);
             var tabVersion = tabVersions.FirstOrDefault();
-            
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var userTimeZone = user.Profile.PreferredTimeZone;
+
+            var localizedDate = TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, DateUtilsTestable.GetDatabaseDateTimeOffset(), userTimeZone);
+
             // Assert
-            Assert.AreEqual(tabVersion.CreateOnUserLocalDate, expectedDateTime);
+            Assert.AreEqual(localizedDate, expectedDateTime);
         }
 
         private void SetupCBO()

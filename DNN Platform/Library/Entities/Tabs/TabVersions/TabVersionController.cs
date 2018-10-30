@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)), false);
 
-            return ApplyUserLocalTime(tabVersions, userTimeZone);
+            return tabVersions;
         }
         public void SaveTabVersion(TabVersion tabVersion)
         {
@@ -113,28 +113,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
         }
 
-        private static string GetTabVersionsCacheKey(int tabId)
+        public static string GetTabVersionsCacheKey(int tabId)
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
-        }
-        
-        protected virtual TimeZoneInfo GetDatabaseDateTimeOffset()
-        {
-            var dateTimeOffset = DateUtils.GetDatabaseDateTimeOffset();
-            var offset = dateTimeOffset.Offset;
-            var id = string.Format("UTC {0}", offset.ToString());
-            return TimeZoneInfo.CreateCustomTimeZone(id, offset, id, id);
-        }
-
-        private IEnumerable<TabVersion> ApplyUserLocalTime(IEnumerable<TabVersion> tabVersions, TimeZoneInfo userTimeZone)
-        {
-            var serverTimeZone = GetDatabaseDateTimeOffset();
-            
-            return tabVersions.Select((tabVersion) =>
-            {
-                tabVersion.CreateOnUserLocalDate = TimeZoneInfo.ConvertTime(tabVersion.CreatedOnDate, serverTimeZone, userTimeZone);
-                return tabVersion;
-            });
         }
 
         #endregion
