@@ -231,7 +231,7 @@ namespace DotNetNuke.Entities.Portals
 
         public int SearchTabId { get; set; }
 
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public int SiteLogHistory { get; set; }
 
 		public int SplashTabId { get; set; }
@@ -314,7 +314,7 @@ namespace DotNetNuke.Entities.Portals
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
 		/// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in Platform 7.4.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v11.0.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
         /// -----------------------------------------------------------------------------

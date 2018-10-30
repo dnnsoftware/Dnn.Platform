@@ -824,7 +824,7 @@ namespace DotNetNuke.Common.Utilities
             sb.Append(")");
             return sb.ToString();
         }
-        [Obsolete("This method is obsolete.")]
+        [Obsolete("This method is obsolete.. Scheduled removal in v11.0.0.")]
         public static XmlDocument GetXMLContent(string contentUrl)
         {
             //This function reads an Xml document via a Url and returns it as an XmlDocument object

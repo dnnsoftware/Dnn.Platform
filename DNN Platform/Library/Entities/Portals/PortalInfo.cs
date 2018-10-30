@@ -545,7 +545,7 @@ namespace DotNetNuke.Entities.Portals
         /// <value># of days sitelog history</value>
         /// <returns># of days sitelog history</returns>
         [XmlElement("siteloghistory")]
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public int SiteLogHistory { get; set; }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace DotNetNuke.Entities.Portals
         #endregion
 
         [XmlIgnore]
-        [Obsolete("Deprecated in DNN 6.0.")]
+        [Obsolete("Deprecated in DNN 6.0.. Scheduled removal in v11.0.0.")]
         public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members

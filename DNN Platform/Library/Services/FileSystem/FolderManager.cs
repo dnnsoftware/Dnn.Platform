@@ -2256,7 +2256,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="newFolderPath">The new folder path.</param>
         /// <returns>The moved folder.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) ")]
+        [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) . Scheduled removal in v11.0.0.")]
         public virtual IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath)
         {
             Requires.NotNull("folder", folder);

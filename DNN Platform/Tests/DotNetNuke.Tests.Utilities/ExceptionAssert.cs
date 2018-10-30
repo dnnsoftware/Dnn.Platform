@@ -25,7 +25,7 @@ using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Utilities
 {
-    [Obsolete("Use Assert.Exception or ExpectedExceptionAttribute")]
+    [Obsolete("Use Assert.Exception or ExpectedExceptionAttribute. Scheduled removal in v11.0.0.")]
     public static class ExceptionAssert
     {
         //public static void Throws<TException>(Action act) where TException : Exception
