@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0.. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Scheduled removal in v11.0.0.")]
         public void DeletePortalInfo(int portalId)
         {
             UserController.DeleteUsers(portalId, false, true);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Portals
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.4.0.  Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v11.0.0.")]
         public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
         {
             return Instance.GetPortalSettings(portalId);
