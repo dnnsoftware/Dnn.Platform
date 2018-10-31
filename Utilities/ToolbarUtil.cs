@@ -270,13 +270,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                              },
                                                          new ToolbarButton
                                                              {
-                                                                 ToolbarName =
-                                                                     "SpellChecker",
-                                                                 ToolbarIcon =
-                                                                     "SpellChecker.png"
-                                                             },
-                                                         new ToolbarButton
-                                                             {
                                                                  ToolbarName = "Scayt",
                                                                  ToolbarIcon =
                                                                      "SpellChecker.png"
