@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
         }
 
-        public static string GetTabVersionsCacheKey(int tabId)
+        private static string GetTabVersionsCacheKey(int tabId)
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
