@@ -1,14 +1,18 @@
 #addin Cake.XdtTransform
 #addin "Cake.FileHelpers"
+#addin Cake.Powershell
 #tool "nuget:?package=GitVersion.CommandLine&prerelease"
 
 GitVersion version;
+var buildId = EnvironmentVariable("Build.BuildId") ?? string.Empty;
 
 Task("BuildServerSetVersion")
+  .IsDependentOn("GitVersion")
   .Does(() => {
-    GitVersion(new GitVersionSettings {
-      OutputType = GitVersionOutput.BuildServer
-    });
+    StartPowershellScript("Write-Host", args =>
+        {
+            args.AppendQuoted($"##vso[build.updatebuildnumber]{version.FullSemver}.{buildId}");
+        });
 });
 
 Task("GitVersion")
