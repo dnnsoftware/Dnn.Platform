@@ -11,7 +11,7 @@ Task("BuildServerSetVersion")
   .Does(() => {
     StartPowershellScript("Write-Host", args =>
         {
-            args.AppendQuoted($"##vso[build.updatebuildnumber]{version.FullSemver}.{buildId}");
+            args.AppendQuoted($"##vso[build.updatebuildnumber]{version.FullSemVer}.{buildId}");
         });
 });
 
