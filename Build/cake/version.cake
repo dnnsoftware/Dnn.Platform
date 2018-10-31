@@ -9,10 +9,7 @@ var buildId = EnvironmentVariable("Build.BuildId") ?? string.Empty;
 Task("BuildServerSetVersion")
   .IsDependentOn("GitVersion")
   .Does(() => {
-    StartPowershellScript("Write-Host", args =>
-        {
-            args.AppendQuoted($"##vso[build.updatebuildnumber]{version.FullSemVer}.{buildId}");
-        });
+    StartPowershellScript("Write-Host", $"##vso[build.updatebuildnumber]{version.FullSemVer}.{buildId}");
 });
 
 Task("GitVersion")
