@@ -4,7 +4,7 @@
 #tool "nuget:?package=GitVersion.CommandLine&prerelease"
 
 GitVersion version;
-var buildId = EnvironmentVariable("BUILD_BUILDID) ?? "0";
+var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
 
 Task("BuildServerSetVersion")
   .IsDependentOn("GitVersion")
