@@ -374,7 +374,7 @@
                 $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
                 var menu = $form.find("div:last");
                 var menuRoot = menu.find("ul");
-                var menuLabel = menuTitle;
+                var menuLabel = moduleTitle;
                 if (customCount > 0) {
                     buildMenu(menuRoot, "Edit", "actionMenuEdit", "pencil",  customActions, customCount);
                 }
