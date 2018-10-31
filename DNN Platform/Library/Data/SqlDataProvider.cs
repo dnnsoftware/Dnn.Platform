@@ -442,13 +442,13 @@ namespace DotNetNuke.Data
         {
             return ExecuteSQLInternal(ConnectionString, sql, timeoutSec);
         }
-        
+
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
             string errorMessage;
             return ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
-        
+
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             string errorMessage;

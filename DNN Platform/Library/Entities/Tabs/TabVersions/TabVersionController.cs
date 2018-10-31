@@ -43,10 +43,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var userTimeZone = user.Profile.PreferredTimeZone;
-
-            //if we are not using the cache, then remove from cache and re-add loaded items when eeded later
+            //if we are not using the cache, then remove from cache and re-add loaded items when needed later
             var tabCacheKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {

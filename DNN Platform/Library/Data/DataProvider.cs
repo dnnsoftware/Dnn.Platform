@@ -3357,13 +3357,8 @@ namespace DotNetNuke.Data
         {
             using (var reader = (SqlDataReader)ExecuteSQL("SELECT SYSDATETIMEOFFSET()"))
             {
-                if(reader.HasRows && reader.Read())
-                {
-                    return reader.GetDateTimeOffset(0);
-                } else
-                {
-                    throw new Exception("Error retrieving database UTC offset");
-                }
+                reader.Read();
+                return reader.GetDateTimeOffset(0);
             }
         }
 
