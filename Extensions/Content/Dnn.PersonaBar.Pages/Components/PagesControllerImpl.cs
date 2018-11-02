@@ -1364,8 +1364,6 @@ namespace Dnn.PersonaBar.Pages.Components
         private void CopySourceTabProperties(TabInfo tab, TabInfo sourceTab)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            tab.SkinSrc = sourceTab.SkinSrc.Equals(portalSettings.DefaultPortalSkin, StringComparison.OrdinalIgnoreCase) ? string.Empty : sourceTab.SkinSrc;
-            tab.ContainerSrc = sourceTab.ContainerSrc;
             tab.IconFile = sourceTab.IconFile;
             tab.IconFileLarge = sourceTab.IconFileLarge;
             tab.PageHeadText = sourceTab.PageHeadText;
