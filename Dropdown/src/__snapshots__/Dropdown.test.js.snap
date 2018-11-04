@@ -93,7 +93,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
             }
           }
         >
-          <Component
+          <Motion
             defaultStyle={
               Object {
                 "height": 0,
@@ -247,7 +247,7 @@ exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
                 </div>
               </div>
             </div>
-          </Component>
+          </Motion>
         </Collapse>
       </UnmountClosed>
     </div>
@@ -458,7 +458,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
             }
           }
         >
-          <Component
+          <Motion
             defaultStyle={
               Object {
                 "height": 0,
@@ -612,7 +612,7 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
                 </div>
               </div>
             </div>
-          </Component>
+          </Motion>
         </Collapse>
       </UnmountClosed>
     </div>
@@ -622,7 +622,6 @@ exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
 
 exports[`Dnn Dropdown component Displays/Hides icon when withIcon is true 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -675,7 +674,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           <span
             className="dropdown-prepend"
@@ -720,13 +718,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -857,13 +853,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -910,13 +904,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -961,13 +953,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -1135,7 +1125,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             <span
               className="dropdown-prepend"
@@ -1180,13 +1169,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -1317,13 +1304,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -1370,13 +1355,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -1421,13 +1404,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -1587,18 +1568,29 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`Dnn Dropdown component Displays/Hides icon when withIcon is true 2`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -1651,7 +1643,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           <span
             className="dropdown-prepend"
@@ -1710,13 +1701,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -1867,13 +1856,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -1920,13 +1907,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -1971,13 +1956,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -2145,7 +2128,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             <span
               className="dropdown-prepend"
@@ -2204,13 +2186,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -2361,13 +2341,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -2414,13 +2392,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -2465,13 +2441,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -2631,11 +2605,23 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
@@ -2732,7 +2718,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
             }
           }
         >
-          <Component
+          <Motion
             defaultStyle={
               Object {
                 "height": 0,
@@ -2886,7 +2872,7 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
                 </div>
               </div>
             </div>
-          </Component>
+          </Motion>
         </Collapse>
       </UnmountClosed>
     </div>
@@ -2896,7 +2882,6 @@ exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
 
 exports[`Dnn Dropdown component Renders labels properly according to props 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -2930,7 +2915,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           -- Select --
         </div>,
@@ -2981,13 +2965,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3080,13 +3062,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3114,13 +3094,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3146,13 +3124,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3223,7 +3199,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             -- Select --
           </div>,
@@ -3274,13 +3249,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -3373,13 +3346,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -3407,13 +3378,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -3439,13 +3408,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -3508,18 +3475,29 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`Dnn Dropdown component Renders labels properly according to props 2`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -3553,7 +3531,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           My new label
         </div>,
@@ -3604,13 +3581,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3703,13 +3678,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3737,13 +3710,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3769,13 +3740,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -3846,7 +3815,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             My new label
           </div>,
@@ -3897,13 +3865,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -3996,13 +3962,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -4030,13 +3994,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -4062,13 +4024,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -4131,18 +4091,29 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`Dnn Dropdown component Renders labels properly according to props 3`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -4195,7 +4166,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           <span
             className="dropdown-prepend"
@@ -4254,13 +4224,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -4411,13 +4379,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -4464,13 +4430,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -4515,13 +4479,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -4689,7 +4651,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             <span
               className="dropdown-prepend"
@@ -4748,13 +4709,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -4905,13 +4864,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -4958,13 +4915,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5009,13 +4964,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5175,18 +5128,29 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`Dnn Dropdown component Renders with minimal setup 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Dropdown
     autoHide={true}
@@ -5220,7 +5184,6 @@ ShallowWrapper {
         <div
           className="collapsible-label no-wrap"
           onClick={[Function]}
-          title={undefined}
         >
           -- Select --
         </div>,
@@ -5271,13 +5234,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -5370,13 +5331,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -5404,13 +5363,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -5436,13 +5393,11 @@ ShallowWrapper {
                 autoHideDuration={200}
                 autoHideTimeout={1000}
                 hideTracksWhenNotNeeded={false}
-                onUpdate={undefined}
                 renderThumbHorizontal={[Function]}
                 renderThumbVertical={[Function]}
                 renderTrackHorizontal={[Function]}
                 renderTrackVertical={[Function]}
                 renderView={[Function]}
-                style={undefined}
                 tagName="div"
                 thumbMinSize={30}
                 universal={false}
@@ -5513,7 +5468,6 @@ ShallowWrapper {
           <div
             className="collapsible-label no-wrap"
             onClick={[Function]}
-            title={undefined}
           >
             -- Select --
           </div>,
@@ -5564,13 +5518,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5663,13 +5615,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5697,13 +5647,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5729,13 +5677,11 @@ ShallowWrapper {
                   autoHideDuration={200}
                   autoHideTimeout={1000}
                   hideTracksWhenNotNeeded={false}
-                  onUpdate={undefined}
                   renderThumbHorizontal={[Function]}
                   renderThumbVertical={[Function]}
                   renderTrackHorizontal={[Function]}
                   renderTrackVertical={[Function]}
                   renderView={[Function]}
-                  style={undefined}
                   tagName="div"
                   thumbMinSize={30}
                   universal={false}
@@ -5798,11 +5744,23 @@ ShallowWrapper {
     },
   ],
   Symbol(enzyme.__options__): Object {
-    "adapter": ReactFifteenFourAdapter {
+    "adapter": ReactSixteenAdapter {
       "options": Object {
-        "supportPrevContextArgumentOfComponentDidUpdate": true,
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

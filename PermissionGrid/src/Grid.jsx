@@ -79,12 +79,12 @@ class Grid extends Component {
                 default: false,
                 permissions: []
             } : {
-                    userId: value.value,
-                    displayName: value.label,
-                    locked: false,
-                    default: false,
-                    permissions: []
-                };
+                userId: value.value,
+                displayName: value.label,
+                locked: false,
+                default: false,
+                permissions: []
+            };
             props.onAddPermission(newPermission);
         }
     }
@@ -120,6 +120,7 @@ class Grid extends Component {
                 {props.permissions.map((permission) => {
                     return (
                         <GridRow
+                            key={permission}
                             type={props.type}
                             definitions={props.definitions}
                             permission={permission}

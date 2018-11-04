@@ -24,15 +24,15 @@ class PortableTransitionModal extends Component {
         }
 
         const content = childrenWithProps || <TransitionModalContent
-                        onClose={this.props.onClose}
-                        onOk={this.props.onOk}
-                        message={this.props.message}
-                        header={this.props.header}
-                        showCancelButton={this.props.showCancelButton}
-                        cancelButtonText={this.props.cancelButtonText}
-                        showOkButton={this.props.showOkButton}
-                        okButtonText={this.props.okButtonText}
-                        />;
+            onClose={this.props.onClose}
+            onOk={this.props.onOk}
+            message={this.props.message}
+            header={this.props.header}
+            showCancelButton={this.props.showCancelButton}
+            cancelButtonText={this.props.cancelButtonText}
+            showOkButton={this.props.showOkButton}
+            okButtonText={this.props.okButtonText}
+        />;
         return <Portal portalId={this.props.portalId} className={this.props.className}>
             <TransitionModal onCloseModal={this.props.onClose}>
                 {content}

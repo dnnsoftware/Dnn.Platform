@@ -19,6 +19,8 @@ class RoleGroupFilter extends Component {
             roleGroups: [],
             selectedGroup: { id: -1, name: props.localization.globalGroupsText }
         };
+
+        this.groupsDropdown = React.createRef();
     }
 
     componentWillMount() {
@@ -29,9 +31,9 @@ class RoleGroupFilter extends Component {
 
     closeDropdown() {
         /*This is done in order to keep the dropdown closed on click on edit/delete*/
-        let {state} = this.refs["groupsDropdown"];
+        let {state} = this.groupsDropdown;
         state.dropDownOpen = true;
-        this.refs["groupsDropdown"].setState({
+        this.groupsDropdown.setState({
             state
         });
     }
@@ -89,9 +91,9 @@ class RoleGroupFilter extends Component {
             value={state.selectedGroup.id}
             onSelect={this.onSelect.bind(this) }
             style={{ width: "100%" }}
-            ref="groupsDropdown"
+            ref={this.groupsDropdown}
             prependWith={props.localization.filterByGroup}
-            />;
+        />;
 
         return GroupsDropDown;
     }

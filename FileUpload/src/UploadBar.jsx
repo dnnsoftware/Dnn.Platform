@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from "react";
 
-const upload = require("!raw!./img/upload.svg");
-const checkmark = require("!raw!./img/checkmark.svg");
-const errorIcon = require("!raw!./img/x.svg");
+const upload = require("!raw-loader!./img/upload.svg");
+const checkmark = require("!raw-loader!./img/checkmark.svg");
+const errorIcon = require("!raw-loader!./img/x.svg");
 
 export default class UploadBar extends Component {
     constructor() {

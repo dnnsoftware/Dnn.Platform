@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Button from "dnn-button";
 import "./style.less";
@@ -40,7 +39,7 @@ export default class CollapsibleRow extends Component {
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted || !props.closeOnBlur) { return; }
 
-        if (!ReactDOM.findDOMNode(this).contains(event.target)) {
+        if (!this.node.contains(event.target)) {
             this.collapse();
         }
     }
@@ -82,6 +81,7 @@ export default class CollapsibleRow extends Component {
                     }
                 </div>
                 <Collapse
+                    ref={node => this.node = node}
                     isOpened={!this.state.collapsed}
                     style={Object.assign({ float: "left" }, props.collapseStyle) }
                     keepCollapsedContent={props.keepCollapsedContent}

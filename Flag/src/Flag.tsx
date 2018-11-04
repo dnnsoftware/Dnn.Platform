@@ -37,7 +37,7 @@ const Flag: React.SFC<IProps> = ({culture, title, onClick}) => {
     return <div
         onClick={onClick}
         title={title}
-        style={getStyle(culture, isGeneric)}>{isGeneric ? culture : ""}</div>;
+        style={getStyle(culture, isGeneric) as any}>{isGeneric ? culture : ""}</div>;
 };
 
 export default Flag;

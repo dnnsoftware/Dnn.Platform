@@ -1,10 +1,9 @@
 import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./style.less";
 
-const searchIconImage = require("!raw!./img/search.svg");
+const searchIconImage = require("!raw-loader!./img/search.svg");
 
 export default class FolderSelector extends Component {
 
@@ -30,8 +29,7 @@ export default class FolderSelector extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = ReactDOM.findDOMNode(this);
-        if (node && node.contains(e.target) || e.target.className === "clear-button") {
+        if (this.node && this.node.contains(e.target) || e.target.className === "clear-button") {
             return;
         }
         this.hide();
@@ -76,7 +74,7 @@ export default class FolderSelector extends Component {
         const searchIcon = this.getSearchIcon();
 
         return ( 
-            <div className="dnn-folder-selector">
+            <div className="dnn-folder-selector" ref={node => this.node = node}>
                 <div className="selected-item" onClick={this.onFoldersClick.bind(this) }>
                     {selectedFolderText}
                 </div>

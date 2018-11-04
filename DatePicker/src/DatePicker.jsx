@@ -65,6 +65,7 @@ class DatePicker extends Component {
             timezone: props.timezone
         };
         this.handleClick = this.handleClick.bind(this);
+        this.dayPickerRef = React.createRef();
     }
 
     componentDidMount() {
@@ -81,7 +82,7 @@ class DatePicker extends Component {
         const isController = hasClass(e.target, DefaultControllerClassName) || this.props.controllerClassName && hasClass(e.target, this.props.controllerClassName);
 
         if (!this._isMounted) { return; }
-        const node = this.refs.dayPicker;
+        const node = this.dayPickerRef;
         if (node && node.contains(e.target)) {
             return;
         }
@@ -301,14 +302,14 @@ class DatePicker extends Component {
     }
 
     onClearDatesPressed() {
-        if(this.state.Date.FirstDate || this.state.Date.SecondDate) {
+        if (this.state.Date.FirstDate || this.state.Date.SecondDate) {
             const Date = { FirstDate: null, SecondDate: null };
             this.setState({ Date }, () => this.callUpdateDate());
         }
     }
 
     getPositionCss() {
-        switch(this.props.calendarPosition) {            
+        switch (this.props.calendarPosition) {            
             case "top":
                 return "show-above-input";
             case "bottom":
@@ -317,7 +318,7 @@ class DatePicker extends Component {
         }
     }
 
-    updateTimezone(timezone){
+    updateTimezone(timezone) {
         this.setState({timezone});
     }
    
@@ -362,7 +363,7 @@ class DatePicker extends Component {
         const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
         /* eslint-disable react/no-danger */
-        return <div className="dnn-day-picker" ref="dayPicker">
+        return <div className="dnn-day-picker" ref={this.dayPickerRef}>
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
                 {this.props.prependWith && <span>{this.props.prependWith}</span>}
                 {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
@@ -388,7 +389,7 @@ class DatePicker extends Component {
                         selectedDays={day => DateUtils.isSameDay(firstDate, day) }
                         onDayClick={this.firstDateClick.bind(this) }
                         disabledDays={ this.firstDisableDates.bind(this) }
-                        />
+                    />
                     <div className="dnn-time-picker-box">
                         {this.props.hasTimePicker && 
                             <TimePicker 
@@ -411,7 +412,7 @@ class DatePicker extends Component {
                         selectedDays={day => DateUtils.isSameDay(secondDate, day) }
                         onDayClick={this.secondDateClick.bind(this) }
                         disabledDays={ this.secondDisableDates.bind(this) }
-                        />
+                    />
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
                 {showButton && <button style={buttonStyle} role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}

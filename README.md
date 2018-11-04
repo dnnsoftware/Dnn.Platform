@@ -19,6 +19,14 @@ npm install packagename
 
 This will search the package in the private repository, and if not found, it will then use the public npm repository
 
+## Restoring all packages
+
+To install all the package dependencies for all the components 
+
+```
+npm run install-all
+```
+
 ## Compiling a package
 
 To compile a package from the source, it is needed to install all its dependencies in the package folder

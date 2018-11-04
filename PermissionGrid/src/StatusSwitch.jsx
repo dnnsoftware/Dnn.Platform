@@ -13,16 +13,16 @@ class StatusSwitch extends Component {
     changeState() {
         const {props} = this;
 
-        if (props.status === 3){
+        if (props.status === 3) {
             return;
         }
 
         let status = props.status + 1;
-        if (status > 2){
+        if (status > 2) {
             status = 0;
         }
 
-        if (typeof props.onChange === "function"){
+        if (typeof props.onChange === "function") {
             props.onChange(status);
         }
     }

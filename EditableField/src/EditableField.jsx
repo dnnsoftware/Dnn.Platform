@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
 import TextArea from "dnn-multi-line-input-with-error";
 import Input from "dnn-single-line-input-with-error";
 import { EditIcon } from "dnn-svg-icons";
@@ -9,6 +8,7 @@ class EditableField extends Component {
     constructor() {
         super();
         this.uniqueId = "editableField-" + (Date.now() * Math.random());
+        this.editableInputRef = React.createRef();
     }
 
     componentWillMount() {
@@ -21,7 +21,7 @@ class EditableField extends Component {
     }
     toggleEditMode() {
         if (!this.state.editMode) {
-            ReactDOM.findDOMNode(this.refs.editableInput).focus();
+            this.editableInputRef.focus();
         }
         this.setState({
             editMode: !this.state.editMode
@@ -52,7 +52,7 @@ class EditableField extends Component {
                 onChange={this.onKeyUp.bind(this)}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}
-                ref="editableInput"
+                ref={this.editableInputRef}
                 enabled={state.editMode}
                 error={state.error}
                 errorMessage={props.errorMessage}
@@ -64,7 +64,7 @@ class EditableField extends Component {
                 onChange={this.onKeyUp.bind(this)}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}
-                ref="editableInput"
+                ref={this.editableInputRef}
                 enabled={state.editMode}
                 error={state.error}
                 errorMessage={props.errorMessage}
@@ -82,7 +82,7 @@ class EditableField extends Component {
                 event.preventDefault();
                 if (props.enableCallback) {
                     props.onEnter(state.value, () => {
-                        ReactDOM.findDOMNode(this.refs.editableInput).blur();
+                        this.editableInputRef.blur();
                         this.setState({
                             editMode: false,
                             error: false
@@ -95,7 +95,7 @@ class EditableField extends Component {
                 }
                 else {
                     props.onEnter(state.value);
-                    ReactDOM.findDOMNode(this.refs.editableInput).blur();
+                    this.editableInputRef.blur();
                     this.setState({
                         editMode: false,
                         error: false
@@ -115,7 +115,7 @@ class EditableField extends Component {
                     this.props.onEscape(event);
                 }
                 setTimeout(() => {
-                    ReactDOM.findDOMNode(this.refs.editableInput).blur();
+                    this.editableInputRef.blur();
                 }, 250);
                 break;
             default:
@@ -155,7 +155,7 @@ class EditableField extends Component {
         if (!props.isUrl) {
             return <span className="editable-value">{state.value}</span>;
         }
-        return <span className="editable-value"><a href={this.getUrl(state.value)} target="_blank">{state.value}</a></span>;
+        return <span className="editable-value"><a href={this.getUrl(state.value)} target="_blank" rel="noopener noreferrer">{state.value}</a></span>;
     }
 
     render() {

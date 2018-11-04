@@ -6,32 +6,26 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
     entry: "./src/GridCell.jsx",
     output: {
-        path: "./lib/",
+        path: __dirname + "/lib",
         filename: "GridCell.js",
         libraryTarget: "umd",
         library: "GridCell"
     },
     module: {
-        loaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
+        rules: [
+            { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["babel-loader?presets[]=react"] },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
-            { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
-            { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" }
-        ],
-        preLoaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+            { test: /\.(svg|png)$/, exclude: /node_modules/, loader: "raw-loader" }
         ]
     },
-    target: 'node', // in order to ignore built-in modules like path, fs, etc.
+    target: "node", // in order to ignore built-in modules like path, fs, etc.
     externals: ["react", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"],
-        root: [
-            path.resolve('./src'),
-            path.resolve('./node_modules')
+        extensions: [".js", ".json", ".jsx"],
+        modules: [
+            "node_modules",
+            path.resolve(__dirname, "src")
         ]
     },
     plugins: isProduction ? [

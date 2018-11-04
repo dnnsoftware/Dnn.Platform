@@ -1,4 +1,8 @@
+const webpack = require("webpack");
 const path = require("path");
+const packageJson = require("./package.json");
+const isProduction = process.env.NODE_ENV === "production";
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
     entry: "./src/Flag.tsx",
@@ -19,7 +23,20 @@ module.exports = {
     resolve: {
             extensions: [".tsx"]
         },
-    externals: {
-        "react": "react"
-    }
+    target: "node", // in order to ignore built-in modules like path, fs, etc.
+    externals: ["react", nodeExternals()], // in order to ignore all modules in node_modules folder
+    plugins: isProduction ? [
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version),
+            "process.env": {
+                "NODE_ENV": JSON.stringify("production")
+            }
+        })
+    ] : [
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version)
+        })
+    ]
 };

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-const folderIcon = require("!raw!./img/folder.svg");
+const folderIcon = require("!raw-loader!./img/folder.svg");
 
 export default class Folders extends Component {
 
@@ -54,7 +54,7 @@ export default class Folders extends Component {
             /* eslint-disable react/no-danger */
             const isOpen = this.state.openFolders.some(id => id === child.data.key);
             const className = isOpen ? "open" : "";
-            return <li className={className}>
+            return <li className={className} key={child.data.key}>
                 {child.data.hasChildren && <div className="has-children" onClick={this.onParentClick.bind(this, child) }></div>}
                 <div onClick={this.onFolderNameClick.bind(this, child)}>
                     <div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} />

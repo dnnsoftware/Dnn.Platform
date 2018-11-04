@@ -30,6 +30,9 @@ export default class SearchableTags extends Component {
             inputWidth: 13,
             searchResults: []
         };
+
+        this.tagsFieldRef = React.createRef();
+        this.inputFieldRef = React.createRef();
     }
 
     componentDidMount() {
@@ -72,11 +75,11 @@ export default class SearchableTags extends Component {
 
     handleError(error) {
         this.setState({ loading: false });
-        console.log('ERROR:', error);
+        console.log("ERROR:", error);
     }
 
     resizeInputField() {
-        let width = this.refs.tagsField.getBoundingClientRect().width - 30;
+        let width = this.tagsFieldRef.getBoundingClientRect().width - 30;
         if (this.state.tags.length) {
             width = this.state.newTagText.length ? this.state.newTagText.length * 7 + 6 : 13;
         }
@@ -96,7 +99,7 @@ export default class SearchableTags extends Component {
         let {tags} = this.state;
         tags.push(tag);
         this.updateTags(tags);
-        setTimeout(() => { this.refs.inputField.focus(); }, 0);
+        setTimeout(() => { this.inputFieldRef.focus(); }, 0);
     }
 
     updateSelectedIndex(diff) {
@@ -182,7 +185,7 @@ export default class SearchableTags extends Component {
                     className={"result-item " + className}
                     onClick={this.addTag.bind(this, result) }
                     onMouseEnter={this.selectItem.bind(this, index) }
-                    >
+                >
                     {result.name}</div>;
             });
         } else if (!this.state.searchResults.length && this.state.newTagText) {
@@ -194,7 +197,7 @@ export default class SearchableTags extends Component {
     }
 
     focusInput() {
-        this.refs.inputField.focus();
+        this.inputFieldRef.focus();
     }
 
     render() {
@@ -216,12 +219,12 @@ export default class SearchableTags extends Component {
         return <div
             className={ className }
             onClick={this.focusInput.bind(this) }
-            ref="tagsField">
+            ref={this.tagsFieldRef}>
             <div type="text" className="dark-form-control">
                 {Tags}
                 <input
                     disabled={this.props.isDisabled}
-                    ref="inputField"
+                    ref={this.inputFieldRef}
                     type="text"
                     placeholder={placeholderText}
                     style={inputStyle}

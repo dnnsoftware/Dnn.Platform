@@ -9,9 +9,9 @@ class RadioButtons extends Component {
             value: props.value
         });
     }
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps(prop) {
         this.setState({
-            value: props.value
+            value: prop.value
         });
     }
     onChange(event) {
@@ -66,7 +66,8 @@ RadioButtons.PropTypes = {
 };
 
 RadioButtons.defaultProps = {
-    float: "left"
+    float: "left",
+    value: ""
 };
 
 export default RadioButtons;

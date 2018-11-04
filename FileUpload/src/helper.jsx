@@ -1,19 +1,19 @@
 import React, {Component, PropTypes} from "react";
 
 const helper = {
-    renderActions(template, actions){
+    renderActions(template, actions) {
 
         const components = [];
         let actionTemplate = template;
 
         const tokenRegex = /\{(.+?)\|(.+?)\}/;
-        while(tokenRegex.test(actionTemplate)){
+        while (tokenRegex.test(actionTemplate)) {
             const match = tokenRegex.exec(actionTemplate);
 
             components.push(actionTemplate.substr(0, match.index));
 
             const action = ((type) => {
-                if(typeof actions[type] === "function"){
+                if (typeof actions[type] === "function") {
                     return actions[type];
                 }
 
@@ -25,7 +25,7 @@ const helper = {
             actionTemplate = actionTemplate.substr(match.index + match[0].length);
         }
 
-        if(actionTemplate){
+        if (actionTemplate) {
             components.push(actionTemplate);
         }
 

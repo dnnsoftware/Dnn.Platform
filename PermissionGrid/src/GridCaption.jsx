@@ -39,9 +39,9 @@ class GridCaption extends Component {
             roleGroupId: state.roleGroupId,
             count: 10
         } : {
-                actionName: "GetSuggestionUsers",
-                count: 10
-            };
+            actionName: "GetSuggestionUsers",
+            count: 10
+        };
 
         return <GridCell className="grid-caption">
             <Label className="title" label={props.type === "role" ? props.localization.permissionsByRole : props.localization.permissionsByUser}></Label>
@@ -62,7 +62,7 @@ class GridCaption extends Component {
                     }}
                     options={suggestionOptions}
                     onSelect={this.onSuggestionSelected.bind(this) }
-                    />
+                />
             </GridCell>
         </GridCell>;
     }

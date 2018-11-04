@@ -4,6 +4,7 @@ module.exports = {
         "spellcheck"
     ],
     "env": {
+        "node": true,
         "browser": true,
         "commonjs": true
     },
@@ -12,7 +13,7 @@ module.exports = {
         "ecmaFeatures": {
             "es6":true,
             "jsx": true,
-            "experimentalObjectRestSpread": true
+            "ecmaVersion": 6 
         },
         "ecmaVersion": 6,
         "sourceType": "module"
@@ -23,9 +24,9 @@ module.exports = {
     "rules": {
        "spellcheck/spell-checker": [1,
         {
-            "comments": "true",
-            "strings": "true",
-            "identifiers": "true",
+            "comments": true,
+            "strings": true,
+            "identifiers": false,
             "skipWords": require("./.eslintskipwords"),
             "skipIfMatch": [
                 "http://[^s]*",

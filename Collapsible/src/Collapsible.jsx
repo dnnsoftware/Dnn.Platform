@@ -1,15 +1,18 @@
 import React, {Component, PropTypes} from "react";
 import ReactCollapse from "react-collapse";
-import {findDOMNode} from "react-dom";
 import scroll from "scroll";
 
 const defaultDelay = 300;
 
 const page = /Firefox/.test(navigator.userAgent) ?
-  document.documentElement :
-  document.body;
+    document.documentElement :
+    document.body;
 
 export default class Collapsible extends Component {
+    constructor(props) {
+        super(props);
+        this.collapsibleRef = React.createRef();
+    }
 
     componentWillUnmount() {
         if (this.scrollTimeout) {
@@ -24,7 +27,7 @@ export default class Collapsible extends Component {
             return;
         }
         this.scrollTimeout = setTimeout(()=> {
-            const collapsible = findDOMNode(this.refs.collapsible);
+            const collapsible = this.collapsibleRef.current;
             const collapsibleTop = collapsible.getBoundingClientRect().top;
             const collapsibleHeight = this.props.fixedHeight || height;
             const bodyTop = document.body.getBoundingClientRect().top;
@@ -49,7 +52,7 @@ export default class Collapsible extends Component {
             <ReactCollapse 
                 isOpened={isOpened}
                 style={style}
-                ref="collapsible"
+                ref={this.collapsibleRef}
                 keepCollapsedContent={true}
                 className={className}
                 onHeightReady={this.scroll.bind(this)}

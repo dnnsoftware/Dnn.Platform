@@ -25,7 +25,7 @@ class Label extends Component {
                     tooltipPlace={props.tooltipPlace}
                     rendered={tooltipMessages.length > 0}
                     style={Object.assign(tooltipStyle, props.tooltipStyle)}/>
-                    {props.extra}
+                {props.extra}
             </div>
         );
     }

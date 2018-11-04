@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import interact from "interact.js";
 
 export default (Component) => { 
@@ -25,13 +24,13 @@ export default (Component) => {
         }
     
         componentDidMount() {            
-            const node = ReactDOM.findDOMNode(this);
+            const node = this.node;
             if (!node) {
                 return;
             }
             interact.dynamicDrop(true);
             
-            interact(ReactDOM.findDOMNode(this)).dropzone({
+            interact(this.node).dropzone({
                 accept: ".drag-element",
                 overlap: 0.50,
                 ondropactivate: this.props.onDropActivate,
@@ -44,7 +43,7 @@ export default (Component) => {
         }
         
         render() {
-            return (<Component {...this.props} />);
+            return (<Component {...this.props} ref={node => this.node = node} />);
         }
     }
     Droppable.propTypes = {     

@@ -52,7 +52,7 @@ export default class Checkbox extends Component {
                         tooltipPlace={props.tooltipPlace}
                         tooltipStyle={{float: "none", display: "inline-block"}}
                         style={{float: "none", display: "inline-block", width: "auto"}}
-                        />
+                    />
                 }
                 <div className={className} style={Object.assign(checkBoxStyle, props.style)}>
                     <input
@@ -61,7 +61,7 @@ export default class Checkbox extends Component {
                         checked={this.state.checked}
                         onChange={() => {}}
                         aria-label={label ? "" : "Select"}
-                        />
+                    />
                     <label htmlFor={this.id} onClick={this.onClick.bind(this)}>Check</label>
                 </div>
                 {(!!label && props.labelPlace === "right") &&
@@ -73,7 +73,7 @@ export default class Checkbox extends Component {
                         tooltipPlace={props.tooltipPlace}
                         tooltipStyle={{float: "none", display: "inline-block"}}
                         style={{float: "none", display: "inline-block", width: "auto"}}
-                        />
+                    />
                 }
             </div>
         );

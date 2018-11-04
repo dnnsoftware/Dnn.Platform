@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
-const searchIcon = require("!raw!./img/search.svg");
-const fileIcon = require("!raw!./img/pages.svg");
+const searchIcon = require("!raw-loader!./img/search.svg");
+const fileIcon = require("!raw-loader!./img/pages.svg");
 import { Scrollbars } from "react-custom-scrollbars";
 
 export default class FilePicker extends Component {
@@ -27,8 +26,7 @@ export default class FilePicker extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = ReactDOM.findDOMNode(this);
-        if (node && node.contains(e.target) || e.target.className === "clear-button") {
+        if (this.node && this.node.contains(e.target) || e.target.className === "clear-button") {
             return;
         }
         this.hide();
@@ -106,7 +104,7 @@ export default class FilePicker extends Component {
 
         const files = this.getFiles();
 
-        return <div className="drop-down">
+        return <div className="drop-down" ref={node => this.node = node}>
             <div className="selected-item" onClick={this.onFilesClick.bind(this) }>
                 {selectedFileText}
             </div>

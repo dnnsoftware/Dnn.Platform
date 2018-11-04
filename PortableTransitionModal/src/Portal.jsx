@@ -5,7 +5,7 @@ class Portal extends Component {
     componentDidMount() {
         let portal = this.props.portalId && document.getElementById(this.props.portalId);
         if (!portal) {
-            portal = document.createElement('div');
+            portal = document.createElement("div");
             portal.id = this.props.portalId;
             document.body.appendChild(portal);
         }

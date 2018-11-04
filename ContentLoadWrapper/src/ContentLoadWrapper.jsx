@@ -108,7 +108,9 @@ ContentLoadWrapper.propTypes = {
     svgSkeleton: PropTypes.node,
     tryAgainText: PropTypes.string,
     loadError: PropTypes.bool,
-    onTryAgain: PropTypes.func
+    onTryAgain: PropTypes.func,
+    onCompleteCallback: PropTypes.func,
+    onErrorCallback: PropTypes.func
 };
 
 ContentLoadWrapper.defaultProps = {

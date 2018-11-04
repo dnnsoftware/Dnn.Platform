@@ -10,6 +10,7 @@ class TextOverflowWrapper extends Component {
         this.state = {
             itemWidth: 0
         };
+        this.overflowTooltipRef = React.createRef();
     }
     getStyle() {
         const {props} = this;
@@ -19,7 +20,7 @@ class TextOverflowWrapper extends Component {
     componentDidMount() {
         //Set time out to ensure calculation happens after render
         setTimeout(() => {
-            let input = this.refs.overflowTooltip;
+            let input = this.overflowTooltipRef;
             if (typeof input !== "undefined" && input.getBoundingClientRect()) {
                 let inputRect = input.getBoundingClientRect();
                 this.setState({
@@ -38,7 +39,7 @@ class TextOverflowWrapper extends Component {
             <div
                 className={"dnn-text-overflow-wrapper" + (props.className ? " " + props.className : "")}
                 style={this.getStyle()}
-                ref="overflowTooltip"
+                ref={this.overflowTooltipRef}
                 data-tip
                 data-for={this.uniqueId}
                 title={props.doNotUseTitleAttribute ? "" : props.text}>

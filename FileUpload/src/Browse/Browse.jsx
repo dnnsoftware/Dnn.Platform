@@ -80,9 +80,9 @@ export default class Browse extends Component {
 
     getFolders(searchText) {
         const sf = this.getServiceFramework();
-        let portalIdParams = this.props.portalId && this.props.portalId != -1
-                ? { portalId: this.props.portalId }
-                : {};
+        let portalIdParams = this.props.portalId && this.props.portalId !== -1
+            ? { portalId: this.props.portalId }
+            : {};
                     
         if (!searchText) {
             return sf.get("GetFolders", portalIdParams, this.setFolders.bind(this), this.handleError.bind(this));
@@ -153,7 +153,7 @@ export default class Browse extends Component {
         this.setState({ folders });
     }
 
-    renderActions(){
+    renderActions() {
         const {props} = this;
 
         return helper.renderActions(props.browseActionText, {
@@ -167,23 +167,23 @@ export default class Browse extends Component {
         return <div className="file-upload-container">
             <h4>{this.props.folderText}</h4>
             <FolderPicker
-                notSpecifiedText = {this.props.notSpecifiedText}
-                searchFoldersPlaceHolderText = {this.props.searchFoldersPlaceHolderText}
+                notSpecifiedText={this.props.notSpecifiedText}
+                searchFoldersPlaceHolderText={this.props.searchFoldersPlaceHolderText}
                 selectedFolder={this.state.selectedFolder}
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
                 onFolderClick={this.onFolderClick.bind(this) }
                 getChildren={this.getChildrenFolders.bind(this) }
-                />
+            />
             <h4>{this.props.fileText}</h4>
             <FilePicker
-                notSpecifiedText = {this.props.notSpecifiedText}
-                searchFilesPlaceHolderText = {this.props.searchFilesPlaceHolderText}
+                notSpecifiedText={this.props.notSpecifiedText}
+                searchFilesPlaceHolderText={this.props.searchFilesPlaceHolderText}
                 selectedFile={this.state.selectedFile}
                 files={this.state.files}
                 onFileClick={this.onFileClick.bind(this) }
                 getFiles={this.getFiles.bind(this) }                
-                />
+            />
             <span>{this.renderActions()}</span>
         </div>;
     }

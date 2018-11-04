@@ -6,7 +6,7 @@ import Dropdown from "./Dropdown";
 import Collapse from "react-collapse";
 
 import {configure} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-15.4';
+import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 
 import {shallow, mount} from "enzyme";

@@ -25,7 +25,7 @@ export default class Suggestions extends Component {
         let suggestions = this.props.suggestions.map((suggestion, index) => {
             let className = this.props.selectedIndex > -1 && index === this.props.selectedIndex ? "selected" : "";
             return <div ref={(itemRef) => this.itemRef = index === 0 ? itemRef : null} className={`suggestion ${className}`} key={index}
-                        onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
+                onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
         });
         return suggestions;
     }
@@ -53,8 +53,8 @@ export default class Suggestions extends Component {
         const keySelectionHandler = this.keySelectionHandler.bind(this);
         return (<div className="suggestions">
             <Scrollbars ref={keySelectionHandler}
-                        style={style.list}
-                        onUpdate={this.onScrollUpdate.bind(this)}>
+                style={style.list}
+                onUpdate={this.onScrollUpdate.bind(this)}>
                 {suggestions}
             </Scrollbars>
         </div>);

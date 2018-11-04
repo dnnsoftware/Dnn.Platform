@@ -64,7 +64,7 @@ export default class TagInput extends Component {
             case KEY.COMMA:
             case KEY.TAB:
                 event.preventDefault();
-                if(props.suggestions.length > 0 && props.selectedIndex > -1 && props.suggestions[props.selectedIndex]) {
+                if (props.suggestions.length > 0 && props.selectedIndex > -1 && props.suggestions[props.selectedIndex]) {
                     this.addTag(props.suggestions[props.selectedIndex].value);
                 } else {
                     this.addTag(this.props.newTagText);

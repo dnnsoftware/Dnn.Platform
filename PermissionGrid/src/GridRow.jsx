@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
 import GridCell from "dnn-grid-cell";
 import StatusSwitch from "./StatusSwitch";
 import IconButton from "./IconButton/IconButton";
@@ -13,9 +12,9 @@ class GridRow extends Component {
         this.columnHeight = 40;
     }
 
-    componentDidMount(){
-        this.columnHeight = ReactDOM.findDOMNode(this).offsetHeight;
-    }
+    componentDidMount() {
+        this.columnHeight = this.node.offsetHeight;
+    }   
 
     getHeaderColumnText() {
         const {props} = this;
@@ -164,7 +163,7 @@ class GridRow extends Component {
         let self = this;
        
         return (
-            <GridCell className="grid-row">
+            <GridCell className="grid-row" ref={node => this.node = node}>
                 <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
                 {props.definitions.map(function (def) {
                     let permission = props.permission.permissions.filter(p => {
@@ -182,7 +181,7 @@ class GridRow extends Component {
 
                     return (
                         
-                        <GridCell style={{"height":self.columnHeight+"px"}} columnSize={columnWidth} >
+                        <GridCell style={{"height":self.columnHeight+"px"}} columnSize={columnWidth} key={def.permissionId} >
                             <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
                         </GridCell>
                     );

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 
-const arrow_svg = require("!raw!./arrow_bullet.svg");
+const arrow_svg = require("!raw-loader!./arrow_bullet.svg");
 import { global } from "../../global";
 
 const styles = global.styles;

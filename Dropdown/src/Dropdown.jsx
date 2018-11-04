@@ -1,6 +1,5 @@
 import React, { Component} from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
 import {ArrowDownIcon} from "dnn-svg-icons";
@@ -98,7 +97,7 @@ class Dropdown extends Component {
             return;
         }
 
-        if (!ReactDOM.findDOMNode(this).contains(event.target)) {
+        if (!this.node.contains(event.target)) {
             this.setState({
                 dropDownOpen: false,
                 closestValue: null,
@@ -192,14 +191,14 @@ class Dropdown extends Component {
         const { props } = this;
 
         let index = props.options.findIndex(this.startWith, this);
-        if(index < 0) {
+        if (index < 0) {
             index = props.options.findIndex(this.containsString, this);
         }
-        if(index > -1) {
+        if (index > -1) {
 
             const option = this.getOption(index);
 
-            if(option) {
+            if (option) {
                 this.setState({
                     closestValue: option.value,
                     currentIndex: index,
@@ -218,12 +217,12 @@ class Dropdown extends Component {
 
         const optionRef = this.selectedOptionElement ? this.selectedOptionElement : null;
         if (optionRef) {
-            const domElement = ReactDOM.findDOMNode(optionRef);
+            const domElement = this.selectedOptionElement.ref;// ReactDOM.findDOMNode(optionRef);
             let offset = domElement.offsetTop;
-            if (eventKey == "ArrowUp") {
+            if (eventKey === "ArrowUp") {
                 offset = domElement.offsetTop - domElement.clientHeight*2;
             }
-            scroll.top(ReactDOM.findDOMNode(this.scrollBar).childNodes[0], offset);
+            scroll.top(this.node.scrollBar.childNodes[0], offset);
         }
     }
 
@@ -255,14 +254,12 @@ class Dropdown extends Component {
 
     getCurrentIndex() {
         const maxIndex = this.optionItems ? this.optionItems.length : 0;
-        const currentIndex = this.state.currentIndex != undefined ? this.state.currentIndex : -1;
+        const currentIndex = this.state.currentIndex !== undefined ? this.state.currentIndex : -1;
         return currentIndex > -1 && currentIndex < maxIndex ? currentIndex : -1;
     }
 
     onArrowDown(eventKey) {
-        const maxIndex = this.optionItems ? this.optionItems.length -1 : 0;
         let currentIndex = this.getCurrentIndex();
-        const nextIndex = currentIndex < maxIndex ? currentIndex++ : currentIndex;
         const option = this.getOption(currentIndex);
         this.setState({currentIndex, selectedOption: option, closestValue: null, ignorePreselection: true});
         this.scrollToSelectedItem(eventKey);
@@ -270,7 +267,6 @@ class Dropdown extends Component {
 
     onArrowUp(eventKey) {
         let currentIndex = this.getCurrentIndex();
-        const nextIndex = currentIndex > 0 ? currentIndex-- : currentIndex;
         this.setState({currentIndex, selectedOption: this.getOption(currentIndex), closestValue: null, ignorePreselection: true});
         this.scrollToSelectedItem(eventKey);
     }
@@ -281,8 +277,8 @@ class Dropdown extends Component {
         const options = props.options && props.options.map((option, index) => {
             this.optionItems.push(option);
             return <li onClick={this.onSelect.bind(this, option)} key={index}
-                       ref={this.isSelectedItem(index) ? this.addOptionRef.bind(this) : f => f}
-                       className={this.getOptionClassName(option, index)}>{option.label}</li>;
+                ref={this.isSelectedItem(index) ? this.addOptionRef.bind(this) : f => f}
+                className={this.getOptionClassName(option, index)}>{option.label}</li>;
         });
         return options;
     }
@@ -291,14 +287,14 @@ class Dropdown extends Component {
         const {props, state} = this;
         const currentIndex = this.getCurrentIndex();
         const isCurrentIndex = index === currentIndex;
-        const isPreselected = !this.state.ignorePreselection && props.value != null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
-        const isSearchResult = state.closestValue != null && (option.value === state.closestValue);
+        const isPreselected = !this.state.ignorePreselection && props.value !== null && (option.value === props.value && state.closestValue === null && currentIndex < 0);
+        const isSearchResult = state.closestValue !== null && (option.value === state.closestValue);
         const selected = currentIndex === -1 ? isPreselected : (isCurrentIndex || isSearchResult);
         return selected ? "dnn-dropdown-option selected" : "dnn-dropdown-option";
     }
 
     isSelectedItem(index) {
-        return index == this.state.currentIndex;
+        return index === this.state.currentIndex;
     }
 
     addOptionRef(option) {
@@ -318,7 +314,7 @@ class Dropdown extends Component {
         return (
             <div className={this.getClassName()} style={props.style}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()}
-                     onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
+                    onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
                     {this.getDropdownLabel()}
                 </div>
                 <input
@@ -338,7 +334,7 @@ class Dropdown extends Component {
                     aria-label="Search"
                 />
                 {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{__html: ArrowDownIcon}}
-                                        onClick={this.toggleDropdown.bind(this)}></div>}
+                    onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
                         isOpened={state.dropDownOpen}>

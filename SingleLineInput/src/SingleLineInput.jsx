@@ -24,22 +24,22 @@ class SingleLineInput extends Component {
         const {props} = this;
         return (
             <input type={getType(props.type)}
-                   className={"dnn-ui-common-single-line-input" + (" " + props.className) + (" " + props.size)}
-                   id={props.id}
-                   onChange={getHandler(props.onChange, props.enabled)}
-                   onBlur={getHandler(props.onBlur, props.enabled)}
-                   onFocus={getHandler(props.onFocus, props.enabled)}
-                   onKeyDown={getHandler(props.onKeyDown, props.enabled)}
-                   onKeyPress={getHandler(props.onKeyPress, props.enabled)}
-                   onKeyUp={getHandler(props.onKeyUp, props.enabled)}
-                   value={props.value}
-                   tabIndex={props.tabIndex}
-                   style={props.style} 
-                   placeholder={props.placeholder}
-                   autoComplete={props.autoComplete}
-                   maxLength={props.maxLength}
-                   aria-label="Content"
-                   {...getOptions(props.enabled)} />
+                className={"dnn-ui-common-single-line-input" + (" " + props.className) + (" " + props.size)}
+                id={props.id}
+                onChange={getHandler(props.onChange, props.enabled)}
+                onBlur={getHandler(props.onBlur, props.enabled)}
+                onFocus={getHandler(props.onFocus, props.enabled)}
+                onKeyDown={getHandler(props.onKeyDown, props.enabled)}
+                onKeyPress={getHandler(props.onKeyPress, props.enabled)}
+                onKeyUp={getHandler(props.onKeyUp, props.enabled)}
+                value={props.value}
+                tabIndex={props.tabIndex}
+                style={props.style} 
+                placeholder={props.placeholder}
+                autoComplete={props.autoComplete}
+                maxLength={props.maxLength}
+                aria-label="Content"
+                {...getOptions(props.enabled)} />
         );
     } 
 }

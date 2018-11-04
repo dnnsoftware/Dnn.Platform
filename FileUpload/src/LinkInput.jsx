@@ -45,7 +45,7 @@ export default class LinkInput extends Component {
         this.props.onChange(e.target.value);
     }
 
-    renderActions(){
+    renderActions() {
         const {props} = this;
 
         return helper.renderActions(props.linkInputActionText, {

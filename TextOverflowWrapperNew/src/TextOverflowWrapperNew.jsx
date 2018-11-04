@@ -56,7 +56,7 @@ class TextOverflowWrapperNew extends Component {
                     multiline={props.multiline || true}
                     className={props.className || "page-picker-tooltip-style"}
                     border={props.bool || false}
-                    >
+                >
                     <div>
                         {props.text}
                     </div>

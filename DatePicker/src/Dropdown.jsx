@@ -9,6 +9,7 @@ class Dropdown extends Component {
             className: ""
         };
         this.handleClick = this.handleClick.bind(this);
+        this.timePickerRef = React.createRef();
     }
 
     componentDidMount() {
@@ -23,7 +24,7 @@ class Dropdown extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = this.refs.timePicker;
+        const node = this.timePickerRef;
         if (node && node.contains(e.target)) {
             return;
         }
@@ -58,7 +59,7 @@ class Dropdown extends Component {
         });
         
         return (
-            <div className={"dnn-time-picker " +  (className || "")} ref="timePicker">
+            <div className={"dnn-time-picker " +  (className || "")} ref={this.timePickerRef}>
                 <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
                     <span className="time-text-label" title={label}>{label}</span>
                     {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>

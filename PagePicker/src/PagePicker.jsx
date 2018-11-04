@@ -1,7 +1,5 @@
 import React, {PropTypes, Component} from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
-import Scrollbars from "react-custom-scrollbars";
 import SearchBox from "dnn-search-box";
 import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "dnn-svg-icons";
 import "./style.less";
@@ -30,6 +28,9 @@ class PagePicker extends Component {
         };
         this.loaded = false;
         this.handleClick = this.handleClick.bind(this);
+
+        this.dnnPagePickerRef = React.createRef();
+        this.pagePickerContent = React.createRef();
     }
     componentWillMount() {
         this._isMounted = false;
@@ -295,7 +296,7 @@ class PagePicker extends Component {
             const pageClass = props.IsMultiSelect && props.ShowIcon ? " page-icon" : "";
             const parentNotSelectable = isCurrentOrDescendant ? isCurrentOrDescendant : this.props.currentTabId === parseInt(page.TabId);
             
-            return <li className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
+            return <li key={page.TabId} className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
                 {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
                 <div className={this.getSelected(page, parentNotSelectable) } onClick={page.Selectable && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
@@ -399,7 +400,7 @@ class PagePicker extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted || !props.closeOnBlur || !props.IsInDropDown) { return; }
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)) {
+        if (!this.node.contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)) {
             this.setState({
                 dropDownOpen: false
             });
@@ -465,7 +466,7 @@ class PagePicker extends Component {
     UpdateSelectedData(Tab, checked, selectedPages) {
         if ((checked === 0 || checked === 2) && !selectedPages.some(page => page.TabId === Tab.TabId && page.CheckedState === checked)) {
             selectedPages = selectedPages.filter(page => {
-                return page.TabId != Tab.TabId;
+                return page.TabId !== Tab.TabId;
             });
             selectedPages = [{
                 TabId: Tab.TabId,
@@ -473,9 +474,9 @@ class PagePicker extends Component {
                 CheckedState: checked
             }].concat(selectedPages);
 
-        } else if (checked === 1 && selectedPages.some(page => page.TabId == Tab.TabId)) {
+        } else if (checked === 1 && selectedPages.some(page => page.TabId === Tab.TabId)) {
             selectedPages = selectedPages.filter(page => {
-                return page.TabId != Tab.TabId;
+                return page.TabId !== Tab.TabId;
             });
         }
         return selectedPages;
@@ -561,7 +562,7 @@ class PagePicker extends Component {
             if (state.portalTabs.length > 0 && state.portalTabs[0].Processed) {
                 let children = state.portalTabs.length > 0 && state.portalTabs[0].Processed && this.getChildItems(state.portalTabs);
                 picker =
-                    <PagePickerScrollbar style={props.scrollAreaStyle}>
+                    <PagePickerScrollbar style={props.scrollAreaStyle} ref={node => this.node = node}>
                         <div className="pages-container">
                             <ul>
                                 {state.portalTabs.length > 0 && state.portalTabs[0].Processed && children}
@@ -571,7 +572,7 @@ class PagePicker extends Component {
                     </PagePickerScrollbar>;
             }
             return (
-                <div className={this.getClassName() } style={props.style} ref="dnnPagePicker">
+                <div className={this.getClassName() } style={props.style} ref={this.dnnPagePickerRef}>
                     {
                         props.IsInDropDown &&
                         <div className="collapsible-label" onClick={this.toggleDropdown.bind(this) }>
@@ -585,7 +586,7 @@ class PagePicker extends Component {
                         <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") } style={props.style}>
                             <Collapse
                                 className="page-picker-content"
-                                ref="pagePickerContent"
+                                ref={this.pagePickerContentRef}
                                 keepCollapsedContent={props.keepCollapsedContent}
                                 isOpened={state.dropDownOpen}>
                                 {!props.IsMultiSelect && props.SearchEnabled &&
@@ -596,7 +597,7 @@ class PagePicker extends Component {
                                         onSearch={this.onSearch.bind(this) }
                                         iconStyle={Object.assign({ right: 4 }, props.iconStyle) }
                                         inputDisabled={!state.dropDownOpen}
-                                        />
+                                    />
                                 }
                                 {picker}
                                 {props.ShowCount && <div className="count" dangerouslySetInnerHTML={{ __html: this.getCountText() }}></div>}

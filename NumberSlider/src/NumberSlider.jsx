@@ -27,8 +27,8 @@ export default class NumberSlider extends Component {
                     onChange={this.props.onChange}
                     disabled={!!this.props.disabled}
                     withBars={true}>
-                        {!this.props.hideValue && <div>{value}</div>}
-                    </ReactSlider>
+                    {!this.props.hideValue && <div>{value}</div>}
+                </ReactSlider>
                     
                 {this.props.withMinMax && <span>{maximum}</span>}
             </div>

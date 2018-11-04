@@ -36,7 +36,7 @@ class DnnTabs extends Component {
     getTabPanels() {
         const {props} = this;
         let children = [];        
-        if (Object.prototype.toString.call(props.children) === '[object Array]') {
+        if (Object.prototype.toString.call(props.children) === "[object Array]") {
             for (let i = 0; i < (props.children.length); i++) {
                 children.push(<TabPanel key={this.uniqueId + "panel-" + i}>{props.children[i]}</TabPanel>);
             }

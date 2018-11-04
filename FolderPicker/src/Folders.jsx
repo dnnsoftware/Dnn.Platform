@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import "./style.less";
 
-const folderIcon = require("!raw!./img/folder.svg");
+const folderIcon = require("!raw-loader!./img/folder.svg");
 
 export default class Folders extends Component {
 
@@ -64,7 +64,7 @@ export default class Folders extends Component {
         const children = folder.children.map((child) => {
             const isOpen = this.state.openFolders.some(id => id === child.data.key);
             const className = isOpen ? "open" : "";
-            return <li className={className}>
+            return <li className={className} key={child.data.key}>
                 {child.data.hasChildren && 
                     <div 
                         className="has-children" 

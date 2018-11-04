@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import interact from "interact.js";
 
 //TODO: reconsider location of this general component
@@ -7,6 +6,11 @@ export default (Component) => {
     
     class Draggable extends React.Component {
 
+        constructor(props) {
+            super(props);
+            this.collapsibleRef = React.createRef();
+        }
+            
         showGhostTargetOnClone(currentTarget) {            
             this.originalTarget = currentTarget;
             this.originalTargetClassName = this.originalTarget.className;
@@ -51,7 +55,7 @@ export default (Component) => {
         }
 
         destroyClone(clone) {
-            if(clone.parentNode) {
+            if (clone.parentNode) {
                 clone.parentNode.removeChild(clone);
             }
         }
@@ -96,17 +100,17 @@ export default (Component) => {
 
         componentDidMount() {
             const self = this;
-            const dragElement = ReactDOM.findDOMNode(this);   
+            const dragElement = this.node;   
             if (!dragElement) {
                 return;
             }     
             const {
-                 cloneElementOnDrag,
-                 onDragStart, 
-                 onDragMove,
-                 onDragEnd,
-                 getDragPreview,
-                 showGhostOnClone
+                cloneElementOnDrag,
+                onDragStart, 
+                onDragMove,
+                onDragEnd,
+                getDragPreview,
+                showGhostOnClone
             } = this.props;
             
             interact(dragElement).ignoreFrom("input, *[contenteditable=true], .ignoreDraggable").draggable({
@@ -115,7 +119,7 @@ export default (Component) => {
                     this.moveTarget(event);
                     
                     // Notify drag move
-                    if(typeof(onDragMove) === "function") {
+                    if (typeof(onDragMove) === "function") {
                         onDragMove(self, event);
                     }
                 },
@@ -141,15 +145,15 @@ export default (Component) => {
                 if (interaction.pointerIsDown && !interaction.interacting() && interaction.prepared.name === "drag") {  
                     const currentTarget = event.currentTarget;   
                     
-                    if(!cloneElementOnDrag) {            
+                    if (!cloneElementOnDrag) {            
                         this.setDraggingStyle(currentTarget);
                         return;
                     }
                     
                     let clone = null;
-                    if(typeof(getDragPreview) === "function") {
+                    if (typeof(getDragPreview) === "function") {
                         const dragPreviewComponent = getDragPreview(self);
-                        const dragPreviewDOMElement = ReactDOM.findDOMNode(dragPreviewComponent);
+                        const dragPreviewDOMElement = dragPreviewComponent.node;
                         clone = this.clonePreviewElement(dragPreviewDOMElement, event);
                     } else {                                    
                         clone = this.cloneTarget(currentTarget);  

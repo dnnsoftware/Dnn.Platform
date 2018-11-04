@@ -15,8 +15,8 @@ class GridHeader extends Component {
         const {props, state} = this;
     }
 
-    getLocaliztion(key){
-        let localized = this.props.localization[key.replace(' ', '')];
+    getLocaliztion(key) {
+        let localized = this.props.localization[key.replace(" ", "")];
         return localized || key;
     }
 
@@ -27,7 +27,7 @@ class GridHeader extends Component {
         return <GridCell className="grid-header">
             <GridCell columnSize={roleColumnWidth}><span title={props.type}>{this.getLocaliztion(props.type)}</span></GridCell>
             {props.definitions.map((def) => {
-                return <GridCell columnSize={columnWidth}><span title={def.permissionName}>{this.getLocaliztion(def.permissionName)}</span></GridCell>;
+                return <GridCell key={def.permissionName} columnSize={columnWidth}><span title={def.permissionName}>{this.getLocaliztion(def.permissionName)}</span></GridCell>;
             }) }
             <GridCell columnSize={actionsWidth} />
         </GridCell>;

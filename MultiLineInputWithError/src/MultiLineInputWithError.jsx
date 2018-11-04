@@ -81,7 +81,7 @@ class MultiLineInputWithError extends Component {
                         labelType={props.labelType}
                         className={props.infoTooltipClassName}
                         style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
-                        />
+                    />
                 }
                 {props.extraToolTips}
                 <div className={"input-tooltip-container " + props.labelType}>
@@ -99,7 +99,7 @@ class MultiLineInputWithError extends Component {
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         maxLength={props.maxLength}
-                        />
+                    />
                     {this.getCounter(props.counter)}
                     <Tooltip
                         messages={errorMessages}
