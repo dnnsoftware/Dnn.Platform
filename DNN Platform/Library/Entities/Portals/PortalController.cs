@@ -2727,7 +2727,7 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalInternal(portal, true);
         }
 
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
@@ -3325,7 +3325,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode)
 		{
 			UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode, false);

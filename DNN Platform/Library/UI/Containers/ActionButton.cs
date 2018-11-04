@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.Containers
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.")]
+    [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.. Scheduled removal in v11.0.0.")]
     public class ActionButton : ActionBase
     {
         private ActionButtonList _ButtonList;
