@@ -211,7 +211,8 @@ namespace DotNetNuke.Services.FileSystem
 
         private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
         {
-            var fileCollection = CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID));
+            var fileCollection =
+                CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, false, false));
 
             var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
 
