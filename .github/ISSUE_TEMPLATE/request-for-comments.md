@@ -11,10 +11,10 @@ about: Start a discussion around a feature, enhancement, or other change to DNN.
 ## Description of Problem
 Summarization of the solution requesting commentary.
 
-## Proposed Solution #1
+## Proposed Solution Option 1
 A proposed solution to the problem
 
-## Proposed Solution #2 (If Needed, repeat for more)
+## Proposed Solution Option 2 (If Needed, repeat for more)
 Another proposed solution to the problem
 
 ## Alternatives Researched
