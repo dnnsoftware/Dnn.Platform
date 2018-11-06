@@ -673,7 +673,7 @@ namespace DotNetNuke.Entities.Profile
 
         #region Obsolete Methods
 
-        [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead")]
+        [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
             return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));

@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -1874,6 +1874,15 @@ namespace DotNetNuke.Security.Membership
                     //Clear cache for user so that locked out & other status could be updated
                     DataCache.ClearUserCache(portalId, username);
                     DataCache.ClearCache(GetCacheKey(username));
+
+                    aspnetUser = System.Web.Security.Membership.GetUser(username);
+
+                    // If user has been locked out for current invalid attempt 
+                    // return locked out status
+                    if (aspnetUser.IsLockedOut)
+                    {
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                    }
                 }
             }
             else

@@ -510,7 +510,7 @@ namespace DotNetNuke.Data
 
         #region Portal Methods
 
-        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode")]
+        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v11.0.0.")]
         public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
                                         double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
                                          string HomeDirectory, int CreatedByUserID)
@@ -653,7 +653,8 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, string defaultLanguage,
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, 
+                                             int termsTabId, int privacyTabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
@@ -686,6 +687,8 @@ namespace DotNetNuke.Data
                                       GetNull(searchTabId),
                                       GetNull(custom404TabId),
                                       GetNull(custom500TabId),
+                                      GetNull(termsTabId),
+                                      GetNull(privacyTabId),
                                       GetNull(defaultLanguage),
                                       homeDirectory,
                                       lastModifiedByUserID,
@@ -701,7 +704,8 @@ namespace DotNetNuke.Data
         public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
                                               int registeredRoleId, int splashTabId, int homeTabId, int loginTabId,
                                               int registerTabId,
-                                               int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
+                                              int userTabId, int searchTabId, int custom404TabId, int custom500TabId,
+                                              int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalSetup",
                                       portalId,
@@ -716,6 +720,8 @@ namespace DotNetNuke.Data
                                       searchTabId,
                                       custom404TabId,
                                       custom500TabId,
+                                      termsTabId,
+                                      privacyTabId,
                                       adminTabId,
                                       cultureCode);
         }
@@ -3317,7 +3323,7 @@ namespace DotNetNuke.Data
 
         #region Password History
 
-        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes passwordsRetained and daysRetained")]
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes passwordsRetained and daysRetained. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetPasswordHistory(int userId)
         {
             return this.GetPasswordHistory(userId, int.MaxValue, int.MaxValue);
@@ -3328,7 +3334,7 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPasswordHistory", GetNull(userId), passwordsRetained, daysRetained);
         }
 
-        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes daysRetained")]
+        [Obsolete("Deprecated in Platform 9.2.0, please use the overload that takes daysRetained. Scheduled removal in v11.0.0.")]
         public virtual void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
             this.AddPasswordHistory(userId, password, passwordHistory, retained, int.MaxValue);
@@ -3948,7 +3954,7 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             return ExecuteScalar<int>("AddContentWorkflow",
@@ -3961,19 +3967,19 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflow(int workflowId)
         {
             return ExecuteReader("GetContentWorkflow", workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflows(int portalId)
         {
             return ExecuteReader("GetContentWorkflows", portalId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             ExecuteNonQuery("UpdateContentWorkflow",
@@ -3986,7 +3992,7 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual int AddContentWorkflowState(int workflowId, string stateName, int order,
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
             string onCompleteMessageSubject, string onCompleteMessageBody,
@@ -4006,13 +4012,13 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual void DeleteContentWorkflowState(int stateId)
         {
             ExecuteNonQuery("DeleteContentWorkflowState", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual void UpdateContentWorkflowState(int stateId, string stateName, int order,
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
             string onCompleteMessageSubject, string onCompleteMessageBody,
@@ -4032,19 +4038,19 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflowState(int stateId)
         {
             return ExecuteReader("GetContentWorkflowState", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflowStates(int workflowId)
         {
             return ExecuteReader("GetContentWorkflowStates", workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog. Scheduled removal in v11.0.0.")]
         public virtual int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
         {
             return ExecuteScalar<int>("AddContentWorkflowLog",
@@ -4055,13 +4061,13 @@ namespace DotNetNuke.Data
                 contentItemId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
         {
             return ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
         {
             return ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
@@ -4110,13 +4116,13 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
         {
             return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
         public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
         {
             return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
@@ -4325,13 +4331,13 @@ namespace DotNetNuke.Data
             return Globals.ConvertDataReaderToDataSet(ExecuteReader(procedureName, commandParameters));
         }
 
-        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  Use the generic version ExecuteScalar<T>.")]
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  Use the generic version ExecuteScalar<T>.. Scheduled removal in v11.0.0.")]
         public virtual object ExecuteScalar(string procedureName, params object[] commandParameters)
         {
             return ExecuteScalar<object>(procedureName, commandParameters);
         }
 
-        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.")]
+        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.. Scheduled removal in v11.0.0.")]
         public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
         {
             SqlParameter[] sqlCommandParameters = null;
