@@ -1,4 +1,5 @@
-[![Build status](https://dotnetfoundation.visualstudio.com/DNN/_apis/build/status/Dnn.AdminExperience%20%5BCI%5D)](https://dotnetfoundation.visualstudio.com/DNN/_build/latest?definitionId=38) [![Greenkeeper badge](https://badges.greenkeeper.io/dnnsoftware/Dnn.AdminExperience.svg)](https://greenkeeper.io/)
+[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.AdminExperience%20%5BCI%5D)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=38) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dnnsoftware/Dnn.AdminExperience.svg)](https://greenkeeper.io/)
 
 # Dnn.AdminExperience
 
