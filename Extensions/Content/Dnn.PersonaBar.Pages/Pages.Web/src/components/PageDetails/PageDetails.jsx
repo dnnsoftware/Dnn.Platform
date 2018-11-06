@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import PageStandard from "./PageStandard/PageStandard";
 import PageUrl from "./PageUrl/PageUrl";
 import PageDetailsFooter from "./PageDetailsFooter/PageDetailsFooter";
+import PageIcons from "./PageIcons/PageIcons";
 
 class PageDetail extends Component {
 
@@ -27,6 +28,7 @@ class PageDetail extends Component {
         return (
             <div>
                 <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} onSelectParentPageId={this.props.onSelectParentPageId}/>
+                <PageIcons components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} page={this.props.page} />
                 <PageDetailsFooter components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} />
             </div>
         );
@@ -43,7 +45,7 @@ PageDetail.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        page: state.pages.selectedPage
+        page: state.pages.selectedPage        
     };
 };
 

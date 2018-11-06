@@ -91,6 +91,8 @@ const PageService = function () {
                 page.hasParent = parentPage && typeof parentPage !== "function" && parentPage.id || page.hasParent;
                 page.hierarchy = parentPage && typeof parentPage !== "function" && parentPage.id && parentPage.name || page.hierarchy;
                 page.parentId = parentPage && typeof parentPage !== "function" && parentPage.id || page.parentId;
+                page.iconFile = null;
+                page.iconFileLarge = null;
                 return page;
             });
     };
