@@ -486,7 +486,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public IEnumerable<ModuleInfo> GetModules(int pageId)
         {
             var tabModules = _moduleController.GetTabModules(pageId);
-            return tabModules.Values.Where(m => !m.IsDeleted && !m.AllTabs);
+            return tabModules.Values.Where(m => !m.IsDeleted);
         }
 
         protected virtual bool ValidatePageSettingsData(PortalSettings portalSettings, PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage)

@@ -43,7 +43,7 @@ class ModuleRow extends Component {
                             className={editClassName} 
                             onClick={onSetting.bind(this, module)} 
                             dangerouslySetInnerHTML={{ __html: SettingsIcon }}></div>
-                        {module.editContentUrl && 
+                        {module.allTabs === false && module.editContentUrl &&
                             <div 
                                 className={editClassName} 
                                 onClick={onEditing.bind(this, module)} 
