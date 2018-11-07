@@ -621,4 +621,10 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="VersionIncrementedConfirmation.Text" xml:space="preserve">
     <value>Version incremented successfully</value>
   </data>
+  <data name="plHostEmail.Help" xml:space="preserve">
+    <value>The host email is used when testing the mail server, it can also be used by extensions to reach the person responsible for the hosting.</value>
+  </data>
+  <data name="plHostEmail.Text" xml:space="preserve">
+    <value>Host Email</value>
+  </data>
 </root>
