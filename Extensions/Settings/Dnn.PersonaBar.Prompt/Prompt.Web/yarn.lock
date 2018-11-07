@@ -2598,9 +2598,9 @@ eslint-plugin-import@^1.10.1:
     pkg-dir "^1.0.0"
     pkg-up "^1.0.0"
 
-eslint-plugin-jest@^21.5.0:
-  version "21.17.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-jest/-/eslint-plugin-jest-21.17.0.tgz#fdb00e2f9ff16987d6ebcf2c75c7add105760bbb"
+eslint-plugin-jest@^22.0.0:
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.0.0.tgz#87dc52bbdd47f37f23bf2b10bb8469458bb3ed68"
 
 eslint-plugin-react@7.11.1:
   version "7.11.1"
