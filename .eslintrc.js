@@ -1,39 +1,67 @@
 module.exports = {
     "plugins": [
         "react",
-        "spellcheck"
+        "spellcheck",
+        "import",
+        "filenames",
+        "babel"
     ],
-    "env": {
-        "node": true,
-        "browser": true,
-        "commonjs": true
+    "settings": {
+        "import/resolver":{
+            "webpack": {},
+            "node":{
+                "extensions":[".js", ".jsx"]
+            }
+        },
+        "react": {
+            "createClass": "createReactClass",
+            "pragma": "React",  
+            "version": "15.0",
+            "flowVersion": "0.53"
+          },
+          "propWrapperFunctions": [ "forbidExtraProps" ]
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended", "eslint-config-dnn"],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
-            "es6":true,
             "jsx": true,
-            "ecmaVersion": 6 
+            "experimentalObjectRestSpread": true,
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": false,
+            "templateStrings": true
         },
         "ecmaVersion": 6,
         "sourceType": "module"
-    },        
-    "globals": {
-        "Promise": false,
     },
     "rules": {
-       "spellcheck/spell-checker": [1,
-        {
-            "comments": true,
-            "strings": true,
-            "identifiers": false,
-            "skipWords": require("./.eslintskipwords"),
-            "skipIfMatch": [
-                "http://[^s]*",
-                "https://[^s]*",
-                "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-            ]
-        }
-      ]
+        "semi": "error",
+        "no-var": "error",
+        "quotes": ["warn", "double" ],
+        "indent": ["warn", 4, {"SwitchCase": 1}],
+        "no-unused-vars": "warn",
+        "no-console": "warn",      
+        "keyword-spacing": "warn", 
+        "eqeqeq": "warn",
+        "space-before-function-paren": ["warn", { "anonymous": "always", "named": "never" }],
+        "space-before-blocks": "warn",
+        "no-multiple-empty-lines":  "warn",
+        "react/jsx-equals-spacing": ["warn", "never"],
+        "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}],
+        "import/no-unresolved": 2,
+        "import/named": 2,
+        "import/default": 2,
+        "filenames/match-exported": 2,
+        "filenames/no-index": 2
     }
 };
