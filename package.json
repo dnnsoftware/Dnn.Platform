@@ -9,8 +9,9 @@
   },
   "license": "MIT",
   "scripts": {
+    "prepublishOnly": "yarn run build",
     "eslint": "eslint ./src/**/*.jsx --fix",
-    "build": "set NODE_ENV=production && webpack -p"
+    "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js"
   },
   "dependencies": {
     "interact.js": "^1.2.8",

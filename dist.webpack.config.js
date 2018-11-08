@@ -1,12 +1,17 @@
-module.exports = (distRoot, optimize) => ({
+const webpack = require("webpack");
+const path = require("path");
+const packageJson = require("./package.json");
+const nodeExternals = require('webpack-node-externals');
+
+module.exports = {
   mode: 'production',
   optimization: {
-    minimize: !!optimize,
+    minimize: true,
   },
-  entry: './src/index.js',
+  entry: './src/index.jsx',
   output: {
-    path: distRoot,
-    filename: optimize ? 'dnn-react-common.min.js' : 'dnn-react-common.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'dnn-react-common.min.js',
     library: 'DnnReactCommon',
     libraryTarget: 'umd',
   },
@@ -32,8 +37,6 @@ resolve: {
     ]
 },
 plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
         VERSION: JSON.stringify(packageJson.version),
         "process.env": {
@@ -41,4 +44,4 @@ plugins: [
         }
     })
     ] 
-});
+};
