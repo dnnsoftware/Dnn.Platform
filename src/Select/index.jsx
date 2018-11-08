@@ -37,15 +37,15 @@ function getActualValue(multipleSelect, value, valueArray) {
 }
 
 const Select = ({onChange, value, valueArray, options, enabled, multipleSelect, style}) => (
-        <select 
-            className="dnn-uicommon-select"
-            onChange={getHandler(onChange, enabled)}            
-            value={getActualValue(multipleSelect, value, valueArray)}            
-            style={style}    
-            aria-label="Select"        
-            {...getOpts(enabled, multipleSelect)}>
-            {getOptionsList(options)}
-         </select> 
+    <select 
+        className="dnn-uicommon-select"
+        onChange={getHandler(onChange, enabled)}            
+        value={getActualValue(multipleSelect, value, valueArray)}            
+        style={style}    
+        aria-label="Select"        
+        {...getOpts(enabled, multipleSelect)}>
+        {getOptionsList(options)}
+    </select> 
 );
 
 Select.propTypes = {

@@ -13,10 +13,10 @@ class ScrollBar extends Component {
     render() {
         return (
             <ScrollArea
-                    speed={0.8}
-                    className="area"
-                    contentClassName={this.props.contentClassName?this.props.contentClassName:""}
-                    contentStyle={this.props.contentStyle?this.props.contentStyle:""}>
+                speed={0.8}
+                className="area"
+                contentClassName={this.props.contentClassName?this.props.contentClassName:""}
+                contentStyle={this.props.contentStyle?this.props.contentStyle:""}>
                 {this.props.children}
             </ScrollArea>
         );

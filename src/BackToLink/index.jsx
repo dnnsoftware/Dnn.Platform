@@ -1,5 +1,5 @@
 import React, {PropTypes} from "react";
-import { ArrowBack } from "dnn-svg-icons";
+import { ArrowBack } from "../SvgIcons";
 import "./style.less";
 
 /*eslint-disable react/no-danger*/

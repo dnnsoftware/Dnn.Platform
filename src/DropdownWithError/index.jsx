@@ -25,7 +25,7 @@ class DropdownWithError extends Component {
                         labelType={props.labelType}
                         className={props.infoTooltipClassName}
                         style={Object.assign(!props.tooltipMessage ? { marginBottom: 5 } : {}, props.labelStyle) }
-                        />
+                    />
                 }
                 {props.extraToolTips}
                 <div className={"dropdown-tooltip-container " + props.labelType}>
@@ -48,7 +48,7 @@ class DropdownWithError extends Component {
                         prependWith={props.prependWith}
                         title={props.title}
                         autoHide={props.autoHide}
-                        />
+                    />
                     <Tooltip
                         messages={errorMessages}
                         type="error"

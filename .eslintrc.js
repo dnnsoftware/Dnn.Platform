@@ -61,7 +61,6 @@ module.exports = {
         "import/no-unresolved": 2,
         "import/named": 2,
         "import/default": 2,
-        "filenames/match-exported": 2,
-        "filenames/no-index": 2
+        "filenames/match-exported": 2
     }
 };

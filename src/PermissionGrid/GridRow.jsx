@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "../GridCell";
 import StatusSwitch from "./StatusSwitch";
-import IconButton from "./IconButton/IconButton";
+import IconButton from "./IconButton";
 
 class GridRow extends Component {
     constructor(props) {
@@ -167,7 +167,7 @@ class GridRow extends Component {
                 <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
                 {props.definitions.map(function (def) {
                     let permission = props.permission.permissions.filter(p => {
-                        return p.permissionId == def.permissionId;
+                        return p.permissionId === def.permissionId;
                     });
 
                     let status = 0;

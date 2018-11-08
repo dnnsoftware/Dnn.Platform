@@ -4,10 +4,10 @@ const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
 const nodeExternals = require('webpack-node-externals');
 module.exports = {
-    entry: "./src/Button.jsx",
+    entry: "./src/index.jsx",
     output: {
-        path: __dirname + '/lib',
-        filename: "Button.js",
+        path: __dirname + '/dist',
+        filename: "dnn-react-common.js",
         libraryTarget: "umd",
         library: "Button"
     },

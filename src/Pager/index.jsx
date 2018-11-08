@@ -5,7 +5,7 @@ import {
     ArrowEndLeftIcon,
     ArrowEndRightIcon
 } from "../SvgIcons";
-import DropDown from "../DropDown";
+import DropDown from "../Dropdown";
 import "./style.less";
 
 class Pager extends Component {

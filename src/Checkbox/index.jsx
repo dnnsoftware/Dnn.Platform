@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Label from "dnn-label";
+import Label from "../Label";
 import "./style.less";
 
 export default class Checkbox extends Component {

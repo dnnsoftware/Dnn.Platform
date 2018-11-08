@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 
-import IconButton from "./IconButton/IconButton";
+import IconButton from "./IconButton";
 
 class StatusSwitch extends Component {
     constructor(props) {
