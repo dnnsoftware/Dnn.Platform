@@ -217,7 +217,7 @@ export default class Sortable extends Component {
     render() {
         const {children, items} = this.props;
         if (children.length !== items.length) {
-            console.error("Children.length and items.length should be equal");
+            //console.error("Children.length and items.length should be equal");
             return false;
         }
         const listItems = children.map((child, index) => {

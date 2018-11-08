@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import LinkInput from "./LinkInput";
-import Browse from "./Browse/Browse";
+import Browse from "./Browse";
 import UploadBar from "./UploadBar";
 
 import "./style.less";

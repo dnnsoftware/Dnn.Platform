@@ -75,7 +75,7 @@ export default class SearchableTags extends Component {
 
     handleError(error) {
         this.setState({ loading: false });
-        console.log("ERROR:", error);
+        //console.log("ERROR:", error);
     }
 
     resizeInputField() {
