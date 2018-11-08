@@ -39,7 +39,7 @@ export Select from "./Select";
 export SingleLineInput from "./SingleLineInput";
 export SingleLineInputWithError from "./SingleLineInputWithError";
 export Sortable from "./Sortable";
-export Sortable from "./SvgIcons";
+export SvgIcons from "./SvgIcons";
 export Switch from "./Switch";
 export Tags from "./Tags";
 export TextOverflowWrapper from "./TextOverflowWrapper";
