@@ -130,7 +130,7 @@ class Grid extends Component {
                             columnWidth={columnWidth}
                             actionsWidth={actionsWidth} />);
                 }) }
-                {props.permissions.length === 0 && <GridCell className="empty-row">{props.type == "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
+                {props.permissions.length === 0 && <GridCell className="empty-row">{props.type === "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
             </GridCell>);
     }
 

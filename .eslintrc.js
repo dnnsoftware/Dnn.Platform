@@ -49,7 +49,6 @@ module.exports = {
         "no-var": "error",
         "quotes": ["warn", "double" ],
         "indent": ["warn", 4, {"SwitchCase": 1}],
-        "no-unused-vars": "warn",
         "no-console": "warn",      
         "keyword-spacing": "warn", 
         "eqeqeq": "warn",

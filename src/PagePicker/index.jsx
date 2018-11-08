@@ -485,7 +485,7 @@ class PagePicker extends Component {
     DoRecursiveSelect(page, mainKey, originalChecked, callback) {
         let {portalTabs} = this.state;
         let checked = originalChecked;
-        if (mainKey != page.TabId && page.HasChildren && page.ChildTabs.length > 0) {
+        if (mainKey !== page.TabId && page.HasChildren && page.ChildTabs.length > 0) {
             if (!page.ChildTabs.some(child => child.CheckedState === undefined || child.CheckedState === 1 || child.CheckedState === 2))
                 checked = 0;
             else if (page.ChildTabs.some(child => child.CheckedState !== undefined && child.CheckedState === 0 && child.CheckedState === 2))
