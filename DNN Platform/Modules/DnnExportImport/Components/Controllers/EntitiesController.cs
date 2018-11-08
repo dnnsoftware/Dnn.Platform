@@ -161,6 +161,11 @@ namespace Dnn.ExportImport.Components.Controllers
                 _dataProvider.GetAllTabModules(tabId, includeDeleted, toDate, fromDate));
         }
 
+        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
+        {
+            return GetTabModuleSettings(tabId, true, toDate, fromDate);
+        }
+
         public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabModuleSetting>(
