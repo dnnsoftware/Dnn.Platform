@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "eslint": "eslint ./src/**/*.jsx --fix",
-    "build": "node build-all"
+    "build": "set NODE_ENV=production && webpack -p"
   },
   "dependencies": {
     "interact.js": "^1.2.8",
