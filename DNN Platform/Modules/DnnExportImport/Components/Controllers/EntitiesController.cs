@@ -163,8 +163,13 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
+            return GetTabModuleSettings(tabId, true, toDate, fromDate);
+        }
+
+        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        {
             return CBO.Instance.FillCollection<ExportTabModuleSetting>(
-                _dataProvider.GetAllTabModuleSettings(tabId, toDate, fromDate));
+                _dataProvider.GetAllTabModuleSettings(tabId, includeDeleted, toDate, fromDate));
         }
 
         public PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)

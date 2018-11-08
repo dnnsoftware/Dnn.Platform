@@ -1383,7 +1383,7 @@ namespace Dnn.ExportImport.Components.Services
                             ExportTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
 
                         _totals.TotalTabModuleSettings +=
-                            ExportTabModuleSettings(exportPage, toDate, fromDate);
+                            ExportTabModuleSettings(exportPage, _exportDto.IncludeDeletions,  toDate, fromDate);
                         _totals.TotalTabs++;
                     }
                     _totals.LastProcessedId = index;
@@ -1433,9 +1433,9 @@ namespace Dnn.ExportImport.Components.Services
             return tabModules.Count;
         }
 
-        private int ExportTabModuleSettings(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
+        private int ExportTabModuleSettings(ExportTab exportPage, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
-            var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, toDate, fromDate);
+            var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModuleSettings.Count > 0)
                 Repository.CreateItems(tabModuleSettings, exportPage.Id);
             return tabModuleSettings.Count;
