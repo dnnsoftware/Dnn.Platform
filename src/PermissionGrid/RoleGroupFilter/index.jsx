@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import DropDown from "../../DropDown";
+import Dropdown from "../../Dropdown";
 
 import "./style.less";
 import Service from "./Service";
@@ -84,7 +84,7 @@ class RoleGroupFilter extends Component {
 
         let roleGroupsOptions = this.BuildRoleGroupsOptions();
 
-        let GroupsDropDown = <DropDown
+        let GroupsDropDown = <Dropdown
             withBorder={false}
             options={roleGroupsOptions}
             value={state.selectedGroup.id}
