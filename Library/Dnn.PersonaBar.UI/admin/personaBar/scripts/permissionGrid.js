@@ -379,13 +379,20 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
         _addUserToGrid: function (e) {
             var tokenInput = $("#permissionGrid_txtUser").data('tokenInputObject');
             var selectedUsers = tokenInput.getTokens();
+
+            var defaultPermission = this.getPermission({
+                permissionCode: 'SYSTEM_FOLDER',
+                permissionKey: 'READ'
+            });
+            defaultPermission.allowAccess = true;
+
             for (var i = 0; i < selectedUsers.length; i++) {
                 var user = selectedUsers[i];
                 if (!this._userExistsInGrid(user.id)) {
                     this._buildGridRow(this._usersTable.find('tbody'), {
                         userId: user.id,
                         displayName: user.name,
-                        permissions: []
+                        permissions: [defaultPermission]
                     }, 'users');
                 }
             }
