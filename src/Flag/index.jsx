@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes, Component} from "react";
 
 const getUrl = (code: string) => {
     try {
@@ -18,7 +18,7 @@ const getStyle = (code: string, isGeneric: boolean) => ({
     textTransform: "uppercase",
     display: "inline-block",
     marginRight: "5px",
-    fontWeight: "bold" as "bold",
+    fontWeight: "bold",
     width: "27px",
     height: "18px",
     lineHeight: "18px",
@@ -26,18 +26,24 @@ const getStyle = (code: string, isGeneric: boolean) => ({
     textAlign: "center"
 });
 
-export interface IProps {
-    culture: string;
-    onClick?: () => void;
-    title?: string;
+class Flag extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const isGeneric: boolean = !culture.includes("-");
+        return <div
+            onClick={onClick}
+            title={title}
+            style={getStyle(culture, isGeneric)}>{isGeneric ? culture : ""}</div>;
+    }
 }
 
-const Flag: React.SFC<IProps> = ({culture, title, onClick}) => {
-    const isGeneric: boolean = !culture.includes("-");
-    return <div
-        onClick={onClick}
-        title={title}
-        style={getStyle(culture, isGeneric) as any}>{isGeneric ? culture : ""}</div>;
+Flag.PropTypes = {
+    culture: PropTypes.string,
+    onClick: PropTypes.function,
+    title: PropTypes.string,
 };
 
 export default Flag;
