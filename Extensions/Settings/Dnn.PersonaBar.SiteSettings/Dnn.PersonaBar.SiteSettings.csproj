@@ -112,6 +112,7 @@
     <Compile Include="Services\Dto\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />
+    <Compile Include="Services\Dto\UpdatePrivacySettings.cs" />
     <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateListEntryOrdersRequest.cs" />
     <Compile Include="Services\Dto\UpdateProfilePropertyOrdersRequest.cs" />

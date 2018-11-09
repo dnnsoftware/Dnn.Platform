@@ -1329,4 +1329,43 @@
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
   </data>
+  <data name="plTermsTabId.Help" xml:space="preserve">
+    <value>The page where you show the terms of use for this site. If left unselected a default text will be shown when a user clicks on the terms of use link.</value>
+  </data>
+  <data name="plTermsTabId.Text" xml:space="preserve">
+    <value>Terms of Use Page</value>
+  </data>
+  <data name="plPrivacyTabId.Help" xml:space="preserve">
+    <value>This is the page that your user will be redirected to when clicking on the privacy statement link. If not set then a default privacy statement will be shown.</value>
+  </data>
+  <data name="plPrivacyTabId.Text" xml:space="preserve">
+    <value>Privacy Statement Page</value>
+  </data>
+  <data name="plCookieMoreLink.Help" xml:space="preserve">
+    <value>In the cookie consent popup a link is shown to explain about cookies to users. If you wish to override this link (by default it points to cookiesandme.com) it will link to this url.</value>
+  </data>
+  <data name="plCookieMoreLink.Text" xml:space="preserve">
+    <value>Cookie Consent Url</value>
+  </data>
+  <data name="plShowCookieConsent.Help" xml:space="preserve">
+    <value>Show a cookie consent popup on this site. Users will need to click the popup to agree and close it. It will not reappear again after this.</value>
+  </data>
+  <data name="plShowCookieConsent.Text" xml:space="preserve">
+    <value>Show Cookie Consent</value>
+  </data>
+  <data name="TabPrivacy.Text" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="PrivacyCommunicationSettings.Text" xml:space="preserve">
+    <value>Communication Settings</value>
+  </data>
+  <data name="PrivacyCookieConsentSettings.Text" xml:space="preserve">
+    <value>Cookie Consent Settings</value>
+  </data>
+  <data name="plDisplayCopyright.Help" xml:space="preserve">
+    <value>Include DNN Platform Copyright statement in page HTML source. Users will not see this rendered in their browser.</value>
+  </data>
+  <data name="plDisplayCopyright.Text" xml:space="preserve">
+    <value>Display Copyright</value>
+  </data>
 </root>

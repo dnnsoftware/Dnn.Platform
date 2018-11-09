@@ -464,6 +464,52 @@ const siteBehaviorActions = {
             });
         };
     },
+    getPrivacySettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getPrivacySettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PRIVACY_SETTINGS,
+                    data: {
+                        settings: data.Settings,
+                        privacySettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updatePrivacySettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updatePrivacySettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_PRIVACY_SETTINGS,
+                    data: {
+                        privacySettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    privacySettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_PRIVACY_SETTINGS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    privacySettingsClientModified: true
+                }
+            });
+        };
+    },
     getOtherSettings(callback) {
         return (dispatch) => {
             ApplicationService.getOtherSettings(data => {

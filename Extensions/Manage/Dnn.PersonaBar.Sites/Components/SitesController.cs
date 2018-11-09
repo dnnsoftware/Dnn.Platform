@@ -812,6 +812,18 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("addcompatiblehttpheader", setting);
             }
 
+            settingsDictionary.TryGetValue("ShowCookieConsent", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("showcookieconsent", setting);
+            }
+
+            settingsDictionary.TryGetValue("CookieMoreLink", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("cookiemorelink", setting);
+            }
+
             //End Portal Settings
             writer.WriteEndElement();
         }

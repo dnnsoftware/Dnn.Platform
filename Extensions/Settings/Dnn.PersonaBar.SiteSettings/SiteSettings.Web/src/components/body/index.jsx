@@ -9,6 +9,7 @@ import DefaultPagesSettings from "../defaultPagesSettings";
 import MessagingSettings from "../messagingSettings";
 import ProfileSettings from "../profileSettings";
 import SiteAliasSettings from "../siteAliasSettings";
+import PrivacySettings from "../privacySettings";
 import BasicSearchSettings from "../basicSearchSettings";
 import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
@@ -18,6 +19,7 @@ import MoreSettings from "../moreSettings";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
+import privacySettings from "../privacySettings";
 
 let isHost = false;
 let isAdmin = false;
@@ -49,12 +51,14 @@ export class Body extends Component {
                     resx.get("TabMessaging"),
                     resx.get("TabUserProfiles"),
                     resx.get("TabSiteAliases"),
+                    resx.get("TabPrivacy"),
                     resx.get("TabMore")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <PrivacySettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
             </Tabs>;
         }
