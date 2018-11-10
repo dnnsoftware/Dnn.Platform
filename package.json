@@ -11,7 +11,8 @@
   "scripts": {
     "prepublishOnly": "yarn run build",
     "eslint": "eslint ./src/**/*.jsx --fix",
-    "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js"
+    "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
     "interact.js": "^1.2.8",
@@ -37,6 +38,8 @@
     "throttle-debounce": "^2.0.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^4.0.4",
+    "@storybook/react": "^4.0.4",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",

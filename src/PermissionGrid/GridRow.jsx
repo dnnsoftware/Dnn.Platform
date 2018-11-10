@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "../GridCell";
 import StatusSwitch from "./StatusSwitch";
 import IconButton from "./IconButton";

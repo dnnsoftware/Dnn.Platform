@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 
 const Button = ({children, className, size, type, onClick, style, disabled}) => { 

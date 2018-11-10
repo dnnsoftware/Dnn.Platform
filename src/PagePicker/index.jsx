@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Collapse from "react-collapse";
 import SearchBox from "../SearchBox";
 import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "../SvgIcons";

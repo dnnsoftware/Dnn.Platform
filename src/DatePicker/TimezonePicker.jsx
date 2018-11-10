@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import timeZones from "./timeZones";
 import Dropdown from "./Dropdown";
 

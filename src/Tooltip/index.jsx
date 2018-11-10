@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ReactPortalTooltip from "react-portal-tooltip";
 import uniqueId from "lodash/uniqueId";
 import InfoIcon from "./InfoIcon";

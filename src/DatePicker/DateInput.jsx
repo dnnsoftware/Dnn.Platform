@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 const Periods = ["AM", "PM"];
 const numberReg = new RegExp("^\\d+$");

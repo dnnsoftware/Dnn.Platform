@@ -23,8 +23,9 @@ module.exports = {
             { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
             { test: /\.css$/, loader: "style-loader!css-loader" },
             { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
+            { test: /\.(svg)$/, exclude: /node_modules/, loader: "raw-loader" },
             { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" }
+            { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" }
         ]
     },
     target: "node", // in order to ignore built-in modules like path, fs, etc.

@@ -1,6 +1,7 @@
-import React, {PropTypes, Component} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-const getUrl = (code: string) => {
+const getUrl = (code) => {
     try {
         return require(`./img/flags/${code}.png`);
     } catch (error) {
@@ -8,7 +9,7 @@ const getUrl = (code: string) => {
     }
 };
 
-const getStyle = (code: string, isGeneric: boolean) => ({
+const getStyle = (code, isGeneric) => ({
     backgroundColor: isGeneric ? "#78BEDB" : "transparent",
     backgroundRepeat: "no-repeat",
     backgroundImage: isGeneric ? "none" : `url(${getUrl(code)})`,
@@ -32,7 +33,7 @@ class Flag extends Component {
     }
 
     render() {
-        const isGeneric: boolean = !culture.includes("-");
+        const isGeneric = !culture.includes("-");
         return <div
             onClick={onClick}
             title={title}
@@ -42,7 +43,7 @@ class Flag extends Component {
 
 Flag.PropTypes = {
     culture: PropTypes.string,
-    onClick: PropTypes.function,
+    onClick: PropTypes.func,
     title: PropTypes.string,
 };
 

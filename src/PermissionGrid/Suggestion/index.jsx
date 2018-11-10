@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {debounce} from "throttle-debounce";
 import Combobox from "react-widgets/lib/Combobox";
 import Service from "./Service";
