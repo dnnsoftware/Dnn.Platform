@@ -106,6 +106,7 @@ class SingleLineInputWithError extends Component {
                         size={props.inputSize}
                         autoComplete={props.autoComplete}
                         maxLength={props.maxLength}
+                        inputRef={props.inputRef}
                     />
                     {this.getCounter(props.counter)}
                     <Tooltip

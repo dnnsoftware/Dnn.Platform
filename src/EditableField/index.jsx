@@ -9,7 +9,6 @@ class EditableField extends Component {
     constructor() {
         super();
         this.uniqueId = "editableField-" + (Date.now() * Math.random());
-        this.editableInputRef = React.createRef();
     }
 
     componentWillMount() {
@@ -25,7 +24,7 @@ class EditableField extends Component {
             editMode: !this.state.editMode
         });
         if (!this.state.editMode) {
-            this.editableInputRef.current.focus();
+            this.editableInputRef.focus();
         }
     }
 
@@ -65,7 +64,7 @@ class EditableField extends Component {
                 onChange={this.onKeyUp.bind(this)}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}
-                ref={this.editableInputRef}
+                inputRef={node => this.editableInputRef = node}
                 enabled={state.editMode}
                 error={state.error}
                 errorMessage={props.errorMessage}
@@ -87,7 +86,7 @@ class EditableField extends Component {
                             editMode: false,
                             error: false
                         });
-                        this.editableInputRef.current.blur();
+                        this.editableInputRef.blur();
                     }, () => {
                         this.setState({
                             error: true
@@ -100,7 +99,7 @@ class EditableField extends Component {
                         editMode: false,
                         error: false
                     });
-                    this.editableInputRef.current.blur();
+                    this.editableInputRef.blur();
                 }
                 //enter
                 break;
@@ -116,7 +115,7 @@ class EditableField extends Component {
                     this.props.onEscape(event);
                 }
                 setTimeout(() => {
-                    this.editableInputRef.current.blur();
+                    this.editableInputRef.blur();
                 }, 250);
                 break;
             default:

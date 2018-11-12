@@ -40,6 +40,7 @@ class SingleLineInput extends Component {
                 autoComplete={props.autoComplete}
                 maxLength={props.maxLength}
                 aria-label="Content"
+                ref={this.props.inputRef}
                 {...getOptions(props.enabled)} />
         );
     } 
