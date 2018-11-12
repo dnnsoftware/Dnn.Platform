@@ -34,7 +34,7 @@ import ScrollBar from "../ScrollBar";
 //import Select from "../Select";
 import SingleLineInputWithError from "../SingleLineInputWithError";
 //import Sortable from "../Sortable";
-//import Switch from "../Switch";
+import Switch from "../Switch";
 //import Tags from "../Tags";
 //import TextOverflowWrapperNew from "../TextOverflowWrapperNew";
 //import Tooltip from "../Tooltip";
@@ -239,7 +239,30 @@ storiesOf("SingleLineInputWithError", module)
     );
 
 // TODO: Need Sortable example
-// TODO: Need Switch example
+
+storiesOf("Switch", module)
+    .add("with off", () =>     <Switch
+        labelHidden={false}
+        onText="On"
+        offText="Off"
+        label="Example Switch"
+        onChange={action("changed")}
+        labelPlacement="left"
+    />
+    );
+
+storiesOf("Switch", module)
+    .add("with on", () =>     <Switch
+        labelHidden={false}
+        onText="On"
+        offText="Off"
+        label="Example Switch"
+        onChange={action("changed")}
+        labelPlacement="left"
+        value={true}
+    />
+    );
+
 // TODO: Need Tags example
 // TODO: Need TextOverflowWrapperNew example
 // TODO: Need Tooltip example
