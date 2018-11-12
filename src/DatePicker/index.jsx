@@ -66,6 +66,8 @@ class DatePicker extends Component {
             timezone: props.timezone
         };
         this.handleClick = this.handleClick.bind(this);
+        this.firstDateClick = this.firstDateClick.bind(this);
+        this.secondDateClick = this.secondDateClick.bind(this);
         this.dayPickerRef = React.createRef();
     }
 
@@ -238,11 +240,11 @@ class DatePicker extends Component {
         this.updateDate(this.date, date, { preventUpdateTime: true });
     }
 
-    firstDateClick(e, day, { disabled }) {
+    firstDateClick(day, { disabled }) {
         this.updateDate(day, undefined, { disabled });
     }
 
-    secondDateClick(e, day, { disabled }) {
+    secondDateClick(day, { disabled }) {
         this.updateDate(undefined, day, { disabled });
     }
 
@@ -388,7 +390,7 @@ class DatePicker extends Component {
                         weekdayElement={ <Weekday/> }
                         initialMonth={firstDate || new Date() }
                         selectedDays={day => DateUtils.isSameDay(firstDate, day) }
-                        onDayClick={this.firstDateClick.bind(this) }
+                        onDayClick={this.firstDateClick }
                         disabledDays={ this.firstDisableDates.bind(this) }
                     />
                     <div className="dnn-time-picker-box">
@@ -411,7 +413,7 @@ class DatePicker extends Component {
                         weekdayElement={ <Weekday/> }
                         initialMonth={secondDate || new Date() }
                         selectedDays={day => DateUtils.isSameDay(secondDate, day) }
-                        onDayClick={this.secondDateClick.bind(this) }
+                        onDayClick={this.secondDateClick }
                         disabledDays={ this.secondDisableDates.bind(this) }
                     />
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}

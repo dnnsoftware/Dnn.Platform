@@ -8,7 +8,8 @@ module.exports = {
                 test: /\.(svg)$/, exclude: /node_modules/,
                 loader: "raw-loader", 
                 include: path.resolve(__dirname, "../")
-            }
+            },
+            { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
         ]
     } 
 };

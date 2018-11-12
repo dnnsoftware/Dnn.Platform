@@ -15,7 +15,7 @@ export default class DateInput extends Component {
         const minutes = this.props.date ? this.addZero(this.props.date.getMinutes()) : "";
         const period = this.props.date ? this.getPeriod(this.props.date.getHours()) : this.getPeriod(false);
 
-        this.setState({ month, day, year, hours, minutes, period });
+        this.state = { month, day, year, hours, minutes, period };
 
     }
 
