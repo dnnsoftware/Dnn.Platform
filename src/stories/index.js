@@ -9,7 +9,8 @@ import CollapsibleRow from "../CollapsibleRow";
 import ContentLoadWrapper from "../ContentLoadWrapper";
 import DatePicker from "../DatePicker";
 import DayPicker from "../DayPicker";
-
+import Dropdown from "../Dropdown";
+import DropdownWithError from "../DropdownWithError";
 
 import Label from "../Label";
 
@@ -19,7 +20,7 @@ import SingleLineInputWithError from "../SingleLineInputWithError";
 
 import MultiLineInputWithError from "../MultiLineInputWithError";
 
-import { TableEmptyState } from "../SvgIcons";
+import { ArrowDownIcon, TableEmptyState } from "../SvgIcons";
 
 storiesOf("BackToLink", module)
     .add("with text", () => <BackToLink onClick={action("clicked")} text="Hello BackToLink"></BackToLink>); 
@@ -91,6 +92,7 @@ storiesOf("ContentLoadWrapper", module)
                 <div className="auditcheck-topbar">
                     <h1>Content</h1>
                 </div>
+                
                 <div className="auditCheckItems">
                     <ul>
                         <li>Item 1</li>
@@ -117,4 +119,10 @@ storiesOf("DatePicker", module)
         </div>);
 
 storiesOf("DayPicker", module)
-    .add("with content", () => <DayPicker />);   
+    .add("with content", () => <DayPicker />); 
+
+storiesOf("Dropdown", module)
+    .add("with content", () => <Dropdown label="Test" options={[{ label: "Opt 1", value: 1 }, { label: "Opt 2", value: 2 }, { label: "Opt 3", value: 3 }]} selectedIndex={1}></Dropdown>); 
+  
+storiesOf("DropdownWithError", module)
+    .add("with content", () => <DropdownWithError error={true} errorMessage="Please select an item" label="Test" options={[{ label: "Opt 1", value: 1 }, { label: "Opt 2", value: 2 }, { label: "Opt 3", value: 3 }]}></DropdownWithError>); 

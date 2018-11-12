@@ -96,7 +96,6 @@ class Dropdown extends Component {
         if (!this._isMounted || !props.closeOnClick) {
             return;
         }
-
         if (!this.node.contains(event.target)) {
             this.setState({
                 dropDownOpen: false,
@@ -312,7 +311,7 @@ class Dropdown extends Component {
     render() {
         const {props, state} = this;
         return (
-            <div className={this.getClassName()} style={props.style}>
+            <div className={this.getClassName()} style={props.style} ref={node => this.node = node}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()}
                     onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
                     {this.getDropdownLabel()}
