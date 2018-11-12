@@ -12,6 +12,7 @@ import DayPicker from "../DayPicker";
 import Dropdown from "../Dropdown";
 import DropdownWithError from "../DropdownWithError";
 import EditableField from "../EditableField";
+import Flag from "../Flag";
 
 import Label from "../Label";
 
@@ -131,6 +132,9 @@ storiesOf("DropdownWithError", module)
 storiesOf("EditableField", module)
     .add("with content", () => <EditableField label="Test" value="Content" onFocus={action("focus")} onEnter={action("enter")} />);
 
+
+storiesOf("Flag", module)
+    .add("with content", () => <Flag title="Test" culture="en-US" onClick={action("Clicked")} />);
 
 storiesOf("Label", module)
     .add("with content", () => <Label label="Test" />);

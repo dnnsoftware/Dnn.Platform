@@ -33,15 +33,15 @@ class Flag extends Component {
     }
 
     render() {
-        const isGeneric = !culture.includes("-");
+        const isGeneric = !this.props.culture.includes("-");
         return <div
-            onClick={onClick}
-            title={title}
-            style={getStyle(culture, isGeneric)}>{isGeneric ? culture : ""}</div>;
+            onClick={this.props.onClick}
+            title={this.props.title}
+            style={getStyle(this.props.culture, isGeneric)}>{isGeneric ? this.props.culture : ""}</div>;
     }
 }
 
-Flag.PropTypes = {
+Flag.propTypes = {
     culture: PropTypes.string,
     onClick: PropTypes.func,
     title: PropTypes.string,
