@@ -100,6 +100,7 @@ class MultiLineInputWithError extends Component {
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         maxLength={props.maxLength}
+                        inputRef={props.inputRef}
                     />
                     {this.getCounter(props.counter)}
                     <Tooltip

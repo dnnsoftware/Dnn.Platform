@@ -52,7 +52,7 @@ class EditableField extends Component {
                 onChange={this.onKeyUp.bind(this)}
                 onBlur={this.onBlur.bind(this)}
                 onFocus={this.onFocus.bind(this)}
-                ref={this.editableInputRef}
+                inputRef={node => this.editableInputRef = node}
                 enabled={state.editMode}
                 error={state.error}
                 errorMessage={props.errorMessage}

@@ -149,7 +149,10 @@ storiesOf("DropdownWithError", module)
     .add("with content", () => <DropdownWithError error={true} errorMessage="Please select an item" label="Test" options={[{ label: "Opt 1", value: 1 }, { label: "Opt 2", value: 2 }, { label: "Opt 3", value: 3 }]}></DropdownWithError>); 
 
 storiesOf("EditableField", module)
-    .add("with content", () => <EditableField label="Test" value="Content" onFocus={action("focus")} onEnter={action("enter")} />);
+    .add("with single line input", () => <EditableField label="Test" value="Content" onFocus={action("focus")} onEnter={action("enter")} />);
+
+storiesOf("EditableField", module)
+    .add("with multi-line input", () => <EditableField label="Test" value="Content" inputType="textArea" onFocus={action("focus")} onEnter={action("enter")} />);
 
 // TODO: Need FileUpload example here. It is complicated and most of the dependent required utils live in the Dnn.Admin.Experience project.
 

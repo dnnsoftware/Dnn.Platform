@@ -36,6 +36,7 @@ class MultiLineInput extends Component {
                 placeholder={props.placeholder}
                 maxLength={props.maxLength}
                 aria-label="Content"
+                ref={props.inputRef}
                 {...getOpts(props.enabled) }/>
         );
     }
