@@ -37,7 +37,7 @@ import SingleLineInputWithError from "../SingleLineInputWithError";
 import Switch from "../Switch";
 import Tags from "../Tags";
 //import TextOverflowWrapperNew from "../TextOverflowWrapperNew";
-//import Tooltip from "../Tooltip";
+import Tooltip from "../Tooltip";
 //import TransitionModal from "../TransitionModal";
 //import TreeControlInteractor from "../TreeControlInteractor";
 
@@ -268,7 +268,30 @@ storiesOf("Tags", module)
         tags={["Tag 1", "Tag 2", "Tag 3"]}
         onUpdateTags={action("Tags Update")}
     />);
+    
 // TODO: Need TextOverflowWrapperNew example
-// TODO: Need Tooltip example
+storiesOf("Tooltip", module)
+    .add("with error", () =>  <Tooltip
+        type="error"
+        messages={["Tooltip message"]}
+        rendered={true}
+        tooltipPlace="bottom"
+    />);
+
+storiesOf("Tooltip", module)
+    .add("with warning", () =>  <Tooltip
+        type="warning"
+        messages={["Tooltip message"]}
+        rendered={true}
+        tooltipPlace="bottom"
+    />);
+
+storiesOf("Tooltip", module)
+    .add("with info", () =>  <Tooltip
+        type="info"
+        messages={["Tooltip message"]}
+        rendered={true}
+        tooltipPlace="bottom"
+    />);    
 // TODO: Need TransitionModal example
 // TODO: Need TreeControlInteractor example
