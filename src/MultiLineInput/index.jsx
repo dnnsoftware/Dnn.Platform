@@ -22,7 +22,7 @@ class MultiLineInput extends Component {
     render() {
         const {props} = this;
         return (
-            <textArea className={"dnn-ui-common-multi-line-input" + (" " + props.className)}
+            <textarea className={"dnn-ui-common-multi-line-input" + (" " + props.className)}
                 id={props.id}
                 onChange={getHandler(props.onChange, props.enabled) }
                 onBlur={getHandler(props.onBlur, props.enabled) }
@@ -41,7 +41,7 @@ class MultiLineInput extends Component {
     }
 }
 
-MultiLineInput.PropTypes = {
+MultiLineInput.propTypes = {
     id: PropTypes.string,
     className: PropTypes.string,
     onChange: PropTypes.func,

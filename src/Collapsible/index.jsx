@@ -21,7 +21,7 @@ export default class Collapsible extends Component {
             this.scrollTimeout = null;
         }
     }
-    scroll(height) {
+    scroll(height, width) {
         const {scrollDelay} = this.props;
         const delay = scrollDelay || scrollDelay === 0 ? scrollDelay : defaultDelay;
         if (!this.props.isOpened || !this.props.autoScroll ) {
@@ -54,9 +54,8 @@ export default class Collapsible extends Component {
                 isOpened={isOpened}
                 style={style}
                 ref={this.collapsibleRef}
-                keepCollapsedContent={true}
                 className={className}
-                onHeightReady={this.scroll.bind(this)}
+                onMeasure={this.scroll.bind(this)}
                 fixedHeight={fixedHeight}>
                 {this.props.children}
             </ReactCollapse>

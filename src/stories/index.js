@@ -126,3 +126,40 @@ storiesOf("Dropdown", module)
   
 storiesOf("DropdownWithError", module)
     .add("with content", () => <DropdownWithError error={true} errorMessage="Please select an item" label="Test" options={[{ label: "Opt 1", value: 1 }, { label: "Opt 2", value: 2 }, { label: "Opt 3", value: 3 }]}></DropdownWithError>); 
+
+
+storiesOf("Label", module)
+    .add("with content", () => <Label label="Test" />);
+
+storiesOf("SingleLineInputWithError", module)
+    .add("with content", () =>     <SingleLineInputWithError
+        inputId={"create-term-name"}
+        withLabel={true}
+        label="Required Term *"
+        value="Term Value"
+        onChange={action("changed")}
+        errorMessage="Error"
+    />
+    );
+
+storiesOf("MultiLineInputWithError", module)
+    .add("with content", () => <MultiLineInputWithError
+        inputId={"create-term-description"}
+        withLabel={true}
+        label="Description"
+        value="Long descritpion here"
+        onChange={action("changed")}/>);
+
+storiesOf("InputGroup", module)
+    .add("with content", () =>
+        <InputGroup>
+            <SingleLineInputWithError
+                inputId={"create-term-name"}
+                withLabel={true}
+                label="Required Term *"
+                value="Term Value"
+                onChange={action("changed")}
+                errorMessage="Error"
+            />
+        </InputGroup>
+    );
