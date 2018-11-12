@@ -25,7 +25,7 @@ class Dropdown extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = this.timePickerRef;
+        const node = this.timePickerRef.current;
         if (node && node.contains(e.target)) {
             return;
         }

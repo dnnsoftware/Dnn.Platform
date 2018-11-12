@@ -83,7 +83,7 @@ class DatePicker extends Component {
         const isController = hasClass(e.target, DefaultControllerClassName) || this.props.controllerClassName && hasClass(e.target, this.props.controllerClassName);
 
         if (!this._isMounted) { return; }
-        const node = this.dayPickerRef;
+        const node = this.dayPickerRef.current;
         if (node && node.contains(e.target)) {
             return;
         }
