@@ -35,7 +35,7 @@ import ScrollBar from "../ScrollBar";
 import SingleLineInputWithError from "../SingleLineInputWithError";
 //import Sortable from "../Sortable";
 import Switch from "../Switch";
-//import Tags from "../Tags";
+import Tags from "../Tags";
 //import TextOverflowWrapperNew from "../TextOverflowWrapperNew";
 //import Tooltip from "../Tooltip";
 //import TransitionModal from "../TransitionModal";
@@ -263,7 +263,11 @@ storiesOf("Switch", module)
     />
     );
 
-// TODO: Need Tags example
+storiesOf("Tags", module)
+    .add("with content", () =>  <Tags
+        tags={["Tag 1", "Tag 2", "Tag 3"]}
+        onUpdateTags={action("Tags Update")}
+    />);
 // TODO: Need TextOverflowWrapperNew example
 // TODO: Need Tooltip example
 // TODO: Need TransitionModal example
