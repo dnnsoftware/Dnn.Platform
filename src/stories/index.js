@@ -200,7 +200,7 @@ storiesOf("RadioButtons", module)
         options={[{ value: "1", label: "Value 1" }, { value: "2", label: "Value 2" }]}
         onChange={action("Change")}
         value={"1"} />);
-// TODO: Need ScrollBar example
+
 storiesOf("ScrollBar", module)
     .add("with content", () =>  <ScrollBar>
         <div>
