@@ -51,7 +51,7 @@ class RadioButtons extends Component {
     }
 }
 
-RadioButtons.PropTypes = {
+RadioButtons.propTypes = {
     onChange: PropTypes.func,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
