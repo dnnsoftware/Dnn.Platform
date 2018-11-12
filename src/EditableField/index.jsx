@@ -21,12 +21,12 @@ class EditableField extends Component {
         });
     }
     toggleEditMode() {
-        if (!this.state.editMode) {
-            this.editableInputRef.focus();
-        }
         this.setState({
             editMode: !this.state.editMode
         });
+        if (!this.state.editMode) {
+            this.editableInputRef.current.focus();
+        }
     }
 
     getEditableLabelClass() {
@@ -83,11 +83,11 @@ class EditableField extends Component {
                 event.preventDefault();
                 if (props.enableCallback) {
                     props.onEnter(state.value, () => {
-                        this.editableInputRef.blur();
                         this.setState({
                             editMode: false,
                             error: false
                         });
+                        this.editableInputRef.current.blur();
                     }, () => {
                         this.setState({
                             error: true
@@ -96,11 +96,11 @@ class EditableField extends Component {
                 }
                 else {
                     props.onEnter(state.value);
-                    this.editableInputRef.blur();
                     this.setState({
                         editMode: false,
                         error: false
                     });
+                    this.editableInputRef.current.blur();
                 }
                 //enter
                 break;
@@ -116,7 +116,7 @@ class EditableField extends Component {
                     this.props.onEscape(event);
                 }
                 setTimeout(() => {
-                    this.editableInputRef.blur();
+                    this.editableInputRef.current.blur();
                 }, 250);
                 break;
             default:

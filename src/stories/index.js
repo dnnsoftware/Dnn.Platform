@@ -11,6 +11,7 @@ import DatePicker from "../DatePicker";
 import DayPicker from "../DayPicker";
 import Dropdown from "../Dropdown";
 import DropdownWithError from "../DropdownWithError";
+import EditableField from "../EditableField";
 
 import Label from "../Label";
 
@@ -126,6 +127,9 @@ storiesOf("Dropdown", module)
   
 storiesOf("DropdownWithError", module)
     .add("with content", () => <DropdownWithError error={true} errorMessage="Please select an item" label="Test" options={[{ label: "Opt 1", value: 1 }, { label: "Opt 2", value: 2 }, { label: "Opt 3", value: 3 }]}></DropdownWithError>); 
+
+storiesOf("EditableField", module)
+    .add("with content", () => <EditableField label="Test" value="Content" onFocus={action("focus")} onEnter={action("enter")} />);
 
 
 storiesOf("Label", module)
