@@ -12,15 +12,19 @@ import DayPicker from "../DayPicker";
 import Dropdown from "../Dropdown";
 import DropdownWithError from "../DropdownWithError";
 import EditableField from "../EditableField";
+//import FileUpload from "../FileUpload";
 import Flag from "../Flag";
-
-import Label from "../Label";
-
+//import FolderPicker from "../FolderPicker";
+// GridCell
 import InputGroup from "../InputGroup";
+import Label from "../Label";
+import Modal from "../Modal";
+import MultiLineInputWithError from "../MultiLineInputWithError";
+import NumberSlider from "../NumberSlider";
+
 
 import SingleLineInputWithError from "../SingleLineInputWithError";
 
-import MultiLineInputWithError from "../MultiLineInputWithError";
 
 import { ArrowDownIcon, TableEmptyState } from "../SvgIcons";
 
@@ -132,31 +136,12 @@ storiesOf("DropdownWithError", module)
 storiesOf("EditableField", module)
     .add("with content", () => <EditableField label="Test" value="Content" onFocus={action("focus")} onEnter={action("enter")} />);
 
+// TODO: Need FileUpload example here. It is complicated and most of the dependent required utils live in the Dnn.Admin.Experience project.
 
 storiesOf("Flag", module)
     .add("with content", () => <Flag title="Test" culture="en-US" onClick={action("Clicked")} />);
 
-storiesOf("Label", module)
-    .add("with content", () => <Label label="Test" />);
-
-storiesOf("SingleLineInputWithError", module)
-    .add("with content", () =>     <SingleLineInputWithError
-        inputId={"create-term-name"}
-        withLabel={true}
-        label="Required Term *"
-        value="Term Value"
-        onChange={action("changed")}
-        errorMessage="Error"
-    />
-    );
-
-storiesOf("MultiLineInputWithError", module)
-    .add("with content", () => <MultiLineInputWithError
-        inputId={"create-term-description"}
-        withLabel={true}
-        label="Description"
-        value="Long descritpion here"
-        onChange={action("changed")}/>);
+// TODO: Need FolderPicker example here. Not sure what to put in for the serviceFramework prop
 
 storiesOf("InputGroup", module)
     .add("with content", () =>
@@ -170,4 +155,32 @@ storiesOf("InputGroup", module)
                 errorMessage="Error"
             />
         </InputGroup>
+    );
+
+storiesOf("Label", module)
+    .add("with content", () => <Label label="Test" />);
+
+storiesOf("Modal", module)
+    .add("with content", () => <Modal isOpen={true} header="Test Modal"><div>Hello!</div></Modal>);
+
+storiesOf("MultiLineInputWithError", module)
+    .add("with content", () => <MultiLineInputWithError
+        inputId={"create-term-description"}
+        withLabel={true}
+        label="Description"
+        value="Long descritpion here"
+        onChange={action("changed")}/>);
+
+storiesOf("NumberSlider", module)
+    .add("with content", () => <NumberSlider min={1} max={100} step={5} value={50} onChange={action("Change")} />);
+    
+storiesOf("SingleLineInputWithError", module)
+    .add("with content", () =>     <SingleLineInputWithError
+        inputId={"create-term-name"}
+        withLabel={true}
+        label="Required Term *"
+        value="Term Value"
+        onChange={action("changed")}
+        errorMessage="Error"
+    />
     );
