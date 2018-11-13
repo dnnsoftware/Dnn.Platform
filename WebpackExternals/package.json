@@ -1,6 +1,7 @@
 {
   "name": "@dnnsoftware/dnn-webpack-externals",
   "version": "2.0.0",
+  "private": false,
   "description": "Webpack externals for build",
   "main": "index.js",
   "scripts": {
