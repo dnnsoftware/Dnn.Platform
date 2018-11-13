@@ -101,6 +101,15 @@ END
 
 GO
 
+/***** DNN-9651: Drop duplicate index and unused calculated column *****/
+IF Exists (SELECT * FROM sys.indexes WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LowerEmail')
+	DROP INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}[{objectQualifier}Users];
+GO
+
+IF Exists (SELECT * FROM sys.columns WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'LowerEmail')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users] DROP COLUMN LowerEmail;
+GO
+
 /***** DNN-24542: Journal_GET SP Performance: Timing out when 1k+ Friends. *****/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
@@ -382,4 +391,3 @@ GO
 /*****              SqlDataProvider                     *****/
 /************************************************************/
 /************************************************************/
-
