@@ -4,7 +4,10 @@
   "description": "Webpack externals for build",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "preversion": "yarn run test",
+    "version": "yarn run build && git add -A .",
+    "postversion": "git push && git push --tags",
+    "test": "echo \"No tests script specified to run.\"",
     "build": "echo \"No build required\""
   },
   "license": "MIT",
