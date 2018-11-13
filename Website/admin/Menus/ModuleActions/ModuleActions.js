@@ -15,6 +15,8 @@
         var isShared = opts.isShared;
         var supportsQuickSettings = opts.supportsQuickSettings;
         var displayQuickSettings = opts.displayQuickSettings;
+        var sharedText = opts.sharedText;
+        var moduleTitle = opts.moduleTitle;
 
         function completeMove(targetPane, moduleOrder) {
             //remove empty pane class
@@ -307,7 +309,10 @@
             }
         }
 
-        function buildSharedMenu(root, rootText, rootClass) {
+        function buildMenuLabel(root, rootText, rootClass) {
+            if (!rootText || rootText.length == 0) {
+                return;                
+            }
             root.append("<li class=\"" + rootClass + "\"><div>" + rootText + "</div>");
         }
 
@@ -369,6 +374,7 @@
                 $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
                 var menu = $form.find("div:last");
                 var menuRoot = menu.find("ul");
+                var menuLabel = moduleTitle;
                 if (customCount > 0) {
                     buildMenu(menuRoot, "Edit", "actionMenuEdit", "pencil",  customActions, customCount);
                 }
@@ -384,8 +390,9 @@
                 }
 
                 if (isShared) {
-                    buildSharedMenu(menuRoot, opts.sharedText, "dnn_shared");
+                    menuLabel = menuLabel && menuLabel.length > 0 ? sharedText + ': ' + menuLabel : sharedText;
                 }
+                buildMenuLabel(menuRoot, menuLabel, "dnn_menu_label");
                 watchResize(moduleId);
             }
         }

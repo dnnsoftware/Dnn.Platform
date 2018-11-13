@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -824,7 +824,7 @@ namespace DotNetNuke.Common.Utilities
             sb.Append(")");
             return sb.ToString();
         }
-        [Obsolete("This method is obsolete.")]
+        [Obsolete("This method is obsolete. Use .Net XmlDocument.Load instead. Scheduled removal in v11.0.0.")]
         public static XmlDocument GetXMLContent(string contentUrl)
         {
             //This function reads an Xml document via a Url and returns it as an XmlDocument object

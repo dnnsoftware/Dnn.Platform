@@ -1,0 +1,9 @@
+next-version: 9.3.0
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+mode: ContinuousDeployment
+branches:
+  development:
+    regex: development      
+    tag: 'alpha'
+    is-mainline: true
+    source-branches: []

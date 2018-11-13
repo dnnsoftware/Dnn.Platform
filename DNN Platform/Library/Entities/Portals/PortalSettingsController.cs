@@ -217,6 +217,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SearchTabId = portal.SearchTabId;
             portalSettings.ErrorPage404 = portal.Custom404TabId;
             portalSettings.ErrorPage500 = portal.Custom500TabId;
+            portalSettings.TermsTabId = portal.TermsTabId;
+            portalSettings.PrivacyTabId = portal.PrivacyTabId;
             portalSettings.DefaultLanguage = Null.IsNull(portal.DefaultLanguage) ? Localization.SystemLocale : portal.DefaultLanguage;
             portalSettings.HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
             portalSettings.HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
@@ -261,6 +263,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.EnablePopUps = settings.GetValueOrDefault("EnablePopUps", true);
             portalSettings.HideLoginControl = settings.GetValueOrDefault("HideLoginControl", false);
             portalSettings.EnableSkinWidgets = settings.GetValueOrDefault("EnableSkinWidgets", true);
+            portalSettings.ShowCookieConsent = settings.GetValueOrDefault("ShowCookieConsent", false);
+            portalSettings.CookieMoreLink = settings.GetValueOrDefault("CookieMoreLink", Null.NullString);
             portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
             portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
             portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);

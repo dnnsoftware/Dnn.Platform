@@ -1,13 +1,13 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke_Symbols" type="Library" version="09.02.02">
+    <package name="DotNetNuke_Symbols" type="Library" >
       <friendlyName>DNN @@VER_NAME@@ Symbols</friendlyName>
       <description>This package contains Debug Symbols and Intellisense files for DNN @@VER_NAME@@ Edition.</description>
       <owner>
         <name>DNN Corporation</name>
         <organization>DNN Corporation</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dotnetnuke.com</email>
+        <url>https://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />

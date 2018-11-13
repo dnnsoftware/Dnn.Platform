@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Utilities
         /// Gets the database time.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
-        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime")]
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime. Scheduled removal in v11.0.0.")]
         public static DateTime GetDatabaseTime()
         {
             return GetDatabaseUtcTime();

@@ -2,7 +2,7 @@
 <p class="Contributor">
 	DotNetNuke Corporation <br />
 	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
-	<a href=http://www.dnnsoftware.com>http://www.dnnsoftware.com</a><br />
+	<a href=https://www.dnnsoftware.com>www.dnnsoftware.com</a><br />
 </p>
 <hr/>
 <div class="License">

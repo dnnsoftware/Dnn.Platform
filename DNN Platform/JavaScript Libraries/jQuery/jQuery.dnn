@@ -41,7 +41,7 @@
             </file>
           </files>
         </component>
-        <component type="Cleanup" version="01.09.01" fileName ="01.09.01.txt" />
+        <component type="Cleanup" version="01.09.01" fileName="01.09.01.txt" />
       </components>
     </package>
   </packages>

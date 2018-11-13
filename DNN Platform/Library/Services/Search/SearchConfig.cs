@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Search
     /// The SearchConfig class provides a configuration class for Search
     /// </summary>
     /// -----------------------------------------------------------------------------
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
+    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v11.0.0.")]
     [Serializable]
     public class SearchConfig
     {

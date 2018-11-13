@@ -1,15 +1,15 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DDRMenu" type="Module" version="09.02.02">
+		<package name="DDRMenu" type="Module">
 			<friendlyName>DDR Menu</friendlyName>
 			<description>DotNetNuke Navigation Provider.</description>
 			<owner>
 				<organization>DotNetNuke Corporation</organization>
 				<url>
-					<![CDATA[<a href="http://www.dotnetnuke.com/">www.dotnetnuke.com</a>]]>
+					<![CDATA[<a href="https://www.dnnsoftware.com/">www.dnnsoftware.com</a>]]>
 				</url>
 				<email>
-					<![CDATA[<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a>]]>
+					<![CDATA[<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a>]]>
 				</email>
 			</owner>
 			<license src="License.txt" />

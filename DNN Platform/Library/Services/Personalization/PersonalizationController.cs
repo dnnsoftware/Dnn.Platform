@@ -175,7 +175,8 @@ namespace DotNetNuke.Services.Personalization
         {
             var machineKey = Config.GetDecryptionkey();
             var hostGuid = Host.GUID.Replace("-", string.Empty);
-            return (machineKey ?? "") + hostGuid;
+            var key = (machineKey ?? "") + hostGuid;
+            return PortalSecurity.Instance.Encrypt(key, key);
         }
     }
 }

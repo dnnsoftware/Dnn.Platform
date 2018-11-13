@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -605,9 +605,17 @@ namespace DotNetNuke.Security.Membership
                                       userName), GetMembershipUserCallBack);
         }
 
-        private static string GetCacheKey(string userName)
+        private static MembershipUser GetMembershipUserByUserKey(string userKey)
         {
-            return String.Format("MembershipUser_{0}", userName);
+            return
+                CBO.GetCachedObject<MembershipUser>(
+                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
+                        userKey), GetMembershipUserByUserKeyCallBack);
+        }
+
+        private static string GetCacheKey(string cacheKey)
+        {
+            return $"MembershipUser_{cacheKey}";
         }
 
         private static object GetMembershipUserCallBack(CacheItemArgs cacheItemArgs)
@@ -615,6 +623,13 @@ namespace DotNetNuke.Security.Membership
             string userName = cacheItemArgs.ParamList[0].ToString();
 
             return System.Web.Security.Membership.GetUser(userName);
+        }
+
+        private static object GetMembershipUserByUserKeyCallBack(CacheItemArgs cacheItemArgs)
+        {
+            string userKey = cacheItemArgs.ParamList[0].ToString();
+
+            return System.Web.Security.Membership.GetUser(new Guid(userKey));
         }
 
        
@@ -1184,6 +1199,22 @@ namespace DotNetNuke.Security.Membership
                 user = FillUserInfo(portalId, dr, true);
             }
             return user;
+        }
+
+        public override string GetProviderUserKey(UserInfo user)
+        {
+            return GetMembershipUser(user).ProviderUserKey?.ToString().Replace("-", string.Empty) ?? string.Empty;
+        }
+
+        public override UserInfo GetUserByProviderUserKey(int portalId, string providerUserKey)
+        {
+            var userName = GetMembershipUserByUserKey(providerUserKey)?.UserName ?? string.Empty;
+            if (string.IsNullOrEmpty(userName))
+            {
+                return null;
+            }
+
+            return GetUserByUserName(portalId, userName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1768,7 +1799,7 @@ namespace DotNetNuke.Security.Membership
 
             //Initialise Login Status to Failure
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
-
+            
             DataCache.ClearUserCache(portalId, username);
             DataCache.ClearCache(GetCacheKey(username));
 
@@ -1794,7 +1825,7 @@ namespace DotNetNuke.Security.Membership
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;                      
                     }
                 }
 
@@ -1830,7 +1861,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
 
-                }
+                }                
 
                 //Verify User Credentials
                 bool bValid = false;
@@ -1839,6 +1870,19 @@ namespace DotNetNuke.Security.Membership
                 {
                     //Clear the user object
                     user = null;
+
+                    //Clear cache for user so that locked out & other status could be updated
+                    DataCache.ClearUserCache(portalId, username);
+                    DataCache.ClearCache(GetCacheKey(username));
+
+                    aspnetUser = System.Web.Security.Membership.GetUser(username);
+
+                    // If user has been locked out for current invalid attempt 
+                    // return locked out status
+                    if (aspnetUser.IsLockedOut)
+                    {
+                        loginStatus = UserLoginStatus.LOGIN_USERLOCKEDOUT;
+                    }
                 }
             }
             else

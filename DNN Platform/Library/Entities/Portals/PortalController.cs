@@ -1421,8 +1421,16 @@ namespace DotNetNuke.Entities.Portals
                 UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
             }
 
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
+            {
+                UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
+            {
+                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", ""), true, currentCulture);
+            }
+
             //Enable AutoSAve feature
-            //Enable Skin Widgets Setting
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
             {
                 UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
@@ -1550,6 +1558,8 @@ namespace DotNetNuke.Entities.Portals
                               portal.SearchTabId,
                               portal.Custom404TabId,
                               portal.Custom500TabId,
+                              portal.TermsTabId,
+                              portal.PrivacyTabId,
                               portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
@@ -1604,6 +1614,8 @@ namespace DotNetNuke.Entities.Portals
                               portal.SearchTabId,
                               portal.Custom404TabId,
                               portal.Custom500TabId,
+                              portal.TermsTabId,
+                              portal.PrivacyTabId,
                               portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
@@ -1682,6 +1694,8 @@ namespace DotNetNuke.Entities.Portals
                                   portal.SearchTabId,
                                   portal.Custom404TabId,
                                   portal.Custom500TabId,
+                                  portal.TermsTabId,
+                                  portal.PrivacyTabId,
                                   portal.AdminTabId,
                                   GetActivePortalLanguage(portalId));
                 EventLogController.Instance.AddLog(logType,
@@ -2009,6 +2023,8 @@ namespace DotNetNuke.Entities.Portals
                                             portal.SearchTabId,
                                             portal.Custom404TabId,
                                             portal.Custom500TabId,
+                                            portal.TermsTabId,
+                                            portal.PrivacyTabId,
                                             portal.DefaultLanguage,
                                             portal.HomeDirectory,
                                             UserController.Instance.GetCurrentUserInfo().UserID,
@@ -2063,7 +2079,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
-                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
+                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(portalId,
                                                       administratorId,
@@ -2077,6 +2093,8 @@ namespace DotNetNuke.Entities.Portals
                                                       searchTabId,
                                                       custom404TabId,
                                                       custom500TabId,
+                                                      termsTabId,
+                                                      privacyTabId,
                                                       adminTabId,
                                                       cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
@@ -2606,6 +2624,22 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.Custom500TabId = tempTab.TabID;
                 }
             }
+            if (defaultPortal.TermsTabId != Null.NullInteger)
+            {
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.TermsTabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.TermsTabId = tempTab.TabID;
+                }
+            }
+            if (defaultPortal.PrivacyTabId != Null.NullInteger)
+            {
+                tempTab = TabController.Instance.GetTabByCulture(defaultPortal.PrivacyTabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.PrivacyTabId = tempTab.TabID;
+                }
+            }
 
             UpdatePortalInternal(targetPortal, false);
         }
@@ -2693,7 +2727,7 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalInternal(portal, true);
         }
 
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
@@ -2791,8 +2825,8 @@ namespace DotNetNuke.Entities.Portals
             string message = string.Empty;
 
             //check if this is the last portal
-            int portalCount = Instance.GetPortals().Count;
-            if (portalCount > 1)
+            var portals = Instance.GetPortals();
+            if (portals.Count > 1)
             {
                 if (portal != null)
                 {
@@ -2815,19 +2849,21 @@ namespace DotNetNuke.Entities.Portals
                         }
                     }
                     //delete upload directory
-                    Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string homeDirectory = portal.HomeDirectoryMapPath;
+                        var homeDirectory = portal.HomeDirectoryMapPath;
+                        // check whether home directory is not used by other portal
+                        // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
+                        var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x => 
+                            x.PortalID != portal.PortalID &&
+                            x.HomeDirectoryMapPath.Equals(homeDirectory, StringComparison.OrdinalIgnoreCase));
 
-                        if (homeDirectory.EndsWith("\\"))
+                        if (!homeDirectoryInUse)
                         {
-                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
-                        }
-
-                        if (Directory.Exists(homeDirectory))
-                        {
-                            Globals.DeleteFolderRecursive(homeDirectory);
+                            if (Directory.Exists(homeDirectory))
+                            {
+                                Globals.DeleteFolderRecursive(homeDirectory);
+                            }
                         }
                     }
                     //remove database references
@@ -3289,7 +3325,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode)
 		{
 			UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode, false);

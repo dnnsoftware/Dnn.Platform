@@ -240,7 +240,7 @@ namespace DotNetNuke.Security.Permissions
 		
 		#endregion
 
-        [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int)")]
+        [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int). Scheduled removal in v11.0.0.")]
         public ArrayList GetPermissionsByModuleID(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
