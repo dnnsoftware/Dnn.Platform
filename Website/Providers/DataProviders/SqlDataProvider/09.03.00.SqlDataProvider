@@ -378,6 +378,23 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
 	ORDER BY RowNumber ASC;
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects
+	WHERE id = object_id(N'{databaseOwner}[{objectQualifier}HostSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'UsernameUnallowedCharacters')
+		INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+			([SettingName]
+			,[SettingValue]
+			,[SettingIsSecure]
+			,[CreatedByUserID]
+			,[CreatedOnDate]
+			,[LastModifiedByUserID]
+			,[LastModifiedOnDate])
+		VALUES (N'UsernameUnallowedCharacters', N'!"#$%&''()*+,/:;<=>?[\]^`{|}', 0, -1, GETDATE(), NULL, NULL)
+END
+
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
