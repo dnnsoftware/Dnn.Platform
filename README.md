@@ -14,9 +14,8 @@ Once installed you can reference any of the components by doing
 ```
 import { Label, SingleLineInputWithError } from "dnn-react-common";
 ```
-
-## Stories
-DNN React Common uses the storybook.js library to create a StoryBook. Every component in the project contains a ```.stories.js``` file. This allows you to test the components in a isolated environment and see what the components are doing. To run the StoryBook run
+## StoryBook
+DNN React Common uses the [StoryBook.js](https://storybook.js.org/) library to create a StoryBook. Every component in the project contains a ```.stories.js``` file. This allows you to test the components in a isolated environment and see what the components are doing. To run the StoryBook run
 
 ```
 yarn run storybook
