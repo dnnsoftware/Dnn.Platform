@@ -4,13 +4,16 @@
 DNN React Common is a library of common React components that can be used in [DNN.Platform](https://github.com/dnnsoftware/Dnn.Platform/) Persona Bar and Module projects.
 
 ## Installation
-DNN React Common uses [Yarn](https://yarnpkg.com/) as the package manager. Once you checkout the repository you will need to run
+DNN React Common uses [Yarn](https://yarnpkg.com/) as the package manager. To install the components run
 
 ```
-yarn install
+yarn install @dnnsoftware/dnn-react-common
 ```
-
-This will download all the dependencies for the components.
+## Usage
+Once installed you can reference any of the components by doing
+```
+import { Label, SingleLineInputWithError } from "dnn-react-common";
+```
 
 ## Stories
 DNN React Common uses the storybook.js library to create a StoryBook. Every component in the project contains a ```.stories.js``` file. This allows you to test the components in a isolated environment and see what the components are doing. To run the StoryBook run
