@@ -80,7 +80,7 @@ export default class SearchableTags extends Component {
     }
 
     resizeInputField() {
-        let width = this.tagsFieldRef.getBoundingClientRect().width - 30;
+        let width = this.tagsFieldRef.current.getBoundingClientRect().width - 30;
         if (this.state.tags.length) {
             width = this.state.newTagText.length ? this.state.newTagText.length * 7 + 6 : 13;
         }
@@ -100,7 +100,7 @@ export default class SearchableTags extends Component {
         let {tags} = this.state;
         tags.push(tag);
         this.updateTags(tags);
-        setTimeout(() => { this.inputFieldRef.focus(); }, 0);
+        setTimeout(() => { this.inputFieldRef.current.focus(); }, 0);
     }
 
     updateSelectedIndex(diff) {
@@ -198,7 +198,7 @@ export default class SearchableTags extends Component {
     }
 
     focusInput() {
-        this.inputFieldRef.focus();
+        this.inputFieldRef.current.focus();
     }
 
     render() {
