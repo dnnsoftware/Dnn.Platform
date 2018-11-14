@@ -73,6 +73,7 @@
   <sum name="Default.aspx" version="9.1.1" type="Content" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.0" type="Content" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.1" type="Content" sum="3c04a7aadf010918d0d9cbea2718a726c788cdd041e5e6bea7fc2e0c8802375c" />
+  <sum name="Default.aspx" version="9.2.2" type="Content" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="6.2.0" type="Platform" sum="ed7da8e8e356751f2ded2eed531379ec1fee4c9a1dd4d3966a0de92fe5833ee5" />
   <sum name="Default.aspx.cs" version="6.2.0" type="Platform" sum="653203223cd51601e02e50107a74771a99fb5b8ccc6a9cd56aa83014428abd98" />
   <sum name="Default.aspx" version="6.2.1" type="Platform" sum="f90742e449f73fe6b1e164f5ab9879f0070ff227d4801ce36b7d24b348fc4667" />
@@ -148,6 +149,7 @@
   <sum name="Default.aspx" version="9.1.1" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.0" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.1" type="Platform" sum="3c04a7aadf010918d0d9cbea2718a726c788cdd041e5e6bea7fc2e0c8802375c" />
+  <sum name="Default.aspx" version="9.2.2" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="1.0.0" type="Social" sum="9536635227c3846393b448a280119dec7f3d8782b57a053ed1941383e8694ff1" />
   <sum name="Default.aspx.cs" version="1.0.0" type="Social" sum="d273408eb73ee09674a5f80303d903805358c9eb8f38633706fc3c793e6bbe19" />
   <sum name="Default.aspx" version="1.1.1" type="Social" sum="9536635227c3846393b448a280119dec7f3d8782b57a053ed1941383e8694ff1" />
@@ -184,4 +186,5 @@
   <sum name="Default.aspx" version="9.1.1" type="Social" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.0" type="Social" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.2.1" type="Social" sum="3c04a7aadf010918d0d9cbea2718a726c788cdd041e5e6bea7fc2e0c8802375c" />
+  <sum name="Default.aspx" version="9.2.2" type="Social" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
 </checksums>

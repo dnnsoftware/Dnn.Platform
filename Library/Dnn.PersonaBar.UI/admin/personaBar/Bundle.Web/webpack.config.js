@@ -29,7 +29,8 @@ module.exports = {
                 { test: /\.(less|css)$/, loader: "style-loader!css-loader!less-loader" },
                 { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
                 { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
-                { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" }],
+                { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
+				{ test: /\.json$/, include: /node_modules/, loader: "json-loader" }],
         preLoaders
     },
     resolve: {
