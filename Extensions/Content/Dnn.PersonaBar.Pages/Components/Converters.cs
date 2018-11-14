@@ -58,7 +58,8 @@ namespace Dnn.PersonaBar.Pages.Components
             FriendlyName = module.DesktopModule.FriendlyName,
             EditContentUrl = GetModuleEditContentUrl(module),
             EditSettingUrl = GetModuleEditSettingUrl(module),
-            IsPortable = module.DesktopModule?.IsPortable
+            IsPortable = module.DesktopModule?.IsPortable,
+            AllTabs = module.AllTabs
         };
 
         private static string GetModuleEditSettingUrl(ModuleInfo module)

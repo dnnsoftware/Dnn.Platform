@@ -63,6 +63,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         enableSmtpSsl = HostController.Instance.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = HostController.Instance.GetString("SMTPUsername"),
                         smtpPassword = GetSmtpPassword(),
+                        smtpHostEmail = HostController.Instance.GetString("HostEmail"),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
                     },
                     site = new 
@@ -104,6 +105,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
                     HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
                         Config.GetDecryptionkey());
+                    HostController.Instance.Update("HostEmail", request.SmtpHostEmail);
                     HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
                     HostController.Instance.Update("MessageSchedulerBatchSize",
                         request.MessageSchedulerBatchSize.ToString(), false);

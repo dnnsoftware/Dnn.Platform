@@ -253,6 +253,32 @@ define(['jquery',
             return matched;
         }
 
+        var normalizeType = function (value) {
+            if(value === "" || value === null || typeof value === "undefined") {
+                return "";
+            }
+            var type = typeof value;
+            switch(type) {
+                case 'boolean':
+                    return value;
+                case 'number':
+                    return value;
+                case 'string':
+                    var lcValue = value.toLowerCase();
+                    if(isFinite(lcValue)) {
+                        return parseFloat(lcValue);
+                    } else if(lcValue == "true") {
+                        return true;
+                    } else if(lcValue == "false") {
+                        return false;
+                    }
+                    return lcValue;
+                default:
+                    return value;
+
+            }
+        };
+
         var createDataTable = function (data) {
             var table = { header: [], rows: ko.observableArray(data) };
             //try to find headers
@@ -345,21 +371,14 @@ define(['jquery',
                 if (sortType !== 0) {
                     filterData.sort(function (left, right) {
                         var sortColumn = table.sortColumn();
-                        var leftData = isFinite(left[sortColumn]) ? parseFloat(left[sortColumn]) : left[sortColumn];
-                        var rightData = isFinite(right[sortColumn]) ? parseFloat(right[sortColumn]) : right[sortColumn];
-
-                        if (leftData && typeof leftData === "string") {
-                            leftData = leftData.toLowerCase();
-                        }
-                        if (rightData && typeof rightData === "string") {
-                            rightData = rightData.toLowerCase();
-                        }
+                        var leftData = normalizeType(left[sortColumn]);
+                        var rightData = normalizeType(right[sortColumn]);
 
                         if (leftData === rightData) {
                             return 0;
-                        } else if (leftData < rightData) {
+                        } else if (leftData === "" || leftData < rightData) {
                             return sortType === 1 ? -1 : 1;
-                        } else if (leftData > rightData) {
+                        } else if (leftData > rightData || rightData === "") {
                             return sortType === 1 ? 1 : -1;
                         }
                     });

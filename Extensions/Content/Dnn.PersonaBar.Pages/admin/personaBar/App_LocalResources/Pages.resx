@@ -1690,4 +1690,16 @@
   <data name="EditContent.Text" xml:space="preserve">
     <value>Edit Content</value>
   </data>
+  <data name="IconFile.Help" xml:space="preserve">
+    <value>The page icon is an image that may be used by your theme or menu system for each page</value>
+  </data>
+  <data name="IconFile.Text" xml:space="preserve">
+    <value>Small Icon</value>
+  </data>
+  <data name="IconFileLarge.Help" xml:space="preserve">
+    <value>The page icon is an image that may be used by your theme or menu system for each page</value>
+  </data>
+  <data name="IconFileLarge.Text" xml:space="preserve">
+    <value>Large Icon</value>
+  </data>
 </root>

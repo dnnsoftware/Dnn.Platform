@@ -4,11 +4,6 @@ import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import Button from "dnn-button";
-import InputGroup from "dnn-input-group";
-import Switch from "dnn-switch";
-import Tooltip from "dnn-tooltip";
-import Label from "dnn-label";
-import Grid from "dnn-grid-system";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -191,53 +186,6 @@ class MoreSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
 
-        const columnOne = <div className="left-column">
-            {state.otherSettings &&
-                <InputGroup>
-                    <Label
-                        labelType="inline"
-                        tooltipMessage={resx.get("plUpgrade.Help")}
-                        label={resx.get("plUpgrade")}
-                        extra={
-                            <Tooltip
-                                messages={[resx.get("GlobalSetting")]}
-                                type="global"
-                                style={{ float: "left", position: "static" }}
-                                />}
-                        />
-                    <Switch
-                        onText={resx.get("SwitchOn")}
-                        offText={resx.get("SwitchOff")}
-                        value={state.otherSettings.CheckUpgrade}
-                        onChange={this.onSettingChange.bind(this, "CheckUpgrade")}
-                        />
-                </InputGroup>
-            }
-        </div>;
-        const columnTwo = <div className="right-column">
-            {state.otherSettings &&
-                <InputGroup>
-                    <Label
-                        labelType="inline"
-                        tooltipMessage={resx.get("plImprovementProgram.Help")}
-                        label={resx.get("plImprovementProgram")}
-                        extra={
-                            <Tooltip
-                                messages={[resx.get("GlobalSetting")]}
-                                type="global"
-                                style={{ float: "left", position: "static" }}
-                                />}
-                        />
-                    <Switch
-                        onText={resx.get("SwitchOn")}
-                        offText={resx.get("SwitchOff")}
-                        value={state.otherSettings.DnnImprovementProgram}
-                        onChange={this.onSettingChange.bind(this, "DnnImprovementProgram")}
-                        />
-                </InputGroup>
-            }
-        </div>;
-
         return (
             <div className={styles.moreSettings}>
                 {state.siteBehaviorExtrasRendered && this.renderSiteBehaviorExtensions()}
@@ -254,7 +202,6 @@ class MoreSettingsPanelBody extends Component {
                         </Button>
                     </div>
                 </div>
-                <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                 <div className="buttons-box">
                     <Button
                         type="secondary"

@@ -28,5 +28,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "isPortable")]
         public bool? IsPortable { get; set; }
+
+        [DataMember(Name = "allTabs")]
+        public bool AllTabs { get; set; }
     }
 }

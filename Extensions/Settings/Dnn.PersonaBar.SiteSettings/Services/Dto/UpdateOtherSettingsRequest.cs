@@ -28,8 +28,5 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
     public class UpdateOtherSettingsRequest
     {
-        public bool CheckUpgrade { get; set; }
-
-        public bool DnnImprovementProgram { get; set; }
     }
 }

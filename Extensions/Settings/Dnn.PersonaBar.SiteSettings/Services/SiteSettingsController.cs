@@ -19,20 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Dynamic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Web;
-using System.Web.Http;
-using System.Text.RegularExpressions;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -59,6 +45,20 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
+using System.Web.Http;
 using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -334,6 +334,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Custom404TabName = TabSanitizer(portal.Custom404TabId, pid)?.TabName,
                         Custom500TabId = TabSanitizer(portal.Custom500TabId, pid)?.TabID,
                         Custom500TabName = TabSanitizer(portal.Custom500TabId, pid)?.TabName,
+                        TermsTabId = TabSanitizer(portal.TermsTabId, pid)?.TabID,
+                        TermsTabName = TabSanitizer(portal.TermsTabId, pid)?.TabName,
+                        PrivacyTabId = TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
+                        PrivacyTabName = TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
                         portalSettings.PageHeadText
                     }
                 });
@@ -381,6 +385,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.SearchTabId = ValidateTabId(request.SearchTabId, pid);
                 portalInfo.Custom404TabId = ValidateTabId(request.Custom404TabId, pid);
                 portalInfo.Custom500TabId = ValidateTabId(request.Custom500TabId, pid);
+                portalInfo.TermsTabId = ValidateTabId(request.TermsTabId, pid);
+                portalInfo.PrivacyTabId = ValidateTabId(request.PrivacyTabId, pid);
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
@@ -1436,7 +1442,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     listController.AddListEntry(entry);
                 }
-                
+
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -1468,7 +1474,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var listController = new ListController();
                 listController.DeleteListEntryByID(entryId, true);
-                
+
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -1503,7 +1509,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     if (request.Entries[i].EntryId.HasValue)
                     {
                         var entry = listController.GetListEntryInfo(request.Entries[i].EntryId.Value);
-                        if (entry.SortOrder == i + 1) continue;
+                        if (entry.SortOrder == i + 1)
+                        {
+                            continue;
+                        }
+
                         if (entry.SortOrder > i + 1)
                         {
                             var j = entry.SortOrder - i - 1;
@@ -1526,6 +1536,83 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 DataCache.ClearListsCache(pid);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetPrivacySettings
+        /// <summary>
+        /// Gets messaging settings
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>privacy settings</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage GetPrivacySettings(int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && PortalId != pid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var portal = PortalController.Instance.GetPortal(pid);
+                var portalSettings = new PortalSettings(portal);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        PortalId = portal.PortalID,
+                        portal.CultureCode,
+                        portalSettings.ShowCookieConsent,
+                        portalSettings.CookieMoreLink,
+                        CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
+                        DnnImprovementProgram = HostController.Instance.GetBoolean("DnnImprovementProgram", true),
+                        DisplayCopyright = HostController.Instance.GetBoolean("Copyright", true)
+                    }
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdatePrivacySettings
+        /// <summary>
+        /// Updates privacy settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage UpdatePrivacySettings(UpdatePrivacySettingsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && PortalId != pid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                PortalController.UpdatePortalSetting(pid, "ShowCookieConsent", request.ShowCookieConsent.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "CookieMoreLink", request.CookieMoreLink, false, request.CultureCode);
+                HostController.Instance.Update("CheckUpgrade", request.CheckUpgrade ? "Y" : "N", false);
+                HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false);
+                HostController.Instance.Update("Copyright", request.DisplayCopyright ? "Y" : "N", false);
+                DataCache.ClearCache();
+
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -3014,8 +3101,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Settings = new
                     {
-                        CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
-                        DnnImprovementProgram = HostController.Instance.GetBoolean("DnnImprovementProgram", true)
                     }
                 });
             }
@@ -3039,8 +3124,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                HostController.Instance.Update("CheckUpgrade", request.CheckUpgrade ? "Y" : "N", false);
-                HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false);
                 DataCache.ClearCache();
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -3182,7 +3265,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             if (!propertyNameRegex.Match(definition.PropertyName).Success)
             {
                 isValid = false;
-                httpPropertyValidationError = Request.CreateErrorResponse(HttpStatusCode.BadRequest, 
+                httpPropertyValidationError = Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                     string.Format(Localization.GetString("NoSpecialCharacterName.Text", Components.Constants.Constants.LocalResourcesFile)));
             }
 
@@ -3196,7 +3279,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     break;
             }
 
-            if(isValid == false)
+            if (isValid == false)
             {
                 httpPropertyValidationError = Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                     string.Format(Localization.GetString("RequiredTextBox", Components.Constants.Constants.LocalResourcesFile)));

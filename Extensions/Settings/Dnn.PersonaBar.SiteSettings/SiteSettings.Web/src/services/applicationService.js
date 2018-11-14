@@ -138,6 +138,16 @@ class ApplicationService {
         sf.post("UpdateBasicSearchSettings", payload, callback, failureCallback);
     }
 
+    getPrivacySettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.get("GetPrivacySettings?portalId=" + portalId, {}, callback);
+    }
+
+    updatePrivacySettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdatePrivacySettings", payload, callback, failureCallback);
+    }
+
     compactSearchIndex(callback, failureCallback) {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("CompactSearchIndex", {}, callback, failureCallback);

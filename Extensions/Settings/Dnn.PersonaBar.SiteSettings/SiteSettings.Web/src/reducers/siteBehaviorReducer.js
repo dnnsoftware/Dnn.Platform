@@ -158,6 +158,20 @@ export default function siteBehavior(state = {
             return { ...state,
                 entries: action.data.entries
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_PRIVACY_SETTINGS:
+            return { ...state,
+                privacySettings: action.data.settings,
+                privacySettingsClientModified: action.data.privacySettingsClientModified
+            };
+        case ActionTypes.SITESETTINGS_PRIVACY_SETTINGS_CLIENT_MODIFIED:
+            return { ...state,
+                privacySettings: action.data.settings,
+                privacySettingsClientModified: action.data.privacySettingsClientModified
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_PRIVACY_SETTINGS:
+            return { ...state,
+                privacySettingsClientModified: action.data.privacySettingsClientModified
+            };
         default:
             return state;
     }

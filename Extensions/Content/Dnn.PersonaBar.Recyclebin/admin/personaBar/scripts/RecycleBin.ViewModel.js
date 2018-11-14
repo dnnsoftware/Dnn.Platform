@@ -706,11 +706,9 @@ define(['jquery', 'knockout',
                 };
 
 
-                $(elementId).on("scroll", function(){
-
+                element.bind('jsp-scroll-y', function(event, scrollPositionY, isAtTop, isAtBottom) {
                     if(!timeout){
-
-                        if(api.getPercentScrolledY() == 1 && !timeout && currentResultsLessThanTotal() ) {
+                        if(scrollPositionY > 0 && isAtBottom && !timeout && currentResultsLessThanTotal() ) {
                             timeout = setTimeout(function(){
                                 timeout=null;
                             },2000);
@@ -760,7 +758,7 @@ define(['jquery', 'knockout',
                                 }
                                 api.reinitialise();
                                 api.scrollToPercentY(.95);
-                         });
+                            });
                         }
                     }
                 });

@@ -486,7 +486,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public IEnumerable<ModuleInfo> GetModules(int pageId)
         {
             var tabModules = _moduleController.GetTabModules(pageId);
-            return tabModules.Values.Where(m => !m.IsDeleted && !m.AllTabs);
+            return tabModules.Values.Where(m => !m.IsDeleted);
         }
 
         protected virtual bool ValidatePageSettingsData(PortalSettings portalSettings, PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage)
@@ -797,6 +797,25 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+
+            // icons
+            if (pageSettings.IconFile != null && pageSettings.IconFile.fileId > 0)
+            {
+                tab.IconFile = FileManager.Instance.GetFile(pageSettings.IconFile.fileId).RelativePath;
+            }
+            else
+            {
+                tab.IconFile = null;
+            }
+            if (pageSettings.IconFileLarge != null && pageSettings.IconFileLarge.fileId > 0)
+            {
+                tab.IconFileLarge = FileManager.Instance.GetFile(pageSettings.IconFileLarge.fileId).RelativePath;
+            }
+            else
+            {
+                tab.IconFileLarge = null;
+            }
+            
         }
 
         private string GetContainerSrc(PageSettings pageSettings)
@@ -1047,6 +1066,30 @@ namespace Dnn.PersonaBar.Pages.Components
             page.PrimaryAliasId = GetPrimaryAliasId(portalSettings.PortalId, portalSettings.CultureCode);
             page.Locales = GetLocales(portalSettings.PortalId);
             page.HasParent = tab.ParentId > -1;
+
+            // icons
+            var iconFile = string.IsNullOrEmpty(tab.IconFile) ? null : FileManager.Instance.GetFile(tab.PortalID, tab.IconFileRaw);
+            if (iconFile != null) {
+                page.IconFile = new FileDto
+                {
+                    fileId = iconFile.FileId,
+                    fileName = iconFile.FileName,
+                    folderId = iconFile.FolderId,
+                    folderPath = iconFile.Folder
+                };
+            }
+            var iconFileLarge = string.IsNullOrEmpty(tab.IconFileLarge) ? null : FileManager.Instance.GetFile(tab.PortalID, tab.IconFileLargeRaw);
+            if (iconFileLarge != null)
+            {
+                page.IconFileLarge = new FileDto
+                {
+                    fileId = iconFileLarge.FileId,
+                    fileName = iconFileLarge.FileName,
+                    folderId = iconFileLarge.FolderId,
+                    folderPath = iconFileLarge.Folder
+                };
+            }
+
             return page;
         }
 

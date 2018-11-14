@@ -1060,7 +1060,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         util.closePersonaBar(function () {
                                             toogleUserMode('EDIT', function() {
                                                 function reloadPage() {
-                                                    window.top.location.replace(window.top.location.href);
+                                                    window.top.location = window.top.location.protocol + '//' + window.top.location.host + window.top.location.pathname + window.top.location.search;
                                                 }
                                                 saveBtnEditSettings(reloadPage, reloadPage);
                                             });

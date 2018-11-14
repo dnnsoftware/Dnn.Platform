@@ -150,5 +150,8 @@ module.exports = [
     "flyout",
     "Flyout",
     "interactor",
-    "cloneDeep"
+    "cloneDeep",
+    "bmp",
+    "xml",
+    "filesystem"
 ]

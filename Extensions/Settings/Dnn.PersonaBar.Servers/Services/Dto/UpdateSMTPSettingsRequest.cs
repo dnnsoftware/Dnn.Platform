@@ -37,6 +37,8 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
 
         public string SmtpPassword { get; set; }
 
+        public string SmtpHostEmail { get; set; }
+
         public bool EnableSmtpSsl { get; set; }
 
         public int MessageSchedulerBatchSize { get; set; }
