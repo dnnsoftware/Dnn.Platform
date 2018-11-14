@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 const folderIcon = require("!raw-loader!./img/folder.svg");
 
 export default class Folders extends Component {

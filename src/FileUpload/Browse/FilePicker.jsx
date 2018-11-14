@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 const searchIcon = require("!raw-loader!./img/search.svg");
 const fileIcon = require("!raw-loader!./img/pages.svg");
 import { Scrollbars } from "react-custom-scrollbars";

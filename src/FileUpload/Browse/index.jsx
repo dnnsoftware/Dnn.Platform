@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import FolderPicker from "./FolderPicker";
 import FilePicker from "./FilePicker";
 import helper from "../helper";
