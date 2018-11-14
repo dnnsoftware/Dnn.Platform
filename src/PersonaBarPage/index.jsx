@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 
 const getClassName = function (className, isOpen, fullWidth) {
@@ -12,10 +13,10 @@ const PersonaBarPage = ({className, isOpen, children, fullWidth}) => (
 );
 
 PersonaBarPage.propTypes = {
-    isOpen: React.PropTypes.bool.isRequired, 
-    className: React.PropTypes.string,
-    children: React.PropTypes.node,
-    fullWidth: React.PropTypes.bool
+    isOpen: PropTypes.bool.isRequired, 
+    className: PropTypes.string,
+    children: PropTypes.node,
+    fullWidth: PropTypes.bool
 };
 
 PersonaBarPage.defaultProps = {
