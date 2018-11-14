@@ -16,6 +16,13 @@
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
+  "keywords": [
+    "DNN",
+    "dnnsoftware",
+    "React",
+    "DNN Module",
+    "Persona Bar"
+  ],
   "peerDependencies": {
     "eslint-import-resolver-webpack": "^0.3.2",
     "eslint-plugin-filenames": "^1.0.0",

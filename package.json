@@ -8,6 +8,13 @@
     "url": "https://github.com/dnnsoftware/Dnn.React.Common.git"
   },
   "license": "MIT",
+  "keywords": [
+    "DNN",
+    "dnnsoftware",
+    "React",
+    "DNN Module",
+    "Persona Bar"
+  ],
   "scripts": {
     "postinstall": "cd WebpackExternals && yarn install && cd ../",
     "preversion": "yarn run test",
