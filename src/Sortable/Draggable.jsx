@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import interact from "interact.js";
 
 //TODO: reconsider location of this general component
@@ -181,12 +182,12 @@ export default (Component) => {
     }
     
     Draggable.propTypes = {
-        onDragStart: React.PropTypes.func,
-        onDragMove: React.PropTypes.func,
-        onDragEnd: React.PropTypes.func,
-        cloneElementOnDrag: React.PropTypes.bool.isRequired,
-        getDragPreview: React.PropTypes.func,
-        showGhostOnClone: React.PropTypes.bool.isRequired
+        onDragStart: PropTypes.func,
+        onDragMove: PropTypes.func,
+        onDragEnd: PropTypes.func,
+        cloneElementOnDrag: PropTypes.bool.isRequired,
+        getDragPreview: PropTypes.func,
+        showGhostOnClone: PropTypes.bool.isRequired
     };
     
     Draggable.defaultProps = {

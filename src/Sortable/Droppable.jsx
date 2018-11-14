@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import interact from "interact.js";
 
 export default (Component) => { 
@@ -47,12 +48,12 @@ export default (Component) => {
         }
     }
     Droppable.propTypes = {     
-        onDrop: React.PropTypes.func,
-        onDropMove: React.PropTypes.func,
-        onDropActivate: React.PropTypes.func,
-        onDragEnter: React.PropTypes.func,
-        onDragLeave: React.PropTypes.func,
-        onDropDeactivate: React.PropTypes.func
+        onDrop: PropTypes.func,
+        onDropMove: PropTypes.func,
+        onDropActivate: PropTypes.func,
+        onDragEnter: PropTypes.func,
+        onDragLeave: PropTypes.func,
+        onDropDeactivate: PropTypes.func
     };
     return Droppable;
 };
