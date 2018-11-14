@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "./style.less";
 
-Tabs.setUseDefaultStyles(false);
-
 class DnnTabs extends Component {
 
     constructor() {
