@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { IconSelector } from "./icons/IconSelector";
 import { global } from "./global";
 import TextOverflowWrapperNew from "../TextOverflowWrapperNew";
