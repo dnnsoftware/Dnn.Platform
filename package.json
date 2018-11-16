@@ -17,7 +17,6 @@
     "Persona Bar"
   ],
   "scripts": {
-    "postinstall": "cd WebpackExternals && yarn install && cd ../",
     "preversion": "yarn run test",
     "version": "yarn run build && git add -A dist",
     "postversion": "git push && git push --tags",
