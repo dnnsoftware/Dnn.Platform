@@ -29,7 +29,7 @@ module.exports = {
         ]
     },
     target: "node", // in order to ignore built-in modules like path, fs, etc.
-    externals: ["react", nodeExternals()], // in order to ignore all modules in node_modules folder
+    externals: ["react", "prop-types", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
         extensions: [".js", ".json", ".jsx"],
         modules: [
