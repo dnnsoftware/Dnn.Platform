@@ -3,7 +3,7 @@ import ThemeService from "../services/themeService";
 
 const themeActions = {
     retrieveThemes() {
-        return (dispatch) => {
+        return (dispatch) => new Promise(function(callback) {
             dispatch({
                 type: ActionTypes.RETRIEVING_THEMES
             });    
@@ -18,14 +18,16 @@ const themeActions = {
                         defaultPortalLayout: response.defaultPortalLayout,
                         defaultPortalContainer: response.defaultPortalContainer
                     }
-                });  
+                });
+                callback({success: true});
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_RETRIEVING_THEMES,
                     data: {error}
                 });
+                callback({success: false});
             });     
-        };
+        });
     },
 
     retrieveThemeFiles(themeName, level) {

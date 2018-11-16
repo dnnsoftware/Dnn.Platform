@@ -15,15 +15,19 @@ import style from "./style.less";
 class Appearance extends Component {
 
     componentWillMount() {
-        const { page, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
+        const { page, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
-        onRetrieveThemes();
-
-        const selectedThemeName = page.themeName || defaultPortalThemeName;
-        const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
-        if (selectedThemeName) {
-            onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
-        }
+        onRetrieveThemes().then(data => {
+			if(!data || data.success === false) {
+				return;
+			}
+			const { defaultPortalThemeName, defaultPortalThemeLevel } = this.props;
+			const selectedThemeName = page.themeName || defaultPortalThemeName;
+			const selectedThemeLevel = page.themeLevel || defaultPortalThemeLevel;
+			if (selectedThemeName) {
+				onRetrieveThemeFiles(selectedThemeName, selectedThemeLevel);
+			}
+		});
     }
 
     componentWillReceiveProps(newProps) {
