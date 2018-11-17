@@ -51,6 +51,5 @@ namespace Dnn.ExportImport.Dto.Users
         public DateTime? LastModifiedOnDate { get; set; }
         public Guid? PasswordResetToken { get; set; }
         public DateTime? PasswordResetExpiration { get; set; }
-        public string LowerEmail { get; set; }
     }
 }

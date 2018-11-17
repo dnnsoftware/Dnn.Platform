@@ -67,7 +67,7 @@ namespace DotNetNuke.UI
 
         #endregion
 
-		#region Private Shared Methods
+        #region Private Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         private static void AddChildActions(ModuleAction parentAction, DNNNode parentNode, DNNNode rootNode, IActionControl actionControl, int intDepth)
         {
-			//Add Menu Items
+            //Add Menu Items
             foreach (ModuleAction action in parentAction.Actions)
             {
                 bool isActionPending = IsActionPending(parentNode, rootNode, intDepth);
@@ -91,16 +91,16 @@ namespace DotNetNuke.UI
                 {
                     if (isActionPending == false)
                     {
-						//A title (text) of ~ denotes a break
+                        //A title (text) of ~ denotes a break
                         parentNode.DNNNodes.AddBreak();
                     }
                 }
                 else
                 {
-					//if action is visible and user has permission 
+                    //if action is visible and user has permission 
                     if (action.Visible &&
                         (action.Secure != SecurityAccessLevel.Anonymous ||
-                            (!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current)) 
+                            (!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current))
                                 && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, actionControl.ModuleControl.ModuleContext.Configuration)))
                     {
                         if (isActionPending)
@@ -163,17 +163,17 @@ namespace DotNetNuke.UI
         /// Logic moved to separate sub to make GetNavigationNodes cleaner
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips)
+        private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
         {
             var objNode = new DNNNode();
             if (objTab.Title == "~") //NEW!
             {
-				//A title (text) of ~ denotes a break
+                //A title (text) of ~ denotes a break
                 objNodes.AddBreak();
             }
             else
             {
-				//assign breadcrumb and selected properties
+                //assign breadcrumb and selected properties
                 if (objBreadCrumbs.Contains(objTab.TabID))
                 {
                     objNode.BreadCrumb = true;
@@ -212,18 +212,22 @@ namespace DotNetNuke.UI
                 }
 
                 objNodes.Add(objNode);
+                if (!nodesLookup.ContainsKey(objNode.ID))
+                {
+                    nodesLookup.Add(objNode.ID, objNode);
+                }
             }
         }
 
         private static bool IsActionPending(DNNNode objParentNode, DNNNode objRootNode, int intDepth)
         {
-			//if we aren't restricting depth then its never pending
+            //if we aren't restricting depth then its never pending
             if (intDepth == -1)
             {
                 return false;
             }
-			
-			//parents level + 1 = current node level
+
+            //parents level + 1 = current node level
             //if current node level - (roots node level) <= the desired depth then not pending
             if (objParentNode.Level + 1 - objRootNode.Level <= intDepth)
             {
@@ -234,7 +238,7 @@ namespace DotNetNuke.UI
 
         private static bool IsTabPending(TabInfo objTab, DNNNode objParentNode, DNNNode objRootNode, int intDepth, Hashtable objBreadCrumbs, int intLastBreadCrumbId, bool blnPOD)
         {
-			//
+            //
             //A
             //|
             //--B
@@ -270,15 +274,15 @@ namespace DotNetNuke.UI
             {
                 return false;
             }
-			
-			//parents level + 1 = current node level
+
+            //parents level + 1 = current node level
             //if current node level - (roots node level) <= the desired depth then not pending
             if (objParentNode.Level + 1 - objRootNode.Level <= intDepth)
             {
                 return false;
             }
-			
-			
+
+
             //--- These checks below are here so tree becomes expands to selected node ---
             if (blnPOD)
             {
@@ -292,8 +296,8 @@ namespace DotNetNuke.UI
                 {
                     return false;
                 }
-				
-				//if parent is in the breadcrumb and it is not the last breadcrumb then not pending
+
+                //if parent is in the breadcrumb and it is not the last breadcrumb then not pending
                 //in tree above say we our breadcrumb is (A, B, B-2) we want our tree containing A, B, B-2 AND B-1 AND C since A and B are expanded
                 //we do NOT want B-2-1 and B-2-2, thus the check for Last Bread Crumb
                 if (objBreadCrumbs.Contains(objTab.ParentId) && intLastBreadCrumbId != objTab.ParentId)
@@ -315,56 +319,55 @@ namespace DotNetNuke.UI
         }
 
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
-                                       int intDepth, int intNavNodeOptions)
+                                       int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
         {
             PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
-            DNNNodeCollection objRootNodes = objRootNode.DNNNodes;
-
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;
 
             if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden)) //based off of tab properties, is it shown
             {
                 DNNNodeCollection objParentNodes;
-                DNNNode objParentNode = objRootNodes.FindNode(objTab.ParentId.ToString());
-                bool blnParentFound = objParentNode != null;
-                if (objParentNode == null)
+                DNNNode objParentNode;
+                bool blnParentFound = nodesLookup.TryGetValue(objTab.ParentId.ToString(), out objParentNode);
+                if (!blnParentFound)
                 {
                     objParentNode = objRootNode;
                 }
                 objParentNodes = objParentNode.DNNNodes;
                 if (objTab.TabID == intStartTabId)
                 {
-					//is this the starting tab
+                    //is this the starting tab
                     if ((intNavNodeOptions & (int) NavNodeOptions.IncludeParent) != 0)
                     {
-						//if we are including parent, make sure there is one, then add
+                        //if we are including parent, make sure there is one, then add
                         if (objTabLookup[objTab.ParentId] != null)
                         {
-                            AddNode((TabInfo) objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips);
-                            objParentNode = objRootNodes.FindNode(objTab.ParentId.ToString());
-                            objParentNodes = objParentNode.DNNNodes;
+                            AddNode((TabInfo) objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                            if (nodesLookup.TryGetValue(objTab.ParentId.ToString(), out objParentNode))
+                            {
+                                objParentNodes = objParentNode.DNNNodes;
+                            }
                         }
                     }
                     if ((intNavNodeOptions & (int) NavNodeOptions.IncludeSelf) != 0)
                     {
-						//if we are including our self (starting tab) then add
-                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips);
+                        //if we are including our self (starting tab) then add
+                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
                 else if (((intNavNodeOptions & (int) NavNodeOptions.IncludeSiblings) != 0) && IsTabSibling(objTab, intStartTabId, objTabLookup))
                 {
-					//is this a sibling of the starting node, and we are including siblings, then add it
-                    AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips);
+                    //is this a sibling of the starting node, and we are including siblings, then add it
+                    AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                 }
                 else
                 {
                     if (blnParentFound) //if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
                     {
-						//parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
+                        //parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
                         if (((intNavNodeOptions & (int) NavNodeOptions.IncludeSiblings) != 0) || IsTabSibling(objTab, intStartTabId, objTabLookup) == false)
                         {
-							//determine if tab should be included or marked as pending
+                            //determine if tab should be included or marked as pending
                             bool blnPOD = (intNavNodeOptions & (int) NavNodeOptions.MarkPendingNodes) != 0;
                             if (IsTabPending(objTab, objParentNode, objRootNode, intDepth, objBreadCrumbs, intLastBreadCrumbId, blnPOD))
                             {
@@ -375,31 +378,31 @@ namespace DotNetNuke.UI
                             }
                             else
                             {
-                                AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips);
+                                AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                             }
                         }
                     }
                     else if ((intNavNodeOptions & (int) NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
                     {
-						//if not including self and parent is the start id then add 
-                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips);
+                        //if not including self and parent is the start id then add 
+                        AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
             }
         }
-		
-		#endregion
 
-		#region Public Shared Methods
+        #endregion
+
+        #region Public Shared Methods
 
         public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)
         {
-          return CanShowTab(objTab, isAdminMode, showDisabled, false);
+            return CanShowTab(objTab, isAdminMode, showDisabled, false);
         }
 
         public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
         {
-			//if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
+            //if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
             return ((tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
                     (!tab.DisableLink || showDisabled) &&
                     (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
@@ -518,7 +521,7 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         public static DNNNode GetNavigationNode(string strID, string strNamespace)
         {
-			//TODO:  FIX THIS MESS!
+            //TODO:  FIX THIS MESS!
             DNNNodeCollection objNodes = GetNavigationNodes(strNamespace);
             DNNNode objNode = objNodes.FindNode(strID);
             var objReturnNodes = new DNNNodeCollection(strNamespace);
@@ -608,19 +611,39 @@ namespace DotNetNuke.UI
                 objTabLookup.Add(objTab.TabID, objTab);
             }
 
+            //convert dnn nodes to dictionary.
+            var nodesDict = new Dictionary<string, DNNNode>();
+            SaveDnnNodesToDictionary(nodesDict, objRootNodes);
+
             foreach (var objTab in cachedPortalTabs)
             {
-                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
+                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions, nodesDict);
             }
 
             foreach (var objTab in cachedHostTabs)
             {
-                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
+                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions, nodesDict);
             }
 
             return objRootNodes;
         }
-		
-		#endregion
+
+        private static void SaveDnnNodesToDictionary(IDictionary<string, DNNNode> nodesDict, DNNNodeCollection nodes)
+        {
+            foreach (DNNNode node in nodes)
+            {
+                if (!nodesDict.ContainsKey(node.ID))
+                {
+                    nodesDict.Add(node.ID, node);
+                }
+
+                if (node.HasNodes)
+                {
+                    SaveDnnNodesToDictionary(nodesDict, node.DNNNodes);
+                }
+            }
+        }
+
+        #endregion
     }
 }

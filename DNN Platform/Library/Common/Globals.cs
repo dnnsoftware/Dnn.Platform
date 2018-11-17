@@ -811,7 +811,7 @@ namespace DotNetNuke.Common
                 }
                 if (string.IsNullOrEmpty(cultureCode))
                 {
-                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
+                    cultureCode = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
                 }
             }
 
