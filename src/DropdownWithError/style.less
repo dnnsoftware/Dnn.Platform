@@ -1,0 +1,66 @@
+@import "../../styles/index";
+.dnn-dropdown-with-error {
+    display: inline-block;
+    position: relative;
+    &.disabled {
+        .dnn-label {
+            label {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+        .dropdown-tooltip-container {
+            .dnn-dropdown-input {
+                color: @mountainMist;
+                cursor: not-allowed;
+            }
+        }
+    }
+    .dnn-label {
+        label {
+            font-weight: 700;
+            cursor: pointer;
+            float: left;
+        }
+    }
+    .dnn-dropdown {
+        color: @bulgarianRose;
+    }
+    &.error {
+        .dnn-dropdown {
+            border-bottom: 2px solid @alizarinCrimson;
+        }
+    }
+    .dnn-ui-common-tooltip {
+        .tooltip-text {
+            max-width: 255px;
+            text-align: center;
+            padding: 7px 15px;
+        }
+    }
+    .dropdown-tooltip-container {
+        float: left;
+        position: relative;
+        width: 100%;
+        .dnn-dropdown {
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 0px;
+        }
+        &.inline {
+            width: auto;
+        }
+        .dnn-ui-common-tooltip {
+            position: absolute;
+            top: 7px;
+            right: 30px;
+            &.outside {
+                right: -25px;
+            }
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}

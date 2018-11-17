@@ -1,0 +1,129 @@
+@import "../../styles/index";
+.dnn-ui-common-tooltip {
+    .tooltip-text {
+        z-index: 10000;
+        max-width: 255px;
+        text-align: center;
+        padding: 7px 15px;
+        pointer-events: auto !important;
+        word-wrap: break-word;
+        word-break: keep-all;
+        &:hover {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        &.place-top {
+            &:after {
+                border-top: 6px solid !important;
+            }
+        }
+        &.place-bottom {
+            &:after {
+                border-bottom: 6px solid !important;
+            }
+        }
+        &.place-left {
+            &:after {
+                border-left: 6px solid !important;
+            }
+        }
+        &.place-right {
+            &:after {
+                border-right: 6px solid !important;
+            }
+        }
+    }
+    &.error {
+        .icon svg {
+            color: @alizarinCrimson;
+            fill: @alizarinCrimson;
+        }
+        .tooltip-text {
+            background-color: @alizarinCrimson !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: @alizarinCrimson !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color: @alizarinCrimson !important;
+                }
+            }
+        }
+    }
+    &.warning {
+        .icon svg {
+            color: #EA9C00;
+            fill: #EA9C00;
+        }
+        .tooltip-text {
+            background-color: #EA9C00 !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: #EA9C00 !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color: #EA9C00 !important;
+                }
+            }
+        }
+    }
+    &.info {
+        .icon svg {
+            color: @alto;
+            fill: @alto;
+        }
+        .tooltip-text {
+            background-color: @thunder !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: @thunder !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color: @thunder !important;
+                }
+            }
+        }
+    }
+    &.global {
+        .icon svg {
+            color: @cerulean;
+            fill: @cerulean;
+        }
+        .tooltip-text {
+            background-color: @cerulean !important;
+            color: white;
+            &.place-top {
+                &:after {
+                    border-top-color: @cerulean !important;
+                }
+            }
+            &.place-bottom {
+                &:after {
+                    border-bottom-color: @cerulean !important;
+                }
+            }
+        }
+    }
+    .icon svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.ToolTipPortal {
+    & > div {
+        z-index: 9999999 !important;
+    }
+    span {
+        margin-top: 1px !important;
+    }
+}

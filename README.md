@@ -1,46 +1,38 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/er8qc8a7323ctfb1?svg=true)](https://ci.appveyor.com/project/DnnAutomation/dnn-react-common)
 
->This documentation is based in the info from 
-http://docs.myget.org/docs/reference/myget-npm-support
+## DNN React Common Components
+DNN React Common is a library of common React components that can be used in [DNN.Platform](https://github.com/dnnsoftware/Dnn.Platform/) Persona Bar and Module projects.
 
-## Configure local npm to use the DNN public repository
-From the command line, the following command must be executed:
-```
-npm config set registry https://www.myget.org/F/dnn-software-public/npm/
-```
-
-## Installing a package from the private repository
-
-To install a package, execute the regular npm command:
+## Installation
+DNN React Common uses [Yarn](https://yarnpkg.com/) as the package manager. To install the components run
 
 ```
-npm install packagename
+yarn install @dnnsoftware/dnn-react-common
 ```
-
-This will search the package in the private repository, and if not found, it will then use the public npm repository
-
-## Restoring all packages
-
-To install all the package dependencies for all the components 
-
+## Usage
+Once installed you can reference any of the components by doing
 ```
-npm run install-all
+import { Label, SingleLineInputWithError } from "dnn-react-common";
 ```
-
-## Compiling a package
-
-To compile a package from the source, it is needed to install all its dependencies in the package folder
+## StoryBook
+DNN React Common uses the [StoryBook.js](https://storybook.js.org/) library to create a StoryBook. Every component in the project contains a ```.stories.js``` file. This allows you to test the components in a isolated environment and see what the components are doing. To run the StoryBook run
 
 ```
-cd package
-npm install
+yarn run storybook
 ```
 
-Then the build script should be run to generate the compiled js in the lib subfolder
-
+## Building the Components
+To build the components you just need to run
 ```
-npm run build
+yarn run build
 ```
 
-### Note:
-[Yarn](https://yarnpkg.com/) is another dependency management tool that can be used for building these packages. If you prefer to use this tool instead of `npm`, then you need only to replace the `npm` with `yarn` in the various commands above.
+## License
+ 
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
