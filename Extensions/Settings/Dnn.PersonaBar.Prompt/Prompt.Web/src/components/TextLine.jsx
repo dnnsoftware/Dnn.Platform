@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Parser from "html-react-parser";
-import DomKey from "../services/DomKey";
+import DomKey from "services/DomKey";
 
 const TextLine = ({txt, css}) => {
-    if(!txt){
+    if (!txt) {
         return null;
     }
     const textLines = txt.split("\\n");
@@ -19,8 +20,8 @@ const TextLine = ({txt, css}) => {
 TextLine.defaultProps = { css: "dnn-prompt-cmd" };
 
 TextLine.propTypes = {
-    txt: React.PropTypes.string.isRequired,
-    css: React.PropTypes.string
+    txt: PropTypes.string.isRequired,
+    css: PropTypes.string
 };
 
 export default TextLine;

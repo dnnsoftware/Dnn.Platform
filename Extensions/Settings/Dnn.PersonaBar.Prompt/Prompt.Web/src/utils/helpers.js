@@ -3,7 +3,7 @@ import React  from "react";
 export function formatString() {
     let format = arguments[0];
     let methodsArgs = arguments;
-    return format.replace(/[{\[](\d+)[\]}]/gi, function (value, index) {
+    return format.replace(/[{[](\d+)[\]}]/gi, function (value, index) {
         let argsIndex = parseInt(index) + 1;
         return methodsArgs[argsIndex];
     });
@@ -59,7 +59,7 @@ export function renderObject(data, fieldOrder) {
 }
 
 export function stripWhiteSpaces(html = "") {
-    const re = /\>[^\w^\<]+\</igm;
+    const re = />[^\w^<]+</igm;
     return html.replace(re,"><");
 }
 

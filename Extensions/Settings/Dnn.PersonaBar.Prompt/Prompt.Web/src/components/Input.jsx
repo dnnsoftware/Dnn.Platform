@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Localization from "../localization/Localization";
-import { util, formatString } from "../utils/helpers";
-import "./Prompt.less";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
-import {commands as Cmd, modes as Mode} from "../constants/promptLabel";
+import Localization from "localization/Localization";
+import { util, formatString } from "utils/helpers";
+import "components/Prompt.less";
+//import Cookies from "universal-cookie";
+//const cookies = new Cookies();
+import {commands as Cmd, modes as Mode} from "constants/promptLabel";
 
 class Input extends Component {
 
@@ -168,7 +168,7 @@ class Input extends Component {
 
     isLastPage() {
         const { props } = this;
-        const IS_LAST_PAGE = props.paging !== null && props.paging.pageNo == props.paging.totalPages;
+        const IS_LAST_PAGE = props.paging !== null && props.paging.pageNo === props.paging.totalPages;
         return IS_LAST_PAGE;
     }
 
@@ -181,16 +181,16 @@ class Input extends Component {
             <div className={`dnn-prompt-input-wrapper ${IS_PAGING && !IS_LAST_PAGE ? "hidden-cursor" : ""}`}>
                 <input className={`dnn-prompt-input ${IS_PAGING && !IS_LAST_PAGE ? "hidden-text" : ""}`} ref={(el) => {
                     this.cmdPromptInput = el;
-                    if(el) {
+                    if (el) {
                         el.readOnly = this.isPaging();
                         /**
                          * Note: this is a patch to be removed once a complete refactoring of the Redux
                          * implementation will be done.
-                         * All changes in the DOM must happend accordingly to Redux state update and this
+                         * All changes in the DOM must happen accordingly to Redux state update and this
                          * usage of setTimeout has to be considered wrong.
                          * Patch needed to close DNN-10688
                          */
-                        if(this.isPaging() && this.isLastPage() === true) {
+                        if (this.isPaging() && this.isLastPage() === true) {
                             el.value = "";
                             setTimeout(() => el.readOnly = false, 500);
                         }

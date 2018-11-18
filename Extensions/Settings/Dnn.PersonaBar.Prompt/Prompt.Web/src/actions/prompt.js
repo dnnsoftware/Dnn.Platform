@@ -1,5 +1,5 @@
-import actionTypes from "../constants/actionTypes";
-import ApplicationService from "../services/applicationService";
+import actionTypes from "constants/actionTypes";
+import ApplicationService from "services/applicationService";
 
 export function getCommandList(payload, callback, errorCallback) {
     return (dispatch) => {

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Output from "./Output";
-import Input from "./Input";
+import Output from "components/Output";
+import Input from "components/Input";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Localization from "localization/Localization";
 import { util, formatString } from "utils/helpers";
-import "./Prompt.less";
+import "components/Prompt.less";
 import * as PromptActionsCreators from "actions/prompt";
 import PersonaBarPage from "dnn-persona-bar-page";
 
@@ -24,7 +24,7 @@ export class App extends Component {
         this.setFocus(true);
         this.scrollToBottom();
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.showGreeting();
     }
 
@@ -123,7 +123,7 @@ export class App extends Component {
             && document.activeElement.type === "text") {
             switch (e.keyCode) {
                 case 13: // enter key
-                    if(this.isPaging) {
+                    if (this.isPaging) {
                         this.setValue("");
                         this.runCmd();
                         this.setFocus(false);
@@ -151,7 +151,7 @@ export class App extends Component {
             this.setValue("");
             this.setFocus(false);
             this.runCmd();
-            if(lastPage) {
+            if (lastPage) {
                 this.endPaging();
             }
             return;
@@ -163,26 +163,26 @@ export class App extends Component {
         return (
             <PersonaBarPage isOpen={true} fullWidth={true}>
                 <div className="wrapper">
-                <div
-                    className="dnn-prompt"
-                    style={{ display: "block" }}
-                    onKeyDown={this.keyDownHandler.bind(this)}
-                    onClick={this.onClickHandler.bind(this)}
-                    ref={(el) => this.cmdPrompt = el}>
+                    <div
+                        className="dnn-prompt"
+                        style={{ display: "block" }}
+                        onKeyDown={this.keyDownHandler.bind(this)}
+                        onClick={this.onClickHandler.bind(this)}
+                        ref={(el) => this.cmdPrompt = el}>
                         <Output
                             {...props}
                             className="Output"
                             scrollToBottom={this.scrollToBottom.bind(this)}
                             IsPaging={this.paging.bind(this)}></Output>
-                    <br />
-                    {!props.isBusy && <Input
-                        ref={(el) => this.cmdPromptInputControl = el}
-                        {...props}
-                        actions={this.actions}
-                        updateHistory={this.updateHistory.bind(this)}
-                        paging={props.paging}
-                        setHeight={this.setHeight.bind(this)} />}
-                </div>
+                        <br />
+                        {!props.isBusy && <Input
+                            ref={(el) => this.cmdPromptInputControl = el}
+                            {...props}
+                            actions={this.actions}
+                            updateHistory={this.updateHistory.bind(this)}
+                            paging={props.paging}
+                            setHeight={this.setHeight.bind(this)} />}
+                    </div>
                 </div>
             </PersonaBarPage>
         );

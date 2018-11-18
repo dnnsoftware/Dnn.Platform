@@ -19,7 +19,8 @@ module.exports = {
     "settings": {
         "import/resolver":{
             "node":{
-                "extensions":[".js", ".jsx"]
+                "extensions": [".js", ".jsx"],
+                "paths": ["../node_modules", "src"]
             }
         }
     },
@@ -50,11 +51,15 @@ module.exports = {
         "Promise": false,
     },
     "rules": {
-       "spellcheck/spell-checker": [1,
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/valid-expect": "error",
+        "spellcheck/spell-checker": [1,
         {
-            "comments": "true",
-            "strings": "true",
-            "identifiers": "true",
+            "comments": true,
+            "strings": true,
+            "identifiers": true,
             "skipWords": require("./.eslintskipwords"),
             "skipIfMatch": [
                 "http://[^s]*",
@@ -62,12 +67,6 @@ module.exports = {
                 "util(s)?",
                 "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
             ],
-            "jest/no-disabled-tests": "warn",
-            "jest/no-focused-tests": "error",
-            "jest/no-identical-title": "error",
-            "jest/valid-expect": "error"
-        }
-      ],
-
+        }],
     }
 };

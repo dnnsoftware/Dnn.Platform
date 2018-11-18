@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import App from "components/App";
-import DevTools from "./DevTools";
-import { IS_DEV} from "../globals/promptInit";
+import DevTools from "containers/DevTools";
+import { IS_DEV} from "globals/promptInit";
 
 export default class Root extends Component {
     constructor() {

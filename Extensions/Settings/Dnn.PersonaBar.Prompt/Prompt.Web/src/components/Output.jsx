@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import "./Prompt.less";
-import DataTable from "./DataTable";
-import Command from "./Command";
-import TextLine from "./TextLine";
-import Help from "./Help";
-import { renderObject } from "../utils/helpers";
-import DomKey from "../services/DomKey";
+import "components/Prompt.less";
+import DataTable from "components/DataTable";
+import Command from "components/Command";
+import TextLine from "components/TextLine";
+import Help from "components/Help";
+import { renderObject } from "utils/helpers";
+import DomKey from "services/DomKey";
 
 export class Output extends Component {
 
@@ -21,7 +21,7 @@ export class Output extends Component {
                 return <Command key={DomKey.get("output")} {...props} commandList={props.commandList} IsPaging={props.IsPaging}/>;
             } else {
                 return <Help key={DomKey.get("output")} {...props} IsPaging={props.IsPaging} style={props.style} isError={props.isError}
-                             name={props.name}/>;
+                    name={props.name}/>;
             }
         }
 
@@ -34,7 +34,7 @@ export class Output extends Component {
         }
         else if (props.data) {
             const result = [];
-            if(props.paging !== null && props.paging !== undefined) {
+            if (props.paging !== null && props.paging !== undefined) {
                 props.IsPaging(props.paging.pageNo < props.paging.totalPages);
             }
             result.push(this.renderData(props.data, fieldOrder));

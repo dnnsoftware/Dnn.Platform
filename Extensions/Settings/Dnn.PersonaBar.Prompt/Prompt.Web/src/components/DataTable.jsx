@@ -1,7 +1,8 @@
 import React from "react";
-import { formatLabel, getColumnsFromRow} from "../utils/helpers";
+import PropTypes from "prop-types";
+import { formatLabel, getColumnsFromRow} from "utils/helpers";
 import Parser from "html-react-parser";
-import DomKey from "../services/DomKey";
+import DomKey from "services/DomKey";
 
 const DataTable = ({rows, columns, cssClass}) => {
 
@@ -50,7 +51,7 @@ const DataTable = ({rows, columns, cssClass}) => {
             <table key={DomKey.get("datatable")} className={cssClass ? cssClass : "dnn-prompt-tbl"}>
                 {tableHeader}
                 <tbody>
-                {tableRows}
+                    {tableRows}
                 </tbody>
             </table>
         );
@@ -60,9 +61,9 @@ const DataTable = ({rows, columns, cssClass}) => {
 };
 
 DataTable.propTypes = {
-    rows: React.PropTypes.array.isRequired,
-    columns: React.PropTypes.array.isRequired,
-    cssClass: React.PropTypes.string.isRequired
+    rows: PropTypes.array.isRequired,
+    columns: PropTypes.array.isRequired,
+    cssClass: PropTypes.string.isRequired
 };
 
 export default DataTable;

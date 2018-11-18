@@ -1,4 +1,4 @@
-import { util } from "../utils/helpers";
+import { util } from "utils/helpers";
 
 const Localization = {
     get(key) {

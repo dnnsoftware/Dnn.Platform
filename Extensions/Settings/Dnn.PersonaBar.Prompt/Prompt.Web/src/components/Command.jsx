@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Parser from "html-react-parser";
-import Localization from "../localization/Localization";
-import { sort } from "../utils/helpers";
-import DomKey from "../services/DomKey";
+import Localization from "localization/Localization";
+//import { sort } from "utils/helpers";
+import DomKey from "services/DomKey";
 
 const Command = ({commandList, IsPaging}) => {
 
@@ -18,9 +19,9 @@ const Command = ({commandList, IsPaging}) => {
         const kA = a.Key;
         const kB = b.Key;
 
-        if(catA == catB && kA == kB) return 0;
+        if (catA === catB && kA === kB) return 0;
 
-        if(catA == catB) {
+        if (catA === catB) {
             return kA < kB ? -1 : 1;
         } else {
             return catA < catB ? -1 : 1;
@@ -54,18 +55,18 @@ const Command = ({commandList, IsPaging}) => {
         );
     });
     const divCommands = (<div>
-            <table className="table">
-                <thead>
+        <table className="table">
+            <thead>
                 <tr>
                     <th>{Parser(Localization.get("Prompt_Help_Command"))}</th>
                     <th>{Parser(Localization.get("Prompt_Help_Description"))}</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 {commandsOutput}
-                </tbody>
-            </table>
-        </div>);
+            </tbody>
+        </table>
+    </div>);
 
     const headingSeeAlso = <h4>{Parser(Localization.get("Prompt_Help_SeeAlso"))}</h4>;
     const anchorSyntax = <a href="#" className="dnn-prompt-cmd-insert" data-cmd="help syntax">{Parser(Localization.get("Prompt_Help_Syntax"))}</a>;
@@ -87,8 +88,8 @@ const Command = ({commandList, IsPaging}) => {
 };
 
 Command.propTypes = {
-    commandList: React.PropTypes.array.isRequired,
-    IsPaging: React.PropTypes.func.isRequired
+    commandList: PropTypes.array.isRequired,
+    IsPaging: PropTypes.func.isRequired
 };
 
 export default Command;
