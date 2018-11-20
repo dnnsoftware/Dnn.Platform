@@ -337,10 +337,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                 foundFile = true;
             }
-            catch (FileNotFoundException)
-            {
-                foundFile = false;
-            }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
