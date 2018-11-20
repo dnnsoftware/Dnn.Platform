@@ -38,7 +38,7 @@ import Select from "./Select";
 import SingleLineInput from "./SingleLineInput";
 import SingleLineInputWithError from "./SingleLineInputWithError";
 import Sortable from "./Sortable";
-import SvgIcons from "./SvgIcons";
+import * as SvgIcons from "./SvgIcons";
 import Switch from "./Switch";
 import Tags from "./Tags";
 import TextOverflowWrapper from "./TextOverflowWrapper";
