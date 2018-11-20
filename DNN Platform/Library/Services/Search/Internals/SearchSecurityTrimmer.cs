@@ -178,12 +178,13 @@ namespace DotNetNuke.Services.Search.Internals
                         continue;
                     }
 
-                    if (++collectedSoFar >= pageSize)
+                    if (collectedSoFar >= pageSize)
                     {
                         continue;
                     }
 
                     _scoreDocs.Add(scoreDoc);
+                    ++collectedSoFar;
                 }
                 else
                 {
