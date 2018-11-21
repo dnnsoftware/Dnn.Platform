@@ -284,8 +284,6 @@ namespace DNNConnect.CKEditorProvider
 
                 listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
 
-                FillFolders();
-
                 RenderUrlControls(true);
 
                 FillRoles();
@@ -383,6 +381,8 @@ namespace DNNConnect.CKEditorProvider
 
                 BindUserGroupsGridView();
 
+                FillFolders();
+
                 BindOptionsData();
 
                 SetLanguage();
@@ -391,8 +391,6 @@ namespace DNNConnect.CKEditorProvider
 
                 // Load Skin List
                 FillSkinList();
-
-                FillFolders();
 
                 RenderUrlControls();
 
