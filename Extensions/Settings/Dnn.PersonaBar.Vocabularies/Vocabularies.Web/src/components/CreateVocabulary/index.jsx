@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -32,7 +33,7 @@ class CreateVocabulary extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             term: {
                 Name: "",
@@ -121,7 +122,7 @@ class CreateVocabulary extends Component {
                 text: LocalizedResources.get("BackToVocabularies"),
                 onClick: this.onCloseVocabulary.bind(this)
             }}
-             className={styles.createVocabulary} style={{ height: "calc(100% - 100px)" }}>
+            className={styles.createVocabulary} style={{ height: "calc(100% - 100px)" }}>
                 {props.isOpen &&
                     <GridCell className="create-box">
                         <InputGroup>
@@ -133,7 +134,7 @@ class CreateVocabulary extends Component {
                                 errorMessage={LocalizedResources.get("TermValidationError.Message")}
                                 value={state.term.Name}
                                 onChange={this.onTermValueChange.bind(this, "Name")}
-                                />
+                            />
                         </InputGroup>
                         <InputGroup>
                             <MultiLineInputWithError

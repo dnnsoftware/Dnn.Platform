@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import EditableWithLabel from "dnn-editable-field";
 import LocalizedResources from "../../../resources";
 import util from "utils";
@@ -14,9 +15,9 @@ class LeftPane extends Component {
         props.onEnter(key, value, props.index);
     }
 
-    canEdit(){
+    canEdit() {
         const {props} = this;
-        return util.isHost() || (props.scopeType == "Portal" && util.canEdit());
+        return util.isHost() || (props.scopeType === "Portal" && util.canEdit());
     }
 
     render() {
@@ -30,19 +31,19 @@ class LeftPane extends Component {
                     inputType="textArea"
                     editable={this.canEdit()}
                     helpText={LocalizedResources.get("EditFieldHelper")}
-                    />
+                />
                 <EditableWithLabel
                     label={LocalizedResources.get("Type") }
                     value={LocalizedResources.get(props.type)}
                     onEnter={this.onEnter.bind(this, "Type") }
                     editable={false}
-                    />
+                />
                 <EditableWithLabel
                     label={LocalizedResources.get("Scope") }
                     value={LocalizedResources.get(props.scopeType)}
                     onEnter={this.onEnter.bind(this, "ScopeType") }
                     editable={false}
-                    />
+                />
             </div>
         );
     }

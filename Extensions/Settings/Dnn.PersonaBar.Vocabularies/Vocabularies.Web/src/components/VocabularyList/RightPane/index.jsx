@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
 import AddTermBox from "./AddTermBox";
 import Term from "./Term";
@@ -81,7 +82,7 @@ class RightPane extends Component {
             triedToSubmitTerm: false
         };
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {termBeingEdited} = this.state;
         const {props} = this;
 
@@ -201,7 +202,7 @@ class RightPane extends Component {
     onEditTerm(term) {
         const {props} = this;
 
-        if(!this.canEdit()){
+        if (!this.canEdit()) {
             return;
         }
 
@@ -227,13 +228,12 @@ class RightPane extends Component {
         if (term.ChildTerms) {
             children = term.ChildTerms.map((child) => {
                 let _children = this.getChildTerms(child, clickFunction, isEditable);
-                return <ul className="term-ul">
+                return <ul className="term-ul" key={"ul-" + term.TermId}>
                     <Term
                         term={child}
                         onClick={clickFunction}
                         isEditable={isEditable}
-                        key={"term-" + term.TermId}
-                        >
+                        key={"term-" + term.TermId}>
                         {_children}
                     </Term>
                 </ul>;
@@ -272,9 +272,9 @@ class RightPane extends Component {
         });
     }
 
-    canEdit(){
+    canEdit() {
         const {props} = this;
-        return util.isHost() || (props.scopeType == "Portal" && util.canEdit());
+        return util.isHost() || (props.scopeType === "Portal" && util.canEdit());
     }
 
     render() {
@@ -293,8 +293,7 @@ class RightPane extends Component {
                 term={term}
                 onClick={this.onEditTerm.bind(this)}
                 isEditable={this.canEdit()}
-                key={"term-" + term.TermId}
-                >
+                key={"term-" + term.TermId}>
                 {children}
             </Term>;
         });
@@ -309,8 +308,7 @@ class RightPane extends Component {
                 term={term}
                 onClick={this.onSelectParent.bind(this)}
                 isEditable={false}
-                key={"term-" + term.TermId}
-                >
+                key={"term-" + term.TermId}>
                 {children}
             </Term>;
         });
@@ -336,7 +334,7 @@ class RightPane extends Component {
                         deleteTerm={this.deleteTerm.bind(this)}
                         closeAddTerm={this.closeAddTerm.bind(this)}
                         onUpdateTerm={this.onUpdateTerm.bind(this)}
-                        />}
+                    />}
                     {!state._editBoxOpened && <GridCell className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed")}>
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
                         {this.canEdit() &&

@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Collapse from "dnn-collapsible";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
@@ -9,8 +9,8 @@ import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 
 /* eslint-disable quotes */
-const SimpleType = require(`!raw!./svg/vocabulary_simple.svg`);
-const HierarchyType = require(`!raw!./svg/vocabulary_hierarchy.svg`);
+const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`);
+const HierarchyType = require(`!raw-loader!./svg/vocabulary_hierarchy.svg`);
 
 
 class TermHeader extends Component {
@@ -41,7 +41,7 @@ class TermHeader extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        if (!ReactDOM.findDOMNode(this).contains(event.target) &&
+        if (!this.node.contains(event.target) &&
             (typeof event.target.className === "string" && event.target.className.indexOf("false") > -1)) {
 
             if (event.target.className.indexOf("delete-button") > -1) {
@@ -83,7 +83,7 @@ class TermHeader extends Component {
         const {props, state} = this;
         const svgIcon = props.type === 1 ? SimpleType : HierarchyType;
         return (
-            <div className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
+            <div ref={node => this.node = node} className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
                         <div className="term-icon" dangerouslySetInnerHTML={{ __html: svgIcon }}>

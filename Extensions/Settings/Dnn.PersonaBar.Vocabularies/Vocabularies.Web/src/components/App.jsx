@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -41,7 +42,7 @@ class App extends Component {
                     <PersonaBarPageHeader
                         title={LocalizedResources.get("Create")}
                         onCreateVocabulary={this.openCreateVocabulary.bind(this)}
-                        />
+                    />
                     {props.selectedPage === 1 && <CreateVocabulary onCloseVocabulary={this.closeCreateVocabulary.bind(this)} isOpen={props.selectedPage === 1} />}
                 </PersonaBarPage>
             </div>

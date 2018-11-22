@@ -8,10 +8,10 @@ const utils = {
         this.moduleName = options.moduleName;
         this.settings = options.settings;    
     },
-    canEdit: function(){
+    canEdit: function () {
         return this.settings.isHost || this.settings.isAdmin || (this.settings.permissions && this.settings.permissions.EDIT === true);
     },
-    isHost: function(){
+    isHost: function () {
         return this.settings.isHost;
     },
     utilities: null,

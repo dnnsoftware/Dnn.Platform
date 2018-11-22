@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component  } from "react";
+import PropTypes from "prop-types";
 import Collapsible from "react-collapse";
 import { EditIcon, ArrowRightIcon, ArrowDownIcon } from "dnn-svg-icons";
 import util from "utils";
@@ -32,7 +33,7 @@ class Term extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.closeAll) {
             this.setState({
                 isOpened: false

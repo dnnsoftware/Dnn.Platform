@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import {
@@ -63,7 +64,7 @@ class VocabularyListComponent extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         props.dispatch(VocabularyActions.getVocabularyList(this.getNextPage(props.pagination.pageIndex, props.pagination.pageSize, props.pagination.scopeTypeId)));
     }
@@ -177,7 +178,7 @@ class VocabularyListComponent extends Component {
                             onEnter={this.onDescriptionUpdate}
                             index={index}
                             scopeType={term.ScopeType}
-                            />
+                        />
                         <RightPane
                             vocabularyId={term.VocabularyId}
                             getVocabularyTerms={this.getVocabularyTerms.bind(this)}
@@ -222,8 +223,8 @@ VocabularyListComponent.propTypes = {
     pagination: PropTypes.object,
     tabIndex: PropTypes.number,
     scopeTypeId: PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number
+        PropTypes.string,
+        PropTypes.number
     ])
 };
 

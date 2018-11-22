@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
 import MultiLineInputWithError  from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -32,53 +33,53 @@ const AddTermBox = ({
     onUpdateTerm,
     error
 }) => (
-        <Collapsible
-            isOpened={isOpened}>
-            <div className={styles.addTermBox}>
-                <p className="add-term-title">{editMode ? LocalizedResources.get("CurrentTerm") : LocalizedResources.get("AddTerm") }</p>
-                <InputGroup>
-                    <SingleLineInputWithError
-                        inputId={"create-term-name"}
-                        withLabel={true}
-                        label={LocalizedResources.get("TermName") + "*"}
-                        value={termBeingEdited.Name}
-                        onChange={onTermValueChange.bind(this, "Name") }
-                        error={error}
-                        errorMessage={LocalizedResources.get("TermValidationError.Message") }
-                        />
+    <Collapsible
+        isOpened={isOpened}>
+        <div className={styles.addTermBox}>
+            <p className="add-term-title">{editMode ? LocalizedResources.get("CurrentTerm") : LocalizedResources.get("AddTerm") }</p>
+            <InputGroup>
+                <SingleLineInputWithError
+                    inputId={"create-term-name"}
+                    withLabel={true}
+                    label={LocalizedResources.get("TermName") + "*"}
+                    value={termBeingEdited.Name}
+                    onChange={onTermValueChange.bind(this, "Name") }
+                    error={error}
+                    errorMessage={LocalizedResources.get("TermValidationError.Message") }
+                />
+            </InputGroup>
+            <InputGroup>
+                <MultiLineInputWithError
+                    inputId={"create-term-description"}
+                    withLabel={true}
+                    label={LocalizedResources.get("Description")}
+                    value={termBeingEdited.Description}
+                    onChange={onTermValueChange.bind(this, "Description") }/>
+            </InputGroup>
+            {termTreeVisible &&
+                <InputGroup style={{ marginBottom: 32 }}>
+                    <label>{LocalizedResources.get("ParentTerm") }</label>
+                    <p className="parent-display" onClick={toggleParentTree}>{parentDisplay && parentDisplay.Name || ""}</p>
+                    <Collapsible
+                        isOpened={parentTreeOpened}
+                        fixedHeight={115}
+                        keepCollapsedContent={true}>
+                        <Scrollbars style={parentTermTreeStyle}>
+                            <ul className="term-ul root-level parent-tree">
+                                {parentTermTree}
+                            </ul>
+                        </Scrollbars>
+                    </Collapsible>
                 </InputGroup>
-                <InputGroup>
-                    <MultiLineInputWithError
-                        inputId={"create-term-description"}
-                        withLabel={true}
-                        label={LocalizedResources.get("Description")}
-                        value={termBeingEdited.Description}
-                        onChange={onTermValueChange.bind(this, "Description") }/>
-                </InputGroup>
-                {termTreeVisible &&
-                    <InputGroup style={{ marginBottom: 32 }}>
-                        <label>{LocalizedResources.get("ParentTerm") }</label>
-                        <p className="parent-display" onClick={toggleParentTree}>{parentDisplay && parentDisplay.Name || ""}</p>
-                        <Collapsible
-                            isOpened={parentTreeOpened}
-                            fixedHeight={115}
-                            keepCollapsedContent={true}>
-                            <Scrollbars style={parentTermTreeStyle}>
-                                <ul className="term-ul root-level parent-tree">
-                                    {parentTermTree}
-                                </ul>
-                            </Scrollbars>
-                        </Collapsible>
-                    </InputGroup>
-                }
-                <div className="add-term-footer">
-                    {editMode && <Button type="secondary" onClick={deleteTerm}>{LocalizedResources.get("DeleteTerm") }</Button>}
-                    <Button type="secondary" onClick={closeAddTerm}>{LocalizedResources.get("cancelCreate") }</Button>
-                    <Button type="primary" onClick={onUpdateTerm}>{LocalizedResources.get("SaveTerm") }</Button>
-                </div>
+            }
+            <div className="add-term-footer">
+                {editMode && <Button type="secondary" onClick={deleteTerm}>{LocalizedResources.get("DeleteTerm") }</Button>}
+                <Button type="secondary" onClick={closeAddTerm}>{LocalizedResources.get("cancelCreate") }</Button>
+                <Button type="primary" onClick={onUpdateTerm}>{LocalizedResources.get("SaveTerm") }</Button>
             </div>
-        </Collapsible>
-    );
+        </div>
+    </Collapsible>
+);
 
 
 AddTermBox.propTypes = {
