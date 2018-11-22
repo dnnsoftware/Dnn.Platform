@@ -1,5 +1,5 @@
-import BackTo from "./BackTo/BackTo.jsx";
+import BackToMain from "./BackTo/BackTo.jsx";
 
 export default {
-    BackTo
+    BackToMain
 };

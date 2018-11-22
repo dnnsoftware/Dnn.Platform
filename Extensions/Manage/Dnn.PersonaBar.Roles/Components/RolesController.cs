@@ -78,7 +78,6 @@ namespace Dnn.PersonaBar.Roles.Components
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
         /// <param name="rolesFilter"></param>
-        /// <param name="notFound">List of "not found roles"</param>
         /// <returns>List of found Roles</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {

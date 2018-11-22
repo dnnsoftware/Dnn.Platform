@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Button from "dnn-button";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { Button, PersonaBarPageHeader, PersonaBarPage}  from "@dnnsoftware/dnn-react-common";
 import RolesPanel from "./roles";
 import {
     visiblePanelActions as VisiblePanelActions
@@ -23,7 +22,7 @@ class Root extends Component {
     }
 
     onCreate() {
-        this.refs["rolesPanel"].getWrappedInstance().onAddRole();
+        this.rolesPanelref.getWrappedInstance().onAddRole();
     }
 
     render() {
@@ -35,7 +34,7 @@ class Root extends Component {
                             <Button type="primary" size="large" onClick={this.onCreate.bind(this) }>{resx.get("Create") }</Button>
                         }
                     </PersonaBarPageHeader>
-                    <RolesPanel ref="rolesPanel" />
+                    <RolesPanel ref={node => this.rolesPanelref = node} />
                 </PersonaBarPage>
             </div>
         );

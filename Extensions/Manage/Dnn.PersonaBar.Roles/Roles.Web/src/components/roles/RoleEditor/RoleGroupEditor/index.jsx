@@ -1,13 +1,10 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import util from "../../../../utils";
 import resx from "../../../../resources";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
-import Button from "dnn-button";
-import ReactDOM from "react-dom";
-import Label from "dnn-label";
+import { SingleLineInputWithError, MultiLineInput, Button, Label }  from "@dnnsoftware/dnn-react-common";
 import {
     roles as RolesActions
 } from "../../../../actions";
@@ -35,15 +32,13 @@ class RoleGroupEditor extends Component {
         document.removeEventListener("click", this.handleClick);
         this._isMounted = false;
     }
-    componentWillReceiveProps(newProps) {
-        this.setState(newProps);
-    }
+
     handleClick(event) {
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        if (ReactDOM.findDOMNode(this) !== null && !ReactDOM.findDOMNode(this).contains(event.target) &&
+        if (this.node !== null && !this.node.contains(event.target) &&
             (event.target.firstChild !== null && typeof event.target.firstChild.className === "string" && event.target.firstChild.className.indexOf("do-not-close") === -1)) {
             if (typeof this.props.onCancel === "function") {
                 this.props.onCancel();
@@ -104,7 +99,7 @@ class RoleGroupEditor extends Component {
     render() {
         const {props, state} = this;
         let group = Object.assign({}, state.group);
-        return props.visible && <div className="role-group-editor" onClick={this.props.onClick.bind(this) }>
+        return props.visible && <div ref={node => this.node = node} className="role-group-editor" onClick={this.props.onClick.bind(this) }>
             <h2>{resx.get(props.title) }</h2>
             <div className="edit-form">
                 <div className="form-items">

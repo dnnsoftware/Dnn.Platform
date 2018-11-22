@@ -1,11 +1,11 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import GridCell from "dnn-grid-cell";
+import { GridCell, DatePicker }  from "@dnnsoftware/dnn-react-common";
 import IconButton from "../../../common/IconButton";
 import util from "../../../../utils";
 import resx from "../../../../resources";
-import DatePicker from "dnn-date-picker";
 import {
     roleUsers as RoleUsersActions
 } from "../../../../actions";
@@ -24,13 +24,7 @@ class UserRow extends Component {
             isCalendarVisible: false
         };
     }
-    componentDidMount() {
-    }
 
-    componentWillUnmount() {
-    }
-    componentWillMount() {
-    }
     formateDate(dateValue) {
         let date = new Date(dateValue);
 

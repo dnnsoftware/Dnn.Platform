@@ -1,15 +1,11 @@
-import React, {Component, PropTypes } from "react";
-import ReactDOM, { findDOMNode } from "react-dom";
-import {debounce} from "throttle-debounce";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import resx from "../../../resources";
-import SearchBox from "dnn-search-box";
+import { SearchBox, GridCell, Checkbox, Pager }  from "@dnnsoftware/dnn-react-common";
 import Combobox from "react-widgets/lib/Combobox";
 import UserRow from "./UserRow";
-import GridCell from "dnn-grid-cell";
-import CheckBox from "dnn-checkbox";
 import "./style.less";
-import Pager from "dnn-pager";
 import IconButton from "../../common/IconButton";
 import {
     roleUsers as RoleUsersActions
@@ -32,20 +28,12 @@ class UsersInRole extends Component {
             isOwner: false,
             loading: false
         };
-
-        this.comboBoxDom =null;
-        this.debounceGetSuggestUsers = debounce(500, this.debounceGetSuggestUsers);
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState(newProps);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getUsers();
-    }
-
-    componentDidMount(){
-        findDOMNode(this.comboBoxDom).childNodes[1].setAttribute('aria-label', 'Suggestion');
+        if (this.comboBoxRef.childNodes && this.comboBoxRef.childNodes[1])
+            this.comboBoxRef.childNodes[1].setAttribute("aria-label", "Suggestion");
     }
 
     getUsers() {
@@ -135,10 +123,11 @@ class UsersInRole extends Component {
         let roleUsers = this.props.roleUsers;
         let userRows = roleUsers.map((user, index) => {
             return <UserRow
+                key={index}
                 userDetails={user}
                 index={index}
                 saveUser={this.saveUser.bind(this, false) }
-                >
+            >
             </UserRow>;
         });
         return <div className="role-user-body">{(roleUsers.length > 0) ?
@@ -166,7 +155,7 @@ class UsersInRole extends Component {
             { name: "", width: 35 }
         ];
         let tableHeaders = tableFields.map((field) => {
-            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
+            return <GridCell key={field.name} columnSize={field.width} style={{ fontWeight: "bolder" }}>
                 {
                     field.name !== "" ?
                         <span>{resx.get(field.name + ".Header") }</span>
@@ -200,16 +189,16 @@ class UsersInRole extends Component {
                 <div className="add-box">
                     <GridCell columnSize={50}>
                         <div className="send-email-box">
-                            <CheckBox value={this.state.sendEmail} enabled={!state.loading} onChange={this.onSendEmailClick.bind(this) }
+                            <Checkbox value={this.state.sendEmail} enabled={!state.loading} onChange={this.onSendEmailClick.bind(this) }
                                 label={  resx.get("SendEmail") } labelPlace="right"    />
-                            {this.props.roleDetails.allowOwner && <CheckBox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
+                            {this.props.roleDetails.allowOwner && <Checkbox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
                                 label={  resx.get("isOwner") } labelPlace="right"   />}
                         </div>
                     </GridCell>
                     <GridCell columnSize={50}>
                         <span>
                             <Combobox suggest={false}
-                                ref={(dom) => {this.comboBoxDom = dom;}}
+                                ref={node => {this.comboBoxRef = node;}}
                                 placeholder={resx.get("AddUserPlaceHolder") }
                                 open={this.props.matchedUsers.length > 0 }
                                 onToggle={this.onUserSelectorToggle.bind(this) }

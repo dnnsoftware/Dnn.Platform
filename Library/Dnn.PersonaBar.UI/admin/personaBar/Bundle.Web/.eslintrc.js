@@ -1,3 +1,14 @@
+const pkg = require('./package.json')
+
+const reactVersion = () => {
+  if (pkg.dependencies && pkg.dependencies.react) {
+    return { version: pkg.dependencies.react.replace(/[^0-9.]/g, '') }
+  }
+  if (pkg.devDependencies && pkg.devDependencies.react) {
+    return { version: pkg.devDependencies.react.replace(/[^0-9.]/g, '') }
+  }
+}
+
 module.exports = {
     "plugins": [
         "react",
@@ -8,12 +19,30 @@ module.exports = {
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "settings": {
+        "react": {
+          ...reactVersion()
+        }
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
-            "experimentalObjectRestSpread": true
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": false,
+            "templateStrings": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },        
     "globals": {
@@ -24,9 +53,9 @@ module.exports = {
     "rules": {
        "spellcheck/spell-checker": [1,
         {
-            "comments": "true",
-            "strings": "true",
-            "identifiers": "true",
+            "comments": true,
+            "strings": true,
+            "identifiers": false,
             "skipWords": require("./.eslintskipwords"),
             "skipIfMatch": [
                 "http://[^s]*",

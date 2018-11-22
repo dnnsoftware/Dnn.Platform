@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./style.less";
-import Collapse from "dnn-collapsible";
-import GridCell from "dnn-grid-cell";
+import { Collapsible, GridCell }  from "@dnnsoftware/dnn-react-common";
 import IconButton from "../../common/IconButton";
 import resx from "resources";
 import util from "utils";
@@ -20,6 +19,11 @@ class RoleRow extends Component {
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
     }
     componentDidMount() {
+        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+        this.setState({
+            opened
+        });
+
         document.addEventListener("click", this.handleClick);
         this._isMounted = true;
     }
@@ -28,18 +32,13 @@ class RoleRow extends Component {
         document.removeEventListener("click", this.handleClick);
         this._isMounted = false;
     }
-    componentWillMount() {
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
-        this.setState({
-            opened
-        });
-    }
+    
     handleClick(event) {
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)
+        if (! this.node.contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)
             && !(event.target.id === "confirmbtn" || event.target.id === "cancelbtn") && this.props.openId !== "add") {
 
             this.timeout = 475;
@@ -73,7 +72,7 @@ class RoleRow extends Component {
 
         if (props.visible) {
             return (
-                <div className={"collapsible-component1 " + opened} id={uniqueId}>
+                <div ref={node => this.node = node} className={"collapsible-component1 " + opened} id={uniqueId}>
                     {!props.addIsClosed && <div className={"collapsible-header1 " + !opened}>
                         <GridCell style={roleLabelStyle} title={props.roleName} columnSize={40} className="ellipsis">
                             {props.roleName}</GridCell>
@@ -99,9 +98,9 @@ class RoleRow extends Component {
                         }
                     </div>
                     }
-                    <Collapse accordion={true} isOpened={opened} className="role-row-collapsible">
+                    <Collapsible accordion={true} isOpened={opened} className="role-row-collapsible">
                         {opened && props.children}
-                    </Collapse>
+                    </Collapsible>
                 </div>
             );
         } else {

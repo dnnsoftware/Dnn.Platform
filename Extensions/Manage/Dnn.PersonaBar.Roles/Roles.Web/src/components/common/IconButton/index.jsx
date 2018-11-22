@@ -1,20 +1,7 @@
-import React, {Component, PropTypes } from "react";
-import { AddIcon,
-    EditIcon,
-    CardViewIcon,
-    ListViewIcon,
-    PreviewIcon,
-    SettingsIcon,
-    PageIcon,
-    TrafficIcon,
-    TemplateIcon,
-    TrashIcon,
-    UserIcon,
-    ArrowDownIcon,
-    ArrowRightIcon,
-    ArrowUpIcon,
-    LockClosedIcon
-} from "dnn-svg-icons";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
+import { SvgIcons }  from "@dnnsoftware/dnn-react-common";
+
 
 import "./style.less";
 
@@ -28,37 +15,37 @@ class IconButton extends Component {
 
         switch (props.type.toLowerCase()) {
             case "add":
-                return AddIcon;
+                return SvgIcons.AddIcon;
             case "edit":
-                return EditIcon;
+                return SvgIcons.EditIcon;
             case "card":
-                return CardViewIcon;
+                return SvgIcons.CardViewIcon;
             case "list":
-                return ListViewIcon;
+                return SvgIcons.ListViewIcon;
             case "preview":
-                return PreviewIcon;
+                return SvgIcons.PreviewIcon;
             case "settings":
-                return SettingsIcon;
+                return SvgIcons.SettingsIcon;
             case "page":
-                return PageIcon;
+                return SvgIcons.PageIcon;
             case "traffic":
-                return TrafficIcon;
+                return SvgIcons.TrafficIcon;
             case "template":
-                return TemplateIcon;
+                return SvgIcons.TemplateIcon;
             case "trash":
-                return TrashIcon;
+                return SvgIcons.TrashIcon;
             case "user":
-                return UserIcon;
+                return SvgIcons.UserIcon;
             case "arrow-down":
-                return ArrowDownIcon;
+                return SvgIcons.ArrowDownIcon;
             case "arrow-right":
-                return ArrowRightIcon;
+                return SvgIcons.ArrowRightIcon;
             case "arrow-up":
-                return ArrowUpIcon;
+                return SvgIcons.ArrowUpIcon;
             case "lock-closed":
-                return LockClosedIcon;
+                return SvgIcons.LockClosedIcon;
             default:
-                return require("!raw!../../../img/common/" + props.type.toLowerCase() + ".svg");
+                return require("!raw-loader!../../../img/common/" + props.type.toLowerCase() + ".svg");
         }
     }
 

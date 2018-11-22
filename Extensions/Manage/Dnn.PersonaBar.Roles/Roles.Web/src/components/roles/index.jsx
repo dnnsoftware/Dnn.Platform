@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../resources";
@@ -7,7 +8,7 @@ import {
 } from "../../actions";
 import FiltersBar from "./FiltersBar";
 import RoleRow from "./RoleRow";
-import GridCell from "dnn-grid-cell";
+import { GridCell }  from "@dnnsoftware/dnn-react-common";
 import UsersInRole from "./UsersInRole";
 import RoleEditor from "./RoleEditor";
 import CollapsibleSwitcher from "../common/CollapsibleSwitcher";
@@ -42,7 +43,7 @@ class RolesPanel extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         props.dispatch(RolesActions.getRoleGroupsList(false));
         this.refreshRolesList();
@@ -50,10 +51,11 @@ class RolesPanel extends Component {
         deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
         this.setState({ deleteAllowed });
     }
-    componentWillReceiveProps(newProps) {
-        let {deleteAllowed} = this.state;
-        deleteAllowed = (newProps.rolesList !== undefined && newProps.rolesList.length === 0);
-        this.setState({ deleteAllowed });
+
+    static getDerivedStateFromProps(props, state) {
+        let {deleteAllowed} = state;
+        deleteAllowed = (props.rolesList !== undefined && props.rolesList.length === 0);
+        return { deleteAllowed };
     }
 
     refreshRolesList() {
@@ -137,7 +139,7 @@ class RolesPanel extends Component {
 
     renderHeader() {
         let tableHeaders = tableFields.map((field) => {
-            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
+            return <GridCell key={field.name} columnSize={field.width} style={{ fontWeight: "bolder" }}>
                 {
                     field.name !== "" ?
                         <span>{resx.get(field.name + ".Header")}</span>
@@ -155,9 +157,10 @@ class RolesPanel extends Component {
             return validRolesList.map((role, index) => {
                 let id = "row-" + i++;
                 let children = [
-                    <UsersInRole
+                    <UsersInRole key={"userInRole-" + id}
                         Collapse={this.collapse.bind(this)} roleDetails={role} />,
                     <RoleEditor
+                        key={"roleeditor-" + id}
                         roleDetails={role}
                         roleGroupOptions={roleGroupOptions}
                         securityModeOptions={securityModeOptions}
@@ -166,15 +169,15 @@ class RolesPanel extends Component {
                         roleId={role.id}
                         Collapse={this.collapse.bind(this)}
                         currentGroupId={this.state.parameter.groupId}
-                        />];
+                    />];
                 return (
                     <RoleRow
+                        key={"role-" + index}
                         roleName={role.name}
                         groupName={this.GetGroupName(role.groupId)}
                         userCount={role.usersCount}
                         auto={role.autoAssign}
                         index={index}
-                        key={"role-" + index}
                         closeOnClick={true}
                         openId={this.state.openId}
                         currentIndex={this.state.renderIndex}
@@ -183,7 +186,7 @@ class RolesPanel extends Component {
                         Collapse={this.collapse.bind(this, id)}
                         roleIsApproved={role.status === 1}
                         id={id}>
-                        <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />
+                        <CollapsibleSwitcher renderIndex={this.state.renderIndex}>{children}</CollapsibleSwitcher>
                     </RoleRow>
                 );
             });
@@ -207,15 +210,16 @@ class RolesPanel extends Component {
             { label: resx.get("Approved"), value: 1 }
         ];
         let children = [
-            <div />,
+            <div key="" />,
             <RoleEditor
+                key=""
                 roleGroupOptions={roleGroupOptions}
                 securityModeOptions={securityModeOptions}
                 statusOptions={statusOptions}
                 roleId={-1}
                 Collapse={this.collapse.bind(this)}
                 currentGroupId={this.state.parameter.groupId}
-                />];
+            />];
         return (
             props.roleGroups &&
             <div className="roles-list-container">
@@ -242,7 +246,7 @@ class RolesPanel extends Component {
                             Collapse={this.collapse.bind(this, "add")}
                             id={"add"}
                             addIsClosed={!opened}>
-                            {opened && <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />}
+                            {opened && <CollapsibleSwitcher renderIndex={this.state.renderIndex}>{children}</CollapsibleSwitcher>}
                         </RoleRow>
                     </div>
                     {this.renderedRolesList(roleGroupOptions, securityModeOptions, statusOptions)}

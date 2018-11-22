@@ -1,6 +1,7 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import styles from "./style.less";
-import { ArrowBack } from "dnn-svg-icons";
+import { ArrowBack } from "@dnnsoftware/dnn-react-common";
 
 /* eslint-disable react/no-danger */
 const BackToMain = ({onClick, label}) => {
