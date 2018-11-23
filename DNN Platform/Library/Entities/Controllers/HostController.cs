@@ -342,7 +342,7 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <summary>
-        /// Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores
+        /// Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores it.
         /// </summary>
         /// <param name="key">host settings key</param>
         /// <param name="value">host settings value</param>
