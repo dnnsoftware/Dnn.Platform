@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw!./svg/checkmark.svg`);
+const svgIcon = require(`!raw-loader!./svg/checkmark.svg`);
 
 class TaskHistoryItemRow extends Component {
     constructor() {
@@ -38,7 +38,7 @@ class TaskHistoryItemRow extends Component {
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
 
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className == "string" && event.target.className.indexOf("do-not-close") == -1)) {
+        if (!this.node.contains(event.target) && (typeof event.target.className == "string" && event.target.className.indexOf("do-not-close") == -1)) {
 
             this.timeout = 475;
         } else {
@@ -84,7 +84,7 @@ class TaskHistoryItemRow extends Component {
 
     render() {
         return (
-            <div className={styles.taskHistoryItemRow}>
+            <div className={styles.taskHistoryItemRow} ref={node => this.node = node}>
                 <div className="term-label-logNotes">
                     <div className="term-label-wrapper">
                         {this.getLogNotesDisplay()}

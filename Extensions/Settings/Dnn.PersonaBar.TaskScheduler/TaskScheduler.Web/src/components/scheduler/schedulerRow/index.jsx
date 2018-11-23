@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Collapse from "dnn-collapsible";
 import "./style.less";
@@ -10,8 +11,8 @@ import {
 import util from "../../../utils";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw!./../../svg/checkmark.svg`);
-const svgIcon2 = require(`!raw!./../../svg/history.svg`);
+const svgIcon = require(`!raw-loader!./../../svg/checkmark.svg`);
+const svgIcon2 = require(`!raw-loader!./../../svg/history.svg`);
 
 class SchedulerRow extends Component {
     constructor() {
@@ -21,7 +22,7 @@ class SchedulerRow extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened

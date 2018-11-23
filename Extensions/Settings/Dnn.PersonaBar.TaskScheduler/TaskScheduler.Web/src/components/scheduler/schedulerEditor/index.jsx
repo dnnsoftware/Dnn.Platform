@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -36,7 +37,7 @@ class SchedulerEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         /*if (props.scheduleItemDetail) {
             this.setState({
@@ -89,7 +90,7 @@ class SchedulerEditor extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         let { state } = this;
         if (props.scheduleItemDetail["TypeFullName"] === "" || props.scheduleItemDetail["TypeFullName"] === undefined) {
             state.error["name"] = true;
@@ -386,7 +387,7 @@ class SchedulerEditor extends Component {
 
             return (
                 <div className="scheduler-setting-editor">
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box">
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button

@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
 import resx from "../../resources";
 
-const noDataImage = require(`!raw!./../svg/nodata.svg`);
+const noDataImage = require("!raw-loader!./../svg/nodata.svg");
 
 class TaskQueuePanelBody extends Component {
     constructor() {

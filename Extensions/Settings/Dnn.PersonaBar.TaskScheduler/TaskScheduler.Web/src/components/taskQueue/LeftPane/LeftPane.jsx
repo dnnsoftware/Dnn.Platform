@@ -1,10 +1,11 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import styles from "./style.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw!./../taskStatusItemRow/svg/clock_stop.svg`);
-const svgIcon2 = require(`!raw!./../taskStatusItemRow/svg/cycle.svg`);
+const svgIcon = require(`!raw-loader!./../taskStatusItemRow/svg/clock_stop.svg`);
+const svgIcon2 = require(`!raw-loader!./../taskStatusItemRow/svg/cycle.svg`);
 
 class LeftPane extends Component {
     constructor() {

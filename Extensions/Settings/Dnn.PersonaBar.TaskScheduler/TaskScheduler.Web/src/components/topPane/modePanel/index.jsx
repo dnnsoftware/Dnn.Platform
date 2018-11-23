@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Collapse from "dnn-collapsible";
 import Button from "dnn-button";
@@ -29,7 +30,7 @@ class ModePanel extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let {props, state} = this;
         if (props.schedulerDelay === "" || !re.test(props.schedulerDelay)) {
             state.error["schedulerDelay"] = true;
@@ -129,7 +130,7 @@ class ModePanel extends Component {
                                             errorMessage={resx.get("ScheduleAppStartDelayValidation")}
                                             value={state.updateRequest.SchedulerdelayAtAppStart}
                                             onChange={this.onValueChange.bind(this, "SchedulerdelayAtAppStart")}
-                                            />
+                                        />
                                     </div>
                                     <div className="action-buttons">
                                         <Button type="secondary" onClick={this.onClose.bind(this)}>{resx.get("Cancel")}</Button>

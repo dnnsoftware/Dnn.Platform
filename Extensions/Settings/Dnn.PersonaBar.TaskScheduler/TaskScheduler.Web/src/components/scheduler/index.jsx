@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     task as TaskActions
@@ -26,7 +27,7 @@ class SchedulerPanel extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         props.dispatch(TaskActions.getSchedulerItemList());
         if (props.serverList === null || props.serverList === [] || props.serverList === undefined) {
@@ -138,7 +139,6 @@ class SchedulerPanel extends Component {
 
     /* eslint-disable react/no-danger */
     renderedScedulerItemList() {
-        const { state } = this;
         let i = 0;
         if (this.props.schedulerItemList) {
             return this.props.schedulerItemList.map((item, index) => {
