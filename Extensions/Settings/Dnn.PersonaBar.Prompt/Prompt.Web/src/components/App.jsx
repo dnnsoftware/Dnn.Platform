@@ -24,7 +24,7 @@ export class App extends Component {
         this.setFocus(true);
         this.scrollToBottom();
     }
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.showGreeting();
     }
 
