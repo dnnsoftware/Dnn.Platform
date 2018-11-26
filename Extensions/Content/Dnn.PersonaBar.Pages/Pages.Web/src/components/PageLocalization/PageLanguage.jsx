@@ -21,6 +21,9 @@ class PageLanguage extends Component {
         const {modules} = this.props;
         const CultureCode = this.props.local.CultureCode;
         modules.forEach((module, index) => {
+            if (module.IsShared && key === "IsLocalized") {
+                return;
+            }
             this.props.onUpdateModules(CultureCode, index, value, key);
         });
     }

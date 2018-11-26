@@ -702,6 +702,12 @@
   <data name="NeutralPageClickButton.Text" xml:space="preserve">
     <value>To change this to a translatable page, click the button here.</value>
   </data>
+  <data name="SharedModule.Text" xml:space="preserve">
+    <value>Shared: true</value>
+  </data>
+  <data name="IsNotSharedModule.Text" xml:space="preserve">
+    <value>Shared: false</value>
+  </data>
   <data name="NotifyModalHeader.Text" xml:space="preserve">
     <value>Send a notification to translators</value>
   </data>

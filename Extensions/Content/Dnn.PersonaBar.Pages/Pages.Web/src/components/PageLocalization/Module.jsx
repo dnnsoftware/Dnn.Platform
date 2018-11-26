@@ -35,9 +35,10 @@ class Module extends Component {
 
         if (module.Exist) {
             const className = "module-row" + (module.IsDeleted ? " deleted" : "");
+            const toolTip = [module.IsShared ? Localization.get("SharedModule") : Localization.get("IsNotSharedModule"), module.ModuleInfoHelp].join("<br>");
             return <div className={className}>
                 <Tooltip
-                    messages={[module.ModuleInfoHelp]}
+                    messages={[toolTip]}
                     style={{ float: "left", position: "static" }}
                     />
                 <input type="text" value={module.ModuleTitle} onChange={this.onUpdateModules.bind(this, "ModuleTitle") } aria-label="Title"/>
@@ -47,7 +48,7 @@ class Module extends Component {
                 </div>}
                 {!module.IsDeleted && !isDefault && <div className="icons-container">
                     <span
-                        className={`icon float-left ${(module.IsLocalized ? " blue" : "")}`}
+                        className={`icon float-left ${(module.IsShared ? " disabled" : (module.IsLocalized ? " blue" : ""))}`}
                         onClick={this.toggleLink.bind(this) }
                         dangerouslySetInnerHTML={{ __html: LinkIcon }} />
                     {module.TranslatedVisible && <Checkbox
