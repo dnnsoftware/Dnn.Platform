@@ -15,7 +15,6 @@ class Suggestion extends Component {
             selectedValue: {value: -1, label: ""}
         };
 
-        this.comboBoxDom = React.createRef();
         this.debounceGetSuggestions = debounce(500, this.debounceGetSuggestions);
     }
 
@@ -24,7 +23,9 @@ class Suggestion extends Component {
     }
 
     componentDidMount() {
-        this.comboBoxDom.childNodes[1].setAttribute("aria-label", "Suggestion");
+        if (this.comboBoxDom.childNodes !== undefined){
+                this.comboBoxDom.childNodes[1].setAttribute("aria-label", "Suggestion");
+        }
     }
 
     getSuggestions() {
