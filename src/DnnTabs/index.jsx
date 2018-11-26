@@ -48,7 +48,7 @@ class DnnTabs extends Component {
         const {props, state} = this;
         const className = (props.className ? " " + props.className : "");
         return (
-            <Tabs className={"dnn-tabs" + className + (" " + props.type) } onSelect={this.onSelect.bind(this) }
+            <Tabs className={"dnn-tabs react-tabs" + className + (" " + props.type) } onSelect={this.onSelect.bind(this) }
                 selectedIndex={typeof props.selectedIndex !== "undefined" ? props.selectedIndex : state.selectedIndex}>
                 <TabList>
                     {this.getTabHeaders() }
