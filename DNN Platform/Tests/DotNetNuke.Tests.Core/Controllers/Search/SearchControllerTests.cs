@@ -1010,7 +1010,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             //Assert
-            Assert.AreEqual(maxDocs - 6, result.TotalHits);
+            Assert.AreEqual(maxDocs - 18, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 6, 7, 8, 9 }, ids);
         }
@@ -1036,7 +1036,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             //Assert
-            Assert.AreEqual(maxDocs - 12, result.TotalHits);
+            Assert.AreEqual(maxDocs - 18, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17 }, ids);
         }
@@ -1062,7 +1062,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             //Assert
-            Assert.AreEqual(maxDocs - 12, result.TotalHits);
+            Assert.AreEqual(maxDocs - 18, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17, 18, 19 }, ids);
         }
