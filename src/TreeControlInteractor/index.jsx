@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import TreeControl from "./TreeControl";
-import { IconSelector } from "./icons/IconSelector";
+import IconSelector from "./icons/IconSelector";
 import { Scrollbars } from "react-custom-scrollbars";
 
 import "./styles.less";
