@@ -7,6 +7,7 @@
         <xs:element name="settings" maxOccurs="1" minOccurs="0">
           <xs:complexType>
             <xs:all>
+              <xs:element name="showcookieconsent" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="enableskinwidgets" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="enableautosave" type="xs:string" minOccurs="0" maxOccurs="1"/>
               <xs:element name="timetoautosave" type="xs:integer" minOccurs="0" maxOccurs="1" />

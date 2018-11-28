@@ -225,30 +225,37 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void PurgeExpiredItems(int portalId)
         {
-            var filesNotDeleted = new StringBuilder();
-            int i = 0;
-            string cacheFolder = GetCacheFolder(portalId);
-            if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
+            try
             {
-                foreach (string File in Directory.GetFiles(cacheFolder, String.Format("*{0}", AttribFileExtension)))
+                var filesNotDeleted = new StringBuilder();
+                int i = 0;
+                string cacheFolder = GetCacheFolder(portalId);
+                if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    if (IsFileExpired(File))
+                    foreach (string File in Directory.GetFiles(cacheFolder, String.Format("*{0}", AttribFileExtension)))
                     {
-                        string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
-                        if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
+                        if (IsFileExpired(File))
                         {
-                            filesNotDeleted.Append(String.Format("{0};", fileToDelete));
-                        }
-                        else
-                        {
-                            i += 1;
+                            string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
+                            if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
+                            {
+                                filesNotDeleted.Append(String.Format("{0};", fileToDelete));
+                            }
+                            else
+                            {
+                                i += 1;
+                            }
                         }
                     }
                 }
+                if (filesNotDeleted.Length > 0)
+                {
+                    throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                }
             }
-            if (filesNotDeleted.Length > 0)
+            catch (Exception ex)
             {
-                throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -277,31 +284,38 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void Remove(int tabModuleId)
         {
-            ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
+            try
+            {
+                ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
 
-            int portalId = tabModule.PortalID;
-            if (portalId == Null.NullInteger)
-            {
-                portalId = PortalSettings.Current.PortalId;
-            }
+                int portalId = tabModule.PortalID;
+                if (portalId == Null.NullInteger)
+                {
+                    portalId = PortalSettings.Current.PortalId;
+                }
 
-            string cacheFolder = GetCacheFolder(portalId);
-            var filesNotDeleted = new StringBuilder();
-            int i = 0;
-            foreach (string File in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
-            {
-                if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
+                string cacheFolder = GetCacheFolder(portalId);
+                var filesNotDeleted = new StringBuilder();
+                int i = 0;
+                foreach (string File in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
                 {
-                    filesNotDeleted.Append(File + ";");
+                    if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
+                    {
+                        filesNotDeleted.Append(File + ";");
+                    }
+                    else
+                    {
+                        i += 1;
+                    }
                 }
-                else
+                if (filesNotDeleted.Length > 0)
                 {
-                    i += 1;
+                    throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
                 }
             }
-            if (filesNotDeleted.Length > 0)
+            catch (Exception ex)
             {
-                throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
+                Exceptions.Exceptions.LogException(ex);
             }
         }
 
