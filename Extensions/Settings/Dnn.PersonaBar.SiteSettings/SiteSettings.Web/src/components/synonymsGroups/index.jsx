@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     search as SearchActions
 } from "../../actions";
 import SynonymsGroupRow from "./synonymsGroupRow";
 import SynonymsGroupEditor from "./synonymsGroupEditor";
-import Collapse from "dnn-collapsible";
 import DropDown from "dnn-dropdown";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
@@ -54,7 +54,7 @@ class SynonymsGroupsPanel extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {state, props} = this;
 
         if (tableFields.length === 0) {
@@ -89,7 +89,7 @@ class SynonymsGroupsPanel extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         if (props.synonymsGroups) {
             this.setState({
                 synonymsGroups: props.synonymsGroups
@@ -265,7 +265,7 @@ class SynonymsGroupsPanel extends Component {
                                     options={this.getCultureOptions()}
                                     withBorder={false}
                                     onSelect={this.onSelectCulture.bind(this)}
-                                    />
+                                />
                             </div>
                         }
                     </div>

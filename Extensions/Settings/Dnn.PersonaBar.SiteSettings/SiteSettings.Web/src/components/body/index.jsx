@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
@@ -19,7 +20,6 @@ import MoreSettings from "../moreSettings";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import privacySettings from "../privacySettings";
 
 let isHost = false;
 let isAdmin = false;
@@ -38,7 +38,7 @@ export class Body extends Component {
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
 
-    shouldComponentUpdate(nextProps){
+    shouldComponentUpdate(nextProps) {
         // Only render if is to show the component.Avoid calling backend when not needed. 
         return nextProps.showing;
     }
@@ -79,9 +79,11 @@ export class Body extends Component {
         const SearchExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras;
 
         let searchTabHeaders = [resx.get("TabBasicSettings"), resx.get("TabSynonyms"), resx.get("TabIgnoreWords")];
-        let searchTabContent = [<BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
-            <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
-            <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode} />];
+        let searchTabContent = [
+            <BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} key="first" />,
+            <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode} key="second" />,
+            <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode} key="third" />
+        ];
 
         if (SearchExtras && SearchExtras.length > 0) {
             SearchExtras.sort(function (a, b) {
@@ -131,8 +133,8 @@ export class Body extends Component {
                         openLanguageVerifier={this.props.openLanguageVerifier}
                         openLanguagePack={this.props.openLanguagePack}
                         openLocalizedContent={this.props.openLocalizedContent}
-                        cultureCode={this.props.cultureCode}
-                        />}
+                        cultureCode={this.props.cultureCode}/>
+                    }
                     {this.props.showing && isAdmin && this.getSearchSecondaryTabs() }
                 </Tabs>
             </PersonaBarPageBody>

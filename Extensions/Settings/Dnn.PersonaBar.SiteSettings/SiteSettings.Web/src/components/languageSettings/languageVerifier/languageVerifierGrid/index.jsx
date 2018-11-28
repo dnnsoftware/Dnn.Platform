@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import LanguageVerifierRow from "./languageVerifierRow";
 import "./style.less";
@@ -34,9 +35,9 @@ class LanguageVerifierGridPanel extends Component {
     }
 
     renderBody(list) {
-        return list.map((item) => {
+        return list.map((item, i) => {
             return (
-                <div className="resx-file">{item}</div>
+                <div className="resx-file" key={i}>{item}</div>
             );
         });
     }

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     search as SearchActions
 } from "../../actions";
 import IgnoreWordsRow from "./ignoreWordsRow";
 import IgnoreWordsEditor from "./ignoreWordsEditor";
-import Collapse from "dnn-collapsible";
 import "./style.less";
 import DropDown from "dnn-dropdown";
 import { AddIcon } from "dnn-svg-icons";
@@ -54,7 +54,7 @@ class IgnoreWordsPanel extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props, state} = this;
 
         if (tableFields.length === 0) {
@@ -89,7 +89,7 @@ class IgnoreWordsPanel extends Component {
 
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         if (props.ignoreWords) {
             this.setState({
                 ignoreWords: props.ignoreWords
@@ -246,7 +246,7 @@ class IgnoreWordsPanel extends Component {
                                         options={this.getCultureOptions()}
                                         withBorder={false}
                                         onSelect={this.onSelectCulture.bind(this)}
-                                        />
+                                    />
                                 </div>
                             }
                         </div>

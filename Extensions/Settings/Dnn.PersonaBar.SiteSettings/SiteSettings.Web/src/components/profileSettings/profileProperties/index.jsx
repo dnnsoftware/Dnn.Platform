@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -38,7 +39,7 @@ class ProfilePropertiesPanel extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
 
         if (!this.loadData()) {
@@ -60,7 +61,7 @@ class ProfilePropertiesPanel extends Component {
         tableFields.push({ "name": resx.get("Visible.Header"), "id": "Visible" });
     }
 
-    componentWillReceiveProps() {
+    componentDidUpdate() {
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
         tableFields.push({ "name": resx.get("DataType.Header"), "id": "DataType" });
@@ -214,6 +215,7 @@ class ProfilePropertiesPanel extends Component {
                 this.collapse();
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
+                util.utilities.notifyError(errorMessage.Message);
             }));
     }
 
@@ -298,8 +300,7 @@ class ProfilePropertiesPanel extends Component {
                             <Sortable
                                 onSort={this.onSort.bind(this) }
                                 items={this.props.profileProperties.Properties}
-                                sortOnDrag={true}
-                                >
+                                sortOnDrag={true}>
                                 {this.renderedProfileProperties() }
                             </Sortable>
                         }

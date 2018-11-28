@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     languages as LanguagesActions
@@ -69,19 +70,19 @@ class LanguagePackPanelBody extends Component {
 
     getTypeOptions() {
         let options = [{ label: resx.get("Core.LangPackType"), value: "Core" },
-        { label: resx.get("Module.LangPackType"), value: "Module" },
-        { label: resx.get("Provider.LangPackType"), value: "Provider" },
-        { label: resx.get("AuthSystem.LangPackType"), value: "AuthSystem" },
-        { label: resx.get("Full.LangPackType"), value: "Full" }];
+            { label: resx.get("Module.LangPackType"), value: "Module" },
+            { label: resx.get("Provider.LangPackType"), value: "Provider" },
+            { label: resx.get("AuthSystem.LangPackType"), value: "AuthSystem" },
+            { label: resx.get("Full.LangPackType"), value: "Full" }];
         return options;
     }
 
     renderModuleSelection() {
         const {props} = this;
         if (props.modules) {
-            return props.modules.map((item) => {
+            return props.modules.map((item, i) => {
                 return (
-                    <div className="languagePack-module">
+                    <div className="languagePack-module" key={i}>
                         <Checkbox
                             style={{ float: "left" }}
                             value={this.isModuleSelected(item.Value)}
@@ -211,25 +212,25 @@ class LanguagePackPanelBody extends Component {
                             <Label
                                 tooltipMessage={resx.get("lbLocale.Help")}
                                 label={resx.get("lbLocale")}
-                                />
+                            />
                             <Dropdown
                                 options={this.getLanguageOptions()}
                                 value={state.languagePack.CultureCode}
                                 onSelect={this.onSettingChange.bind(this, "CultureCode")}
-                                />
+                            />
                         </InputGroup>
                         <div className="seperator" />
                         <InputGroup>
                             <Label
                                 tooltipMessage={resx.get("lblType.Help")}
                                 label={resx.get("lblType")}
-                                />
+                            />
                             <RadioButtons
                                 onChange={this.onSettingChange.bind(this, "PackType")}
                                 options={this.getTypeOptions()}
                                 buttonGroup="languagePackType"
                                 value={state.languagePack.PackType}
-                                />
+                            />
                         </InputGroup>
                         {(state.languagePack.PackType === "Core" || state.languagePack.PackType === "Full") &&
                             <InputGroup>
@@ -237,7 +238,7 @@ class LanguagePackPanelBody extends Component {
                                     style={{ width: "100%" }}
                                     tooltipMessage={resx.get("lblName.Help")}
                                     label={resx.get("lblName")}
-                                    />
+                                />
                                 <div className="name-prefix">ResourcePack.</div>
                                 <SingleLineInputWithError
                                     inputStyle={{ margin: "0" }}
@@ -246,7 +247,7 @@ class LanguagePackPanelBody extends Component {
                                     errorMessage={resx.get("valName.ErrorMessage")}
                                     value={state.languagePack.FileName}
                                     onChange={this.onSettingChange.bind(this, "FileName")}
-                                    />
+                                />
                                 <div className="name-suffix">.&lt;version&gt;.&lt;locale&gt;.zip</div>
                             </InputGroup>
                         }
@@ -254,7 +255,7 @@ class LanguagePackPanelBody extends Component {
                             <InputGroup>
                                 <Label
                                     label={resx.get("SelectModules")}
-                                    />
+                                />
                                 <div className="moduleSelection">
                                     {this.renderModuleSelection()}
                                 </div>
@@ -279,7 +280,7 @@ class LanguagePackPanelBody extends Component {
                         isOpened={state.showMessageBox}
                         onClose={this.closeMessageBox.bind(this)}
                         collapsibleWidth={485}
-                        />
+                    />
                 </PersonaBarPageBody>
             </div>
         );

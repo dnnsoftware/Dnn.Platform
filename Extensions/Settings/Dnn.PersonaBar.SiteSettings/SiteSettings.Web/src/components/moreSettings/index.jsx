@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -27,7 +28,7 @@ class MoreSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (props.otherSettings) {
             this.setState({
@@ -47,7 +48,7 @@ class MoreSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             otherSettings: Object.assign({}, props.otherSettings)
         });

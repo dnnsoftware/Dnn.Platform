@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import Grid from "dnn-grid-system";
@@ -28,7 +29,7 @@ class LanguageEditor extends Component {
         isHost = util.settings.isHost;
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (!props.languageDetail || (props.code !== props.languageDetail.Code)) {
             props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
@@ -44,7 +45,7 @@ class LanguageEditor extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         if (!props.languageDetail) {
             return;
         }
@@ -250,14 +251,14 @@ class LanguageEditor extends Component {
                 <Label
                     tooltipMessage={resx.get("languageLabel.Help")}
                     label={resx.get("languageLabel")}
-                    />
+                />
                 <Dropdown
                     options={this.getLanguageOptions()}
                     value={this.getLanguageValue(state.languageDetail.Code)}
                     onSelect={this.onSettingChange.bind(this, "Code")}
                     enabled={props.id === "add"}
                     getLabelText={(label) => label.props.title}
-                    />
+                />
             </InputGroup>
         </div>;
         const columnTwo = <div className="right-column">
@@ -265,7 +266,7 @@ class LanguageEditor extends Component {
                 <Label
                     tooltipMessage={resx.get("fallBackLabel.Help")}
                     label={resx.get("fallBackLabel")}
-                    />
+                />
                 <Dropdown
                     options={this.getFallbackOptions()}
                     fixedHeight={100}
@@ -273,12 +274,12 @@ class LanguageEditor extends Component {
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={true}
                     getLabelText={(label) => label.props.title}
-                    />
+                />
             </InputGroup>
         </div>;
         return (
             <div className="language-editor">
-                <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                 <div className="editor-buttons-box">
                     <Button
                         type="secondary"
@@ -302,7 +303,7 @@ class LanguageEditor extends Component {
                 <Label
                     tooltipMessage={resx.get("fallBackLabel.Help")}
                     label={resx.get("fallBackLabel")}
-                    />
+                />
                 <Dropdown
                     options={this.getFallbackOptions()}
                     fixedHeight={100}
@@ -310,7 +311,7 @@ class LanguageEditor extends Component {
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={isHost}
                     getLabelText={(label) => label.props.title}
-                    />
+                />
             </InputGroup>
         </div>;
         const columnTwo = <div className="right-column">
@@ -319,14 +320,14 @@ class LanguageEditor extends Component {
                     <Label
                         labelType="inline"
                         label={resx.get("enableLanguageLabel")}
-                        />
+                    />
                     <Switch
                         onText={resx.get("SwitchOn")}
                         offText={resx.get("SwitchOff")}
                         value={state.languageDetail.Enabled}
                         onChange={this.onToggleEnable.bind(this)}
                         readOnly={!state.languageDetail.CanEnableDisable}
-                        />
+                    />
                 </div>
             </InputGroup>
             {state.languageDetail.IsDefault &&
@@ -335,13 +336,13 @@ class LanguageEditor extends Component {
                         style={{ marginTop: "-15px" }}
                         labelType="inline"
                         label={resx.get("DefaultLanguage")}
-                        />
+                    />
                 </InputGroup>
             }
         </div>;
         return (
             <div className="language-editor">
-                <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                 <div className="editor-buttons-box">
                     <Button
                         type="secondary"

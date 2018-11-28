@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     languages as LanguagesActions,
@@ -43,7 +44,7 @@ class LanguagesPanel extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
 
         this.getHeaderColumns(props.contentLocalizationEnabled);
@@ -63,7 +64,7 @@ class LanguagesPanel extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         let {state} = this;        
 
         if (state.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
@@ -237,7 +238,7 @@ class LanguagesPanel extends Component {
                             id={id}
                             openId={this.state.openId}
                             openMode={this.state.openMode}
-                            />
+                        />
                     </LanguageRow>
                 );
             });
@@ -283,8 +284,8 @@ class LanguagesPanel extends Component {
                                     onUpdate={this.onUpdateLanguage.bind(this)}
                                     id={"add"}
                                     openId={this.state.openId}
-                                    openMode={this.state.openMode}
-                                    />}
+                                    openMode={this.state.openMode}/>
+                                }
                             </LanguageRow>
                         </Collapse>
                         {this.renderedLanguages()}

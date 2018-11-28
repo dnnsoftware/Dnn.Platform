@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import resx from "../../../resources";
 import BackTo from "dnn-back-to";
@@ -14,13 +15,13 @@ class HtmlEditorManagerPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({
             url: util.siteRoot + "Host/HTMLEditorManager?portalid=" + this.props.portalId + "&portpopUp=true"
         });
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             url: util.siteRoot + "Host/HTMLEditorManager?portalid=" + props.portalId + "&portpopUp=true"
         });

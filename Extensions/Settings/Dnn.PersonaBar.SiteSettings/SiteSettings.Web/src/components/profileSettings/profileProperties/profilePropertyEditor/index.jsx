@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -50,17 +49,16 @@ class ProfilePropertyEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        // Moved from componentWillMount
         const { props } = this;
         props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
-    }
 
-    componentDidMount() {
-        const domComponent = ReactDOM.findDOMNode(this).querySelector("#profilePropertyName");
+        const domComponent = this.node.querySelector("#profilePropertyName");
         domComponent && domComponent.focus();
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         let { state } = this;
 
         if (!props.profileProperty) {
@@ -636,9 +634,9 @@ class ProfilePropertyEditor extends Component {
             </div>;
 
             return (
-                <div className="property-editor">
+                <div className="property-editor" ref={node => this.node = node}>
                     <div className={this.state.showFirstPage ? "property-editor-page" : "property-editor-page-hidden"}>
-                        <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                        <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                         <div className="editor-buttons-box">
                             <Button
                                 type="secondary"
@@ -686,7 +684,7 @@ class ProfilePropertyEditor extends Component {
                                     onSelect={this.onLanguageChange.bind(this)}
                                 />
                             </InputGroup>
-                            <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
+                            <Grid numberOfColumns={2}>{[columnThree, columnFour]}</Grid>
                             <div className="editor-buttons-box">
                                 <Button
                                     type="secondary"

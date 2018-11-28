@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -55,7 +56,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (!this.loadData()) {
             this.setState({
@@ -70,7 +71,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         if (!this.loadData(props)) {
             this.setState({
                 defaultPagesSettings: Object.assign({}, props.defaultPagesSettings)                
@@ -156,7 +157,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     <Label
                         tooltipMessage={resx.get("plSplashTabId.Help")}
                         label={resx.get("plSplashTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 6 }}
@@ -166,13 +167,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plHomeTabId.Help")}
                         label={resx.get("plHomeTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 5 }}
@@ -182,13 +183,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plLoginTabId.Help")}
                         label={resx.get("plLoginTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 4 }}
@@ -198,13 +199,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_Login}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plRegisterTabId.Help")}
                         label={resx.get("plRegisterTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 3 }}
@@ -214,13 +215,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plUserTabId.Help")}
                         label={resx.get("plUserTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 2 }}
@@ -230,7 +231,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
@@ -238,7 +239,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     <Label
                         tooltipMessage={resx.get("plSearchTabId.Help")}
                         label={resx.get("plSearchTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 6 }}
@@ -248,13 +249,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_Search}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("pl404TabId.Help")}
                         label={resx.get("pl404TabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 5 }}
@@ -264,13 +265,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_2}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("pl500TabId.Help")}
                         label={resx.get("pl500TabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 4 }}
@@ -280,13 +281,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_2}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plTermsTabId.Help")}
                         label={resx.get("plTermsTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 3 }}
@@ -296,13 +297,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plPrivacyTabId.Help")}
                         label={resx.get("plPrivacyTabId")}
-                        />
+                    />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 2 }}
@@ -312,13 +313,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
                         PortalTabsParameters={TabParameters_1}
-                        />
+                    />
                 </InputGroup>
             </div>;
 
             return (
                 <div className={styles.defaultPagesSettings}>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     {isHost &&
                         <div className="sectionTitle">{resx.get("PageOutputSettings")}</div>}
                     {isHost &&
@@ -326,11 +327,11 @@ class DefaultPagesSettingsPanelBody extends Component {
                             <Label
                                 tooltipMessage={resx.get("plPageHeadText.Help")}
                                 label={resx.get("plPageHeadText")}
-                                />
+                            />
                             <MultiLineInputWithError
                                 value={state.defaultPagesSettings.PageHeadText}
                                 onChange={this.onSettingChange.bind(this, "PageHeadText")}
-                                />
+                            />
                         </InputGroup>
                     }
 

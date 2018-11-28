@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../resources";
@@ -29,7 +30,7 @@ class TranslatePageContent extends Component {
         this.getProgressData = this.getProgressData.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited) });
         this.getPageList();
@@ -37,7 +38,7 @@ class TranslatePageContent extends Component {
         this.getProgressData();
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited)  });
     }
 
@@ -92,11 +93,11 @@ class TranslatePageContent extends Component {
         if (!pageList) {
             return;
         }
-        return pageList.map((page) => {
-            return <div className="page-list-item">
+        return pageList.map((page, i) => {
+            return <div className="page-list-item" key={i}>
                 <span>{page.PageName}</span>
                 <a className="float-right" onClick={this.goToPageSettings.bind(this, page.PageId) }>{resx.get("EditPageSettings") }</a>
-                <a className="float-right" target="_blank" href={page.ViewUrl}>{resx.get("ViewPage") }</a>
+                <a className="float-right" target="_blank" rel="noopener noreferrer" href={page.ViewUrl}>{resx.get("ViewPage") }</a>
             </div>;
         });
     }
@@ -235,7 +236,7 @@ class TranslatePageContent extends Component {
                                 value={language.Active}
                                 readOnly={!isEnabled}
                                 onChange={this.onToggleActive.bind(this) }
-                                />
+                            />
                         </div>
                     </InputGroup>
                     <div className="button-block">
@@ -285,8 +286,8 @@ class TranslatePageContent extends Component {
                     SecondaryValue={this.state.SecondaryValue}
                     TimeEstimated={this.state.TimeEstimated}
                     Error={this.state.Error}
-                    CurrentOperationText={this.state.CurrentOperationText}
-                    />}
+                    CurrentOperationText={this.state.CurrentOperationText}/>
+                }
                 {!!state.pageList && !!state.pageList.length && <div className="page-list">
                     <Scrollbars className="scrollArea content-vertical"
                         autoHeight

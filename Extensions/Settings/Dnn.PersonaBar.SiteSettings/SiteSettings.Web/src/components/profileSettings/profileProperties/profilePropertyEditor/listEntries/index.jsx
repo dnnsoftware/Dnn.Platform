@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -22,7 +23,7 @@ class ListEntriesPanel extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         if (tableFields.length === 0) {
             tableFields.push({ "name": resx.get("ListEntryText"), "id": "Text" });

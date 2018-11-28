@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -55,7 +56,7 @@ class MessagingSettingsPanelBody extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { props} = this;
         if (!this.loadData()) {
             this.setState({
@@ -95,7 +96,7 @@ class MessagingSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             messagingSettings: Object.assign({}, props.messagingSettings)
         });
@@ -152,36 +153,36 @@ class MessagingSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plDisablePrivateMessage.Help")}
                             label={resx.get("plDisablePrivateMessage")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.DisablePrivateMessage}
                             onChange={this.onSettingChange.bind(this, "DisablePrivateMessage")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plMsgThrottlingInterval.Help")}
                         label={resx.get("plMsgThrottlingInterval")}
-                        />
+                    />
                     <Dropdown
                         options={timeIntervalOptions}
                         value={state.messagingSettings.ThrottlingInterval}
                         onSelect={this.onSettingChange.bind(this, "ThrottlingInterval")}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plMsgRecipientLimit.Help")}
                         label={resx.get("plMsgRecipientLimit")}
-                        />
+                    />
                     <Dropdown
                         options={recipientLimitOptions}
                         value={state.messagingSettings.RecipientLimit}
                         onSelect={this.onSettingChange.bind(this, "RecipientLimit")}
-                        />
+                    />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
@@ -191,13 +192,13 @@ class MessagingSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plMsgProfanityFilters.Help")}
                             label={resx.get("plMsgProfanityFilters")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.ProfanityFilters}
                             onChange={this.onSettingChange.bind(this, "ProfanityFilters")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -206,13 +207,13 @@ class MessagingSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plIncludeAttachments.Help")}
                             label={resx.get("plIncludeAttachments")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.IncludeAttachments}
                             onChange={this.onSettingChange.bind(this, "IncludeAttachments")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -221,13 +222,13 @@ class MessagingSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plMsgAllowAttachments.Help")}
                             label={resx.get("plMsgAllowAttachments")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.AllowAttachments}
                             onChange={this.onSettingChange.bind(this, "AllowAttachments")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -236,20 +237,20 @@ class MessagingSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plMsgSendEmail.Help")}
                             label={resx.get("plMsgSendEmail")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.messagingSettings.SendEmail}
                             onChange={this.onSettingChange.bind(this, "SendEmail")}
-                            />
+                        />
                     </div>
                 </InputGroup>
             </div>;
 
             return (
                 <div className={styles.messagingSettings}>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.messagingSettingsClientModified}

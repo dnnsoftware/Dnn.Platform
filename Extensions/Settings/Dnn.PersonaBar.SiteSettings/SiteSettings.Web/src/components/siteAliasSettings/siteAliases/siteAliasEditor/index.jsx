@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -32,14 +33,14 @@ class SiteAliasEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (props.aliasId) {
             props.dispatch(SiteBehaviorActions.getSiteAlias(props.aliasId));
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         let {state} = this;
 
         if (!props.aliasDetail) {
@@ -171,7 +172,7 @@ class SiteAliasEditor extends Component {
                 <InputGroup>
                     <Label
                         label={resx.get("SiteAlias")}
-                        />
+                    />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
@@ -179,17 +180,17 @@ class SiteAliasEditor extends Component {
                         errorMessage={resx.get("InvalidAlias")}
                         value={this.state.aliasDetail.HTTPAlias}
                         onChange={this.onSettingChange.bind(this, "HTTPAlias")}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <Label
                         label={resx.get("Browser")}
-                        />
+                    />
                     <Dropdown
                         options={this.getBrowserOptions()}
                         value={this.state.aliasDetail.BrowserType}
                         onSelect={this.onSettingChange.bind(this, "BrowserType")}
-                        />
+                    />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
@@ -197,29 +198,29 @@ class SiteAliasEditor extends Component {
                     <InputGroup>
                         <Label
                             label={resx.get("Language")}
-                            />
+                        />
                         <Dropdown
                             options={this.getLanguageOptions()}
                             value={this.state.aliasDetail.CultureCode}
                             onSelect={this.onSettingChange.bind(this, "CultureCode")}
-                            />
+                        />
                     </InputGroup>
                 }
                 <InputGroup>
                     <Label
                         label={resx.get("Theme")}
-                        />
+                    />
                     <Dropdown
                         options={this.getSkinOptions()}
                         value={this.state.aliasDetail.Skin}
                         onSelect={this.onSettingChange.bind(this, "Skin")}
-                        />
+                    />
                 </InputGroup>
             </div>;
 
             return (
                 <div className="alias-editor">
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="editor-buttons-box">
                         <Button
                             type="secondary"

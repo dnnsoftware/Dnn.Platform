@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import {
@@ -106,7 +107,7 @@ class App extends Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {state, props} = this;
 
         // // Listen for the event.
@@ -136,7 +137,7 @@ class App extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         const {state} = this;
         if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
             this.changePortalIdCultureCode(props.portalId, props.cultureCode);

@@ -4,10 +4,10 @@ import ApplicationService from "../services/applicationService";
 const siteInfoActions = {
     updatePortalId(portalId) {
         return {
-          type: ActionTypes.CHANGED_PORTAL_ID,
-          data: {
-              portalId
-          }
+            type: ActionTypes.CHANGED_PORTAL_ID,
+            data: {
+                portalId
+            }
         };
     },
     getPortals(callback) {

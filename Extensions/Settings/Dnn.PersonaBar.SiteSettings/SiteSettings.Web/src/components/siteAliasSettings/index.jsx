@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -37,7 +38,7 @@ class SiteAliasSettingsPanelBody extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (!this.loadData()) {
             this.setState({
@@ -52,7 +53,7 @@ class SiteAliasSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             urlMappingSettings: Object.assign({}, props.urlMappingSettings)
         });
@@ -122,7 +123,7 @@ class SiteAliasSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("portalAliasModeButtonListLabel.Help")}
                                 label={resx.get("portalAliasModeButtonListLabel")}
-                                />
+                            />
                             <RadioButtons
                                 onChange={this.onSettingChange.bind(this, "PortalAliasMapping")}
                                 options={this.getMappingModeOptions()}
@@ -135,14 +136,14 @@ class SiteAliasSettingsPanelBody extends Component {
                                     labelType="inline"
                                     tooltipMessage={resx.get("plAutoAddPortalAlias.Help")}
                                     label={resx.get("plAutoAddPortalAlias")}
-                                    />
+                                />
                                 <Switch
                                     onText={resx.get("SwitchOn")}
                                     offText={resx.get("SwitchOff")}
                                     readOnly={!state.urlMappingSettings.AutoAddPortalAliasEnabled}
                                     value={state.urlMappingSettings.AutoAddPortalAlias}
                                     onChange={this.onSettingChange.bind(this, "AutoAddPortalAlias")}
-                                    />
+                                />
                             </div>
                         </InputGroup>
                     </div>

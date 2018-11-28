@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Modal from "react-modal";
 import { XThinIcon, CheckMarkIcon } from "dnn-svg-icons";
 
@@ -51,7 +52,7 @@ class MessageBox extends Component {
                         <div className="message-icon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }} />
                         <div className="message-text">{props.message}</div>
                         {props.link &&
-                            <div className="message-link"><a target="_blank" href={props.link}>{props.link}</a></div>
+                            <div className="message-link"><a target="_blank" rel="noopener noreferrer" href={props.link}>{props.link}</a></div>
                         }
                     </div>
                 </div>

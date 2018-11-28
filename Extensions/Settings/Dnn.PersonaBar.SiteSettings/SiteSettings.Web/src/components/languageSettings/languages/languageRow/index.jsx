@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Collapse from "dnn-collapsible";
 import "./style.less";
 import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon } from "dnn-svg-icons";
 import Flag from "dnn-flag";
 
 class LanguageRow extends Component {
-    componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened

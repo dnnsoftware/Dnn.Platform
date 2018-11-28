@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteInfo as SiteInfoActions,
@@ -25,7 +26,7 @@ class SiteLanguageSelector extends Component {
         isHost = util.settings.isHost;
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {state, props} = this;
         this.setState({
             portalId: props.portalId,
@@ -41,12 +42,12 @@ class SiteLanguageSelector extends Component {
             }
         });
 
-        document.addEventListener("reloadPortalList", (e) => {
+        document.addEventListener("reloadPortalList", () => {
             props.dispatch(SiteInfoActions.getPortals());
         }, false);
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         const { state } = this;
         if (props.portalId !== state.portalId && props.portalId !== undefined) {
             this.onSiteChange({ value: props.portalId });
@@ -125,9 +126,9 @@ class SiteLanguageSelector extends Component {
         const {props} = this;
         let options = [];
         if (props.languages !== undefined) {
-            options = props.languages.map((item) => {
+            options = props.languages.map((item, i) => {
                 return (
-                    <div className={"language-flag" + (item.Code === this.state.cultureCode ? " selected": "")} onClick={this.onLanguageChange.bind(this, { value: item.Code })}>
+                    <div className={"language-flag" + (item.Code === this.state.cultureCode ? " selected": "")} onClick={this.onLanguageChange.bind(this, { value: item.Code })} key={i}>
                         <Flag culture={item.Code} title={item.Name} />
                     </div>
                 );
@@ -170,12 +171,12 @@ class SiteLanguageSelector extends Component {
                     <Label
                         labelType="inline"
                         label={resx.get("SiteSelectionLabel") + ":"}
-                        />
+                    />
                     <Dropdown
                         options={this.getSiteOptions()}
                         value={state.portalId}
                         onSelect={this.onSiteChange.bind(this)}
-                        />
+                    />
                 </InputGroup>
             </div>
             );

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../../../../resources";
@@ -24,7 +25,7 @@ class RolesPanel extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props, state} = this;
 
         if (!props.roleGroups) {
@@ -44,8 +45,8 @@ class RolesPanel extends Component {
     }
 
     renderHeader() {
-        let tableHeaders = tableFields.map((field) => {
-            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
+        let tableHeaders = tableFields.map((field, i) => {
+            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }} key={i}>
                 {
                     field.name !== "" ?
                         <span>{resx.get(field.name + ".Header")}</span>
@@ -102,7 +103,7 @@ class RolesPanel extends Component {
                     <Label
                         tooltipMessage={resx.get("translatorsLabel.Help")}
                         label={resx.get("Translators")}
-                        />
+                    />
                 </div>
                 {props.roleGroups && props.roleGroups.length > 0 &&
                     <div className="group-filter">
@@ -113,7 +114,7 @@ class RolesPanel extends Component {
                             options={this.getRoleGroupOptions()}
                             withBorder={false}
                             onSelect={this.onRoleGroupChanged.bind(this)}
-                            />
+                        />
                     </div>
                 }
                 <div className="container">

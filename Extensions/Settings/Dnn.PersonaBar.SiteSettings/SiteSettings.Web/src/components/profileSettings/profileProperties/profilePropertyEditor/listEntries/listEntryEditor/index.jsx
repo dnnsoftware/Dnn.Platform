@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Grid from "dnn-grid-system";
@@ -112,7 +112,7 @@ class ListEntryEditor extends Component {
 
             return (
                 <div className="entry-editor">
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="editor-buttons-box">
                         <Button
                             type="secondary"

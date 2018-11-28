@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     languages as LanguagesActions
@@ -14,11 +15,11 @@ class LanguageVerifierPanelBody extends Component {
         super();
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         if (props.selectedPage === 2) {
             if (props.verificationResults) {
                 this.setState({
@@ -36,7 +37,7 @@ class LanguageVerifierPanelBody extends Component {
 
     renderedResults() {
         if (this.props.verificationResults) {
-            return this.props.verificationResults.map((item) => {
+            return this.props.verificationResults.map((item, i) => {
                 return (
                     <LanguageVerifierGrid
                         language={item.Language}
@@ -47,7 +48,8 @@ class LanguageVerifierPanelBody extends Component {
                         filesWithMissingEntries={item.FilesWithMissingEntries}
                         filesWithObsoleteEntries={item.FilesWithObsoleteEntries}
                         oldFiles={item.OldFiles}
-                        malformedFiles={item.MalformedFiles}>
+                        malformedFiles={item.MalformedFiles}
+                        key={i}>
                     </LanguageVerifierGrid>
                 );
             });

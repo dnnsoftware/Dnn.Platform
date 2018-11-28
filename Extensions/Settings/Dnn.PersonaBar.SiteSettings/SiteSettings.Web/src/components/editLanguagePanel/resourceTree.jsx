@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import resx from "resources";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -17,14 +17,15 @@ const parentTermTreeStyle = {
 
 /*eslint-disable react/no-danger*/
 function mapChildFolders(folders, getChildFolders, getResxEntries, resxBeingEdited) {
-    return folders.map((folder) => {
+    return folders.map((folder, i) => {
         const isResxFile = folder.NewValue.indexOf(".resx") !== -1;
 
         return <Folder
             onClick={(!isResxFile ? getChildFolders.bind(this) : getResxEntries.bind(this))}
             folder={folder}
             ChildFolders={folder.ChildFolders}
-            isSelected={resxBeingEdited === folder.NewValue}>
+            isSelected={resxBeingEdited === folder.NewValue}
+            key={i}>
             {(folder.ChildFolders && folder.ChildFolders.length > 0) && mapChildFolders(folder.ChildFolders, getChildFolders, getResxEntries, resxBeingEdited)}
         </Folder>;
     });
@@ -52,7 +53,7 @@ class ResourceTree extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = ReactDOM.findDOMNode(this);
+        const node = this.node;
         if (node && node.contains(e.target)) {
             return;
         }
@@ -75,7 +76,7 @@ class ResourceTree extends Component {
             resxBeingEditedDisplay
         } = this.props;
         return (
-            <GridCell columnSize={100} className="resource-file-tree-container">
+            <GridCell columnSize={100} className="resource-file-tree-container" ref={node => this.node = node}>
                 <Label label={resx.get("ResourceFile")} />
                 <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
                     {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}

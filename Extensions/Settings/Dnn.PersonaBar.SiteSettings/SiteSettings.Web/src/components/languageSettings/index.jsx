@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     languages as LanguagesActions
@@ -60,7 +61,7 @@ class LanguageSettingsPanelBody extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (!this.loadData()) {
             this.setState({
@@ -75,7 +76,7 @@ class LanguageSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             languageSettings: Object.assign({}, props.languageSettings)
         });
@@ -230,27 +231,27 @@ class LanguageSettingsPanelBody extends Component {
                     <Label
                         tooltipMessage={resx.get("systemDefaultLabel.Help")}
                         label={resx.get("systemDefaultLabel")}
-                        />
+                    />
                     {this.getDefaultLanguageDisplay()}
                 </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("siteDefaultLabel.Help")}
                         label={resx.get("siteDefaultLabel")}
-                        />
+                    />
                     <Dropdown
                         options={this.getLanguageOptions()}
                         value={state.languageSettings.SiteDefaultLanguage}
                         onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
                         enabled={!state.languageSettings.ContentLocalizationEnabled}
                         getLabelText={(label) => label.props.title}
-                        />
+                    />
                     <RadioButtons
                         onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
                         options={this.getLanguageDisplayModes()}
                         buttonGroup="languageDisplayMode"
                         value={state.languageSettings.LanguageDisplayMode}
-                        />
+                    />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
@@ -260,14 +261,14 @@ class LanguageSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("plUrl.Help")}
                             label={resx.get("plUrl")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.languageSettings.EnableUrlLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableUrlLanguage")}
                             readOnly={state.languageSettings.ContentLocalizationEnabled}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -276,13 +277,13 @@ class LanguageSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("detectBrowserLable.Help")}
                             label={resx.get("detectBrowserLable")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.languageSettings.EnableBrowserLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableBrowserLanguage")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -291,13 +292,13 @@ class LanguageSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("allowUserCulture.Help")}
                             label={resx.get("allowUserCulture")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.languageSettings.AllowUserUICulture}
                             onChange={this.onSettingChange.bind(this, "AllowUserUICulture")}
-                            />
+                        />
                     </div>
                 </InputGroup>
                 {isHost &&
@@ -312,14 +313,14 @@ class LanguageSettingsPanelBody extends Component {
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
                                         style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                    />}
+                            />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.languageSettings.AllowContentLocalization}
                                 onChange={this.onSettingChange.bind(this, "AllowContentLocalization")}
-                                />
+                            />
                         </div>
                     </InputGroup>
                 }
@@ -345,9 +346,9 @@ class LanguageSettingsPanelBody extends Component {
                         portalId={this.props.portalId}
                         languageDisplayMode={state.languageSettings.LanguageDisplayMode}
                         contentLocalizationEnabled={state.languageSettings.ContentLocalizationEnabled}
-                        />
+                    />
                     <div className="sectionTitle">{resx.get("LanguageSettings")}</div>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className={isHost ? "buttons-box-alter" : "buttons-box"}>
                         <Button
                             disabled={!this.props.languageSettingsClientModified}

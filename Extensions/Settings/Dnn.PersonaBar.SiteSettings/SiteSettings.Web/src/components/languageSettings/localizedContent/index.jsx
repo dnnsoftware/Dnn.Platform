@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     languages as LanguagesActions
@@ -103,7 +104,7 @@ class LocalizedContent extends Component {
                         <Label
                             tooltipMessage={resx.get("CurrentSiteDefault.Help") }
                             label={resx.get("CurrentSiteDefault") }
-                            />
+                        />
                         <div>
                             <div className="language-flag">
                                 {!!defaultLanguage.Icon && <img src={defaultLanguage.Icon} alt={defaultLanguage.EnglishName} />}
@@ -115,12 +116,12 @@ class LocalizedContent extends Component {
                             offText={resx.get("SwitchOff")}
                             value={state.allPagesTranslatable}
                             onChange={this.onChange.bind(this) }
-                            />
+                        />
                         <Label
                             className="float-right"
                             tooltipMessage={resx.get("AllPagesTranslatable.Help") }
                             label={resx.get("AllPagesTranslatable") }
-                            />
+                        />
                     </InputGroup>
 
                     {!state.showProgressBars && <div className="buttons-box">
@@ -146,8 +147,8 @@ class LocalizedContent extends Component {
                         TimeEstimated={this.state.TimeEstimated}
                         Error={this.state.Error}
                         CurrentOperationText={this.state.CurrentOperationText}
-                        closePersonaBarPage={props.closePersonaBarPage}
-                        />}
+                        closePersonaBarPage={props.closePersonaBarPage}/>
+                    }
                 </div>
             </PersonaBarPageBody>
         );

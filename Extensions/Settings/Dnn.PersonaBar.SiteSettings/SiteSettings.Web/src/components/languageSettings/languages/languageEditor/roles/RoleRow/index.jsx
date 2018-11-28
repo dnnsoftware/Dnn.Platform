@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 import GridCell from "dnn-grid-cell";
 import Checkbox from "dnn-checkbox";
@@ -15,7 +16,7 @@ class RoleRow extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
 
         this.setState({
@@ -23,7 +24,7 @@ class RoleRow extends Component {
         });
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             selected: props.selected
         });

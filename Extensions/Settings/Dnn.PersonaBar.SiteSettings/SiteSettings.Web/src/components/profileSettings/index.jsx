@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
@@ -39,7 +40,7 @@ class ProfileSettingsPanelBody extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (!this.loadData()) {
             this.setState({
@@ -54,7 +55,7 @@ class ProfileSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(props) {
         this.setState({
             profileSettings: Object.assign({}, props.profileSettings)
         });
@@ -119,12 +120,12 @@ class ProfileSettingsPanelBody extends Component {
                     <Label
                         tooltipMessage={resx.get("Profile_DefaultVisibility.Help")}
                         label={resx.get("Profile_DefaultVisibility")}
-                        />
+                    />
                     <Dropdown
                         options={this.getProfileVisibilityOptions()}
                         value={state.profileSettings.ProfileDefaultVisibility}
                         onSelect={this.onSettingChange.bind(this, "ProfileDefaultVisibility")}
-                        />
+                    />
                 </InputGroup>
                 <InputGroup>
                     <div className="profileSettings-row_switch">
@@ -132,13 +133,13 @@ class ProfileSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("redirectOldProfileUrlsLabel.Help")}
                             label={resx.get("redirectOldProfileUrlsLabel")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.profileSettings.RedirectOldProfileUrl}
                             onChange={this.onSettingChange.bind(this, "RedirectOldProfileUrl")}
-                            />
+                        />
                     </div>
                 </InputGroup>
             </div>;
@@ -147,14 +148,14 @@ class ProfileSettingsPanelBody extends Component {
                     <Label
                         tooltipMessage={resx.get("vanilyUrlPrefixLabel.Help")}
                         label={resx.get("vanilyUrlPrefixLabel")}
-                        />
+                    />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
                         value={state.profileSettings.VanityUrlPrefix}
                         onChange={this.onSettingChange.bind(this, "VanityUrlPrefix")}
-                        />
+                    />
                     <div className="VanityUrlPrefix">/{resx.get("VanityUrlExample")}</div>
                 </InputGroup>
                 <InputGroup>
@@ -163,13 +164,13 @@ class ProfileSettingsPanelBody extends Component {
                             labelType="inline"
                             tooltipMessage={resx.get("Profile_DisplayVisibility.Help")}
                             label={resx.get("Profile_DisplayVisibility")}
-                            />
+                        />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.profileSettings.ProfileDisplayVisibility}
                             onChange={this.onSettingChange.bind(this, "ProfileDisplayVisibility")}
-                            />
+                        />
                     </div>
                 </InputGroup>
             </div>;
@@ -177,7 +178,7 @@ class ProfileSettingsPanelBody extends Component {
             return (
                 <div className={styles.profileSettings}>
                     <div className="sectionTitleNoBorder">{resx.get("UserProfileSettings")}</div>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <ProfileProperties portalId={props.portalId} cultureCode={props.cultureCode}/>
                     <div className="buttons-box">
                         <Button

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import Label from "dnn-label";
@@ -27,7 +28,7 @@ class IgnoreWordsEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         let words = Object.assign({}, props.words);
         words.CultureCode = props.culture;
@@ -94,11 +95,11 @@ class IgnoreWordsEditor extends Component {
                     <InputGroup>
                         <Label
                             label={resx.get("IgnoreWords")}
-                            />
+                        />
                         <Tags
                             tags={this.state.words.StopWords ? this.state.words.StopWords.split(",") : []}
                             onUpdateTags={this.onSettingChange.bind(this, "StopWords")}
-                            />
+                        />
                     </InputGroup>
                     <div className="editor-buttons-box">
                         <Button
