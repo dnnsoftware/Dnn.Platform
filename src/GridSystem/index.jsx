@@ -35,7 +35,7 @@ class GridSystem extends Component {
     }
 }
 
-GridSystem.PropTypes = {
+GridSystem.propTypes = {
     children: PropTypes.node,
     width: PropTypes.number,
     type: PropTypes.string,

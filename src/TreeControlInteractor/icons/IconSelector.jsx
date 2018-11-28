@@ -3,7 +3,7 @@ import {
 } from "./arrow-icon/_arrow_icon";
 
 
-export const IconSelector = (type) => {
+const IconSelector = (type) => {
     switch (type) {
         case "arrow_bullet":
             return ArrowIcon;
@@ -12,3 +12,5 @@ export const IconSelector = (type) => {
             return ArrowIcon;
     }
 };
+
+export default IconSelector;

@@ -22,8 +22,8 @@ class TextOverflowWrapper extends Component {
         //Set time out to ensure calculation happens after render
         setTimeout(() => {
             let input = this.overflowTooltipRef;
-            if (typeof input !== "undefined" && input.getBoundingClientRect()) {
-                let inputRect = input.getBoundingClientRect();
+            if (typeof input !== "undefined" && input.current.getBoundingClientRect()) {
+                let inputRect = input.current.getBoundingClientRect();
                 this.setState({
                     itemWidth: inputRect.width
                 });
