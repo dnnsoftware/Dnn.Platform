@@ -621,7 +621,6 @@ class PagePicker extends Component {
 }
 
 PagePicker.propTypes = {
-    dispatch: PropTypes.func.isRequired,
 
     //React Collapse prop - set to false if you want to re-render the items every time.
     keepCollapsedContent: PropTypes.bool,
@@ -697,12 +696,6 @@ PagePicker.propTypes = {
     serviceFramework: PropTypes.object,
 
     currentTabId: PropTypes.number,
-   
-    //Object to apply style scrollbar track horizontal
-    renderThumbHorizontal: PropTypes.function,
-    
-    //Object to apply style scrollbar track horizontal
-    renderThumbVertical: PropTypes.function,
 
     scrollbarThumbStyleDefault: PropTypes.object
 };
