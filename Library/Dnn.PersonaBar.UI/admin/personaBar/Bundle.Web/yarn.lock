@@ -576,8 +576,8 @@
     to-fast-properties "^2.0.0"
 
 "@dnnsoftware/dnn-react-common@^2.0.5":
-  version "2.0.5"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.5.tgz#35d0f3b0cadcf27dd547461d66d3a80a805e0fcd"
+  version "2.0.6"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.6.tgz#d1be0ef7a419dda29247fc18d6e71235b8119f1e"
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"
@@ -966,7 +966,7 @@ babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-loader@8.0.4:
+babel-loader@^8.0.4:
   version "8.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/babel-loader/-/babel-loader-8.0.4.tgz#7bbf20cbe4560629e2e41534147692d3fecbdce6"
   dependencies:
@@ -4289,8 +4289,8 @@ react-motion@0.5.2, react-motion@^0.5.2:
     raf "^3.1.0"
 
 react-portal-tooltip@^2.4.0:
-  version "2.4.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-portal-tooltip/-/react-portal-tooltip-2.4.0.tgz#0f2d558d9eb20ef5ab344c87572e63e7c373b229"
+  version "2.4.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-portal-tooltip/-/react-portal-tooltip-2.4.1.tgz#f5011e845eb4a5dbaecd329ecf92e237cc7fe80b"
 
 react-pure-render@^1.0.2:
   version "1.0.2"
@@ -5067,9 +5067,15 @@ string-width@^1.0.1:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
 
-string_decoder@^1.0.0, string_decoder@^1.1.1, string_decoder@~1.1.1:
+string_decoder@^1.0.0, string_decoder@~1.1.1:
   version "1.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  dependencies:
+    safe-buffer "~5.1.0"
+
+string_decoder@^1.1.1:
+  version "1.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
   dependencies:
     safe-buffer "~5.1.0"
 
