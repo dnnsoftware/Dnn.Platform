@@ -22,8 +22,6 @@
 
 using System.ComponentModel.Composition;
 using System.Globalization;
-
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 
@@ -38,6 +36,12 @@ namespace DotNetNuke.Entities.Users
 
         public void UserCreated(object sender, UserEventArgs args)
         {
+            UserEmailRegistrationNotifier.EmailToAdministrator(args.User);
+
+            if (args.SendEmailNotification)
+            {
+                UserEmailRegistrationNotifier.EmailToUser(args.User);
+            }
         }
 
         public void UserRemoved(object sender, UserEventArgs args)
@@ -51,7 +55,10 @@ namespace DotNetNuke.Entities.Users
 
         public void UserApproved(object sender, UserEventArgs args)
         {
-            if (args.SendNotification) Mail.SendMail(args.User, MessageType.UserRegistrationPublic, PortalSettings.Current);
+            if (args.SendEmailNotification)
+            {
+                UserEmailRegistrationNotifier.EmailToUser(args.User, MessageType.UserRegistrationPublic);
+            }
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 

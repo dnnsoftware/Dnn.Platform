@@ -232,6 +232,7 @@
     <Compile Include="Entities\Users\IFriendshipEventHandlers.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Entities\Users\UserEmailRegistrationNotifier.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />

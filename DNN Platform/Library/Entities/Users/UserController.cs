@@ -951,6 +951,20 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static UserCreateStatus CreateUser(ref UserInfo user)
         {
+            return CreateUser(ref user, false);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Creates a new User in the Data Store
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="user">The userInfo object to persist to the Database</param>
+        /// <param name="sendEmailNotification">The sendEmailNotification flag defines whether registration email will be send to user</param>
+        /// <returns>The Created status ot the User</returns>
+        /// -----------------------------------------------------------------------------
+        public static UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
+        {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
             //ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
@@ -976,7 +990,7 @@ namespace DotNetNuke.Entities.Users
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
-                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user });
+                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user, SendEmailNotification = sendEmailNotification });
             }
 
             //Reset PortalId
