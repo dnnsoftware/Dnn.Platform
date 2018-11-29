@@ -6,15 +6,15 @@ using static DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Entities.Users
 {
-    public class UserEmailRegistrationNotifier
+    public class UserRegistrationEmailNotifier
     {
-        private static PortalSettings _portalSettings = PortalSettings.Current;
+        private static PortalSettings __portalSettings = PortalSettings.Current;
 
-        public UserEmailRegistrationNotifier()
+        public UserRegistrationEmailNotifier()
         {
         }
 
-        public static void EmailToAdministrator(UserInfo user)
+        public static void NotifyAdministrator(UserInfo user)
         {
             // avoid self-notification (i.e. on site installation/super user creation)
             var currentUser = UserController.Instance.GetCurrentUserInfo();
@@ -26,34 +26,34 @@ namespace DotNetNuke.Entities.Users
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
             //because the user need administrators to do the approve action so that he can continue use the website.
-            if (_portalSettings.EnableRegisterNotification || _portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+            if (__portalSettings.EnableRegisterNotification || __portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
             {
-                EmailToUser(user, MessageType.UserRegistrationAdmin);
+                NotifyUser(user, MessageType.UserRegistrationAdmin);
             }
         }
 
-        public static void EmailToUser(UserInfo user)
+        public static void NotifyUser(UserInfo user)
         {
-            switch (_portalSettings.UserRegistration)
+            switch (__portalSettings.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
-                    EmailToUser(user, MessageType.UserRegistrationPrivate);
+                    NotifyUser(user, MessageType.UserRegistrationPrivate);
                     break;
                 case (int)PortalRegistrationType.PublicRegistration:
-                    EmailToUser(user, MessageType.UserRegistrationPublic);
+                    NotifyUser(user, MessageType.UserRegistrationPublic);
                     break;
                 case (int)PortalRegistrationType.VerifiedRegistration:
-                    EmailToUser(user, MessageType.UserRegistrationVerified);
+                    NotifyUser(user, MessageType.UserRegistrationVerified);
                     break;
                 case (int)PortalRegistrationType.NoRegistration:
-                    EmailToUser(user, MessageType.UserRegistrationPublic);
+                    NotifyUser(user, MessageType.UserRegistrationPublic);
                     break;
             }
         }
 
-        public static void EmailToUser(UserInfo user, MessageType type)
+        public static void NotifyUser(UserInfo user, MessageType type)
         {
-            Mail.SendMail(user, type, _portalSettings);
+            Mail.SendMail(user, type, __portalSettings);
         }
     }
 }

@@ -36,11 +36,11 @@ namespace DotNetNuke.Entities.Users
 
         public void UserCreated(object sender, UserEventArgs args)
         {
-            UserEmailRegistrationNotifier.EmailToAdministrator(args.User);
+            UserRegistrationEmailNotifier.NotifyAdministrator(args.User);
 
             if (args.SendEmailNotification)
             {
-                UserEmailRegistrationNotifier.EmailToUser(args.User);
+                UserRegistrationEmailNotifier.NotifyUser(args.User);
             }
         }
 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Users
         {
             if (args.SendEmailNotification)
             {
-                UserEmailRegistrationNotifier.EmailToUser(args.User, MessageType.UserRegistrationPublic);
+                UserRegistrationEmailNotifier.NotifyUser(args.User, MessageType.UserRegistrationPublic);
             }
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }

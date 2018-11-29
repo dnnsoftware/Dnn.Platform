@@ -960,7 +960,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="user">The userInfo object to persist to the Database</param>
-        /// <param name="sendEmailNotification">The sendEmailNotification flag defines whether registration email will be send to user</param>
+        /// <param name="sendEmailNotification">The sendEmailNotification flag defines whether registration email will be sent to user</param>
         /// <returns>The Created status ot the User</returns>
         /// -----------------------------------------------------------------------------
         public static UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
