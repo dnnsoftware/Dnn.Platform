@@ -1,24 +1,12 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import Label from "dnn-label";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import CheckBox from "dnn-checkbox";
-import GridCell from "dnn-grid-cell";
+import { PagePicker, Switch, Dropdown, Checkbox as CheckBox, Label, PersonaBarPageHeader, PersonaBarPageBody, GridCell, GridSystem, Tooltip as ToolTip, SingleLineInputWithError, MultiLineInputWithError, Button  } from "@dnnsoftware/dnn-react-common";
 import { CommonExportPortalActions } from "../../actions";
-import GridSystem from "dnn-grid-system";
-import ToolTip from "dnn-tooltip";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Button from "dnn-button";
-import Dropdown from "dnn-dropdown";
-import Switch from "dnn-switch";
-import PagePicker from "dnn-page-picker";
 import utilities from "utils";
 import stringUtils from "utils/string";
 import Localization from "localization";
 import "./style.less";
-
 
 const emptyExport = {
     fileName: "",

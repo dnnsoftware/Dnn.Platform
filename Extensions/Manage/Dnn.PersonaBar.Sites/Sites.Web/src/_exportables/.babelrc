@@ -5,8 +5,8 @@
   ],
   "plugins": [
     "@babel/plugin-transform-object-assign",
-    "@babel/plugin-proposal-object-rest-spread",
-    "react-hot-loader/babel"
+     "@babel/plugin-proposal-object-rest-spread",
+     "react-hot-loader/babel"
   ],
   "env": {
     "production": {

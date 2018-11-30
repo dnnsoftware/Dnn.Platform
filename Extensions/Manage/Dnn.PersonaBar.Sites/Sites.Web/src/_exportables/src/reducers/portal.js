@@ -51,8 +51,8 @@ const switchCase = [{
     functionToRun: (state, action) => {
         let portals = Object.assign([], utilities.getObjectCopy(state.portals));
         let totalCount = Object.assign(state.totalCount);
-        let portal = portals.find(p => p.PortalID == action.payload.portalId);
-        if(portal){
+        let portal = portals.find(p => p.PortalID === action.payload.portalId);
+        if (portal) {
             portal[action.payload.name] = action.payload.value;
         }
 

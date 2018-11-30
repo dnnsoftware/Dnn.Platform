@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PortalList from "./PortalList";
 import { CommonVisiblePanelActions, CommonExportPortalActions } from "dnn-sites-common-actions";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 import {ExportPortal} from "dnn-sites-common-components";
 import CreatePortal from "./CreatePortal";
 

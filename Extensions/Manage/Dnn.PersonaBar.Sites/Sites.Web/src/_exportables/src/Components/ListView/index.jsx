@@ -1,19 +1,12 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
 import Localization from "localization";
 import { CommonVisiblePanelActions, CommonPortalListActions, CommonExportPortalActions } from "actions";
-import GridCell from "dnn-grid-cell";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
 import Moment from "moment";
-import {
-    TrashIcon,
-    PreviewIcon,
-    SettingsIcon,
-    TemplateIcon,
-    DownloadIcon,
-    UploadIcon
-} from "dnn-svg-icons";
 import styles from "./style.less";
 
 class ListView extends Component {
@@ -94,22 +87,22 @@ class ListView extends Component {
     getPortalButtons(portal, index) {
         let portalButtons = [
             {
-                icon: PreviewIcon,
+                icon: SvgIcons.PreviewIcon,
                 onClick: this.onPreview.bind(this, portal, index),
                 title: Localization.get("ViewSite")
             },
             {
-                icon: SettingsIcon,
+                icon: SvgIcons.SettingsIcon,
                 onClick: this.onSetting.bind(this, portal, index),
                 title: Localization.get("SiteSettings")
             },
             {
-                icon: UploadIcon,
+                icon: SvgIcons.UploadIcon,
                 onClick: this.onImportExport.bind(this, portal, "Export", index),
                 title: Localization.get("SiteExport")
             },
             {
-                icon: DownloadIcon,
+                icon: SvgIcons.DownloadIcon,
                 onClick: this.onImportExport.bind(this, portal, "Import", index),
                 title: Localization.get("SiteImport")
             }
@@ -117,7 +110,7 @@ class ListView extends Component {
         if (portal.allowDelete) {
             portalButtons = portalButtons.concat([
                 {
-                    icon: TrashIcon,
+                    icon: SvgIcons.TrashIcon,
                     onClick: this.onDelete.bind(this, portal, index),
                     title: Localization.get("DeleteSite")
                 }
@@ -125,8 +118,11 @@ class ListView extends Component {
         }
 
         /*eslint-disable react/no-danger*/
+        let i = 0;
         return portalButtons.map((_button) => {
-            return <div dangerouslySetInnerHTML={{ __html: _button.icon }} title={_button.title} onClick={_button.onClick}></div>;
+            let element = <div key={`portalButton_${i}`} dangerouslySetInnerHTML={{ __html: _button.icon }} title={_button.title} onClick={_button.onClick}></div>;
+            i++;
+            return element;
         });
     }
     getPortalMapping(portal) {

@@ -1,12 +1,10 @@
-import React, { PropTypes, Component } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import Button from "dnn-button";
+import { PersonaBarPageHeader, PersonaBarPageBody, GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import { ListView } from "dnn-sites-common-components";
 import Localization from "localization";
 import utilities from "utils/applicationSettings";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import GridCell from "dnn-grid-cell";
 import { CommonPaginationActions, CommonPortalListActions } from "dnn-sites-common-actions";
 import styles from "./style.less";
 

@@ -1,34 +1,28 @@
 const path = require("path");
 module.exports = {
     entry: "./index",
+    optimization: {
+        minimize: true
+    },
     output: {
-        path: "../../../admin/personaBar/scripts/exportables/Sites",
+        path: path.resolve("../../../admin/personaBar/scripts/exportables/Sites"),
         filename: "SitesListView.js",
         publicPath: "http://localhost:8050/dist/"
     },
     module: {
-        loaders: [{
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            loader: "babel-loader",
-            query: {
-                presets: ["react", "es2015"]
-            }
-        }, {
-            test: /\.less$/,
-            loader: "style-loader!css-loader!less-loader"
-        }],
-        preLoaders: [{
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            loader: "eslint-loader"
-        }]
+        rules: [
+            { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
+            { test: /\.(js|jsx)$/ , exclude: /node_modules/, loader: "babel-loader" },
+            { test: /\.(less|css)$/, loader: "style-loader!css-loader!less-loader" }
+        ]
     },
-    externals: require("dnn-webpack-externals"),
+    externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"],
-        root: [
+        extensions: [".js", ".json", ".jsx"],
+        modules: [
             path.resolve('./src'),
+            path.resolve('./src'),
+            path.resolve('./node_modules'),  // Last fallback to node_modules
             path.resolve('../') // Look in src first
         ]
     }

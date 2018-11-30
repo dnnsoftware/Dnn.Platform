@@ -1,7 +1,8 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import MainLabel from "./MainLabel";
 import Statistic from "./statistic";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 /* eslint-disable react/no-danger */
 const PortalListItem = ({portal, portalStatisticInfo, portalButtons}) => (
@@ -17,9 +18,11 @@ const PortalListItem = ({portal, portalStatisticInfo, portalButtons}) => (
                 </GridCell>
             </GridCell>
             <GridCell className="portal-statistics-info" columnSize={65}>
-                {portalStatisticInfo.map(statistic => {
-                    return <Statistic label={statistic.label} value={statistic.value}/>;
-                }) }
+                {
+                    portalStatisticInfo.map(statistic => {
+                        return <Statistic key={"stat-" + statistic.label} label={statistic.label} value={statistic.value}/>;
+                    })
+                }
             </GridCell>
         </GridCell>
     </GridCell >
