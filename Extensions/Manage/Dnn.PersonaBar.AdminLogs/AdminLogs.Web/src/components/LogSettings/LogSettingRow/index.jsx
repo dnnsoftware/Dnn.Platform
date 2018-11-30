@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import Collapse from "dnn-collapsible";
-import GridCell from "dnn-grid-cell";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { GridCell, Collapsible as Collapse, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { EditIcon } from "dnn-svg-icons";
 
 
 class LogSettingRow extends Component {
@@ -33,7 +31,7 @@ class LogSettingRow extends Component {
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
 
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)) {
+        if (!this.node.contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)) {
 
             this.timeout = 475;
             if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
@@ -58,7 +56,7 @@ class LogSettingRow extends Component {
         let uniqueId = "settingrow-" + Math.random() + Date.now();
 
         return (
-            <div className={"collapsible-component-log" + (opened ? " row-opened" : "") } id={uniqueId}>
+            <div ref={node => this.node = node} className={"collapsible-component-log" + (opened ? " row-opened" : "") } id={uniqueId}>
                 {props.visible && <div className={"collapsible-header-log " + !opened} >
                     <GridCell title={props.typeName} columnSize={40} >
                         {props.typeName}</GridCell>
@@ -70,7 +68,7 @@ class LogSettingRow extends Component {
                         {props.fileName}&nbsp; </GridCell>
                     {!props.readOnly &&
                         <GridCell columnSize={5} >
-                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
+                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this) }>
                             </div>
                         </GridCell>
                     }

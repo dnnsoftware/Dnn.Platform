@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
     logSettings as LogSettingActions,
@@ -7,8 +8,7 @@ import {
 import SettingRow from "./LogSettingRow";
 import LogSettingEditor from "./LogSettingEditor";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
-import GridCell from "dnn-grid-cell";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import Localization from "localization";
 import {
@@ -50,7 +50,7 @@ class LogSettingsPanel extends Component {
             { "name": "", "width": 5 }
         ];
         let tableHeaders = tableFields.map((field) => {
-            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
+            return <GridCell key={field.name} columnSize={field.width} style={{ fontWeight: "bolder" }}>
                 <span>{field.name}&nbsp; </span>
             </GridCell>;
         });
@@ -122,7 +122,7 @@ class LogSettingsPanel extends Component {
                     {canEdit &&
                         <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
                             <div className={"add-setting-box " + !opened}>
-                                <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                                 </div> {Localization.get("AddContent.Action") }
                             </div>
                         </div>

@@ -1,17 +1,15 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
     log as LogActions
 } from "../../actions";
 import LogItemRow from "./LogItemRow";
 import EmailPanel from "./EmailPanel";
-import Checkbox from "dnn-checkbox";
-import DropDown from "dnn-dropdown";
-import Pager from "dnn-pager";
+import { Checkbox, Dropdown, Pager, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common"
 import "./style.less";
 import util from "../../utils";
 import Localization from "localization";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import {
     createPortalOptions,
     createLogTypeOptions
@@ -198,7 +196,7 @@ class AdminLogPanelBody extends Component {
 
         let tableHeaders = tableFields.map((field) => {
             let className = "logHeader logHeader-" + field.id;
-            return <div className={className}>
+            return <div key={field.id} className={className}>
                 <span>{field.name}&nbsp; </span>
             </div>;
         });
@@ -293,7 +291,7 @@ class AdminLogPanelBody extends Component {
             { "name": Localization.get("SecurityException"), "id": "SecurityException" }
         ];
         let legend = legendItems.map((item) => {
-            return <div className="logLegend-item">
+            return <div key={item.id} className="logLegend-item">
                 <div className={item.id}>
                     <span></span>
                 </div>
@@ -315,7 +313,7 @@ class AdminLogPanelBody extends Component {
                 <div className="toolbar">
                     {state.portalList.length > 0 &&
                         <div className="adminlogs-filter-container">
-                            <DropDown
+                            <Dropdown
                                 value={state.currentPortalId}
                                 style={{ width: "100%" }}
                                 options={portalOptions}
@@ -326,7 +324,7 @@ class AdminLogPanelBody extends Component {
                     }
                     {state.logTypeList.length > 0 &&
                         <div className="adminlogs-filter-container">
-                            <DropDown
+                            <Dropdown
                                 value={state.currentLogTypeKey}
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}

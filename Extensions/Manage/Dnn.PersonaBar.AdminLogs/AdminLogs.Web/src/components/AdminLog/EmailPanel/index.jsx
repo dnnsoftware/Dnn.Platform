@@ -1,11 +1,7 @@
-import React, { PropTypes, Component } from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import Collapse from "dnn-collapsible";
-import MultiLineInput from "dnn-multi-line-input";
-import Button from "dnn-button";
-import Label from "dnn-label";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { Collapsible as Collapse, MultiLineInput, Button, Label, InputGroup, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import {
     log as LogActions

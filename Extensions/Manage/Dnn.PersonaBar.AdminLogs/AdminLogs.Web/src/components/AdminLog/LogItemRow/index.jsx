@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
-import Collapse from "dnn-collapsible";
+import { Collapsible as Collapse, Checkbox } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import Checkbox from "dnn-checkbox";
 import {
     log as LogActions
 } from "../../../actions";
@@ -41,7 +40,7 @@ class LogItemRow extends Component {
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
 
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className == "string" && event.target.className.indexOf("do-not-close") == -1)) {
+        if (!this.node.contains(event.target) && (typeof event.target.className == "string" && event.target.className.indexOf("do-not-close") == -1)) {
 
             this.timeout = 475;
             this.collapse();
@@ -91,7 +90,7 @@ class LogItemRow extends Component {
     render() {
         const {props, state} = this;
         return (
-            <div className={"collapsible-logitemdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
+            <div ref={node => this.node = node} className={"collapsible-logitemdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-logitemdetail-header " + state.collapsed}>
                     <div className="term-header">
                         <div data-index="0" className="term-label-checkbox">

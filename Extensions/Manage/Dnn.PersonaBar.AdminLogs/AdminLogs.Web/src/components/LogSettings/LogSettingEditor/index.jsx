@@ -1,11 +1,8 @@
-import React, {Component, PropTypes } from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import Switch from "dnn-switch";
-import Grid from "dnn-grid-system";
-import Button from "dnn-button";
-import DropDown from "dnn-dropdown";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { Switch, GridSystem as Grid, Button, Dropdown, SingleLineInputWithError  } from "@dnnsoftware/dnn-react-common";
 import {
     logSettings as LogSettingActions
 } from "../../../actions";
@@ -208,27 +205,27 @@ class LogSettingEditor extends Component {
                 </div>
                 <div className="right">
                     <Switch 
-                    value={this.getEnabledStatus("Logging") } 
-                    onChange={this.OnCheckboxChanged.bind(this, "LoggingIsActive") }
-                    onText={Localization.get("SwitchOn")}
-                    offText={Localization.get("SwitchOff")}
+                        value={this.getEnabledStatus("Logging") } 
+                        onChange={this.OnCheckboxChanged.bind(this, "LoggingIsActive") }
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                     />
                 </div>
             </div>
             <div className="editor-row divider" title={Localization.get("plLogTypeKey.Help") }>
                 <label>{Localization.get("plLogTypeKey") } </label>
-                <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.logTypeList } value={this.getValue("LogType") } onSelect={this.onDropDownChange.bind(this, "LogTypeKey") }
+                <Dropdown enabled={this.getEnabledStatus("Logging") } options={this.props.logTypeList } value={this.getValue("LogType") } onSelect={this.onDropDownChange.bind(this, "LogTypeKey") }
                     style={{ width: 100 + "%", float: "left" }}/>
             </div>
             <div className="editor-row divider" title={Localization.get("plLogTypePortalID.Help") }>
                 <label>{Localization.get("plLogTypePortalID") } </label>
-                <DropDown enabled={this.getEnabledStatus("Logging") } options={portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
+                <Dropdown enabled={this.getEnabledStatus("Logging") } options={portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
                     style={{ width: 100 + "%", float: "left" }}/>
             </div>
 
             <div className="editor-row divider" >
                 <label>{Localization.get("plKeepMostRecent") } </label>
-                <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.keepMostRecentOptions }  value={this.getValue("Recent") } onSelect={this.onDropDownChange.bind(this, "KeepMostRecent") }
+                <Dropdown enabled={this.getEnabledStatus("Logging") } options={this.props.keepMostRecentOptions }  value={this.getValue("Recent") } onSelect={this.onDropDownChange.bind(this, "KeepMostRecent") }
                     style={{ width: 100 + "%", float: "left" }}/>
             </div>
         </div>;
@@ -243,22 +240,22 @@ class LogSettingEditor extends Component {
                 </div>
                 <div className="right">
                     <Switch 
-                    value={this.getEnabledStatus("EmailNotification") } 
-                    onChange={this.OnCheckboxChanged.bind(this, "EmailNotificationIsActive") }
-                    onText={Localization.get("SwitchOn")}
-                    offText={Localization.get("SwitchOff")}
+                        value={this.getEnabledStatus("EmailNotification") } 
+                        onChange={this.OnCheckboxChanged.bind(this, "EmailNotificationIsActive") }
+                        onText={Localization.get("SwitchOn")}
+                        offText={Localization.get("SwitchOff")}
                     />
                 </div>
             </div>
             <div className="editor-row divider">
                 <label>{Localization.get("plThreshold") }</label>
-                <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.thresholdsOptions} value={this.getValue("Threshold") } onSelect={this.onDropDownChange.bind(this, "NotificationThreshold") }
+                <Dropdown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.thresholdsOptions} value={this.getValue("Threshold") } onSelect={this.onDropDownChange.bind(this, "NotificationThreshold") }
                     style={{ width: 40 + "%", float: "left" }}/>
                 <div className="text-section">in</div>
-                <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimesOptions } value={this.getValue("ThresholdNotificationTime") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTime") }
+                <Dropdown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimesOptions } value={this.getValue("ThresholdNotificationTime") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTime") }
                     style={{ width: 25 + "%", float: "left" }}/>
                 <div className="text-section">&nbsp; </div>
-                <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimeTypesOptions } value={this.getValue("ThresholdNotificationTimeType") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTimeType") }
+                <Dropdown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimeTypesOptions } value={this.getValue("ThresholdNotificationTimeType") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTimeType") }
                     style={{ width: 25 + "%", float: "left" }}/>
             </div>
             <div className="editor-row divider"  title={Localization.get("plMailToAddress.Help") }>
@@ -276,7 +273,7 @@ class LogSettingEditor extends Component {
         /* eslint-disable react/no-danger */
         return (
             <div className="log-setting-editor">
-                <Grid children={children} numberOfColumns={2} />
+                <Grid numberOfColumns={2}>{children}</Grid>
                 <div className="buttons-box">
                     {this.props.logTypeSettingId !== "" && <Button type="secondary" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
                     <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{Localization.get("ConfigBtnCancel") }</Button>

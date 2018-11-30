@@ -575,7 +575,7 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@^2.0.5":
+"@dnnsoftware/dnn-react-common@^2.0.6":
   version "2.0.6"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.6.tgz#d1be0ef7a419dda29247fc18d6e71235b8119f1e"
   dependencies:
@@ -1263,8 +1263,8 @@ camelcase@^5.0.0:
   resolved "https://www.myget.org/F/dnn-software-public/npm/camelcase/-/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
 
 caniuse-lite@^1.0.30000899:
-  version "1.0.30000910"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/caniuse-lite/-/caniuse-lite-1.0.30000910.tgz#755d5181d4b006e5a2b59b1ffa05d0a0470039f5"
+  version "1.0.30000912"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/caniuse-lite/-/caniuse-lite-1.0.30000912.tgz#08e650d4090a9c0ab06bfd2b46b7d3ad6dcaea28"
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1869,8 +1869,8 @@ ejs@^2.6.1:
   resolved "https://www.myget.org/F/dnn-software-public/npm/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
 electron-to-chromium@^1.3.82:
-  version "1.3.84"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/electron-to-chromium/-/electron-to-chromium-1.3.84.tgz#2e55df59e818f150a9f61b53471ebf4f0feecc65"
+  version "1.3.85"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/electron-to-chromium/-/electron-to-chromium-1.3.85.tgz#5c46f790aa96445cabc57eb9d17346b1e46476fe"
 
 elliptic@^6.0.0:
   version "6.4.1"
@@ -2628,8 +2628,8 @@ hoist-non-react-statics@^2.5.0:
   resolved "https://www.myget.org/F/dnn-software-public/npm/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
 hoist-non-react-statics@^3.1.0:
-  version "3.1.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/hoist-non-react-statics/-/hoist-non-react-statics-3.1.0.tgz#42414ccdfff019cd2168168be998c7b3bd5245c0"
+  version "3.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/hoist-non-react-statics/-/hoist-non-react-statics-3.2.0.tgz#d21b9fc72b50fdc38c5d88f6e2c52f2c2dbe5ee2"
   dependencies:
     react-is "^16.3.2"
 
@@ -3372,8 +3372,8 @@ mime@^1.4.1:
   resolved "https://www.myget.org/F/dnn-software-public/npm/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 
 mime@^2.0.3, mime@^2.3.1:
-  version "2.3.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/mime/-/mime-2.3.1.tgz#b1621c54d63b97c47d3cfe7f7215f7d64517c369"
+  version "2.4.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/mime/-/mime-2.4.0.tgz#e051fd881358585f3279df333fe694da0bcffdd6"
 
 mimic-fn@^1.0.0:
   version "1.2.0"
@@ -3589,8 +3589,8 @@ node-pre-gyp@^0.10.0:
     tar "^4"
 
 node-releases@^1.0.1:
-  version "1.0.4"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/node-releases/-/node-releases-1.0.4.tgz#2d585de8c6c81d00017e063e7810a63889aa6756"
+  version "1.0.5"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/node-releases/-/node-releases-1.0.5.tgz#a641adcc968b039a27345d92ef10b093e5cbd41d"
   dependencies:
     semver "^5.3.0"
 
@@ -4433,8 +4433,8 @@ redux-devtools-dock-monitor@1.1.3:
     react-pure-render "^1.0.2"
 
 redux-devtools-instrument@^1.9.0:
-  version "1.9.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/redux-devtools-instrument/-/redux-devtools-instrument-1.9.1.tgz#3c0871d0e29aa4edb9222b1e93082fa0dd92835a"
+  version "1.9.3"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/redux-devtools-instrument/-/redux-devtools-instrument-1.9.3.tgz#37b229f3a64a404d7d2c43489ef91cae8f712a4b"
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
@@ -5067,15 +5067,15 @@ string-width@^1.0.1:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^4.0.0"
 
-string_decoder@^1.0.0, string_decoder@~1.1.1:
-  version "1.1.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+string_decoder@^1.0.0, string_decoder@^1.1.1:
+  version "1.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
   dependencies:
     safe-buffer "~5.1.0"
 
-string_decoder@^1.1.1:
-  version "1.2.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
+string_decoder@~1.1.1:
+  version "1.1.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   dependencies:
     safe-buffer "~5.1.0"
 
@@ -5130,8 +5130,8 @@ table@^5.0.2:
     string-width "^2.1.1"
 
 tapable@^1.0.0, tapable@^1.1.0:
-  version "1.1.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/tapable/-/tapable-1.1.0.tgz#0d076a172e3d9ba088fd2272b2668fb8d194b78c"
+  version "1.1.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/tapable/-/tapable-1.1.1.tgz#4d297923c5a72a42360de2ab52dadfaaec00018e"
 
 tar@^4:
   version "4.4.8"
@@ -5665,8 +5665,8 @@ xtend@^4.0.0, xtend@~4.0.1:
   resolved "https://www.myget.org/F/dnn-software-public/npm/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
 
 yallist@^3.0.0, yallist@^3.0.2:
-  version "3.0.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/yallist/-/yallist-3.0.2.tgz#8452b4bb7e83c7c188d8041c1a837c773d6d8bb9"
+  version "3.0.3"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/yallist/-/yallist-3.0.3.tgz#b4b049e314be545e3ce802236d6cd22cd91c3de9"
 
 yargs-parser@^10.1.0:
   version "10.1.0"

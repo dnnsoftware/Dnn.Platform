@@ -8,12 +8,30 @@ module.exports = {
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "settings": {
+        "react": {
+          "version": "16"
+        }
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
-            "experimentalObjectRestSpread": true
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": false,
+            "templateStrings": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },        
     "globals": {
@@ -47,6 +65,7 @@ module.exports = {
       "space-before-blocks": "warn",
       "no-multiple-empty-lines":  "warn",
       "react/jsx-equals-spacing": ["warn", "never"],
-      "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}]
+      "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}],
+      "no-useless-escape": "off"
     }
 };
