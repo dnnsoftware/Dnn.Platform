@@ -1533,6 +1533,10 @@ namespace DotNetNuke.Entities.Urls
                                              portalSettings.ActiveTab.TabName + " IsSecure: " +
                                              portalSettings.ActiveTab.IsSecure.ToString());
 
+                    // this covers the specific case of popups and iframes opened from a secure tab
+                    // e.g: AdminExperience -> Users -> UsersProfile 
+                    // example url: https://YOUR_HOST/Admin/User-Accounts/ctl/Edit/mid/464/UserId/4/editprofile/true?popUp=true
+                    var isPopUpFromSecurePage = result.IsSecureConnection && UrlUtils.IsPopUp(url);
                     //check ssl enabled
                     if (portalSettings.SSLEnabled)
                     {
@@ -1554,8 +1558,10 @@ namespace DotNetNuke.Entities.Urls
                     //check ssl enforced
                     if (portalSettings.SSLEnforced)
                     {
+                        var isSecureConnectionOnUnsecurePage = !portalSettings.ActiveTab.IsSecure && result.IsSecureConnection;
+                        
                         //check page is not secure, connection is secure
-                        if (!portalSettings.ActiveTab.IsSecure && result.IsSecureConnection)
+                        if (isSecureConnectionOnUnsecurePage && !isPopUpFromSecurePage)
                         {
                             //has connection already been forced to secure?
                             if (queryStringCol["ssl"] == null)
