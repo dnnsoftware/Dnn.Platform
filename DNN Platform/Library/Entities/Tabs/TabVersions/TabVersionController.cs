@@ -52,7 +52,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
-                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));
+                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),
+                                                            false
+                                                            );
 
             return tabVersions;
         }
