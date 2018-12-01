@@ -566,12 +566,12 @@ namespace DotNetNuke.Entities.Users
             // Validate username against bad characters; it must not start or end with space, 
             // must not contain control characters, and not contain special punctuations
             // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-            char[] unallowedAscii = Globals.USERNAME_UNALLOWED_ASCII.ToCharArray();
+            // Fallback to default if there is no host setting configured
+            char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
             return userName.Length >= 5 &&
                         userName == userName.Trim() &&
                         userName.All(ch => ch >= ' ') &&
                         userName.IndexOfAny(unallowedAscii) < 0;
-
         }
 
         public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)

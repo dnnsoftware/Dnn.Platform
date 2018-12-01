@@ -387,6 +387,18 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
 	ORDER BY RowNumber ASC;
 GO
 
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'UsernameUnallowedCharacters')
+	INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+		([SettingName]
+		,[SettingValue]
+		,[SettingIsSecure]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate])
+	VALUES (N'UsernameUnallowedCharacters', N'!"#$%&''()*+,/:;<=>?[\]^`{|}', 0, -1, GETDATE(), NULL, NULL)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
