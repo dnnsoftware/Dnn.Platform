@@ -52,6 +52,18 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Gets DateTime Offset of current DB 
+        /// </summary>
+        /// <returns>DateTimeOffset object</returns>
+        public static TimeZoneInfo GetDatabaseDateTimeOffset()
+        {
+            var dateTimeOffset = DataProvider.Instance().GetDatabaseTimeOffset();
+            var offset = dateTimeOffset.Offset;
+            var id = string.Format("UTC {0}", offset.ToString());
+            return TimeZoneInfo.CreateCustomTimeZone(id, offset, id, id);
+        }
+
+        /// <summary>
         /// Gets the database server's time in UTC.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
