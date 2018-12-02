@@ -244,9 +244,8 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     // if no errors, update settings in db
                     UpdateRegexSettingsInternal(request);
-                    DataCache.ClearHostCache(false);
-                    CacheController.FlushPageIndexFromCache();
-                    CacheController.FlushFriendlyUrlSettingsFromCache();
+                    // clear cache
+                    ClearCache();
 
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
@@ -274,15 +273,29 @@ namespace Dnn.PersonaBar.Seo.Services
 
             settings.ToList().ForEach((value) =>
             {
-                if (PortalId > -1)
-                {
-                    PortalController.Instance.UpdatePortalSetting(PortalId, value.Key, value.Value, false, Null.NullString, false);
-                }
-                else
+                if (PortalId == Null.NullInteger)
                 {
                     HostController.Instance.Update(value.Key, value.Value, false);
                 }
+                else
+                {
+                    PortalController.Instance.UpdatePortalSetting(PortalId, value.Key, value.Value, false, Null.NullString, false);
+                }
             });
+        }
+
+        private void ClearCache()
+        {
+            if (PortalId == Null.NullInteger)
+            {
+                DataCache.ClearHostCache(false);
+            }
+            else
+            {
+                DataCache.ClearPortalCache(PortalId, false);
+            }
+            CacheController.FlushPageIndexFromCache();
+            CacheController.FlushFriendlyUrlSettingsFromCache();
         }
 
         private static bool ValidateRegex(string regexPattern)
