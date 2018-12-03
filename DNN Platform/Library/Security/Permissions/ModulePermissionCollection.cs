@@ -181,13 +181,15 @@ namespace DotNetNuke.Security.Permissions
 
         public void Remove(int permissionID, int roleID, int userID)
         {
+            var idx = 0;
             foreach (PermissionInfoBase permission in List)
             {
                 if (permission.PermissionID == permissionID && permission.UserID == userID && permission.RoleID == roleID)
                 {
-                    List.Remove(permission);
+                    List.RemoveAt(idx);
                     break;
                 }
+                idx++;
             }
         }
 
