@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         public string Id => "CheckUnexpectedExtensions";
 
-        public bool LazyLoad => false;
+        public bool LazyLoad => true;
 
         public CheckResult Execute()
         {
