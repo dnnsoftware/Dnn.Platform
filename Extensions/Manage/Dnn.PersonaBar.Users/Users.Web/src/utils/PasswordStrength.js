@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 export const PasswordStrengthType = {
     WEAK: "weak",
     FAIR: "fair",
@@ -39,7 +40,7 @@ export const passwordStrengthRating = (password, options) => {
     let matchValidationExpression = false;
 
     let minNumberOfSpecialChars = options.minNumberOfSpecialChars || 0;
-    let validationExpression = options.validationExpression || '';
+    let validationExpression = options.validationExpression || "";
 
     if (password.length > 0) {
 

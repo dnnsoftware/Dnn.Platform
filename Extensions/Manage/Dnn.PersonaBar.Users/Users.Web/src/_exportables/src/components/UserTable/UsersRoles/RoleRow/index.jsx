@@ -1,13 +1,12 @@
-import React, {Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import GridCell from "dnn-grid-cell";
 import utilities from "utils";
 import Localization from "localization";
-import DatePicker from "dnn-date-picker";
 import { CommonUsersActions } from "../../../../actions";
-import { XIcon } from "dnn-svg-icons";
 import {formatDate,formatString} from "../../../../helpers";
+import { GridCell, DatePicker, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class RoleRow extends Component {
     constructor() {
@@ -92,7 +91,7 @@ class RoleRow extends Component {
                 onIconClick={this.onExpiresTimeClick.bind(this, props.roleDetails, props.index) }             />
         </span> : null;
         let deleteAction = props.roleDetails.allowDelete ?
-            <a className={"extension-action"} dangerouslySetInnerHTML={{ __html: XIcon }} onClick={this.onDeleteClick.bind(this, props.roleDetails, props.index) }></a>
+            <a className={"extension-action"} dangerouslySetInnerHTML={{ __html: SvgIcons.XIcon }} onClick={this.onDeleteClick.bind(this, props.roleDetails, props.index) }></a>
             : null;
         return <div className={state.editIndex === props.index ? "edit-row" : null}>
             {startTimeAction}

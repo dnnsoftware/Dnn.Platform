@@ -1,17 +1,13 @@
-import React, {Component, PropTypes } from "react";
-import ReactDOM, { findDOMNode } from "react-dom";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import {debounce} from "throttle-debounce";
 import { connect } from "react-redux";
 import Localization from "localization";
-import Combobox from "react-widgets/lib/Combobox";
 import RoleRow from "./RoleRow";
-import GridCell from "dnn-grid-cell";
-import CheckBox from "dnn-checkbox";
 import "./style.less";
-import Pager from "dnn-pager";
-import { AddIcon } from "dnn-svg-icons";
 import { CommonUsersActions } from "../../../actions";
 import utilities from "utils";
+import { Combobox, GridCell, Checkbox, Pager, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class UserRoles extends Component {
     constructor(props) {
@@ -35,11 +31,6 @@ class UserRoles extends Component {
     componentWillMount() {
         this.getRoles();
     }
-
-    componentDidMount(){
-         findDOMNode(this.comboBoxDom).childNodes[1].setAttribute('aria-label', 'Suggestion');
-    }
- 
 
     getRoles() {
         const {props, state} = this;
@@ -98,14 +89,6 @@ class UserRoles extends Component {
         this.setState({ sendEmail: true, isOwner: false, allowOwner: false });
     }
 
-    onroleKeywordChanged(keyword) {
-        let newState = { roleKeyword: keyword, currentPage: 0 };
-
-        this.setState(newState, () => {
-            this.getRoles();
-        });
-    }
-
     onPageChanged(currentPage, pageSize) {
         let {state} = this;
         if (pageSize !== undefined && state.pageSize !== pageSize) {
@@ -123,6 +106,7 @@ class UserRoles extends Component {
             return <RoleRow
                 roleDetails={role}
                 index={index}
+                key={`role_row_${index}`}
                 saveRole={this.saveRole.bind(this) }>
             </RoleRow>;
         });
@@ -154,8 +138,8 @@ class UserRoles extends Component {
             { name: "Expires", width: 20 },
             { name: "", width: 35 }
         ];
-        let tableHeaders = tableFields.map((field) => {
-            return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
+        let tableHeaders = tableFields.map((field, index) => {
+            return <GridCell key={`grid_cell_${index}`} columnSize={field.width} style={{ fontWeight: "bolder" }}>
                 {
                     field.name !== "" ?
                         <span>{Localization.get(field.name + ".Header") }</span>
@@ -178,7 +162,7 @@ class UserRoles extends Component {
                 totalRecords={this.props.totalRecords}
                 onPageChanged={this.onPageChanged.bind(this) }
                 culture={utilities.getCulture()}
-                />;
+            />;
     }
     render() {
         const {state} = this;
@@ -189,9 +173,9 @@ class UserRoles extends Component {
                 <div className="add-box">
                     <GridCell columnSize={30}>
                         <div className="send-email-box">
-                            <CheckBox value={this.state.sendEmail} onChange={this.onSendEmailClick.bind(this) }
+                            <Checkbox value={this.state.sendEmail} onChange={this.onSendEmailClick.bind(this) }
                                 label={  Localization.get("SendEmail") } labelPlace="right"    />
-                            {this.state.allowOwner && <CheckBox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
+                            {this.state.allowOwner && <Checkbox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
                                 label={  Localization.get("IsOwner") } labelPlace="right"   />}
                         </div>
                     </GridCell>
@@ -209,7 +193,7 @@ class UserRoles extends Component {
                                 valueField="roleId"
                                 textField="roleName"/>
                             <div className="add-role-button" onClick={this.onAddRole.bind(this) }>
-                                <div className={"extension-action"} title={Localization.get("Add")} dangerouslySetInnerHTML={{ __html: AddIcon }}></div>
+                                <div className={"extension-action"} title={Localization.get("Add")} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}></div>
                                 {Localization.get("Add") }
                             </div>
                         </span>

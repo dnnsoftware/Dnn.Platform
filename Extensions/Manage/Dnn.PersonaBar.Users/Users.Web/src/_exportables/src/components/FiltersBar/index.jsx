@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import "./style.less";
-import DropDown from "dnn-dropdown";
 import Localization from "localization";
-import SearchBox from "dnn-search-box";
-import GridCell from "dnn-grid-cell";
+import { Dropdown, SearchBox, GridCell } from "@dnnsoftware/dnn-react-common";
 
 class FiltersBar extends Component {
     constructor(props) {
@@ -63,36 +62,32 @@ class FiltersBar extends Component {
 
     render() {
         let userFiltersOptions = this.BuildUserFiltersOptions();
-        return <div className="users-filter-container">
+        return (<div className="users-filter-container">
             <GridCell columnSize={35} >
-                {
-                    userFiltersOptions.length > 0 &&
+                {this.userFiltersOptions != null &&
+                    this.userFiltersOptions.length > 0 &&
                     <div className="user-filters-filter">
-                        <DropDown style={{ width: "100%" }}
+                        <Dropdown style={{ width: "100%" }}
                             withBorder={false}
                             options={userFiltersOptions}
                             label={this.state.selectedUserFilter.label}
                             onSelect={this.onSelect.bind(this)}
-                            ref="userFiltersDropdown"
                             prependWith={Localization.get("ShowLabel")}
                             />
                         <div className="clear">
                         </div>
-                    </div>
-                }
+                    </div>}
             </GridCell>
             <GridCell columnSize={30} >
                 <div>&nbsp; </div></GridCell>
             <GridCell columnSize={35} >
                 <div className="search-filter">
-                    {
-                        (this.state.selectedUserFilter.value === 0 || this.state.selectedUserFilter.value === 5) &&
-                        <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />
-                    }
+                    {(this.state.selectedUserFilter.value === 0 || this.state.selectedUserFilter.value === 5) &&
+                        <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />}
                     <div className="clear"></div>
                 </div>
             </GridCell>
-        </div>;
+        </div>);
     }
 }
 FiltersBar.propTypes = {

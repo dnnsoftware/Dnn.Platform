@@ -1,16 +1,14 @@
-import React, {Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
 import { CommonUsersActions } from "../../../actions";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import {formatDate, validateEmail} from "../../../helpers";
 import utilities from "utils";
-import Button from "dnn-button";
 import styles from "./style.less";
 import ChangePassword from "../ChangePassword";
 import {canManagePassword, canEditSettings} from "../../permissionHelpers.js";
+import { GridCell, GridSystem, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 
 const inputStyle = { width: "100%" };
 const blankAccountSettings = {

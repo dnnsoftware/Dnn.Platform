@@ -1,12 +1,12 @@
-import React, {Component, PropTypes } from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import Menu from "./menu/Menu";
 import MenuItem from "./menu/MenuItem";
 import Localization from "localization";
 import { CommonUsersActions } from "../../../actions";
 import utilities from "utils";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import ChangePassword from "../ChangePassword";
 import "./style.less";
 import {canManagePassword, canDeleteUser, canAuthorizeUnAuthorizeUser, canPromoteDemote} from "../../permissionHelpers.js";
@@ -23,7 +23,7 @@ class UserMenu extends Component {
     }
 
     handleClick(event) {
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
+        if ((typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
             this.props.onClose();
         }
     }
@@ -243,12 +243,12 @@ class UserMenu extends Component {
         
         if (showMenu)
         {
-            return ( <GridCell className="dnn-user-menu menu-popup">
+            return ( <GridCell className="dnn-user-menu menu-popup" ref={(node) => this.rootElement = node}>
                 {!this.state.ChangePasswordVisible &&
                     <Menu>
                         {
-                            visibleMenus.map(menu => {
-                                return <MenuItem onMenuAction={this.onItemClick.bind(this, menu.key) }>{menu.title}</MenuItem>;
+                            visibleMenus.map((menu, index) => {
+                                return <MenuItem key={`menu_item_${index}`} onMenuAction={this.onItemClick.bind(this, menu.key) }>{menu.title}</MenuItem>;
                             })
                         }
                     </Menu>

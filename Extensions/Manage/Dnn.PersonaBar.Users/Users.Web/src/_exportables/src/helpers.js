@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import utilities from "utils";
 import Moment from "moment";
 

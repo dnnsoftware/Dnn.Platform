@@ -1,20 +1,18 @@
-import React, {Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import GridCell from "dnn-grid-cell";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import styles from "./style.less";
 import {formatDate, sort} from "../../../helpers";
-import Collapse from "dnn-collapsible";
 import UserMenu from "../UserMenu";
 import Localization from "localization";
-import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
 import ColumnSizes from "../columnSizes";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import {canManageRoles, canManageProfile, canViewSettings} from "../../permissionHelpers.js";
+import { SvgIcons, GridCell, Collapsible, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 
 class DetailsRow extends Component {
     constructor() {
         super();
         this.handleClick = this.handleClick.bind(this);
+        this.rootElement = React.createRef();
         this.state = {
             opened: false,
             showMenu: false
@@ -40,7 +38,7 @@ class DetailsRow extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)
+        if ((typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)
             && !(event.target.id === "confirmbtn" || event.target.id === "cancelbtn") && this.props.openId !== "add") {
             if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
                 this.props.Collapse();
@@ -68,14 +66,14 @@ class DetailsRow extends Component {
         {
             actionIcons = actionIcons.concat([{
                 index: 15,
-                icon: UserIcon,
+                icon: SvgIcons.UserIcon,
                 title: Localization.get("ManageProfile.title")
             }]);
         }
         if (canViewSettings(this.props.appSettings.applicationSettings.settings)) {
             actionIcons = actionIcons.concat([{
                 index: 10,
-                icon: SettingsIcon,
+                icon: SvgIcons.SettingsIcon,
                 title: Localization.get("ManageSettings.title")
             }]);
         }
@@ -84,23 +82,23 @@ class DetailsRow extends Component {
         {
             actionIcons = actionIcons.concat([{
                 index: 5,
-                icon: ShieldIcon,
+                icon: SvgIcons.ShieldIcon,
                 title: Localization.get("ManageRoles.title")
             }]);
         }
 
         let i = 0;
         let userActions = sort(actionIcons, "index", "desc").map((actionIcon) => {
-            let element = <div title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
+            let element = <div key={`user_action_${i}`} title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
             i++;
             return element;
         });
-        return ([<div style={{ position: "relative" }}>
-            <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
+        return ([<div key={`user_action_wrapper_${user.userId}`} style={{ position: "relative" }}>
+            <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: SvgIcons.MoreMenuIcon }}
                 onClick={this.toggleUserMenu.bind(this) }>
             </div>
             { this.state.showMenu && <UserMenu filter={this.props.filter} appSettings={this.props.appSettings} getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } 
-            userId={user.userId}/> }
+                userId={user.userId}/> }
         </div>]).concat(userActions);
     }
     getUserColumns(user, id, opened) {
@@ -112,7 +110,7 @@ class DetailsRow extends Component {
                 index: 5,
                 content: <GridCell columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
                     <h6>
-                    <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
+                        <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
                     </h6>
                     {user.displayName !== "-" && <p>{user.userName}</p> }
                 </GridCell>
@@ -141,7 +139,6 @@ class DetailsRow extends Component {
         });
     }
 
-
     render() {
         const {props} = this;
         let {user} = this.props;
@@ -160,15 +157,15 @@ class DetailsRow extends Component {
         let userColumns = this.getUserColumns(user, props.id, opened);
         return (
             /* eslint-disable react/no-danger */
-            <GridCell className={"collapsible-component-users"} id={uniqueId}>
+            <GridCell className={"collapsible-component-users"} id={uniqueId} ref={(node) => this.rootElement = node}>
                 <GridCell  className={"collapsible-header-users " + !opened}>
                     <GridCell className={styles.extensionDetailRow + " " + props.addIsOpened} columnSize={100}>
                         {(!props.addIsOpened || props.addIsOpened === "add-opened") && <GridCell>
                             {userColumns}
                         </GridCell>}
-                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
+                        <Collapsible accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
                             {opened && props.children }
-                        </Collapse>
+                        </Collapsible>
                     </GridCell>
                 </GridCell>
             </GridCell>
