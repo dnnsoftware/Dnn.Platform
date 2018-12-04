@@ -35,6 +35,7 @@ BEGIN
         FailedPasswordAttemptWindowStart = CONVERT( datetime, '17540101', 112 ),
         FailedPasswordAnswerAttemptCount = 0,
         FailedPasswordAnswerAttemptWindowStart = CONVERT( datetime, '17540101', 112 )		
+		-- Removed to ensure lockout date is preserved
 		-- , LastLockoutDate = CONVERT( datetime, '17540101', 112 )
     WHERE @UserId = UserId
 
