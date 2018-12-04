@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import {
@@ -19,7 +20,7 @@ export class Body extends Component {
         props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(LicensingActions.getProduct());
     }

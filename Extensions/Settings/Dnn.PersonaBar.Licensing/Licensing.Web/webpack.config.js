@@ -16,37 +16,62 @@ const webpackExternals = require("dnn-webpack-externals");
 
 module.exports = {
     entry: "./src/main.jsx",
+    optimization: {
+        minimize: isProduction
+    },
     output: {
-        path: "../admin/personaBar/scripts/bundles/",
+        path: path.resolve(__dirname, '../admin/personaBar/scripts/bundles/'),
+        publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: "licensing-bundle.js",
-        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
-
-    module: {
-        loaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
-        ],
-
-        preLoaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
-        ]
-    },
-
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"],
-        root: [
-            path.resolve('./src'),          // Look in src first
-            path.resolve('./node_modules')  // Last fallback to node_modules
+        extensions: ["*", ".js", ".json", ".jsx"],
+        modules: [
+            path.resolve('./src'),           // Look in src first
+            path.resolve('./node_modules')   // Last fallback to node_modules
         ]
     },
-
+    module: {
+        rules: [
+            { 
+                test: /\.(js|jsx)$/, 
+                exclude: /node_modules/, 
+                enforce: "pre",
+                use: [
+                    'eslint-loader'
+                ] 
+            },
+            { 
+                test: /\.less$/, 
+                use: [{
+                    loader: 'style-loader'  // creates style nodes from JS strings
+                }, {
+                    loader: 'css-loader'    // translates CSS into CommonJS
+                }, {
+                    loader: 'less-loader'   // compiles Less to CSS
+                }]
+            },
+            { 
+                test: /\.(js|jsx)$/, 
+                exclude: /node_modules/, 
+                use: {
+                    loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env','@babel/preset-react']
+                }
+            }
+        },
+            { 
+                test: /\.(ttf|woff)$/, 
+                use: {
+                    loader: 'url-loader?limit=8192'
+                } 
+            }
+        ]
+    },
     externals: webpackExternals,
 
     plugins: isProduction ? [
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
             VERSION: JSON.stringify(packageJson.version),
             "process.env": {

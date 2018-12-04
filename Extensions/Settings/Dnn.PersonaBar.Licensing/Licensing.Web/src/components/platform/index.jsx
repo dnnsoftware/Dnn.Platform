@@ -4,9 +4,9 @@ import resx from "../../resources";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const starIcon = require(`!raw!./../svg/star_circle.svg`);
-const evoqIcon = require(`!raw!./../svg/evoq.svg`);
-const infoIcon = require(`!raw!./../svg/info_circle.svg`);
+const starIcon = require(`!raw-loader!./../svg/star_circle.svg`);
+const evoqIcon = require(`!raw-loader!./../svg/evoq.svg`);
+const infoIcon = require(`!raw-loader!./../svg/info_circle.svg`);
 
 class Platform extends Component {
     constructor() {
@@ -75,14 +75,14 @@ class Platform extends Component {
     render() {
         return (
             <div className={styles.licensingPlatform}>
-            <div>
-                {this.renderHeader() }
-                <div className="nolicense">
-                    <div className="nolicense-header">{resx.get("NoLicense.Header") }</div>
-                    <div className="nolicense-body">{resx.get("NoLicense") }</div>
-                </div>                
-            </div>
-            {this.renderLinks() }
+                <div>
+                    {this.renderHeader() }
+                    <div className="nolicense">
+                        <div className="nolicense-header">{resx.get("NoLicense.Header") }</div>
+                        <div className="nolicense-body">{resx.get("NoLicense") }</div>
+                    </div>                
+                </div>
+                {this.renderLinks() }
             </div>
         );
     }
