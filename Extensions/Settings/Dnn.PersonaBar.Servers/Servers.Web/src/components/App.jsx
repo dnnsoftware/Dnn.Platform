@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
@@ -15,7 +16,7 @@ const restartAppButtonStyle = {
 
 class App extends Component { 
 
-    componentWillReceiveProps(newProps) {       
+    UNSAFE_componentWillReceiveProps(newProps) {       
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
             utils.notify(newProps.infoMessage);
         }

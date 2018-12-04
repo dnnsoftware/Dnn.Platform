@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridSystem from "dnn-grid-system";
 import Label from "dnn-label";
 import InfoBlock from "../../common/InfoBlock";
@@ -20,7 +21,7 @@ class Database extends Component {
         this.props.onRetrieveDatabaseServerInfo();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.notifyError(newProps.errorMessage);
         }

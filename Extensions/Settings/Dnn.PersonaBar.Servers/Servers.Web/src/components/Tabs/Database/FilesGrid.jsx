@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import Localization from "../../../localization";
 import util from "../../../utils";
@@ -8,8 +9,8 @@ export default class FilesGrid extends Component {
 
     getFilesGridRows() {
         if (this.props.files && this.props.files.length > 0) {
-            const rows = this.props.files.map((field) => {
-                return <div className="row">
+            const rows = this.props.files.map((field, i) => {
+                return <div className="row" key={i}>
                     <GridCell columnSize={30}><OverflowText text={field.name} /></GridCell>
                     <GridCell columnSize={15}>{util.formatNumeric2Decimals(field.size)} Mb</GridCell>
                     <GridCell columnSize={15}>{field.fileType}</GridCell>

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
@@ -60,20 +61,22 @@ class Body extends Component {
 
         const systemInfoTabHeaders = isHost ? [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle")] 
             : [Localization.get("tabApplicationTitle")];
-        const systemInfoTabBody = isHost ? [<ApplicationTab />, <WebTab />, <DatabaseTab />]
-            :  [<ApplicationTab />]; 
+        const systemInfoTabBody = isHost ? [<ApplicationTab key="first" />, <WebTab key="second" />, <DatabaseTab key="third" />]
+            :  [<ApplicationTab key="first" />]; 
         const serverSettingsTabHeaders = isHost ? [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")]
             : [Localization.get("tabSmtpServerTitle")];
-        const serverSettingsTabBody = isHost ? [<SmtpServerTab />, <PerformanceTab />, <LogsTab />]
-            : [<SmtpServerTab />];
+        const serverSettingsTabBody = isHost ? [<SmtpServerTab key="first" />, <PerformanceTab key="second" />, <LogsTab key="third" />]
+            : [<SmtpServerTab key="first" />];
         const mainTabHeaders = [Localization.get("tabSystemInfoTitle"), Localization.get("tabServerSettingsTitle")];
         const mainTabBody = [
             <Tabs tabHeaders={systemInfoTabHeaders}
-                type="secondary">
+                type="secondary" 
+                key="first">
                 {systemInfoTabBody}
             </Tabs>,
             <Tabs tabHeaders={serverSettingsTabHeaders}
-                type="secondary">
+                type="secondary"
+                key="second">
                 {serverSettingsTabBody}
             </Tabs>];
         
@@ -110,7 +113,7 @@ class Body extends Component {
                     onSelect={this.handleSelect}
                     selectedIndex={props.tabIndex}
                     tabHeaders={mainTabHeaders}>
-                       {mainTabBody}                   
+                    {mainTabBody}                   
                 </Tabs>
                 
             </PersonaBarPageBody >

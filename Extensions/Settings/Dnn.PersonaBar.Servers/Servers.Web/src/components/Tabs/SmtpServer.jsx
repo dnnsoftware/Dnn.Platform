@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridSystem from "dnn-grid-system";
 import RadioButtonBlock from "../common/RadioButtonBlock";
 import EditBlock from "../common/EditBlock";
@@ -16,7 +17,7 @@ class SmtpServer extends Component {
         this.props.onRetrieveSmtpServerInfo();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
             utils.notify(newProps.infoMessage);
         }
@@ -191,11 +192,11 @@ class SmtpServer extends Component {
                     {smtpSettingsVisible &&
                         <div className="tooltipAdjustment border-bottom">
                             <RadioButtonBlock options={this.getSmtpAuthenticationOptions()}
-                                    label={localization.get("plSMTPAuthentication")}
-                                    tooltip={localization.get("plSMTPAuthentication.Help")}
-                                    onChange={this.onChangeAuthenticationMode.bind(this)}
-                                    value={selectedSmtpSettings.smtpAuthentication || "0"} 
-                                    isGlobal={areGlobalSettings} />
+                                label={localization.get("plSMTPAuthentication")}
+                                tooltip={localization.get("plSMTPAuthentication.Help")}
+                                onChange={this.onChangeAuthenticationMode.bind(this)}
+                                value={selectedSmtpSettings.smtpAuthentication || "0"} 
+                                isGlobal={areGlobalSettings} />
                         </div>
                     }
                     <div className="tooltipAdjustment border-bottom">
@@ -239,9 +240,9 @@ class SmtpServer extends Component {
             </GridSystem>
             <div className="clear" />
             <div className="buttons-panel">
-                 <Button type="secondary"
+                <Button type="secondary" 
                     onClick={this.onTestSmtpSettings.bind(this)}>{localization.get("EmailTest")}</Button>
-                 <Button type="primary" 
+                <Button type="primary" 
                     onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;

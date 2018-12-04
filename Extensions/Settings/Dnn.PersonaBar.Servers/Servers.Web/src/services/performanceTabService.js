@@ -42,8 +42,7 @@ const getPerformanceSettings = function () {
                 authCacheabilityOptions: convertKeyValueToLabelValue(response.AuthCacheabilityOptions),
                 unauthCacheabilityOptions: convertKeyValueToLabelValue(response.UnauthCacheabilityOptions)
             };
-        }
-    );
+        });
 };
 
 const save = function (performanceSettings) {
@@ -72,8 +71,7 @@ const save = function (performanceSettings) {
         request.PortalMinifyJs = performanceSettings.portalMinifyJs;
     }
     
-    return serviceFramework.post("ServerSettingsPerformance", "UpdatePerformanceSettings", 
-                request);
+    return serviceFramework.post("ServerSettingsPerformance", "UpdatePerformanceSettings", request);
 };
 
 const incrementVersion = function (version, isGlobalSetting) {

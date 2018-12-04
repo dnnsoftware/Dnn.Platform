@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import Label from "dnn-label";
 import InputGroup from "dnn-input-group";
 import Switch from "dnn-switch";

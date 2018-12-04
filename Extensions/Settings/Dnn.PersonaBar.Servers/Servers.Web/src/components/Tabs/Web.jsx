@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import GridSystem from "dnn-grid-system";
 import InfoBlock from "../common/InfoBlock";
 import Localization from "../../localization";
@@ -16,7 +17,7 @@ class Web extends Component {
         this.props.onRetrieveWebServerInfo();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.notifyError(newProps.errorMessage);
         }

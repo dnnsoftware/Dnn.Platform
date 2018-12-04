@@ -19,8 +19,7 @@ const getLogs = function () {
             });
             
             return logList.concat(upgradeLogList);
-        }
-    );
+        });
 };
 
 const getLog = function (fileName, upgradeLog) {

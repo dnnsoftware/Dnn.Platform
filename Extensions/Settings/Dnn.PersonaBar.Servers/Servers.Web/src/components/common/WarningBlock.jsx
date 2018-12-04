@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import "./style.less";
 import { ErrorStateIcon } from "dnn-svg-icons";

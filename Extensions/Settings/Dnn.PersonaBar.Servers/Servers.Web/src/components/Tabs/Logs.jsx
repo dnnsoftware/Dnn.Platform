@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
 import GridCell from "dnn-grid-cell";
 import Dropdown from "dnn-dropdown";
@@ -19,7 +20,7 @@ class Logs extends Component {
         this.props.onRetrieveLogsServerInfo();
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.notifyError(newProps.errorMessage);
         }
