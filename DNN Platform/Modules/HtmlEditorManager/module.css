@@ -20,7 +20,7 @@
 #dnnEditorConfig .dnnFormItem > div.languageComboBox{width: 47%;margin-bottom: 18px;max-width: 445px;display: inline-block !important;}
 
 /* New CK Editor Classes */
-.html-editor-manager { padding: 1em; background: #eee; border: solid 1px #ccc; overflow:hidden;}
+.html-editor-manager { padding: 1em; background: #eee; color: #333 !important; border: solid 1px #ccc; overflow:hidden;}
 /*.html-editor-manager h2 {float:left; width: 33%; padding:0;}
 .html-editor-manager h2, .html-editor-manager h4 { display:inline-block; margin: 0;}
 .html-editor-manager span {font-style:italic; color: #666;}*/ 
