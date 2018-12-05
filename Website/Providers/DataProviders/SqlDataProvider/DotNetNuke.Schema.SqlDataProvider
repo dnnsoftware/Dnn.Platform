@@ -20966,7 +20966,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowStates] ADD CONSTRAI
 GO
 PRINT N'Adding foreign keys to {databaseOwner}[{objectQualifier}Folders]'
 GO
-ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}ContentWorkflows] FOREIGN KEY ([WorkflowID]) REFERENCES {databaseOwner}[{objectQualifier}ContentWorkflows] ([WorkflowID]) ON DELETE SET NULL
+ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}ContentWorkflows] FOREIGN KEY ([WorkflowID]) REFERENCES {databaseOwner}[{objectQualifier}ContentWorkflows] ([WorkflowID]) ON DELETE SET NULL ON UPDATE SET NULL
 GO
 ALTER TABLE {databaseOwner}[{objectQualifier}Folders] ADD CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}FolderMappings] FOREIGN KEY ([FolderMappingID]) REFERENCES {databaseOwner}[{objectQualifier}FolderMappings] ([FolderMappingID])
 GO
