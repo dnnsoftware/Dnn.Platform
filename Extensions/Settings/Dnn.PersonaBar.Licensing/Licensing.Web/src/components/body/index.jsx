@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import {
     pagination as PaginationActions,
     licensing as LicensingActions
