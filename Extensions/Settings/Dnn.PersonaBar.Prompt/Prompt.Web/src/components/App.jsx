@@ -8,7 +8,7 @@ import Localization from "localization/Localization";
 import { util, formatString } from "utils/helpers";
 import "components/Prompt.less";
 import * as PromptActionsCreators from "actions/prompt";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 
 export class App extends Component {
 
@@ -89,7 +89,7 @@ export class App extends Component {
     }
 
     keyDownHandler(e) {
-        const { state, props } = this;
+        const { props } = this;
 
         const lastPage = props.paging !== null && props.paging.pageNo === props.paging.totalPages;
 
@@ -188,10 +188,9 @@ export class App extends Component {
         );
     }
 }
-App.PropTypes = {
+App.propTypes = {
     output: PropTypes.string,
     data: PropTypes.array,
-    paging: PropTypes.object,
     isHtml: PropTypes.bool,
     reload: PropTypes.bool,
     isError: PropTypes.bool,
@@ -207,9 +206,6 @@ App.PropTypes = {
     options: PropTypes.array,
     resultHtml: PropTypes.string,
     error: PropTypes.string,
-    scrollToBottom: PropTypes.func.isRequired,
-    busy: PropTypes.func.isRequired,
-    IsPaging: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

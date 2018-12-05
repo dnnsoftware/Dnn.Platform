@@ -73,7 +73,7 @@ export class Output extends Component {
     }
 }
 
-Output.PropTypes = {
+Output.propTypes = {
     output: PropTypes.string,
     data: PropTypes.array,
     paging: PropTypes.object,
