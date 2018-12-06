@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactRedux from "react-redux";
 import * as Redux from "redux";
 import ReactDOM from "react-dom";
-import ReactTabs from "react-tabs";
+import { Tabs as ReactTabs } from "react-tabs";
 import ReactCollapse from "react-collapse";
 import * as ReactCustomScrollBars from "react-custom-scrollbars";
 import ReactModal from "react-modal";
