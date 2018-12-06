@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
@@ -19,7 +20,7 @@ class ProviderEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         priorityOptions = [];
@@ -78,14 +79,12 @@ class ProviderEditor extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("enableSitemapProvider.Help")}
-                            label={resx.get("enableSitemapProvider")}
-                            />
+                            label={resx.get("enableSitemapProvider")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.settings.Enabled}
-                            onChange={this.onSettingChange.bind(this, "Enabled")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "Enabled")} />
                     </div>
                 </InputGroup>
             </div>;
@@ -95,13 +94,11 @@ class ProviderEditor extends Component {
                     <div className="providerSettings-row_dropdown">
                         <Label
                             tooltipMessage={resx.get("overridePriority.Help")}
-                            label={resx.get("overridePriority")}
-                            />
+                            label={resx.get("overridePriority")} />
                         <Dropdown
                             options={priorityOptions}
                             value={!state.settings.OverridePriority ? -1 : state.settings.Priority}
-                            onSelect={this.onSettingChange.bind(this, "Priority")}
-                            />
+                            onSelect={this.onSettingChange.bind(this, "Priority")} />
                     </div>
                 </InputGroup>
             </div>;
@@ -110,7 +107,7 @@ class ProviderEditor extends Component {
             return (
                 <div className={styles.providerSettingEditor}>
                     <div style={{ height: "15px" }} />
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box-secondary">
                         <Button
                             type="secondary"

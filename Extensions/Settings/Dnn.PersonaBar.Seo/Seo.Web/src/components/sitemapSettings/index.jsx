@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     seo as SeoActions
@@ -39,7 +40,7 @@ class SitemapSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.sitemapSettings) {
             this.setState({
@@ -89,7 +90,7 @@ class SitemapSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.setState({
             sitemapSettings: Object.assign({}, props.sitemapSettings),
             triedToSubmit: false,
@@ -280,12 +281,12 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("sitemapUrlLabel.Help")}
-                        label={resx.get("sitemapUrlLabel")}
-                        />
+                        label={resx.get("sitemapUrlLabel")} />
                     <div className="sitemapUrl">
                         <a
                             href={state.sitemapSettings.SitemapUrl}
-                            target="_blank">
+                            target="_blank"
+                            rel="noopener noreferrer">
                             {state.sitemapSettings.SitemapUrl}
                         </a>
                     </div>
@@ -293,27 +294,23 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblExcludePriority.Help")}
-                        label={resx.get("lblExcludePriority")}
-                        />
+                        label={resx.get("lblExcludePriority")} />
                     <Dropdown
                         options={priorityOptions}
                         value={state.sitemapSettings.SitemapExcludePriority}
-                        onSelect={this.onSettingChange.bind(this, "SitemapExcludePriority")}
-                        />
+                        onSelect={this.onSettingChange.bind(this, "SitemapExcludePriority")} />
                 </InputGroup>
                 <InputGroup>
                     <div className="sitemapSettings-row_switch">
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("lblIncludeHidden.Help")}
-                            label={resx.get("lblIncludeHidden")}
-                            />
+                            label={resx.get("lblIncludeHidden")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.sitemapSettings.SitemapIncludeHidden}
-                            onChange={this.onSettingChange.bind(this, "SitemapIncludeHidden")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "SitemapIncludeHidden")} />
                     </div>
                 </InputGroup>
             </div>;
@@ -321,14 +318,12 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblCache.Help")}
-                        label={resx.get("lblCache")}
-                        />
+                        label={resx.get("lblCache")} />
                     <div className="daysToCache">
                         <Dropdown
                             options={daysToCacheOptions}
                             value={state.sitemapSettings.SitemapCacheDays}
-                            onSelect={this.onSettingChange.bind(this, "SitemapCacheDays")}
-                            />
+                            onSelect={this.onSettingChange.bind(this, "SitemapCacheDays")} />
                         <Button
                             className="clearCacheBtn"
                             type="secondary"
@@ -340,27 +335,23 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblMinPagePriority.Help")}
-                        label={resx.get("lblMinPagePriority")}
-                        />
+                        label={resx.get("lblMinPagePriority")} />
                     <Dropdown
                         options={priorityOptions}
                         value={state.sitemapSettings.SitemapMinPriority}
-                        onSelect={this.onSettingChange.bind(this, "SitemapMinPriority")}
-                        />
+                        onSelect={this.onSettingChange.bind(this, "SitemapMinPriority")} />
                 </InputGroup>
                 <InputGroup>
                     <div className="sitemapSettings-row_switch">
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("lblLevelPriority.Help")}
-                            label={resx.get("lblLevelPriority")}
-                            />
+                            label={resx.get("lblLevelPriority")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.sitemapSettings.SitemapLevelMode}
-                            onChange={this.onSettingChange.bind(this, "SitemapLevelMode")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "SitemapLevelMode")} />
                     </div>
                 </InputGroup>
             </div>;
@@ -369,14 +360,12 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblSearchEngine.Help")}
-                        label={resx.get("lblSearchEngine")}
-                        />
+                        label={resx.get("lblSearchEngine")} />
                     <div className="searchEngineSubmit">
                         <Dropdown
                             options={this.searchEngineListToOptions(props.searchEngineUrls)}
                             value={state.searchEngine}
-                            onSelect={this.onSearchEngineChange.bind(this)}
-                            />
+                            onSelect={this.onSearchEngineChange.bind(this)} />
                         <Button
                             className="searchEngineSubmitBtn"
                             type="secondary"
@@ -391,8 +380,7 @@ class SitemapSettingsPanelBody extends Component {
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblVerification.Help")}
-                        label={resx.get("lblVerification")}
-                        />
+                        label={resx.get("lblVerification")} />
                     <div className="createVerification">
                         <SingleLineInputWithError
                             inputStyle={{ margin: "0" }}
@@ -400,8 +388,7 @@ class SitemapSettingsPanelBody extends Component {
                             error={this.state.error.verificationValidity && this.state.triedToCreate}
                             errorMessage={resx.get("VerificationValidity.ErrorMessage")}
                             value={state.verification}
-                            onChange={this.onVerificationChange.bind(this)}
-                            />
+                            onChange={this.onVerificationChange.bind(this)} />
                         <Button
                             className="createVerificationBtn"
                             type="secondary"
@@ -415,14 +402,14 @@ class SitemapSettingsPanelBody extends Component {
             return (
                 <div className={styles.sitemapSettings}>
                     <div className="columnTitle">{resx.get("SitemapSettings")}</div>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="columnTitle2">{resx.get("SitemapProviders")}</div>
                     <div className="provider-items-grid">
                         {this.renderProvidersHeader()}
                         {this.renderedProviders()}
                     </div>
                     <div className="columnTitle3">{resx.get("SiteSubmission")}</div>
-                    <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnThree, columnFour]}</Grid>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}

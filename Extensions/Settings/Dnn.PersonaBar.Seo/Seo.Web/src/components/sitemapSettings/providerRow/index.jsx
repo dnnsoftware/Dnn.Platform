@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Collapse from "dnn-collapsible";
 import "./style.less";
 import { EditIcon, CheckMarkIcon } from "dnn-svg-icons";
@@ -8,7 +9,7 @@ class ProviderRow extends Component {
         super();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         this.setState({
             opened

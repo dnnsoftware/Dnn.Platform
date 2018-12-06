@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 import styles from "./style.less";
 
@@ -7,14 +8,11 @@ class ProviderEditor extends Component {
         super();
     }
 
-    componentWillMount() {
-    }    
-
     /* eslint-disable react/no-danger */
     render() {        
         return <div className={styles.providerSettingEditor}>
-                <iframe className="edit-provider" seamless src={this.props.settingUrl} />
-                </div>;
+            <iframe className="edit-provider" seamless src={this.props.settingUrl} />
+        </div>;
     }
 }
 

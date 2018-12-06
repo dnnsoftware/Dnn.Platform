@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
@@ -33,14 +34,21 @@ export class Body extends Component {
         if (isHost) {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("URLManagementTab"),
-                resx.get("SitemapSettingsTab")]}
+                    resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
-                        messages={[resx.get("GlobalSetting")]}
-                        type="global"
-                        style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }}
-                        /></div>, resx.get("TestURLTab")]}
+                    tabHeaders={[
+                        resx.get("GeneralSettingsTab"), 
+                        resx.get("ExtensionUrlProvidersTab"), 
+                        <div style={{ fontSize: "9pt", paddingRight: 25 }} key="first">
+                            {resx.get("ExpressionsTab")} 
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"
+                                style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }} />
+                        </div>, 
+                        resx.get("TestURLTab")
+                    ]}
                     type="secondary">
                     <GeneralSettings />
                     <ExtensionUrlProviders />
@@ -53,7 +61,7 @@ export class Body extends Component {
         else {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("URLManagementTab"),
-                resx.get("SitemapSettingsTab")]}
+                    resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), resx.get("TestURLTab")]}
