@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     importExport as ImportExportActions,
@@ -64,7 +65,7 @@ class ExportModal extends Component {
             .map(item => item.category);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props, state } = this;
         const { exportRequest } = state;
         exportRequest.PortalId = props.portalId;
@@ -73,7 +74,7 @@ class ExportModal extends Component {
         });
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         const { state } = this;
         const { exportRequest } = state;
         let { reloadPages } = state;
@@ -400,8 +401,8 @@ class ExportModal extends Component {
                                     onChange={this.onChange.bind(this, "IncludeExtensions")}
                                 />
                             </InputGroup>
-                            {registeredItemsToExport.map(item =>
-                                <InputGroup>
+                            {registeredItemsToExport.map((item, i) =>
+                                <InputGroup key={i}>
                                     <Label
                                         labelType="inline"
                                         label={item.name}

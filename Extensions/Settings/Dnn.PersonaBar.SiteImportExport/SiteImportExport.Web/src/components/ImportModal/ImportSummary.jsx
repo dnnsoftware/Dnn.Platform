@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
@@ -127,8 +128,8 @@ class ImportSummary extends Component {
                                     />
                                     <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                                 </GridCell>
-                                {registeredItemsToExport.map(item =>
-                                    <GridCell>
+                                {registeredItemsToExport.map((item, i) =>
+                                    <GridCell key={i}>
                                         <Label
                                             labelType="inline"
                                             label={item.name}

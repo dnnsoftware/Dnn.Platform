@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { connect } from "react-redux";
@@ -44,7 +45,7 @@ class App extends Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
 
         document.addEventListener("siteImportExport", (e) => {

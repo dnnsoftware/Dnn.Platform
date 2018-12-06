@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";

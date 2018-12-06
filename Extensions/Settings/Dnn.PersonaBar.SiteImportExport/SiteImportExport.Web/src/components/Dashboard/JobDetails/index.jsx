@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import Label from "dnn-label";
@@ -19,14 +20,14 @@ class JobDetails extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         if (props.jobId) {
             props.dispatch(ImportExportActions.getJobDetails(props.jobId));
         }
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.cancelled !== this.state.cancelled) {
             this.setState({
                 cancelled: props.cancelled
@@ -273,8 +274,8 @@ class JobDetails extends Component {
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
                             </GridCell>
-                            {registeredItemsToExport.map(item =>
-                                <GridCell>
+                            {registeredItemsToExport.map((item, i) =>
+                                <GridCell key={i}>
                                     <Label
                                         labelType="inline"
                                         label={item.name}
