@@ -64,7 +64,7 @@ module.exports = {
             }
         ]
     },
-    externals: require("dnn-webpack-externals"),
+    externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
     plugins:
     isProduction
         ?
