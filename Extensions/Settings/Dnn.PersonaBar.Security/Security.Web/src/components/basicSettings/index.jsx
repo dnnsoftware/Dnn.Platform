@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -24,7 +25,7 @@ class BasicSettingsPanelBody extends Component {
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.BASIC_LOGIN_SETTINGS_EDIT;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.basicLoginSettings) {
             this.setState({
@@ -139,32 +140,27 @@ class BasicSettingsPanelBody extends Component {
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("DefaultAuthProvider.Help") }
-                            label={resx.get("DefaultAuthProvider") }
-                            />
+                            label={resx.get("DefaultAuthProvider") } />
                         <Dropdown
                             options={this.getAuthProviderOptions() }
                             value={state.basicLoginSettings.DefaultAuthProvider}
                             onSelect={this.onSettingChange.bind(this, "DefaultAuthProvider") }
-                            enabled={canEdit}
-                            />
+                            enabled={canEdit} />
                     </InputGroup>
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plAdministrator.Help") }
-                            label={resx.get("plAdministrator") }
-                            />
+                            label={resx.get("plAdministrator") } />
                         <Dropdown
                             options={this.getAdminUserOptions() }
                             value={state.basicLoginSettings.PrimaryAdministratorId}
                             onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId") }
-                            enabled={canEdit}
-                            />
+                            enabled={canEdit} />
                     </InputGroup>
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("Redirect_AfterLogin.Help") }
-                            label={resx.get("Redirect_AfterLogin") }
-                            />
+                            label={resx.get("Redirect_AfterLogin") } />
                         <PagePicker
                             serviceFramework={util.utilities.sf}
                             style={{ width: "100%", zIndex: 2 }}
@@ -174,14 +170,12 @@ class BasicSettingsPanelBody extends Component {
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLoginParameters}
-                            enabled={canEdit}
-                            />
+                            enabled={canEdit} />
                     </InputGroup>
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("Redirect_AfterLogout.Help") }
-                            label={resx.get("Redirect_AfterLogout") }
-                            />
+                            label={resx.get("Redirect_AfterLogout") } />
                         <PagePicker
                             serviceFramework={util.utilities.sf}
                             style={{ width: "100%", zIndex: 1 }}
@@ -191,23 +185,20 @@ class BasicSettingsPanelBody extends Component {
                             noneSpecifiedText={noneSpecifiedText}
                             CountText={"{0} Results"}
                             PortalTabsParameters={RedirectAfterLogoutParameters}
-                            enabled={canEdit}
-                            />
+                            enabled={canEdit} />
                     </InputGroup>
                     <InputGroup>
                         <div className="loginSettings-row_switch" style={{ margin: "0" }}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("Security_RequireValidProfileAtLogin.Help") }
-                                label={resx.get("Security_RequireValidProfileAtLogin") }
-                                />
+                                label={resx.get("Security_RequireValidProfileAtLogin") } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.RequireValidProfileAtLogin}
                                 onChange={this.onSettingChange.bind(this, "RequireValidProfileAtLogin") }
-                                readOnly={!canEdit}
-                                />
+                                readOnly={!canEdit} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -215,15 +206,13 @@ class BasicSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("Security_CaptchaLogin.Help") }
-                                label={resx.get("Security_CaptchaLogin") }
-                                />
+                                label={resx.get("Security_CaptchaLogin") } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaLogin}
                                 onChange={this.onSettingChange.bind(this, "CaptchaLogin") }
-                                readOnly={!canEdit}
-                                />
+                                readOnly={!canEdit} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -231,15 +220,13 @@ class BasicSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("Security_CaptchaRetrivePassword.Help") }
-                                label={resx.get("Security_CaptchaRetrivePassword") }
-                                />
+                                label={resx.get("Security_CaptchaRetrivePassword") } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaRetrivePassword}
                                 onChange={this.onSettingChange.bind(this, "CaptchaRetrivePassword") }
-                                readOnly={!canEdit}
-                                />
+                                readOnly={!canEdit} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -247,15 +234,13 @@ class BasicSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("Security_CaptchaChangePassword.Help") }
-                                label={resx.get("Security_CaptchaChangePassword") }
-                                />
+                                label={resx.get("Security_CaptchaChangePassword") } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.CaptchaChangePassword}
                                 onChange={this.onSettingChange.bind(this, "CaptchaChangePassword") }
-                                readOnly={!canEdit}
-                                />
+                                readOnly={!canEdit} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -263,15 +248,13 @@ class BasicSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plHideLoginControl.Help") }
-                                label={resx.get("plHideLoginControl") }
-                                />
+                                label={resx.get("plHideLoginControl") } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.basicLoginSettings.HideLoginControl}
                                 onChange={this.onSettingChange.bind(this, "HideLoginControl") }
-                                readOnly={!canEdit}
-                                />
+                                readOnly={!canEdit} />
                         </div>
                     </InputGroup>
                     {canEdit &&

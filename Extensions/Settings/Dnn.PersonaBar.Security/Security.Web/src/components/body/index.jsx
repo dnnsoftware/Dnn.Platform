@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
@@ -62,8 +63,7 @@ export class Body extends Component {
                             right: -27,
                             top: 15,
                             textTransform: "none"
-                        }}
-                        />
+                        }} />
                 </div>);
             }
         }
@@ -80,8 +80,7 @@ export class Body extends Component {
                             right: -27,
                             top: 15,
                             textTransform: "none"
-                        }}
-                        />
+                        }} />
                 </div>);
                 memberAccountsTabs.push(<MemberManagement />);
             }
@@ -117,8 +116,7 @@ export class Body extends Component {
                         right: -27,
                         top: 15,
                         textTransform: "none"
-                    }}
-                    /></div>);
+                    }} /></div>);
             moreTabs.push(<OtherSettings />);
         }
         if (isAdmin) {

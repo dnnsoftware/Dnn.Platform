@@ -1,20 +1,21 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Collapse from "dnn-collapsible";
 import "./style.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
-const allowIcon = require(`!raw!./../../svg/checkbox.svg`);
-const denyIcon = require(`!raw!./../../svg/cross_out.svg`);
-const editIcon = require(`!raw!./../../svg/edit.svg`);
-const deleteIcon = require(`!raw!./../../svg/trash.svg`);
+const allowIcon = require(`!raw-loader!./../../svg/checkbox.svg`);
+const denyIcon = require(`!raw-loader!./../../svg/cross_out.svg`);
+const editIcon = require(`!raw-loader!./../../svg/edit.svg`);
+const deleteIcon = require(`!raw-loader!./../../svg/trash.svg`);
 
 class IpFilterRow extends Component {
     constructor() {
         super();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened

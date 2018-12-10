@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -9,7 +10,7 @@ import resx from "../../resources";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const warningIcon = require(`!raw!./../svg/error.svg`);
+const warningIcon = require(`!raw-loader!./../svg/error.svg`);
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {
@@ -19,7 +20,7 @@ class SecurityBulletinsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.securityBulletins) {
             return;
@@ -37,9 +38,9 @@ class SecurityBulletinsPanelBody extends Component {
         const tableFields = [
             { "name": resx.get("Bulletins"), "id": "Bulletins" }
         ];
-        let tableHeaders = tableFields.map((field) => {
+        let tableHeaders = tableFields.map((field, i) => {
             let className = "bulletinsHeader bulletinsHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -69,7 +70,7 @@ class SecurityBulletinsPanelBody extends Component {
                             </div>
                             <div style={{ fontWeight: "bolder", margin: "15px 0 15px 0" }}>{resx.get("BulletinLink")}</div>
                             <div className="bulletin-detail-link">
-                                <a target="_blank" href={term.Link}>{term.Link}</a>
+                                <a target="_blank" href={term.Link} rel="noopener noreferrer">{term.Link}</a>
                             </div>
                             <div style={{ height: "20px" }}>&nbsp;</div>
                         </div>

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -19,7 +20,7 @@ class AuditCheckPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.auditCheckResults) {
             return;
@@ -33,9 +34,9 @@ class AuditCheckPanelBody extends Component {
             { "name": resx.get("Result"), "id": "Result" },
             { "name": resx.get("Notes"), "id": "Notes" }
         ];
-        let tableHeaders = tableFields.map((field) => {
+        let tableHeaders = tableFields.map((field, i) => {
             let className = "auditCheckHeader auditCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -96,9 +97,9 @@ class AuditCheckPanelBody extends Component {
         }
     }
 
-    onAuditCheck(result){
+    onAuditCheck(result) {
         const {state, props} = this;
-        if(state.checking){
+        if (state.checking) {
             return;
         }
 
@@ -121,9 +122,9 @@ class AuditCheckPanelBody extends Component {
 
     renderedList() {
         const {props} = this;
-        return props.auditCheckResults.map((term) => {
+        return props.auditCheckResults.map((term, i) => {
             return (
-                <div className="auditCheckItem">
+                <div className="auditCheckItem" key={i}>
                     <div className="label-name">
                         <div className="label-wrapper">
                             <span>{term.CheckNameText}&nbsp; </span>

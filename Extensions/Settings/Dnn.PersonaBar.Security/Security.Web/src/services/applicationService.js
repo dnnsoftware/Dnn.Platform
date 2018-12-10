@@ -117,8 +117,8 @@ class ApplicationService {
             
         });
 
-        if(this.searchRequest && this.searchRequest.readyState !== 4){
-            if(window.dnn){
+        if (this.searchRequest && this.searchRequest.readyState !== 4) {
+            if (window.dnn) {
                 window.dnn.loading = false;
             }
             this.searchRequest.abort();

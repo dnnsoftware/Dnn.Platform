@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -33,7 +34,7 @@ class OtherSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.otherSettings) {
             this.setState({
@@ -49,7 +50,7 @@ class OtherSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         let {state} = this;
 
         let autoAccountUnlockDuration = props.otherSettings["AutoAccountUnlockDuration"];
@@ -180,15 +181,13 @@ class OtherSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.DisplayCopyright}
-                                onChange={this.onSettingChange.bind(this, "DisplayCopyright")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DisplayCopyright")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -201,15 +200,13 @@ class OtherSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.ShowCriticalErrors}
-                                onChange={this.onSettingChange.bind(this, "ShowCriticalErrors")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "ShowCriticalErrors")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -222,15 +219,13 @@ class OtherSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.DebugMode}
-                                onChange={this.onSettingChange.bind(this, "DebugMode")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DebugMode")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -243,15 +238,13 @@ class OtherSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.otherSettings.RememberCheckbox}
-                                onChange={this.onSettingChange.bind(this, "RememberCheckbox")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "RememberCheckbox")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -262,16 +255,14 @@ class OtherSettingsPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.autoAccountUnlockDuration && this.state.triedToSubmit}
                             errorMessage={resx.get("AutoAccountUnlockDuration.ErrorMessage")}
                             value={state.otherSettings.AutoAccountUnlockDuration}
-                            onChange={this.onSettingChange.bind(this, "AutoAccountUnlockDuration")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "AutoAccountUnlockDuration")} />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -281,16 +272,14 @@ class OtherSettingsPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.asyncTimeout && this.state.triedToSubmit}
                             errorMessage={resx.get("AsyncTimeout.ErrorMessage")}
                             value={state.otherSettings.AsyncTimeout}
-                            onChange={this.onSettingChange.bind(this, "AsyncTimeout")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "AsyncTimeout")} />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -300,16 +289,14 @@ class OtherSettingsPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.maxUploadSize && this.state.triedToSubmit}
                             errorMessage={resx.get("maxUploadSize.Error").replace("{0}", state.otherSettings.RangeUploadSize)}
                             value={state.otherSettings.MaxUploadSize}
-                            onChange={this.onSettingChange.bind(this, "MaxUploadSize")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "MaxUploadSize")} />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -319,13 +306,11 @@ class OtherSettingsPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <MultiLineInputWithError
                             value={state.otherSettings.AllowedExtensionWhitelist}
-                            onChange={this.onSettingChange.bind(this, "AllowedExtensionWhitelist")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "AllowedExtensionWhitelist")} />
                     </InputGroup>
                     <div className="buttons-box">
                         <Button

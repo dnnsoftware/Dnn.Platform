@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -12,7 +13,7 @@ import { AddIcon } from "dnn-svg-icons";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const warningIcon = require(`!raw!./../svg/error.svg`);
+const warningIcon = require(`!raw-loader!./../svg/error.svg`);
 
 let tableFields = [];
 
@@ -24,7 +25,7 @@ class IpFiltersPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(SecurityActions.getIpFilters());
 
@@ -111,11 +112,11 @@ class IpFiltersPanelBody extends Component {
                     Collapse={this.collapse.bind(this) }
                     onDelete={this.onDeleteIpFilter.bind(this, item.IPFilterID) }
                     id={id}>
-                        <IpFilterEditor
-                            ipFilterId={item.IPFilterID}
-                            Collapse={this.collapse.bind(this) }
-                            onUpdate={this.onUpdateIpFilter.bind(this) }
-                            id={id}
+                    <IpFilterEditor
+                        ipFilterId={item.IPFilterID}
+                        Collapse={this.collapse.bind(this) }
+                        onUpdate={this.onUpdateIpFilter.bind(this) }
+                        id={id}
                         openId={this.state.openId} />
                 </IpFilterRow>
             );
@@ -135,15 +136,15 @@ class IpFiltersPanelBody extends Component {
                             </div>
                         }
                         <div className="AddItemRow">
-                                <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                                    </div> {resx.get("cmdAdd") }
-                                </div>
+                            <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
+                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                </div> {resx.get("cmdAdd") }
+                            </div>
                         </div>
                     </div>
                     <div className="ip-filter-items-grid">
                         {this.renderHeader() }
-                                <IpFilterRow
+                        <IpFilterRow
                             ipFilterId={"-"}
                             ruleType={"-"}
                             ipFilter={"-"}
@@ -155,12 +156,12 @@ class IpFiltersPanelBody extends Component {
                             Collapse={this.collapse.bind(this) }
                             onDelete={this.onDeleteIpFilter.bind(this) }
                             id={"add"}
-                                    visible={opened}>
+                            visible={opened}>
                             <IpFilterEditor
                                 Collapse={this.collapse.bind(this) }
                                 onUpdate={this.onUpdateIpFilter.bind(this) }
                                 id={"add"}
-                                        openId={this.state.openId} />
+                                openId={this.state.openId} />
                         </IpFilterRow>
                         {this.renderedIpFilters() }
                     </div>

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -32,7 +33,7 @@ class IpFilterEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.ipFilterId) {
             props.dispatch(SecurityActions.getIpFilter({
@@ -49,7 +50,7 @@ class IpFilterEditor extends Component {
         typeOptions.push({ label: resx.get("DenyIP"), value: 2 });
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         let {state} = this;
 
         let ip = props.ipFilter["IPAddress"];
@@ -182,8 +183,7 @@ class IpFilterEditor extends Component {
                 <Label
                     labelType="inline"
                     tooltipMessage={resx.get("plRuleSpecifity.Help") }
-                    label={resx.get("plRuleSpecifity") }
-                    />
+                    label={resx.get("plRuleSpecifity") } />
                 {this.state.isIpRange &&
                     <RadioButtons
                         onChange={this.toggle.bind(this) }
@@ -202,42 +202,36 @@ class IpFilterEditor extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("plRuleType.Help") }
-                    label={resx.get("plRuleType") }
-                    />
+                    label={resx.get("plRuleType") } />
                 <Dropdown
                     options={typeOptions }
                     value={this.state.ipFilter.RuleType != undefined ? this.state.ipFilter.RuleType : 1}
-                    onSelect={this.onSettingChange.bind(this, "RuleType") }
-                    />
+                    onSelect={this.onSettingChange.bind(this, "RuleType") } />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("plFirstIP.Help") }
-                    label={resx.get("plFirstIP") }
-                    />
+                    label={resx.get("plFirstIP") } />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={this.state.error.ip && this.state.triedToSubmit}
                     errorMessage={resx.get("IPValidation.ErrorMessage") }
                     value={this.state.ipFilter.IPAddress}
-                    onChange={this.onSettingChange.bind(this, "IPAddress") }
-                    />
+                    onChange={this.onSettingChange.bind(this, "IPAddress") } />
             </InputGroup>
             {this.state.isIpRange &&
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSubnet.Help") }
-                        label={resx.get("plSubnet") }
-                        />
+                        label={resx.get("plSubnet") } />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={this.state.error.mask && this.state.triedToSubmit}
                         errorMessage={resx.get("IPValidation.ErrorMessage") }
                         value={this.state.ipFilter.SubnetMask}
-                        onChange={this.onSettingChange.bind(this, "SubnetMask") }
-                        />
+                        onChange={this.onSettingChange.bind(this, "SubnetMask") } />
                 </InputGroup>
             }
         </div>;
@@ -248,9 +242,9 @@ class IpFilterEditor extends Component {
         return (
             <div className="ip-filter-setting-editor">
                 <Grid
-                    children={children}
-                    numberOfColumns={1}
-                    />
+                    numberOfColumns={1}>
+                    {children}
+                </Grid>
                 <div className="buttons-box">
                     <Button                        
                         type="secondary"

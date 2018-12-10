@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     security as SecurityActions
@@ -12,7 +13,7 @@ class SuperuserActivityPanelBody extends Component {
         super();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.activities) {
             return;
@@ -27,9 +28,9 @@ class SuperuserActivityPanelBody extends Component {
             { "name": resx.get("LastLogin"), "id": "LastLogin" },
             { "name": resx.get("LastActivityDate"), "id": "LastActivityDate" }
         ];
-        let tableHeaders = tableFields.map((field) => {
+        let tableHeaders = tableFields.map((field, i) => {
             let className = "activityHeader activityHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -39,9 +40,9 @@ class SuperuserActivityPanelBody extends Component {
 
     renderedList() {
         const {props} = this;
-        return props.activities.map((term) => {
+        return props.activities.map((term, i) => {
             return (
-                <div className="activityItem">
+                <div className="activityItem" key={i}>
                     <div className="label-username">
                         <div className="label-wrapper">
                             <span>{term.Username}&nbsp; </span>
