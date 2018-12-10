@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import DropdownWithError from "dnn-dropdown-with-error";
@@ -38,10 +39,10 @@ class FromManifest extends Component {
             triedToSave: false
         };
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.retrieveOwnerAndModuleFolders();
     }
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.moduleFiles.length > 0) {
             let { newModule } = this.state;
             newModule.fileName.value = props.moduleFiles[0].value;
@@ -193,8 +194,7 @@ class FromManifest extends Component {
                             options={props.moduleFiles}
                             onSelect={this.onFolderSelect.bind(this, "fileName")}
                             value={state.newModule.fileName.value}
-                            error={state.newModule.fileName.error && state.triedToSave}
-                            />
+                            error={state.newModule.fileName.error && state.triedToSave} />
                         <Switch value={state.newModule.addPage.value}
                             tooltipMessage={Localization.get("NewModule_AddTestPage.HelpText")}
                             label={Localization.get("NewModule_AddTestPage.Label")}

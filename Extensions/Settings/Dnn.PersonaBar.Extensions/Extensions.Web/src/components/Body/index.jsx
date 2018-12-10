@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import { PaginationActions, VisiblePanelActions, ExtensionActions, InstallationActions } from "actions";
@@ -37,7 +38,7 @@ class Body extends Component {
         this.handleSelect = this.handleSelect.bind(this);
         this.state = {};
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         this.isHost = utilities.settings.isHost;
         if ((!props.locales || props.locales.length === 0)) {

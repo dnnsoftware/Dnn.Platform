@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { InstallationActions } from "actions";
 import Body from "./Body";
@@ -55,7 +56,7 @@ class App extends Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
 
         document.addEventListener("installPortalTheme", (e) => {

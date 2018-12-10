@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import Collapse from "dnn-collapsible";
 import { EditIcon, TrashIcon } from "dnn-svg-icons";

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import Button from "dnn-button";
@@ -42,7 +43,7 @@ class InUseModal extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props, state} = this;
 
         if (props.usageFilter) {
@@ -62,7 +63,7 @@ class InUseModal extends Component {
         props.dispatch(ExtensionActions.GetPackageUsageFilter());
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         let {state} = this;
 
         if (state.portalId === -1) {
@@ -125,9 +126,9 @@ class InUseModal extends Component {
     renderUsageDetail() {
         const {props} = this;
         if (props.tabUrls) {
-            return props.tabUrls.map((item) => {
+            return props.tabUrls.map((item, i) => {
                 return (
-                    <div className="usage-detail-taburl" dangerouslySetInnerHTML={{ __html: item.TabUrl }}></div>
+                    <div key={i} className="usage-detail-taburl" dangerouslySetInnerHTML={{ __html: item.TabUrl }}></div>
                 );
             });
         }

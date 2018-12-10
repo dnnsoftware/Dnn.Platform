@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
@@ -60,8 +61,7 @@ class PackageInformation extends Component {
                         label={Localization.get("EditExtension_PackageType.Label")}
                         defaultDropdownValue={!props.validationMapped ? extensionBeingEdited.packageType : extensionBeingEdited.packageType.value}
                         style={inputStyle}
-                        enabled={false}
-                        />
+                        enabled={false} />
                 </GridCell>
                 <GridSystem className="with-right-border top-half">
                     <div>
@@ -79,7 +79,6 @@ class PackageInformation extends Component {
                             error={extensionBeingEdited.friendlyName.error && props.triedToSave}
                             enabled={!props.disabled}
                             onChange={props.onChange && props.onChange.bind(this, "friendlyName")} />
-
                         <SingleLineInputWithError
                             label={Localization.get("EditExtension_PackageIconFile.Label")}
                             tooltipMessage={Localization.get("EditExtension_PackageIconFile.HelpText")}
@@ -106,22 +105,19 @@ class PackageInformation extends Component {
                             defaultDropdownValue={formatVersionNumber(version[0])}
                             onSelect={props.onVersionChange && props.onVersionChange.bind(this, 0)}
                             className="version-dropdown"
-                            style={{position: "relative", top: 3}}
-                            />
+                            style={{position: "relative", top: 3}} />
                         <Dropdown
                             options={getVersionDropdownValues()}
                             className="version-dropdown"
                             label={formatVersionNumber(version[1])}
                             onSelect={props.onVersionChange && props.onVersionChange.bind(this, 1)}
-                            enabled={!props.disabled}
-                            />
+                            enabled={!props.disabled} />
                         <Dropdown
                             options={getVersionDropdownValues()}
                             label={formatVersionNumber(version[2])}
                             className="version-dropdown"
                             onSelect={props.onVersionChange && props.onVersionChange.bind(this, 2)}
-                            enabled={!props.disabled}
-                            />
+                            enabled={!props.disabled} />
                     </div>
                 </GridSystem>
                 <GridCell><hr /></GridCell>

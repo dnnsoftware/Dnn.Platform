@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -110,8 +111,7 @@ class Module extends Component {
                             })}
                             value={extensionBeingEdited.category.value}
                             onSelect={this.onSelect.bind(this, "category")}
-                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
-                            />
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
@@ -137,8 +137,7 @@ class Module extends Component {
                             ]}
                             value={extensionBeingEdited.shareable.value}
                             onSelect={this.onSelect.bind(this, "shareable")}
-                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
-                            />
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                         }
                         <Switch value={extensionBeingEdited.portable.value}
                             readOnly={true}
@@ -206,8 +205,7 @@ class Module extends Component {
                             ]}
                             value={extensionBeingEdited.shareable.value}
                             onSelect={this.onSelect.bind(this, "shareable")}
-                            style={inputStyle}
-                            />
+                            style={inputStyle} />
                         }
                     </div>
                 </GridSystem>

@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-const upload = require("!raw!./img/upload.svg");
-const checkmark = require("!raw!./img/checkmark.svg");
-const errorIcon = require("!raw!./img/x.svg");
+const upload = require("!raw-loader!./img/upload.svg");
+const checkmark = require("!raw-loader!./img/checkmark.svg");
+const errorIcon = require("!raw-loader!./img/x.svg");
 
 export default class UploadBar extends Component {
     constructor() {
@@ -24,7 +25,7 @@ export default class UploadBar extends Component {
         this._isMounted = false;
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.uploadComplete) {
             clearTimeout(this.setTimeout);
             if (this._isMounted) {

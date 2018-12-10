@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -42,8 +43,7 @@ class ControlFields extends Component {
                                 };
                             })}
                             onSelect={props.onSelectSourceFolder.bind(this)}
-                            value={props.selectedSourceFolder}
-                            />
+                            value={props.selectedSourceFolder} />
                         <DropdownWithError
                             label={Localization.get("AddModuleControl_Type.Label")}
                             tooltipMessage={Localization.get("AddModuleControl_Type.HelpText")}
@@ -75,8 +75,7 @@ class ControlFields extends Component {
                                 }
                             ]}
                             value={props.controlBeingEdited.type}
-                            onSelect={this.onSelect.bind(this, "type")}
-                            />
+                            onSelect={this.onSelect.bind(this, "type")} />
                         <DropdownWithError
                             label={Localization.get("AddModuleControl_Icon.Label")}
                             tooltipMessage={Localization.get("AddModuleControl_Icon.HelpText")}
@@ -88,8 +87,7 @@ class ControlFields extends Component {
                                 };
                             })}
                             value={props.controlBeingEdited.icon}
-                            onSelect={this.onSelect.bind(this, "icon")}
-                            />
+                            onSelect={this.onSelect.bind(this, "icon")} />
                         <Switch value={props.controlBeingEdited.supportPopups}
                             label={Localization.get("AddModuleControl_SupportsPopups.Label")}
                             onText={Localization.get("SwitchOn")}
@@ -116,8 +114,7 @@ class ControlFields extends Component {
                             })}
                             value={props.controlBeingEdited.source}
                             error={props.triedToSave && props.error.source}
-                            onSelect={this.onSelect.bind(this, "source")}
-                            />
+                            onSelect={this.onSelect.bind(this, "source")} />
                         <SingleLineInputWithError
                             label={Localization.get("AddModuleControl_ViewOrder.Label")}
                             tooltipMessage={Localization.get("AddModuleControl_ViewOrder.HelpText")}

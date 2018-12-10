@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -11,8 +12,8 @@ import styles from "./style.less";
 const inputStyle = { width: "100%" };
 class JavascriptLibrary extends Component {
     getNameVersionRows(list) {
-        return list.map(item => {
-            return <GridCell className="js-library-info-row">
+        return list.map((item, i) => {
+            return <GridCell key={i} className="js-library-info-row">
                 <GridCell columnSize={70} className="js-library-info-name">
                     <p>{item.name}</p>
                 </GridCell>
@@ -27,9 +28,9 @@ class JavascriptLibrary extends Component {
             <Label
                 label={label}
                 tooltipMessage={labelTooltip}
-                />,
-            <hr className="jslibrary-table-separator" />,
-            <GridCell className="js-library-info-table">
+                key="first" />,
+            <hr className="jslibrary-table-separator" key="second" />,
+            <GridCell className="js-library-info-table" key="third">
                 <GridCell className="js-library-info-name-header" columnSize={70}>
                     {Localization.get("EditJavascriptLibrary_TableName.Header")}
                 </GridCell>

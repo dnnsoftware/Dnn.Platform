@@ -3,10 +3,10 @@ import App from "../components/App";
 import DevTools from "./DevTools";
 
 const Root = () => (
-  <div className="boilerplate-root">
-      <App/>
-      <DevTools />
-  </div>
+    <div className="boilerplate-root">
+        <App/>
+        <DevTools />
+    </div>
 );
 
 

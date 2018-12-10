@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { ExtensionActions } from "actions";
 import GridCell from "dnn-grid-cell";
@@ -37,7 +38,7 @@ class ModuleDefinitions extends Component {
             cacheTime: 0
         };
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             moduleDefinitionBeingEdited: this.getNewModuleDefinition()
         });
@@ -189,7 +190,8 @@ class ModuleDefinitions extends Component {
                 onDelete={this.onDelete.bind(this, moduleDefinition.id, index)}
                 isEditMode={state.moduleDefinitionBeingEditedIndex === index}
                 onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
-                onEdit={this.onEditModuleDefinition.bind(this, Object.assign({}, moduleDefinition), index)} />;
+                onEdit={this.onEditModuleDefinition.bind(this, Object.assign({}, moduleDefinition), index)}
+                key={index} />;
         });
 
         const isAddMode = state.editMode && state.moduleDefinitionBeingEditedIndex === -1;
@@ -213,8 +215,7 @@ class ModuleDefinitions extends Component {
                                 error={state.error}
                                 triedToSave={state.triedToSave}
                                 isEditMode={false}
-                                moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited}
-                                />
+                                moduleDefinitionBeingEdited={state.moduleDefinitionBeingEdited} />
                             <GridCell className="modal-footer">
                                 <Button type="secondary" onClick={this.exitEditMode.bind(this)}>{Localization.get("ModuleDefinitions_Cancel.Button")}</Button>
                                 <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("ModuleDefinitions_Save.Button")}</Button>

@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React, { } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -19,8 +20,8 @@ const StepSix = ({onClose, logs}) => (
 
             <Scrollbars style={packageCreationStyle}>
                 <div className="package-creation-report">
-                    {logs.map((log) => {
-                        return <p>{log}</p>;
+                    {logs.map((log, i) => {
+                        return <p key={i}>{log}</p>;
                     })}
                 </div>
             </Scrollbars>

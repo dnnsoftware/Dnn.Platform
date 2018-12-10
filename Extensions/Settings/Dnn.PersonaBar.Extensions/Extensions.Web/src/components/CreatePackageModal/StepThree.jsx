@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React, { } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import MultiLineInput from "dnn-multi-line-input";
@@ -12,8 +13,7 @@ const StepThree = ({packageManifest, onCancel, onNext, onPrevious, onFileOrAssem
             <MultiLineInput
                 className="package-assemblies"
                 value={packageManifest.assemblies.join("\n")}
-                onChange={onFileOrAssemblyChange.bind(this, "assemblies")}
-                />
+                onChange={onFileOrAssemblyChange.bind(this, "assemblies")} />
         </GridCell>
         <GridCell className="modal-footer">
             <Button type="secondary" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
@@ -162,8 +163,7 @@ class NewModuleModal extends Component {
                                     value={this.state.selectedType}
                                     onSelect={this.onSelectNewModuleType.bind(this)}
                                     label={Localization.get("CreateNewModuleFrom.Label")}
-                                    style={inputStyle}
-                                    />
+                                    style={inputStyle} />
                                 {this.state.selectedType === "" &&
                                     <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
                                 }

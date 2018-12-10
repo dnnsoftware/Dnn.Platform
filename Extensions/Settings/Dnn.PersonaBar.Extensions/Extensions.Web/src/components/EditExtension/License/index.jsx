@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import { Scrollbars } from "react-custom-scrollbars";

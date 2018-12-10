@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     ExtensionActions,
@@ -28,14 +29,14 @@ class InstalledExtensions extends Component {
         return !props.installedPackages || props.installedPackages.length === 0;
     }
 
-    componentWillMount() {
-        const {props, state} = this;
+    UNSAFE_scomponentWillMount() {
+        const {props} = this;
         if (this.checkIfPackageTypesEmpty(props)) {
             props.dispatch(ExtensionActions.getPackageTypes());
         }
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (!this.checkIfPackageTypesEmpty(props) && this.checkIfInstalledPackagesEmpty(props) && props.selectedInstalledPackageType === "") {
             this.setState({loading: true}, () => {
                 props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type, ()=> {
@@ -72,12 +73,12 @@ class InstalledExtensions extends Component {
         }));
     }
 
-    renderLoading(){
+    renderLoading() {
         /* eslint-disable react/no-danger */
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
-            <div dangerouslySetInnerHTML={{ __html: require("!raw!./../../../img/fetching.svg") }} />
+            <div dangerouslySetInnerHTML={{ __html: require("!raw-loader!./../../../img/fetching.svg") }} />
         </div>;
     }
 
@@ -92,9 +93,9 @@ class InstalledExtensions extends Component {
                             value: _package.Type
                         };
                     })}
-                        label={Localization.get("Showing.Label")}
-                        value={props.selectedInstalledPackageType}
-                        labelType="inline" />
+                    label={Localization.get("Showing.Label")}
+                    value={props.selectedInstalledPackageType}
+                    labelType="inline" />
                 </GridCell>
                 {state.loading && this.renderLoading()}
                 {(props.installedPackages && props.installedPackages.length > 0 && !state.loading) &&

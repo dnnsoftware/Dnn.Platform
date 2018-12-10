@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
 import { ArrowLeftIcon, ArrowRightIcon, DoubleArrowRightIcon, DoubleArrowLeftIcon } from "dnn-svg-icons";
@@ -12,7 +13,8 @@ class AssignedSelector extends Component {
         const { props } = this;
         return list.map((portal, index) => {
             return <li className={portal.selected ? "selected" : ""}
-                onClick={props.onClickOnPortal.bind(this, index, type)}>
+                onClick={props.onClickOnPortal.bind(this, index, type)}
+                key={index}>
                 {portal.name}
             </li>;
         });

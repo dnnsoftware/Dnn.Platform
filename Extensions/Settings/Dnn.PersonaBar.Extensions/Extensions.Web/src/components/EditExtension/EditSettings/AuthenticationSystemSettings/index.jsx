@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";

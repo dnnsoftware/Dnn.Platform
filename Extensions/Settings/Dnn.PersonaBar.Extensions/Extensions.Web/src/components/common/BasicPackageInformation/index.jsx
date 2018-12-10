@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React, { } from "react";
+import PropTypes from "prop-types";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -26,8 +27,7 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 label={Localization.get("EditExtension_PackageType.Label")}
                 onSelect={onPackageTypeSelect}
                 value={!validationMapped ? extensionData.packageType : (extensionData.packageType.value)}
-                style={inputStyle}
-                />
+                style={inputStyle} />
             <SingleLineInputWithError
                 label={Localization.get("EditExtension_PackageName.Label")}
                 tooltipMessage={Localization.get("EditExtension_PackageName.HelpText")}
@@ -64,22 +64,19 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 defaultDropdownValue={formatVersionNumber(version[0])}
                 onSelect={onVersionChange && onVersionChange.bind(this, 0)}
                 className="version-dropdown"
-                style={{position: "relative", top: 3}}
-                />
+                style={{position: "relative", top: 3}} />
             <Dropdown
                 options={getVersionDropdownValues()}
                 className="version-dropdown"
                 label={formatVersionNumber(version[1])}
                 onSelect={onVersionChange && onVersionChange.bind(this, 1)}
-                enabled={!disabled}
-                />
+                enabled={!disabled} />
             <Dropdown
                 options={getVersionDropdownValues()}
                 label={formatVersionNumber(version[2])}
                 className="version-dropdown"
                 onSelect={onVersionChange && onVersionChange.bind(this, 2)}
-                enabled={!disabled}
-                />
+                enabled={!disabled} />
         </div>
     </GridSystem>
 );

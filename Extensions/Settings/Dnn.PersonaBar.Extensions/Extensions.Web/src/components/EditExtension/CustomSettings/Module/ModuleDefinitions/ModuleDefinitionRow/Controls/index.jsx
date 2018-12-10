@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import Localization from "localization";
@@ -202,7 +203,8 @@ class Controls extends Component {
                 selectedSourceFolder={state.selectedSourceFolder}
                 isEditMode={state.controlBeingEditedIndex === index}
                 onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
-                onEdit={this.onEdit.bind(this, Object.assign({}, moduleControl), index)} />;
+                onEdit={this.onEdit.bind(this, Object.assign({}, moduleControl), index)}
+                key={index} />;
         });
         const isAddMode = state.editMode && state.controlBeingEditedIndex === -1;
         return (
@@ -227,8 +229,7 @@ class Controls extends Component {
                             sourceFiles={props.sourceFiles}
                             onSelectSourceFolder={this.onSelectSourceFolder.bind(this)}
                             selectedSourceFolder={state.selectedSourceFolder}
-                            onCancel={this.exitEditMode.bind(this)} // Set definition being edited as null.
-                            />
+                            onCancel={this.exitEditMode.bind(this)} /* Set definition being edited as null. */ />
                     </Collapse>
                     <GridCell columnSize={15} className="module-control-title-header">
                         {Localization.get("AddModuleControl_Title.Label")}

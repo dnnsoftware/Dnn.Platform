@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
 import Button from "dnn-button";
@@ -25,8 +26,8 @@ class EditExtension extends Component {
                 <p>{Localization.get("InstallExtension_Logs.HelpText")}</p>
                 <Scrollbars style={errorCount > 0 ? Object.assign({borderBottom: "2px solid #EA2134"}, licenseBoxStyle) : licenseBoxStyle}>
                     <div className="package-installation-report">
-                        {props.logs.map((log) => {
-                            return <p className={log.Type.toLowerCase()}>{log.Type + " " + log.Description}</p>;
+                        {props.logs.map((log, i) => {
+                            return <p className={log.Type.toLowerCase()} key={i}>{log.Type + " " + log.Description}</p>;
                         })}
                     </div>
                 </Scrollbars>

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import Localization from "localization";
 import Collapse from "dnn-collapsible";
@@ -36,8 +37,7 @@ class ModuleDefinitionRow extends Component {
                             triedToSave={props.triedToSave}
                             onChange={props.onChange.bind(this)}
                             isEditMode={true}
-                            moduleDefinitionBeingEdited={props.moduleDefinitionBeingEdited}
-                            />
+                            moduleDefinitionBeingEdited={props.moduleDefinitionBeingEdited} />
                         <GridCell className="module-controls">
                             <Controls
                                 moduleControls={props.moduleDefinitionBeingEdited.controls}

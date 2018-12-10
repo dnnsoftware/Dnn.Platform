@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import GridCell from "dnn-grid-cell";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -23,7 +24,7 @@ class ReleaseNotes extends Component {
                 {props.installationMode && <h6>{Localization.get("InstallExtension_ReleaseNotes.Header")}</h6>}
                 {props.installationMode && <p>{Localization.get("InstallExtension_ReleaseNotes.HelpText")}</p>}
                 {!props.readOnly && <MultiLineInputWithError
-                        label={!props.installationMode && Localization.get("InstallExtension_ReleaseNotes.Header")}
+                    label={!props.installationMode && Localization.get("InstallExtension_ReleaseNotes.Header")}
                     style={inputStyle}
                     enabled={!props.disabled}
                     value={value}
