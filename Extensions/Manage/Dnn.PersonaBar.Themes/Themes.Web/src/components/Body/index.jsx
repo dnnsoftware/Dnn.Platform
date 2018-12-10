@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
@@ -78,11 +79,11 @@ class Body extends Component {
         return (
             <GridCell className="themes-body">
                 <PersonaBarPageHeader title={Localization.get("Themes")}>
-                {utils.params.settings.isHost &&
+                    {utils.params.settings.isHost &&
                     <Button type="primary" size="large" onClick={this.installTheme.bind(this)}>
                         {Localization.get("InstallTheme")}
                     </Button>
-                }
+                    }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <SiteTheme />

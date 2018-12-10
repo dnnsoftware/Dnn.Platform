@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
@@ -31,7 +32,7 @@ class EditThemeAttributes extends Component {
 
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         if (props.tokens.length === 0) {
@@ -101,7 +102,7 @@ class EditThemeAttributes extends Component {
 
 
     onThemeChanged(themeName) {
-        const {props, state} = this;
+        const {props} = this;
         this.setState({ themeName: themeName.value, level: themeName.level, path: "", token: "", setting: "", value: "" }, function () {
             let themeName = this.state.themeName;
             let type = this.getThemeType();

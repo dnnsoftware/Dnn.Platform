@@ -59,26 +59,26 @@ export default function theme(state = {
                 currentThemeFiles: [[], []]
             };
         case ActionTypes.DELETE_THEME:
-            {
-                let deletedTheme = action.data.theme;
-                let layouts = state.themes.layouts;
-                if (layouts.some(l => l.packageName === deletedTheme.packageName)) {
-                    layouts = layouts.filter(l => {
-                        return l.packageName !== deletedTheme.packageName;
-                    });
-                }
-
-                let containers = state.themes.containers;
-                if (containers.some(l => l.packageName === deletedTheme.packageName)) {
-                    containers = containers.filter(l => {
-                        return l.packageName !== deletedTheme.packageName;
-                    });
-                }
-
-                return { ...state,
-                    themes: { layouts: layouts, containers: containers }
-                };
+        {
+            let deletedTheme = action.data.theme;
+            let layouts = state.themes.layouts;
+            if (layouts.some(l => l.packageName === deletedTheme.packageName)) {
+                layouts = layouts.filter(l => {
+                    return l.packageName !== deletedTheme.packageName;
+                });
             }
+
+            let containers = state.themes.containers;
+            if (containers.some(l => l.packageName === deletedTheme.packageName)) {
+                containers = containers.filter(l => {
+                    return l.packageName !== deletedTheme.packageName;
+                });
+            }
+
+            return { ...state,
+                themes: { layouts: layouts, containers: containers }
+            };
+        }
         default:
             return { ...state
             };

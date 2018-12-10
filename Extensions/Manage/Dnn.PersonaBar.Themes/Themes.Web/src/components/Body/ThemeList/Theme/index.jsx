@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
@@ -24,10 +25,10 @@ class Theme extends Component {
         let currentTheme = props.currentTheme;
         if (theme.type === 0) {
             return currentTheme.SiteLayout.themeName === theme.packageName
-                    && currentTheme.SiteLayout.level == theme.level;
+                    && currentTheme.SiteLayout.level === theme.level;
         } else {
             return currentTheme.SiteContainer.themeName === theme.packageName
-                    && currentTheme.SiteContainer.level == theme.level;
+                    && currentTheme.SiteContainer.level === theme.level;
         }
     }
 
