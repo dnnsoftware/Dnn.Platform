@@ -1,13 +1,10 @@
-import React, {Component, PropTypes} from "react";
-import Button from "dnn-button";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { Button, Label, Switch, SingleLineInputWithError, MultiLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styles from "./style.less";
 import Localization from "../../localization";
-import Label from "dnn-label";
-import Switch from "dnn-switch";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import {
     templateActions as TemplateActions
 } from "../../actions";

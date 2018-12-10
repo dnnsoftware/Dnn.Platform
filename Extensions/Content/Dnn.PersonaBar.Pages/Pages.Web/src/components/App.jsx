@@ -1,10 +1,9 @@
 
-import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { PersonaBarPageHeader, PersonaBarPage, Button, GridCell } from "@dnnsoftware/dnn-react-common";
 import {
     pageActions as PageActions,
     addPagesActions as AddPagesActions,
@@ -19,14 +18,12 @@ import AddPages from "./AddPages/AddPages";
 import Localization from "../localization";
 import PageList from "./PageList/PageList";
 import SaveAsTemplate from "./SaveAsTemplate/SaveAsTemplate";
-import Button from "dnn-button";
 import utils from "../utils";
 import panels from "../constants/panels";
 import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
 import BreadCrumbs from "./BreadCrumbs";
-import GridCell from "dnn-grid-cell";
 import Promise from "promise";
 import SearchPageInput from "./SearchPage/SearchPageInput";
 
@@ -86,6 +83,11 @@ class App extends Component {
     }
 
     componentDidMount() {
+        let { selectedPage } = this.props;
+        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
+            this.props.getContentLocalizationEnabled();
+        }
+
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
@@ -149,23 +151,18 @@ class App extends Component {
             this.updateReferral(viewParams.referral, viewParams.referralText);
         }
     }
-
-    componentWillMount() {
-        let { selectedPage } = this.props;
-        if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
-            this.props.getContentLocalizationEnabled();
-        }
-    }
-
+    
     componentWillUnmount() {
-        document.removeEventListener("viewPageSettings");
+        document.removeEventListener("viewPageSettings", this.resolveTabBeingViewed);
     }
 
-
-    componentWillReceiveProps(newProps) {
-        this.notifyErrorIfNeeded(newProps);
+    componentDidUpdate(prevProps) {
+        if (this.props.error && this.props.error && this.props.error !== prevProps.error){
+            const errorMessage = (this.props.error && this.props.error.message) || Localization.get("AnErrorOccurred");
+            utils.notify(errorMessage);
+        }
         window.dnn.utility.closeSocialTasks();
-        const { selectedPage } = newProps;
+        const { selectedPage } = this.props;
         if (selectedPage && selectedPage.tabId > 0 && selectedPage.canManagePage !== undefined && !selectedPage.canManagePage) {
             this.noPermissionSelectionPageId = utils.getCurrentPageId();
             this.setEmptyStateMessage(Localization.get("NoPermissionEditPage"));
@@ -219,12 +216,6 @@ class App extends Component {
             callAPI();
         };
         this.props.getPageHierarchy(selectedId).then(buildTreeInternal);
-    }
-    notifyErrorIfNeeded(newProps) {
-        if (newProps.error !== this.props.error) {
-            const errorMessage = (newProps.error && newProps.error.message) || Localization.get("AnErrorOccurred");
-            utils.notifyError(errorMessage);
-        }
     }
 
     onPageSettings(pageId) {
@@ -321,7 +312,7 @@ class App extends Component {
                 const left = () => {
                     const { pageList } = this.props;
                     pageList.forEach((item, index) => {
-                        if (item.id == update.tabId) {
+                        if (item.id === update.tabId) {
                             cachedItem = item;
                             const arr1 = pageList.slice(0, index);
                             const arr2 = pageList.slice(index + 1);
@@ -335,7 +326,7 @@ class App extends Component {
                 const right = () => {
 
                     this._traverse((item, list, updateStore) => {
-                        if (item.id == update.oldParentId) {
+                        if (item.id === update.oldParentId) {
                             item.childListItems.forEach((child, index) => {
                                 if (child.id === update.tabId) {
                                     cachedItem = child;
@@ -354,7 +345,7 @@ class App extends Component {
             };
 
             const addToNewParent = () => {
-                if (update.parentId == -1) {
+                if (update.parentId === -1) {
                     this._traverse((item, list, updateStore) => {
                         if (item.id === list[list.length - 1].id) {
                             (cachedItem) ? cachedItem.parentId = -1 : null;
@@ -364,7 +355,7 @@ class App extends Component {
                     });
                 } else {
                     this._traverse((item, list, updateStore) => {
-                        if (item.id == update.parentId) {
+                        if (item.id === update.parentId) {
 
                             (cachedItem) ? cachedItem.parentId = item.id : null;
 
@@ -376,7 +367,7 @@ class App extends Component {
                                         updateStore(list);
                                     });
                                     break;
-                                case item.childCount == 0 && !item.childListItems:
+                                case item.childCount === 0 && !item.childListItems:
                                     item.childCount++;
                                     item.childListItems = [];
                                     item.childListItems.push(cachedItem);
@@ -485,14 +476,13 @@ class App extends Component {
     }
 
     onCancelPage(parentPageId) {
-        const {props, state} = this;
         this._removePageFromTree(parentPageId);
         this.props.changeSelectedPagePath("");
         (parentPageId !== -1) ? this.props.onCancelPage(parentPageId) : this.props.onCancelPage();
         this.setState({inDuplicateMode: false});
     }
 
-    onChangeParentId(newParentId) {
+    onChangeParentId() {
         this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
     }
 
@@ -579,8 +569,8 @@ class App extends Component {
             }
             
             setTimeout(()=>{
-                if (ReactDOM.findDOMNode(this).querySelector("#name")) {
-                    ReactDOM.findDOMNode(this).querySelector("#name").focus();
+                if (this.node.querySelector("#name")) {
+                    this.node.querySelector("#name").focus();
                 }    
             },100);
         };
@@ -766,7 +756,7 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPageSettings, onHidePageSettings } = this.props;
+        const { selectedPage, settingsButtonComponents, onLoadSavePageAsTemplate, onShowPageSettings, onHidePageSettings } = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
         
         return (
@@ -1158,8 +1148,8 @@ class App extends Component {
         const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
 
         if (tags) {
-            tags = tags[0] == "," ? tags.replace(",", "") : tags;
-            tags = tags[tags.length - 1] == "," ? tags.split(",").filter(t => !!t).join() : tags;
+            tags = tags[0] === "," ? tags.replace(",", "") : tags;
+            tags = tags[tags.length - 1] === "," ? tags.split(",").filter(t => !!t).join() : tags;
         }
 
         let search = { 
@@ -1322,7 +1312,7 @@ class App extends Component {
             const { props } = this;
             const { isContentLocalizationEnabled } = props;
             return (
-                <PageSettings
+                <PageSettings key={"pageDetails" + this.props.selectedPage.tabId}
                     selectedPage={this.props.selectedPage}
                     AllowContentLocalization={isContentLocalizationEnabled}
                     selectedPageErrors={{}}
@@ -1366,7 +1356,7 @@ class App extends Component {
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
         return (
             <GridCell columnSize={100} className="treeview-page-details" >
-                <PageSettings selectedPage={props.selectedPage}
+                <PageSettings key="newPageSettings" selectedPage={props.selectedPage}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -1567,7 +1557,7 @@ class App extends Component {
          /* eslint-disable react/no-danger */
         return (
 
-            <div className="pages-app personaBar-mainContainer">
+            <div ref={node => this.node = node} className="pages-app personaBar-mainContainer">
                 { isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
@@ -1629,7 +1619,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     pageList: PropTypes.array.isRequired,
     searchPageList: PropTypes.func.isRequired,
     searchAndFilterPagedPageList: PropTypes.func.isRequired,
@@ -1638,11 +1627,11 @@ App.propTypes = {
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
-    selectedPageDirty: PropTypes.boolean,
-    selectedTemplateDirty: PropTypes.boolean,
-    filtersUpdated: PropTypes.boolean,
+    selectedPageDirty: PropTypes.bool,
+    selectedTemplateDirty: PropTypes.bool,
+    filtersUpdated: PropTypes.bool,
     bulkPage: PropTypes.object,
-    dirtyBulkPage : PropTypes.boolean, 
+    dirtyBulkPage : PropTypes.bool, 
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
     onCreatePage: PropTypes.func.isRequired,
@@ -1650,7 +1639,7 @@ App.propTypes = {
     onDeletePage: PropTypes.func.isRequired,
     getPageList: PropTypes.func.isRequired,
     getPage: PropTypes.func.isRequired,
-    updatePageListStore: PropTypes.func.isRequire,
+    updatePageListStore: PropTypes.func.isRequired,
     getNewPage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
@@ -1682,20 +1671,20 @@ App.propTypes = {
     onHidePanel: PropTypes.func.isRequired,
     onShowPageSettings: PropTypes.func,
     onHidePageSettings: PropTypes.func,
-    isContentLocalizationEnabled: PropTypes.object.isRequired,
+    isContentLocalizationEnabled: PropTypes.bool,
     getContentLocalizationEnabled: PropTypes.func.isRequired,
     selectPage: PropTypes.func.isRequired,
     selectedPagePath: PropTypes.array.isRequired,
     changeSelectedPagePath: PropTypes.func.isRequired,
-    onGetCachedPageCount: PropTypes.array.isRequired,
+    onGetCachedPageCount: PropTypes.func,
     onClearCache: PropTypes.func.isRequired,
     clearSelectedPage: PropTypes.func.isRequired,
     onModuleCopyChange: PropTypes.func,
     workflowList: PropTypes.array.isRequired,
     customPageSettingsComponents: PropTypes.array,
     getPageHierarchy: PropTypes.func.isRequired,
-    dirtyTemplate: PropTypes.boolean,
-    dirtyCustomDetails: PropTypes.boolean,
+    dirtyTemplate: PropTypes.bool,
+    dirtyCustomDetails: PropTypes.bool,
     onChangeCustomDetails: PropTypes.func
 };
 

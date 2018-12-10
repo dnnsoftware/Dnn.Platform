@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import DatePicker from "dnn-date-picker";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Switch, Label, DatePicker } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 
 class EnableScheduling extends Component {
@@ -53,10 +52,10 @@ class EnableScheduling extends Component {
 }
 
 EnableScheduling.propTypes = {
-    schedulingEnabled: PropTypes.bool.isRequired,
+    schedulingEnabled: PropTypes.bool,
     onChangeSchedulingEnabled: PropTypes.func.isRequired,
-    startDate: PropTypes.date,
-    endDate: PropTypes.date,
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
     onChangeStartDate: PropTypes.func.isRequired,
     onChangeEndDate: PropTypes.func.isRequired
 };

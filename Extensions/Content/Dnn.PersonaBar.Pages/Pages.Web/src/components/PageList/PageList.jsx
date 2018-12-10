@@ -1,7 +1,7 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import SearchBox from "dnn-search-box";
+import { GridCell, SearchBox } from "@dnnsoftware/dnn-react-common";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
 import styles from "./PageList.less";

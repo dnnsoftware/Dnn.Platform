@@ -1,11 +1,10 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import ModulesRow from "./ModuleRow/ModuleRow";
 import styles from "./style.less";
-import GridCell from "dnn-grid-cell";
+import { GridCell, SvgIcons, Modal } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import utils from "../../utils";
-import { ModuleIcon } from "dnn-svg-icons";
-import Modal from "dnn-modal";
 import ModuleEdit from "./ModuleEdit/ModuleEdit";
 
 class Modules extends Component {
@@ -70,7 +69,7 @@ class Modules extends Component {
             /* eslint-disable react/no-danger */
             <div className={styles.moduleContainer}>
                 <div className="module-title">
-                        <div className="module-icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
+                        <div className="module-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
                         <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
                     </div>
                 <div className="module-table">    

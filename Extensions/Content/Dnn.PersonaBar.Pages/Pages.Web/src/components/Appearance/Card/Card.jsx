@@ -1,5 +1,6 @@
-import React, {Component, PropTypes} from "react";
-import OverflowText from "dnn-text-overflow-wrapper";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import localization from "../../../localization";
 
@@ -46,8 +47,8 @@ class Card extends Component {
         return (
             <div className={className}>
                 {this.getImageComponent() }
-                <OverflowText text={this.props.label} maxWidth={maxWidth} className={(isSiteDefault ? 'card-title site-default' : 'card-title') }  />
-                <OverflowText text={isSiteDefault && localization.get("SiteDefault") } maxWidth={maxWidth} className="card-title-site-default" />
+                <TextOverflowWrapper text={this.props.label} maxWidth={maxWidth} className={(isSiteDefault ? 'card-title site-default' : 'card-title') }  />
+                <TextOverflowWrapper text={isSiteDefault && localization.get("SiteDefault") } maxWidth={maxWidth} className="card-title-site-default" />
             </div>
         );
     }

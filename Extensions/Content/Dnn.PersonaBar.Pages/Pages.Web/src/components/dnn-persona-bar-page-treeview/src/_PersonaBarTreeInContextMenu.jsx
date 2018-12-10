@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import Localization from "localization";
-import { TreeAddPage, TreeAnalytics, TreeCopy, TreeEdit, EyeIcon } from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
-import cloneDeep from 'lodash/clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 import securityService from "../../../services/securityService";
 
 import "./styles.less";
@@ -13,15 +13,15 @@ export class PersonaBarTreeInContextMenu extends Component {
 
     constructor(props) {
         super(props);
-        this.showMenu = false;
+        this.state = {showMenu:false};
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let { props } = this;
         if (props.item === undefined) {
-            this.showMenu = false;
+            this.setState({showMenu: false});
         } else {
-            this.showMenu = true;
+            this.setState({showMenu: true});
         }
     }
 
@@ -61,7 +61,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 key: "Add",
                 title: Localization.get("AddPage"),
                 index: 10,
-                icon: TreeAddPage,
+                icon: SvgIcons.TreeAddPage,
                 onClick: this.onItemClick
             });
         }
@@ -70,7 +70,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 key: "View",
                 title: Localization.get("View"),
                 index: 20,
-                icon: EyeIcon,
+                icon: SvgIcons.EyeIcon,
                 onClick: this.onItemClick
             });
         }
@@ -80,7 +80,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 key: "Edit",
                 title: Localization.get("Edit"),
                 index: 30,
-                icon: TreeEdit,
+                icon: SvgIcons.TreeEdit,
                 onClick: this.onItemClick
             });
         }
@@ -90,7 +90,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 key: "Duplicate",
                 title: Localization.get("Duplicate"),
                 index: 40,
-                icon: TreeCopy,
+                icon: SvgIcons.TreeCopy,
                 onClick: this.onItemClick
             });
         }
@@ -125,11 +125,11 @@ export class PersonaBarTreeInContextMenu extends Component {
     renderActionable(item) {
         const visibleMenus = this.buildMenuItems(item);
         /*eslint-disable react/no-danger*/
-        if (this.showMenu && visibleMenus.length) {
+        if (this.state.showMenu && visibleMenus.length) {
             return (<Menu>
                 {
                     visibleMenus.map(menu => {
-                        return <MenuItem onMenuAction={menu.onClick.bind(this, menu.key, item, menu.OnClickAction)}>
+                        return <MenuItem key={menu.key} onMenuAction={menu.onClick.bind(this, menu.key, item, menu.OnClickAction)}>
                             <div className="icon" dangerouslySetInnerHTML={{ __html: menu.icon }} />
                             <div className="label">{menu.title}</div>
                         </MenuItem>;

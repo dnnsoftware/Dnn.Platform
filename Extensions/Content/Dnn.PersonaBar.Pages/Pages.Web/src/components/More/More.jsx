@@ -1,20 +1,14 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
-import Label from "dnn-label";
-import Switch from "dnn-switch";
-import Dropdown from "dnn-dropdown";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { GridSystem, GridCell, Label, Switch, Dropdown, Button, RadioButtons, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import { pageActions as PageActions } from "../../actions";
 import styles from "./style.less";
 
 class More extends Component {
-    componentWillMount() {
+    componentDidMount() {
         this.props.onFetchCacheProviderList();
         if (this.props.page.cacheProvider && !this.props.cachedPageCount) {
             this.props.onGetCachedPageCount(this.props.page.cacheProvider);

@@ -1,6 +1,5 @@
 import Api from "./api";
 import utils from "../utils";
-import securityService from "./securityService";
 const PageService = function () {
 
     function getOverridablePagesApi() {

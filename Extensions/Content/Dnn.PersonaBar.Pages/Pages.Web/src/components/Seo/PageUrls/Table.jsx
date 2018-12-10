@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import UrlRow from "./UrlRow";
 import EditUrl from "./EditUrl";
-import { AddIcon, LinkIcon } from "dnn-svg-icons";
 import styles from "./style.less";
 
 class Table extends Component {
@@ -16,7 +16,9 @@ class Table extends Component {
         const { siteAliases, primaryAliasId, onSave, onCancel, onDelete, onChange, editedUrl,
             pageHasParent, editingUrl, onOpenEditForm } = this.props;
         return pageUrls.map(url => {
-            return <UrlRow url={url}
+            return <UrlRow 
+                key={url.id}
+                url={url}
                 editedUrl={editedUrl}
                 onOpenEditForm={onOpenEditForm}
                 pageHasParent={pageHasParent}
@@ -43,10 +45,10 @@ class Table extends Component {
         return (
             <div>
                 <div className={styles.AddItemRow}>
-                    <div className="link-icon" dangerouslySetInnerHTML={{ __html: LinkIcon }} />
+                    <div className="link-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
                     <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
                     <div className={"AddItemBox" + (newFormOpened ? " active" : "")} onClick={onOpenNewForm}>
-                        <div className={"add-icon" + (newFormOpened ? " active" : "")} dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                        <div className={"add-icon" + (newFormOpened ? " active" : "")} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                         </div> {Localization.get("AddUrl")}
                     </div>
                 </div>

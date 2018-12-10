@@ -115,7 +115,7 @@ const pageActions = {
     },
 
     getPage(id) {
-        return (dispatch) => PagesService.getPage(id);
+        return () => PagesService.getPage(id);
     },
 
     getChildPageList(id) {
@@ -148,12 +148,12 @@ const pageActions = {
 
     viewPage(id, url, callback) {
         PagesService.openPageInEditMode(id, url, callback);
-        return (dispatch) => {
+        return () => {
 
         };
     },
 
-    duplicatePage(reloadTemplate) {
+    duplicatePage() {
         return (dispatch, getState) => {
             const { pages } = getState();
             const duplicate = (page) => {
@@ -270,9 +270,7 @@ const pageActions = {
     },
 
     updatePage(page, callback) {
-        return (dispatch, getState) => {
-
-            const { pages } = getState();
+        return (dispatch) => {
 
             PagesService.savePage(page).then(response => {
 

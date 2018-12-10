@@ -1,5 +1,6 @@
-import TransitionModal from "dnn-transition-modal";
-import React, {Component, PropTypes} from "react";
+import { TransitionModal } from "@dnnsoftware/dnn-react-common";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Notify from "./Notify";
 
 import "./NotifyModal.less";

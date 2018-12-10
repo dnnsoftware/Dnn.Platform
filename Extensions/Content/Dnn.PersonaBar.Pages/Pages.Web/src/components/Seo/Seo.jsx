@@ -1,13 +1,9 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import styles from "./style.less";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
-import Label from "dnn-label";
-import Dropdown from "dnn-dropdown";
+import { GridSystem, GridCell, Label, Dropdown, MultiLineInputWithError, Switch } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import PageUrls from "./PageUrls/PageUrls";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Switch from "dnn-switch";
 
 class Seo extends Component {
 

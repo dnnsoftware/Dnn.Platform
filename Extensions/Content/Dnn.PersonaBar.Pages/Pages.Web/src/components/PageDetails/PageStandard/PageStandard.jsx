@@ -1,16 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
+import { GridSystem, GridCell, InputGroup, SingleLineInputWithError, MultiLineInputWithError, Tags, Label, PagePicker } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import styles from "./style.less";
-import Tags from "dnn-tags";
-import Label from "dnn-label";
-import PagePicker from "dnn-page-picker";
 import Utils from "../../../utils";
 
 class PageDetails extends Component {
@@ -76,7 +69,7 @@ class PageDetails extends Component {
                             errorMessage={errors.name}
                             value={page.name}
                             onChange={this.onChangeField.bind(this, "name")}
-                            maxLength="200"
+                            maxLength={200}
                             inputId="name" />
                     </GridCell>
                     <GridCell className="right-column">
@@ -87,7 +80,7 @@ class PageDetails extends Component {
                             tooltipMessage={Localization.get("TitleTooltip")}
                             value={page.title}
                             onChange={this.onChangeField.bind(this, "title")}
-                            maxLength="200" />
+                            maxLength={200} />
                     </GridCell>
                 </GridSystem>
                 <InputGroup style={{ padding: "0px", marginBottom: "0px" }}>
@@ -97,7 +90,7 @@ class PageDetails extends Component {
                         onChange={this.onChangeField.bind(this, "description")}
                         inputStyle={{ height: "64px", minHeight: "64px", marginBottom: "28px", paddingBottom: "0px" }}
                         labelStyle={{ paddingTop: "0px", paddingBottom: "10px" }}
-                        maxLength="500" />
+                        maxLength={500} />
                 </InputGroup>
                 <InputGroup style={{ padding: "0px", margin: "0px" }}>
                     <MultiLineInputWithError
@@ -107,7 +100,7 @@ class PageDetails extends Component {
                         inputStyle={{ height: "64px", minHeight: "32px" }}
                         labelStyle={{ paddingBottom: "10px" }}
                         style={{ padding: "0px" }}
-                        maxLength="500" />
+                        maxLength={500} />
                 </InputGroup>
                 <GridSystem>
                     <GridCell className="left-column input-cell">
@@ -140,9 +133,9 @@ class PageDetails extends Component {
 }
 
 PageDetails.propTypes = {
-    onSelectParentPageId: PropTypes.func.isRequired,
-    selectedParentPageName: PropTypes.string.isRequired,
-    selectedParentPageId: PropTypes.number.isRequired,
+    onSelectParentPageId: PropTypes.func,
+    selectedParentPageName: PropTypes.string,
+    selectedParentPageId: PropTypes.number,
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired

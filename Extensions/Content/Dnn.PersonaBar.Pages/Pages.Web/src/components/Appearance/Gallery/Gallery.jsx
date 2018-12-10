@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
 import style from "./style.less";
 
@@ -16,7 +17,7 @@ class Gallery extends Component {
 
     scrollToSelectedItem(scrollToIndex) {
         const indexToScroll = scrollToIndex !== -1 ? scrollToIndex : 0; 
-        const scrollbars = this.refs.scrollbars;
+        const scrollbars = this.scrollbarsRef;
         if (scrollbars) {
             const scrollClientWidth = scrollbars.getClientWidth();
             const scrollLeft = indexToScroll * this.getElementSize();
@@ -26,12 +27,12 @@ class Gallery extends Component {
             if (scrollLeft > lowBoundary && scrollLeft < highBoundary) {
                 return;
             }
-            this.refs.scrollbars.scrollLeft(scrollLeft);
+            this.scrollbarsRef.scrollLeft(scrollLeft);
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        setTimeout(() => this.scrollToSelectedItem(newProps.scrollToIndex), 0);
+    componentDidUpdate() {
+        setTimeout(() => this.scrollToSelectedItem(this.props.scrollToIndex), 0);
     }
     
     componentDidMount() {
@@ -42,7 +43,7 @@ class Gallery extends Component {
         const width = this.calculateGalleryWidth();    
         return (
             <div className={style.moduleContainer}>
-                <Scrollbars ref="scrollbars"
+                <Scrollbars ref={this.scrollbarsRef}
                     className="container"
                     autoHeight
                     autoHeightMin={0}

@@ -1,11 +1,10 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Localization from "localization";
 import Module from "./Module";
-import Checkbox from "dnn-checkbox";
+import { Checkbox, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./PageLanguage.less";
 import utils from "../../utils";
-
-import { EyeIcon, ModuleIcon, LinkIcon } from "dnn-svg-icons";
 
 class PageLanguage extends Component {
 
@@ -65,6 +64,7 @@ class PageLanguage extends Component {
         const modules = this.props.modules || [];
         const moduleComponents = modules.map((module, index) => {
             return <Module
+                key={module.id}
                 isDefault={this.props.isDefault}
                 module={module}
                 onUpdateModules={this.props.onUpdateModules}
@@ -79,7 +79,7 @@ class PageLanguage extends Component {
                 <div className="page-language-row">
                     <img src={iconSrc} alt={cultureCode} />
                     <span>{cultureCode}</span>
-                    <a className="icon" href={page.PageUrl} onClick={this.onViewPage.bind(this, page.PageUrl)} dangerouslySetInnerHTML={{ __html: EyeIcon }} aria-label="View"></a>
+                    <a className="icon" href={page.PageUrl} onClick={this.onViewPage.bind(this, page.PageUrl)} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} aria-label="View"></a>
                 </div>
                 <div className="page-language-row">
                     <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName") } aria-label="Name" />
@@ -88,13 +88,13 @@ class PageLanguage extends Component {
                 </div>
                 <div className="page-language-row">
                     <div className="page-language-row-header">
-                        <span className="icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
+                        <span className="icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
                         <span>{Localization.get("ModulesOnThisPage") }</span>
                         {!this.props.isDefault && <div className="icons-container">
                             <span
                             className={`icon float-left ${(this.state.allModulesLinked ? " blue" : "")}`}
                             onClick={this.linkAllModules.bind(this)  }
-                            dangerouslySetInnerHTML={{ __html: LinkIcon }} />
+                            dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
                             <Checkbox
                             style={{ float: "left" }}
                             value={this.state.allModulesSelected}

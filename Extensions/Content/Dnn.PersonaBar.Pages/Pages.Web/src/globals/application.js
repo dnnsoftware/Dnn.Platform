@@ -3,7 +3,6 @@ import PageHierarchyActions from "../actions/pageHierarchyActions";
 import ExtensionsActions from "../actions/extensionsActions";
 import PageActions from "../actions/pageActions";
 import utils from "../utils";
-import securityService from "../services/securityService";
 import { languagesActions } from "../actions/index";
 
 const application = {

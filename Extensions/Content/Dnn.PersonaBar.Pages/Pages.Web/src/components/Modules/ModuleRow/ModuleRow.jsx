@@ -1,8 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
-import { EditIcon, SettingsIcon, TrashIcon } from "dnn-svg-icons";
-import Checkbox from "dnn-checkbox";
-import RadioButtons from "dnn-radio-buttons";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, SvgIcons, Checkbox, RadioButtons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import Localization from "../../../localization";
 
@@ -38,16 +36,16 @@ class ModuleRow extends Component {
                 </GridCell>
                 {!showCopySettings &&
                     <GridCell columnSize={10} >
-                        <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete.bind(this, module)}></div>
+                        <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={onDelete.bind(this, module)}></div>
                         <div 
                             className={editClassName} 
                             onClick={onSetting.bind(this, module)} 
-                            dangerouslySetInnerHTML={{ __html: SettingsIcon }}></div>
+                            dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }}></div>
                         {module.allTabs === false && module.editContentUrl &&
                             <div 
                                 className={editClassName} 
                                 onClick={onEditing.bind(this, module)} 
-                                dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
+                                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>}
                     </GridCell>
                 }
                 {showCopySettings &&

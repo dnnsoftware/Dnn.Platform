@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { PropTypes } from "prop-types";
 import "./styles.less";
-import {CollapseTree, ExpandTree} from "dnn-svg-icons";
+import {CollapseTree, ExpandTree} from "@dnnsoftware/dnn-react-common";
 
 export default class PersonaBarExpandCollapseIcon extends Component {
 
@@ -17,6 +17,6 @@ export default class PersonaBarExpandCollapseIcon extends Component {
 }
 
 PersonaBarExpandCollapseIcon.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool,
     item: PropTypes.object.isRequired
 };

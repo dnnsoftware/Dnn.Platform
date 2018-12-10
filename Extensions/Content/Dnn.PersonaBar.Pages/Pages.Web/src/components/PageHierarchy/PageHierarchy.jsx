@@ -1,5 +1,5 @@
-import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {pageHierarchyManager} from "./pages.pageHierarchy";
 import utils from "../../utils";
 import "./css/pages-hierarchy.css";
@@ -7,8 +7,6 @@ import "./css/pages-hierarchy.css";
 class PageHierarchy extends Component {
     componentDidMount() {
         const {itemTemplate, dragItemTemplate, searchKeyword} = this.props;
-
-        this.node = ReactDOM.findDOMNode(this);
         pageHierarchyManager.utility = utils.getUtilities();
         pageHierarchyManager.resx = pageHierarchyManager.utility.resx.Pages;
         pageHierarchyManager._viewModel = {};
@@ -21,22 +19,22 @@ class PageHierarchy extends Component {
         pageHierarchyManager.selectedPagePathChanged = p => this.props.onSelectedPagePathChanged([...p]);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {itemTemplate, dragItemTemplate, searchKeyword, selectedPage} = this.props;
-        if (itemTemplate !== nextProps.itemTemplate) {
-            pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
+    componentDidUpdate(prevProps) {
+        const {itemTemplate, dragItemTemplate, searchKeyword, selectedPage} = prevProps;
+        if (itemTemplate && itemTemplate !== this.props.itemTemplate) {
+            pageHierarchyManager.setItemTemplate(this.props.itemTemplate);
         }    
 
-        if (dragItemTemplate !== nextProps.dragItemTemplate) {
-            pageHierarchyManager.setDragItemTemplate(nextProps.dragItemTemplate);
+        if (dragItemTemplate && dragItemTemplate !== this.props.dragItemTemplate) {
+            pageHierarchyManager.setDragItemTemplate(this.props.dragItemTemplate);
         }    
 
-        if (searchKeyword !== nextProps.searchKeyword) {
-            pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
+        if (searchKeyword && searchKeyword !== this.props.searchKeyword) {
+            pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);
         }
 
-        if (selectedPage !== nextProps.selectedPage) {
-            pageHierarchyManager.selectPageFromBreadCrumbs(nextProps.selectedPage);
+        if (selectedPage && selectedPage !== this.props.selectedPage) {
+            pageHierarchyManager.selectPageFromBreadCrumbs(this.props.selectedPage);
         }
     }
     
@@ -54,8 +52,8 @@ class PageHierarchy extends Component {
     }
     
     render() {
-        const html = require("raw!./pages.html");
-        return <div dangerouslySetInnerHTML={{__html: html}} />; // eslint-disable-line react/no-danger
+        const html = require("raw-loader!./pages.html");
+        return <div ref={node => this.node = node} dangerouslySetInnerHTML={{__html: html}} />; // eslint-disable-line react/no-danger
     }
 } 
 

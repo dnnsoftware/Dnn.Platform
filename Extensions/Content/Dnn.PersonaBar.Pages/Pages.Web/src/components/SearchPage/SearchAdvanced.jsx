@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import Collapse from "dnn-collapsible";
-import { SearchIcon } from "dnn-svg-icons";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Collapse, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import SearchAdvancedDetails from "./SearchAdvancedDetails";
 import "./styles.less";
@@ -26,7 +26,7 @@ class SearchAdvanced extends Component {
             <div className={`advancedCollapsibleComponent ${this.state.collapsed?"open":""}`}>
                 <div className={`collapsible-header false` } onClick={this.toggle.bind(this)}>
                     <div className="search-advanced-header">
-                        <div className="search-advanced-icon" dangerouslySetInnerHTML={{ __html: SearchIcon }}>
+                        <div className="search-advanced-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.SearchIcon }}>
                         </div>
                         <div className="search-advanced-label">
                             {Localization.get("AdvancedFilters")}
