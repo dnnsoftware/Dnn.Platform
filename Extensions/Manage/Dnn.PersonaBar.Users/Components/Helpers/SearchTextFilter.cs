@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         {
             var pattern = new StringBuilder();
             var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
-            var inStringRegex = "^(\\*|%)?([\\w\\-_\\*\\%\\.\\@]+)(\\*|%)$";
+            var inStringRegex = "^(\\*|%)?([\\w\\-_\\s\\*\\%\\.\\@]+)(\\*|%)$";
             var regex = new Regex(inStringRegex, regexOptions);
             var matches = regex.Matches(searchText);
 
@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         {
             var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
             var pattern = new StringBuilder();
-            var prefixRegex = "^(\\*|%)?([\\w\\-_\\*\\%\\.\\@]+)";
+            var prefixRegex = "^(\\*|%)?([\\w\\-_\\s\\*\\%\\.\\@]+)";
             var regex = new Regex(prefixRegex, regexOptions);
             var matches = regex.Matches(searchText);
 
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
         {
             var pattern = new StringBuilder();
             var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Compiled;
-            var suffixRegex = "([\\w\\-_\\*\\%\\.\\@]+)(\\*|%)$";
+            var suffixRegex = "([\\w\\-_\\*\\s\\%\\.\\@]+)(\\*|%)$";
             var regex = new Regex(suffixRegex, regexOptions);
             var matches = regex.Matches(searchText);
 
