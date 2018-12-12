@@ -1,14 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Switch from "dnn-switch";
-import RadioButtons from "dnn-radio-buttons";
+import { GridCell, GridSystem, SingleLineInputWithError, MultiLineInputWithError, Switch, RadioButtons, Button } from "@dnnsoftware/dnn-react-common";
 import FolderDropdown from "../common/FolderDropdown";
 import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
-import Button from "dnn-button";
 import Localization from "localization";
 import styles from "./style.less";
 

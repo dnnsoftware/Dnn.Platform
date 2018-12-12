@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 import Body from "./Body";
 
 class App extends Component {
@@ -25,7 +25,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number

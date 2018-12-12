@@ -1,9 +1,6 @@
-import React, { } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import MultiLineInput from "dnn-multi-line-input";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { GridCell, Button, MultiLineInput, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 
 const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPrevious, onFileOrAssemblyChange, onRefresh}) => (

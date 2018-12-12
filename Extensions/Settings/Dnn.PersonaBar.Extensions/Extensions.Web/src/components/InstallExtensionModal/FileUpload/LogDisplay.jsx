@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import "./style.less";
@@ -27,12 +27,12 @@ class LogDisplay extends Component {
                         {!props.logs && <p className="logs-unknown-error" dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_UploadFailedUnknownLogs") }}></p>}
                     </div>
                 </Scrollbars>
-            </GridCell >
+            </GridCell>
         );
     }
 }
 
-LogDisplay.PropTypes = {
+LogDisplay.propTypes = {
     onDone: PropTypes.func,
     logs: PropTypes.array
 };

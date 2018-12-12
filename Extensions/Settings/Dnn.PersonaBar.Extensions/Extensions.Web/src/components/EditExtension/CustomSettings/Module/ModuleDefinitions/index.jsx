@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { ExtensionActions } from "actions";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
+import { GridCell, Button, SvgIcons, Collapsible } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import { AddIcon } from "dnn-svg-icons";
 import ModuleDefinitionRow from "./ModuleDefinitionRow";
-import Collapse from "dnn-collapsible";
 import utilities from "utils";
 import { ModuleDefinitionActions } from "actions";
 import DefinitionFields from "./DefinitionFields";
@@ -202,12 +199,12 @@ class ModuleDefinitions extends Component {
                     <h3 className="box-title">{Localization.get("EditModule_ModuleDefinitions.Header")}</h3>
                     <a className={"add-button" + (isAddMode ? " add-active" : "")}
                         onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} className={isAddMode ? "svg-active" : ""}></span> {Localization.get("EditModule_Add.Button")}
+                        <span dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }} className={isAddMode ? "svg-active" : ""}></span> {Localization.get("EditModule_Add.Button")}
                     </a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-definitions-table">
-                    <Collapse isOpened={isAddMode} fixedHeight={300} style={{ float: "left" }}>
+                    <Collapsible isOpened={isAddMode} fixedHeight={300} style={{ float: "left" }}>
                         <GridCell className={"add-module-definition-box" + (isAddMode ? " row-opened" : "")}>
                             <DefinitionFields
                                 onChange={this.onChange.bind(this)}
@@ -221,7 +218,7 @@ class ModuleDefinitions extends Component {
                                 <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("ModuleDefinitions_Save.Button")}</Button>
                             </GridCell>
                         </GridCell>
-                    </Collapse>
+                    </Collapsible>
                     {moduleDefinitions}
                 </GridCell>
             </GridCell>
@@ -230,7 +227,7 @@ class ModuleDefinitions extends Component {
     }
 }
 
-ModuleDefinitions.PropTypes = {
+ModuleDefinitions.propTypes = {
     dispatch: PropTypes.func.isRequired
 };
 

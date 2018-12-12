@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import DropdownWithError from "dnn-dropdown-with-error";
-import GridSystem from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
-import Button from "dnn-button";
+import { GridCell, SingleLineInputWithError, MultiLineInputWithError, DropdownWithError, GridSystem, Dropdown, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import {
     formatVersionNumber,
@@ -169,11 +163,11 @@ class PackageInformation extends Component {
     }
 }
 
-PackageInformation.PropTypes = {
+PackageInformation.propTypes = {
     onCancel: PropTypes.func,
     onPrimaryButtonClick: PropTypes.func,
     onChange: PropTypes.func,
-    disabled: PropTypes.func,
+    disabled: PropTypes.bool,
     primaryButtonText: PropTypes.string,
     triedToSave: PropTypes.bool,
     validateFields: PropTypes.func,

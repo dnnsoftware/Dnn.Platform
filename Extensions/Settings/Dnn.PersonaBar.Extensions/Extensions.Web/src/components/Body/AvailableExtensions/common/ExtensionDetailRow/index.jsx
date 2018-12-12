@@ -1,11 +1,9 @@
-import React, { } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
+import { GridCell, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import util from "utils";
 
 /* eslint-disable react/no-danger */

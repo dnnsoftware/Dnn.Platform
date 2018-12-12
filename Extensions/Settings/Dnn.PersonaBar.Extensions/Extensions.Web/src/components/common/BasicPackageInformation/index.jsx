@@ -1,11 +1,7 @@
 import React, { } from "react";
 import PropTypes from "prop-types";
-import DropdownWithError from "dnn-dropdown-with-error";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { DropdownWithError, GridSystem, SingleLineInputWithError, Dropdown, MultiLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import Dropdown from "dnn-dropdown";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import { getVersionDropdownValues, formatVersionNumber } from "utils/helperFunctions";
 import styles from "./style.less";
 

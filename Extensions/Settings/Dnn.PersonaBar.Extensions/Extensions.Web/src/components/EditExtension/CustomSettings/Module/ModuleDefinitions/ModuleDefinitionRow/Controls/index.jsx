@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
+import { GridCell, SvgIcons, Collapsible } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import { AddIcon } from "dnn-svg-icons";
 import ControlRow from "./ControlRow";
-import Collapse from "dnn-collapsible";
 import utilities from "utils";
 import { ModuleDefinitionActions, ExtensionActions } from "actions";
 import ControlFields from "./ControlFields";
@@ -212,11 +210,11 @@ class Controls extends Component {
                 <GridCell className="header-container">
                     <h3 className="box-title">{Localization.get("ModuleDefinitions_ModuleControls.Header")}</h3>
                     <a className={"add-button" + (isAddMode ? " add-active" : "")} onClick={this.onEdit.bind(this, this.getNewControlKeys(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: AddIcon }} ></span> {Localization.get("EditModule_Add.Button")}</a>
+                        <span dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }} ></span> {Localization.get("EditModule_Add.Button")}</a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-controls-table">
-                    <Collapse isOpened={isAddMode} style={{ float: "left" }} className={"add-control-box" + (isAddMode ? " row-opened": "")}>
+                    <Collapsible isOpened={isAddMode} style={{ float: "left" }} className={"add-control-box" + (isAddMode ? " row-opened": "")}>
                         <ControlFields
                             controlBeingEdited={state.controlBeingEdited}
                             onChange={this.onChange.bind(this)}
@@ -230,7 +228,7 @@ class Controls extends Component {
                             onSelectSourceFolder={this.onSelectSourceFolder.bind(this)}
                             selectedSourceFolder={state.selectedSourceFolder}
                             onCancel={this.exitEditMode.bind(this)} /* Set definition being edited as null. */ />
-                    </Collapse>
+                    </Collapsible>
                     <GridCell columnSize={15} className="module-control-title-header">
                         {Localization.get("AddModuleControl_Title.Label")}
                     </GridCell>
@@ -245,7 +243,7 @@ class Controls extends Component {
     }
 }
 
-Controls.PropTypes = {
+Controls.propTypes = {
     dispatch: PropTypes.func.isRequired
 };
 

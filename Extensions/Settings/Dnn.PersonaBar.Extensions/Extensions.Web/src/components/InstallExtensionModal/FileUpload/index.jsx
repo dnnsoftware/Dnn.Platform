@@ -4,7 +4,7 @@ import UploadBar from "./UploadBar";
 import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
 import LogDisplay from "./LogDisplay";
-import RadioButtons from "dnn-radio-buttons";
+import { RadioButtons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 
 export default class FileUpload extends Component {

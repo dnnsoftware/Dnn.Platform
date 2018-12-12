@@ -1,8 +1,6 @@
 import React, { } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import MultiLineInput from "dnn-multi-line-input";
+import { GridCell, Button, MultiLineInput } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 
 const StepFour = ({onCancel, onNext, onChange, selectedManifest, onPrevious}) => (

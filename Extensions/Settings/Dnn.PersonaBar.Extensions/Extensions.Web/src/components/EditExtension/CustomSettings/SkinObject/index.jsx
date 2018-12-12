@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
+import { GridCell, SingleLineInputWithError, GridSystem, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import { connect } from "react-redux";
 import styles from "./style.less";
@@ -59,7 +55,7 @@ class SkinObject extends Component {
     }
 }
 
-SkinObject.PropTypes = {
+SkinObject.propTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,

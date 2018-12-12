@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, PersonaBarPageBody, PersonaBarPageHeader, DnnTabs, Tooltip, Button } from "@dnnsoftware/dnn-react-common";
 import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions, CreatePackageActions } from "actions";
-import Tabs from "dnn-tabs";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
 import CustomSettings from "./CustomSettings";
 import EditSettings from "./EditSettings";
-import Tooltip from "dnn-tooltip";
-import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
 import styles from "./style.less";
@@ -381,15 +376,15 @@ class EditExtension extends Component {
                     text: Localization.get("BackToExtensions"),
                     onClick: this.onCancel.bind(this)
                 }}>
-                    <Tabs
+                    <DnnTabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
                         selectedIndex={props.selectedEditingTab}
                         type="primary">
                         {this.getTabUI()}
-                    </Tabs>
+                    </DnnTabs>
                 </PersonaBarPageBody>
-            </GridCell >
+            </GridCell>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
     }

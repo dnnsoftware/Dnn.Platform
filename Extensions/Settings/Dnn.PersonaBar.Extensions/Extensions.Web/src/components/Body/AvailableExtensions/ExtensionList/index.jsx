@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import ExtensionHeader from "../common/ExtensionHeader";
 import ExtensionDetailRow from "../common/ExtensionDetailRow";
 import "./style.less";

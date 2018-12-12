@@ -1,10 +1,7 @@
 import React, { } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell, Switch, Button, DropdownWithError } from "@dnnsoftware/dnn-react-common";
 import BasicPackageInformation from "../common/BasicPackageInformation";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
-import DropdownWithError from "dnn-dropdown-with-error";
 import Localization from "localization";
 
 const StepOne = ({packageManifest,

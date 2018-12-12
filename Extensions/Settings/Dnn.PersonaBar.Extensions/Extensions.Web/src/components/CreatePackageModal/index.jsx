@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, PersonaBarPageHeader, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import { CreatePackageActions } from "actions";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";

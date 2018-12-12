@@ -1,5 +1,5 @@
 import React from "react";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
 import styles from "./style.less";

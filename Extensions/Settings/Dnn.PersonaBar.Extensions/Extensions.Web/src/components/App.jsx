@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { InstallationActions } from "actions";
 import Body from "./Body";
-import PersonaBarPage from "dnn-persona-bar-page";
+import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 import NewExtensionModal from "./NewExtensionModal";
 import NewModuleModal from "./NewModuleModal";
 import InstallExtensionModal from "./installExtensionModal";
@@ -116,7 +116,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,

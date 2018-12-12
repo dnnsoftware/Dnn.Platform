@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, GridSystem, SingleLineInputWithError, PersonaBarPageBody, PersonaBarPageHeader, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
-import Button from "dnn-button";
 import CustomSettings from "../EditExtension/CustomSettings";
 import BasicPackageInformation from "../common/BasicPackageInformation";
 import styles from "./style.less";
@@ -242,7 +237,7 @@ class NewExtensionModal extends Component {
     }
 }
 
-NewExtensionModal.PropTypes = {
+NewExtensionModal.propTypes = {
     onCancel: PropTypes.func
 };
 

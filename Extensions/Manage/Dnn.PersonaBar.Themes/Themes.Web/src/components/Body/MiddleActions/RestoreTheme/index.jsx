@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
+import { theme as ThemeActions } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
+import { GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
-
 import "./style.less";
 
 class RestoreTheme extends Component {

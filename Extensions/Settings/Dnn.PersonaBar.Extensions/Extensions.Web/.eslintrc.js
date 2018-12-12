@@ -1,7 +1,6 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
@@ -15,6 +14,11 @@ module.exports = {
         },
         "ecmaVersion": 6,
         "sourceType": "module"
+    },
+    "settings": {
+        "react":{
+            "version": "16"
+        }
     },
     "globals": {
         "__": false,

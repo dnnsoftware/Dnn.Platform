@@ -5,8 +5,7 @@ import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
+import { Button, RadioButtons } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
 
 import "./style.less";

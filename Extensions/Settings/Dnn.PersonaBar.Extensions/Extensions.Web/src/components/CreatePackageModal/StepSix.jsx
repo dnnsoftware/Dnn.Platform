@@ -1,7 +1,6 @@
-import React, { } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
+import { GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridSystem from "dnn-grid-system";
+import { GridSystem } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
-
 import EditThemeAttributes from "./EditThemeAttributes";
 import ParseThemePackage from "./ParseThemePackage";
 

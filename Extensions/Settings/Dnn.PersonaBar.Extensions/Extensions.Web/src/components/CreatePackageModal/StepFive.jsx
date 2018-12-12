@@ -1,10 +1,6 @@
 import React, { } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
-import GridSystem from "dnn-grid-system";
+import { GridCell, SingleLineInputWithError, Switch, Button, GridSystem } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 
 const inputStyle = { width: "100%" };

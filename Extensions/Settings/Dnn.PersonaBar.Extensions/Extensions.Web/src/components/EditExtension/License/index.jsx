@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
+import { GridCell, MultiLineInputWithError, Button, Checkbox } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
-import Button from "dnn-button";
 import Localization from "localization";
 import "./style.less";
 
@@ -36,7 +34,11 @@ class License extends Component {
                         <div className="read-only-license" dangerouslySetInnerHTML={{ __html: value }}></div>
                     </Scrollbars>
                 }
-                {props.acceptLicenseCheckbox}
+                <Checkbox
+                    label={Localization.get("InstallExtension_AcceptLicense.Label")}
+                    value={props.licenseAccepted}
+                    onChange={props.onToggleLicenseAccept}                     
+                />                
                 {!props.buttonsAreHidden && <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
                     {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
@@ -47,14 +49,15 @@ class License extends Component {
     }
 }
 
-License.PropTypes = {
+License.propTypes = {
     onCancel: PropTypes.func,
     readOnly: PropTypes.bool,
     onSave: PropTypes.func,
     value: PropTypes.string,
     onChange: PropTypes.func,
     primaryButtonText: PropTypes.string,
-    acceptLicenseCheckbox: PropTypes.node
+    licenseAccepted: PropTypes.bool,
+    onToggleLicenseAccept: PropTypes.func
 };
 
 export default License;

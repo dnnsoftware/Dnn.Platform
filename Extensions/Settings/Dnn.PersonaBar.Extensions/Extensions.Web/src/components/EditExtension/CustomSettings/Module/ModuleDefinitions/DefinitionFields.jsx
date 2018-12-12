@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
+import { SingleLineInputWithError, GridSystem } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import "./style.less";
 class DefinitionFields extends Component {
@@ -42,7 +41,7 @@ class DefinitionFields extends Component {
     }
 }
 
-DefinitionFields.PropTypes = {
+DefinitionFields.propTypes = {
     onChange: PropTypes.func,
     error: PropTypes.object,
     triedToSave: PropTypes.bool,

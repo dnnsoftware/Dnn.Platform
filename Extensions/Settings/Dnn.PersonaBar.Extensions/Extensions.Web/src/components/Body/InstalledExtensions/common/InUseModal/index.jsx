@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Modal from "react-modal";
-import Button from "dnn-button";
-import DropDown from "dnn-dropdown";
+import { Modal, Button, Dropdown, Label } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "localization";
-import Label from "dnn-label";
-import {
-    ExtensionActions
-} from "actions";
+import { ExtensionActions } from "actions";
 
 const modalStyles = {
     overlay: {
@@ -150,7 +145,7 @@ class InUseModal extends Component {
                                 style={{ width: "auto", marginTop: "8px" }}
                                 label={resx.get("PagesFromSite")}
                             />
-                            {props.usageFilter && <DropDown
+                            {props.usageFilter && <Dropdown
                                 enabled={props.usageFilter.length > 1}
                                 value={state.portalId}
                                 style={{ width: "150px" }}

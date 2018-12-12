@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell, Button, Tooltip } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
-import Button from "dnn-button";
 import Localization from "localization";
-import Tooltip from "dnn-tooltip";
 import "./style.less";
 
 const licenseBoxStyle = {
@@ -39,7 +37,7 @@ class EditExtension extends Component {
     }
 }
 
-EditExtension.PropTypes = {
+EditExtension.propTypes = {
     onDone: PropTypes.func,
     logs: PropTypes.array
 };

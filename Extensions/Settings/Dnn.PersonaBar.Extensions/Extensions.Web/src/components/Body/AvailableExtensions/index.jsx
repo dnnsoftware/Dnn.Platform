@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    ExtensionActions,
-    VisiblePanelActions,
-    InstallationActions
-} from "actions";
+import { ExtensionActions, VisiblePanelActions, InstallationActions } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
+import { GridCell, DropdownWithError } from "@dnnsoftware/dnn-react-common";
 import ExtensionList from "./ExtensionList";
-import DropdownWithError from "dnn-dropdown-with-error";
 import "./style.less";
 
 class AvailableExtensions extends Component {

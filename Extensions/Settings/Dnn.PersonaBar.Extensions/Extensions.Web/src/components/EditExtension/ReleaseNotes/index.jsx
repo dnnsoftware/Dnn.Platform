@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
+import { GridCell, MultiLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
-import Button from "dnn-button";
 import Localization from "localization";
 import "./style.less";
 
