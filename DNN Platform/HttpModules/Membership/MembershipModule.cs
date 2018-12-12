@@ -187,7 +187,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
-                if (NeedLogout(context, user))
+                if (RequireLogout(context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
@@ -258,7 +258,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        private static bool NeedLogout(HttpContextBase context, UserInfo user)
+        private static bool RequireLogout(HttpContextBase context, UserInfo user)
         {
             try
             {
@@ -270,19 +270,8 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 // if user's password changed after the user cookie created, then force user to login again.
-                var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
-                if (!string.IsNullOrWhiteSpace(authCookie?.Value))
-                {
-                    var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    if (authTicket == null 
-                            || authTicket.Expired 
-                            || authTicket.IssueDate < user.Membership.LastPasswordChangeDate)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                var issueDate = ((FormsIdentity)context.User.Identity)?.Ticket.IssueDate;
+                return !Null.IsNull(issueDate) && issueDate < user.Membership.LastPasswordChangeDate;
             }
             catch (Exception ex)
             {
