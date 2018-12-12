@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.HttpModules.Services;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
@@ -52,6 +53,8 @@ namespace DotNetNuke.HttpModules.Membership
     /// </summary>
     public class MembershipModule : IHttpModule
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
+
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
         private static string _cultureCode;
@@ -184,9 +187,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
-                if (user == null || user.IsDeleted || user.Membership.LockedOut
-                    || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
-                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                if (NeedLogout(context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
@@ -254,6 +255,39 @@ namespace DotNetNuke.HttpModules.Membership
             if (context.Items["UserInfo"] == null)
             {
                 context.Items.Add("UserInfo", new UserInfo());
+            }
+        }
+
+        private static bool NeedLogout(HttpContextBase context, UserInfo user)
+        {
+            try
+            {
+                if (user == null || user.IsDeleted || user.Membership.LockedOut
+                    || !user.Membership.Approved && !user.IsInRole("Unverified Users")
+                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                // if user's password changed after the user cookie created, then force user to login again.
+                var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
+                if (!string.IsNullOrWhiteSpace(authCookie?.Value))
+                {
+                    var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket == null 
+                            || authTicket.Expired 
+                            || authTicket.IssueDate < user.Membership.LastPasswordChangeDate)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return true;
             }
         }
     }
