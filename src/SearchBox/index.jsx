@@ -75,7 +75,7 @@ SearchBox.propTypes = {
     className: PropTypes.string,
     onSearch: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
-    inputDisabled: PropTypes.boolean
+    inputDisabled: PropTypes.bool
 };
 
 SearchBox.defaultProps = {
