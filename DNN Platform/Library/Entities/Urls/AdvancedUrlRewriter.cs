@@ -57,6 +57,7 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex AumDebugRegex = new Regex(@"(&|\?)_aumdebug=[A-Z]+(?:&|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+        private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         #region Private Members
 
@@ -152,31 +153,39 @@ namespace DotNetNuke.Entities.Urls
 
         private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
         {
-            PortalAliasInfo alias = null;
+            PortalAliasInfo aliasInfo = null;
             redirectAlias = false;
             wrongAlias = null;
             isPrimaryAlias = false;
-            OrderedDictionary portalRegexes = TabIndexController.GetPortalAliasRegexes(settings);
-            foreach (string regexPattern in portalRegexes.Keys)
+            OrderedDictionary portalAliases = TabIndexController.GetPortalAliases(settings);
+            foreach (string alias in portalAliases.Keys)
             {
-                //split out the portal alias from the regex pattern representing that alias
-                var regex = RegexUtils.GetCachedRegex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                var aliasMatch = regex.Match(requestUrl);
+                // in fact, requested url should contain alias
+                // for better performance, need to check whether we want to proceed with a whole url matching or not
+                // if alias is not a part of url -> let's proceed to the next iteration
+                if (requestUrl.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase) < 0)
+                {
+                    continue;
+                }
+                // check whether requested url has a right URL formal containing exsting alias
+                // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
+                // in the below expression we will validate following value http://_ALIAS_/query?string=test
+                var aliasMatch = AliasUrlRegex.Match(requestUrl.Replace(alias, "_ALIAS_"));
                 if (aliasMatch.Success)
                 {
                     //check for mobile browser and matching
-                    var aliasEx = (PortalAliasInfo)portalRegexes[regexPattern];
+                    var aliasEx = (PortalAliasInfo)portalAliases[alias];
                     redirectAlias = aliasEx.Redirect;
                     if (redirectAlias)
                     {
-                        wrongAlias = aliasMatch.Groups["alias"].Value;
+                        wrongAlias = alias;
                     }
                     isPrimaryAlias = aliasEx.IsPrimary;
-                    alias = aliasEx;
+                    aliasInfo = aliasEx;
                     break;
                 }
             }
-            return alias;
+            return aliasInfo;
         }
 
         private void ProcessRequest(HttpContext context,

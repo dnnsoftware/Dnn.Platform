@@ -936,7 +936,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private static OrderedDictionary BuildPortalAliasesRegexDictionary()
+        private static OrderedDictionary BuildPortalAliasesDictionary()
         {
            var aliases = PortalAliasController.Instance.GetPortalAliases();
             //create a new OrderedDictionary.  We use this because we
@@ -944,10 +944,7 @@ namespace DotNetNuke.Entities.Urls
             //portalAlias that matches, and we want to preserve the
             //order of the items, such that the item with the most path separators (/)
             //is at the front of the list.  
-            var regexList = new OrderedDictionary(aliases.Count);
-            //this regex pattern, when formatted with the httpAlias, will match a request 
-            //for this portalAlias
-            const string aliasRegexPattern = @"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))";
+            var aliasList = new OrderedDictionary(aliases.Count);
             var pathLengths = new List<int>();
             foreach (string aliasKey in aliases.Keys)
             {
@@ -984,8 +981,6 @@ namespace DotNetNuke.Entities.Urls
                     count++;
                     var aliasObject = new PortalAliasInfo(alias) { Redirect = count != 1 };
 
-                    //format up the regex pattern by replacing the alias portion with the portal alias name
-                    string regexPattern = aliasRegexPattern.Replace("_ALIAS_", aliasToAdd);
                     //work out how many path separators there are in the portalAlias (ie myalias/mychild = 1 path)
                     int pathLength = plainAlias.Split('/').GetUpperBound(0);
                     //now work out where in the list we should put this portalAlias regex pattern
@@ -1008,18 +1003,18 @@ namespace DotNetNuke.Entities.Urls
                     if (pathLengths.Count > 0 && insertPoint <= pathLengths.Count - 1)
                     {
                         //put the new regex pattern into the correct position
-                        regexList.Insert(insertPoint, regexPattern, aliasObject);
+                        aliasList.Insert(insertPoint, aliasToAdd, aliasObject);
                         pathLengths.Insert(insertPoint, pathLength);
                     }
                     else
                     {
                         //put the new regex pattern on the end of the list
-                        regexList.Add(regexPattern, aliasObject);
+                        aliasList.Add(aliasToAdd, aliasObject);
                         pathLengths.Add(pathLength);
                     }
                 }
             }
-            return regexList;
+            return aliasList;
         }
 
         private static SharedDictionary<string, string> BuildTabDictionary(out PathSizes pathSizes,
@@ -1628,16 +1623,16 @@ namespace DotNetNuke.Entities.Urls
         /// Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.
         /// </summary>
         /// <returns></returns>
-        internal static OrderedDictionary GetPortalAliasRegexes(FriendlyUrlSettings settings)
+        internal static OrderedDictionary GetPortalAliases(FriendlyUrlSettings settings)
         {
             //object to return
-            OrderedDictionary regexList = CacheController.GetPortalAliasesRegexesFromCache();
-            if (regexList == null)
+            OrderedDictionary aliasList = CacheController.GetPortalAliasesFromCache();
+            if (aliasList == null)
             {
-                regexList = BuildPortalAliasesRegexDictionary();
-                CacheController.StorePortalAliasesRegexesInCache(regexList, settings);
+                aliasList = BuildPortalAliasesDictionary();
+                CacheController.StorePortalAliasesInCache(aliasList, settings);
             }
-            return regexList;
+            return aliasList;
         }
 
         /// <summary>
