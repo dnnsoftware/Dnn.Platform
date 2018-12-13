@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Urls
                     // we are fine here, lets prepeare URL to be validated in regex
                     urlToMatch = urlToMatch.Replace(alias, "_ALIAS_");
                 }
-                // check whether requested url has a right URL formal containing exsting alias
+                // check whether requested URL has the right URL format containing existing alias
                 // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
                 // in the below expression we will validate following value http://_ALIAS_/query?string=test
                 var aliasMatch = AliasUrlRegex.Match(urlToMatch);
