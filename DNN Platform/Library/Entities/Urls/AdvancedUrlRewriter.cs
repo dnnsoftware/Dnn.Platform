@@ -160,17 +160,31 @@ namespace DotNetNuke.Entities.Urls
             OrderedDictionary portalAliases = TabIndexController.GetPortalAliases(settings);
             foreach (string alias in portalAliases.Keys)
             {
+                var urlToMatch = requestUrl;
                 // in fact, requested url should contain alias
                 // for better performance, need to check whether we want to proceed with a whole url matching or not
                 // if alias is not a part of url -> let's proceed to the next iteration
-                if (requestUrl.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase) < 0)
+                var aliasIndex = urlToMatch.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase);
+                if (aliasIndex < 0)
                 {
                     continue;
+                }
+                else
+                {
+                    // we do not accept URL if the first occurence of alias is presented somewhere in the query string
+                    var queryIndex = urlToMatch.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
+                    if (queryIndex >= 0 && queryIndex < aliasIndex)
+                    {
+                        // alias is in the query string, go to the next alias
+                        continue;
+                    }
+                    // we are fine here, lets prepeare URL to be validated in regex
+                    urlToMatch = urlToMatch.Replace(alias, "_ALIAS_");
                 }
                 // check whether requested url has a right URL formal containing exsting alias
                 // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
                 // in the below expression we will validate following value http://_ALIAS_/query?string=test
-                var aliasMatch = AliasUrlRegex.Match(requestUrl.Replace(alias, "_ALIAS_"));
+                var aliasMatch = AliasUrlRegex.Match(urlToMatch);
                 if (aliasMatch.Success)
                 {
                     //check for mobile browser and matching

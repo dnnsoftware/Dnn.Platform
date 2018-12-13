@@ -951,8 +951,7 @@ namespace DotNetNuke.Entities.Urls
                 PortalAliasInfo alias = aliases[aliasKey];
                 //regex escape the portal alias for inclusion into a regex pattern
                 string plainAlias = alias.HTTPAlias;
-                string escapedAlias = Regex.Escape(plainAlias);
-                var aliasesToAdd = new List<string> { escapedAlias };
+                var aliasesToAdd = new List<string> { plainAlias };
                 //check for existence of www. version of domain, if it doesn't have a www.
                 if (plainAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -962,7 +961,7 @@ namespace DotNetNuke.Entities.Urls
                         if (!aliases.Contains(noWWWVersion))
                         {
                             //there is no no-www version of the alias
-                            aliasesToAdd.Add(Regex.Escape(noWWWVersion));
+                            aliasesToAdd.Add(noWWWVersion);
                         }
                     }
                 }
@@ -971,7 +970,7 @@ namespace DotNetNuke.Entities.Urls
                     string wwwVersion = "www." + plainAlias;
                     if (!aliases.Contains(wwwVersion))
                     {
-                        aliasesToAdd.Add(Regex.Escape(wwwVersion));
+                        aliasesToAdd.Add(wwwVersion);
                     }
                 }
                 int count = 0;
