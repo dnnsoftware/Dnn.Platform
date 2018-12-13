@@ -30,6 +30,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 
@@ -245,8 +246,14 @@ namespace DotNetNuke.Modules.Admin.Users
 			//Verify that the current user has access to this page
 			if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
 			{
-				Response.Redirect(Globals.NavigateURL("Access Denied"), false);
-				Context.ApplicationInstance.CompleteRequest();
+			    try
+			    {
+			        Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+			    }
+			    catch (ThreadAbortException)
+			    {
+                    //do nothing here.
+			    }
 			}
 
 			cancelLink.NavigateUrl = closeLink.NavigateUrl = GetRedirectUrl(false);
