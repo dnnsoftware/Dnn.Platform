@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
-    "webpack": "webpack-dev-server -d --host 0.0.0.0 --port 8080 --hot --inline --content-base dist/ --history-api-fallback",
+    "webpack": "webpack-dev-server -d --host localhost --port 8080 --hot --inline --content-base dist/ --history-api-fallback",
     "analyze": "set NODE_ENV=production&&webpack -p --json | webpack-bundle-size-analyzer"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
+    "@dnnsoftware/dnn-react-common": "^2.0.6",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
     "babel-loader": "8.0.4",
@@ -19,8 +21,6 @@
     "babel-plugin-transform-react-remove-prop-types": "0.4.20",
     "babel-polyfill": "6.26.0",
     "css-loader": "1.0.1",
-    "dnn-global-styles": "0.0.5",
-    "dnn-webpack-externals": "^1.1.1",
     "es6-object-assign": "1.1.0",
     "eslint": "5.8.0",
     "eslint-loader": "2.1.1",

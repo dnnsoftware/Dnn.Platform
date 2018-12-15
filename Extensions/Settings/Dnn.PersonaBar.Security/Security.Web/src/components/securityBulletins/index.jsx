@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
+import { security as SecurityActions } from "../../actions";
 import BulletinItemRow from "./bulletinItemRow";
 import "./style.less";
 import resx from "../../resources";

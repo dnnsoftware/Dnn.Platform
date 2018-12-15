@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Tooltip from "dnn-tooltip";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { security as SecurityActions } from "../../actions";
+import { 
+    InputGroup, 
+    SingleLineInputWithError, 
+    Switch,
+    Tooltip,
+    Label,
+    Button
+} from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
@@ -46,8 +46,11 @@ class MemberManagementPanelBody extends Component {
     }
 
     updateMemberSettings(memberSettings) {
+        if (!memberSettings){
+            return;
+        }
         let {state} = this;
-
+        console.log(memberSettings);
         let membershipResetLinkValidity = memberSettings["MembershipResetLinkValidity"];
         if (membershipResetLinkValidity === "" || !re.test(membershipResetLinkValidity)) {
             state.error["membershipResetLinkValidity"] = true;

@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
+import { security as SecurityActions } from "../../actions";
 import IpFilterRow from "./ipFilterRow";
 import IpFilterEditor from "./ipfilterEditor";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import { AddIcon } from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
@@ -137,7 +135,7 @@ class IpFiltersPanelBody extends Component {
                         }
                         <div className="AddItemRow">
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                                 </div> {resx.get("cmdAdd") }
                             </div>
                         </div>

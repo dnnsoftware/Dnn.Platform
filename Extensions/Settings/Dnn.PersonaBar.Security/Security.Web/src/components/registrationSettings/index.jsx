@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import SearchableTags from "dnn-searchable-tags";
-import Switch from "dnn-switch";
-import RadioButtons from "dnn-radio-buttons";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import PagePicker from "dnn-page-picker";
+import { security as SecurityActions } from "../../actions";
+import { 
+    InputGroup,
+    SingleLineInputWithError,
+    SearchableTags,
+    Switch,
+    RadioButtons,
+    Label,
+    Button,
+    PagePicker
+} from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";

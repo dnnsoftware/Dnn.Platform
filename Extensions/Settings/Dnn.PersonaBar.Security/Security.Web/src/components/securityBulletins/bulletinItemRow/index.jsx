@@ -1,6 +1,6 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
+import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 
 class BulletinItemRow extends Component {
@@ -51,7 +51,7 @@ class BulletinItemRow extends Component {
                         </div>                        
                     </div>
                 </div>
-                <Collapse className={this.props.className} isOpened={!this.state.collapsed}>{!state.collapsed && props.children }</Collapse>
+                <Collapsible className={this.props.className} isOpened={!this.state.collapsed}>{!state.collapsed && props.children }</Collapsible>
             </div>
         );
     }
