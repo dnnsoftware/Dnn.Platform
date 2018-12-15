@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import Dropdown from "dnn-dropdown";
-import PagePicker from "dnn-page-picker";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { security as SecurityActions } from "../../actions";
+import { InputGroup, Dropdown, PagePicker, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";

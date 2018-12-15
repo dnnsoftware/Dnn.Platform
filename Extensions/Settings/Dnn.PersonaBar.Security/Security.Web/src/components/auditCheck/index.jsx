@@ -2,12 +2,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
+import { security as SecurityActions } from "../../actions";
 import "./style.less";
-import ContentLoadWrapper from "dnn-content-load-wrapper";
-import { TableEmptyState } from "dnn-svg-icons";
+import { ContentLoadWrapper, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
 import styles from "./style.less";
 
@@ -151,7 +148,7 @@ class AuditCheckPanelBody extends Component {
         let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;
         return (
             <ContentLoadWrapper loadComplete={contentShouldShow}
-                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}>
+                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: SvgIcons.TableEmptyState }} />}>
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
                         {resx.get("AuditExplanation")}

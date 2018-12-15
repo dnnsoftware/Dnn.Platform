@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Tooltip from "dnn-tooltip";
+import { security as SecurityActions } from "../../actions";
+import { 
+    InputGroup,
+    SingleLineInputWithError,
+    Switch,
+    Label,
+    Button,
+    Tooltip
+} from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";

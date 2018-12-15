@@ -2,16 +2,8 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import InputGroup from "dnn-input-group";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
-import Dropdown from "dnn-dropdown";
-import {
-    security as SecurityActions
-} from "../../../actions";
+import { SingleLineInputWithError, Grid, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { security as SecurityActions } from "../../../actions";
 import resx from "../../../resources";
 
 let specificityOptions = [];
