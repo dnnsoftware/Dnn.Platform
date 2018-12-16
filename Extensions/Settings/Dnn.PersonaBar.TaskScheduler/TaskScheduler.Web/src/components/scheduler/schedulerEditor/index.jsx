@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import { 
-    GridSystem as Grid,
     Label,
     Button,
     Switch,
@@ -388,7 +387,14 @@ class SchedulerEditor extends Component {
 
             return ( 
                 <div className="scheduler-setting-editor">
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <div className="scheduler-item-container">
+                        <div className="scheduler-item-column">
+                            {columnOne}
+                        </div>
+                        <div className="scheduler-item-column">
+                            {columnTwo}
+                        </div>
+                    </div>
                     <div className="buttons-box">
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button
