@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
-import GridCell from "dnn-grid-cell";
-import Dropdown from "dnn-dropdown";
-
+import { GridCell, Dropdown } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";

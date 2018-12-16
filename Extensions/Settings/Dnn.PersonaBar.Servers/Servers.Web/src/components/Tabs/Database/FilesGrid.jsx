@@ -1,9 +1,8 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell, TextOverflowWrapper as OverflowText } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import util from "../../../utils";
-import OverflowText from "dnn-text-overflow-wrapper";
 
 export default class FilesGrid extends Component {
 

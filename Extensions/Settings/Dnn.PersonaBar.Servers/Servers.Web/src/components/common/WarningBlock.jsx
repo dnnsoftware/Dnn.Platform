@@ -1,8 +1,7 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import GridCell from "dnn-grid-cell";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { ErrorStateIcon } from "dnn-svg-icons";
 
 export default class WarningBlock extends Component {
     
@@ -11,7 +10,7 @@ export default class WarningBlock extends Component {
         const {props} = this;
 
         return <GridCell className="serversTabWarningInfo">
-            <div dangerouslySetInnerHTML={{ __html: ErrorStateIcon }} />
+            <div dangerouslySetInnerHTML={{ __html: SvgIcons.ErrorStateIcon }} />
             <div className="dnn-label title"
                 dangerouslySetInnerHTML={{ __html: props.label}} />
         </GridCell>;
