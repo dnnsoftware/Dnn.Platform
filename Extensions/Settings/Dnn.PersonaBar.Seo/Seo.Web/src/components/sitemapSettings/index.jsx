@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
-import Label from "dnn-label";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
+import { 
+    InputGroup, 
+    SingleLineInputWithError, 
+    GridSystem as Grid, 
+    Dropdown, 
+    Label,
+    Switch, Button
+} from "@dnnsoftware/dnn-react-common";
 import ProviderRow from "./providerRow";
 import ProviderEditor from "./providerEditor";
 import "./style.less";
@@ -277,7 +278,7 @@ class SitemapSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.sitemapSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div className="left-column" key="columnOne">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("sitemapUrlLabel.Help")}
@@ -314,7 +315,7 @@ class SitemapSettingsPanelBody extends Component {
                     </div>
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div className="right-column" key="columnTwo">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblCache.Help")}
@@ -356,7 +357,7 @@ class SitemapSettingsPanelBody extends Component {
                 </InputGroup>
             </div>;
 
-            const columnThree = <div className="left-column">
+            const columnThree = <div className="left-column" key="columnThree">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblSearchEngine.Help")}
@@ -376,7 +377,7 @@ class SitemapSettingsPanelBody extends Component {
                 </InputGroup>
             </div>;
 
-            const columnFour = <div className="right-column">
+            const columnFour = <div className="right-column" key="columnFour">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("lblVerification.Help")}

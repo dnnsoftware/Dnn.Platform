@@ -6,7 +6,7 @@ import {
 } from "../../actions";
 import ProviderRow from "./providerRow";
 import ProviderEditor from "./providerEditor";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
