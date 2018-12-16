@@ -5,11 +5,9 @@ import {
     task as TaskActions
 } from "../../actions";
 import SchedulerRow from "./schedulerRow";
-import Dropdown from "dnn-dropdown";
+import { Dropdown, Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import SchedulerEditor from "./schedulerEditor";
-import Collapse from "dnn-collapsible";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
 import util from "../../utils";
 import resx from "../../resources";
 
@@ -27,7 +25,7 @@ class SchedulerPanel extends Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         props.dispatch(TaskActions.getSchedulerItemList());
         if (props.serverList === null || props.serverList === [] || props.serverList === undefined) {
@@ -194,13 +192,13 @@ class SchedulerPanel extends Component {
                     </div>
                     <div className="AddItemRow">
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                             </div> {resx.get("cmdAddTask")}
                         </div>
                     </div>
                     <div className="schedule-items-grid">
                         {this.renderHeader()}
-                        <Collapse isOpened={opened} style={{ float: "left" }} fixedHeight={650}>
+                        <Collapsible isOpened={opened} style={{ float: "left" }} fixedHeight={650}>
                             <SchedulerRow
                                 name={"-"}
                                 frequency={"-"}
@@ -221,12 +219,12 @@ class SchedulerPanel extends Component {
                                     id={"add"}
                                     openId={this.state.openId} />
                             </SchedulerRow>
-                        </Collapse>
+                        </Collapsible>
                         {this.renderedScedulerItemList()}
                     </div>
                 </div>
 
-            </div >
+            </div>
         );
     }
 }

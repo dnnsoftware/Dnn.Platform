@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import { PersonaBarPageHeader, PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 import Body from "./body";
-import PersonaBarPage from "dnn-persona-bar-page";
 import resx from "../resources";
 
 class App extends Component {
@@ -25,7 +24,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number
 };
