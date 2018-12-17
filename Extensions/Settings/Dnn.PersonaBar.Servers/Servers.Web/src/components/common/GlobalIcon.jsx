@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Tooltip from "dnn-tooltip";
+import { Tooltip } from "@dnnsoftware/dnn-react-common";
 import localization from "../../localization";
 
 const normalMargin = "-3px 0 0 5px";

@@ -1,6 +1,6 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import GridSystem from "dnn-grid-system";
+import { GridSystem } from "@dnnsoftware/dnn-react-common";
 import InfoBlock from "../common/InfoBlock";
 import Localization from "../../localization";
 import { connect } from "react-redux";

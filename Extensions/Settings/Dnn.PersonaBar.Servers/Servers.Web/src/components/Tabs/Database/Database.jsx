@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridSystem from "dnn-grid-system";
-import Label from "dnn-label";
+import { GridSystem, Label, GridCell } from "@dnnsoftware/dnn-react-common";
 import InfoBlock from "../../common/InfoBlock";
-import GridCell from "dnn-grid-cell";
 import BackupGrid from "./BackupGrid";
 import FilesGrid from "./FilesGrid";
 import Localization from "../../../localization";
