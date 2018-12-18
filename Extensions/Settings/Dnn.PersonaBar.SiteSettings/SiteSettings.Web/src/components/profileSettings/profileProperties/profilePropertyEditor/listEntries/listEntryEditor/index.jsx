@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import InputGroup from "dnn-input-group";
+import { SingleLineInputWithError, GridSystem, Switch, Label, Button, InputGroup } from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
 
 class ListEntryEditor extends Component {
@@ -112,7 +107,7 @@ class ListEntryEditor extends Component {
 
             return (
                 <div className="entry-editor">
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <div className="editor-buttons-box">
                         <Button
                             type="secondary"

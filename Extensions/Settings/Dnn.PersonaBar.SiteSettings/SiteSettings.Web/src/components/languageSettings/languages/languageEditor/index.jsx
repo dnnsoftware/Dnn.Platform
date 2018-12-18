@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
-import InputGroup from "dnn-input-group";
-import Dropdown from "dnn-dropdown";
-import Flag from "dnn-flag";
+import { GridSystem,Label,Button,Switch,InputGroup,Dropdown,Flag } from "@dnnsoftware/dnn-react-common";
 import Roles from "./roles";
 import {
     languages as LanguagesActions
@@ -45,13 +39,13 @@ class LanguageEditor extends Component {
         }
     }
 
-    componentDidUpdate(props) {
-        if (!props.languageDetail) {
-            return;
+    componentDidUpdate(newProps) {
+        const { props } = this;
+        if(props.languageDetail !== newProps.languageDetail) {
+            this.setState({
+                languageDetail: Object.assign({}, props.languageDetail)
+            });
         }
-        this.setState({
-            languageDetail: Object.assign({}, props.languageDetail)
-        });
     }
 
     getFlagItem(name, code) {
@@ -193,9 +187,6 @@ class LanguageEditor extends Component {
             if (languages.length > 0) {
                 let languageDetail = Object.assign({}, state.languageDetail);
                 languageDetail["Code"] = languages[0].value;
-                this.setState({
-                    languageDetail: languageDetail
-                });
             }
 
             return languages.length > 0 ? languages[0].value : "";
@@ -279,7 +270,7 @@ class LanguageEditor extends Component {
         </div>;
         return (
             <div className="language-editor">
-                <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                 <div className="editor-buttons-box">
                     <Button
                         type="secondary"
@@ -342,7 +333,7 @@ class LanguageEditor extends Component {
         </div>;
         return (
             <div className="language-editor">
-                <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                 <div className="editor-buttons-box">
                     <Button
                         type="secondary"
@@ -431,7 +422,8 @@ function mapStateToProps(state) {
         fallbacks: state.languages.fallbacks,
         fullLanguageList: state.languages.fullLanguageList,
         languageDisplayModes: state.languages.languageDisplayModes,
-        languageClientModified: state.languages.languageClientModified
+        languageClientModified: state.languages.languageClientModified,
+        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
     };
 }
 

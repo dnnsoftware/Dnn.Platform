@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
-import Button from "dnn-button";
+import { Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -46,12 +46,6 @@ class MoreSettingsPanelBody extends Component {
                 otherSettings: Object.assign({}, data.Settings)
             });
         }));
-    }
-
-    componentDidUpdate(props) {
-        this.setState({
-            otherSettings: Object.assign({}, props.otherSettings)
-        });
     }
 
     onSettingChange(key, event) {

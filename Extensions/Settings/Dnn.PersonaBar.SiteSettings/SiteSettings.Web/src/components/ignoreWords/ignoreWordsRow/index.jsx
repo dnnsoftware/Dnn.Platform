@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
 import "./style.less";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class IgnoreWordsRow extends Component {
     componentDidMount() {
@@ -33,13 +32,13 @@ class IgnoreWordsRow extends Component {
                             <div className="words-item item-row-tags">
                                 {props.tags}</div>
                             <div className="words-item item-row-editButton">
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete.bind(this)}></div>
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete.bind(this)}></div>
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)}></div>
                             </div>
                         </div>
                     </div>
                 }
-                <Collapse className="words-editor-wrapper" isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapsible className="words-editor-wrapper" isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
             </div>
         );
     }

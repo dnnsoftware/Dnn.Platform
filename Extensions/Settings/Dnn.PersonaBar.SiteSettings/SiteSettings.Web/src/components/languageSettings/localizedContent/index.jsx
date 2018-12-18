@@ -4,11 +4,7 @@ import { connect } from "react-redux";
 import {
     languages as LanguagesActions
 } from "../../../actions";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import InputGroup from "dnn-input-group";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
+import { PersonaBarPageBody, InputGroup, Label, Button, Switch } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
 import util from "../../../utils";
 import TranslationProgressBars from "../TranslationProgressBars";

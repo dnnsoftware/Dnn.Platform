@@ -4,12 +4,7 @@ import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import PagePicker from "dnn-page-picker";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { InputGroup, MultiLineInputWithError, PagePicker, GridSystem, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -20,68 +15,41 @@ let isHost = false;
 class DefaultPagesSettingsPanelBody extends Component {
     constructor() {
         super();
+        this._mounted = false;
         this.state = {
             defaultPagesSettings: undefined
         };
         isHost = util.settings.isHost;
     }
 
-    loadData(newProps) {
-        const props = newProps ? newProps : this.props;
-        if (props.defaultPagesSettings) {
-            let portalIdChanged = false;
-            let cultureCodeChanged = false;
-
-            if (props.portalId === undefined || props.defaultPagesSettings.PortalId === props.portalId) {
-                portalIdChanged = false;
-            }
-            else {
-                portalIdChanged = true;
-            }
-
-            if (props.cultureCode === undefined || props.defaultPagesSettings.CultureCode === props.cultureCode) {
-                cultureCodeChanged = false;
-            }
-            else {
-                cultureCodeChanged = true;
-            }
-
-            if (portalIdChanged || cultureCodeChanged) {
-                return true;
-            }
-            else return false;
-        }
-        else {
-            return true;
-        }
-    }
-
     componentDidMount() {
-        const {props} = this;
-        if (!this.loadData()) {
-            this.setState({
-                defaultPagesSettings: props.defaultPagesSettings
-            });
-            return;
-        }
-        props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
-            this.setState({
-                defaultPagesSettings: Object.assign({}, data.Settings)
-            });
-        }));
+        this._mounted = true;
+        this.loadData();
     }
 
-    componentDidUpdate(props) {
-        if (!this.loadData(props)) {
-            this.setState({
-                defaultPagesSettings: Object.assign({}, props.defaultPagesSettings)                
-            });
-            return;
+    componentDidUpdate(prevProps) {
+        let { props} = this;
+
+        const portalIdChanged = !prevProps.portalId && prevProps.portalId !== props.portalId;
+        const cultureCodeChanged = !prevProps.cultureCode && prevProps.cultureCode !== props.cultureCode;
+
+        if(portalIdChanged || cultureCodeChanged) {
+            this.loadData();
         }
+    }
+
+    componentWillUnmount() {
+        this._mounted = false;
+    }
+
+    loadData() {
+        const { props } = this;
         props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
-            this.setState({
-                defaultPagesSettings: Object.assign({}, data.Settings)
-            });
+            if(this._mounted) {
+                this.setState({
+                    defaultPagesSettings: Object.assign({}, data.Settings)
+                });
+            }
         }));
     }
 
@@ -152,7 +120,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         let TabParameters_Login = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false, validateTab: "Account Login" });
         let TabParameters_Search = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false, validateTab: "Search Results" });
         if (state.defaultPagesSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSplashTabId.Help")}
@@ -234,7 +202,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div key="column-two" className="right-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSearchTabId.Help")}
@@ -319,7 +287,9 @@ class DefaultPagesSettingsPanelBody extends Component {
 
             return (
                 <div className={styles.defaultPagesSettings}>
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <GridSystem numberOfColumns={2}>
+                        {[columnOne, columnTwo]}
+                    </GridSystem>
                     {isHost &&
                         <div className="sectionTitle">{resx.get("PageOutputSettings")}</div>}
                     {isHost &&
@@ -369,7 +339,8 @@ function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
         defaultPagesSettings: state.siteBehavior.defaultPagesSettings,
-        defaultPagesSettingsClientModified: state.siteBehavior.defaultPagesSettingsClientModified
+        defaultPagesSettingsClientModified: state.siteBehavior.defaultPagesSettingsClientModified,
+        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
     };
 }
 

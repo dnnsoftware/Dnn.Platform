@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
-import SingleLineInput from "dnn-single-line-input";
-import MultiLineInput from "dnn-multi-line-input";
 import FullEditor from "./fullEditor";
-import Modal from "dnn-modal";
-import { EditIcon } from "dnn-svg-icons";
 import "./style.less";
+import { SingleLineInput, MultiLineInput, Modal, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class ResourceEditor extends Component {
     constructor() {
@@ -112,7 +109,7 @@ class ResourceEditor extends Component {
             {props.enabled && 
             <div 
                 className="edit-svg" 
-                dangerouslySetInnerHTML={{ __html: EditIcon }}
+                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
                 onClick={this.onEnterFullMode.bind(this)}>
             </div>
             }

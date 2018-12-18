@@ -6,9 +6,9 @@ import {
 } from "../../../actions";
 import SiteAliasRow from "./siteAliasRow";
 import SiteAliasEditor from "./siteAliasEditor";
-import Collapse from "dnn-collapsible";
+import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import util from "../../../utils";
 import resx from "../../../resources";
 
@@ -51,7 +51,7 @@ class SiteAliasesPanel extends Component {
             tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });
             tableFields.push({ "name": resx.get("Browser.Header"), "id": "Browser" });
             tableFields.push({ "name": resx.get("Theme.Header"), "id": "Theme" });
-            if (props.siteAliases. Languages.length > 1) {
+            if (props.siteAliases !== undefined && props.siteAliases. Languages.length > 1) {
                 tableFields.push({ "name": resx.get("Language.Header"), "id": "Language" });
             }
             tableFields.push({ "name": resx.get("Primary.Header"), "id": "Primary" });
@@ -173,13 +173,13 @@ class SiteAliasesPanel extends Component {
                     <div className="AddItemRow">
                         <div className="sectionTitle">{resx.get("SiteAliases")}</div>
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                             </div> {resx.get("cmdAddAlias")}
                         </div>
                     </div>
                     <div className="alias-items-grid">
                         {this.renderHeader()}
-                        <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
+                        <Collapsible isOpened={opened} style={{width: "100%", overflow: "visible" }}>
                             <SiteAliasRow
                                 alias={"-"}
                                 browser={"-"}
@@ -203,12 +203,11 @@ class SiteAliasesPanel extends Component {
                                     id={"add"}
                                     openId={this.state.openId} />
                             </SiteAliasRow>
-                        </Collapse>
+                        </Collapsible>
                         {this.renderedSiteAliases()}
                     </div>
                 </div>
-
-            </div >
+            </div>
         );
     }
 }

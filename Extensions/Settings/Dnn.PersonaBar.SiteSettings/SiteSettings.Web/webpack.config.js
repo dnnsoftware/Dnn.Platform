@@ -2,20 +2,7 @@
 const packageJson = require("./package.json");
 const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
-const languages = {
-    "en": null
-    // TODO: create locallizaton files per language 
-    // "de": require("./localizations/de.json"),
-    // "es": require("./localizations/es.json"),
-    // "fr": require("./localizations/fr.json"),
-    // "it": require("./localizations/it.json"),
-    // "nl": require("./localizations/nl.json")
-};
-
-const webpackExternals = Object.assign({},
-    require("dnn-webpack-externals"), {
-        "dnn-back-to": "window.dnn.nodeModules.PersonaBarComponents.BackTo"
-    });
+const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
 
 module.exports = {
     entry: "./src/main.jsx",
@@ -64,13 +51,13 @@ module.exports = {
             },
             { 
                 test: /\.(js|jsx)$/, 
-                exclude: /node_modules/, 
+                exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
+                    loader:'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env','@babel/preset-react']
-                    }
-                } 
+                        presets: ['@babel/react']
+                    },
+                }
             },
             {
                 test: /\.(ttf|woff)$/, 

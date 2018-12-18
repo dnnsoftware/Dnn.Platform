@@ -4,14 +4,7 @@ import { connect } from "react-redux";
 import {
     languages as LanguagesActions
 } from "../../../actions";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import InputGroup from "dnn-input-group";
-import Checkbox from "dnn-checkbox";
-import Dropdown from "dnn-dropdown";
-import RadioButtons from "dnn-radio-buttons";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { PersonaBarPageBody, SingleLineInputWithError, InputGroup, Checkbox, Dropdown, RadioButtons, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../../utils";
 import resx from "../../../resources";

@@ -1,14 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import resx from "resources";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
-import Label from "dnn-label";
-import Flag from "dnn-flag";
-import RadioButtons from "dnn-radio-buttons";
-import GridCell from "dnn-grid-cell";
 import ResourceTree from "./resourceTree";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { Switch, Button, Label, Flag, RadioButtons, GridCell, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import util from "utils";
 
 class LanguageInfoView extends Component {

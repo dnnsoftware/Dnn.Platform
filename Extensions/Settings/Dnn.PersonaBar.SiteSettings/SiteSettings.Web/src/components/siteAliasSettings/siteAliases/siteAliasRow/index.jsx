@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon } from "dnn-svg-icons";
 
 class SiteAliasRow extends Component {
     componentDidMount() {
@@ -14,7 +13,7 @@ class SiteAliasRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            this.props.Collapse();
         }
         else {
             this.props.OpenCollapse(this.props.id);
@@ -25,7 +24,7 @@ class SiteAliasRow extends Component {
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
+                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -54,15 +53,15 @@ class SiteAliasRow extends Component {
                             {this.getBooleanDisplay(props.isPrimary)}</div>
                         <div className="alias-item item-row-actionButtons">
                             {props.deletable &&
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete.bind(this)}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete.bind(this)}></div>
                             }
                             {props.editable &&
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)}></div>
                             }
                         </div>
                     </div>
                 </div>
-                <Collapse fixedHeight={320} keepContent={true} isOpened={opened} style={{ float: "left", width: "100%", overflow: "inherit" }}>{opened && props.children}</Collapse>
+                <Collapsible fixedHeight={320} keepContent={true} isOpened={opened} style={{ float: "left", width: "100%", overflow: "inherit" }}>{opened && props.children}</Collapsible>
             </div>
         );
     }

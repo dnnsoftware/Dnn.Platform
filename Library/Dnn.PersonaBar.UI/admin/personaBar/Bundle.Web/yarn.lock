@@ -591,10 +591,11 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@^2.0.6":
+"@dnnsoftware/dnn-react-common@2.0.7":
   version "2.0.7"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.7.tgz#ec828cdbd053fc332ecc474e4d7fc39cbf93585d"
   integrity sha1-7IKM29BT/DMuzEdOTX/DnL+TWF0=
+
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"

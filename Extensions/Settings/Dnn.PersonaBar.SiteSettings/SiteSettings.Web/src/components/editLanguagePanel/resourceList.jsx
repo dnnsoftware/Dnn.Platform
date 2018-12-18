@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import resx from "resources";
-import SearchBox from "dnn-search-box";
-import GridCell from "dnn-grid-cell";
+import { SearchBox, GridCell } from "@dnnsoftware/dnn-react-common";
 import ResourceEditor from "./resourceEditor";
 import utilities from "utils";
 

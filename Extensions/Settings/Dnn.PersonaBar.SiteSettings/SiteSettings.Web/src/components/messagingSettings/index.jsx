@@ -4,12 +4,7 @@ import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import Switch from "dnn-switch";
-import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { InputGroup, Switch, GridSystem, Dropdown, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -96,12 +91,6 @@ class MessagingSettingsPanelBody extends Component {
         }));
     }
 
-    componentDidUpdate(props) {
-        this.setState({
-            messagingSettings: Object.assign({}, props.messagingSettings)
-        });
-    }
-
     onSettingChange(key, event) {
         let {state, props} = this;
         let messagingSettings = Object.assign({}, state.messagingSettings);
@@ -146,7 +135,7 @@ class MessagingSettingsPanelBody extends Component {
     render() {
         const {state} = this;
         if (state.messagingSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
                     <div className="messagingSettings-row_switch">
                         <Label
@@ -185,7 +174,7 @@ class MessagingSettingsPanelBody extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div key="column-two" className="right-column">
                 <InputGroup>
                     <div className="messagingSettings-row_switch">
                         <Label
@@ -250,7 +239,7 @@ class MessagingSettingsPanelBody extends Component {
 
             return (
                 <div className={styles.messagingSettings}>
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.messagingSettingsClientModified}

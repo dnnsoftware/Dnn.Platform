@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from "dnn-button";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
 import "./fullEditor.less";
 

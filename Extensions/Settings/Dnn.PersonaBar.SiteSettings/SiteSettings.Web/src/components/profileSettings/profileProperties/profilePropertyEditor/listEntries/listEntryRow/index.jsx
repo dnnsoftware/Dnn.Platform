@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { EditIcon, TrashIcon, DragRowIcon } from "dnn-svg-icons";
 
 class ListEntryRow extends Component {
     componentDidMount() {
@@ -14,7 +13,7 @@ class ListEntryRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            //this.props.Collapsible();
         }
         else {
             this.props.OpenCollapse(this.props.id);
@@ -38,25 +37,25 @@ class ListEntryRow extends Component {
                         <div className="list-item item-row-actionButtons">
                             {props.enableSortOrder &&
                                 <div className={opened ? "order-icon-hidden" : "order-icon"}
-                                    dangerouslySetInnerHTML={{ __html: DragRowIcon }} >
+                                    dangerouslySetInnerHTML={{ __html: SvgIcons.DragRowIcon }} >
                                 </div>
                             }
                             <div className={opened ? "delete-icon-hidden" : "delete-icon"}
-                                dangerouslySetInnerHTML={{ __html: TrashIcon }}
+                                dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}
                                 onClick={props.onDelete.bind(this, props.entryId)}>
                             </div>
                             <div className={opened ? "edit-icon-active" : "edit-icon"}
-                                dangerouslySetInnerHTML={{ __html: EditIcon }}
+                                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
                                 onClick={this.toggle.bind(this)}>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Collapse fixedHeight={props.enableSortOrder === undefined || props.enableSortOrder === null ? 270 : 220}
+                <Collapsible fixedHeight={props.enableSortOrder === undefined || props.enableSortOrder === null ? 270 : 220}
                     isOpened={opened}
-                    style={{ float: "left", width: "100%", overflow: "inherit" }}>
+                    style={{ width: "100%", overflow: "visible" }}>
                     {opened && props.children}
-                </Collapse>
+                </Collapsible>
             </div>
         );
     }

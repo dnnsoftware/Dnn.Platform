@@ -6,12 +6,10 @@ import {
 } from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
-import Sortable from "dnn-sortable";
-import Collapse from "dnn-collapsible";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";
 import resx from "../../../resources";
+import { Sortable, Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 let tableFields = [];
 
@@ -53,15 +51,6 @@ class ProfilePropertiesPanel extends Component {
             }));
         }
 
-        tableFields = [];
-        tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
-        tableFields.push({ "name": resx.get("DataType.Header"), "id": "DataType" });
-        tableFields.push({ "name": resx.get("DefaultVisibility.Header"), "id": "DefaultVisibility" });
-        tableFields.push({ "name": resx.get("Required.Header"), "id": "Required" });
-        tableFields.push({ "name": resx.get("Visible.Header"), "id": "Visible" });
-    }
-
-    componentDidUpdate() {
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
         tableFields.push({ "name": resx.get("DataType.Header"), "id": "DataType" });
@@ -264,13 +253,13 @@ class ProfilePropertiesPanel extends Component {
                     <div className="AddItemRow">
                         <div className="sectionTitle">{resx.get("UserProfileFields") }</div>
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                             </div> {resx.get("cmdAddField") }
                         </div>
                     </div>
                     <div className="property-items-grid">
                         {this.renderHeader() }
-                        <Collapse isOpened={opened} autoScroll={true} style={{ float: "left", width: "100%" }}>
+                        <Collapsible isOpened={opened} autoScroll={true} style={{ overflow: "visible", width: "100%" }}>
                             <ProfilePropertyRow
                                 name={"-"}
                                 dataType={"-"}
@@ -292,7 +281,7 @@ class ProfilePropertiesPanel extends Component {
                                     id={"add"}
                                     openId={this.state.openId} />
                             </ProfilePropertyRow>
-                        </Collapse>
+                        </Collapsible>
                         {this.props.profileProperties && this.state.openId &&
                             this.renderedProfileProperties()
                         }
