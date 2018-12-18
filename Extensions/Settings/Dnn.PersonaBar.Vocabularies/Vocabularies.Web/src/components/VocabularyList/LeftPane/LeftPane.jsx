@@ -1,6 +1,6 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
-import EditableWithLabel from "dnn-editable-field";
+import { EditableField as EditableWithLabel} from "@dnnsoftware/dnn-react-common";
 import LocalizedResources from "../../../resources";
 import util from "utils";
 import styles from "./style.less";

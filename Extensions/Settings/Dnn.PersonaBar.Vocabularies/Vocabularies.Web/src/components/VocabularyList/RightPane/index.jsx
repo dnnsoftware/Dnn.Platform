@@ -6,8 +6,7 @@ import Term from "./Term";
 import util from "../../../utils";
 import LocalizedResources from "../../../resources";
 import styles from "./style.less";
-import GridCell from "dnn-grid-cell";
-import { AddIcon } from "dnn-svg-icons";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 function findInChildren(list, parentTermId) {
     if (!list) {
@@ -339,7 +338,7 @@ class RightPane extends Component {
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
                         {this.canEdit() &&
                             <div className="add-term-button do-not-close"
-                                dangerouslySetInnerHTML={{ __html: AddIcon + " " + LocalizedResources.get("AddTerm") }}
+                                dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon + " " + LocalizedResources.get("AddTerm") }}
                                 onClick={this.openAddTerm.bind(this, false, props.type)}>
                             </div>
                         }
@@ -350,7 +349,7 @@ class RightPane extends Component {
                         </Scrollbars>
                     </GridCell>}
                 </GridCell>
-            </GridCell >
+            </GridCell>
         );
     }
 }

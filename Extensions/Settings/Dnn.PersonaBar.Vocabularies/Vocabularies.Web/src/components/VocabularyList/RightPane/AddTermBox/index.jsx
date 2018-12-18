@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Scrollbars } from "react-custom-scrollbars";
-import MultiLineInputWithError  from "dnn-multi-line-input-with-error";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Button from "dnn-button";
-import InputGroup from "dnn-input-group";
+import { 
+    MultiLineInputWithError,
+    SingleLineInputWithError,
+    Button,
+    InputGroup
+} from "@dnnsoftware/dnn-react-common";
 import Collapsible from "react-collapse";
 import LocalizedResources from "../../../../resources";
 import styles from "./style.less";
