@@ -15,7 +15,6 @@ import ReduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import ReduxThunk from "redux-thunk";
 import Moment from "moment";
 import ReactWidgets from "react-widgets";
-import ThrottleDebounce from "throttle-debounce";
 import Promise from "es6-promise";
 import PersonaBarComponents from "./components/persona-bar-components";
 
@@ -40,7 +39,6 @@ window.dnn.nodeModules.ReactCollapse = ReactCollapse;
 window.dnn.nodeModules.ReactCustomScrollBars = ReactCustomScrollBars;
 window.dnn.nodeModules.ReactModal = ReactModal;
 window.dnn.nodeModules.ReactWidgets = ReactWidgets;
-window.dnn.nodeModules.ThrottleDebounce = ThrottleDebounce;
 window.dnn.nodeModules.CommonComponents = CommonComponents;
 window.dnn.nodeModules.PersonaBarComponents = PersonaBarComponents;
 window.dnn.nodeModules.ReduxDevTools = ReduxDevTools;
