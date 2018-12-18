@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Collapse from "dnn-collapsible";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { EditIcon } from "dnn-svg-icons";
 import resx from "../../../resources";
 import {
     task as TaskActions
@@ -22,7 +21,7 @@ class SchedulerRow extends Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened
@@ -77,6 +76,7 @@ class SchedulerRow extends Component {
     render() {
         const { props } = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+
         return (
             <div className={"collapsible-component-scheduler" + (opened ? " row-opened" : "")}>
                 <div className={"collapsible-header-scheduler " + !opened} >
@@ -98,12 +98,12 @@ class SchedulerRow extends Component {
                             </div>
                         }
                         <div className="schedule-item item-row-editButton">
-                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this, 0)}>
+                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this, 0)}>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapsible autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
             </div>
         );
     }

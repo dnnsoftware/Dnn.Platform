@@ -1,13 +1,17 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "settings": {
+        "react":{
+            "verstion": "16"
+        }
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
@@ -22,19 +26,6 @@ module.exports = {
         "VERSION": false
     },
     "rules": {
-    //    "spellcheck/spell-checker": [1,
-    //     {
-    //         "comments": "true",
-    //         "strings": "true",
-    //         "identifiers": "true",
-    //         "skipWords": require("./.eslintskipwords"),
-    //         "skipIfMatch": [
-    //             "http://[^s]*",
-    //             "https://[^s]*",
-    //             "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-    //         ]
-    //     }
-    //   ],      
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
@@ -47,6 +38,7 @@ module.exports = {
       "space-before-blocks": "warn",
       "no-multiple-empty-lines":  "warn",
       "react/jsx-equals-spacing": ["warn", "never"],
-      "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}]
+      "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}],
+      "no-debugger": "warn"
     }
 };

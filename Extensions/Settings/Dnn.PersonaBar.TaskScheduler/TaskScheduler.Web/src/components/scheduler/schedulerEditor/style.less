@@ -1,10 +1,14 @@
-@import "~dnn-global-styles/index";
+@import "~@dnnsoftware/dnn-react-common/styles/index";
 .scheduler-setting-editor {
     margin: 10px 0;
+    .scheduler-item-container{
+        display: flex;
+        .scheduler-item-column{
+            flex: 0 1 50%;
+        }
+    }
     .container {
-        float: left;
         padding: 2% 8%;
-        width: 100%;
         &.right-column {
             border-left: 1px solid @alto;
         }

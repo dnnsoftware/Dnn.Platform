@@ -3,7 +3,7 @@ const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
 const path = require("path");
 
-const webpackExternals = require("dnn-webpack-externals");
+const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
 
 module.exports = {
     entry: "./src/main.jsx",

@@ -5,8 +5,7 @@ import {
     task as TaskActions
 } from "../../actions";
 import styles from "./style.less";
-import Button from "dnn-button";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import ModePanel from "./modePanel";
 import util from "../../utils";
 import resx from "../../resources";
@@ -22,7 +21,7 @@ class TopPane extends Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         const persistedSettings = util.utilities.persistent.load();
 
