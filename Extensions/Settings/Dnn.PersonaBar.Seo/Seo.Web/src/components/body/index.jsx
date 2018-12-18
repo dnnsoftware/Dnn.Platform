@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Tabs from "dnn-tabs";
+import { DnnTabs as Tabs, Tooltip, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
-import {
-    pagination as PaginationActions
-} from "../../actions";
+import { pagination as PaginationActions } from "../../actions";
 import GeneralSettings from "../generalSettings";
 import RegexSettings from "../regexSettings";
 import SitemapSettings from "../sitemapSettings";
 import ExtensionUrlProviders from "../extensionUrlProviders";
 import TestUrl from "../testUrl";
-import Tooltip from "dnn-tooltip";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";

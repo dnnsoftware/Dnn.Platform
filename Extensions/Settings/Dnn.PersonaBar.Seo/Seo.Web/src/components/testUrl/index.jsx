@@ -4,13 +4,15 @@ import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import PagePicker from "dnn-page-picker";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { 
+    Button,
+    GridSystem as Grid,
+    InputGroup, 
+    Label,
+    MultiLineInput,
+    PagePicker, 
+    SingleLineInputWithError
+} from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";

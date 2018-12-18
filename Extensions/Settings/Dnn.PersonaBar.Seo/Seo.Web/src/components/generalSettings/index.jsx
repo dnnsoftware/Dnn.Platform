@@ -4,13 +4,7 @@ import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
-import Label from "dnn-label";
-import RadioButtons from "dnn-radio-buttons";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
+import { Dropdown, InputGroup, GridSystem as Grid, Label, RadioButtons, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -105,7 +99,7 @@ class GeneralSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.generalSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div className="left-column" key="columnOne">
                 <div className="columnTitle">{resx.get("UrlRewriter")}</div>
                 <InputGroup>
                     <Label
@@ -169,7 +163,7 @@ class GeneralSettingsPanelBody extends Component {
                     </div>
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div className="right-column" key="columnTwo">
                 <div className="columnTitle">{resx.get("UrlRedirects")}</div>
                 <InputGroup>
                     <div className="generalSettings-row-options">

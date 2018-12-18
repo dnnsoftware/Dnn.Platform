@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
+import { Collapsible as Collapse, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { EditIcon, CheckMarkIcon } from "dnn-svg-icons";
 
 class ProviderRow extends Component {
     constructor() {
@@ -30,7 +29,7 @@ class ProviderRow extends Component {
         if (props.enabled) {
             return (
                 <div className="item-row-enabled-display">
-                    <div className="enabled-icon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }} />
+                    <div className="enabled-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }} />
                 </div>
             );
         }
@@ -60,7 +59,7 @@ class ProviderRow extends Component {
                                 {props.priority}
                             </div>
                             <div className="provider-item item-row-editButton">
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)} />
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
                             </div>
                         </div>
                     </div>
@@ -75,7 +74,7 @@ class ProviderRow extends Component {
 }
 
 ProviderRow.propTypes = {
-    name: PropTypes.number,
+    name: PropTypes.string,
     enabled: PropTypes.bool,
     priority: PropTypes.number,
     overridePriority: PropTypes.bool,

@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.less";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import InputGroup from "dnn-input-group";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
-import Dropdown from "dnn-dropdown";
+import { GridSystem as Grid, Label, InputGroup, Button, Switch, Dropdown } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
 import styles from "./style.less";
 
@@ -128,7 +123,6 @@ class ProviderEditor extends Component {
 }
 
 ProviderEditor.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     settings: PropTypes.object,
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func
