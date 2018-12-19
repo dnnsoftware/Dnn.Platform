@@ -651,9 +651,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@2.0.6":
-  version "2.0.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.6.tgz#d1be0ef7a419dda29247fc18d6e71235b8119f1e"
+"@dnnsoftware/dnn-react-common@2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.8.tgz#0bb7a4033bea8934b1e511a777806a65246be250"
+  integrity sha512-bFibsk6X2mHtp2fclxochTN5FmK1Em9ggauMvjMsNT4XSuRVSFqo/Ntj7uJIAGjWkyp2Kh3mg1f4dyDGahV5aQ==
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"
@@ -664,7 +665,7 @@
     react-height "^3.0.0"
     react-modal "^3.5.1"
     react-motion "^0.5.2"
-    react-portal-tooltip "^2.4.0"
+    react-portal-tooltip "^2.4.2"
     react-scrollbar "^0.5.4"
     react-slider "0.11.2"
     react-tabs "2.3.0"
@@ -4586,9 +4587,10 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
-react-portal-tooltip@^2.4.0:
-  version "2.4.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-portal-tooltip/-/react-portal-tooltip-2.4.1.tgz#f5011e845eb4a5dbaecd329ecf92e237cc7fe80b"
+react-portal-tooltip@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
+  integrity sha512-scer683Y1Sc9p3YilEbEZf7er9AZzJBaQ/c8hymxgJ0+Sa7RqUiOEvjA/L2fycM/yKKMH7aHOOxhMzeL2ff22A==
 
 react-redux@^5.1.1:
   version "5.1.1"
