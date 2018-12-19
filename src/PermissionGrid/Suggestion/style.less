@@ -22,7 +22,9 @@
             border-radius: 0;
             box-shadow: none;
             background: transparent;
-
+            .rw-select{
+                display: none;
+            }
             &.rw-state-focus, &.rw-state-focus:hover{
                 border: none;
                 outline: none;
@@ -49,6 +51,10 @@
             :-ms-input-placeholder {
                 /* Internet Explorer 10-11 */
                 color: @alto;
+            }
+            .rw-widget-container{
+                background-color: transparent;
+                border: none;
             }
             input {
                 -webkit-box-shadow: none;
