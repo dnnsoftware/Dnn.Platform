@@ -4,17 +4,13 @@ import { connect } from "react-redux";
 import {
     importExport as ImportExportActions
 } from "../../actions";
-import DropDown from "dnn-dropdown";
-import Pager from "dnn-pager";
-import Button from "dnn-button";
-import Label from "dnn-label";
-import GridCell from "dnn-grid-cell";
 import "./style.less";
 import util from "../../utils";
 import Localization from "localization";
 import JobRow from "./JobRow";
 import FiltersBar from "./FiltersBar";
 import JobDetails from "./JobDetails";
+import { Dropdown, Pager, Button, Label, GridCell } from "@dnnsoftware/dnn-react-common";
 
 class DashboardPanelBody extends Component {
     constructor() {
@@ -29,7 +25,7 @@ class DashboardPanelBody extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         props.dispatch(ImportExportActions.getPortals((data) => {
             if (data.TotalResults === 1) {
@@ -57,7 +53,8 @@ class DashboardPanelBody extends Component {
         }));
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
+    componentDidUpdate() {
+        const { props } = this;
         if (this.state.currentJobId !== props.currentJobId) {
             this.setState({
                 currentJobId: props.currentJobId
@@ -310,7 +307,7 @@ class DashboardPanelBody extends Component {
         return <div className="top-panel">
             <GridCell columnSize={100} >
                 <div className="site-selection">
-                    <DropDown
+                    <Dropdown
                         enabled={props.portals.length > 1 ? true : false}
                         options={this.getPortalOptions()}
                         autoHide={false}

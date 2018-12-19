@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import GridCell from "dnn-grid-cell";
-import { CycleIcon } from "dnn-svg-icons";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
 import Localization from "localization";
 import itemsToExportService from "../../../services/itemsToExportService";
+import { Label, Button, GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class JobDetails extends Component {
     constructor(props) {
@@ -46,7 +43,7 @@ class JobDetails extends Component {
                 }
                 else {
                     return <div>
-                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
                         <div style={{ float: "right" }}>
                             {detail.ProcessedItemsString + " / " + detail.TotalItemsString + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}
                         </div>
@@ -74,7 +71,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -101,7 +98,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
                                 <div style={{ float: "right" }}>
                                     {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -131,7 +128,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>

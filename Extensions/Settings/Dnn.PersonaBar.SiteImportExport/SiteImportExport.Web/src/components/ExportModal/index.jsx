@@ -6,21 +6,22 @@ import {
     visiblePanel as VisiblePanelActions
 } from "../../actions";
 import Localization from "localization";
-import InputGroup from "dnn-input-group";
-import Label from "dnn-label";
-import Dropdown from "dnn-dropdown-with-error";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
-import RadioButtons from "dnn-radio-buttons";
-import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 import itemsToExportService from "../../services/itemsToExportService";
 
-import TreeControlInteractor from "dnn-tree-control-interactor";
+import {
+    InputGroup,
+    Label,
+    Dropdown,
+    SingleLineInputWithError,
+    MultiLineInputWithError,
+    GridCell,
+    GridSystem,
+    Switch,
+    RadioButtons,
+    Button,
+    TreeControlInteractor } from "@dnnsoftware/dnn-react-common";
 
 const keysToValidate = ["ExportName"];
 

@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { connect } from "react-redux";
 import {
     visiblePanel as VisiblePanelActions,
     importExport as ImportExportActions
 } from "../actions";
-import PersonaBarPage from "dnn-persona-bar-page";
 import Localization from "localization";
 import Dashboard from "./Dashboard";
 import ExportModal from "./ExportModal";
 import ImportModal from "./ImportModal";
 import util from "../utils";
+import { PersonaBarPageHeader, PersonaBarPageBody, PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 
 class App extends Component {
     constructor() {
