@@ -8,8 +8,6 @@ namespace DotNetNuke.Entities.Users
 {
     public class UserRegistrationEmailNotifier
     {
-        private static PortalSettings __portalSettings = PortalSettings.Current;
-
         public UserRegistrationEmailNotifier()
         {
         }
@@ -26,7 +24,7 @@ namespace DotNetNuke.Entities.Users
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
             //because the user need administrators to do the approve action so that he can continue use the website.
-            if (__portalSettings.EnableRegisterNotification || __portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+            if (PortalSettings.Current.EnableRegisterNotification || PortalSettings.Current.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
             {
                 NotifyUser(user, MessageType.UserRegistrationAdmin);
             }
@@ -34,7 +32,7 @@ namespace DotNetNuke.Entities.Users
 
         public static void NotifyUser(UserInfo user)
         {
-            switch (__portalSettings.UserRegistration)
+            switch (PortalSettings.Current.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
                     NotifyUser(user, MessageType.UserRegistrationPrivate);
@@ -53,7 +51,7 @@ namespace DotNetNuke.Entities.Users
 
         public static void NotifyUser(UserInfo user, MessageType type)
         {
-            Mail.SendMail(user, type, __portalSettings);
+            Mail.SendMail(user, type, PortalSettings.Current);
         }
     }
 }

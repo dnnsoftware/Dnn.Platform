@@ -990,7 +990,7 @@ namespace DotNetNuke.Entities.Users
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
-                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user, SendEmailNotification = sendEmailNotification });
+                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user, SendNotification = sendEmailNotification });
             }
 
             //Reset PortalId

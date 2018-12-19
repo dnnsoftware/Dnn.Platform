@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Users
         {
             UserRegistrationEmailNotifier.NotifyAdministrator(args.User);
 
-            if (args.SendEmailNotification)
+            if (args.SendNotification)
             {
                 UserRegistrationEmailNotifier.NotifyUser(args.User);
             }
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Users
 
         public void UserApproved(object sender, UserEventArgs args)
         {
-            if (args.SendEmailNotification)
+            if (args.SendNotification)
             {
                 UserRegistrationEmailNotifier.NotifyUser(args.User, MessageType.UserRegistrationPublic);
             }
