@@ -22,6 +22,7 @@ const searchParameters = {
 class Body extends Component {
     constructor() {
         super();
+        this.userTable = React.createRef();
         this.state = {
             userFilters: [],
             searchParameters
@@ -34,12 +35,6 @@ class Body extends Component {
                 userFilters
             });
         }));
-    }
-
-    onChange(key, event) {
-        this.setState({
-            [key]: event.target.value
-        });
     }
 
     onFilterChange(option, searchText) {
@@ -75,7 +70,7 @@ class Body extends Component {
     }
 
     toggleCreateBox() {
-        this.userTable.onAddUser();
+        this.userTable.wrappedInstance.onAddUser();
     }
     canAddUser()
     {
