@@ -2,7 +2,7 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import { SingleLineInputWithError, Grid, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
 import { security as SecurityActions } from "../../../actions";
 import resx from "../../../resources";
 
@@ -25,7 +25,7 @@ class IpFilterEditor extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (props.ipFilterId) {
             props.dispatch(SecurityActions.getIpFilter({
@@ -40,45 +40,6 @@ class IpFilterEditor extends Component {
         typeOptions = [];
         typeOptions.push({ label: resx.get("AllowIP"), value: 1 });
         typeOptions.push({ label: resx.get("DenyIP"), value: 2 });
-    }
-
-    UNSAFE_componentWillReceiveProps(props) {
-        let {state} = this;
-
-        let ip = props.ipFilter["IPAddress"];
-        let mask = props.ipFilter["SubnetMask"];
-        if (ip === "" || !re.test(ip)) {
-            state.error["ip"] = true;
-        }
-        else if (ip !== "" && re.test(ip)) {
-            state.error["ip"] = false;
-        }
-        if (mask === "" || !re.test(mask)) {
-            state.error["mask"] = true;
-        }
-        else if (mask !== "" && re.test(mask)) {
-            state.error["mask"] = false;
-        }
-        this.setState({
-            ipFilter: Object.assign({}, props.ipFilter),
-            triedToSubmit: false,
-            error: state.error,
-            isIpRange: props.ipFilter.SubnetMask.length > 0 ? true : false
-        });
-    }
-
-    getValue(selectKey) {
-        const {state} = this;
-        switch (selectKey) {
-            case "IPAddress":
-                return state.ipFilter.IPAddress !== undefined ? state.ipFilter.IPAddress.toString() : "";
-            case "RuleType":
-                return state.ipFilter.RuleType !== undefined ? state.ipFilter.RuleType.toString() : "";
-            case "SubnetMask":
-                return state.ipFilter.SubnetMask !== undefined ? state.ipFilter.SubnetMask.toString() : "";
-            default:
-                break;
-        }
     }
 
     toggle(event) {
@@ -233,10 +194,10 @@ class IpFilterEditor extends Component {
         /* eslint-disable react/no-danger */
         return (
             <div className="ip-filter-setting-editor">
-                <Grid
+                <GridSystem
                     numberOfColumns={1}>
                     {children}
-                </Grid>
+                </GridSystem>
                 <div className="buttons-box">
                     <Button                        
                         type="secondary"

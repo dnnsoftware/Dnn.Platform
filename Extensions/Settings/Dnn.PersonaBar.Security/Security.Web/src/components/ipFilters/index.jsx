@@ -23,7 +23,7 @@ class IpFiltersPanelBody extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         props.dispatch(SecurityActions.getIpFilters());
 
@@ -42,17 +42,10 @@ class IpFiltersPanelBody extends Component {
         return <div className="header-row">{tableHeaders}</div>;
     }
 
-    onEnter(key) {
-        const { state } = this;
-        alert("You pressed enter! My value is: " + state[key]);
-    }
-
     uncollapse(id) {
-        setTimeout(() => {
-            this.setState({
-                openId: id
-            });
-        }, this.timeout);
+        this.setState({
+            openId: id
+        });
     }
     collapse() {
         if (this.state.openId !== "") {
@@ -141,7 +134,7 @@ class IpFiltersPanelBody extends Component {
                         </div>
                     </div>
                     <div className="ip-filter-items-grid">
-                        {this.renderHeader() }
+                        {this.renderHeader()}
                         <IpFilterRow
                             ipFilterId={"-"}
                             ruleType={"-"}
@@ -161,7 +154,7 @@ class IpFiltersPanelBody extends Component {
                                 id={"add"}
                                 openId={this.state.openId} />
                         </IpFilterRow>
-                        {this.renderedIpFilters() }
+                        {this.renderedIpFilters()}
                     </div>
                 </div>
             );
