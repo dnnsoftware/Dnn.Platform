@@ -15,7 +15,7 @@ class IpFilterRow extends Component {
         super();
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened
@@ -24,7 +24,7 @@ class IpFilterRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            this.props.Collapse();
         } else {
             this.props.OpenCollapse(this.props.id);
         }
@@ -81,7 +81,7 @@ class IpFilterRow extends Component {
                         </div>
                     </div>
                 }
-                <Collapsible className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
+                <Collapsible className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ overflow: "visible", width: "100%" }}>{opened && props.children}</Collapsible>
             </div>
         );
 
