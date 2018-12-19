@@ -6903,9 +6903,10 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
-react-portal-tooltip@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.0.tgz#0f2d558d9eb20ef5ab344c87572e63e7c373b229"
+react-portal-tooltip@^2.4.2:
+  version "2.4.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
+  integrity sha1-IoWVqOAuzMSABFem+P3nmWA6zDU=
 
 react-scrollbar@^0.5.4:
   version "0.5.4"
