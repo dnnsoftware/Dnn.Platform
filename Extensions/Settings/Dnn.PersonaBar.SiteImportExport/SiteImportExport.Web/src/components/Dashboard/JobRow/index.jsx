@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
-import { ArrowDownIcon, CycleIcon } from "dnn-svg-icons";
 import Localization from "localization";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import "./style.less";
+import { Collapsible, SvgIcons, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 
 /*eslint-disable eqeqeq*/
 class JobRow extends Component {
@@ -75,19 +73,19 @@ class JobRow extends Component {
                                 <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
                                     <TextOverflowWrapper text={Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))} maxWidth={80} />                                    
                                     {props.jobStatus === 1 && ! props.jobCancelled &&
-                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
                                     }
                                 </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} />
+                                <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} />
                             </div>
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} fixedHeight={480} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapsible autoScroll={true} isOpened={opened} fixedHeight={480} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
             </div>
         );
     }

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Label from "dnn-label";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { GridCell, Label, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 
 class PackageCard extends Component {
     render() {

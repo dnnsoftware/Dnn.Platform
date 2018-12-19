@@ -9,13 +9,12 @@ import Localization from "localization";
 import ImportSummary from "./ImportSummary";
 import PackagesList from "./PackagesList";
 import PackageCard from "./PackageCard";
-import Button from "dnn-button";
-import GridCell from "dnn-grid-cell";
 import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
-import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
+
+import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
 
 const noDataImg = require("!raw-loader!./img/nodata.svg");
 
