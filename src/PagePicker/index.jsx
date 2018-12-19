@@ -588,7 +588,6 @@ class PagePicker extends Component {
                             <Collapse
                                 className="page-picker-content"
                                 ref={this.pagePickerContentRef}
-                                keepCollapsedContent={props.keepCollapsedContent}
                                 isOpened={state.dropDownOpen}>
                                 {!props.IsMultiSelect && props.SearchEnabled &&
                                     <SearchBox
@@ -621,9 +620,6 @@ class PagePicker extends Component {
 }
 
 PagePicker.propTypes = {
-
-    //React Collapse prop - set to false if you want to re-render the items every time.
-    keepCollapsedContent: PropTypes.bool,
 
     //Class name to attach to parent
     className: PropTypes.string,
@@ -715,7 +711,6 @@ PagePicker.defaultProps = {
     closeOnBlur: true,
     enabled: true,
     className: "",
-    keepCollapsedContent: true,
     placeholderText: "Search pages..",
     style: {
         width: 300
