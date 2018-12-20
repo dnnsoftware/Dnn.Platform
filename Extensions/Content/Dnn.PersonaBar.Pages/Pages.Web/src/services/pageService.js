@@ -22,9 +22,9 @@ const PageService = function () {
         return api.post("SavePageDetails", toBackEndPage(request));
     };
 
-    const deletePage = function (page) {
+    const deletePage = function (page, hardDelete = false) {
         const api = getPagesApi();
-        return api.post("DeletePage", { id: page.tabId });
+        return api.post("DeletePage?hardDelete=" + hardDelete, { id: page.tabId });
     };
 
     const addPages = function (bulkPage) {

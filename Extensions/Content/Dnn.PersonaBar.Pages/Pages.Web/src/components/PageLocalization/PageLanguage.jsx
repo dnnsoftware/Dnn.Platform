@@ -56,12 +56,37 @@ class PageLanguage extends Component {
         e.stopPropagation();
     }
 
+    onSettingPage(url, e){
+        let panelId = window.$('.socialpanel:visible').attr('id');
+        utils.getUtilities().panelViewData(panelId, {tab: [0]});
+        window.parent.location = url;
+        
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    onDeletePage(page, e){
+        let confirmText = Localization.get("DeleteTranslationConfirm");
+        confirmText = confirmText.replace("{0}", page.CultureCode);
+        utils.confirm(
+            confirmText,
+            Localization.get("Delete"),
+            Localization.get("Cancel"),
+            () => {
+                this.props.onDeletePage(page);
+            }
+        );
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const iconSrc = this.props.local && this.props.local.Icon ? this.props.local.Icon : "";
         const cultureCode = this.props.local && this.props.local.CultureCode ? this.props.local.CultureCode : "";
         const page = this.props.page || {};
         const modules = this.props.modules || [];
+        const isCurrentPage = page.TabId === utils.getCurrentPageId();
         const moduleComponents = modules.map((module, index) => {
             return <Module
                 key={module.id}
@@ -79,7 +104,22 @@ class PageLanguage extends Component {
                 <div className="page-language-row">
                     <img src={iconSrc} alt={cultureCode} />
                     <span>{cultureCode}</span>
-                    <a className="icon" href={page.PageUrl} onClick={this.onViewPage.bind(this, page.PageUrl)} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} aria-label="View"></a>
+                    {!this.props.isDefault && <a className="icon" 
+                        onClick={this.onDeletePage.bind(this, page)} 
+                        dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} 
+                        aria-label="Delete">
+                    </a>}
+                    {!isCurrentPage && <a className="icon" 
+                        onClick={this.onSettingPage.bind(this, page.PageUrl)} 
+                        dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }} 
+                        aria-label="Settings">
+                    </a>}
+                    <a className="icon" 
+                        href={page.PageUrl} 
+                        onClick={this.onViewPage.bind(this, page.PageUrl)} 
+                        dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} 
+                        aria-label="View">
+                    </a>
                 </div>
                 <div className="page-language-row">
                     <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName") } aria-label="Name" />
@@ -130,6 +170,7 @@ PageLanguage.propTypes = {
     onUpdateModules: PropTypes.func,
     onDeleteModule: PropTypes.func,
     onRestoreModule: PropTypes.func,
+    onDeletePage: PropTypes.func,
     isDefault: PropTypes.bool
 };
 

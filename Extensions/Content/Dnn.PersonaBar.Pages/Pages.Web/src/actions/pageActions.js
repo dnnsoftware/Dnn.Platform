@@ -207,6 +207,7 @@ const pageActions = {
     },
 
     deletePage(page, redirectUrl) {
+        
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.DELETE_PAGE
@@ -225,7 +226,21 @@ const pageActions = {
                 if (page.tabId !== 0 && (page.tabId === utils.getCurrentPageId()) || redirectUrl) {
                     window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
                 }
-
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_DELETING_PAGE,
+                    data: { error }
+                });
+            });
+        };
+    },
+    deleteLocalizePage(page) {
+        return (dispatch) => {
+            PagesService.deletePage(page, true).then(response => {
+                if (response.Status === responseStatus.ERROR) {
+                    utils.notifyError(response.Message, 3000);
+                    return;
+                }
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_DELETING_PAGE,

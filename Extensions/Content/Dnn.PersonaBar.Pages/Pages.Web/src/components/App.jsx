@@ -618,7 +618,7 @@ class App extends Component {
                         const arr1 = item.childListItems.slice(0, itemIndex);
                         const arr2 = item.childListItems.slice(itemIndex + 1);
                         item.childListItems = [...arr1, ...arr2];
-                        props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? item.url : null);
+                        props.onDeletePage(props.selectedPage, false, utils.getCurrentPageId() === props.selectedPage.tabId ? item.url : null);
                         updateStore(list);
                         this.onCancelPage();
                     }
@@ -639,7 +639,7 @@ class App extends Component {
                 const arr1 = pageList.slice(0, itemIndex);
                 const arr2 = pageList.slice(itemIndex + 1);
                 const update = [...arr1, ...arr2];
-                this.props.onDeletePage(props.selectedPage, utils.getCurrentPageId() === props.selectedPage.tabId ? utils.getDefaultPageUrl() : null);
+                this.props.onDeletePage(props.selectedPage, false, utils.getCurrentPageId() === props.selectedPage.tabId ? utils.getDefaultPageUrl() : null);
                 this.props.updatePageListStore(update);
                 this.onCancelPage();
             };
