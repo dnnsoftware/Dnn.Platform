@@ -1,11 +1,7 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import DropdownWithError from "dnn-dropdown-with-error";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, GridSystem, SingleLineInputWithError, DropdownWithError, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
 import "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -23,7 +19,7 @@ class ControlFields extends Component {
         const {props} = this;
         return (
             <GridCell className="edit-module-control-box">
-                <GridSystem>
+                  <GridSystem>
                     <div>
                         <SingleLineInputWithError
                             label={Localization.get("AddModuleControl_Key.Label")}
@@ -31,6 +27,7 @@ class ControlFields extends Component {
                             tooltipMessage={Localization.get("AddModuleControl_Key.HelpText")}
                             value={props.controlBeingEdited.key}
                             onChange={props.onChange.bind(this, "key")} />
+                      
                     </div>
                     <div>
                         <SingleLineInputWithError
