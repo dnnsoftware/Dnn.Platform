@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button, PersonaBarPageHeader, PersonaBarPage}  from "@dnnsoftware/dnn-react-common";
 import RolesPanel from "./roles";
-import {
-    visiblePanelActions as VisiblePanelActions
-} from "../actions";
 import resx from "../resources";
 import util from "utils";
 let canEdit = false;
@@ -13,12 +10,6 @@ class Root extends Component {
     constructor() {
         super();
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.EDIT;
-    }
-
-    navigateMap(page, index, event) {
-        event.preventDefault();
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(page, index));
     }
 
     onCreate() {
