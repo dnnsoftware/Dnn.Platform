@@ -15,11 +15,10 @@ module.exports = {
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
-            "experimentalObjectRestSpread": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
-    },        
+    },
     "globals": {
         "__": false,
         "Promise": false,
