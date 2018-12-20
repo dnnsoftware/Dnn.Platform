@@ -34,7 +34,7 @@
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="true"  />
-    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="true"  />
+    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
+    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
   </Target>
 </Project>
