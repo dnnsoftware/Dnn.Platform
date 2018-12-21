@@ -1558,7 +1558,7 @@ namespace DotNetNuke.Entities.Urls
                         // from an unsecure page
                         if (!portalSettings.ActiveTab.IsSecure && 
                             result.IsSecureConnection &&
-                            UrlUtils.IsPopUp(url))
+                            !UrlUtils.IsPopUp(url))
                         {
                             //has connection already been forced to secure?
                             if (queryStringCol["ssl"] == null)
