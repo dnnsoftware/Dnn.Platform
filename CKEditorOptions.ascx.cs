@@ -1187,6 +1187,8 @@ namespace DNNConnect.CKEditorProvider
                 ddlSkin.Items.Add(skinItem);
             }
 
+            ddlSkin.SelectedValue = currentSettings?.Config?.Skin?? "";
+
             // CodeMirror Themes
             CodeMirrorTheme.Items.Clear();
 
