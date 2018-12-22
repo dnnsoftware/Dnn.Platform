@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Exceptions
             }
 
             // DNN-8845: using a FIPS compliant HashAlgorithm
-            using (var hasher = new HMACSHA1())
+            using (var hasher = new SHA1CryptoServiceProvider())
             {
                 var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString().ToLowerInvariant()));
                 return Convert.ToBase64String(byteArray);
