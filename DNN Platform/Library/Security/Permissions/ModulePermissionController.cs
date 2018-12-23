@@ -127,12 +127,23 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>
         /// Returns a flag indicating whether the current user can manage a module's settings
+        /// and edit module's content
         /// </summary>
         /// <param name="module">The page</param>
         /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanManageModule(ModuleInfo module)
         {
             return _provider.CanManageModule(module);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can manage module's settings
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public static bool CanManageModuleSettings(ModuleInfo module)
+        {
+            return _provider.CanManageModuleSettings(module);
         }
 
         /// <summary>

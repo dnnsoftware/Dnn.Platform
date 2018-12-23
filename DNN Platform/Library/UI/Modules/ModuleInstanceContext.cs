@@ -577,11 +577,9 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", Configuration))
+                if (!Globals.IsAdminControl() && (ModulePermissionController.CanManageModuleSettings(_configuration) || ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Configuration)))
                 {
-                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Configuration))
-                    {
-                        _moduleGenericActions.Actions.Add(GetNextActionID(),
+                    _moduleGenericActions.Actions.Add(GetNextActionID(),
                                                           Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
                                                           ModuleActionType.ModuleSettings,
                                                           "",
@@ -591,7 +589,6 @@ namespace DotNetNuke.UI.Modules
                                                           SecurityAccessLevel.Edit,
                                                           true,
                                                           false);
-                    }
                 }
             }
 

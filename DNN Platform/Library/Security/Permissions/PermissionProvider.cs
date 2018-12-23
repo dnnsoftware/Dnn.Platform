@@ -63,6 +63,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ExportModulePermissionKey = "EDIT";
         private const string ImportModulePermissionKey = "EDIT";
         private const string ManageModulePermissionKey = "EDIT";
+        private const string ManageModuleSettingsPermissionKey = "MANAGE";
         private const string ViewModulePermissionKey = "VIEW";
 
         //Page Permission Keys
@@ -742,6 +743,11 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool CanAdminModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(AdminModulePermissionKey));
+        }
+
+        public virtual bool CanManageModuleSettings(ModuleInfo module)
+        {
+            return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ManageModuleSettingsPermissionKey));
         }
 
         /// <summary>
