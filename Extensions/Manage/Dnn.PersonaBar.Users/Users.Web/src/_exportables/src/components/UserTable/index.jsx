@@ -24,16 +24,14 @@ class UserTable extends Component {
         };
     }
 
-    componentWillReceiveProps() {
+    componentDidMount() {
         this.collapse();
     }
 
-    uncollapse(id, index) {
-        setTimeout(() => {
-            this.setState({
-                openId: id,
-                renderIndex: index
-            });
+    unCollapse(id, index) {
+        this.setState({
+            openId: id,
+            renderIndex: index
         });
     }
     collapse() {
@@ -46,7 +44,7 @@ class UserTable extends Component {
     }
     toggle(openId, index) {
         if (openId !== "") {
-            this.uncollapse(openId, index);
+            this.unCollapse(openId, index);
         } else {
             this.collapse();
         }
@@ -119,7 +117,7 @@ class UserTable extends Component {
             <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>
                 <DetailRow
-                    Collapse={this.collapse.bind(this) }
+                    Collapse={this.toggle.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
                     currentIndex={this.state.renderIndex}
                     openId={this.state.openId }
