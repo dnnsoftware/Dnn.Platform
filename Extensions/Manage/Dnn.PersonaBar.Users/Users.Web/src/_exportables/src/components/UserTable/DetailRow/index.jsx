@@ -11,7 +11,6 @@ import { SvgIcons, GridCell, Collapsible, TextOverflowWrapper } from "@dnnsoftwa
 class DetailsRow extends Component {
     constructor() {
         super();
-        this.handleClick = this.handleClick.bind(this);
         this.rootElement = React.createRef();
         this.state = {
             opened: false,
@@ -19,20 +18,17 @@ class DetailsRow extends Component {
         };
     }
     componentDidMount() {
-        document.addEventListener("click", this.handleClick);
         this._isMounted = true;
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("click", this.handleClick);
-        this._isMounted = false;
-    }
-    componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened
         });
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     handleClick(event) {
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid

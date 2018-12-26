@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {debounce} from "throttle-debounce";
 import { connect } from "react-redux";
 import Localization from "localization";
 import RoleRow from "./RoleRow";
 import "./style.less";
 import { CommonUsersActions } from "../../../actions";
 import utilities from "utils";
-import { Combobox, GridCell, Checkbox, Pager, SvgIcons } from "@dnnsoftware/dnn-react-common";
+import Combobox from "react-widgets/lib/Combobox";
+import { GridCell, Checkbox, Pager, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class UserRoles extends Component {
     constructor(props) {
@@ -21,16 +21,12 @@ class UserRoles extends Component {
             isOwner: false,
             allowOwner: false
         };
-        this.comboBoxDom =null;
-        this.debounceGetSuggestRoles = debounce(500, this.debounceGetSuggestRoles);
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState(newProps);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getRoles();
     }
+
 
     getRoles() {
         const {props, state} = this;
@@ -182,7 +178,6 @@ class UserRoles extends Component {
                     <GridCell columnSize={70}>
                         <span>
                             <Combobox suggest={false}
-                                ref={(dom) => {this.comboBoxDom = dom;}}
                                 placeholder={Localization.get("AddRolePlaceHolder") }
                                 open={this.props.matchedRoles && this.props.matchedRoles.length > 0 }
                                 onToggle={this.onRoleSelectorToggle.bind(this) }

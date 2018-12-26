@@ -17,9 +17,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "8.0.4",
     "css-loader": "1.0.1",
-    "dnn-svg-icons": "^0.1.22",
     "eslint": "5.8.0",
-    "eslint-config-dnn": "*",
     "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-loader": "2.1.1",
     "eslint-plugin-filenames": "^1.0.0",
@@ -29,6 +27,7 @@
     "fs": "^0.0.1-security",
     "less": "3.8.1",
     "less-loader": "4.1.0",
+    "moment": "^2.23.0",
     "prop-types": "15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -36,9 +35,7 @@
     "utils": "^0.3.1",
     "webpack": "4.26.1",
     "webpack-cli": "3.1.2",
-    "webpack-dev-server": "^3.1.10"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^3.1.10",
     "@dnnsoftware/dnn-react-common": "2.0.8",
     "localization": "^1.0.2",
     "react-redux": "^5.1.1",
