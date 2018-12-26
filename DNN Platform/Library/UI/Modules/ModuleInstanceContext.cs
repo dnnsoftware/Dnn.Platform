@@ -577,7 +577,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (!Globals.IsAdminControl() && (ModulePermissionController.CanManageModuleSettings(_configuration) || ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Configuration)))
+                if (!Globals.IsAdminControl() && (ModulePermissionController.CanManageModuleSettings(_configuration) || ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", Configuration)))
                 {
                     _moduleGenericActions.Actions.Add(GetNextActionID(),
                                                           Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
