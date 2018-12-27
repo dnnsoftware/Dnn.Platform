@@ -1,7 +1,6 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
@@ -42,21 +41,7 @@ module.exports = {
         "it" : false,
         "expect" :false
     },
- "rules": {
-       "spellcheck/spell-checker": [1,
-        {
-            "comments": true,
-            "strings": true,
-            "identifiers": false,
-            "skipWords": require("./.eslintskipwords"),
-            "skipIfMatch": [
-                "http://[^s]*",
-                "https://[^s]*",
-                "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)", // CSS hex color
-                "Asdf"
-            ]
-        }
-      ],  
+ "rules": {       
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
