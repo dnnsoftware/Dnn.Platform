@@ -22,7 +22,9 @@ class ResourceEditor extends Component {
     }
 
     componentDidUpdate(newProps) {
-        this.setState({content: newProps.value});
+        if (this.state.content !== newProps.value){
+            this.setState({content: newProps.value});
+        }
     }
 
     onChange(e) {
