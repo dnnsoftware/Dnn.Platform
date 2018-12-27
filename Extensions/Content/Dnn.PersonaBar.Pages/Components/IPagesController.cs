@@ -25,6 +25,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         void DeletePage(PageItem page, PortalSettings portalSettings = null);
 
+        void DeletePage(PageItem page, bool hardDelete, PortalSettings portalSettings = null);
+
         void EditModeForPage(int pageId, int userId);
 
         TabInfo SavePageDetails(PortalSettings portalSettings, PageSettings pageSettings);

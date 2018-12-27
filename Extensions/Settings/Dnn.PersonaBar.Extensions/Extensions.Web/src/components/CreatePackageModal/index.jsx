@@ -1,8 +1,7 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, PersonaBarPageHeader, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import { CreatePackageActions } from "actions";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -61,7 +60,7 @@ class CreatePackage extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.goToStep(0);
         let { props } = this;
         let _packagePayload = deepCopy(props.packagePayload);
@@ -247,8 +246,7 @@ class CreatePackage extends Component {
                     selectedManifest={packagePayload.selectedManifest}
                     onSelect={this.onSelect.bind(this)}
                     reviewManifest={packagePayload.reviewManifest}
-                    hasManifests={Object.keys(packageManifest.manifests).length > 0}
-                    />;
+                    hasManifests={Object.keys(packageManifest.manifests).length > 0} />;
             case 1:
                 return <StepTwo
                     packageManifest={packageManifest}
@@ -257,8 +255,7 @@ class CreatePackage extends Component {
                     onBasePathChange={this.onBasePathChange.bind(this)}
                     onFileOrAssemblyChange={this.onFileOrAssemblyChange.bind(this)}
                     onCancel={props.onCancel.bind(this)}
-                    onPrevious={this.onStepBack.bind(this)}
-                    />;
+                    onPrevious={this.onStepBack.bind(this)} />;
             case 2:
                 return <StepThree
                     packageManifest={packageManifest}
@@ -266,8 +263,7 @@ class CreatePackage extends Component {
                     onBasePathChange={this.onBasePathChange.bind(this)}
                     onFileOrAssemblyChange={this.onFileOrAssemblyChange.bind(this)}
                     onCancel={props.onCancel.bind(this)}
-                    onPrevious={this.onStepBack.bind(this)}
-                    />;
+                    onPrevious={this.onStepBack.bind(this)} />;
             case 3:
                 return <StepFour
                     packageManifest={packageManifest}
@@ -275,8 +271,7 @@ class CreatePackage extends Component {
                     onNext={this.goToStep.bind(this, 4)}
                     onChange={this.onChange.bind(this)}
                     onPrevious={this.onStepBack.bind(this)}
-                    onCancel={props.onCancel.bind(this)}
-                    />;
+                    onCancel={props.onCancel.bind(this)} />;
             case 4:
                 return <StepFive
                     onNext={this.createPackage.bind(this)}
@@ -287,12 +282,10 @@ class CreatePackage extends Component {
                     manifestName={packagePayload.manifestName}
                     archiveName={packagePayload.archiveName}
                     useExistingManifest={packagePayload.useExistingManifest}
-                    onPrevious={this.onStepBack.bind(this)}
-                    />;
+                    onPrevious={this.onStepBack.bind(this)} />;
             case 5: return <StepSix
                 onClose={props.onCancel.bind(this)}
-                logs={props.createdPackage}
-                />;
+                logs={props.createdPackage} />;
             default:
                 return <p>Oops, something went wrong. Click <a href="javascript:void(0)" onClick={props.onCancel.bind(this)}> here </a> to go back</p>;
         }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions
 } from "../../actions";
+import { DnnTabs, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import BasicSettings from "../basicSettings";
 import DefaultPagesSettings from "../defaultPagesSettings";
 import MessagingSettings from "../messagingSettings";
@@ -15,7 +15,6 @@ import BasicSearchSettings from "../basicSearchSettings";
 import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import MoreSettings from "../moreSettings";
 import "./style.less";
 import util from "../../utils";
@@ -46,7 +45,7 @@ export class Body extends Component {
     renderSiteBehaviorTab() {
         const {props} = this;
         if (isHost) {
-            return <Tabs onSelect={this.handleSelect.bind(this) }
+            return <DnnTabs onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabDefaultPages"),
                     resx.get("TabMessaging"),
                     resx.get("TabUserProfiles"),
@@ -60,10 +59,10 @@ export class Body extends Component {
                 <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <PrivacySettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
-            </Tabs>;
+            </DnnTabs>;
         }
         else {
-            return <Tabs onSelect={this.handleSelect.bind(this) }
+            return <DnnTabs onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabDefaultPages"),
                     resx.get("TabMessaging"),
                     resx.get("TabUserProfiles")]}
@@ -71,7 +70,7 @@ export class Body extends Component {
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
-            </Tabs>;
+            </DnnTabs>;
         }
     }
 
@@ -96,11 +95,11 @@ export class Body extends Component {
             });
         }
 
-        return <Tabs onSelect={this.handleSelect.bind(this) }
+        return <DnnTabs onSelect={this.handleSelect.bind(this) }
             tabHeaders={searchTabHeaders}
             type="secondary">
             {searchTabContent}
-        </Tabs>;
+        </DnnTabs>;
     }
 
     renderBasicSettings() {
@@ -123,7 +122,7 @@ export class Body extends Component {
                 text: this.props.referrer && this.props.referrerText,
                 onClick: this.props.backToReferrerFunc
             }}>
-                <Tabs onSelect={this.handleSelect.bind(this) }
+                <DnnTabs onSelect={this.handleSelect.bind(this) }
                     tabHeaders={tabHeaders}
                     type="primary">
                     {this.props.showing && canViewSiteInfo && this.renderBasicSettings() }
@@ -136,7 +135,7 @@ export class Body extends Component {
                         cultureCode={this.props.cultureCode}/>
                     }
                     {this.props.showing && isAdmin && this.getSearchSecondaryTabs() }
-                </Tabs>
+                </DnnTabs>
             </PersonaBarPageBody>
         );
     }

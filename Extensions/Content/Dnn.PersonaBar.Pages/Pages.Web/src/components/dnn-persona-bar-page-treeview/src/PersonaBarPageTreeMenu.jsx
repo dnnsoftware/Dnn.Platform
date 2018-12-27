@@ -1,15 +1,8 @@
 import React, { Component } from "react";
-import GridCell from "dnn-grid-cell";
 import { PropTypes } from "prop-types";
-import { DragSource } from 'react-dnd';
-
-
 import "./styles.less";
-
-import PersonaBarPageIcon from "./_PersonaBarPageIcon";
 import PersonaBarSelectionArrow from "./_PersonaBarSelectionArrow";
 import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
-import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeMenu extends Component {
 
@@ -17,8 +10,6 @@ export class PersonaBarPageTreeMenu extends Component {
         super();
         this.state = {};
     }
-
-
 
     render_tree(childListItems) {
         return (
@@ -54,9 +45,9 @@ export class PersonaBarPageTreeMenu extends Component {
     render_li() {
         const { listItems, _traverse } = this.props;
 
-        return listItems.map((item) => {
+        return listItems.map((item, index) => {
             return (
-                <li className="list-item-menu">
+                <li key={"pageTreeListItem" + index} className="list-item-menu">
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{ height: "28px", lineHeight: "35px" }}>

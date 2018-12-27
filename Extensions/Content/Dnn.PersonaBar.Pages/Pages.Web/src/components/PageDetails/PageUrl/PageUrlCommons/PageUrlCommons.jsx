@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import styles from "./style.less";
-import Switch from "dnn-switch";
+import { Switch, Label } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../../localization";
-import Label from "dnn-label";
 
 
 class PageUrlCommons extends Component {

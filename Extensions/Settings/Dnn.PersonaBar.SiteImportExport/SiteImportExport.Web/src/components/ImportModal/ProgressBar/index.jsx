@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     importExport as ImportExportActions
@@ -27,7 +28,7 @@ class ProgressBar extends Component {
         this.setState({ percent: 0 });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.visible !== undefined) {
 
             if (!nextProps.visible && this.started) {
@@ -79,9 +80,9 @@ class ProgressBar extends Component {
                     percent={this.state.percent}
                     strokeWidth={5}
                     trailWidth={5}
-                    strokeLinecap={'square'}
-                    trailColor={'#eff0f0'}
-                    strokeColor={'#9fdbf0'} />
+                    strokeLinecap={"square"}
+                    trailColor={"#eff0f0"}
+                    strokeColor={"#9fdbf0"} />
             </div>
         );
     }

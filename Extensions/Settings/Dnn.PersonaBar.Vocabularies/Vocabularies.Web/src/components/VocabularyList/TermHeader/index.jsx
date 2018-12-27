@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { Collapsible as Collapse, TextOverflowWrapper, GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import util from "utils";
 import LocalizedResources from "resources";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 
 /* eslint-disable quotes */
 const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`);
@@ -109,7 +106,7 @@ class TermHeader extends Component {
                         <Button type="secondary" onClick={this.collapse.bind(this)}>{LocalizedResources.get("Close")}</Button>
                     </GridCell>}
                 </Collapse>
-            </div >
+            </div>
         );
     }
 }

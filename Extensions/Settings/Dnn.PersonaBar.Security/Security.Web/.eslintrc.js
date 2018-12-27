@@ -1,14 +1,18 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
-    "parserOptions": {
+    "settings": {
+        "react": {
+            "version": "16"
+        }
+    },
+    "parserOptions": {        
         "ecmaFeatures": {
             "jsx": true,
             "experimentalObjectRestSpread": true
@@ -21,20 +25,7 @@ module.exports = {
         "Promise": false,
         "VERSION": false
     },
-    "rules": {
-    //    "spellcheck/spell-checker": [1,
-    //     {
-    //         "comments": "true",
-    //         "strings": "true",
-    //         "identifiers": "true",
-    //         "skipWords": require("./.eslintskipwords"),
-    //         "skipIfMatch": [
-    //             "http://[^s]*",
-    //             "https://[^s]*",
-    //             "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-    //         ]
-    //     }
-    //   ],      
+    "rules": {   
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],

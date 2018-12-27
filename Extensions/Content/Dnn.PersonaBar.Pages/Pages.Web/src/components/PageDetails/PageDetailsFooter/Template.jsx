@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import Label from "dnn-label";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Label, Dropdown } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
-import Dropdown from "dnn-dropdown";
 
 
 const styles = {

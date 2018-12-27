@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import resx from "resources";
-import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
-import { ArrowDownIcon } from "dnn-svg-icons";
 import Folder from "./folder";
-import Label from "dnn-label";
-import Collapse from "dnn-collapsible";
+import { GridCell, SvgIcons, Label, Collapsible } from "@dnnsoftware/dnn-react-common";
 const parentTermTreeStyle = {
     width: "100%",
     height: "250px",
@@ -80,15 +77,15 @@ class ResourceTree extends Component {
                 <Label label={resx.get("ResourceFile")} />
                 <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
                     {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
-                    <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>
+                    <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }}></div>
                 </div>
-                <Collapse isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>
+                <Collapsible isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>
                     <Scrollbars style={parentTermTreeStyle}>
                         <ul className="resource-tree root-level parent-tree">
                             {mapChildFolders(languageFolders, getChildFolders, getResxEntries, resxBeingEdited)}
                         </ul>
                     </Scrollbars>
-                </Collapse>
+                </Collapsible>
             </GridCell>
         );
     }

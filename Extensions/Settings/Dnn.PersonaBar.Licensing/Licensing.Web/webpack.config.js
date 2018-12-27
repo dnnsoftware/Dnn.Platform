@@ -12,7 +12,7 @@ const languages = {
     // "nl": require("./localizations/nl.json")
 };
 
-const webpackExternals = require("dnn-webpack-externals");
+const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
 
 module.exports = {
     entry: "./src/main.jsx",

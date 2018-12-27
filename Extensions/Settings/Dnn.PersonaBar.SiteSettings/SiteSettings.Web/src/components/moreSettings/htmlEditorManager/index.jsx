@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import resx from "../../../resources";
-import BackTo from "dnn-back-to";
+import { BackToLink } from "@dnnsoftware/dnn-react-common";
 import util from "utils";
 import styles from "./style.less";
 import "./style.less";
@@ -21,18 +21,12 @@ class HtmlEditorManagerPanelBody extends Component {
         });
     }
 
-    componentDidUpdate(props) {
-        this.setState({
-            url: util.siteRoot + "Host/HTMLEditorManager?portalid=" + props.portalId + "&portpopUp=true"
-        });
-    }
-
     /* eslint-disable react/no-danger */
     render() {
         return (
             <div className="dnn-persona-bar-page-body">
                 <div className={styles.htmlEditorManager}>
-                    <BackTo onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
+                    <BackToLink onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
                     <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
                 </div>
             </div>

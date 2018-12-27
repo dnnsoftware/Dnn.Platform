@@ -1,17 +1,14 @@
-import React, { Component, PropTypes } from "react";
-import Tabs from "dnn-tabs";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { DnnTabs as Tabs, Tooltip, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
-import {
-    pagination as PaginationActions
-} from "../../actions";
+import { pagination as PaginationActions } from "../../actions";
 import BasicSettings from "../basicSettings";
 import SslSettings from "../sslSettings";
 import OtherSettings from "../otherSettings";
 import IpFilters from "../ipFilters";
-import Tooltip from "dnn-tooltip";
 import MemberManagement from "../memberManagement";
 import RegistrationSettings from "../registrationSettings";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import SecurityBulletins from "../securityBulletins";
 import SuperuserActivity from "../superuserActivity";
 import AuditCheck from "../auditCheck";
@@ -62,8 +59,7 @@ export class Body extends Component {
                             right: -27,
                             top: 15,
                             textTransform: "none"
-                        }}
-                        />
+                        }} />
                 </div>);
             }
         }
@@ -80,10 +76,9 @@ export class Body extends Component {
                             right: -27,
                             top: 15,
                             textTransform: "none"
-                        }}
-                        />
+                        }} />
                 </div>);
-                memberAccountsTabs.push(<MemberManagement />);
+                memberAccountsTabs.push(<MemberManagement key="memberManagement" />);
             }
             if (canViewRegistrationSettings) {
                 memberAccountsTabHeaders.push(<div style={{ marginLeft: (isHost ? 35 : 0) }}>
@@ -97,12 +92,12 @@ export class Body extends Component {
                     }}></div>
                     {resx.get("TabRegistrationSettings") }
                 </div>);
-                memberAccountsTabs.push(<RegistrationSettings />);
+                memberAccountsTabs.push(<RegistrationSettings key="registrationSettings" />);
             }
         }
         if (isAdmin) {
             moreTabHeaders.push(resx.get("TabSslSettings"));
-            moreTabs.push(<SslSettings />);
+            moreTabs.push(<SslSettings key="sslSettings" />);
         }
         if (isHost) {
             tabHeaders.push(resx.get("TabSecurityAnalyzer"));
@@ -117,15 +112,14 @@ export class Body extends Component {
                         right: -27,
                         top: 15,
                         textTransform: "none"
-                    }}
-                    /></div>);
-            moreTabs.push(<OtherSettings />);
+                    }} /></div>);
+            moreTabs.push(<OtherSettings key="otherSettings" />);
         }
         if (isAdmin) {
             tabHeaders.push(resx.get("TabMore"));
         }
         if (canViewBasicLoginSettings || isHost) {
-            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="loginSettingsTab" onSelect={this.handleSelect.bind(this) }
                 tabHeaders={loginSettingTabHeaders}
                 type="secondary">
                 {canViewBasicLoginSettings && <BasicSettings cultureCode={this.props.cultureCode} />}
@@ -133,24 +127,24 @@ export class Body extends Component {
             </Tabs>);
         }
         if (isHost || canViewRegistrationSettings) {
-            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="memberAccountsTab" onSelect={this.handleSelect.bind(this) }
                 tabHeaders={memberAccountsTabHeaders}
                 type="secondary">
                 {memberAccountsTabs}
             </Tabs>);
         }
         if (isHost) {
-            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="auditChecksTab" onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabAuditChecks"), resx.get("TabScannerCheck"), resx.get("TabSuperuserActivity")]}
                 type="secondary">
                 <AuditCheck />
                 <ScannerCheck />
                 <SuperuserActivity />
             </Tabs>);
-            securityTabs.push(<SecurityBulletins />);
+            securityTabs.push(<SecurityBulletins key="securityBulletinsTab" />);
         }
         if (isAdmin) {
-            securityTabs.push(<Tabs onSelect={this.handleSelect.bind(this) }
+            securityTabs.push(<Tabs key="moreTab" onSelect={this.handleSelect.bind(this) }
                 tabHeaders={moreTabHeaders}
                 type="secondary">
                 {moreTabs}
@@ -160,7 +154,7 @@ export class Body extends Component {
             tabHeaders={tabHeaders}
             type="primary">
             {securityTabs}
-        </Tabs >;
+        </Tabs>;
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/

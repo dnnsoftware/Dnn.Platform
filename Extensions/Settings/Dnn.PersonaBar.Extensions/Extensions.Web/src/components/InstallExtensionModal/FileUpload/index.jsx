@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import UploadBar from "./UploadBar";
 import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
 import LogDisplay from "./LogDisplay";
-import RadioButtons from "dnn-radio-buttons";
+import { RadioButtons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 
 export default class FileUpload extends Component {
@@ -145,7 +146,7 @@ export default class FileUpload extends Component {
     }
     render() {
         /* eslint-disable quotes */
-        const svg = require(`!raw!./img/upload.svg`);
+        const svg = require(`!raw-loader!./img/upload.svg`);
 
         const buttonsStyle = { width: 67 };
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
@@ -159,8 +160,8 @@ export default class FileUpload extends Component {
                     className={className}
                     onDragOver={this.onDragOver.bind(this)}
                     onDragLeave={this.onDragLeave.bind(this)}
-                    onDrop={this.onDrop.bind(this)}
-                    ><div className="buttons" style={buttonsStyle}>
+                    onDrop={this.onDrop.bind(this)}>
+                    <div className="buttons" style={buttonsStyle}>
                         <div
                             className="button upload"
                             onMouseEnter={this.onMouseEnter.bind(this, Localization.get("InstallExtension_UploadAFile"))}
@@ -186,8 +187,7 @@ export default class FileUpload extends Component {
                     viewLogText={Localization.get("ViewErrorLog")}
                     tryAgainText={Localization.get("TryAgain")}
                     uploadCompleteText={Localization.get("InstallExtension_UploadComplete")}
-                    uploadingText={Localization.get("InstallExtension_Uploading")}
-                    />
+                    uploadingText={Localization.get("InstallExtension_Uploading")} />
             }
             {
                 this.state.noManifest &&
@@ -202,17 +202,16 @@ export default class FileUpload extends Component {
                             value: "Container"
                         }
                     ]}
-                        buttonGroup="selectedLegacyType"
-                        onChange={this.props.onSelectLegacyType.bind(this)}
-                        value={this.props.selectedLegacyType} />
+                    buttonGroup="selectedLegacyType"
+                    onChange={this.props.onSelectLegacyType.bind(this)}
+                    value={this.props.selectedLegacyType} />
                 </div>
             }
             {this.props.alreadyInstalled &&
                 <AlreadyInstalled
                     fileName={this.state.fileName}
                     cancelRepair={this.cancelRepair.bind(this)}
-                    repairInstall={this.repairInstall.bind(this)}
-                    />
+                    repairInstall={this.repairInstall.bind(this)} />
             }
         </div>;
     }

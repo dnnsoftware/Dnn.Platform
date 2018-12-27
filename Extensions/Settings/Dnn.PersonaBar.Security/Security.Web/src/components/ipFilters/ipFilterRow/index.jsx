@@ -1,20 +1,21 @@
-import React, { Component, PropTypes } from "react";
-import Collapse from "dnn-collapsible";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
-const allowIcon = require(`!raw!./../../svg/checkbox.svg`);
-const denyIcon = require(`!raw!./../../svg/cross_out.svg`);
-const editIcon = require(`!raw!./../../svg/edit.svg`);
-const deleteIcon = require(`!raw!./../../svg/trash.svg`);
+const allowIcon = require(`!raw-loader!./../../svg/checkbox.svg`);
+const denyIcon = require(`!raw-loader!./../../svg/cross_out.svg`);
+const editIcon = require(`!raw-loader!./../../svg/edit.svg`);
+const deleteIcon = require(`!raw-loader!./../../svg/trash.svg`);
 
 class IpFilterRow extends Component {
     constructor() {
         super();
     }
 
-    componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened
@@ -23,7 +24,7 @@ class IpFilterRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            this.props.Collapse();
         } else {
             this.props.OpenCollapse(this.props.id);
         }
@@ -80,7 +81,7 @@ class IpFilterRow extends Component {
                         </div>
                     </div>
                 }
-                <Collapse className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapsible className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ overflow: "visible", width: "100%" }}>{opened && props.children}</Collapsible>
             </div>
         );
 

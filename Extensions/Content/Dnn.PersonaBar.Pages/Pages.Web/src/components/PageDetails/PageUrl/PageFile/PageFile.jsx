@@ -2,10 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./style.less";
-import FileUpload from "dnn-file-upload";
 import utils from "../../../../utils";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
+import { FileUpload, GridSystem, GridCell } from "@dnnsoftware/dnn-react-common";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 import Localization from "../../../../localization";
 

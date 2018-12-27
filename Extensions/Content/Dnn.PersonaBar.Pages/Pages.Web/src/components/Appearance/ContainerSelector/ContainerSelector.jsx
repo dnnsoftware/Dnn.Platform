@@ -1,5 +1,6 @@
-import React, {Component, PropTypes} from "react";
-import Label from "dnn-label";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import { Label } from "@dnnsoftware/dnn-react-common";
 import localization from "../../../localization";
 import Card from "../Card/Card";
 import Gallery from "../Gallery/Gallery";
@@ -40,6 +41,7 @@ class ContainerSelector extends Component {
         }
         return containers.map(container => {
             return <Card
+                key={container.name}
                 cardId={container.name}
                 onClick={this.onContainerClick.bind(this) }
                 hoverText={localization.get("SetPageContainer") }

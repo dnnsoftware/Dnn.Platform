@@ -1,15 +1,15 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Localization from "../../localization";
-import Label from "dnn-label";
-import DnnTags from "dnn-tags";
+import { Label, Tags } from "@dnnsoftware/dnn-react-common";
 
-class Tags extends Component {
+class PageTags extends Component {
 
     render() {
         const {props} = this;
         return <div className="input-group">
             <Label label={Localization.get("Tags")} />
-            <DnnTags
+            <Tags
                 tags={props.tags}
                 onUpdateTags={(tags) => props.onChangeTags(tags)} />
             <div style={{ clear: "both" }}></div>
@@ -17,9 +17,9 @@ class Tags extends Component {
     }
 }
 
-Tags.propTypes = {
+PageTags.propTypes = {
     tags: PropTypes.array.isRequired,
     onChangeTags: PropTypes.func.isRequired
 };
 
-export default Tags;
+export default PageTags;

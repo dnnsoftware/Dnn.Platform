@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import ExtensionHeader from "../common/ExtensionHeader";
 import ExtensionDetailRow from "../common/ExtensionDetailRow";
 import "./style.less";
@@ -21,7 +22,7 @@ class ExtensionList extends Component {
                         onInstall={props.onInstall.bind(this)}
                         doingOperation={props.doingOperation}
                         onDeploy={props.onDeploy.bind(this, index)}
-                        />;
+                        key={index} />;
                 })}
             </GridCell>
         );

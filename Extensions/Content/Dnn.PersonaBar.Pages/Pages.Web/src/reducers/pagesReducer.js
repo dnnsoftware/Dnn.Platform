@@ -24,7 +24,7 @@ export default function pagesReducer(state = {
 
     const changeModuleCopy = function changeModuleCopy(id, key, value) {
         const modules = [...state.selectedPage.modules];
-        return modules.map((m, index) => {
+        return modules.map((m) => {
             if (m.id === id) {                
                 return {
                     ...m,
@@ -34,10 +34,6 @@ export default function pagesReducer(state = {
             return m;
         }); 
     };
-    
-    function getIndexById(items, id) {
-        return items.findIndex((ct) => ct.id === id);
-    }
 
     switch (action.type) {
         case ActionTypes.GET_WORKFLOW_LIST:

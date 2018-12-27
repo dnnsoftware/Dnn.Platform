@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
-import Dropdown from "dnn-dropdown";
-import DatePicker from "dnn-date-picker";
+import { 
+    Label,
+    Button,
+    Switch,
+    Dropdown,
+    DatePicker,
+    SingleLineInputWithError
+} from "@dnnsoftware/dnn-react-common";
 import History from "../../history";
 import {
     task as TaskActions
@@ -37,7 +38,7 @@ class SchedulerEditor extends Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         /*if (props.scheduleItemDetail) {
             this.setState({
@@ -90,7 +91,7 @@ class SchedulerEditor extends Component {
         }
     }
 
-    componentDidUpdate(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         let { state } = this;
         if (props.scheduleItemDetail["TypeFullName"] === "" || props.scheduleItemDetail["TypeFullName"] === undefined) {
             state.error["name"] = true;
@@ -114,8 +115,7 @@ class SchedulerEditor extends Component {
             else {
                 state.error["retry"] = false;
             }
-        }
-
+        }        
         this.setState({
             scheduleItemDetail: Object.assign({}, props.scheduleItemDetail),
             triedToSubmit: false,
@@ -252,13 +252,13 @@ class SchedulerEditor extends Component {
     }
 
     /* eslint-disable react/no-danger */
-    render() {
+    render() {        
         if (this.props.panelIndex === 1) {
             return <History pageSize={5} scheduleId={this.props.scheduleId} title={resx.get("HistoryModalTitle")} />;
         }
 
         if (this.state.scheduleItemDetail !== undefined || this.props.id === "add") {
-            const columnOne = <div className="container">
+            const columnOne = <div className="container" key="columnOne">
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
@@ -309,7 +309,7 @@ class SchedulerEditor extends Component {
                     />
                 </div>
             </div>;
-            const columnTwo = <div className="container right-column">
+            const columnTwo = <div className="container right-column" key="columnTwo">
                 <div className="editor-row divider">
                     <Label label={resx.get("plScheduleStartDate")} style={{ margin: "0 0 5px 0" }} />
                     <DatePicker
@@ -385,9 +385,16 @@ class SchedulerEditor extends Component {
                 </div>
             </div>;
 
-            return (
+            return ( 
                 <div className="scheduler-setting-editor">
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <div className="scheduler-item-container">
+                        <div className="scheduler-item-column">
+                            {columnOne}
+                        </div>
+                        <div className="scheduler-item-column">
+                            {columnTwo}
+                        </div>
+                    </div>
                     <div className="buttons-box">
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button

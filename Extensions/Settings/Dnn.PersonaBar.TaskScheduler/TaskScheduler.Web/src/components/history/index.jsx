@@ -6,7 +6,7 @@ import {
 } from "../../actions";
 import TaskHistoryItemRow from "./taskHistoryItemRow";
 import "./style.less";
-import Pager from "dnn-pager";
+import { Pager } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
 
 /*eslint-disable quotes*/
@@ -27,7 +27,7 @@ class HistoryPanelBody extends Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         const {props, state} = this;
         props.dispatch(TaskActions.getScheduleItemHistory({ scheduleId: props.scheduleId, pageIndex: state.pageIndex, pageSize: state.pageSize }));
 

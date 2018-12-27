@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import Tabs from "dnn-tabs";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Localization from "../../localization";
 import PageDetails from "../PageDetails/PageDetails";
 import PermissionGrid from "../PermissionGrid/PermissionGrid";
-import Button from "dnn-button";
+import { Button, DnnTabs } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
 import Seo from "../Seo/Seo";
@@ -16,9 +16,11 @@ import permissionTypes from "../../services/permissionTypes";
 
 class PageSettings extends Component {
 
-    componentWillMount() {
-        this.setState({ selectedPageName: "" });
+    constructor(){
+        super();
+        this.state = { selectedPageName: "" }
     }
+
     hasPageErrors() {
         const { selectedPageErrors } = this.props;
         return Object.keys(selectedPageErrors)
@@ -34,11 +36,13 @@ class PageSettings extends Component {
         const pageErrors = this.hasPageErrors();
 
         let buttons = [<Button
+            key="cancelButton"
             type="secondary"
             onClick={onCancel}>
             {Localization.get("Cancel")}
         </Button>,
         <Button
+            key="saveButton"
             type="primary"
             disabled={(!selectedPageDirty || pageErrors) ? true : false}
             onClick={onSave.bind(this)}>
@@ -49,6 +53,7 @@ class PageSettings extends Component {
             && !selectedPage.isspecial
             && securityService.userHasPermission(permissionTypes.DELETE_PAGE, selectedPage)) {
             buttons.unshift(<Button
+                key="delete"
                 type="secondary"
                 onClick={onDelete.bind(this, selectedPage)} >
                 {Localization.get("Delete")}
@@ -132,7 +137,7 @@ class PageSettings extends Component {
         const advancedTabs = [
             {
                 label: Localization.get("Appearance"),
-                component: <div className="dnn-simple-tab-item">
+                component: <div className="dnn-simple-tab-item" key="appearance">
                     <Appearance page={selectedPage}
                         onChangeField={onChangeField} />
                     {appearanceFooter}
@@ -140,7 +145,7 @@ class PageSettings extends Component {
             },
             {
                 label: Localization.get("SEO"),
-                component: <div className="dnn-simple-tab-item">
+                component: <div className="dnn-simple-tab-item" key="seo">
                     <Seo page={selectedPage}
                         onChangeField={onChangeField} />
                     {footer}
@@ -148,7 +153,7 @@ class PageSettings extends Component {
             },
             {
                 label: Localization.get("More"),
-                component: <div className="dnn-simple-tab-item">
+                component: <div className="dnn-simple-tab-item" key="more">
                     <More page={selectedPage}
                         errors={selectedPageErrors}
                         onChangeField={onChangeField}
@@ -162,7 +167,7 @@ class PageSettings extends Component {
         if ((isEditingExistingPage || selectedPage.templateTabId) && selectedPage.pageType === "normal" && selectedPage.modules) {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
-                component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules">
+                component: <div className="dnn-simple-tab-item dnn-simple-tab-item-modules" key="modules">
                     <Modules
                         modules={selectedPage.modules}
                         onDeleteModule={onDeletePageModule}
@@ -183,7 +188,7 @@ class PageSettings extends Component {
             
             headers.push(Localization.get("Details"));
             tabs.push(
-                <div className="dnn-simple-tab-item">
+                <div className="dnn-simple-tab-item" key="details">
                     <PageTypeSelector
                         onChangePageType={onChangePageType}
                         components={pageTypeSelectorComponents} />
@@ -203,14 +208,14 @@ class PageSettings extends Component {
             if (isLocalizationTabVisible) {
                 headers.push(Localization.get("Localization"));
             }
-            tabs.push(<div className="dnn-simple-tab-item permission-tab">
+            tabs.push(<div className="dnn-simple-tab-item permission-tab" key="permissions">
                 <PermissionGrid
                     permissions={selectedPage.permissions}
                     onPermissionsChanged={this.props.onPermissionsChanged} />
                 {permissionFooter}
             </div>);
             if (isLocalizationTabVisible) {
-                tabs.push(<div className="dnn-simple-tab-item dnn-simple-tab-item-localization">
+                tabs.push(<div className="dnn-simple-tab-item dnn-simple-tab-item-localization" key="localization">
                     <PageLocalization
                         page={selectedPage}
                     />
@@ -219,23 +224,23 @@ class PageSettings extends Component {
         }
         if (!isEditingExistingPage ||securityService.userHasPermission(permissionTypes.MANAGE_PAGE, selectedPage)) {
             headers.push(Localization.get("Advanced"));
-            tabs.push(<div>
-                <Tabs
+            tabs.push(<div key="advanced">
+                <DnnTabs
                     tabHeaders={advancedTabs.map(tab => tab.label)}
                     type="secondary">
                     {advancedTabs.map(tab => tab.component)}
-                </Tabs>
+                </DnnTabs>
             </div>);
         }
         return (
             <div>
-                <Tabs
+                <DnnTabs
                     tabHeaders={headers}
                     className={styles.pageSettings}
                     onSelect={this.props.selectPageSettingTab.bind(this)}
                     selectedIndex={this.props.selectedPageSettingTab}>
                     {tabs}
-                </Tabs>
+                </DnnTabs>
             </div>
         );
     }

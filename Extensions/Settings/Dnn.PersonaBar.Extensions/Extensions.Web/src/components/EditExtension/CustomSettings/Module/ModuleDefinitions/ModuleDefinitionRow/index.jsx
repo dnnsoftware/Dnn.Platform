@@ -1,11 +1,9 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, Collapsible, SvgIcons, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import Collapse from "dnn-collapsible";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
 import Controls from "./Controls";
 import DefinitionFields from "../DefinitionFields";
-import Button from "dnn-button";
 import "./style.less";
 
 
@@ -25,19 +23,17 @@ class ModuleDefinitionRow extends Component {
                     {props.moduleDefinition.name}
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
-                    <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
-                    <div onClick={props.onEdit.bind(this)} className={props.isEditMode ? "svg-active" : ""} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                    <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}></div>
+                    <div onClick={props.onEdit.bind(this)} className={props.isEditMode ? "svg-active" : ""} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>
                 </GridCell>
-                <Collapse isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-definition">
-
+                <Collapsible isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-definition">
                     <GridCell className="edit-module-definition-box">
                         <DefinitionFields
                             error={props.error}
                             triedToSave={props.triedToSave}
                             onChange={props.onChange.bind(this)}
                             isEditMode={true}
-                            moduleDefinitionBeingEdited={props.moduleDefinitionBeingEdited}
-                            />
+                            moduleDefinitionBeingEdited={props.moduleDefinitionBeingEdited} />
                         <GridCell className="module-controls">
                             <Controls
                                 moduleControls={props.moduleDefinitionBeingEdited.controls}
@@ -52,13 +48,13 @@ class ModuleDefinitionRow extends Component {
                             <Button type="primary" disabled={props.controlFormIsDirty} onClick={props.onSave.bind(this)}>{Localization.get("ModuleDefinitions_Save.Button")}</Button>
                         </GridCell>
                     </GridCell>
-                </Collapse>
+                </Collapsible>
             </GridCell>
         );
     }
 }
 
-ModuleDefinitionRow.PropTypes = {
+ModuleDefinitionRow.propTypes = {
     moduleDefinition: PropTypes.object,
     moduleDefinitionBeingEdited: PropTypes.object,
     onCancel: PropTypes.func,

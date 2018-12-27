@@ -5,13 +5,7 @@ import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import ProfileProperties from "./profileProperties";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Switch from "dnn-switch";
-import Dropdown from "dnn-dropdown";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { InputGroup, SingleLineInputWithError, GridSystem, Switch, Dropdown, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -53,12 +47,6 @@ class ProfileSettingsPanelBody extends Component {
                 profileSettings: Object.assign({}, data.Settings)
             });
         }));
-    }
-
-    componentDidUpdate(props) {
-        this.setState({
-            profileSettings: Object.assign({}, props.profileSettings)
-        });
     }
 
     getProfileVisibilityOptions() {
@@ -115,7 +103,7 @@ class ProfileSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.profileSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("Profile_DefaultVisibility.Help")}
@@ -143,7 +131,7 @@ class ProfileSettingsPanelBody extends Component {
                     </div>
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div key="column-two" className="right-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("vanilyUrlPrefixLabel.Help")}
@@ -178,7 +166,7 @@ class ProfileSettingsPanelBody extends Component {
             return (
                 <div className={styles.profileSettings}>
                     <div className="sectionTitleNoBorder">{resx.get("UserProfileSettings")}</div>
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <ProfileProperties portalId={props.portalId} cultureCode={props.cultureCode}/>
                     <div className="buttons-box">
                         <Button

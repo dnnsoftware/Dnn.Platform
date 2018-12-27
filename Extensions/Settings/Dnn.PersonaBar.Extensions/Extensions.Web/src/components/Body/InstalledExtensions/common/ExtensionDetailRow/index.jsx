@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 import InUseModal from "../InUseModal";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
 
 class ExtensionDetailRow extends Component {
     constructor() {
@@ -55,13 +55,13 @@ class ExtensionDetailRow extends Component {
                         {this.getInUseDisplay(props._package.friendlyName, props._package.packageId)}
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[4]}>
-                        <a href={props._package.upgradeUrl} target="_blank" aria-label="Update">
+                        <a href={props._package.upgradeUrl} target="_blank" rel="noopener noreferrer" aria-label="Update">
                             <img src={props._package.upgradeIndicator} alt="Update"/>
                         </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>
-                        {(props._package.canDelete && props.isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete}></div>}
-                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                        {(props._package.canDelete && props.isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete}></div>}
+                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>
                     </GridCell>
                 </GridCell >
                 {state.inUseModalOpen &&

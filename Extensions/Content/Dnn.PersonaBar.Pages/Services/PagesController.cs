@@ -294,7 +294,7 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage DeletePage(PageItem page)
+        public HttpResponseMessage DeletePage(PageItem page, [FromUri] bool hardDelete = false)
         {
             if (!_securityService.CanDeletePage(page.Id))
             {
@@ -303,7 +303,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
             try
             {
-                _pagesController.DeletePage(page);
+                _pagesController.DeletePage(page, hardDelete, PortalSettings);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
             }
             catch (PageNotFoundException)

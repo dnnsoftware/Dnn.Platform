@@ -1,7 +1,6 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
@@ -10,11 +9,15 @@ module.exports = {
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true,
-            "experimentalObjectRestSpread": true
+            "jsx": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
+    },
+    "settings": {
+        "react":{
+            "version": "16"
+        }
     },
     "globals": {
         "__": false,

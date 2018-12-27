@@ -5,7 +5,7 @@ import {
     languages as LanguagesActions
 } from "../../../actions";
 import LanguageVerifierGrid from "./languageVerifierGrid";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
 import styles from "./style.less";

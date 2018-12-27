@@ -39,7 +39,7 @@ export class PersonaBarPageTreeParentExpand extends Component {
         if(listItems && listItems.length > 0)
         return listItems.map((item)=>{
             return (
-                <li className="list-item-menu">
+                <li key={item.id} className="list-item-menu">
                     <div
                         className={(item.selected) ? "list-item-highlight" : null}
                         style={{height:"28px"}}>

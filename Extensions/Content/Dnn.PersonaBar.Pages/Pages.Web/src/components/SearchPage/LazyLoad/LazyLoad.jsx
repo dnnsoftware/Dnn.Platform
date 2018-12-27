@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class LazyLoad extends Component {
     constructor(props) {
@@ -9,12 +10,12 @@ class LazyLoad extends Component {
         };
     }
 
-    componentWillReceiveProps(newProps){
-        if (newProps.filtersUpdated) {
+    componentDidUpdate(){
+        if (this.props.filtersUpdated) {
             this.setState({
                 page:0
             });
-        }
+        }        
     }
 
     addListenerToFindBottom() {

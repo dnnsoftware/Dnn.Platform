@@ -1,16 +1,14 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { PersonaBarPageBody, PersonaBarPageHeader, GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import GridCell from "dnn-grid-cell";
 import SiteTheme from "./SiteTheme";
 import MiddleActions from "./MiddleActions";
 import ThemeList from "./ThemeList";
-import Button from "dnn-button";
 import "./style.less";
 import utils from "utils";
 
@@ -78,11 +76,11 @@ class Body extends Component {
         return (
             <GridCell className="themes-body">
                 <PersonaBarPageHeader title={Localization.get("Themes")}>
-                {utils.params.settings.isHost &&
+                    {utils.params.settings.isHost &&
                     <Button type="primary" size="large" onClick={this.installTheme.bind(this)}>
                         {Localization.get("InstallTheme")}
                     </Button>
-                }
+                    }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <SiteTheme />

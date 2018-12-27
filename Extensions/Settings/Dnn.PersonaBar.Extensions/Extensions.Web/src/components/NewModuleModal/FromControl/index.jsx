@@ -1,12 +1,7 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import DropdownWithError from "dnn-dropdown-with-error";
-import Switch from "dnn-switch";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, GridSystem, SingleLineInputWithError, MultiLineInputWithError, DropdownWithError, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import FolderDropdown from "../common/FolderDropdown";
-import Button from "dnn-button";
 import Localization from "localization";
 import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import styles from "./style.less";
@@ -42,10 +37,10 @@ class FromControl extends Component {
             triedToSave: false
         };
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.retrieveOwnerAndModuleFolders();
     }
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (props.moduleFiles.length > 0) {
             let { newModule } = this.state;
             newModule.fileName.value = props.moduleFiles[0].value;
@@ -204,8 +199,7 @@ class FromControl extends Component {
                             options={props.moduleFiles}
                             onSelect={this.onFolderSelect.bind(this, "fileName")}
                             value={state.newModule.fileName.value}
-                            error={state.newModule.fileName.error && state.triedToSave}
-                            />
+                            error={state.newModule.fileName.error && state.triedToSave} />
                     </div>
                     <div style={{ paddingLeft: 15 }}>
                         <SingleLineInputWithError
@@ -215,8 +209,7 @@ class FromControl extends Component {
                             inputStyle={{ marginBottom: 32 }}
                             value={state.newModule.moduleName.value}
                             onChange={this.onChange.bind(this, "moduleName")}
-                            error={state.newModule.moduleName.error && state.triedToSave}
-                            />
+                            error={state.newModule.moduleName.error && state.triedToSave} />
                         <MultiLineInputWithError
                             label={Localization.get("NewModule_Description.Label")}
                             tooltipMessage={Localization.get("NewModule_Description.HelpText")}

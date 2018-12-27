@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { PropTypes } from "prop-types";
 import "./styles.less";
-import {PagesIcon, TreeLinkIcon, TreePaperClip} from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 export default class PersonaBarPageIcon extends Component {
     /* eslint-disable react/no-danger */
@@ -10,20 +10,20 @@ export default class PersonaBarPageIcon extends Component {
          /*eslint-disable react/no-danger*/
         switch(number) {
             case "normal":
-                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.PagesIcon }} />);
 
             case "file":
-                return (<div dangerouslySetInnerHTML={{ __html: TreePaperClip }} />);
+                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.TreePaperClip }} />);
 
             case "tab":
             case "url":
-                return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
+                return ( <div dangerouslySetInnerHTML={{ __html: SvgIcons.TreeLinkIcon }} /> );
 
             case "existing":
-                return ( <div dangerouslySetInnerHTML={{ __html: TreeLinkIcon }} /> );
+                return ( <div dangerouslySetInnerHTML={{ __html: SvgIcons.TreeLinkIcon }} /> );
 
             default:
-                return (<div dangerouslySetInnerHTML={{ __html: PagesIcon }}/>);
+                return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.PagesIcon }}/>);
         }
     }
 
@@ -38,6 +38,6 @@ export default class PersonaBarPageIcon extends Component {
 }
 
 PersonaBarPageIcon.propTypes = {
-    iconType: PropTypes.number.isRequired,
+    iconType: PropTypes.string.isRequired,
     selected: PropTypes.bool.isRequired
 };

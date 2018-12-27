@@ -1,9 +1,8 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { ExtensionActions, VisiblePanelActions } from "actions";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import PermissionGrid from "dnn-permission-grid";
+import { GridCell, Button, PermissionGrid } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import utils from "utils";
 import "./style.less";

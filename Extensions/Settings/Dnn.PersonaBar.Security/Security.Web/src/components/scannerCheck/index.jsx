@@ -1,13 +1,11 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import SearchBox from "dnn-search-box";
+import { security as SecurityActions } from "../../actions";
+import { SearchBox, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 class ScannerCheckPanelBody extends Component {
     constructor() {
@@ -19,9 +17,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("FileName"), "id": "FileName" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -31,9 +29,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedFileList() {
         const {props} = this;
-        return props.searchResults.FoundInFiles.map((term) => {
+        return props.searchResults.FoundInFiles.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-name">
                         <div className="label-wrapper">
                             <span>{term.FileName}&nbsp;</span>
@@ -54,9 +52,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("DatabaseInstance"), "id": "DatabaseInstance" },
             { "name": resx.get("DatabaseValue"), "id": "DatabaseValue" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -66,9 +64,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedDatabaseList() {
         const {props} = this;
-        return props.searchResults.FoundInDatabase.map((term) => {
+        return props.searchResults.FoundInDatabase.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-columnname">
                         <div className="label-wrapper">
                             <span>{term.ColumnName}&nbsp; </span>
@@ -89,9 +87,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("FileName"), "id": "FileName" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -105,9 +103,9 @@ class ScannerCheckPanelBody extends Component {
         if (risk === "low") {
             list = props.modifiedFiles.LowRiskFiles;
         }
-        return list.map((term) => {
+        return list.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-name">
                         <div className="label-wrapper">
                             <span>{term.FilePath}&nbsp; </span>
@@ -131,9 +129,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -143,9 +141,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedPortalSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.PortalSettings.map((term) => {
+        return props.modifiedSettings.PortalSettings.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-id">
                         <div className="label-wrapper">
                             <span>{term.PortalId}&nbsp; </span>
@@ -183,9 +181,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -195,9 +193,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedHostSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.PortalSettings.map((term) => {
+        return props.modifiedSettings.PortalSettings.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-name">
                         <div className="label-wrapper">
                             <span>{term.SettingName}&nbsp;</span>
@@ -232,9 +230,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -244,9 +242,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedTabSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.TabSettings.map((term) => {
+        return props.modifiedSettings.TabSettings.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-tab">
                         <div className="label-wrapper">
                             <span>{term.TabId}&nbsp; </span>
@@ -292,9 +290,9 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        let tableHeaders = fileTableFields.map((field) => {
+        let tableHeaders = fileTableFields.map((field, i) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -304,9 +302,9 @@ class ScannerCheckPanelBody extends Component {
 
     renderedModuleSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.ModuleSettings.map((term) => {
+        return props.modifiedSettings.ModuleSettings.map((term, i) => {
             return (
-                <div className="scannerCheckItem">
+                <div className="scannerCheckItem" key={i}>
                     <div className="label-type">
                         <div className="label-wrapper">
                             <span>{term.Type}&nbsp; </span>

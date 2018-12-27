@@ -48,13 +48,14 @@ namespace Dnn.PersonaBar.Users.Tests
         [TestCase("*search**_text*", "%search_text%")]
         [TestCase("*search*%_text*", "%search_text%")]
         [TestCase("*search%_text*", "%search_text%")]
+        [TestCase("search text", "search text%")]
         public void FilteredSearchTest(string searchText, string expectedFilteredText)
         {
             int totalRecords;
             usersContract.SearchText = searchText;
             usersCtrl.GetUsers(usersContract, true, out totalRecords);
 
-            Assert.AreEqual(usersCtrl.LastSearch, expectedFilteredText);
+            Assert.AreEqual(expectedFilteredText, usersCtrl.LastSearch);
 
         }
 

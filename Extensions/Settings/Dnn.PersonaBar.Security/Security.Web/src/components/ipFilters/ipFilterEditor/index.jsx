@@ -1,16 +1,9 @@
-import React, {Component, PropTypes } from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import InputGroup from "dnn-input-group";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
-import Dropdown from "dnn-dropdown";
-import {
-    security as SecurityActions
-} from "../../../actions";
+import { SingleLineInputWithError, GridSystem, Label, InputGroup, Button, RadioButtons, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { security as SecurityActions } from "../../../actions";
 import resx from "../../../resources";
 
 let specificityOptions = [];
@@ -32,7 +25,7 @@ class IpFilterEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         if (props.ipFilterId) {
             props.dispatch(SecurityActions.getIpFilter({
@@ -47,45 +40,6 @@ class IpFilterEditor extends Component {
         typeOptions = [];
         typeOptions.push({ label: resx.get("AllowIP"), value: 1 });
         typeOptions.push({ label: resx.get("DenyIP"), value: 2 });
-    }
-
-    componentWillReceiveProps(props) {
-        let {state} = this;
-
-        let ip = props.ipFilter["IPAddress"];
-        let mask = props.ipFilter["SubnetMask"];
-        if (ip === "" || !re.test(ip)) {
-            state.error["ip"] = true;
-        }
-        else if (ip !== "" && re.test(ip)) {
-            state.error["ip"] = false;
-        }
-        if (mask === "" || !re.test(mask)) {
-            state.error["mask"] = true;
-        }
-        else if (mask !== "" && re.test(mask)) {
-            state.error["mask"] = false;
-        }
-        this.setState({
-            ipFilter: Object.assign({}, props.ipFilter),
-            triedToSubmit: false,
-            error: state.error,
-            isIpRange: props.ipFilter.SubnetMask.length > 0 ? true : false
-        });
-    }
-
-    getValue(selectKey) {
-        const {state} = this;
-        switch (selectKey) {
-            case "IPAddress":
-                return state.ipFilter.IPAddress !== undefined ? state.ipFilter.IPAddress.toString() : "";
-            case "RuleType":
-                return state.ipFilter.RuleType !== undefined ? state.ipFilter.RuleType.toString() : "";
-            case "SubnetMask":
-                return state.ipFilter.SubnetMask !== undefined ? state.ipFilter.SubnetMask.toString() : "";
-            default:
-                break;
-        }
     }
 
     toggle(event) {
@@ -182,8 +136,7 @@ class IpFilterEditor extends Component {
                 <Label
                     labelType="inline"
                     tooltipMessage={resx.get("plRuleSpecifity.Help") }
-                    label={resx.get("plRuleSpecifity") }
-                    />
+                    label={resx.get("plRuleSpecifity") } />
                 {this.state.isIpRange &&
                     <RadioButtons
                         onChange={this.toggle.bind(this) }
@@ -202,42 +155,36 @@ class IpFilterEditor extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("plRuleType.Help") }
-                    label={resx.get("plRuleType") }
-                    />
+                    label={resx.get("plRuleType") } />
                 <Dropdown
                     options={typeOptions }
                     value={this.state.ipFilter.RuleType != undefined ? this.state.ipFilter.RuleType : 1}
-                    onSelect={this.onSettingChange.bind(this, "RuleType") }
-                    />
+                    onSelect={this.onSettingChange.bind(this, "RuleType") } />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("plFirstIP.Help") }
-                    label={resx.get("plFirstIP") }
-                    />
+                    label={resx.get("plFirstIP") } />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={this.state.error.ip && this.state.triedToSubmit}
                     errorMessage={resx.get("IPValidation.ErrorMessage") }
                     value={this.state.ipFilter.IPAddress}
-                    onChange={this.onSettingChange.bind(this, "IPAddress") }
-                    />
+                    onChange={this.onSettingChange.bind(this, "IPAddress") } />
             </InputGroup>
             {this.state.isIpRange &&
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSubnet.Help") }
-                        label={resx.get("plSubnet") }
-                        />
+                        label={resx.get("plSubnet") } />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={this.state.error.mask && this.state.triedToSubmit}
                         errorMessage={resx.get("IPValidation.ErrorMessage") }
                         value={this.state.ipFilter.SubnetMask}
-                        onChange={this.onSettingChange.bind(this, "SubnetMask") }
-                        />
+                        onChange={this.onSettingChange.bind(this, "SubnetMask") } />
                 </InputGroup>
             }
         </div>;
@@ -247,10 +194,10 @@ class IpFilterEditor extends Component {
         /* eslint-disable react/no-danger */
         return (
             <div className="ip-filter-setting-editor">
-                <Grid
-                    children={children}
-                    numberOfColumns={1}
-                    />
+                <GridSystem
+                    numberOfColumns={1}>
+                    {children}
+                </GridSystem>
                 <div className="buttons-box">
                     <Button                        
                         type="secondary"

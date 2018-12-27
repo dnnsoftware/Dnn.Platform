@@ -1,7 +1,6 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Button from "dnn-button";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import { connect } from "react-redux";
 import styles from "./style.less";

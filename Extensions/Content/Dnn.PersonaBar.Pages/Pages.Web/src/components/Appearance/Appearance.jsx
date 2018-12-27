@@ -1,9 +1,8 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Button from "dnn-button";
+import { GridCell, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import utils from "../../utils";
 import ThemeSelector from "./ThemeSelector/ThemeSelector";
@@ -14,7 +13,7 @@ import style from "./style.less";
 
 class Appearance extends Component {
 
-    componentWillMount() {
+    componentDidMount() {
         const { page, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
         onRetrieveThemes().then(data => {
@@ -30,19 +29,19 @@ class Appearance extends Component {
 		});
     }
 
-    componentWillReceiveProps(newProps) {
-        const { page, containers, defaultPortalThemeName, defaultPortalThemeLevel, onRetrieveThemeFiles } = this.props;
+    componentDidUpdate(prevProps) {
+        const { page, containers, defaultPortalThemeName, onRetrieveThemeFiles } = prevProps;
 
-        if (newProps.containers !== containers) {
-            this.autoSelectFirstContainerIfNoOneIsSelected(newProps.page, newProps.containers);
+        if (this.props.containers && this.props.containers !== containers) {
+            this.autoSelectFirstContainerIfNoOneIsSelected(this.props.page, this.props.containers);
         }
 
         if (page.themeName) {
             return;
         }
 
-        if (defaultPortalThemeName !== newProps.defaultPortalThemeName && newProps.defaultPortalThemeName !== null) {
-            onRetrieveThemeFiles(newProps.defaultPortalThemeName,newProps.defaultPortalThemeLevel);
+        if (this.props.defaultPortalThemeName && this.props.defaultPortalThemeName !== defaultPortalThemeName && this.props.defaultPortalThemeName && this.props.defaultPortalThemeName !== null) {
+            onRetrieveThemeFiles(this.props.defaultPortalThemeName,this.props.defaultPortalThemeLevel);
         }
     }
 

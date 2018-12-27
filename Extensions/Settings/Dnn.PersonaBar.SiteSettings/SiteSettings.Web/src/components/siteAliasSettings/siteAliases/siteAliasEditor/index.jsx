@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import InputGroup from "dnn-input-group";
-import Dropdown from "dnn-dropdown";
+import { SingleLineInputWithError, GridSystem, Label, Button, InputGroup, Dropdown } from "@dnnsoftware/dnn-react-common";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../../../actions";
@@ -38,27 +33,6 @@ class SiteAliasEditor extends Component {
         if (props.aliasId) {
             props.dispatch(SiteBehaviorActions.getSiteAlias(props.aliasId));
         }
-    }
-
-    componentDidUpdate(props) {
-        let {state} = this;
-
-        if (!props.aliasDetail) {
-            return;
-        }
-
-        if (props.aliasDetail["HTTPAlias"] === undefined || props.aliasDetail["HTTPAlias"] === "") {
-            state.error["alias"] = true;
-        }
-        else if (props.aliasDetail["HTTPAlias"] !== "" && props.aliasDetail["HTTPAlias"] !== undefined) {
-            state.error["alias"] = false;
-        }
-
-        this.setState({
-            aliasDetail: Object.assign({}, props.aliasDetail),
-            triedToSubmit: false,
-            error: state.error
-        });
     }
 
     onSettingChange(key, event) {
@@ -168,7 +142,7 @@ class SiteAliasEditor extends Component {
     render() {
         /* eslint-disable react/no-danger */
         if (this.state.aliasDetail !== undefined || this.props.id === "add") {
-            const columnOne = <div className="left-column">
+            const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
                     <Label
                         label={resx.get("SiteAlias")}
@@ -193,7 +167,7 @@ class SiteAliasEditor extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div key="column-two" className="right-column">
                 {this.props.siteAliases.Languages.length > 1 &&
                     <InputGroup>
                         <Label
@@ -220,7 +194,7 @@ class SiteAliasEditor extends Component {
 
             return (
                 <div className="alias-editor">
-                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                    <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                     <div className="editor-buttons-box">
                         <Button
                             type="secondary"

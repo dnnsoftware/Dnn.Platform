@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PagesSearchIcon, ArrowBack, XIcon } from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import PropTypes from "prop-types";
 
@@ -33,7 +33,7 @@ class SearchPageInput extends Component {
             <div className="search-container">
                 {this.props.inSearch ?
                     <div className="dnn-back-to-link" onClick={() => this.props.clearSearch()}>
-                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: ArrowBack }} /> <span>{Localization.get("BackToPages").toUpperCase()}</span>
+                        <div className="dnn-back-to-arrow" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowBack }} /> <span>{Localization.get("BackToPages").toUpperCase()}</span>
                     </div> : null
                 }
 
@@ -50,14 +50,14 @@ class SearchPageInput extends Component {
                         <div
                             className="btn clear-search"
                             style={{ fill: "#444" }}
-                            dangerouslySetInnerHTML={{ __html: XIcon }}
+                            dangerouslySetInnerHTML={{ __html: SvgIcons.XIcon }}
                             onClick={() => this.setState({ searchTerm: "", filtersUpdated: true }, () => this.props.onSearch(""))}
                         />
 
                         : <div className="btn clear-search" />}
                     <div
                         className="btn search-btn"
-                        dangerouslySetInnerHTML={{ __html: PagesSearchIcon }}
+                        dangerouslySetInnerHTML={{ __html: SvgIcons.PagesSearchIcon }}
                         onClick={()=>this.props.onSearch(this.state.searchTerm)}
                     >
                     </div>

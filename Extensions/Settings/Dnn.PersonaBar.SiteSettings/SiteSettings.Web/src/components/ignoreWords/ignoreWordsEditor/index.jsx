@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Tags from "dnn-tags";
-import InputGroup from "dnn-input-group";
+import { Label, Button, Tags, InputGroup } from "@dnnsoftware/dnn-react-common";
 import {
     search as SearchActions
 } from "../../../actions";

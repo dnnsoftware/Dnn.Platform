@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import App from "../components/App";
-import DevTools from "./DevTools";
 
 class Root extends Component {
     constructor() {
@@ -11,7 +10,6 @@ class Root extends Component {
         return (
             <div className="siteSettings-Root">
                 <App cultureCode={culture} />
-                <DevTools />
             </div>
         );
     }

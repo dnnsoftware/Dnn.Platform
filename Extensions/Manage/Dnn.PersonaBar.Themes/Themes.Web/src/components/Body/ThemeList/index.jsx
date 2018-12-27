@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import Theme from "./Theme";
-const NoDataIcon = require(`!raw!./../SvgIcon/nodata.svg`);
+const NoDataIcon = require("!raw-loader!./../SvgIcon/nodata.svg");
 import "./style.less";
 
 class ThemeList extends Component {
@@ -36,8 +37,8 @@ class ThemeList extends Component {
                             autoHeightMin={0}
                             autoHeightMax={480}>
                             <GridCell>
-                                {globalThemes.map((theme) => {
-                                    return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
+                                {globalThemes.map((theme, i) => {
+                                    return <GridCell key={i} columnSize="25"><Theme theme={theme} /></GridCell>;
                                 })}
                             </GridCell>
                         </Scrollbars>
@@ -55,8 +56,8 @@ class ThemeList extends Component {
                             autoHeightMin={0}
                             autoHeightMax={480}>
                             <GridCell>
-                                {siteThemes.map((theme) => {
-                                    return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
+                                {siteThemes.map((theme, i) => {
+                                    return <GridCell key={i} columnSize="25"><Theme theme={theme} /></GridCell>;
                                 })}
                             </GridCell>
                         </Scrollbars>

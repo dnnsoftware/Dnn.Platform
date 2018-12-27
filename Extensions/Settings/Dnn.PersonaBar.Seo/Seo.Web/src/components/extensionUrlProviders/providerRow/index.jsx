@@ -1,15 +1,14 @@
-import React, { Component, PropTypes } from "react";
-import Collapse from "dnn-collapsible";
-import Checkbox from "dnn-checkbox";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Collapsible as Collapse, Checkbox, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { EditIcon } from "dnn-svg-icons";
 
 class ProviderRow extends Component {
     constructor() {
         super();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         this.setState({
             opened
@@ -45,7 +44,7 @@ class ProviderRow extends Component {
                                 <Checkbox value={props.enabled} onChange={this.updateStatus.bind(this) } />
                             </div>
                             <div className="provider-item item-row-editButton">
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)} />
+                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
                             </div>
                         </div>
                     </div>

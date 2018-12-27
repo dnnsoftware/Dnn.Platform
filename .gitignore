@@ -113,3 +113,5 @@ npm-debug.log
 
 [Ww]ebsite/
 .idea
+/**/yarn-error.log
+/**/*-bundle.js

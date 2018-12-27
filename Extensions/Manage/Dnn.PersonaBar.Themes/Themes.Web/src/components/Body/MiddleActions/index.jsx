@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import SearchBox from "dnn-search-box";
+import { GridCell, SearchBox, Dropdown } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
 import RestoreTheme from "./RestoreTheme";
-import DropDown from "dnn-dropdown";
 import "./style.less";
 
 let canEdit = false;
@@ -56,14 +55,14 @@ class MiddleActions extends Component {
         let themeFilterOptions = this.buildFiltersOptions();
         return (
             <GridCell className="middle-actions">
-                <GridCell columnSize="40">
+                <GridCell columnSize={40}>
                     {canEdit &&
                         <RestoreTheme />
                     }
                 </GridCell>
-                <GridCell columnSize="30">
+                <GridCell columnSize={30}>
                     <div className="theme-level-filter">
-                        <DropDown style={{ width: "100%" }}
+                        <Dropdown style={{ width: "100%" }}
                             withBorder={false}
                             options={themeFilterOptions}
                             onSelect={this.onSelect.bind(this)}
@@ -74,7 +73,7 @@ class MiddleActions extends Component {
                         </div>
                     </div>
                 </GridCell>
-                <GridCell columnSize="30">
+                <GridCell columnSize={30}>
                     <div className="search-filter">
                         {
                             <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />

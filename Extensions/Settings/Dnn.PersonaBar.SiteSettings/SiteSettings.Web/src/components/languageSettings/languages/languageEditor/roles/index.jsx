@@ -6,10 +6,8 @@ import resx from "../../../../../resources";
 import {
     languages as LanguagesActions
 } from "actions";
-import Label from "dnn-label";
 import RoleRow from "./RoleRow";
-import GridCell from "dnn-grid-cell";
-import DropDown from "dnn-dropdown";
+import { Label, GridCell, Dropdown } from "@dnnsoftware/dnn-react-common";
 
 const tableFields = [
     { name: "RoleName", width: 60 },
@@ -107,7 +105,7 @@ class RolesPanel extends Component {
                 </div>
                 {props.roleGroups && props.roleGroups.length > 0 &&
                     <div className="group-filter">
-                        <DropDown
+                        <Dropdown
                             value={state.groupId}
                             fixedHeight={200}
                             style={{ width: "150px" }}

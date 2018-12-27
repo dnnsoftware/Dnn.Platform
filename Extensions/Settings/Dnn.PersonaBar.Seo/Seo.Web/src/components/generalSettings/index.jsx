@@ -1,15 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
-import Label from "dnn-label";
-import RadioButtons from "dnn-radio-buttons";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
+import { Dropdown, InputGroup, GridSystem as Grid, Label, RadioButtons, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -24,7 +19,7 @@ class GeneralSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.generalSettings) {
             this.setState({
@@ -39,7 +34,7 @@ class GeneralSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.setState({
             generalSettings: Object.assign({}, props.generalSettings),
             triedToSubmit: false
@@ -104,32 +99,28 @@ class GeneralSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.generalSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div className="left-column" key="columnOne">
                 <div className="columnTitle">{resx.get("UrlRewriter")}</div>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("ReplacementCharacter.Help")}
-                        label={resx.get("ReplacementCharacter")}
-                        />
+                        label={resx.get("ReplacementCharacter")} />
                     <Dropdown
                         options={this.keyValuePairsToOptions(props.replacementCharacterList)}
                         value={state.generalSettings.ReplaceSpaceWith}
-                        onSelect={this.onSettingChange.bind(this, "ReplaceSpaceWith")}
-                        />
+                        onSelect={this.onSettingChange.bind(this, "ReplaceSpaceWith")} />
                 </InputGroup>
                 <InputGroup>
                     <div className="generalSettings-row_switch">
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("enableSystemGeneratedUrlsLabel.Help")}
-                            label={resx.get("enableSystemGeneratedUrlsLabel")}
-                            />
+                            label={resx.get("enableSystemGeneratedUrlsLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.EnableSystemGeneratedUrls}
-                            onChange={this.onSettingChange.bind(this, "EnableSystemGeneratedUrls")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "EnableSystemGeneratedUrls")} />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -137,14 +128,12 @@ class GeneralSettingsPanelBody extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("enableLowerCaseLabel.Help")}
-                            label={resx.get("enableLowerCaseLabel")}
-                            />
+                            label={resx.get("enableLowerCaseLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.ForceLowerCase}
-                            onChange={this.onSettingChange.bind(this, "ForceLowerCase")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "ForceLowerCase")} />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -152,14 +141,12 @@ class GeneralSettingsPanelBody extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("autoAsciiConvertLabel.Help")}
-                            label={resx.get("autoAsciiConvertLabel")}
-                            />
+                            label={resx.get("autoAsciiConvertLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.AutoAsciiConvert}
-                            onChange={this.onSettingChange.bind(this, "AutoAsciiConvert")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "AutoAsciiConvert")} />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -167,25 +154,22 @@ class GeneralSettingsPanelBody extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("setDefaultSiteLanguageLabel.Help")}
-                            label={resx.get("setDefaultSiteLanguageLabel")}
-                            />
+                            label={resx.get("setDefaultSiteLanguageLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.ForcePortalDefaultLanguage}
-                            onChange={this.onSettingChange.bind(this, "ForcePortalDefaultLanguage")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "ForcePortalDefaultLanguage")} />
                     </div>
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div className="right-column" key="columnTwo">
                 <div className="columnTitle">{resx.get("UrlRedirects")}</div>
                 <InputGroup>
                     <div className="generalSettings-row-options">
                         <Label
                             tooltipMessage={resx.get("plDeletedPages.Help")}
-                            label={resx.get("plDeletedPages")}
-                            />
+                            label={resx.get("plDeletedPages")} />
                         <RadioButtons
                             onChange={this.onSettingChange.bind(this, "DeletedTabHandlingType")}
                             options={this.keyValuePairsToOptions(props.deletedPageHandlingTypes)}
@@ -198,14 +182,12 @@ class GeneralSettingsPanelBody extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("enable301RedirectsLabel.Help")}
-                            label={resx.get("enable301RedirectsLabel")}
-                            />
+                            label={resx.get("enable301RedirectsLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.RedirectUnfriendly}
-                            onChange={this.onSettingChange.bind(this, "RedirectUnfriendly")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "RedirectUnfriendly")} />
                     </div>
                 </InputGroup>
                 <InputGroup>
@@ -213,21 +195,19 @@ class GeneralSettingsPanelBody extends Component {
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("redirectOnWrongCaseLabel.Help")}
-                            label={resx.get("redirectOnWrongCaseLabel")}
-                            />
+                            label={resx.get("redirectOnWrongCaseLabel")} />
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
                             value={state.generalSettings.RedirectWrongCase}
-                            onChange={this.onSettingChange.bind(this, "RedirectWrongCase")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "RedirectWrongCase")} />
                     </div>
                 </InputGroup>
             </div>;
 
             return (
                 <div className={styles.generalSettings}>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}

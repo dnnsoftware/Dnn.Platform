@@ -1,12 +1,11 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Localization from "localization";
 import PackageCard from "./PackageCard";
-import Tooltip from "dnn-tooltip";
 import PackageCardOverlay from "./PackageCardOverlay";
-import {
-    CheckMarkIcon
-} from "dnn-svg-icons";
+
+import { SvgIcons, Tooltip } from "@dnnsoftware/dnn-react-common";
 
 const tooltipStyle = {
     style: {
@@ -48,8 +47,8 @@ class PackagesList extends Component {
         const { props } = this;
         if (props.importPackages && props.importPackages.length > 0) {
             return <div className="package-cards">
-                {props.importPackages.map((pkg) => {
-                    return <div className="package-card-wrapper">
+                {props.importPackages.map((pkg, i) => {
+                    return <div className="package-card-wrapper" key={i}>
                         <PackageCard selectedPackage={pkg}
                             className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
                             <PackageCardOverlay
@@ -58,7 +57,7 @@ class PackagesList extends Component {
                                 packageDescription={pkg.Description}
                                 isSelected={props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId} />
                             {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
-                                <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
+                                <div className="checkmark" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>
                             }
                             <Tooltip
                                 tooltipStyle={tooltipStyle}

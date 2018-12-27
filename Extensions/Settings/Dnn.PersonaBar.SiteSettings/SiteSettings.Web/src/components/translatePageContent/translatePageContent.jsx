@@ -4,13 +4,7 @@ import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../resources";
 import { Scrollbars } from "react-custom-scrollbars";
-import InputGroup from "dnn-input-group";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import TranslationProgressBars from "../languageSettings/TranslationProgressBars";
-import Button from "dnn-button";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
+import { InputGroup, Switch, Label, PersonaBarPageBody, TranslationProgressBars, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import {
     languages as LanguagesActions,
     siteInfo as SiteInfoActions,
@@ -38,8 +32,11 @@ class TranslatePageContent extends Component {
         this.getProgressData();
     }
 
-    componentDidUpdate(props) {
-        this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited)  });
+    componentDidUpdate(newProps) {
+        const { props } = this;
+        if(newProps.languageBeingEdited !== props.languageBeingEdited) {
+            this.setState({languageBeingEdited: Object.assign({}, props.languageBeingEdited)});
+        }
     }
 
     getPageList() {
@@ -202,13 +199,13 @@ class TranslatePageContent extends Component {
 
     render() {
         const {props, state} = this;
-        const language = state.languageBeingEdited;
-        const hasPublishedPages = !!language.PublishedPages;
+        const { languageBeingEdited } = props;
+        const hasPublishedPages = !!languageBeingEdited.PublishedPages;
         
-        const isEnabled = language.Enabled;
+        const isEnabled = languageBeingEdited.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
-        const localizablePages = +language.LocalizablePages;
-        const TranslatedPages = +language.TranslatedPages;
+        const localizablePages = +languageBeingEdited.LocalizablePages;
+        const TranslatedPages = +languageBeingEdited.TranslatedPages;
         
         return <PersonaBarPageBody
             className="translate-page-content"
@@ -218,10 +215,10 @@ class TranslatePageContent extends Component {
             }}>
 
             <div className="language-settings-page-list">
-                {language && <div className="top-block">
+                {languageBeingEdited && <div className="top-block">
                     <div className="language-block">
-                        <img className="float-left" src={language.Icon} alt={language.NativeName} />
-                        <span >{language.NativeName}</span>
+                        <img className="float-left" src={languageBeingEdited.Icon} alt={languageBeingEdited.NativeName} />
+                        <span >{languageBeingEdited.NativeName}</span>
                         {state.basicSettings && <span className="float-right">{state.basicSettings.PortalName}</span>}
                     </div>
                     <InputGroup>
@@ -233,7 +230,7 @@ class TranslatePageContent extends Component {
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
-                                value={language.Active}
+                                value={languageBeingEdited.Active}
                                 readOnly={!isEnabled}
                                 onChange={this.onToggleActive.bind(this) }
                             />
@@ -243,7 +240,7 @@ class TranslatePageContent extends Component {
                         <Button
                             type="secondary"
                             disabled={!isEnabled || !localizablePages || !pagesNumber}
-                            onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code) }>
+                            onClick={this.onMarkAllPagesAsTranslated.bind(this, languageBeingEdited.Code) }>
                             <TextOverflowWrapper text={resx.get("MarkAllPagesAsTranslated") } maxWidth={150}/>
                         </Button>
                         <Button
@@ -253,7 +250,7 @@ class TranslatePageContent extends Component {
                             <TextOverflowWrapper text={resx.get("EraseAllLocalizedPages") } maxWidth={150}/>
                         </Button>
                         <Button
-                            disabled={!language.Active || !isEnabled || !TranslatedPages}
+                            disabled={!languageBeingEdited.Active || !isEnabled || !TranslatedPages}
                             type="primary"
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, true) }>
@@ -261,7 +258,7 @@ class TranslatePageContent extends Component {
                         </Button>
                         <Button
                             type="secondary"
-                            disabled={!language.Active || !isEnabled || !hasPublishedPages || !TranslatedPages}
+                            disabled={!languageBeingEdited.Active || !isEnabled || !hasPublishedPages || !TranslatedPages}
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, false) }>
                             <TextOverflowWrapper text={resx.get("UnpublishTranslatedPages") } maxWidth={150}/>
@@ -316,7 +313,8 @@ function mapStateToProps(state) {
     return {
         pageList: state.languages.pageList,
         languageBeingEdited: state.languageEditor.languageBeingEdited,
-        languageDisplayMode: (state.languages.languageSettings && state.languages.languageSettings.LanguageDisplayMode) || "NATIVE"
+        languageDisplayMode: (state.languages.languageSettings && state.languages.languageSettings.LanguageDisplayMode) || "NATIVE",
+        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
     };
 }
 

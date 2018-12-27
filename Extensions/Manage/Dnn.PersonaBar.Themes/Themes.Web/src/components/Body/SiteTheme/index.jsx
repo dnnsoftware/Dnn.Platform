@@ -1,12 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Tabs from "dnn-tabs";
+import { DnnTabs as Tabs, GridCell } from "@dnnsoftware/dnn-react-common";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-
 import CurrentTheme from "./CurrentTheme";
 import ThemeFileList from "./ThemeFileList";
 import ThemeSettings from "./ThemeSettings";
@@ -21,7 +20,7 @@ class SiteTheme extends Component {
         this.state = {};
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(ThemeActions.getCurrentTheme());
     }

@@ -1,8 +1,7 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, MultiLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
-import Button from "dnn-button";
 import Localization from "localization";
 import "./style.less";
 
@@ -23,7 +22,7 @@ class ReleaseNotes extends Component {
                 {props.installationMode && <h6>{Localization.get("InstallExtension_ReleaseNotes.Header")}</h6>}
                 {props.installationMode && <p>{Localization.get("InstallExtension_ReleaseNotes.HelpText")}</p>}
                 {!props.readOnly && <MultiLineInputWithError
-                        label={!props.installationMode && Localization.get("InstallExtension_ReleaseNotes.Header")}
+                    label={!props.installationMode && Localization.get("InstallExtension_ReleaseNotes.Header")}
                     style={inputStyle}
                     enabled={!props.disabled}
                     value={value}

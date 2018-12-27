@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import { ErrorStateIcon } from "dnn-svg-icons";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 export default class AlreadyInstalled extends Component {
     constructor() {
@@ -12,7 +13,7 @@ export default class AlreadyInstalled extends Component {
         return <div className="already-installed">
             <div className="already-installed-container">
                 <div className="upload-file-name">{this.props.fileName || "undefined"}</div>
-                <div className="upload-icon" dangerouslySetInnerHTML={{ __html: ErrorStateIcon }} />
+                <div className="upload-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ErrorStateIcon }} />
                 <h4 dangerouslySetInnerHTML={{ __html: props.repairWarning }}></h4>
                 <p className="repair-or-install">
                     <span onClick={props.repairInstall.bind(this)}>[{props.repairInstallText}] </span>

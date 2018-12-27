@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "dnn-collapsible";
-import { FolderIcon, PagesIcon, ArrowRightIcon, ArrowDownIcon } from "dnn-svg-icons";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 class Folder extends Component {
     constructor() {
         super();
@@ -24,16 +23,16 @@ class Folder extends Component {
     render() {
         const { props } = this;
         const isFolder = props.folder.NewValue.indexOf(".resx") === -1;
-        const svgIcon = isFolder ? FolderIcon : PagesIcon;
-        const isOpenIcon = this.state.isOpen ? ArrowDownIcon : ArrowRightIcon;
+        const svgIcon = isFolder ? SvgIcons.FolderIcon : SvgIcons.PagesIcon;
+        const isOpenIcon = this.state.isOpen ? SvgIcons.ArrowDownIcon : SvgIcons.ArrowRightIcon;
         return (
             <li>
                 {isFolder && <div onClick={this.toggleCollapse.bind(this)} className="edit-svg" dangerouslySetInnerHTML={{ __html: isOpenIcon }}></div>}
                 <div className="resource-type-icon" onClick={this.toggleCollapse.bind(this)} dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
                 <span className={props.isSelected ? "selected-resource" : ""} onClick={this.toggleCollapse.bind(this)}>{props.folder.Name}</span>
-                <Collapse isOpened={this.state.isOpen} keepCollapsedContent={true}>
+                <Collapsible isOpened={this.state.isOpen} keepCollapsedContent={true}>
                     <ul>{props.children}</ul>
-                </Collapse>
+                </Collapsible>
             </li>
         );
     }

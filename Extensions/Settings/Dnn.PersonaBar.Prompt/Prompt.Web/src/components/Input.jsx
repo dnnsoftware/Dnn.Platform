@@ -201,13 +201,12 @@ class Input extends Component {
     }
 }
 
-Input.PropTypes = {
+Input.propTypes = {
     nextPageCommand: PropTypes.string,
     updateHistory: PropTypes.func.isRequired,
-    busy: PropTypes.func.isRequired,
     setHeight: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
-    paging: PropTypes.bool.isRequired
+    paging: PropTypes.object
 };
 
 export default Input;

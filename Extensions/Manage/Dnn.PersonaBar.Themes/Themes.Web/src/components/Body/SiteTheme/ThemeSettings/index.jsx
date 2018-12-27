@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridSystem from "dnn-grid-system";
+import { GridSystem } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
-
 import EditThemeAttributes from "./EditThemeAttributes";
 import ParseThemePackage from "./ParseThemePackage";
 
@@ -33,7 +33,8 @@ class ThemeSettings extends Component {
 
     render() {
         return (
-            <GridSystem className="theme-settings" children={[this.renderLeftColumn(), this.renderRightColumn()]}>
+            <GridSystem className="theme-settings">
+                {[this.renderLeftColumn(), this.renderRightColumn()]}
             </GridSystem>
         );
     }

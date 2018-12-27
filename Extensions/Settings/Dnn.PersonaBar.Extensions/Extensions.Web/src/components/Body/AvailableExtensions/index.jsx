@@ -1,14 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    ExtensionActions,
-    VisiblePanelActions,
-    InstallationActions
-} from "actions";
+import { ExtensionActions, VisiblePanelActions, InstallationActions } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
+import { GridCell, DropdownWithError } from "@dnnsoftware/dnn-react-common";
 import ExtensionList from "./ExtensionList";
-import DropdownWithError from "dnn-dropdown-with-error";
 import "./style.less";
 
 class AvailableExtensions extends Component {
@@ -26,8 +22,8 @@ class AvailableExtensions extends Component {
     checkIfAvailablePackagesEmpty(props) {
         return !props.availablePackages || props.availablePackages.length === 0;
     }
-    componentWillMount() {
-        const { props, state } = this;
+    UNSAFE_componentWillMount() {
+        const { props } = this;
 
         if (!this.checkIfAvailablePackageTypesEmpty(props) && this.checkIfAvailablePackagesEmpty(props) && props.selectedAvailablePackageType === "") {
             this.setState({loading: true}, () => {
@@ -37,8 +33,8 @@ class AvailableExtensions extends Component {
             });
         }
     }
-    componentWillReceiveProps(props) {
-        if(props.availablePackages && props.availablePackages.length > 0){
+    UNSAFE_componentWillReceiveProps(props) {
+        if (props.availablePackages && props.availablePackages.length > 0) {
             this.setState({loading: false});
         }
     }
@@ -102,12 +98,12 @@ class AvailableExtensions extends Component {
         }));
     }
 
-    renderLoading(){
+    renderLoading() {
         /* eslint-disable react/no-danger */
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
-            <div dangerouslySetInnerHTML={{ __html: require("!raw!./../../../img/fetching.svg") }} />
+            <div dangerouslySetInnerHTML={{ __html: require("!raw-loader!./../../../img/fetching.svg") }} />
         </div>;
     }
 
@@ -122,9 +118,9 @@ class AvailableExtensions extends Component {
                             value: _package.Type
                         };
                     })}
-                        label={Localization.get("Showing.Label")}
-                        value={props.selectedAvailablePackageType}
-                        labelType="inline" />
+                    label={Localization.get("Showing.Label")}
+                    value={props.selectedAvailablePackageType}
+                    labelType="inline" />
                 </GridCell>
                 {state.loading && this.renderLoading()}
                 {(props.availablePackages && props.availablePackages.length > 0 && !state.loading) &&

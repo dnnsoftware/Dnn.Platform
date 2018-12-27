@@ -1,13 +1,9 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, GridSystem, SingleLineInputWithError, PersonaBarPageBody, PersonaBarPageHeader, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
-import Button from "dnn-button";
 import CustomSettings from "../EditExtension/CustomSettings";
 import BasicPackageInformation from "../common/BasicPackageInformation";
 import styles from "./style.less";
@@ -40,7 +36,7 @@ class NewExtensionModal extends Component {
         this.versionDropdownOptions = getDropdownOptions();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         if ((!props.moduleCategories || props.moduleCategories.length === 0)) {
             props.dispatch(ExtensionActions.getModuleCategories());
@@ -186,8 +182,7 @@ class NewExtensionModal extends Component {
                             version={version}
                             onPackageTypeSelect={this.onPackageTypeSelect.bind(this)}
                             onVersionChange={this.onVersionChange.bind(this)}
-                            isAddMode={true}
-                            />
+                            isAddMode={true} />
                         <GridCell><hr /></GridCell>
                         <GridCell className="box-title-container">
                             <h3 className="box-title">{Localization.get("EditExtension_OwnerDetails.Label")}</h3>
@@ -229,8 +224,7 @@ class NewExtensionModal extends Component {
                             type={extensionBeingEdited.packageType.value}
                             onChange={this.onChange.bind(this)}
                             actionButtonsDisabled={true}
-                            isAddMode={true}
-                            />
+                            isAddMode={true} />
                         <GridCell columnSize={100} className="modal-footer">
                             <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("CreateExtension_Cancel.Button")}</Button>
                             <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("CreateExtension_Save.Button")}</Button>
@@ -243,7 +237,7 @@ class NewExtensionModal extends Component {
     }
 }
 
-NewExtensionModal.PropTypes = {
+NewExtensionModal.propTypes = {
     onCancel: PropTypes.func
 };
 

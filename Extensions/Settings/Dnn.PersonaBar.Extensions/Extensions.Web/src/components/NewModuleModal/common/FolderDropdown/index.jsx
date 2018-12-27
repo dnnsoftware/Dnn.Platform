@@ -1,8 +1,6 @@
-import React, { PropTypes, Component } from "react";
-import DropdownWithError from "dnn-dropdown-with-error";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Button from "dnn-button";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { DropdownWithError, SingleLineInputWithError, Button, GridCell } from "@dnnsoftware/dnn-react-common";
 import Collapsible from "react-collapse";
 import Localization from "localization";
 import styles from "./style.less";
@@ -76,8 +74,7 @@ class FolderDropdown extends Component {
                                 inputStyle={{ marginBottom: 16 }}
                                 value={state.newFolderValue}
                                 onChange={this.onFolderNameChange.bind(this)}
-                                error={state.newFolderValue === "" && state.triedToSave}
-                                />
+                                error={state.newFolderValue === "" && state.triedToSave} />
                         </GridCell>
                         <GridCell className="new-folder-buttons">
                             <Button type="secondary" onClick={this.closeAddNewFolderBox.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
@@ -93,8 +90,7 @@ class FolderDropdown extends Component {
                     onSelect={this.onOwnerFolderSelect.bind(this)}
                     value={props.value}
                     enabled={props.enabled}
-                    error={props.error}
-                    />
+                    error={props.error} />
             </GridCell>
         );
     }

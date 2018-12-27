@@ -1,7 +1,6 @@
-import React, { PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import MultiLineInput from "dnn-multi-line-input";
+import React, { } from "react";
+import PropTypes from "prop-types";
+import { GridCell, Button, MultiLineInput } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 
 const StepFour = ({onCancel, onNext, onChange, selectedManifest, onPrevious}) => (
@@ -12,8 +11,7 @@ const StepFour = ({onCancel, onNext, onChange, selectedManifest, onPrevious}) =>
             <MultiLineInput
                 className="package-manifest"
                 value={selectedManifest}
-                onChange={onChange.bind(this, "selectedManifest")}
-                />
+                onChange={onChange.bind(this, "selectedManifest")} />
         </GridCell>
         <GridCell className="modal-footer">
             <Button type="secondary" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>

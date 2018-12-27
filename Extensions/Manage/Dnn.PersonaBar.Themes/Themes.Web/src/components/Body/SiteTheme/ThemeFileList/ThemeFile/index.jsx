@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import OverflowText from "dnn-text-overflow-wrapper";
-
+import { TextOverflowWrapperNew } from "@dnnsoftware/dnn-react-common";
 import SvgIcon from "../../../SvgIcon";
 import utils from "utils";
 import "./style.less";
@@ -125,7 +125,7 @@ class ThemeFile extends Component {
         return (
             <li className={this.getClassName() }>
                 {this.renderThumbnail() }
-                <OverflowText text={props.themeFile.name} maxWidth={80} className="title" />
+                <TextOverflowWrapperNew text={props.themeFile.name} maxWidth={80} className="title" />
             </li>
         );
     }

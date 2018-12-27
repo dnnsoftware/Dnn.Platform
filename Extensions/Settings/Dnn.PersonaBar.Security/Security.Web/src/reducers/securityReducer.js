@@ -59,19 +59,19 @@ export default function securitySettings(state = {
                 auditCheckResults: action.data.auditCheckResults
             };
         case ActionTypes.RETRIEVED_SECURITY_AUDITCHECK_RESULT:
-            {
-                let result = action.data.auditCheckResult;
-                let curentResults = Object.assign([], JSON.parse(JSON.stringify(state.auditCheckResults)));
-                for(let i = 0; i < curentResults.length; i++){
-                    if(curentResults[i].CheckName === result.CheckName){
-                        curentResults[i] = result;
-                        break;
-                    }
+        {
+            let result = action.data.auditCheckResult;
+            let curentResults = Object.assign([], JSON.parse(JSON.stringify(state.auditCheckResults)));
+            for (let i = 0; i < curentResults.length; i++) {
+                if (curentResults[i].CheckName === result.CheckName) {
+                    curentResults[i] = result;
+                    break;
                 }
-                return { ...state,
-                    auditCheckResults: curentResults
-                };
             }
+            return { ...state,
+                auditCheckResults: curentResults
+            };
+        }
         case ActionTypes.RETRIEVED_SECURITY_SEARCH_FILE_SYSTEM_DATABASE:
             return { ...state,
                 searchResults: action.data.searchResults,

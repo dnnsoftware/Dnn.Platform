@@ -1,14 +1,15 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Tooltip from "dnn-tooltip";
+import { security as SecurityActions } from "../../actions";
+import { 
+    InputGroup,
+    SingleLineInputWithError,
+    Switch,
+    Label,
+    Button,
+    Tooltip
+} from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -22,7 +23,7 @@ class SslSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.sslSettings) {
             this.setState({
@@ -82,14 +83,12 @@ class SslSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plSSLEnabled.Help")}
-                                label={resx.get("plSSLEnabled")}
-                                />
+                                label={resx.get("plSSLEnabled")} />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.sslSettings.SSLEnabled}
-                                onChange={this.onSettingChange.bind(this, "SSLEnabled")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "SSLEnabled")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -97,39 +96,33 @@ class SslSettingsPanelBody extends Component {
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plSSLEnforced.Help")}
-                                label={resx.get("plSSLEnforced")}
-                                />
+                                label={resx.get("plSSLEnforced")} />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.sslSettings.SSLEnforced}
-                                onChange={this.onSettingChange.bind(this, "SSLEnforced")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "SSLEnforced")} />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plSSLURL.Help")}
-                            label={resx.get("plSSLURL")}
-                            />
+                            label={resx.get("plSSLURL")} />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={false}
                             value={state.sslSettings.SSLURL}
-                            onChange={this.onSettingChange.bind(this, "SSLURL")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "SSLURL")} />
                     </InputGroup>
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plSTDURL.Help")}
-                            label={resx.get("plSTDURL")}
-                            />
+                            label={resx.get("plSTDURL")} />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={false}
                             value={state.sslSettings.STDURL}
-                            onChange={this.onSettingChange.bind(this, "STDURL")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "STDURL")} />
                     </InputGroup>
                     {
                         /*eslint-disable eqeqeq*/
@@ -142,15 +135,13 @@ class SslSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 withLabel={false}
                                 error={false}
                                 value={state.sslSettings.SSLOffloadHeader}
-                                onChange={this.onSettingChange.bind(this, "SSLOffloadHeader")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "SSLOffloadHeader")} />
                         </InputGroup>
                     }
                     <div className="buttons-box">

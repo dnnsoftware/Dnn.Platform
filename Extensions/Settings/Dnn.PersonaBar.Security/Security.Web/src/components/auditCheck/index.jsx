@@ -1,12 +1,10 @@
 /* eslint-disable react/no-danger */
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
+import { security as SecurityActions } from "../../actions";
 import "./style.less";
-import ContentLoadWrapper from "dnn-content-load-wrapper";
-import { TableEmptyState } from "dnn-svg-icons";
+import { ContentLoadWrapper, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
 import styles from "./style.less";
 
@@ -19,7 +17,7 @@ class AuditCheckPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.auditCheckResults) {
             return;
@@ -33,9 +31,9 @@ class AuditCheckPanelBody extends Component {
             { "name": resx.get("Result"), "id": "Result" },
             { "name": resx.get("Notes"), "id": "Notes" }
         ];
-        let tableHeaders = tableFields.map((field) => {
+        let tableHeaders = tableFields.map((field, i) => {
             let className = "auditCheckHeader auditCheckHeader-" + field.id;
-            return <div className={className}>
+            return <div className={className} key={i}>
                 <span>{field.name}</span>
             </div>;
         });
@@ -96,9 +94,9 @@ class AuditCheckPanelBody extends Component {
         }
     }
 
-    onAuditCheck(result){
+    onAuditCheck(result) {
         const {state, props} = this;
-        if(state.checking){
+        if (state.checking) {
             return;
         }
 
@@ -121,9 +119,9 @@ class AuditCheckPanelBody extends Component {
 
     renderedList() {
         const {props} = this;
-        return props.auditCheckResults.map((term) => {
+        return props.auditCheckResults.map((term, i) => {
             return (
-                <div className="auditCheckItem">
+                <div className="auditCheckItem" key={i}>
                     <div className="label-name">
                         <div className="label-wrapper">
                             <span>{term.CheckNameText}&nbsp; </span>
@@ -150,7 +148,7 @@ class AuditCheckPanelBody extends Component {
         let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;
         return (
             <ContentLoadWrapper loadComplete={contentShouldShow}
-                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}>
+                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: SvgIcons.TableEmptyState }} />}>
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
                         {resx.get("AuditExplanation")}

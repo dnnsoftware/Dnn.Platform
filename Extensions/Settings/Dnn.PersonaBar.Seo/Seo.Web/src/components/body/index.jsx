@@ -1,16 +1,13 @@
-import React, { Component, PropTypes } from "react";
-import Tabs from "dnn-tabs";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { DnnTabs as Tabs, Tooltip, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import { connect } from "react-redux";
-import {
-    pagination as PaginationActions
-} from "../../actions";
+import { pagination as PaginationActions } from "../../actions";
 import GeneralSettings from "../generalSettings";
 import RegexSettings from "../regexSettings";
 import SitemapSettings from "../sitemapSettings";
 import ExtensionUrlProviders from "../extensionUrlProviders";
 import TestUrl from "../testUrl";
-import Tooltip from "dnn-tooltip";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -33,14 +30,21 @@ export class Body extends Component {
         if (isHost) {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("URLManagementTab"),
-                resx.get("SitemapSettingsTab")]}
+                    resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
-                        messages={[resx.get("GlobalSetting")]}
-                        type="global"
-                        style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }}
-                        /></div>, resx.get("TestURLTab")]}
+                    tabHeaders={[
+                        resx.get("GeneralSettingsTab"), 
+                        resx.get("ExtensionUrlProvidersTab"), 
+                        <div style={{ fontSize: "9pt", paddingRight: 25 }} key="first">
+                            {resx.get("ExpressionsTab")} 
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"
+                                style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }} />
+                        </div>, 
+                        resx.get("TestURLTab")
+                    ]}
                     type="secondary">
                     <GeneralSettings />
                     <ExtensionUrlProviders />
@@ -53,7 +57,7 @@ export class Body extends Component {
         else {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("URLManagementTab"),
-                resx.get("SitemapSettingsTab")]}
+                    resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), resx.get("TestURLTab")]}

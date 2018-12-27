@@ -2,11 +2,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./style.less";
-import InputGroup from "dnn-input-group";
-import PagePicker from "dnn-page-picker";
+import { InputGroup, PagePicker, Label } from "@dnnsoftware/dnn-react-common";
 import utils from "../../../../utils";
 import Localization from "../../../../localization";
-import Label from "dnn-label";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
 /* eslint-disable spellcheck/spell-checker */

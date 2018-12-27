@@ -1,15 +1,18 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import PagePicker from "dnn-page-picker";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { 
+    Button,
+    GridSystem as Grid,
+    InputGroup, 
+    Label,
+    MultiLineInput,
+    PagePicker, 
+    SingleLineInputWithError
+} from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -26,10 +29,6 @@ class TestUrlPanelBody extends Component {
                 UrlToTest: ""
             }
         };
-    }
-
-    componentWillMount() {
-
     }
 
     onSettingChange(key, event) {
@@ -95,8 +94,7 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("selectPageToTestLabel.Help")}
-                    label={resx.get("selectPageToTestLabel") + "*"}
-                    />
+                    label={resx.get("selectPageToTestLabel") + "*"} />
                 <PagePicker
                     serviceFramework={util.utilities.sf}
                     style={{ width: "100%", zIndex: 2 }}
@@ -104,34 +102,29 @@ class TestUrlPanelBody extends Component {
                     defaultLabel={noneSpecifiedText}
                     noneSpecifiedText={noneSpecifiedText}
                     CountText={"{0} Results"}
-                    PortalTabsParameters={PageToTestParameters}
-                    />
+                    PortalTabsParameters={PageToTestParameters} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("queryStringLabel.Help")}
-                    label={resx.get("queryStringLabel")}
-                    />
+                    label={resx.get("queryStringLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     value={state.test.QueryString}
-                    onChange={this.onSettingChange.bind(this, "QueryString")}
-                    />
+                    onChange={this.onSettingChange.bind(this, "QueryString")} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("pageNameLabel.Help")}
-                    label={resx.get("pageNameLabel")}
-                    />
+                    label={resx.get("pageNameLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     value={state.test.CustomPageName}
-                    onChange={this.onSettingChange.bind(this, "CustomPageName")}
-                    />
+                    onChange={this.onSettingChange.bind(this, "CustomPageName")} />
             </InputGroup>
             <div className="buttons-box">
                 <Button
@@ -146,12 +139,10 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("resultingUrlsLabel.Help")}
-                    label={resx.get("resultingUrlsLabel")}
-                    />
+                    label={resx.get("resultingUrlsLabel")} />
                 <MultiLineInput
                     value={props.urls}
-                    enabled={false}
-                    />
+                    enabled={false} />
             </InputGroup>
         </div>;
 
@@ -159,15 +150,13 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("testUrlRewritingLabel.Help")}
-                    label={resx.get("testUrlRewritingLabel") + "*"}
-                    />
+                    label={resx.get("testUrlRewritingLabel") + "*"} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     value={state.test.UrlToTest}
-                    onChange={this.onSettingChange.bind(this, "UrlToTest")}
-                    />
+                    onChange={this.onSettingChange.bind(this, "UrlToTest")} />
             </InputGroup>
             <div className="buttons-box">
                 <Button
@@ -183,89 +172,77 @@ class TestUrlPanelBody extends Component {
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("rewritingResultLabel.Help")}
-                    label={resx.get("rewritingResultLabel")}
-                    />
+                    label={resx.get("rewritingResultLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.rewritingResult}
-                    />
+                    value={props.rewritingResult} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("languageLabel.Help")}
-                    label={resx.get("languageLabel")}
-                    />
+                    label={resx.get("languageLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.culture}
-                    />
+                    value={props.culture} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("identifiedTabLabel.Help")}
-                    label={resx.get("identifiedTabLabel")}
-                    />
+                    label={resx.get("identifiedTabLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.identifiedPage}
-                    />
+                    value={props.identifiedPage} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("redirectionResultLabel.Help")}
-                    label={resx.get("redirectionResultLabel")}
-                    />
+                    label={resx.get("redirectionResultLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.redirectionResult}
-                    />
+                    value={props.redirectionResult} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("redirectionReasonLabel.Help")}
-                    label={resx.get("redirectionReasonLabel")}
-                    />
+                    label={resx.get("redirectionReasonLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.redirectionReason}
-                    />
+                    value={props.redirectionReason} />
             </InputGroup>
             <InputGroup>
                 <Label
                     tooltipMessage={resx.get("operationMessagesLabel.Help")}
-                    label={resx.get("operationMessagesLabel")}
-                    />
+                    label={resx.get("operationMessagesLabel")} />
                 <SingleLineInputWithError
                     inputStyle={{ margin: "0" }}
                     withLabel={false}
                     error={false}
                     enabled={false}
-                    value={props.operationMessages}
-                    />
+                    value={props.operationMessages} />
             </InputGroup>
         </div>;
 
         return (
             <div className={styles.testUrl}>
                 <div className="columnTitleOne">{resx.get("TestPageUrl")}</div>
-                <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
                 <div className="columnTitleTwo">{resx.get("TestUrlRewriting")}</div>
-                <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
+                <Grid numberOfColumns={2}>{[columnThree, columnFour]}</Grid>
             </div>
         );
     }

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
+import { Button, RadioButtons } from "@dnnsoftware/dnn-react-common";
 import utils from "utils";
 
 import "./style.less";

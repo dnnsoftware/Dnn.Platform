@@ -1,15 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Tabs from "dnn-tabs";
+import { DnnTabs as Tabs, PersonaBarPageBody, TextOverflowWrapper, PersonaBarPageHeader, GridCell, Button } from "@dnnsoftware/dnn-react-common";
 import { PaginationActions, VisiblePanelActions, ExtensionActions, InstallationActions } from "actions";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Localization from "localization";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import InstalledExtensions from "./InstalledExtensions";
 import AvailableExtensions from "./AvailableExtensions";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 import utilities from "utils";
 import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
 import { ModuleCustomSettings, CoreLanguagePack, ExtensionLanguagePack } from "./packageCustomSettings";
@@ -37,7 +33,8 @@ class Body extends Component {
         this.handleSelect = this.handleSelect.bind(this);
         this.state = {};
     }
-    componentWillMount() {
+
+    UNSAFE_componentWillMount() {
         const { props } = this;
         this.isHost = utilities.settings.isHost;
         if ((!props.locales || props.locales.length === 0)) {
@@ -47,11 +44,13 @@ class Body extends Component {
             props.dispatch(ExtensionActions.getLocalePackageList());
         }
     }
+
     handleSelect(index/*, last*/) {
         const { props } = this;
         props.dispatch(PaginationActions.loadTab(index)); //index acts as scopeTypeId
         this.setState({});
     }
+    
     selectPanel(panel, event) {
         if (event) {
             event.preventDefault();

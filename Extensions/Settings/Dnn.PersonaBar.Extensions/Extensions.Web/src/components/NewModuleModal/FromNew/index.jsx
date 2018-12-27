@@ -1,13 +1,8 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Switch from "dnn-switch";
-import RadioButtons from "dnn-radio-buttons";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, GridSystem, SingleLineInputWithError, MultiLineInputWithError, Switch, RadioButtons, Button } from "@dnnsoftware/dnn-react-common";
 import FolderDropdown from "../common/FolderDropdown";
 import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
-import Button from "dnn-button";
 import Localization from "localization";
 import styles from "./style.less";
 
@@ -44,7 +39,7 @@ class FromNew extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.retrieveOwnerAndModuleFolders();
     }
 
@@ -172,18 +167,18 @@ class FromNew extends Component {
                             inputStyle={{ marginBottom: 0 }}
                             onChange={this.onChange.bind(this, "fileName")}
                             value={state.newModule.fileName.value}
-                            error={state.newModule.fileName.error && state.triedToSave}
-                            />
-                        <RadioButtons options={[
-                            {
-                                label: "Visual Basic",
-                                value: "Visual Basic"
-                            },
-                            {
-                                label: "C Sharp",
-                                value: "C#"
-                            }
-                        ]}
+                            error={state.newModule.fileName.error && state.triedToSave} />
+                        <RadioButtons 
+                            options={[
+                                {
+                                    label: "Visual Basic",
+                                    value: "Visual Basic"
+                                },
+                                {
+                                    label: "C Sharp",
+                                    value: "C#"
+                                }
+                            ]}
                             label={Localization.get("NewModule_Language.Label")}
                             value={state.newModule.language.value}
                             buttonGroup="language"
@@ -199,8 +194,7 @@ class FromNew extends Component {
                             inputStyle={{ marginBottom: 32 }}
                             value={state.newModule.moduleName.value}
                             onChange={this.onChange.bind(this, "moduleName")}
-                            error={state.newModule.moduleName.error && state.triedToSave}
-                            />
+                            error={state.newModule.moduleName.error && state.triedToSave} />
                         <MultiLineInputWithError
                             label={Localization.get("NewModule_Description.Label")}
                             tooltipMessage={Localization.get("NewModule_Description.HelpText")}

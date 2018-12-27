@@ -1,19 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Button from "dnn-button";
+import { Button, GridSystem, PersonaBarPageBody, DnnTabs as Tabs } from "@dnnsoftware/dnn-react-common";
 import {
     vocabulary as VocabularyActions,
     pagination as PaginationActions,
     vocabularyTermList as VocabularyTermListActions
 } from "../../actions";
 import TermHeader from "./TermHeader";
-import GridSystem from "dnn-grid-system";
 import LeftPane from "./LeftPane";
 import RightPane from "./RightPane";
 import util from "../../utils";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import Tabs from "dnn-tabs";
 import LocalizedResources from "../../resources";
 import "./style.less";
 

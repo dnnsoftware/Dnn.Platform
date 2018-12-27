@@ -2,16 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
-import DropdownWithError from "dnn-dropdown-with-error";
-import MultiLineInput from "dnn-multi-line-input";
-import InputGroup from "dnn-input-group";
-import ListEntries from "./listEntries";
-import Dropdown from "dnn-dropdown";
+import { SingleLineInputWithError, GridSystem, Label, Button, Switch, DropdownWithError, MultiLineInput, InputGroup, ListEntries, Dropdown } from "@dnnsoftware/dnn-react-common";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../../../actions";
@@ -50,70 +41,49 @@ class ProfilePropertyEditor extends Component {
     }
 
     componentDidMount() {
-        // Moved from componentWillMount
         const { props } = this;
         props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
-
-        const domComponent = this.node.querySelector("#profilePropertyName");
-        domComponent && domComponent.focus();
     }
 
-    componentDidUpdate(props) {
-        let { state } = this;
+    componentDidUpdate(prevProps, prevState) {
+        let { state, props } = this;
+
+        const error = Object.assign({}, state.error);
 
         if (!props.profileProperty) {
             return;
         }
 
-        if (props.profileProperty["PropertyName"] === undefined || props.profileProperty["PropertyName"] === "") {
-            state.error.name["required"] = true;
-        }
-        else {
-            state.error.name["required"] = false;
-        }
-        
-        if (this.props.id === ADD_PROPERTY_FLAG && !this.isValidName(props.profileProperty["PropertyName"])) {
-            state.error.name["noSpecialCharacter"] = true; 
-        } 
-        else {
-            state.error.name["noSpecialCharacter"] = false;
-        }
+        const { PropertyName, PropertyCategory, profileProperty, propertyLocalization} = props;
 
-        if (props.profileProperty["PropertyCategory"] === "" || props.profileProperty["PropertyCategory"] === undefined) {
-            state.error["category"] = true;
-        }
-        else {
-            state.error["category"] = false;
-        }
-        if (props.profileProperty["DataType"] === "" || props.profileProperty["DataType"] === undefined) {
-            state.error["datatype"] = true;
-        }
-        else {
-            state.error["datatype"] = false;
-        }
-        let length = props.profileProperty["Length"];
-        if (this.isValidLength(length)) {
-            state.error["length"] = false;
-        }
-        else {
-            state.error["length"] = true;
-        }
+        let updateState = false;
+        Object.keys(profileProperty).forEach((key) => {
+            const current = profileProperty[key];
+            const previous = prevProps.profileProperty ? prevProps.profileProperty[key] : undefined;
 
-        if (props.propertyLocalization) {
-            if (props.propertyLocalization["PropertyName"] === "" || props.propertyLocalization["PropertyName"] === undefined) {
-                state.error["localeName"] = true;
+            if(current !== previous) {
+                updateState = true;
             }
-            else {
-                state.error["localeName"] = false;
-            }
-        }
-
-        this.setState({
-            profileProperty: Object.assign({}, props.profileProperty),
-            propertyLocalization: Object.assign({}, props.propertyLocalization),
-            triedToSubmit: state.triedToSubmit,
-            error: state.error
         });
+
+        error.name["required"] = !PropertyName;
+        error.name["noSpecialCharacter"] = this.props.id === ADD_PROPERTY_FLAG && !this.isValidName(PropertyName);
+        error["category"] = !PropertyCategory;
+        error["datatype"] = !profileProperty["DataType"];
+        error["length"] = this.isValidLength(profileProperty["Length"]);
+
+        if (propertyLocalization) {
+            error["localeName"] = !propertyLocalization["PropertyName"];
+        }
+
+        if(updateState) {
+            this.setState({
+                profileProperty: Object.assign({}, profileProperty),
+                propertyLocalization: Object.assign({}, propertyLocalization),
+                triedToSubmit: state.triedToSubmit,
+                error
+            });
+        }
     }
 
     isValidName(name) {
@@ -254,7 +224,7 @@ class ProfilePropertyEditor extends Component {
         if (this.props.languageOptions !== undefined) {
             options = this.props.languageOptions.map((item) => {
                 return {
-                    label: <div style={{ float: "left", display: "flex" }}>
+                    label: <div style={{display: "flex" }}>
                         <div className="language-flag">
                             <img src={item.Icon} alt={item.Text} />
                         </div>
@@ -402,7 +372,8 @@ class ProfilePropertyEditor extends Component {
     render() {
         /* eslint-disable react/no-danger */
         if (this.state.profileProperty !== undefined || this.props.id === ADD_PROPERTY_FLAG) {
-            const columnOne = <div className="left-column">
+            const { profileProperty, propertyLocalization } = this.state;
+            const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyName.Help")}
@@ -415,7 +386,7 @@ class ProfilePropertyEditor extends Component {
                         withLabel={false}
                         error={(this.state.error.name.required || this.state.error.name.noSpecialCharacter) && this.state.triedToSubmit}
                         errorMessage={this._chooseNameError()}
-                        value={this.state.profileProperty ? this.state.profileProperty.PropertyName : ""}
+                        value={profileProperty.PropertyName}
                         onChange={this.onSettingChange.bind(this, "PropertyName")}
                     />
                 </InputGroup>
@@ -429,7 +400,7 @@ class ProfilePropertyEditor extends Component {
                         withLabel={false}
                         error={this.state.error.category && this.state.triedToSubmit}
                         errorMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Required")}
-                        value={this.state.profileProperty ? this.state.profileProperty.PropertyCategory : ""}
+                        value={profileProperty.PropertyCategory}
                         onChange={this.onSettingChange.bind(this, "PropertyCategory")}
                     />
                 </InputGroup>
@@ -442,7 +413,7 @@ class ProfilePropertyEditor extends Component {
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
-                        value={this.state.profileProperty ? this.state.profileProperty.DefaultValue : ""}
+                        value={profileProperty.DefaultValue}
                         onChange={this.onSettingChange.bind(this, "DefaultValue")}
                     />
                 </InputGroup>
@@ -456,7 +427,7 @@ class ProfilePropertyEditor extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={this.state.profileProperty ? this.state.profileProperty.Required : false}
+                            value={profileProperty.Required}
                             onChange={this.onSettingChange.bind(this, "Required")}
                         />
                     </div>
@@ -471,7 +442,7 @@ class ProfilePropertyEditor extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={this.state.profileProperty ? this.state.profileProperty.Visible : false}
+                            value={profileProperty.Visible}
                             onChange={this.onSettingChange.bind(this, "Visible")}
                         />
                     </div>
@@ -488,7 +459,7 @@ class ProfilePropertyEditor extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div key="column-two" className="right-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("ProfilePropertyDefinition_DataType.Help")}
@@ -496,7 +467,7 @@ class ProfilePropertyEditor extends Component {
                     />
                     <DropdownWithError
                         options={this.getProfileDataTypeOptions()}
-                        value={this.state.profileProperty ? this.state.profileProperty.DataType : ""}
+                        value={profileProperty.DataType}
                         onSelect={this.onSettingChange.bind(this, "DataType")}
                         error={this.state.error.datatype && this.state.triedToSubmit}
                         errorMessage={resx.get("ProfilePropertyDefinition_DataType.Required")}
@@ -512,7 +483,7 @@ class ProfilePropertyEditor extends Component {
                         withLabel={false}
                         error={this.state.error.length && this.state.triedToSubmit}
                         errorMessage={resx.get("RequiredTextBox")}
-                        value={this.state.profileProperty ? this.state.profileProperty.Length : 0}
+                        value={profileProperty.Length}
                         onChange={this.onSettingChange.bind(this, "Length")}
                     />
                 </InputGroup>
@@ -525,7 +496,7 @@ class ProfilePropertyEditor extends Component {
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
-                        value={this.state.profileProperty ? this.state.profileProperty.ValidationExpression : ""}
+                        value={profileProperty.ValidationExpression}
                         onChange={this.onSettingChange.bind(this, "ValidationExpression")}
                     />
                 </InputGroup>
@@ -539,7 +510,7 @@ class ProfilePropertyEditor extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={this.state.profileProperty ? this.state.profileProperty.ReadOnly : false}
+                            value={profileProperty.ReadOnly}
                             onChange={this.onSettingChange.bind(this, "ReadOnly")}
                         />
                     </div>
@@ -554,7 +525,7 @@ class ProfilePropertyEditor extends Component {
                 </InputGroup>
             </div>;
 
-            const columnThree = <div className="left-column2">
+            const columnThree = <div key="column-three" className="left-column2">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plPropertyName.Help")}
@@ -566,7 +537,7 @@ class ProfilePropertyEditor extends Component {
                             withLabel={false}
                             error={this.state.error.localeName && this.state.triedToSubmit}
                             errorMessage={resx.get("valPropertyName.ErrorMessage")}
-                            value={this.state.propertyLocalization.PropertyName}
+                            value={propertyLocalization.PropertyName}
                             onChange={this.onLocaleSettingChange.bind(this, "PropertyName")}
                         />
                     }
@@ -581,7 +552,7 @@ class ProfilePropertyEditor extends Component {
                             inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={false}
-                            value={this.state.propertyLocalization.CategoryName}
+                            value={propertyLocalization.CategoryName}
                             onChange={this.onLocaleSettingChange.bind(this, "CategoryName")}
                         />
                     }
@@ -596,13 +567,13 @@ class ProfilePropertyEditor extends Component {
                             inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={false}
-                            value={this.state.propertyLocalization.PropertyValidation}
+                            value={propertyLocalization.PropertyValidation}
                             onChange={this.onLocaleSettingChange.bind(this, "PropertyValidation")}
                         />
                     }
                 </InputGroup>
             </div>;
-            const columnFour = <div className="right-column2">
+            const columnFour = <div key="column-four" className="right-column2">
                 <InputGroup style={{ paddingTop: "10px" }}>
                     <Label
                         tooltipMessage={resx.get("plPropertyHelp.Help")}
@@ -610,7 +581,7 @@ class ProfilePropertyEditor extends Component {
                     />
                     {this.state.propertyLocalization &&
                         <MultiLineInput
-                            value={this.state.propertyLocalization.PropertyHelp}
+                            value={propertyLocalization.PropertyHelp}
                             onChange={this.onLocaleSettingChange.bind(this, "PropertyHelp")}
                             style={{ padding: "8px 16px 75px" }}
                         />
@@ -626,7 +597,7 @@ class ProfilePropertyEditor extends Component {
                             inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={false}
-                            value={this.state.propertyLocalization.PropertyRequired}
+                            value={propertyLocalization.PropertyRequired}
                             onChange={this.onLocaleSettingChange.bind(this, "PropertyRequired")}
                         />
                     }
@@ -636,7 +607,7 @@ class ProfilePropertyEditor extends Component {
             return (
                 <div className="property-editor" ref={node => this.node = node}>
                     <div className={this.state.showFirstPage ? "property-editor-page" : "property-editor-page-hidden"}>
-                        <Grid numberOfColumns={2}>{[columnOne, columnTwo]}</Grid>
+                        <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>
                         <div className="editor-buttons-box">
                             <Button
                                 type="secondary"
@@ -684,7 +655,7 @@ class ProfilePropertyEditor extends Component {
                                     onSelect={this.onLanguageChange.bind(this)}
                                 />
                             </InputGroup>
-                            <Grid numberOfColumns={2}>{[columnThree, columnFour]}</Grid>
+                            <GridSystem numberOfColumns={2}>{[columnThree, columnFour]}</GridSystem>
                             <div className="editor-buttons-box">
                                 <Button
                                     type="secondary"

@@ -1,14 +1,15 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    security as SecurityActions
-} from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Tooltip from "dnn-tooltip";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { security as SecurityActions } from "../../actions";
+import { 
+    InputGroup, 
+    SingleLineInputWithError, 
+    Switch,
+    Tooltip,
+    Label,
+    Button
+} from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
@@ -33,7 +34,7 @@ class MemberManagementPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.memberSettings) {
             this.updateMemberSettings(props.memberSettings);
@@ -44,9 +45,12 @@ class MemberManagementPanelBody extends Component {
         }));
     }
 
-    updateMemberSettings(memberSettings){
+    updateMemberSettings(memberSettings) {
+        if (!memberSettings){
+            return;
+        }
         let {state} = this;
-
+        console.log(memberSettings);
         let membershipResetLinkValidity = memberSettings["MembershipResetLinkValidity"];
         if (membershipResetLinkValidity === "" || !re.test(membershipResetLinkValidity)) {
             state.error["membershipResetLinkValidity"] = true;
@@ -102,7 +106,7 @@ class MemberManagementPanelBody extends Component {
         });
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.updateMemberSettings(props.memberSettings);
     }
 
@@ -162,16 +166,14 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.membershipResetLinkValidity && this.state.triedToSubmit}
                             errorMessage={resx.get("MembershipResetLinkValidity.ErrorMessage") }
                             value={state.memberSettings.MembershipResetLinkValidity}
-                            onChange={this.onSettingChange.bind(this, "MembershipResetLinkValidity") }
-                            />
+                            onChange={this.onSettingChange.bind(this, "MembershipResetLinkValidity") } />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -181,16 +183,14 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.adminMembershipResetLinkValidity && this.state.triedToSubmit}
                             errorMessage={resx.get("AdminMembershipResetLinkValidity.ErrorMessage") }
                             value={state.memberSettings.AdminMembershipResetLinkValidity}
-                            onChange={this.onSettingChange.bind(this, "AdminMembershipResetLinkValidity") }
-                            />
+                            onChange={this.onSettingChange.bind(this, "AdminMembershipResetLinkValidity") } />
                     </InputGroup>
                     <InputGroup>
                         <div className="memberSettings-row_switch" style={{ margin: "0 0 20px 0" }}>
@@ -202,15 +202,13 @@ class MemberManagementPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnablePasswordHistory}
-                                onChange={this.onSettingChange.bind(this, "EnablePasswordHistory") }
-                                />
+                                onChange={this.onSettingChange.bind(this, "EnablePasswordHistory") } />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -221,16 +219,14 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.membershipNumberPasswords && this.state.triedToSubmit}
                             errorMessage={resx.get("MembershipNumberPasswords.ErrorMessage") }
                             value={state.memberSettings.MembershipNumberPasswords}
-                            onChange={this.onSettingChange.bind(this, "MembershipNumberPasswords") }
-                            />
+                            onChange={this.onSettingChange.bind(this, "MembershipNumberPasswords") } />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -240,16 +236,14 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.membershipDaysBeforePasswordReuse && this.state.triedToSubmit}
                             errorMessage={resx.get("MembershipDaysBeforePasswordReuse.ErrorMessage")}
                             value={state.memberSettings.MembershipDaysBeforePasswordReuse}
-                            onChange={this.onSettingChange.bind(this, "MembershipDaysBeforePasswordReuse")}
-                            />
+                            onChange={this.onSettingChange.bind(this, "MembershipDaysBeforePasswordReuse")} />
                     </InputGroup>
                     <InputGroup>
                         <div className="memberSettings-row_switch" style={{ margin: "0 0 20px 0" }}>
@@ -261,15 +255,13 @@ class MemberManagementPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableBannedList}
-                                onChange={this.onSettingChange.bind(this, "EnableBannedList") }
-                                />
+                                onChange={this.onSettingChange.bind(this, "EnableBannedList") } />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -282,15 +274,13 @@ class MemberManagementPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableStrengthMeter}
-                                onChange={this.onSettingChange.bind(this, "EnableStrengthMeter") }
-                                />
+                                onChange={this.onSettingChange.bind(this, "EnableStrengthMeter") } />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -303,15 +293,13 @@ class MemberManagementPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
                                 value={state.memberSettings.EnableIPChecking}
-                                onChange={this.onSettingChange.bind(this, "EnableIPChecking") }
-                                />
+                                onChange={this.onSettingChange.bind(this, "EnableIPChecking") } />
                         </div>
                     </InputGroup>
                     <InputGroup>
@@ -322,16 +310,14 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.passwordExpiry && this.state.triedToSubmit}
                             errorMessage={resx.get("PasswordExpiry.ErrorMessage") }
                             value={state.memberSettings.PasswordExpiry}
-                            onChange={this.onSettingChange.bind(this, "PasswordExpiry") }
-                            />
+                            onChange={this.onSettingChange.bind(this, "PasswordExpiry") } />
                     </InputGroup>
                     <InputGroup>
                         <Label
@@ -341,29 +327,27 @@ class MemberManagementPanelBody extends Component {
                                 <Tooltip
                                     messages={[resx.get("GlobalSetting")]}
                                     type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
+                                    style={{ float: "left", position: "static" }} />
+                            } />
                         <SingleLineInputWithError
                             withLabel={false}
                             error={this.state.error.passwordExpiryReminder && this.state.triedToSubmit}
                             errorMessage={resx.get("PasswordExpiryReminder.ErrorMessage") }
                             value={state.memberSettings.PasswordExpiryReminder}
-                            onChange={this.onSettingChange.bind(this, "PasswordExpiryReminder") }
-                            />
+                            onChange={this.onSettingChange.bind(this, "PasswordExpiryReminder") } />
                     </InputGroup>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.memberSettingsClientModified}
                             type="secondary"
-                                onClick={this.onCancel.bind(this) }>
-                                {resx.get("Cancel") }
+                            onClick={this.onCancel.bind(this) }>
+                            {resx.get("Cancel") }
                         </Button>
                         <Button
                             disabled={!this.props.memberSettingsClientModified}
                             type="primary"
-                                onClick={this.onUpdate.bind(this) }>
-                                {resx.get("Save") }
+                            onClick={this.onUpdate.bind(this) }>
+                            {resx.get("Save") }
                         </Button>
                     </div>
                 </div>

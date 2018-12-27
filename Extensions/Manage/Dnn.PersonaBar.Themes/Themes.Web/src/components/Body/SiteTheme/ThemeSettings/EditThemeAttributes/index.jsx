@@ -1,14 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
-import DropdownWithError from "dnn-dropdown-with-error";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { GridCell, Button, RadioButtons, DropdownWithError, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Collapsible from "react-collapse";
 import utils from "utils";
 import "./style.less";
@@ -31,7 +28,7 @@ class EditThemeAttributes extends Component {
 
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         if (props.tokens.length === 0) {
@@ -101,7 +98,7 @@ class EditThemeAttributes extends Component {
 
 
     onThemeChanged(themeName) {
-        const {props, state} = this;
+        const {props} = this;
         this.setState({ themeName: themeName.value, level: themeName.level, path: "", token: "", setting: "", value: "" }, function () {
             let themeName = this.state.themeName;
             let type = this.getThemeType();

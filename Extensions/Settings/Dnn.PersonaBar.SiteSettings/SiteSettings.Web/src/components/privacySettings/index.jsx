@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { siteBehavior as SiteBehaviorActions } from "../../actions";
-import InputGroup from "dnn-input-group";
-import Switch from "dnn-switch";
-import Grid from "dnn-grid-system";
-import Tooltip from "dnn-tooltip";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { InputGroup, Switch, GridSystem, Tooltip, Label, Button, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -24,44 +18,6 @@ class PrivacySettingsPanelBody extends Component {
 
     loadData() {
         const { props } = this;
-        if (props.privacySettings) {
-            let portalIdChanged = false;
-            let cultureCodeChanged = false;
-
-            if (
-                props.portalId === undefined ||
-                props.privacySettings.PortalId === props.portalId
-            ) {
-                portalIdChanged = false;
-            } else {
-                portalIdChanged = true;
-            }
-
-            if (
-                props.cultureCode === undefined ||
-                props.privacySettings.CultureCode === props.cultureCode
-            ) {
-                cultureCodeChanged = false;
-            } else {
-                cultureCodeChanged = true;
-            }
-
-            if (portalIdChanged || cultureCodeChanged) {
-                return true;
-            } else return false;
-        } else {
-            return true;
-        }
-    }
-
-    componentDidMount() {
-        const { props } = this;
-        if (!this.loadData()) {
-            this.setState({
-                privacySettings: props.privacySettings
-            });
-            return;
-        }
         props.dispatch(
             SiteBehaviorActions.getPrivacySettings(props.portalId, data => {
                 this.setState({
@@ -71,10 +27,25 @@ class PrivacySettingsPanelBody extends Component {
         );
     }
 
-    componentDidUpdate(props) {
-        this.setState({
-            privacySettings: Object.assign({}, props.privacySettings)
-        });
+    componentDidMount() {
+        const { props } = this;
+        props.dispatch(
+            SiteBehaviorActions.getPrivacySettings(props.portalId, data => {
+                this.setState({
+                    privacySettings: Object.assign({}, data.Settings)
+                });
+            })
+        );
+    }
+
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+        const portalIdChanged = !prevProps.portalId && prevProps.portalId !== props.portalId;
+        const cultureCodeChanged = !prevProps.cultureCode && prevProps.cultureCode !== props.cultureCode;
+
+        if(portalIdChanged || cultureCodeChanged) {
+            this.loadData();
+        }
     }
 
     onSettingChange(key, event) {
@@ -134,9 +105,9 @@ class PrivacySettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const { state } = this;
+        const { state, props } = this;
         const columnOneLeft = state.privacySettings ? (
-            <div className="left-column">
+            <div key="column-one-left" className="left-column">
                 <InputGroup>
                     <Label
                         labelType="inline"
@@ -179,10 +150,10 @@ class PrivacySettingsPanelBody extends Component {
                 </InputGroup>
             </div>
         ) : (
-            <div className="left-column" />
+            <div key="column-one-left" className="left-column" />
         );
         const columnOneRight = (
-            <div className="right-column">
+            <div key="column-one-right" className="right-column">
                 {state.privacySettings && (
                     <InputGroup>
                         <Label
@@ -212,7 +183,7 @@ class PrivacySettingsPanelBody extends Component {
             </div>
         );
         const columnTwoLeft = (
-            <div className="left-column">
+            <div key="column-two-left" className="left-column">
                 {state.privacySettings && (
                     <InputGroup>
                         <Label
@@ -231,7 +202,7 @@ class PrivacySettingsPanelBody extends Component {
             </div>
         );
         const columnTwoRight = (
-            <div className="right-column">
+            <div key="column-two-right" className="right-column">
                 {state.privacySettings && (
                     <InputGroup>
                         <Label
@@ -251,32 +222,32 @@ class PrivacySettingsPanelBody extends Component {
             </div>
         );
 
-        return (
-            <div className={styles.privacySettings}>
-                <div className="sectionTitle">
-                    {resx.get("PrivacyCommunicationSettings")}
+            return (
+                <div className={styles.privacySettings}>
+                    <div className="sectionTitle">
+                        {resx.get("PrivacyCommunicationSettings")}
+                    </div>
+                    <GridSystem numberOfColumns={2}>{[columnOneLeft, columnOneRight]}</GridSystem>
+                    <div className="sectionTitle">
+                        {resx.get("PrivacyCookieConsentSettings")}
+                    </div>
+                    <GridSystem numberOfColumns={2}>{[columnTwoLeft, columnTwoRight]}</GridSystem>
+                    <div className="buttons-box">
+                        <Button
+                            disabled={!props.privacySettingsClientModified}
+                            type="secondary"
+                            onClick={this.onCancel.bind(this)}>
+                            {resx.get("Cancel")}
+                        </Button>
+                        <Button
+                            disabled={!props.privacySettingsClientModified}
+                            type="primary"
+                            onClick={this.onUpdate.bind(this)}>
+                            {resx.get("Save")}
+                        </Button>
+                    </div>
                 </div>
-                <Grid numberOfColumns={2}>{[columnOneLeft, columnOneRight]}</Grid>
-                <div className="sectionTitle">
-                    {resx.get("PrivacyCookieConsentSettings")}
-                </div>
-                <Grid numberOfColumns={2}>{[columnTwoLeft, columnTwoRight]}</Grid>
-                <div className="buttons-box">
-                    <Button
-                        disabled={!this.props.privacySettingsClientModified}
-                        type="secondary"
-                        onClick={this.onCancel.bind(this)}>
-                        {resx.get("Cancel")}
-                    </Button>
-                    <Button
-                        disabled={!this.props.privacySettingsClientModified}
-                        type="primary"
-                        onClick={this.onUpdate.bind(this)}>
-                        {resx.get("Save")}
-                    </Button>
-                </div>
-            </div>
-        );
+            );
     }
 }
 
@@ -293,7 +264,8 @@ function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
         privacySettings: state.siteBehavior.privacySettings,
-        privacySettingsClientModified: state.siteBehavior.privacySettingsClientModified
+        privacySettingsClientModified: state.siteBehavior.privacySettingsClientModified,
+        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
     };
 }
 

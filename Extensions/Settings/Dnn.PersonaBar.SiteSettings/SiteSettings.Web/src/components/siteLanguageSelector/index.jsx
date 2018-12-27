@@ -5,10 +5,7 @@ import {
     siteInfo as SiteInfoActions,
     search as SearchActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import Dropdown from "dnn-dropdown";
-import Flag from "dnn-flag";
-import Label from "dnn-label";
+import { InputGroup, Dropdown, Flag, Label } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";

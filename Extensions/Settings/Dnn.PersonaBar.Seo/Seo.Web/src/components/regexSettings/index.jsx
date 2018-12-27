@@ -1,13 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
-import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Tooltip from "dnn-tooltip";
-import Label from "dnn-label";
-import Button from "dnn-button";
+import { InputGroup, SingleLineInputWithError, Label, Button, Tooltip } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -34,7 +31,7 @@ class RegexSettingsPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.regexSettings) {
             this.setState({
@@ -49,7 +46,7 @@ class RegexSettingsPanelBody extends Component {
         }));
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.setState({
             regexSettings: Object.assign({}, props.regexSettings),
             triedToSubmit: false
@@ -198,17 +195,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.IgnoreRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("ignoreRegExInvalidPattern")}
                                 value={state.regexSettings.IgnoreRegex}
-                                onChange={this.onSettingChange.bind(this, "IgnoreRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "IgnoreRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -220,17 +215,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.DoNotRewriteRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("doNotRewriteRegExInvalidPattern")}
                                 value={state.regexSettings.DoNotRewriteRegex}
-                                onChange={this.onSettingChange.bind(this, "DoNotRewriteRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DoNotRewriteRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -242,17 +235,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.UseSiteUrlsRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("siteUrlsOnlyRegExInvalidPattern")}
                                 value={state.regexSettings.UseSiteUrlsRegex}
-                                onChange={this.onSettingChange.bind(this, "UseSiteUrlsRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "UseSiteUrlsRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -264,17 +255,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.DoNotRedirectRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("doNotRedirectUrlRegExInvalidPattern")}
                                 value={state.regexSettings.DoNotRedirectRegex}
-                                onChange={this.onSettingChange.bind(this, "DoNotRedirectRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DoNotRedirectRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -286,17 +275,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.DoNotRedirectSecureRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("doNotRedirectHttpsUrlRegExInvalidPattern")}
                                 value={state.regexSettings.DoNotRedirectSecureRegex}
-                                onChange={this.onSettingChange.bind(this, "DoNotRedirectSecureRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DoNotRedirectSecureRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -308,17 +295,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.ForceLowerCaseRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("preventLowerCaseUrlRegExInvalidPattern")}
                                 value={state.regexSettings.ForceLowerCaseRegex}
-                                onChange={this.onSettingChange.bind(this, "ForceLowerCaseRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "ForceLowerCaseRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -330,17 +315,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.NoFriendlyUrlRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("doNotUseFriendlyUrlsRegExInvalidPattern")}
                                 value={state.regexSettings.NoFriendlyUrlRegex}
-                                onChange={this.onSettingChange.bind(this, "NoFriendlyUrlRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "NoFriendlyUrlRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -352,17 +335,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.DoNotIncludeInPathRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("keepInQueryStringRegExInvalidPattern")}
                                 value={state.regexSettings.DoNotIncludeInPathRegex}
-                                onChange={this.onSettingChange.bind(this, "DoNotIncludeInPathRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "DoNotIncludeInPathRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -374,17 +355,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.ValidExtensionlessUrlsRegex && this.state.triedToSubmit}
                                 errorMessage={resx.get("urlsWithNoExtensionRegExInvalidPattern")}
                                 value={state.regexSettings.ValidExtensionlessUrlsRegex}
-                                onChange={this.onSettingChange.bind(this, "ValidExtensionlessUrlsRegex")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "ValidExtensionlessUrlsRegex")} />
                         </InputGroup>
                     </div>
                     <div className="groupWrapper">
@@ -396,17 +375,15 @@ class RegexSettingsPanelBody extends Component {
                                     <Tooltip
                                         messages={[resx.get("GlobalSetting")]}
                                         type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
+                                        style={{ float: "left", position: "static" }} />
+                                } />
                             <SingleLineInputWithError
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={this.state.error.RegexMatch && this.state.triedToSubmit}
                                 errorMessage={resx.get("validFriendlyUrlRegExInvalidPattern")}
                                 value={state.regexSettings.RegexMatch}
-                                onChange={this.onSettingChange.bind(this, "RegexMatch")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "RegexMatch")} />
                         </InputGroup>
                     </div>
                     <div className="buttons-box">

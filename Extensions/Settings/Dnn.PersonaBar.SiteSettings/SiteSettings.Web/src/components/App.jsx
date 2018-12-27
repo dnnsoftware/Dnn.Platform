@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import { PersonaBarPageHeader, PersonaBarPage} from "@dnnsoftware/dnn-react-common";
 import {
     visiblePanel as VisiblePanelActions,
     siteInfo
 } from "../actions";
 import Body from "./body";
-import PersonaBarPage from "dnn-persona-bar-page";
 import HtmlEditorManager from "./moreSettings/htmlEditorManager";
 import LanguageVerifier from "./languageSettings/languageVerifier";
 import LanguagePack from "./languageSettings/languagePack";
@@ -229,7 +228,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     siteInfo: PropTypes.object,

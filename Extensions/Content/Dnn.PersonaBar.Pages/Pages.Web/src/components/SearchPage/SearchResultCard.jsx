@@ -1,12 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Localization from "../../localization";
 import utils from "../../utils";
-import cloneDeep from "lodash/clonedeep";
+import cloneDeep from "lodash/cloneDeep";
 import securityService from "../../services/securityService";
-
-import GridCell from "dnn-grid-cell";
-import OverflowText from "dnn-text-overflow-wrapper";
-import { EyeIcon, TreeEdit } from "dnn-svg-icons";
+import { OverflowText, GridCell, SvgIcons, TreeEdit } from "@dnnsoftware/dnn-react-common";
 
 
 class SearchResultCard extends Component {
@@ -89,7 +87,7 @@ class SearchResultCard extends Component {
         if (!this.thumbRendered && this.props.pageTypeSelectorComponents && this.props.pageTypeSelectorComponents.length > 0) { 
             return this.props.pageTypeSelectorComponents.map(function (component) {
                 const Component = component.component;
-                return <div className="search-item-thumbnail"><Component page={item} /></div>;
+                return <div className="search-item-thumbnail" key={item.id}><Component page={item} /></div>;
             });
         }
         this.thumbRendered = true;                             
@@ -98,7 +96,7 @@ class SearchResultCard extends Component {
     /* eslint-disable react/no-danger */
     render() {
         let visibleMenus = [];
-        this.props.item.canViewPage && visibleMenus.push(<li onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: EyeIcon }} /></li>);
+        this.props.item.canViewPage && visibleMenus.push(<li onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} /></li>);
         this.props.item.canAddContentToPage && visibleMenus.push(<li onClick={() => this.props.onViewEditPage(this.props.item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: TreeEdit }} /></li>);
         if (this.props.pageInContextComponents && securityService.isSuperUser() && !utils.isPlatform()) {
             let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
@@ -153,7 +151,7 @@ class SearchResultCard extends Component {
                                     <p title={this.props.item.tags.join(",").trim(",")}>{
                                         this.props.item.tags.map((tag, count) => {
                                             return (
-                                                <span>
+                                                <span key={"tag-" + count}>
                                                     <span style={{ marginLeft: "5px" }} onClick={() => this.addToTags(tag)}>
                                                         {tag}
                                                     </span>

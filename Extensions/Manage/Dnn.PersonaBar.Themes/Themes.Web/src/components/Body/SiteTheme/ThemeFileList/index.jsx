@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
@@ -18,13 +19,13 @@ class ThemeFileList extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         this.parseProps(props);
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.parseProps(newProps);
     }
 
@@ -99,8 +100,8 @@ class ThemeFileList extends Component {
                     autoHeightMin={0}
                     autoHeightMax={180}>
                     <ul style={{ width: this.getListWidth() }}>
-                        {props.themeFiles[props.type].map((themeFile) => {
-                            return <ThemeFile themeFile={themeFile} />;
+                        {props.themeFiles[props.type].map((themeFile, i) => {
+                            return <ThemeFile themeFile={themeFile} key={i} />;
                         })}
                     </ul>
                 </Scrollbars>

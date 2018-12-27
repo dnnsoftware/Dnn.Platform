@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { PropTypes } from "prop-types";
 import "./styles.less";
-import {TreeDraftIcon} from "dnn-svg-icons";
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 export default class PersonaBarPageIcon extends Component {
 
@@ -10,7 +10,7 @@ export default class PersonaBarPageIcon extends Component {
 
         switch (true) {
             case hasUnpublishedChanges === true:
-                return ( <div dangerouslySetInnerHTML={{ __html: TreeDraftIcon }} /> );
+                return ( <div dangerouslySetInnerHTML={{ __html: SvgIcons.TreeDraftIcon }} /> );
             case hasUnpublishedChanges === false:
                  return ( <div /> );
             default:
@@ -30,5 +30,5 @@ export default class PersonaBarPageIcon extends Component {
 }
 
 PersonaBarPageIcon.propTypes = {
-    display: PropTypes.number.isRequired
+    display: PropTypes.bool
 };

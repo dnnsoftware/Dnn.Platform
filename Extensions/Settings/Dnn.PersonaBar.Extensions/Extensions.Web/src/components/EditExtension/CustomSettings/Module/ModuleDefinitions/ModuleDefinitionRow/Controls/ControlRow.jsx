@@ -1,7 +1,6 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
-import Collapse from "dnn-collapsible";
-import { EditIcon, TrashIcon } from "dnn-svg-icons";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell, Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import ControlFields from "./ControlFields";
 import "./style.less";
 
@@ -25,18 +24,18 @@ class ControlRow extends Component {
                     {props.moduleControl.source}
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
-                    <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
-                    <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }} className={props.isEditMode ? "svg-active" : ""}></div>
+                    <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}></div>
+                    <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} className={props.isEditMode ? "svg-active" : ""}></div>
                 </GridCell>
-                <Collapse isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-control">
+                <Collapsible isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-control">
                     <ControlFields {...props} />
-                </Collapse>
+                </Collapsible>
             </GridCell>
         );
     }
 }
 
-ControlRow.PropTypes = {
+ControlRow.propTypes = {
     moduleDefinition: PropTypes.object,
     moduleDefinitionBeingEdited: PropTypes.object,
     onCancel: PropTypes.func,

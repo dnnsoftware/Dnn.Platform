@@ -1,17 +1,13 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, PersonaBarPageBody, PersonaBarPageHeader, DnnTabs, Tooltip, Button } from "@dnnsoftware/dnn-react-common";
 import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions, CreatePackageActions } from "actions";
-import Tabs from "dnn-tabs";
 import License from "./License";
 import ReleaseNotes from "./ReleaseNotes";
 import PackageInformation from "./PackageInformation";
 import CustomSettings from "./CustomSettings";
 import EditSettings from "./EditSettings";
-import Tooltip from "dnn-tooltip";
-import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
 import styles from "./style.less";
@@ -36,7 +32,7 @@ class EditExtension extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         this.isHost = utilities.settings.isHost;
         if ((!props.moduleCategories || props.moduleCategories.length === 0) && this.isHost) {
@@ -200,10 +196,10 @@ class EditExtension extends Component {
 
     _getTabHeaders() {
         let tabHeaders = [Localization.get("EditExtension_PackageInformation.TabHeader"),
-        Localization.get("EditExtension_ExtensionSettings.TabHeader"),
-        Localization.get("EditExtension_SiteSettings.TabHeader"),
-        Localization.get("EditExtension_License.TabHeader"),
-        Localization.get("EditExtension_ReleaseNotes.TabHeader")];
+            Localization.get("EditExtension_ExtensionSettings.TabHeader"),
+            Localization.get("EditExtension_SiteSettings.TabHeader"),
+            Localization.get("EditExtension_License.TabHeader"),
+            Localization.get("EditExtension_ReleaseNotes.TabHeader")];
 
         let siteSettingIndex = 2;
         if (!this.isHost || !this.getExtensionSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
@@ -221,7 +217,7 @@ class EditExtension extends Component {
         const tabHeaders = this._getTabHeaders();
         return tabHeaders.map((tabHeader, index) => {
             const hasError = props.tabsWithError.indexOf(index) > -1;
-            return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={[Localization.get("EditExtensions_TabHasError")]} /></span>;
+            return <span key={index}>{tabHeader} <Tooltip type="error" rendered={hasError} messages={[Localization.get("EditExtensions_TabHasError")]} /></span>;
         });
     }
 
@@ -305,7 +301,7 @@ class EditExtension extends Component {
     getTabUI() {
         const {props} = this, {extensionBeingEdited} = props;
         let allTabs = [
-            <GridCell className="package-information-box extension-form">
+            <GridCell key="first" className="package-information-box extension-form">
                 <PackageInformation
                     onSave={this.onSave.bind(this)}
                     validationMapped={true}
@@ -320,17 +316,16 @@ class EditExtension extends Component {
                     toggleTriedToSave={this.toggleTriedToSave.bind(this)}
                     primaryButtonText={Localization.get("Save.Button")} />
             </GridCell>,
-            <GridCell className="extension-form">
+            <GridCell key="second" className="extension-form">
                 <CustomSettings
                     type={extensionBeingEdited.packageType.value}
                     primaryButtonText={Localization.get("Save.Button")}
                     onChange={this.onChange.bind(this)}
                     onCancel={this.onCancel.bind(this)}
                     onSave={this.onSave.bind(this)}
-                    onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)}
-                    />
+                    onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)} />
             </GridCell>,
-            <GridCell>
+            <GridCell key="third">
                 <EditSettings
                     type={extensionBeingEdited.packageType.value}
                     onChange={this.onChange.bind(this)}
@@ -339,13 +334,14 @@ class EditExtension extends Component {
                     extensionBeingEdited={extensionBeingEdited}
                     updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
             </GridCell>,
-            <License value={extensionBeingEdited.license.value}
+            <License key="fourth" 
+                value={extensionBeingEdited.license.value}
                 onChange={this.onChange.bind(this)}
                 disabled={!this.isHost}
                 onCancel={this.onCancel.bind(this)}
                 onSave={this.onSave.bind(this)}
                 primaryButtonText={Localization.get("Save.Button")} />,
-            <ReleaseNotes
+            <ReleaseNotes key="fifth"
                 value={extensionBeingEdited.releaseNotes.value}
                 onChange={this.onChange.bind(this)}
                 onCancel={this.onCancel.bind(this)}
@@ -380,15 +376,15 @@ class EditExtension extends Component {
                     text: Localization.get("BackToExtensions"),
                     onClick: this.onCancel.bind(this)
                 }}>
-                    <Tabs
+                    <DnnTabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
                         selectedIndex={props.selectedEditingTab}
                         type="primary">
                         {this.getTabUI()}
-                    </Tabs>
+                    </DnnTabs>
                 </PersonaBarPageBody>
-            </GridCell >
+            </GridCell>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
     }

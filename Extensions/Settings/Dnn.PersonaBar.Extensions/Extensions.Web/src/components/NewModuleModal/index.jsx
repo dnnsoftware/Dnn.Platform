@@ -1,15 +1,12 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import DropdownWithError from "dnn-dropdown-with-error";
-import GridCell from "dnn-grid-cell";
+import { DropdownWithError, GridCell, PersonaBarPageBody, PersonaBarPageHeader, Button } from "@dnnsoftware/dnn-react-common";
 import { FolderActions, ExtensionActions, VisiblePanelActions } from "actions";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import FromControl from "./FromControl";
 import FromManifest from "./FromManifest";
 import FromNew from "./FromNew";
 import Localization from "localization";
-import Button from "dnn-button";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -162,8 +159,7 @@ class NewModuleModal extends Component {
                                     value={this.state.selectedType}
                                     onSelect={this.onSelectNewModuleType.bind(this)}
                                     label={Localization.get("CreateNewModuleFrom.Label")}
-                                    style={inputStyle}
-                                    />
+                                    style={inputStyle} />
                                 {this.state.selectedType === "" &&
                                     <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
                                 }

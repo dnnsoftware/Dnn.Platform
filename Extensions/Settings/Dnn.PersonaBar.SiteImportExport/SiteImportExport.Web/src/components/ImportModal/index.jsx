@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     importExport as ImportExportActions,
@@ -8,15 +9,14 @@ import Localization from "localization";
 import ImportSummary from "./ImportSummary";
 import PackagesList from "./PackagesList";
 import PackageCard from "./PackageCard";
-import Button from "dnn-button";
-import GridCell from "dnn-grid-cell";
 import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
-import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
 
-const noDataImg = require("!raw!./img/nodata.svg");
+import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
+
+const noDataImg = require("!raw-loader!./img/nodata.svg");
 
 class ImportModal extends Component {
     constructor() {
@@ -36,7 +36,7 @@ class ImportModal extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props, state } = this;
         props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
 
@@ -48,7 +48,7 @@ class ImportModal extends Component {
         });
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         const { state } = this;
         const { importRequest } = state;
         if (importRequest.PortalId === -1 || importRequest.PortalId !== props.portalId) {

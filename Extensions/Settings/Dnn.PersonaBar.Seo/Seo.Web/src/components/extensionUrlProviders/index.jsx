@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     seo as SeoActions
 } from "../../actions";
 import ProviderRow from "./providerRow";
 import ProviderEditor from "./providerEditor";
-import GridCell from "dnn-grid-cell";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -21,7 +22,7 @@ class ExtensionUrlProvidersPanelBody extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         tableFields = [];

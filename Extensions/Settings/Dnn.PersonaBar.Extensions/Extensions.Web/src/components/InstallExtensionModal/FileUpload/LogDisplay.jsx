@@ -1,5 +1,6 @@
-import React, { PropTypes, Component } from "react";
-import GridCell from "dnn-grid-cell";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import "./style.less";
@@ -20,18 +21,18 @@ class LogDisplay extends Component {
             <GridCell style={{ padding: 0 }} className="install-failure-logs">
                 <Scrollbars style={licenseBoxStyle}>
                     <div className="package-installation-report">
-                        {props.logs && props.logs.map((log) => {
-                            return <p className={log.Type.toLowerCase()}>{log.Type + " " + log.Description}</p>;
+                        {props.logs && props.logs.map((log, i) => {
+                            return <p className={log.Type.toLowerCase()} key={i}>{log.Type + " " + log.Description}</p>;
                         })}
                         {!props.logs && <p className="logs-unknown-error" dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_UploadFailedUnknownLogs") }}></p>}
                     </div>
                 </Scrollbars>
-            </GridCell >
+            </GridCell>
         );
     }
 }
 
-LogDisplay.PropTypes = {
+LogDisplay.propTypes = {
     onDone: PropTypes.func,
     logs: PropTypes.array
 };

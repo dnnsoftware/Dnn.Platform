@@ -243,6 +243,11 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public void DeletePage(PageItem page, PortalSettings portalSettings = null)
         {
+            DeletePage(page, false, portalSettings);
+        }
+
+        public void DeletePage(PageItem page, bool hardDelete, PortalSettings portalSettings = null)
+        {
             var currentPortal = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
             var tab = TabController.Instance.GetTab(page.Id, currentPortal.PortalId);
             if (tab == null)
@@ -260,7 +265,14 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     if (_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, currentPortal))
                     {
-                        TabController.Instance.SoftDeleteTab(tab.TabID, currentPortal);
+                        if (hardDelete)
+                        {
+                            TabController.Instance.DeleteTab(tab.TabID, currentPortal.PortalId);
+                        }
+                        else
+                        {
+                            TabController.Instance.SoftDeleteTab(tab.TabID, currentPortal);
+                        }
                     }
                     else
                     {

@@ -1,11 +1,7 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import DropdownWithError from "dnn-dropdown-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
-import Button from "dnn-button";
+import { GridCell, SingleLineInputWithError, DropdownWithError, GridSystem, Switch, Button } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 import AssignedSelector from "./AssignedSelector";
 import ModuleDefinitions from "./ModuleDefinitions";
@@ -110,8 +106,7 @@ class Module extends Component {
                             })}
                             value={extensionBeingEdited.category.value}
                             onSelect={this.onSelect.bind(this, "category")}
-                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
-                            />
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                         <SingleLineInputWithError
                             label={Localization.get("EditModule_Dependencies.Label")}
                             tooltipMessage={Localization.get("EditModule_Dependencies.HelpText")}
@@ -137,8 +132,7 @@ class Module extends Component {
                             ]}
                             value={extensionBeingEdited.shareable.value}
                             onSelect={this.onSelect.bind(this, "shareable")}
-                            style={Object.assign({ marginBottom: 32 }, inputStyle)}
-                            />
+                            style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                         }
                         <Switch value={extensionBeingEdited.portable.value}
                             readOnly={true}
@@ -206,8 +200,7 @@ class Module extends Component {
                             ]}
                             value={extensionBeingEdited.shareable.value}
                             onSelect={this.onSelect.bind(this, "shareable")}
-                            style={inputStyle}
-                            />
+                            style={inputStyle} />
                         }
                     </div>
                 </GridSystem>

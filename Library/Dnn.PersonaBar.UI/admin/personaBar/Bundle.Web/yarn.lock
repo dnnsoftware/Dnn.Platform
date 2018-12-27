@@ -222,6 +222,14 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-object-rest-spread" "^7.0.0"
 
+"@babel/plugin-proposal-object-rest-spread@^7.2.0":
+  version "7.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/plugin-proposal-object-rest-spread/-/@babel/plugin-proposal-object-rest-spread-7.2.0.tgz#88f5fec3e7ad019014c97f7ee3c992f0adbf7fb8"
+  integrity sha1-iPX+w+etAZAUyX9+48mS8K2/f7g=
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/plugin-syntax-object-rest-spread" "^7.2.0"
+
 "@babel/plugin-proposal-optional-catch-binding@^7.0.0":
   version "7.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/plugin-proposal-optional-catch-binding/-/@babel/plugin-proposal-optional-catch-binding-7.0.0.tgz#b610d928fe551ff7117d42c8bb410eec312a6425"
@@ -258,6 +266,13 @@
 "@babel/plugin-syntax-object-rest-spread@^7.0.0":
   version "7.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/plugin-syntax-object-rest-spread/-/@babel/plugin-syntax-object-rest-spread-7.0.0.tgz#37d8fbcaf216bd658ea1aebbeb8b75e88ebc549b"
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+
+"@babel/plugin-syntax-object-rest-spread@^7.2.0":
+  version "7.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/plugin-syntax-object-rest-spread/-/@babel/plugin-syntax-object-rest-spread-7.2.0.tgz#3b7a3e733510c57e820b9142a6579ac8b0dfad2e"
+  integrity sha1-O3o+czUQxX6CC5FCpleayLDfrS4=
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
@@ -540,8 +555,9 @@
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
 "@babel/runtime@^7.1.2":
-  version "7.1.5"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/runtime/-/@babel/runtime-7.1.5.tgz#4170907641cf1f61508f563ece3725150cc6fe39"
+  version "7.2.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/runtime/-/@babel/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
+  integrity sha1-sD5C7t31iY4AZG5MhA+ge6jcrX8=
   dependencies:
     regenerator-runtime "^0.12.0"
 
@@ -575,9 +591,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@^2.0.6":
-  version "2.0.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@dnnsoftware/dnn-react-common/-/@dnnsoftware/dnn-react-common-2.0.6.tgz#d1be0ef7a419dda29247fc18d6e71235b8119f1e"
+"@dnnsoftware/dnn-react-common@^2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.8.tgz#0bb7a4033bea8934b1e511a777806a65246be250"
+  integrity sha512-bFibsk6X2mHtp2fclxochTN5FmK1Em9ggauMvjMsNT4XSuRVSFqo/Ntj7uJIAGjWkyp2Kh3mg1f4dyDGahV5aQ==
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"
@@ -588,7 +605,7 @@
     react-height "^3.0.0"
     react-modal "^3.5.1"
     react-motion "^0.5.2"
-    react-portal-tooltip "^2.4.0"
+    react-portal-tooltip "^2.4.2"
     react-scrollbar "^0.5.4"
     react-slider "0.11.2"
     react-tabs "2.3.0"
@@ -765,6 +782,7 @@ acorn@^6.0.2:
 add-px-to-style@1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/add-px-to-style/-/add-px-to-style-1.0.0.tgz#d0c135441fa8014a8137904531096f67f28f263a"
+  integrity sha1-0ME1RB+oAUqBN5BFMQlvZ/KPJjo=
 
 ajv-errors@^1.0.0:
   version "1.0.0"
@@ -895,6 +913,7 @@ array.prototype.findindex@2.0.2:
 asap@~2.0.3:
   version "2.0.6"
   resolved "https://www.myget.org/F/dnn-software-public/npm/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
+  integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
 
 asn1.js@^4.0.0:
   version "4.10.1"
@@ -1435,6 +1454,7 @@ compression@^1.5.2:
 computed-style@~0.1.3:
   version "0.1.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/computed-style/-/computed-style-0.1.4.tgz#7f344fd8584b2e425bedca4a1afc0e300bb05d74"
+  integrity sha1-fzRP2FhLLkJb7cpKGvwOMAuwXXQ=
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -1452,6 +1472,7 @@ concat-stream@^1.5.0:
 config@^1.24.0:
   version "1.31.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/config/-/config-1.31.0.tgz#ab08aeba6536015d220cd0afe14b3e0501082542"
+  integrity sha1-qwiuumU2AV0iDNCv4Us+BQEIJUI=
   dependencies:
     json5 "^1.0.1"
 
@@ -1513,6 +1534,7 @@ copy-descriptor@^0.1.0:
 core-js@^1.0.0:
   version "1.2.7"
   resolved "https://www.myget.org/F/dnn-software-public/npm/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
+  integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
 core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.7"
@@ -1626,6 +1648,7 @@ dashdash@^1.12.0:
 date-arithmetic@^3.1.0:
   version "3.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/date-arithmetic/-/date-arithmetic-3.1.0.tgz#1fcd03dbd504b9dbee2b9078c85a5f1c7d3cc2d3"
+  integrity sha1-H80D29UEudvuK5B4yFpfHH08wtM=
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -1789,6 +1812,7 @@ doctrine@^2.1.0:
 dom-css@^2.0.0:
   version "2.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dom-css/-/dom-css-2.1.0.tgz#fdbc2d5a015d0a3e1872e11472bbd0e7b9e6a202"
+  integrity sha1-/bwtWgFdCj4YcuEUcrvQ57nmogI=
   dependencies:
     add-px-to-style "1.0.0"
     prefix-style "2.0.1"
@@ -1797,12 +1821,14 @@ dom-css@^2.0.0:
 dom-helpers@^3.3.1:
   version "3.4.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
+  integrity sha1-6bNpcA+Vn2Ls3lprq95LzNkWmvg=
   dependencies:
     "@babel/runtime" "^7.1.2"
 
 dom-serializer@0:
   version "0.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dom-serializer/-/dom-serializer-0.1.0.tgz#073c697546ce0780ce23be4a28e293e40bc30c82"
+  integrity sha1-BzxpdUbOB4DOI75KKOKT5AvDDII=
   dependencies:
     domelementtype "~1.1.1"
     entities "~1.1.1"
@@ -1810,32 +1836,33 @@ dom-serializer@0:
 dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
+  integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
 
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
 
-domelementtype@1:
-  version "1.2.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/domelementtype/-/domelementtype-1.2.1.tgz#578558ef23befac043a1abb0db07635509393479"
-
-domelementtype@^1.3.0:
-  version "1.3.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/domelementtype/-/domelementtype-1.3.0.tgz#b17aed82e8ab59e52dd9c19b1756e0fc187204c2"
+domelementtype@1, domelementtype@^1.3.0:
+  version "1.3.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/domelementtype/-/domelementtype-1.3.1.tgz#d048c44b37b0d10a7f2a3d5fee3f4333d790481f"
+  integrity sha1-0EjESzew0Qp/Kj1f7j9DM9eQSB8=
 
 domelementtype@~1.1.1:
   version "1.1.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/domelementtype/-/domelementtype-1.1.3.tgz#bd28773e2642881aec51544924299c5cd822185b"
+  integrity sha1-vSh3PiZCiBrsUVRJJCmcXNgiGFs=
 
 domhandler@^2.3.0:
   version "2.4.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/domhandler/-/domhandler-2.4.2.tgz#8805097e933d65e85546f726d60f5eb88b44f803"
+  integrity sha1-iAUJfpM9ZehVRvcm1g9euItE+AM=
   dependencies:
     domelementtype "1"
 
 domutils@^1.5.1:
   version "1.7.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/domutils/-/domutils-1.7.0.tgz#56ea341e834e06e6748af7a1cb25da67ea9f8c2a"
+  integrity sha1-Vuo0HoNOBuZ0ivehyyXaZ+qfjCo=
   dependencies:
     dom-serializer "0"
     domelementtype "1"
@@ -1895,6 +1922,7 @@ encodeurl@~1.0.2:
 encoding@^0.1.11:
   version "0.1.12"
   resolved "https://www.myget.org/F/dnn-software-public/npm/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
+  integrity sha1-U4tm8+5izRq1HsMjgp0flIDHS+s=
   dependencies:
     iconv-lite "~0.4.13"
 
@@ -1915,10 +1943,12 @@ enhanced-resolve@^4.1.0:
 entities@^1.1.1, entities@~1.1.1:
   version "1.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
+  integrity sha1-vfpzUplmTfr9NFKe1PhSKidf6lY=
 
 envify@~0.2.0:
   version "0.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/envify/-/envify-0.2.0.tgz#645091cfaf1279f7f8364a893b0cf81c680ecbe0"
+  integrity sha1-ZFCRz68Seff4NkqJOwz4HGgOy+A=
   dependencies:
     falafel "~0.2.1"
     through "~2.3.4"
@@ -2125,6 +2155,7 @@ execa@^0.10.0:
 exenv@^1.2.0:
   version "1.2.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+  integrity sha1-KueOhdmJQVhnCwPUe+wfA72Ru50=
 
 expand-brackets@^2.1.4:
   version "2.1.4"
@@ -2222,6 +2253,7 @@ extsprintf@^1.2.0:
 falafel@~0.2.1:
   version "0.2.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/falafel/-/falafel-0.2.1.tgz#9efc51ce19ec5729086b22ae889e5d7d0e256601"
+  integrity sha1-nvxRzhnsVykIayKuiJ5dfQ4lZgE=
   dependencies:
     esprima substack/esprima#is-keyword
 
@@ -2256,6 +2288,7 @@ faye-websocket@~0.11.1:
 fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://www.myget.org/F/dnn-software-public/npm/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
+  integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -2653,6 +2686,7 @@ html-entities@^1.2.0:
 htmlparser2@^3.9.0:
   version "3.10.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/htmlparser2/-/htmlparser2-3.10.0.tgz#5f5e422dcf6119c0d983ed36260ce9ded0bee464"
+  integrity sha1-X15CLc9hGcDZg+02Jgzp3tC+5GQ=
   dependencies:
     domelementtype "^1.3.0"
     domhandler "^2.3.0"
@@ -2720,6 +2754,7 @@ iconv-lite@0.4.23:
 iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   version "0.4.24"
   resolved "https://www.myget.org/F/dnn-software-public/npm/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
+  integrity sha1-ICK0sl+93CHS9SSXSkdKr+czkIs=
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
@@ -2810,6 +2845,7 @@ inquirer@^6.1.0:
 interact.js@^1.2.8:
   version "1.2.8"
   resolved "https://www.myget.org/F/dnn-software-public/npm/interact.js/-/interact.js-1.2.8.tgz#b62bc004563b5c6f294b6b115b396205d843f60b"
+  integrity sha1-tivABFY7XG8pS2sRWzliBdhD9gs=
 
 internal-ip@^3.0.1:
   version "3.0.1"
@@ -2987,6 +3023,7 @@ is-resolvable@^1.1.0:
 is-stream@^1.0.1, is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
+  integrity sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
 
 is-symbol@^1.0.2:
   version "1.0.2"
@@ -3027,6 +3064,7 @@ isobject@^3.0.0, isobject@^3.0.1:
 isomorphic-fetch@^2.1.1:
   version "2.2.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
+  integrity sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
@@ -3101,6 +3139,7 @@ json5@^0.5.0:
 json5@^1.0.1:
   version "1.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
+  integrity sha1-d5+wAYYE+oVOrL9iUhgNg1Q+Pb4=
   dependencies:
     minimist "^1.2.0"
 
@@ -3192,6 +3231,7 @@ levn@^0.3.0, levn@~0.3.0:
 line-height@^0.1.1:
   version "0.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/line-height/-/line-height-0.1.1.tgz#e86705fbf0a6f50607aed65500d69db2d9db37e2"
+  integrity sha1-6GcF+/Cm9QYHrtZVANadstnbN+I=
   dependencies:
     computed-style "~0.1.3"
 
@@ -3261,6 +3301,7 @@ loglevel@^1.4.1:
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
+  integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
@@ -3382,6 +3423,7 @@ mimic-fn@^1.0.0:
 min-document@^2.19.0:
   version "2.19.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+  integrity sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
   dependencies:
     dom-walk "^0.1.0"
 
@@ -3406,6 +3448,7 @@ minimist@0.0.8:
 minimist@^1.2.0:
   version "1.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
 
 minipass@^2.2.1, minipass@^2.3.4:
   version "2.3.5"
@@ -3448,9 +3491,14 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
   dependencies:
     minimist "0.0.8"
 
-moment@^2.22.1, moment@^2.22.2:
+moment@^2.22.1:
   version "2.22.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
+moment@^2.22.2:
+  version "2.23.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
+  integrity sha1-dZ6kkayX1UusWtd2mW4qWMwbwiU=
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -3493,6 +3541,7 @@ nan@^2.9.2:
 nanoid@^2.0.0:
   version "2.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/nanoid/-/nanoid-2.0.0.tgz#e1ab4a4b024a38d15531ba34a712a201540de639"
+  integrity sha1-4atKSwJKONFVMbo0pxKiAVQN5jk=
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -3537,6 +3586,7 @@ nice-try@^1.0.4:
 node-fetch@^1.0.1:
   version "1.7.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
+  integrity sha1-mA9vcthSEaU0fGsrwYxbhMPrR+8=
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
@@ -3644,6 +3694,7 @@ oauth-sign@~0.9.0:
 object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
+  integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
 object-copy@^0.1.0:
   version "0.1.0"
@@ -3893,10 +3944,12 @@ pbkdf2@^3.0.3:
 performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
+  integrity sha1-M+8wxcd9TqIcWlOGnZG1bY8lVeU=
 
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+  integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
 pify@^2.0.0:
   version "2.3.0"
@@ -3996,6 +4049,7 @@ postcss@^6.0.1, postcss@^6.0.23:
 prefix-style@2.0.1:
   version "2.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/prefix-style/-/prefix-style-2.0.1.tgz#66bba9a870cfda308a5dc20e85e9120932c95a06"
+  integrity sha1-ZrupqHDP2jCKXcIOhekSCTLJWgY=
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -4016,6 +4070,7 @@ process@^0.11.10:
 process@~0.5.1:
   version "0.5.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
+  integrity sha1-FjjYqONML0QKkduVq5rrZ3/Bhc8=
 
 progress@^2.0.0:
   version "2.0.1"
@@ -4028,12 +4083,14 @@ promise-inflight@^1.0.1:
 promise@^7.1.1:
   version "7.3.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
+  integrity sha1-BktyYCsY+Q8pGSuLG8QY/9Hr078=
   dependencies:
     asap "~2.0.3"
 
 prop-types-extra@^1.0.1:
   version "1.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/prop-types-extra/-/prop-types-extra-1.1.0.tgz#32609910ea2dcf190366bacd3490d5a6412a605f"
+  integrity sha1-MmCZEOotzxkDZrrNNJDVpkEqYF8=
   dependencies:
     react-is "^16.3.2"
     warning "^3.0.0"
@@ -4041,6 +4098,7 @@ prop-types-extra@^1.0.1:
 prop-types@15.5.8:
   version "15.5.8"
   resolved "https://www.myget.org/F/dnn-software-public/npm/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  integrity sha1-a3suFBCDvjjIWVqlH8VXdccZk5Q=
   dependencies:
     fbjs "^0.8.9"
 
@@ -4138,12 +4196,14 @@ querystringify@^2.0.0:
 raf@^3.1.0:
   version "3.4.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
+  integrity sha1-B0LpmkplUvRF1z4+4DKK8P8e3jk=
   dependencies:
     performance-now "^2.1.0"
 
 rafl@~1.2.1:
   version "1.2.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/rafl/-/rafl-1.2.2.tgz#fe930f758211020d47e38815f5196a8be4150740"
+  integrity sha1-/pMPdYIRAg1H44gV9Rlqi+QVB0A=
   dependencies:
     global "~4.3.0"
 
@@ -4204,6 +4264,7 @@ react-collapse@4.0.3, react-collapse@^4.0.3:
 react-component-managers@^3.1.0:
   version "3.2.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-component-managers/-/react-component-managers-3.2.2.tgz#b02a965465a32118ffc967f59730618370432412"
+  integrity sha1-sCqWVGWjIRj/yWf1lzBhg3BDJBI=
   dependencies:
     prop-types "^15.6.1"
     spy-on-component "^1.1.0"
@@ -4219,6 +4280,7 @@ react-custom-scrollbars@4.2.1, react-custom-scrollbars@^4.2.1:
 react-day-picker@^7.1.10:
   version "7.2.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-day-picker/-/react-day-picker-7.2.4.tgz#3c3bea7aa1910bef7bad17f25ff15cd26a7d1848"
+  integrity sha1-PDvqeqGRC+97rRfyX/Fc0mp9GEg=
   dependencies:
     prop-types "^15.6.2"
 
@@ -4270,10 +4332,21 @@ react-json-tree@^0.11.0:
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
-react-modal@3.6.1, react-modal@^3.5.1:
+react-modal@3.6.1:
   version "3.6.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-modal/-/react-modal-3.6.1.tgz#54d27a1ec2b493bbc451c7efaa3557b6af82332d"
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.5.10"
+    react-lifecycles-compat "^3.0.0"
+    warning "^3.0.0"
+
+react-modal@^3.5.1:
+  version "3.7.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-modal/-/react-modal-3.7.1.tgz#342ed170133d0557e6c3e6fc40195bc45c8f09c3"
+  integrity sha1-NC7RcBM9BVfmw+b8QBlbxFyPCcM=
   dependencies:
     exenv "^1.2.0"
     prop-types "^15.5.10"
@@ -4288,9 +4361,10 @@ react-motion@0.5.2, react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
-react-portal-tooltip@^2.4.0:
-  version "2.4.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-portal-tooltip/-/react-portal-tooltip-2.4.1.tgz#f5011e845eb4a5dbaecd329ecf92e237cc7fe80b"
+react-portal-tooltip@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
+  integrity sha512-scer683Y1Sc9p3YilEbEZf7er9AZzJBaQ/c8hymxgJ0+Sa7RqUiOEvjA/L2fycM/yKKMH7aHOOxhMzeL2ff22A==
 
 react-pure-render@^1.0.2:
   version "1.0.2"
@@ -4311,6 +4385,7 @@ react-redux@5.1.1:
 react-scrollbar@^0.5.4:
   version "0.5.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-scrollbar/-/react-scrollbar-0.5.4.tgz#270576a28d0f7783b2304b284dbd38d82b36b0e0"
+  integrity sha1-JwV2oo0Pd4OyMEsoTb042Cs2sOA=
   dependencies:
     config "^1.24.0"
     line-height "^0.1.1"
@@ -4319,6 +4394,7 @@ react-scrollbar@^0.5.4:
 react-slider@0.11.2:
   version "0.11.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-slider/-/react-slider-0.11.2.tgz#ae014e1454c3cdd5f28b5c2495b2a08abd9971e6"
+  integrity sha1-rgFOFFTDzdXyi1wklbKgir2ZceY=
 
 react-tabs@2.3.0:
   version "2.3.0"
@@ -4330,6 +4406,7 @@ react-tabs@2.3.0:
 react-test-utils@0.0.1:
   version "0.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-test-utils/-/react-test-utils-0.0.1.tgz#cd69a37c3e4d726e3497e325462a32785a19c026"
+  integrity sha1-zWmjfD5Ncm40l+MlRioyeFoZwCY=
   dependencies:
     envify "~0.2.0"
     react "~0.8.0"
@@ -4343,8 +4420,9 @@ react-tooltip@3.9.0, react-tooltip@^3.8.4:
     sanitize-html-react "^1.13.0"
 
 react-transition-group@^2.4.0:
-  version "2.5.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-transition-group/-/react-transition-group-2.5.0.tgz#70bca0e3546102c4dc5cf3f5f57f73447cce6874"
+  version "2.5.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-transition-group/-/react-transition-group-2.5.1.tgz#67fbd8d30ebb1c57a149d554dbb82eabefa61f0d"
+  integrity sha1-Z/vY0w67HFehSdVU27guq++mHw0=
   dependencies:
     dom-helpers "^3.3.1"
     loose-envify "^1.4.0"
@@ -4367,8 +4445,9 @@ react-widgets@4.4.6:
     warning "^3.0.0"
 
 react-widgets@^4.4.4:
-  version "4.4.7"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/react-widgets/-/react-widgets-4.4.7.tgz#f57f0092c4a8106710dd23f7e87565117f91ca14"
+  version "4.4.8"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-widgets/-/react-widgets-4.4.8.tgz#01410e81b0fd4b8bd1867cb2b4844979c190f603"
+  integrity sha1-AUEOgbD9S4vRhnyytIRJecGQ9gM=
   dependencies:
     classnames "^2.2.6"
     date-arithmetic "^3.1.0"
@@ -4393,6 +4472,7 @@ react@^16.6.3:
 react@~0.8.0:
   version "0.8.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react/-/react-0.8.0.tgz#9aef0dbc3e05b44d96139cdbdaa5d727b0506e1e"
+  integrity sha1-mu8NvD4FtE2WE5zb2qXXJ7BQbh4=
 
 "readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.3, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.6"
@@ -4407,8 +4487,9 @@ react@~0.8.0:
     util-deprecate "~1.0.1"
 
 readable-stream@^3.0.6:
-  version "3.0.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/readable-stream/-/readable-stream-3.0.6.tgz#351302e4c68b5abd6a2ed55376a7f9a25be3057a"
+  version "3.1.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/readable-stream/-/readable-stream-3.1.0.tgz#19c2e9c1ce43507c53f6eefbcf1ee3d4aaa786f5"
+  integrity sha1-GcLpwc5DUHxT9u77zx7j1KqnhvU=
   dependencies:
     inherits "^2.0.3"
     string_decoder "^1.1.1"
@@ -4477,6 +4558,7 @@ redux-thunk@2.3.0:
 redux-undo@^1.0.0-beta9:
   version "1.0.0-beta9-9-7"
   resolved "https://www.myget.org/F/dnn-software-public/npm/redux-undo/-/redux-undo-1.0.0-beta9-9-7.tgz#fe3baa1b271423d7ddbbfc3a82c71b029a2db8ba"
+  integrity sha1-/juqGycUI9fdu/w6gscbApotuLo=
 
 redux@4.0.1:
   version "4.0.1"
@@ -4506,6 +4588,7 @@ regenerator-runtime@^0.11.0:
 regenerator-runtime@^0.12.0:
   version "0.12.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
+  integrity sha1-+hpxVEdkwDb4xJsToIsllMn4oN4=
 
 regenerator-transform@^0.13.3:
   version "0.13.3"
@@ -4523,6 +4606,7 @@ regex-not@^1.0.0, regex-not@^1.0.2:
 regexp-quote@0.0.0:
   version "0.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/regexp-quote/-/regexp-quote-0.0.0.tgz#1e0f4650c862dcbfed54fd42b148e9bb1721fcf2"
+  integrity sha1-Hg9GUMhi3L/tVP1CsUjpuxch/PI=
 
 regexpp@^2.0.1:
   version "2.0.1"
@@ -4702,10 +4786,12 @@ safe-regex@^1.1.0:
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+  integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
 sanitize-html-react@^1.13.0:
   version "1.13.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/sanitize-html-react/-/sanitize-html-react-1.13.0.tgz#e757b9adbaf2c8a762f3d2dff70138838e05420a"
+  integrity sha1-51e5rbryyKdi89Lf9wE4g44FQgo=
   dependencies:
     htmlparser2 "^3.9.0"
     regexp-quote "0.0.0"
@@ -4740,6 +4826,7 @@ schema-utils@^1.0.0:
 scroll@^2.0.3:
   version "2.0.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/scroll/-/scroll-2.0.3.tgz#0951b785544205fd17753bc3d294738ba16fc2ab"
+  integrity sha1-CVG3hVRCBf0XdTvD0pRzi6Fvwqs=
   dependencies:
     rafl "~1.2.1"
 
@@ -4825,6 +4912,7 @@ set-value@^2.0.0:
 setimmediate@^1.0.4, setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
+  integrity sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
 
 setprototypeof@1.1.0:
   version "1.1.0"
@@ -4854,6 +4942,7 @@ shebang-regex@^1.0.0:
 shortid@^2.2.13:
   version "2.2.14"
   resolved "https://www.myget.org/F/dnn-software-public/npm/shortid/-/shortid-2.2.14.tgz#80db6aafcbc3e3a46850b3c88d39e051b84c8d18"
+  integrity sha1-gNtqr8vD46RoULPIjTngUbhMjRg=
   dependencies:
     nanoid "^2.0.0"
 
@@ -4988,6 +5077,7 @@ sprintf-js@~1.0.2:
 spy-on-component@^1.1.0:
   version "1.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/spy-on-component/-/spy-on-component-1.1.2.tgz#70cec3a0b87dfb9d5356e288135fd349d138d407"
+  integrity sha1-cM7DoLh9+51TVuKIE1/TSdE41Ac=
 
 sshpk@^1.7.0:
   version "1.15.2"
@@ -5070,6 +5160,7 @@ string-width@^1.0.1:
 string_decoder@^1.0.0, string_decoder@^1.1.1:
   version "1.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
+  integrity sha1-/obnOLGVRK/nBGkkOyoe6SQOro0=
   dependencies:
     safe-buffer "~5.1.0"
 
@@ -5208,6 +5299,7 @@ to-arraybuffer@^1.0.0:
 to-camel-case@1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/to-camel-case/-/to-camel-case-1.0.0.tgz#1a56054b2f9d696298ce66a60897322b6f423e46"
+  integrity sha1-GlYFSy+daWKYzmamCJcyK29CPkY=
   dependencies:
     to-space-case "^1.0.0"
 
@@ -5218,6 +5310,7 @@ to-fast-properties@^2.0.0:
 to-no-case@^1.0.0:
   version "1.0.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/to-no-case/-/to-no-case-1.0.2.tgz#c722907164ef6b178132c8e69930212d1b4aa16a"
+  integrity sha1-xyKQcWTvaxeBMsjmmTAhLRtKoWo=
 
 to-object-path@^0.3.0:
   version "0.3.0"
@@ -5244,6 +5337,7 @@ to-regex@^3.0.1, to-regex@^3.0.2:
 to-space-case@^1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/to-space-case/-/to-space-case-1.0.0.tgz#b052daafb1b2b29dc770cea0163e5ec0ebc9fc17"
+  integrity sha1-sFLar7Gysp3HcM6gFj5ewOvJ/Bc=
   dependencies:
     to-no-case "^1.0.0"
 
@@ -5300,10 +5394,12 @@ typedarray@^0.0.6:
 ua-parser-js@^0.7.18:
   version "0.7.19"
   resolved "https://www.myget.org/F/dnn-software-public/npm/ua-parser-js/-/ua-parser-js-0.7.19.tgz#94151be4c0a7fb1d001af7022fdaca4642659e4b"
+  integrity sha1-lBUb5MCn+x0AGvcCL9rKRkJlnks=
 
 uncontrollable@^5.0.0:
   version "5.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/uncontrollable/-/uncontrollable-5.1.0.tgz#7e9a1c50ea24e3c78b625e52d21ff3f758c7bd59"
+  integrity sha1-fpocUOok48eLYl5S0h/z91jHvVk=
   dependencies:
     invariant "^2.2.4"
 
@@ -5401,6 +5497,7 @@ use@^3.1.0:
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+  integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
 util.promisify@^1.0.0:
   version "1.0.0"
@@ -5454,6 +5551,7 @@ vm-browserify@0.0.4:
 warning@^3.0.0:
   version "3.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
   dependencies:
     loose-envify "^1.0.0"
 
@@ -5602,6 +5700,7 @@ websocket-extensions@>=0.1.1:
 whatwg-fetch@>=0.10.0:
   version "3.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
+  integrity sha1-/IBORYzEYACbGiuWa8iBfSV4rvs=
 
 which-module@^2.0.0:
   version "2.0.0"
@@ -5659,6 +5758,7 @@ xregexp@4.0.0:
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
+  integrity sha1-pcbVMr5lbiPbgg77lDofBJmNY68=
 
 "y18n@^3.2.1 || ^4.0.0", y18n@^4.0.0:
   version "4.0.0"

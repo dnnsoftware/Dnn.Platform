@@ -1,12 +1,7 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Localization from "../../../localization";
-import Collapse from "dnn-collapsible";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
-import Label from "dnn-label";
-import Dropdown from "dnn-dropdown";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import { Collapse, GridCell, Button, RadioButtons, Label, Dropdown, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 
 const portalAliasUsageType = {
     Default: 0,

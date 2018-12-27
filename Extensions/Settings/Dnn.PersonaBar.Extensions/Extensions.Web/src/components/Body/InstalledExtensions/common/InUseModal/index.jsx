@@ -1,14 +1,10 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Modal from "react-modal";
-import Button from "dnn-button";
-import DropDown from "dnn-dropdown";
+import { Modal, Button, Dropdown, Label } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "localization";
-import Label from "dnn-label";
-import {
-    ExtensionActions
-} from "actions";
+import { ExtensionActions } from "actions";
 
 const modalStyles = {
     overlay: {
@@ -42,7 +38,7 @@ class InUseModal extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props, state} = this;
 
         if (props.usageFilter) {
@@ -62,7 +58,7 @@ class InUseModal extends Component {
         props.dispatch(ExtensionActions.GetPackageUsageFilter());
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         let {state} = this;
 
         if (state.portalId === -1) {
@@ -125,9 +121,9 @@ class InUseModal extends Component {
     renderUsageDetail() {
         const {props} = this;
         if (props.tabUrls) {
-            return props.tabUrls.map((item) => {
+            return props.tabUrls.map((item, i) => {
                 return (
-                    <div className="usage-detail-taburl" dangerouslySetInnerHTML={{ __html: item.TabUrl }}></div>
+                    <div key={i} className="usage-detail-taburl" dangerouslySetInnerHTML={{ __html: item.TabUrl }}></div>
                 );
             });
         }
@@ -149,7 +145,7 @@ class InUseModal extends Component {
                                 style={{ width: "auto", marginTop: "8px" }}
                                 label={resx.get("PagesFromSite")}
                             />
-                            {props.usageFilter && <DropDown
+                            {props.usageFilter && <Dropdown
                                 enabled={props.usageFilter.length > 1}
                                 value={state.portalId}
                                 style={{ width: "150px" }}

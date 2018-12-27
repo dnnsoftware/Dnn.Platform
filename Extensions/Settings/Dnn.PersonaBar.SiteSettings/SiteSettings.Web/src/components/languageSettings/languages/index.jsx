@@ -8,9 +8,8 @@ import {
 } from "../../../actions";
 import LanguageRow from "./languageRow";
 import LanguageEditor from "./languageEditor";
-import Collapse from "dnn-collapsible";
+import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";
 import resx from "../../../resources";
 
@@ -254,14 +253,14 @@ class LanguagesPanel extends Component {
                         <div className="sectionTitle-languages">{resx.get("Languages")}</div>
                         {isHost &&
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add", 1)}>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
                                 </div> {resx.get("cmdCreateLanguage")}
                             </div>
                         }
                     </div>
                     <div className="language-items-grid">
                         {this.renderHeader()}
-                        <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
+                        <Collapsible isOpened={opened} style={{ width: "100%", overflow: "visible" }}>
                             <LanguageRow
                                 name={"-"}
                                 code={""}
@@ -287,7 +286,7 @@ class LanguagesPanel extends Component {
                                     openMode={this.state.openMode}/>
                                 }
                             </LanguageRow>
-                        </Collapse>
+                        </Collapsible>
                         {this.renderedLanguages()}
                     </div>
                 </div>

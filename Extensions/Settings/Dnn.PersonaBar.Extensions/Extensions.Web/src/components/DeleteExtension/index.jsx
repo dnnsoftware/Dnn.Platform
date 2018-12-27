@@ -1,14 +1,11 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import { GridCell, PersonaBarPageHeader, PersonaBarPageBody, Button, Checkbox } from "@dnnsoftware/dnn-react-common";
 import { ExtensionActions, VisiblePanelActions } from "actions";
 import PackageInformation from "../common/BasicPackageInformation";
-import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
-import Checkbox from "dnn-checkbox";
 import styles from "./style.less";
 class DeleteExtension extends Component {
     constructor() {

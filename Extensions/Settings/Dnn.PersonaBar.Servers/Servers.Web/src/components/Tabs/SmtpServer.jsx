@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import GridSystem from "dnn-grid-system";
+import { GridSystem, Button } from "@dnnsoftware/dnn-react-common";
 import RadioButtonBlock from "../common/RadioButtonBlock";
 import EditBlock from "../common/EditBlock";
 import SwitchBlock from "../common/SwitchBlock";
 import localization from "../../localization";
-import Button from "dnn-button";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import SmtpServerTabActions from "../../actions/smtpServerTab";

@@ -1,8 +1,6 @@
-import React, { PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import MultiLineInput from "dnn-multi-line-input";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import React from "react";
+import PropTypes from "prop-types";
+import { GridCell, Button, MultiLineInput, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import Localization from "localization";
 
 const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPrevious, onFileOrAssemblyChange, onRefresh}) => (
@@ -16,8 +14,7 @@ const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPreviou
                     onChange={onBasePathChange.bind(this)}
                     className="create-package-folder-input"
                     inputStyle={{ marginBottom: 0 }}
-                    label={Localization.get("CreatePackage_Folder.Label")}
-                    />
+                    label={Localization.get("CreatePackage_Folder.Label")} />
             </GridCell>
             <GridCell columnSize={30} className="no-padding refresh-file-list-button">
                 <Button type="secondary" onClick={onRefresh}>{Localization.get("CreatePackage_RefreshFileList.Button")}</Button>
@@ -27,8 +24,7 @@ const StepTwo = ({packageManifest, onCancel, onNext, onBasePathChange, onPreviou
             <MultiLineInput
                 className="package-files"
                 value={packageManifest.files.join("\n")}
-                onChange={onFileOrAssemblyChange.bind(this, "files")}
-                />
+                onChange={onFileOrAssemblyChange.bind(this, "files")} />
         </GridCell>
         <GridCell className="modal-footer">
             <Button type="secondary" onClick={onCancel}>{Localization.get("Cancel.Button")}</Button>

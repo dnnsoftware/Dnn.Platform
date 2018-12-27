@@ -1,10 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import OverflowText from "dnn-text-overflow-wrapper";
+import { TextOverflowWrapperNew } from "@dnnsoftware/dnn-react-common";
 import SvgIcon from "../../SvgIcon";
 import utils from "utils";
 import "./style.less";
@@ -24,10 +25,10 @@ class Theme extends Component {
         let currentTheme = props.currentTheme;
         if (theme.type === 0) {
             return currentTheme.SiteLayout.themeName === theme.packageName
-                    && currentTheme.SiteLayout.level == theme.level;
+                    && currentTheme.SiteLayout.level === theme.level;
         } else {
             return currentTheme.SiteContainer.themeName === theme.packageName
-                    && currentTheme.SiteContainer.level == theme.level;
+                    && currentTheme.SiteContainer.level === theme.level;
         }
     }
 
@@ -105,7 +106,7 @@ class Theme extends Component {
         return (
             <div className={this.getClassName() }>
                 {this.renderThumbnail() }
-                <OverflowText text={props.theme.packageName} maxWidth={168} className="title" />
+                <TextOverflowWrapperNew text={props.theme.packageName} maxWidth={168} className="title" />
             </div>
         );
     }

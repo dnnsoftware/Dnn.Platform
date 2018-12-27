@@ -1,10 +1,9 @@
-import React, { PropTypes } from "react";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
+import React from "react";
+import PropTypes from "prop-types";
+import { GridCell, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import util from "utils";
 
 /* eslint-disable react/no-danger */
@@ -41,7 +40,7 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation
             }
             {_package.fileName &&
                 <Button className="install-download-button" disabled={doingOperation} onClick={onInstall.bind(this, _package.fileName)}>
-                <TextOverflowWrapper text={Localization.get("Install.Button") } maxWidth={60}/>
+                    <TextOverflowWrapper text={Localization.get("Install.Button") } maxWidth={60}/>
                 </Button>
             }
         </GridCell>

@@ -1,11 +1,10 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Tabs from "dnn-tabs";
+import { DnnTabs as Tabs, PersonaBarPageBody } from "@dnnsoftware/dnn-react-common";
 import {
     pagination as PaginationActions
 } from "../../actions";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import Localization from "../../localization";
 import ApplicationTab from "../Tabs/Application";
@@ -116,7 +115,7 @@ class Body extends Component {
                     {mainTabBody}                   
                 </Tabs>
                 
-            </PersonaBarPageBody >
+            </PersonaBarPageBody>
         );
     }
 }
