@@ -14,7 +14,7 @@ export function canAddUser(settings) {
     return (settings.isAdmin || settings.permissions.ADD_USER);
 }
 
-export function canManagePassword(settings, userId)
+export function canManagePassword(settings)
 {
     return (settings.isAdmin || settings.permissions.MANAGE_PASSWORD);
 }
