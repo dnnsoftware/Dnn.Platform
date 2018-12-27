@@ -35,7 +35,7 @@ class IgnoreWordsPanel extends Component {
     }
 
     componentDidMount() {
-        const {props, state} = this;
+        const { props } = this;
 
         if (tableFields.length === 0) {
             tableFields.push({ "name": resx.get("IgnoreWords"), "id": "IgnoreWords" });
