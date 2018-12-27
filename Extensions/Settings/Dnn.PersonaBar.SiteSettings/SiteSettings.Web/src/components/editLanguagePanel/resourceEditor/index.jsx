@@ -14,7 +14,7 @@ class ResourceEditor extends Component {
         };
     }
 
-    componentDIdMount() {
+    componentDidMount() {
         const { props } = this;
 
         this.debouncedOnChange = debounce(this.changeContent, 500);
