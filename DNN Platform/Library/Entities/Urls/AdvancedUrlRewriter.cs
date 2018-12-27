@@ -178,8 +178,8 @@ namespace DotNetNuke.Entities.Urls
                         // alias is in the query string, go to the next alias
                         continue;
                     }
-                    // we are fine here, lets prepeare URL to be validated in regex
-                    urlToMatch = urlToMatch.Replace(alias, "_ALIAS_");
+                    // we are fine here, lets prepare URL to be validated in regex
+                    urlToMatch = urlToMatch.ReplaceIgnoreCase(alias, "_ALIAS_");
                 }
                 // check whether requested URL has the right URL format containing existing alias
                 // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
