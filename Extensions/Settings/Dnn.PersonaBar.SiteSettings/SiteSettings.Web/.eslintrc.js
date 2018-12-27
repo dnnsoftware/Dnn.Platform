@@ -31,6 +31,7 @@ module.exports = {
       "indent": ["warn", 4, {"SwitchCase": 1}],
       "no-unused-vars": "warn",
       "no-console": "warn",      
+      "no-debugger": "warn",
       "keyword-spacing": "warn", 
       "eqeqeq": "warn",
       "space-before-function-paren": ["warn", { "anonymous": "always", "named": "never" }],
