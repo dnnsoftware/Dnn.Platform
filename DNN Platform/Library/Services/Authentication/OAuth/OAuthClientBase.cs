@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
                     string response = RequestToken();
 
-                    if (response.Length > 0)
+                    if (!string.IsNullOrWhiteSpace(response))
                     {
                         //response contains token and token secret. We only need the token.
                         NameValueCollection qs = HttpUtility.ParseQueryString(response);

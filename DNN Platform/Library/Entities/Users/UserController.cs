@@ -566,12 +566,12 @@ namespace DotNetNuke.Entities.Users
             // Validate username against bad characters; it must not start or end with space, 
             // must not contain control characters, and not contain special punctuations
             // Printable ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-            char[] unallowedAscii = Globals.USERNAME_UNALLOWED_ASCII.ToCharArray();
+            // Fallback to default if there is no host setting configured
+            char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
             return userName.Length >= 5 &&
                         userName == userName.Trim() &&
                         userName.All(ch => ch >= ' ') &&
                         userName.IndexOfAny(unallowedAscii) < 0;
-
         }
 
         public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
@@ -951,6 +951,20 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static UserCreateStatus CreateUser(ref UserInfo user)
         {
+            return CreateUser(ref user, false);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Creates a new User in the Data Store
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="user">The userInfo object to persist to the Database</param>
+        /// <param name="sendEmailNotification">The sendEmailNotification flag defines whether registration email will be sent to user</param>
+        /// <returns>The Created status ot the User</returns>
+        /// -----------------------------------------------------------------------------
+        public static UserCreateStatus CreateUser(ref UserInfo user, bool sendEmailNotification)
+        {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
             //ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
@@ -976,7 +990,7 @@ namespace DotNetNuke.Entities.Users
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
-                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user });
+                EventManager.Instance.OnUserCreated(new UserEventArgs { User = user, SendNotification = sendEmailNotification });
             }
 
             //Reset PortalId

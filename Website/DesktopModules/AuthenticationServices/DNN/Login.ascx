@@ -44,14 +44,33 @@
     <script type="text/javascript">
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
-            function setUpLogin() {
-                var actionLinks = $("a#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin");
-                actionLinks.click(function () {
-                    if ($(this).hasClass("dnnDisabledAction")) {
-                        return false;
-                    }
-
-                    actionLinks.addClass("dnnDisabledAction");
+            const disabledActionClass = "dnnDisabledAction";
+            const actionLinks = $('a[id^="dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN"]');
+            function isActionDisabled($el) {
+                return $el && $el.hasClass(disabledActionClass);
+            }
+            function disableAction($el) {
+                if ($el == null || $el.hasClass(disabledActionClass)) {
+                    return;
+                }
+                $el.addClass(disabledActionClass);
+            }
+            function enableAction($el) {
+                if ($el == null) {
+                    return;
+                }
+                $el.removeClass(disabledActionClass);
+            }
+            function setUpLogin() {                
+                $.each(actionLinks || [], function (index, action) {
+                    var $action = $(action);
+                    $action.click(function () {
+                        var $el = $(this);
+                        if (isActionDisabled($el)) {
+                            return false;
+                        }
+                        disableAction($el);
+                    });
                 });
             }
 		
@@ -59,11 +78,10 @@
                 $(document).on('keydown', '.dnnLoginService', function (e) {
                     if ($(e.target).is('input:text,input:password') && e.keyCode === 13) {
                         var $loginButton = $('#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
-                        if ($loginButton.hasClass("dnnDisabledAction")) {
+                        if (isActionDisabled($loginButton)) {
                             return false;
                         }
-
-                        $loginButton.addClass("dnnDisabledAction");
+                        disableAction($loginButton);
                         window.setTimeout(function () { eval($loginButton.attr('href')); }, 100);
                         e.preventDefault();
                         return false;
@@ -72,6 +90,9 @@
 
                 setUpLogin();
                 Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                    $.each(actionLinks || [], function (index, item) {
+                        enableAction($(item));
+                    });
                     setUpLogin();
                 });
             });

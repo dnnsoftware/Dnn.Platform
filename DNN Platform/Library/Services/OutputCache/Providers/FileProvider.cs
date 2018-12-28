@@ -112,22 +112,29 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private void PurgeCache(string folder)
         {
-            var filesNotDeleted = new StringBuilder();
-            int i = 0;
-            foreach (string file in Directory.GetFiles(folder, "*.resources"))
+            try
             {
-                if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                var filesNotDeleted = new StringBuilder();
+                int i = 0;
+                foreach (string file in Directory.GetFiles(folder, "*.resources"))
                 {
-                    filesNotDeleted.Append(file + ";");
+                    if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                    {
+                        filesNotDeleted.Append(file + ";");
+                    }
+                    else
+                    {
+                        i += 1;
+                    }
                 }
-                else
+                if (filesNotDeleted.Length > 0)
                 {
-                    i += 1;
+                    throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
                 }
             }
-            if (filesNotDeleted.Length > 0)
+            catch (Exception ex)
             {
-                throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
+                Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -226,44 +233,51 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         public override void Remove(int tabId)
         {
-            Dictionary<int, int> portals = PortalController.GetPortalDictionary();
-            if (portals.ContainsKey(tabId) && portals[tabId] > Null.NullInteger)
+            try
             {
-                var filesNotDeleted = new StringBuilder();
-                int i = 0;
-                string cacheFolder = GetCacheFolder(portals[tabId]);
-
-                if (!(string.IsNullOrEmpty(cacheFolder)))
+                Dictionary<int, int> portals = PortalController.GetPortalDictionary();
+                if (portals.ContainsKey(tabId) && portals[tabId] > Null.NullInteger)
                 {
-                    foreach (string file in Directory.GetFiles(cacheFolder, string.Concat(tabId, "_*.*")))
-                    {
-                        if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
-                        {
-                            filesNotDeleted.Append(string.Concat(file, ";"));
-                        }
-                        else
-                        {
-                            i += 1;
-                        }
-                    }
-                    if (filesNotDeleted.Length > 0)
-                    {
-                        var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                    var filesNotDeleted = new StringBuilder();
+                    int i = 0;
+                    string cacheFolder = GetCacheFolder(portals[tabId]);
 
-                        var logDetail = new LogDetailInfo
+                    if (!(string.IsNullOrEmpty(cacheFolder)))
+                    {
+                        foreach (string file in Directory.GetFiles(cacheFolder, string.Concat(tabId, "_*.*")))
                         {
-                            PropertyName = "FileOutputCacheProvider",
-                            PropertyValue =
-                                string.Format(
-                                    "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
-                                    i, filesNotDeleted)
-                        };
-                        var properties = new LogProperties {logDetail};
-                        log.LogProperties = properties;
+                            if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                            {
+                                filesNotDeleted.Append(string.Concat(file, ";"));
+                            }
+                            else
+                            {
+                                i += 1;
+                            }
+                        }
+                        if (filesNotDeleted.Length > 0)
+                        {
+                            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
 
-                        LogController.Instance.AddLog(log);
+                            var logDetail = new LogDetailInfo
+                            {
+                                PropertyName = "FileOutputCacheProvider",
+                                PropertyValue =
+                                    string.Format(
+                                        "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
+                                        i, filesNotDeleted)
+                            };
+                            var properties = new LogProperties { logDetail };
+                            log.LogProperties = properties;
+
+                            LogController.Instance.AddLog(log);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -304,7 +318,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
         {
-            bool foundFile;
+            bool foundFile = false;
             try
             {
                 string attribFile = GetAttribFileName(tabId, cacheKey);
@@ -319,13 +333,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     return false;
                 }
 
-				context.Response.WriteFile(captureFile);
+                context.Response.WriteFile(captureFile);
 
                 foundFile = true;
             }
-            catch (FileNotFoundException)
+            catch (Exception ex)
             {
-                foundFile = false;
+                Exceptions.Exceptions.LogException(ex);
             }
             return foundFile;
         }

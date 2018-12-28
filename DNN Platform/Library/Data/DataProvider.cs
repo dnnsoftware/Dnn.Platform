@@ -3359,6 +3359,15 @@ namespace DotNetNuke.Data
             return ExecuteScalar<DateTime>("GetDatabaseTime");
         }
 
+        public virtual DateTimeOffset GetDatabaseTimeOffset()
+        {
+            using (var reader = (SqlDataReader)ExecuteSQL("SELECT SYSDATETIMEOFFSET()"))
+            {
+                reader.Read();
+                return reader.GetDateTimeOffset(0);
+            }
+        }
+
         #endregion
 
         #region Mobile Stuff

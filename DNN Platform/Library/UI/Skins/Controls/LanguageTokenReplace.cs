@@ -229,7 +229,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <param name="newLanguage"></param>
         private string NewUrl(string newLanguage)
         {
-            var objSecurity = PortalSecurity.Instance;
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language
@@ -269,7 +268,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     if (!string.IsNullOrEmpty(fullurl))
                     {
-                        return objSecurity.InputFilter(fullurl, PortalSecurity.FilterFlag.NoScripting);
+                        return GetCleanUrl(fullurl);
                     }
                 }
             }
@@ -287,11 +286,23 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (queryString.Length > 0) rawQueryString = string.Concat("?", queryString);
             }
 
-            return
-                objSecurity.InputFilter(
-                    TestableGlobals.Instance.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
-                    rawQueryString,
-                    PortalSecurity.FilterFlag.NoScripting);
+            var controlKey = HttpContext.Current.Request.QueryString["ctl"];
+            var queryStrings = GetQsParams(newLocale.Code, islocalized);
+            var isSuperTab = objPortal.ActiveTab.IsSuperTab;
+            var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
+
+            return GetCleanUrl(url);
+        }
+
+        private string GetCleanUrl(string url)
+        {
+            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                return string.Empty;
+            }
+
+            return url;
         }
 
         #endregion

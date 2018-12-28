@@ -25,6 +25,7 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
@@ -42,17 +43,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
-            //if we are not using the cache, then remove from cacehh and re-add loaded items when eeded later
+            //if we are not using the cache, then remove from cache and re-add loaded items when needed later
             var tabCacheKey = GetTabVersionsCacheKey(tabId);
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
                 DataCache.RemoveCache(tabCacheKey);
             }
-            
-            return CBO.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
+            var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
-                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)));            
+                                                            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),
+                                                            false
+                                                            );
+
+            return tabVersions;
         }
         public void SaveTabVersion(TabVersion tabVersion)
         {
@@ -112,6 +116,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
+
         #endregion
 
         protected override Func<ITabVersionController> GetFactory()
