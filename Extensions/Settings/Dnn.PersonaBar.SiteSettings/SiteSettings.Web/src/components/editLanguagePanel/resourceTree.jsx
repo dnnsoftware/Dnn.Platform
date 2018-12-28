@@ -36,6 +36,7 @@ class ResourceTree extends Component {
             treeOpened: false
         };
         this.handleClick = this.handleClick.bind(this);
+        this.node = React.createRef();
     }
 
     componentDidMount() {
@@ -50,7 +51,7 @@ class ResourceTree extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = this.node;
+        const node = this.node.current;
         if (node && node.contains(e.target)) {
             return;
         }
@@ -73,20 +74,22 @@ class ResourceTree extends Component {
             resxBeingEditedDisplay
         } = this.props;
         return (
-            <GridCell columnSize={100} className="resource-file-tree-container" ref={node => this.node = node}>
-                <Label label={resx.get("ResourceFile")} />
-                <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
-                    {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
-                    <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }}></div>
-                </div>
-                <Collapsible isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>
-                    <Scrollbars style={parentTermTreeStyle}>
-                        <ul className="resource-tree root-level parent-tree">
-                            {mapChildFolders(languageFolders, getChildFolders, getResxEntries, resxBeingEdited)}
-                        </ul>
-                    </Scrollbars>
-                </Collapsible>
-            </GridCell>
+            <div ref={this.node}>
+                <GridCell columnSize={100} className="resource-file-tree-container">
+                    <Label label={resx.get("ResourceFile")} />
+                    <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
+                        {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
+                        <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }}></div>
+                    </div>
+                    <Collapsible isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>
+                        <Scrollbars style={parentTermTreeStyle}>
+                            <ul className="resource-tree root-level parent-tree">
+                                {mapChildFolders(languageFolders, getChildFolders, getResxEntries, resxBeingEdited)}
+                            </ul>
+                        </Scrollbars>
+                    </Collapsible>
+                </GridCell>
+            </div>
         );
     }
 }

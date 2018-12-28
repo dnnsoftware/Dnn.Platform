@@ -1,19 +1,22 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "settings": {
+        "react": {
+            "version": "16"
+        }
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
-            "experimentalObjectRestSpread": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },        
     "globals": {
@@ -21,26 +24,14 @@ module.exports = {
         "Promise": false,
         "VERSION": false
     },
-    "rules": {
-       /*"spellcheck/spell-checker": [1,
-        {
-            "comments": true,
-            "strings": true,
-            "identifiers": true,
-            "skipWords": require("./.eslintskipwords"),
-            "skipIfMatch": [
-                "http://[^s]*",
-                "https://[^s]*",
-                "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-            ]
-        }
-       ],*/     
+    "rules": {    
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
       "indent": ["warn", 4, {"SwitchCase": 1}],
       "no-unused-vars": "warn",
       "no-console": "warn",      
+      "no-debugger": "warn",
       "keyword-spacing": "warn", 
       "eqeqeq": "warn",
       "space-before-function-paren": ["warn", { "anonymous": "always", "named": "never" }],

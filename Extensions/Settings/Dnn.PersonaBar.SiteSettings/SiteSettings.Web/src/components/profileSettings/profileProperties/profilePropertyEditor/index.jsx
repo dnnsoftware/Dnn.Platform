@@ -45,7 +45,7 @@ class ProfilePropertyEditor extends Component {
         props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         let { state, props } = this;
 
         const error = Object.assign({}, state.error);
