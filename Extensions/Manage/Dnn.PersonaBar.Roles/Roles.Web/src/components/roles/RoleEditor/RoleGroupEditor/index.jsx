@@ -22,6 +22,7 @@ class RoleGroupEditor extends Component {
         };
         this.submitted = false;
         this.handleClick = this.handleClick.bind(this);
+        this.node = React.createRef();
     }
     componentDidMount() {
         document.addEventListener("click", this.handleClick);
@@ -38,7 +39,8 @@ class RoleGroupEditor extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        if (this.node !== null && !this.node.contains(event.target) &&
+        var node = this.node.current;
+        if (node && !node.contains(event.target) &&
             (event.target.firstChild !== null && typeof event.target.firstChild.className === "string" && event.target.firstChild.className.indexOf("do-not-close") === -1)) {
             if (typeof this.props.onCancel === "function") {
                 this.props.onCancel();
@@ -122,7 +124,7 @@ class RoleGroupEditor extends Component {
                     <Button type="primary" onClick={this.onSave.bind(this) }>{resx.get("Save") }</Button>
                 </div>
             </div>
-        </div >;
+        </div>;
     }
 }
 

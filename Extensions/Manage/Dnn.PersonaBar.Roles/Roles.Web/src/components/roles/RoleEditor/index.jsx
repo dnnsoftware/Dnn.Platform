@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-//import Select from "dnn-dropdown";
 import util from "../../../utils";
 import resx from "../../../resources";
-import { Select, GridSystem as Grid, Switch, Button, SingleLineInputWithError, MultiLineInput, Label }  from "@dnnsoftware/dnn-react-common";
+import { Dropdown as Select, GridSystem as Grid, Switch, Button, SingleLineInputWithError, MultiLineInput, Label }  from "@dnnsoftware/dnn-react-common";
 import RoleGroupEditor from "./RoleGroupEditor";
 import {
     roles as RolesActions
