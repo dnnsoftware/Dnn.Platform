@@ -229,7 +229,7 @@ namespace DotNetNuke.Tests.Urls
                                                                         Guid.Empty);
             }
 
-            Assert.AreEqual(expectedResult, testUrl);
+            Assert.IsTrue(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private void UpdateTabName(int tabId, string newName)
