@@ -64,8 +64,8 @@ class FiltersBar extends Component {
         let userFiltersOptions = this.BuildUserFiltersOptions();
         return (<div className="users-filter-container">
             <GridCell columnSize={35} >
-                {this.userFiltersOptions != null &&
-                    this.userFiltersOptions.length > 0 &&
+                {userFiltersOptions &&
+                    userFiltersOptions.length > 0 &&
                     <div className="user-filters-filter">
                         <Dropdown style={{ width: "100%" }}
                             withBorder={false}
