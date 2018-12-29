@@ -11,16 +11,18 @@ export default class Folders extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
+    componentDidUpdate(prevProps) {
+        const { props } = this;
         if (!props.folders || !props.folders.children || !props.folders.children[0] || !props.folders.children[0].data || !props.folders.children[0].data.key) {
             return;
         }
         const rootKey = props.folders.children[0].data.key;
         let {openFolders} = this.state;
         openFolders.push(rootKey);
-        this.setState({ openFolders });
+        if (this.state.openFolders !== openFolders) {
+            this.setState({ openFolders });
+        }
     }
-
 
     toggleFolder(key) {
         let {openFolders} = this.state;

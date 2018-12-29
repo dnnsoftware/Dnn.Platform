@@ -19,17 +19,19 @@ export default class DateInput extends Component {
 
     }
 
-    componentWillReceiveProps(props) {
-        const month = props.date ? this.addZero(props.date.getMonth() + 1) : "";
-        const day = props.date ? this.addZero(props.date.getDate()) : "";
-        const year = props.date ? props.date.getFullYear() : "";
-        const hours = props.date ? this.getHour(props.date.getHours()) : "";
-        const minutes = props.date ? this.addZero(props.date.getMinutes()) : "";
-        const period = props.date ? this.getPeriod(props.date.getHours()) : this.getPeriod(false);
+    componentDidUpdate(prevProps) {
+        let { props } = this;
+        if (props.date !== prevProps.date) {
+            const month = props.date ? this.addZero(props.date.getMonth() + 1) : "";
+            const day = props.date ? this.addZero(props.date.getDate()) : "";
+            const year = props.date ? props.date.getFullYear() : "";
+            const hours = props.date ? this.getHour(props.date.getHours()) : "";
+            const minutes = props.date ? this.addZero(props.date.getMinutes()) : "";
+            const period = props.date ? this.getPeriod(props.date.getHours()) : this.getPeriod(false);
 
-        this.setState({ month, day, year, hours, minutes, period });
+            this.setState({ month, day, year, hours, minutes, period });
+        }
     }
-
 
     setMonth() {
         let {month} = this.state;
@@ -210,7 +212,7 @@ export default class DateInput extends Component {
                     <span>{this.state.period}</span>
                 </div>
             </div>}
-        </div >;
+        </div>;
     }
 }
 

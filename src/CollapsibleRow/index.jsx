@@ -5,8 +5,9 @@ import Button from "../Button";
 import "./style.less";
 
 export default class CollapsibleRow extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.state = { collapsed: props.collapsed ? props.collapsed : true };
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -18,16 +19,12 @@ export default class CollapsibleRow extends Component {
         }
     }
 
-    componentWillMount() {
-        this.setState({ collapsed: this.props.collapsed });
-    }
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.collapsed !== this.props.collapsed) {
-            this.setState({ collapsed: newProps.collapsed });
+    componentDidUpdate(prevProps) {
+        if (this.props.collapsed !== prevProps.collapsed) {
+            this.setState({ collapsed: this.props.collapsed });
         }
     }
-
+    
     componentWillUnmount() {
         document.removeEventListener("click", this.handleClick);
         this._isMounted = false;

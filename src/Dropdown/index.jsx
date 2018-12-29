@@ -44,6 +44,12 @@ class Dropdown extends Component {
                 dropDownOpen: false
             });
         }
+        if (props.options && props.options.length > 0) {
+            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
+            this.setState({
+                fixedHeight
+            });
+        }
     }
 
     getDropdownHeight() {
@@ -52,25 +58,18 @@ class Dropdown extends Component {
         return this.dropDownListElement ? Math.min(this.dropDownListElement.offsetHeight, maxHeight) + 20 : 0;
     }
 
-    componentWillMount() {
-        const {props} = this;
-        if (props.options && props.options.length > 0) {
-            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
-            this.setState({
-                fixedHeight
-            });
-        }
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.options && props.options.length > 0) {
-            let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
-            this.setState({
-                fixedHeight
-            });
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+        if (props.options !== prevProps.options) {
+            if (props.options && props.options.length > 0) {
+                let fixedHeight = DNN_DROPDOWN_MINHEIGHT;
+                this.setState({
+                    fixedHeight
+                });
+            }
         }
 
-        if (props.isDropDownOpen !== this.props.isDropDownOpen) {
+        if (props.isDropDownOpen !== prevProps.isDropDownOpen) {
             this.setState({dropDownOpen: !props.isDropDownOpen}, () => this.toggleDropdown(true));
         }
     }

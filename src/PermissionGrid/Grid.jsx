@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import GridCell from "../GridCell";
-import Button from "../Button";
-import Label from "../Label";
 import GridCaption from "./GridCaption";
 import GridHeader from "./GridHeader";
 import GridRow from "./GridRow";
@@ -13,10 +11,6 @@ class Grid extends Component {
 
         this.state = {
         };
-    }
-
-    componentWillMount() {
-        const {props, state} = this;
     }
 
     onPermissionChange(permission) {

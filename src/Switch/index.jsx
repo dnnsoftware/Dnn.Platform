@@ -14,10 +14,12 @@ class Switch extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            switchActive: props.value
-        });
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value) {
+            this.setState({
+                switchActive: this.props.value
+            });
+        }
     }
 
     toggleStatus() {

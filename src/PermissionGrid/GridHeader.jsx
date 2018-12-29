@@ -10,10 +10,6 @@ class GridHeader extends Component {
         };
     }
 
-    componentWillMount() {
-        const {props, state} = this;
-    }
-
     getLocaliztion(key) {
         let localized = this.props.localization[key.replace(" ", "")];
         return localized || key;

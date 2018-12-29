@@ -55,9 +55,13 @@ function getIconComponent(type) {
 
 class Tooltip extends Component {
 
-    componentWillMount() {
+    constructor() {
+        super();
         const id = uniqueId("tooltip-");
-        this.setState({id: id, active: false});
+        this.state = {
+            id: id, 
+            active: false
+        };
     }
 
     showTooltip() {

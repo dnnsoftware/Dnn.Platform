@@ -4,22 +4,28 @@ import Tooltip from "../Tooltip";
 import "./style.less";
 
 class RadioButtons extends Component {
-    componentWillMount() {
-        const {props} = this;
-        this.setState({
+    
+    constructor(props) {
+        super(props);
+        this.state = {
             value: props.value
-        });
+        };
+    }    
+
+    componentDidUpdate(prevProp) {
+        if (this.props.value !== prevProp.value) {
+            this.setState({
+                value: this.props.value
+            });
+        }
     }
-    componentWillReceiveProps(prop) {
-        this.setState({
-            value: prop.value
-        });
-    }
+
     onChange(event) {
         const {props} = this;
         const value = event.target.value;
         props.onChange(value);
     }
+
     render() {
         const {props, state} = this;
         const tooltipMessages = props.tooltipMessage instanceof Array ? props.tooltipMessage : [props.tooltipMessage];

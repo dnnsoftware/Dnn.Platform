@@ -6,6 +6,11 @@ export default (Component) => {
     
     class Droppable extends React.Component {
     
+        constructor() {
+            super();
+            this.node = React.createRef();
+        }
+
         raiseEvent(event, callback) {
             const dropZoneRect = event.dropzone._element.getBoundingClientRect();
             const elementRect = event.relatedTarget.getBoundingClientRect();            

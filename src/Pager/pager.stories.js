@@ -9,3 +9,11 @@ storiesOf("Pager", module).add("with content", () => (
         onPageChanged={action("changed")}
     />
 ));
+
+storiesOf("Pager", module).add("with 5 numeric counters", () => (
+    <Pager
+        totalRecords={100}
+        onPageChanged={action("changed")}
+        numericCounters={5}
+    />
+));

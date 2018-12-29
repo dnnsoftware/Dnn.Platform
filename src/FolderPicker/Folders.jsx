@@ -13,15 +13,18 @@ export default class Folders extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
-        if (!props.folders || !props.folders.children || !props.folders.children[0] || 
-            !props.folders.children[0].data || !props.folders.children[0].data.key) {
-            return;
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+        if (props.folders !== prevProps.folders) {
+            if (!props.folders || !props.folders.children || !props.folders.children[0] || 
+                !props.folders.children[0].data || !props.folders.children[0].data.key) {
+                return;
+            }
+            const rootKey = props.folders.children[0].data.key;
+            const {openFolders} = this.state;
+            openFolders.push(rootKey);
+            this.setState({ openFolders });
         }
-        const rootKey = props.folders.children[0].data.key;
-        const {openFolders} = this.state;
-        openFolders.push(rootKey);
-        this.setState({ openFolders });
     }
 
 

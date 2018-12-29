@@ -10,6 +10,7 @@ export default (Component) => {
         constructor() {
             super();
             this.initialScrollY = 0;
+            this.node = React.createRef();
         }
 
         showGhostTargetOnClone(currentTarget) {            
@@ -117,7 +118,7 @@ export default (Component) => {
                 showGhostOnClone
             } = this.props;
             
-            interact(dragElement).ignoreFrom("input, *[contenteditable=true], .ignoreDraggable").draggable({
+            interact(dragElement).ignoreFrom("input, *[contenteditable=true], .ignoreDraggable").draggable({                
                 manualStart: cloneElementOnDrag,
                 onmove: (event) => {                            
                     this.moveTarget(event);
@@ -168,7 +169,7 @@ export default (Component) => {
                     // start a drag interaction targeting the clone
                     interaction.start({ name: "drag" }, event.interactable, clone);
                 }
-            }).on("dragstart", (event) => {
+            }).on("dragstart", (event) => {                
                 this.initialScrollY = window.scrollY;
                 if (typeof(onDragStart) === "function") {
                     onDragStart(self, event);

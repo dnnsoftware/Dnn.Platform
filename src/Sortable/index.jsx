@@ -22,11 +22,13 @@ export default class Sortable extends Component {
         this.dnnSortableRef = React.createRef();
     }
 
-    componentWillReceiveProps(newProps) {
-        const items = newProps.items.map((item, index) => {
-            return { index, item, id: index };
-        });
-        this.setState({items});
+    componentDidUpdate(prevProps) {
+        if (this.props.items !== prevProps.items) {
+            const items = this.props.items.map((item, index) => {
+                return { index, item, id: index };
+            });
+            this.setState({items});
+        }
     }
 
     sortColumns(a, b) {
@@ -37,9 +39,7 @@ export default class Sortable extends Component {
         return 0;
     }
 
-    onDragStart(component, event) {
-        const itemElement = this.dnnSortableRef.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-
+    onDragStart(component, event) {                
         let dragging = {
             isDragging: true
         };

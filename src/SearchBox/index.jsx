@@ -38,7 +38,7 @@ class SearchBox extends Component {
         };
     }
     
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.debouncedSearch = debounce(this.search, 1000);
     }
     
