@@ -26,6 +26,8 @@ using DotNetNuke.Web.Api.Internal;
 using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using System.Web.Mvc;
+using System.Web;
 
 namespace DotNetNuke.Web.Api
 {
@@ -83,6 +85,11 @@ namespace DotNetNuke.Web.Api
                     var cookieValue = GetAntiForgeryCookieValue(actionContext);
                     AntiForgery.Instance.Validate(cookieValue, token);
                 }
+            }
+            catch (HttpAntiForgeryException ex)
+            {
+                if(!HttpContext.Current.User.Identity.IsAuthenticated || String.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+                    return new Tuple<bool, string>(false, ex.Message);
             }
             catch (Exception e)
             {
