@@ -1554,8 +1554,11 @@ namespace DotNetNuke.Entities.Urls
                     //check ssl enforced
                     if (portalSettings.SSLEnforced)
                     {
-                        //check page is not secure, connection is secure
-                        if (!portalSettings.ActiveTab.IsSecure && result.IsSecureConnection)
+                        // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe 
+                        // from an unsecure page
+                        if (!portalSettings.ActiveTab.IsSecure && 
+                            result.IsSecureConnection &&
+                            !UrlUtils.IsPopUp(url))
                         {
                             //has connection already been forced to secure?
                             if (queryStringCol["ssl"] == null)
