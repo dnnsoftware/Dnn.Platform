@@ -38,7 +38,7 @@
         if (!Page.IsPostBack)
         {
             //Load the HTML file
-            var path = Server.MapPath(ModuleName) + "_CONTROL_.html";
+            var path = Path.Combine(Server.MapPath(ModuleName), "_CONTROL_.html");
             if (File.Exists(path))
             {
                 var content = string.Empty;
