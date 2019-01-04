@@ -275,6 +275,17 @@ AS
     LEFT  JOIN {databaseOwner}[{objectQualifier}Users]              AS U  ON P.AdministratorId = U.UserID
 GO
 
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+SELECT
+	*
+FROM {databaseOwner}[{objectQualifier}vw_Portals]
+WHERE CultureCode = DefaultLanguage
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

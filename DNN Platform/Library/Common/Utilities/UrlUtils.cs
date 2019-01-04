@@ -400,6 +400,11 @@ namespace DotNetNuke.Common.Utilities
             return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
+        public static bool IsPopUp(string url)
+        {
+            return url .IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
         /// <summary>
         /// Redirect current response to 404 error page or output 404 content if error page not defined.
         /// </summary>
