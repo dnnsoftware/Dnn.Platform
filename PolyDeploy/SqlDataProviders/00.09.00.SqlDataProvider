@@ -7,11 +7,10 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-/*** Cantarus_PolyDeploy v0.7.0                           ***/
+/*** Cantarus_PolyDeploy v0.9.0                           ***/
 /************************************************************/
 
 /*********************************************************************************************************/
-<<<<<<< HEAD
 /*** Cantarus_PolyDeploy_DropUQConstraints STORED PROCEDURE **********************************************/
 /***                                                                                                   ***/
 /*** Add stored procedure for dropping unnamed unique constraints.                                     ***/
@@ -72,8 +71,8 @@ GO
 
 IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
-        EXEC sp_rename '{objectQualifier}Cantarus_PolyDeploy_APIUsers', '{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0'
-        EXEC sp_rename 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers', 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0'
+        EXEC sp_rename '{objectQualifier}Cantarus_PolyDeploy_APIUsers', '{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0'
+        EXEC sp_rename 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers', 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0'
     END
 GO
 
@@ -192,13 +191,40 @@ AS
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_PostUpgrade0.7.0 STORED PROCEDURE ***********************************************/
+/*** Cantarus_PolyDeploy_SpExists STORED PROCEDURE *******************************************************/
+/***                                                                                                   ***/
+/*** Create a stored procedure to easily determine if a stored procedure exists.                       ***/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]
+GO
+
+/*
+    This procedure makes it easy to determine if a named stored procedure
+    exists. It's used as part of the logic for when to run upgrade code.
+*/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]
+    @SpName [NVARCHAR](256)
+AS
+    SELECT CASE WHEN EXISTS (
+        SELECT *
+            FROM dbo.sysobjects
+            WHERE id = object_id(@SpName)
+    )
+    THEN CAST(1 AS BIT)
+    ELSE CAST(0 AS BIT)
+    END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade0.9.0 STORED PROCEDURE ***********************************************/
 /***                                                                                                   ***/
 /*** Create the stored procedure that will be called by the upgrade process after application restart. ***/
 /*********************************************************************************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.9.0]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.9.0]
 GO
 
 /*
@@ -207,19 +233,9 @@ GO
 
     This procedure should be dropped by the upgrade code after it has been executed.
 */
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.9.0]
 AS
-    IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0]'))
-        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0]
+    IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]'))
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]
     GO
-=======
-/*** Cantarus_PolyDeploy_APIUsers TABLE ******************************************************************/
-/*********************************************************************************************************/
-
-IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-    IF NOT EXISTS(SELECT * FROM sys.columns WHERE name = 'BypassIPWhitelist' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]'))
-        BEGIN
-            ALTER TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ADD [BypassIPWhitelist] [BIT] NOT NULL CONSTRAINT [{objectQualifier}DF_Cantarus_PolyDeploy_APIUsers_BypassIPWhitelist] DEFAULT (0)
-        END
->>>>>>> c73eed265a9ccd5566d1bac35e66b1082982d52c
 GO

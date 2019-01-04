@@ -101,19 +101,55 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// -----------------------------------------------------------------------------
         public string UpgradeModule(string version)
         {
-            string result = $"Upgrade logic for {version} completed.";
+            string result;
 
-            switch (version)
+            // Determine if we need to run this upgrade logic or if it's already been run.
+            bool shouldRun;
+
+            using (IDataContext context = DataContext.Instance())
             {
-                case "00.07.00":
-                    Upgrade_00_07_00();
-                    break;
-
-                default:
-                    result = $"No upgrade logic for {version}.";
-                    break;
-
+                // See if there is a post-upgrade stored procedure for this version.
+                shouldRun = context.ExecuteSingleOrDefault<bool>(
+                    System.Data.CommandType.StoredProcedure,
+                    $"{{databaseOwner}}[{{objectQualifier}}Cantarus_PolyDeploy_SpExists] '{{databaseOwner}}[{{objectQualifier}}Cantarus_PolyDeploy_PostUpgrade_{version}]'"
+                );
             }
+
+            // Should upgrade logic be run?
+            if (shouldRun)
+            {
+                // Yes.
+                result = $"Upgrade logic for {version} completed.";
+
+                // Execute appropriate logic.
+                switch (version)
+                {
+                    case "00.09.00":
+                        Upgrade_00_09_00();
+                        break;
+
+                    default:
+                        result = $"No upgrade logic for {version}.";
+                        break;
+
+                }
+
+                // Clean up and make sure we don't run this logic again.
+                using (IDataContext context = DataContext.Instance())
+                {
+                    // Upgrade complete, execute post-upgrade stored procedure.
+                    context.Execute(System.Data.CommandType.StoredProcedure, $"{{databaseOwner}}[{{objectQualifier}}Cantarus_PolyDeploy_PostUpgrade_{version}]");
+
+                    // Then drop it.
+                    context.Execute(System.Data.CommandType.Text, $"DROP PROCEDURE {{databaseOwner}}[{{objectQualifier}}Cantarus_PolyDeploy_PostUpgrade_{version}]");
+                }
+            }
+            else
+            {
+                // No.
+                result = $"Upgrade logic for {version} has been run previously.";
+            }
+
 
             return result;
         }
@@ -123,7 +159,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
         #region Upgrade Logic
 
         /// <summary>
-        /// Upgrades to 00.07.00
+        /// Upgrades to 00.09.00
         /// 
         /// Operations:
         /// - Generate a Salt.
@@ -131,19 +167,19 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// - Encrypt existing EncryptionKeys using plain text APIKey.
         /// - Insert in to new table.
         /// </summary>
-        private void Upgrade_00_07_00()
+        private void Upgrade_00_09_00()
         {
             using (IDataContext context = DataContext.Instance())
             {
                 // Get all existing api user ids.
-                IEnumerable<int> apiUserIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT [APIUserID] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0]");
+                IEnumerable<int> apiUserIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT [APIUserID] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]");
 
                 foreach (int apiUserId in apiUserIds)
                 {
                     // Read old data.
-                    string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [Name] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
-                    string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
-                    string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.7.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [Name] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
 
                     // Generate a salt.
                     string auSalt = APIUser.GenerateSalt();
@@ -162,12 +198,6 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
                     context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
                 }
-
-                // Call stored procedure which completes the upgrade.
-                context.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]");
-
-                // Drop the stored procedure.
-                context.Execute(System.Data.CommandType.Text, "DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.7.0]");
             }
         }
 
