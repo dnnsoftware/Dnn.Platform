@@ -56,7 +56,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
                 string apiKey = Request.Headers.GetValues("x-api-key").FirstOrDefault();
 
                 // Get the api user.
-                APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
+                APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
 
                 // Receive files.
                 MultipartMemoryStreamProvider provider = await Request.Content.ReadAsMultipartAsync();

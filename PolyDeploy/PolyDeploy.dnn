@@ -32,7 +32,9 @@
             <moduleName>PolyDeploy</moduleName>
             <foldername>/Cantarus/PolyDeploy</foldername>
             <businessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable"/>
+            </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>PolyDeploy</friendlyName>
@@ -62,6 +64,14 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <BusinessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</BusinessControllerClass>
+              <UpgradeVersionsList>00.07.00</UpgradeVersionsList>
+            </attributes>
+          </eventMessage>
         </component>
 
         <component type="Script">
