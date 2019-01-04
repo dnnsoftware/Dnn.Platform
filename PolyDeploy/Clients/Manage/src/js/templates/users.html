@@ -10,17 +10,24 @@
                     <h3 class="panel-title">New API User</h3>
                 </div>
                 <div class="panel-body">
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="newUserName" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                            <input type="text" ng-model="newUser.name" />
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Bypass IP Whitelist</label>
+                            <div class="col-sm-9">
+                            <input type="checkbox" ng-model="newUser.bypassIPWhitelist" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-success" ng-click="createUser(newUserName)">Create</button>
+                            <div class="col-sm-offset-3 col-sm-9">
+                            <button type="button" class="btn btn-success" ng-click="createUser(newUser)">Create</button>
                         </div>
+                    </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -41,6 +48,7 @@
                                 <th>Name</th>
                                 <th>API Key</th>
                                 <th>Encryption Key</th>
+                                <th>Bypass IP Whitelist</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -49,6 +57,7 @@
                                 <td>{{ user.Name }}</td>
                                 <td>{{ user.APIKey }}</td>
                                 <td>{{ user.EncryptionKey }}</td>
+                                <td>{{ user.BypassIPWhitelist }}</td>
                                 <td><button type="button" class="btn btn-sm btn-danger" ng-click="deleteUser(user)">Delete</button></td>
                             </tr>
                         </tbody>

@@ -41,6 +41,11 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         public string Salt { get; set; }
 
         /// <summary>
+        /// Indicates whether or not this user bypasses IP whitelist checks.
+        /// </summary>
+        public bool BypassIPWhitelist { get; set; }
+
+        /// <summary>
         /// Indicates whether this APIUser object is prepared for use. A
         /// prepared APIUser will have the APIKey and EncryptionKey properties
         /// set to their appropraite plain values for use.
@@ -92,7 +97,14 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
         /// Constructor for creating a new APIUser.
         /// </summary>
         /// <param name="name"></param>
-        public APIUser(string name) : this()
+        public APIUser(string name) : this(name, false) { }
+
+        /// <summary>
+        /// Constructor for creating a new APIUser.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="bypass"></param>
+        public APIUser(string name, bool bypass) : this()
         {
             if(string.IsNullOrEmpty(name))
             {
@@ -100,6 +112,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.Models
             }
 
             Name = name;
+            BypassIPWhitelist = bypass;
 
             // Create keys and place them in the readable fields.
             apiKey = GenerateKey();

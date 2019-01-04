@@ -1,17 +1,19 @@
-﻿using Cantarus.Libraries.Encryption;
+using Cantarus.Libraries.Encryption;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Script.Serialization;
 
 namespace DeployClient
 {
     class Program
     {
-        private static bool IsSilent = false;
-        private static bool NoPrompt = false;
+        internal static CommandLineOptions Options = new CommandLineOptions();
 
         enum ExitCode : int
         {
@@ -22,48 +24,32 @@ namespace DeployClient
             InstallFailure = 4
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
-                foreach (string arg in args)
-                {
-                    if (arg.ToLower().Contains("--silent"))
-                    {
-                        IsSilent = true;
-                    }
-
-                    if (arg.ToLower().Contains("--no-prompt"))
-                    {
-                        NoPrompt = true;
-                    }
-                }
+                GetSettings(args);
 
                 // Output start.
                 WriteLine("*** PolyDeploy Client ***");
                 WriteLine();
 
-                // Get the properties we need.
-                string targetUri = Properties.Settings.Default.TargetUri;
-                string apiKey = Properties.Settings.Default.APIKey;
-                string encryptionKey = Properties.Settings.Default.EncryptionKey;
-
                 // Do we have a target uri.
-                if (targetUri.Equals(string.Empty))
+                if (Options.TargetUri.Equals(string.Empty))
                 {
-                    throw new Exception("No target uri has been set.");
+                    throw new ArgumentException("No target uri has been set.");
                 }
 
                 // Do we have an api key?
-                if (apiKey.Equals(string.Empty))
+                if (Options.APIKey.Equals(string.Empty))
                 {
-                    throw new Exception("No api key has been set.");
+                    throw new ArgumentException("No api key has been set.");
                 }
 
                 // Do we have an encryption key?
-                if (encryptionKey.Equals(string.Empty))
+                if (Options.EncryptionKey.Equals(string.Empty))
                 {
-                    throw new Exception("No encryption key has been set.");
+                    throw new ArgumentException("No encryption key has been set.");
                 }
 
                 // Output identifying module archives.
@@ -92,7 +78,7 @@ namespace DeployClient
                 }
                 WriteLine();
 
-                if (!NoPrompt)
+                if (!Options.NoPrompt)
                 {
                     // Prompt to continue.
                     WriteLine("Would you like to continue? (y/n)");
@@ -107,15 +93,15 @@ namespace DeployClient
                     WriteLine();
                 }
 
-                // Inform user of encryption.
-                WriteLine("Starting encryption and upload...");
-
                 // Get a session.
-                string sessionGuid = API.CreateSession();
+                string sessionGuid = await API.CreateSessionAsync();
 
                 WriteLine(string.Format("Got session: {0}", sessionGuid));
 
                 DateTime startTime = DateTime.Now;
+
+                // Inform user of encryption.
+                WriteLine("Starting encryption and upload...");
 
                 foreach (string zipFile in zipFiles)
                 {
@@ -125,11 +111,11 @@ namespace DeployClient
                         WriteLine(string.Format("\t{0}", Path.GetFileName(zipFile)));
                         Write("\t\t...encrypting...");
 
-                        using (Stream es = Crypto.Encrypt(fs, Properties.Settings.Default.EncryptionKey))
+                        using (Stream es = Crypto.Encrypt(fs, Options.EncryptionKey))
                         {
                             Write("uploading...");
 
-                            API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
+                            await API.AddPackageAsync(sessionGuid, es, Path.GetFileName(zipFile));
                         }
 
                         WriteLine("done.");
@@ -145,25 +131,47 @@ namespace DeployClient
                 JavaScriptSerializer jsonSer = new JavaScriptSerializer();
 
                 // Start.
-                SortedList<string, dynamic> results = null;
-
-                if (!API.Install(sessionGuid, out results))
+                (bool installSuccess,  SortedList<string, dynamic> results) = await API.InstallAsync(sessionGuid);
+                if (!installSuccess)
                 {
-                    DateTime abortTime = DateTime.Now.AddMinutes(10);
-                    TimeSpan interval = new TimeSpan(0, 0, 0, 2);
+                    TimeSpan interval = TimeSpan.FromSeconds(2);
+                    Dictionary<string, dynamic> response;
+                    var successfullyReachedApi = false;
+                    DateTime apiNotFoundAbortTime = DateTime.Now.AddSeconds(Options.InstallationStatusTimeout);
+
+                    // Attempt to get the status of the session from the remote api.
+                    // This can fail shortly after an installation as the api has not yet been initialised,
+                    // so attempt to get it for the given timespan.
+                    do
+                    {
+                        // Get whether we can reach the api
+                        (bool getSessionSuccess, Dictionary<string, dynamic> getSessionResponse) = await API.GetSessionAsync(sessionGuid);
+                        successfullyReachedApi = getSessionSuccess;
+                        response = getSessionResponse;
+
+                        if (!successfullyReachedApi)
+                        {
+                            // Api is returning a 404 - wait and try again
+                            System.Threading.Thread.Sleep(interval);
+                        }
+                    } while (!successfullyReachedApi && DateTime.Now < apiNotFoundAbortTime);
+
+                    // If the api couldn't be reached by the given time, something has gone wrong
+                    if (!successfullyReachedApi)
+                    {
+                        throw new HttpException("Remote API returned status 404");
+                    }
 
                     int status = -1;
                     string previousPrint = null;
 
-                    // While the process isn't complete and we haven't exceeded our abort time.
-                    while (status < 2 && DateTime.Now < abortTime)
-                    {
-                        // Get response.
-                        Dictionary<string, dynamic> response = API.GetSession(sessionGuid);
+                    DateTime abortTime = DateTime.Now.AddMinutes(10);
 
-                        // Is there a status key?
+                    // Get the installation status from the API until it is complete or until the abort time is reached
+                    do
+                    {
                         if (response.ContainsKey("Status"))
-                        {   
+                        {
                             // Yes, get the status.
                             status = response["Status"];
                         }
@@ -180,7 +188,7 @@ namespace DeployClient
                         {
                             // Build feedback.
                             string print = BuildUpdateString(results);
-                            
+
                             // Same as previous feedback?
                             if (print != previousPrint)
                             {
@@ -195,9 +203,18 @@ namespace DeployClient
                             break;
                         }
 
-                        // Sleep.
                         System.Threading.Thread.Sleep(interval);
-                    }
+
+                        (bool success, Dictionary<string, dynamic> getSessionResponse) = await API.GetSessionAsync(sessionGuid);
+                        response = getSessionResponse;
+
+                        // The api should not be returning a 404 status at this point
+                        if (!success)
+                        {
+                            throw new HttpException("Remote API returned status 404");
+                        }
+                    } while (status < 2 && DateTime.Now < abortTime);
+
                 }
                 else
                 {
@@ -205,12 +222,17 @@ namespace DeployClient
                     string print = BuildUpdateString(results);
 
                     // Print feedback.
-                    WriteLine(print);   
+                    WriteLine(print);
                 }
 
                 // Finished install.
                 WriteLine(string.Format("Finished installation in {0} ms.", (DateTime.Now - installStartTime).TotalMilliseconds));
                 ReadLine();
+
+                int succeeded = ParseResults(results).succeeded;
+                bool allSucceeded = succeeded == results.Count;
+                ExitCode exitCode = allSucceeded ? ExitCode.Success : ExitCode.InstallFailure;
+                Environment.Exit((int)exitCode);
             }
             catch (Exception ex)
             {
@@ -223,7 +245,40 @@ namespace DeployClient
             }
         }
 
+        private static void GetSettings(string[] args)
+        {
+            if (!CommandLine.Parser.Default.ParseArguments(args, Options))
+            {
+                // Can't use custom WriteLine method as IsSilent is not properly available
+                Console.WriteLine("Could not parse command line arguments");
+                Environment.Exit((int)ExitCode.Error);
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(Options.TargetUri))
+                {
+                    Options.TargetUri = Properties.Settings.Default.TargetUri;
+                }
+
+                if (string.IsNullOrWhiteSpace(Options.APIKey))
+                {
+                    Options.APIKey = Properties.Settings.Default.APIKey;
+                }
+
+                if (string.IsNullOrWhiteSpace(Options.EncryptionKey))
+                {
+                    Options.EncryptionKey = Properties.Settings.Default.EncryptionKey;
+                }
+            }
+        }
+
         private static string BuildUpdateString(SortedList<string, dynamic> results)
+        {
+            var (attempted, succeeded, _) = ParseResults(results);
+            return string.Format("\t{0}/{1} module archives processed, {2}/{0} succeeded.", attempted, results.Count, succeeded);
+        }
+
+        private static (int attempted, int succeeded, int failed) ParseResults(SortedList<string, dynamic> results)
         {
             // Get counts.
             int attempted = 0;
@@ -249,15 +304,28 @@ namespace DeployClient
                 }
             }
 
-            return string.Format("\t{0}/{1} module archives processed, {2}/{0} succeeded.", attempted, results.Count, succeeded);
+            return (attempted, succeeded, failed);
         }
 
         private static void WriteException(Exception ex, int maxDepth = 10, int depth = 0)
         {
-            WriteLine(ex.Message);
+            WriteLine($"{ex.GetType()} | {ex.Message}");
             WriteLine(ex.StackTrace);
 
-            if (depth < maxDepth && ex.InnerException != null)
+            if (depth >= maxDepth)
+            {
+                return;
+            }
+
+            if (ex is AggregateException aggregate && aggregate.InnerExceptions.Any())
+            {
+                depth++;
+                foreach (Exception inner in aggregate.InnerExceptions)
+                {
+                    WriteException(inner, maxDepth, depth);
+                }
+            }
+            else if (ex.InnerException != null)
             {
                 depth++;
                 WriteException(ex.InnerException, maxDepth, depth);
@@ -266,7 +334,7 @@ namespace DeployClient
 
         private static void Write(string message)
         {
-            if(IsSilent)
+            if(Options.IsSilent)
             {
                 return;
             }
@@ -276,7 +344,7 @@ namespace DeployClient
 
         private static void WriteLine(string message = "")
         {
-            if(IsSilent)
+            if(Options.IsSilent)
             {
                 return;
             }
@@ -286,7 +354,7 @@ namespace DeployClient
 
         private static string ReadLine()
         {
-            if (IsSilent || NoPrompt)
+            if (Options.IsSilent || Options.NoPrompt)
             {
                 return null;
             }
@@ -296,7 +364,7 @@ namespace DeployClient
 
         private static bool Confirm()
         {
-            if (IsSilent || NoPrompt)
+            if (Options.IsSilent || Options.NoPrompt)
             {
                 return true;
             }

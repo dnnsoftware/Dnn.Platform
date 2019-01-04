@@ -1,4 +1,5 @@
-﻿using Cantarus.Modules.PolyDeploy.Components.Logging;
+using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -54,6 +55,18 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 message = "An error occurred while trying to authenticate this request.";
 
                 EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, null, ex);
+            }
+
+            // If IP is not whitelisted, check if API user can bypass whitelist
+            if (!authenticated)
+            {
+                string apiKey = actionContext.Request.GetApiKey();
+                APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
+
+                if (apiUser != null && apiUser.Prepared && apiUser.BypassIPWhitelist)
+                {
+                    authenticated = true;
+                }
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.

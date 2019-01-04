@@ -1,7 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -22,24 +21,19 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
 
             try
             {
-                // Is there an api key header present?
-                if (actionContext.Request.Headers.Contains("x-api-key"))
+                apiKey = actionContext.Request.GetApiKey();
+
+                // Make sure it's not null and it's 32 characters or we're wasting our time.
+                if (apiKey != null && apiKey.Length == 32)
                 {
-                    // Get the api key from the header.
-                    apiKey = actionContext.Request.Headers.GetValues("x-api-key").FirstOrDefault();
+                    // Attempt to look up the api user.
+                    APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
 
-                    // Make sure it's not null and it's 32 characters or we're wasting our time.
-                    if (apiKey != null && apiKey.Length == 32)
+                    // Did we find one and is it ready to use?
+                    if (apiUser != null && apiUser.Prepared)
                     {
-                        // Attempt to look up the api user.
-                        APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
-
-                        // Did we find one and is it ready to use?
-                        if (apiUser != null && apiUser.Prepared)
-                        {
-                            // Genuine API user.
-                            authenticated = true;
-                        }
+                        // Genuine API user.
+                        authenticated = true;
                     }
                 }
             }

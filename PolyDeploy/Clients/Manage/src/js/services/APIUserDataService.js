@@ -18,10 +18,10 @@
 
         // POST
         // Create a new API user.
-        function createUser(name) {
+        function createUser(name, bypass) {
 
             // Make request.
-            return $http.post(controllerUrl + 'Create?name=' + name).then(
+            return $http.post(controllerUrl + 'Create?name=' + name + '&bypass=' + !!bypass).then(
                 function (response) {
 
                     // Return unpacked data.

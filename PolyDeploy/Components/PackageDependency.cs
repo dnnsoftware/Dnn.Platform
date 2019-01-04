@@ -1,12 +1,17 @@
 ﻿using DotNetNuke.Services.Installer.Dependencies;
+using System;
+using System.Collections.Generic;
 using System.Xml.XPath;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class PackageDependency
     {
-        public string Type { get; set; }
-        public string Value { get; set; }
+        private static readonly ISet<string> PackageTypes = new HashSet<string>(new [] { "PACKAGE", "MANAGEDPACKAGE" }, StringComparer.OrdinalIgnoreCase);
+
+        public bool IsPackageDependency { get; set; }
+        public string PackageName { get; set; }
+        public string DependencyVersion { get; set; }
         internal bool DnnMet { get; set; }
         internal bool DeployMet { get; set; }
 
@@ -20,8 +25,9 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
         public PackageDependency(XPathNavigator dependencyRoot)
         {
-            Type = dependencyRoot.GetAttribute("type", "");
-            Value = dependencyRoot.Value;
+            IsPackageDependency = PackageTypes.Contains(dependencyRoot.GetAttribute("type", ""));
+            PackageName = dependencyRoot.Value;
+            DependencyVersion = dependencyRoot.GetAttribute("version", "");
             DnnMet = false;
             DeployMet = false;
 
