@@ -50,7 +50,6 @@ class MemberManagementPanelBody extends Component {
             return;
         }
         let {state} = this;
-        console.log(memberSettings);
         let membershipResetLinkValidity = memberSettings["MembershipResetLinkValidity"];
         if (membershipResetLinkValidity === "" || !re.test(membershipResetLinkValidity)) {
             state.error["membershipResetLinkValidity"] = true;
