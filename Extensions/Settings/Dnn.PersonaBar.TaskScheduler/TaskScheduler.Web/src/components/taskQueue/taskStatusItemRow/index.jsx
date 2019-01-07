@@ -14,10 +14,6 @@ class TaskStatusItemRow extends Component {
             collapsedClass: true,
             repainting: false
         };
-        this.timeout = 0;
-        // setInterval(() => {
-        //     console.log("Repainting: ", this.state.repainting);
-        // }, 500);
         this.handleClick = this.handleClick.bind(this);
     }
 

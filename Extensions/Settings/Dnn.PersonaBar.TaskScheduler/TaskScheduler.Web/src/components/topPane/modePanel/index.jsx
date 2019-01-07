@@ -27,7 +27,7 @@ class ModePanel extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         let {props, state} = this;
         if (props.schedulerDelay === "" || !re.test(props.schedulerDelay)) {
             state.error["schedulerDelay"] = true;

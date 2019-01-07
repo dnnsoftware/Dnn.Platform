@@ -31,7 +31,6 @@ export class Body extends Component {
         else {
             props.dispatch(PaginationActions.loadTab(index));
         }
-        this.setState({});
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/

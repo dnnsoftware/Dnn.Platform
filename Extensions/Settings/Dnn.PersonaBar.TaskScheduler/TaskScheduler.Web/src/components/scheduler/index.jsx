@@ -60,12 +60,10 @@ class SchedulerPanel extends Component {
         return <div className="header-row">{tableHeaders}</div>;
     }
     uncollapse(id, index) {
-        setTimeout(() => {
-            this.setState({
-                openId: id,
-                historyPanelOpen: index === 1
-            });
-        }, this.timeout);
+        this.setState({
+            openId: id,
+            historyPanelOpen: index === 1
+        });
     }
     collapse(index) {
         if (this.state.openId !== "") {
