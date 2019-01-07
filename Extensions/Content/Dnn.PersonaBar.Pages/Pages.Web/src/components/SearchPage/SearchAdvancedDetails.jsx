@@ -15,10 +15,10 @@ class SearchAdvancedDetails extends Component {
         };
     }
 
-    componentDidUpdate() {
-        if (this.props.tags) {
+    componentDidUpdate(prevProps) {
+        if (this.props.tags !== prevProps.tags) {
             this.setState({
-                tags:this.props.tags.split(",")
+                tags: this.props.tags.split(",")
             });
         }
     }
@@ -152,8 +152,8 @@ class SearchAdvancedDetails extends Component {
 
 SearchAdvancedDetails.propTypes = {
     onSearch : PropTypes.func.isRequired,
-    workflowList : PropTypes.array.isRequired,
-    getWorkflowsList : PropTypes.func.isRequired,
+    workflowList : PropTypes.array,
+    getWorkflowsList : PropTypes.func,
     getFilterByPageTypeOptions : PropTypes.func.isRequired,
     getFilterByPageStatusOptions : PropTypes.func.isRequired,
     getFilterByWorkflowOptions : PropTypes.func.isRequired,
@@ -161,14 +161,14 @@ SearchAdvancedDetails.propTypes = {
     updateFilterByPageStatusOptions : PropTypes.func.isRequired,
     updateFilterByWorkflowOptions : PropTypes.func.isRequired,
     onApplyChangesDropdownDayPicker : PropTypes.func.isRequired,
-    filterByPublishStatus: PropTypes.string.isRequired,
-    filterByPageType : PropTypes.string.isRequired,
+    filterByPublishStatus: PropTypes.string,
+    filterByPageType : PropTypes.string,
     onDayClick : PropTypes.func.isRequired,
     startDate : PropTypes.instanceOf(Date).isRequired,
     endDate : PropTypes.instanceOf(Date).isRequired,
     startAndEndDateDirty : PropTypes.bool.isRequired,
     tags : PropTypes.string.isRequired,
-    filterByWorkflow : PropTypes.string.isRequired,
+    filterByWorkflow : PropTypes.number,
     collapsed : PropTypes.bool.isRequired, 
     clearAdvancedSearch : PropTypes.func.isRequired,
     clearAdvancedSearchDateInterval : PropTypes.func.isRequired,

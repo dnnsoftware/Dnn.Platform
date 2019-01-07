@@ -10,8 +10,8 @@ class LazyLoad extends Component {
         };
     }
 
-    componentDidUpdate(){
-        if (this.props.filtersUpdated) {
+    componentDidUpdate(prevProps){
+        if (this.props.filtersUpdated !== prevProps.filtersUpdated) {
             this.setState({
                 page:0
             });
