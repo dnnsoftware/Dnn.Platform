@@ -56,7 +56,7 @@ class PageDetailsFooter extends Component {
         for (let i = 0; i < elements.length; i++) {
             let index = this.getInteger(elements[i].order);
             const Component = elements[i].component;
-            const instance = <Component page={this.props.page} onChange={this.onChangeValue.bind(this)} 
+            const instance = <Component key={"component" + i.toString()} page={this.props.page} onChange={this.onChangeValue.bind(this)} 
                 store={elements[i].store} />;
 
             if (index || index === 0) {

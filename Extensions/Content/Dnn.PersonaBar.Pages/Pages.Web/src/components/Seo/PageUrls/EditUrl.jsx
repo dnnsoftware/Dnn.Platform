@@ -75,7 +75,6 @@ class EditUrl extends Component {
         const {url, saving, pageHasParent, siteAliases, primaryAliasId, isOpened, onSave, onCancel} = this.props;
         const aliases = this.getOptions(siteAliases);
         const siteAliasUsageOptions = this.getSiteAliasUsageOptions(pageHasParent);
-        console.log(this.props);
         return (
             <Collapsible accordion={true} isOpened={isOpened} keepCollapsedContent={true} className={"editUrl"}>
                 <div>

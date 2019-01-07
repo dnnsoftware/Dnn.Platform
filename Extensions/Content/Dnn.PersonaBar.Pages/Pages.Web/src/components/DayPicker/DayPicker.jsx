@@ -10,7 +10,7 @@ const DayPicker = (newProps) => {
             <Picker {...newProps} />
         </div>);
 };
-DayPicker.PropTypes = {
+DayPicker.propTypes = {
     onDayClick: PropTypes.func.isRequired,
     month: PropTypes.instanceOf(Date),
     selectedDays: PropTypes.instanceOf(Date),

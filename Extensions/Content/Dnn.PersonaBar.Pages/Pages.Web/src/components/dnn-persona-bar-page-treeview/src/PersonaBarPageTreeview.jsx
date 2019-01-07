@@ -181,7 +181,7 @@ export class PersonaBarPageTreeview extends Component {
                         </div>
 
                         <div style={style} className={this.getClassName(item)}>
-                            <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
+                            <PersonaBarPageIcon iconType={item.pageType} selected={item.selected || false} />
                             <span
                                 className={`item-name ${itemNameHidden}`}
                                 onClick={() => item.canManagePage ? onSelection(item) : onNoPermissionSelection(item)}>
