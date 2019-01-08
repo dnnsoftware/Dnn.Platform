@@ -1188,8 +1188,15 @@ namespace DotNetNuke.Entities.Portals
                         FolderMappingInfo folderMapping;
                         try
                         {
-                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath) 
-                                            ?? GetFolderMappingFromStorageLocation(portalId, node);
+                            if (folderPath == string.Empty) //site's root folder force to use standard folder type.
+                            {
+                                folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, "Standard");
+                            }
+                            else
+                            {
+                                folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
+                                                ?? GetFolderMappingFromStorageLocation(portalId, node);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -1862,7 +1869,8 @@ namespace DotNetNuke.Entities.Portals
 
             if (FolderManager.Instance.GetFolder(portalId, "") == null)
             {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "");
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, "Standard");
+                objFolder = FolderManager.Instance.AddFolder(folderMapping, "");
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
