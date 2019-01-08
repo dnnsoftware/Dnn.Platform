@@ -104,7 +104,7 @@ class DetailsRow extends Component {
         let userColumns = [
             {
                 index: 5,
-                content: <GridCell columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
+                content: <GridCell key={`gc-username-${user.userId}`} columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
                     <h6>
                         <TextOverflowWrapper className="email-link" text={user.displayName} maxWidth={125}/>
                     </h6>
@@ -113,20 +113,20 @@ class DetailsRow extends Component {
             },
             {
                 index: 10,
-                content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={"user-emails" + (user.isDeleted ? " deleted" : "") } >
+                content: <GridCell key={`gc-email-link-${user.userId}`} columnSize={columnSizes.find(x=>x.index===10).size}  className={"user-emails" + (user.isDeleted ? " deleted" : "") } >
                     <TextOverflowWrapper className="email-link" isAnchor={true} href={"mailto:" + user.email} text={user.email} maxWidth={125}/>
                 </GridCell >
             },
             {
                 index: 15,
-                content: <GridCell columnSize={columnSizes.find(x=>x.index===15).size}  className={"user-joined" + (user.isDeleted ? " deleted" : "")}>
+                content: <GridCell key={`gc-createdon-${user.userId}`} columnSize={columnSizes.find(x=>x.index===15).size}  className={"user-joined" + (user.isDeleted ? " deleted" : "")}>
                     {user.createdOnDate !== "-" && <p>{formatDate(user.createdOnDate) }</p>}
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
             },
             {
                 index: 25,
-                content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right", paddingRight: 2}}>{userActions}</GridCell>
+                content: id !== "add" && <GridCell key={`gc-actions-${user.userId}`} columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right", paddingRight: 2}}>{userActions}</GridCell>
             }
         ].concat((extraColumns) || []);
 
