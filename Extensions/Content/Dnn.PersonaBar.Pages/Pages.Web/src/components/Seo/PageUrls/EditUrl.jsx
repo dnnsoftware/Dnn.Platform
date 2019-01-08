@@ -79,7 +79,7 @@ class EditUrl extends Component {
             <Collapsible accordion={true} isOpened={isOpened} keepCollapsedContent={true} className={"editUrl"}>
                 <div>
                     <GridCell>
-                        <GridCell columnSize="50" className="left-column">
+                        <GridCell columnSize={50} className="left-column">
                             <Label
                                 labelType="block"
                                 tooltipMessage={Localization.get("Pages_Seo_SiteAlias.Help")}
@@ -89,7 +89,7 @@ class EditUrl extends Component {
                                 onSelect={this.onChangeField.bind(this, "siteAlias")} 
                                 withBorder={true} />
                         </GridCell>
-                        <GridCell columnSize="50" className="right-column">
+                        <GridCell columnSize={50} className="right-column">
                             <SingleLineInputWithError
                                 style={{width: "100%"}}
                                 label={Localization.get("Pages_Seo_UrlPath")}
@@ -100,7 +100,7 @@ class EditUrl extends Component {
                     </GridCell>
                     {url.siteAlias.Key !== primaryAliasId &&
                     <GridCell>
-                        <GridCell columnSize="100">
+                        <GridCell columnSize={100}>
                             <Label
                                 labelType="block"
                                 tooltipMessage={Localization.get("Pages_Seo_SelectedAliasUsage.Help")}
@@ -112,7 +112,7 @@ class EditUrl extends Component {
                         </GridCell>
                     </GridCell>}
                     <GridCell>
-                        <GridCell columnSize="50" className="left-column">
+                        <GridCell columnSize={50} className="left-column">
                             <Label
                                 labelType="block"
                                 tooltipMessage={Localization.get("Pages_Seo_UrlType.Help")}
@@ -122,7 +122,7 @@ class EditUrl extends Component {
                                 onSelect={this.onChangeField.bind(this, "statusCode")} 
                                 withBorder={true} />
                         </GridCell>
-                        <GridCell columnSize="50" className="right-column">
+                        <GridCell columnSize={50} className="right-column">
                             {url.statusCode.Key === 301 && 
                             <SingleLineInputWithError
                                 style={{width: "100%"}}
