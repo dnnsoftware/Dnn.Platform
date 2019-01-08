@@ -58,26 +58,27 @@ export default class FileUpload extends Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const file = this.props.selectedFile;
         if (file) {
             this.updateStateAndReloadImage(file);
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!nextProps.selectedFile) {
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+        if (!props.selectedFile && props.selectedFile !== prevProps.selectedFile) {
             this.setState({ fileExist: null, selectedFile: null, selectedFolder: null }, () => {});
             return;
         }
-        if (nextProps.selectedFile && this.state.selectedFile)
+        if (props.selectedFile && props.selectedFile !== prevProps.selectedFile && this.state.selectedFile)
         {
-            if (nextProps.selectedFile.fileId !== (this.state.selectedFile.fileId || + this.state.selectedFile.key)) {
-                const file = nextProps.selectedFile;
+            if (props.selectedFile.fileId !== (this.state.selectedFile.fileId || + this.state.selectedFile.key)) {
+                const file = props.selectedFile;
                 this.updateStateAndReloadImage(file);
             }
         }
-        if (nextProps.portalId !== this.props.portalId) {         
+        if (props.portalId !== prevProps.portalId) {         
             this.setState({ showFolderPicker: false });
         }
     }

@@ -17,10 +17,12 @@ export default class TreeControlInteractor extends Component {
         this.individuallyChecked = 1;
         this.unchecked = 0;
         this.scrollbar = {};
+        this.state = {
+            tabs: []
+        };
     }
 
-    componentWillMount() {
-        this.setState({ tabs: [] });
+    componentDidMount() {        
         this.init();
     }
 
@@ -28,7 +30,6 @@ export default class TreeControlInteractor extends Component {
         if (this.scrollbar.getClientWidth() > 200) {
             this.scrollbar.scrollToRight();
         }
-
     }
 
     init() {

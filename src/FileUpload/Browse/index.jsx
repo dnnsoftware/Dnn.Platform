@@ -57,8 +57,8 @@ export default class Browse extends Component {
         return this.props.onSave(this.state.selectedFolder, this.state.selectedFile);
     }
 
-    componentWillReceiveProps(nextProps) {        
-        if (nextProps.portalId !== this.props.portalId) {
+    componentDidUpdate(prevProps) {
+        if (this.props.portalId !== prevProps.portalId) {
             this.getFolders();
         }
     }

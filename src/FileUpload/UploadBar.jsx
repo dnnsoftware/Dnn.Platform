@@ -19,9 +19,10 @@ export default class UploadBar extends Component {
     componentDidMount() {
         setTimeout(this.increase.bind(this), 100);
     }
-
-    componentWillReceiveProps(props) {
-        if (props.uploadComplete) {
+    
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+        if (props.uploadComplete && props.uploadComplete !== prevProps.uploadComplete) {
             clearTimeout(this.setTimeout);
             this.setState({percent: 100});
         }

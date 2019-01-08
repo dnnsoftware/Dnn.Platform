@@ -18,12 +18,18 @@ class Pager extends Component {
             totalPages: 0,
             startIndex: 0,
             endIndex: props.numericCounters !== undefined ? props.numericCounters : 0
-        };
-        this.calculateTotalPages(props);
+        };        
     }
-    componentWillReceiveProps(newProps) {
-        this.calculateTotalPages(newProps);
+
+    componentDidMount() {
+        this.calculateTotalPages(this.props);
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.totalRecords !== this.props.totalRecords)
+            this.calculateTotalPages(this.props);
+    }
+    
     formatCommaSeparate(number) {
         let numbersSeparatorByLocale = this.getNumbersSeparatorByLocale();
         while (/(\d+)(\d{3})/.test(number.toString())) {
@@ -181,14 +187,14 @@ class Pager extends Component {
             for (let i = startIndex; i < endIndex; i++) {
                 let step = i + 1;
                 if (i !== currentPage) {
-                    pagingBoxes = pagingBoxes.concat(<li className="pages do-not-close" onClick={this.onPageChanged.bind(this, i)}>{this.formatCommaSeparate(step)}</li>);
+                    pagingBoxes = pagingBoxes.concat(<li key={"li" + i} className="pages do-not-close" onClick={this.onPageChanged.bind(this, i)}>{this.formatCommaSeparate(step)}</li>);
                 } else {
-                    pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close">{this.formatCommaSeparate(i + 1)}</li>);
+                    pagingBoxes = pagingBoxes.concat(<li key={"li" + i} className="pages current do-not-close">{this.formatCommaSeparate(i + 1)}</li>);
                 }
             }
         }
         else if (this.props.numericCounters === 1) {
-            pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close">{this.formatCommaSeparate(currentPage + 1)}</li>);
+            pagingBoxes = pagingBoxes.concat(<li key="li-single" className="pages current do-not-close">{this.formatCommaSeparate(currentPage + 1)}</li>);
         }
         return pagingBoxes;
     }

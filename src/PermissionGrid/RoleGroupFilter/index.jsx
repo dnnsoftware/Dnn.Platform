@@ -23,9 +23,7 @@ class RoleGroupFilter extends Component {
         this.groupsDropdown = React.createRef();
     }
 
-    componentWillMount() {
-        const { props, state } = this;
-
+    componentDidMount() {
         this.getRoleGroups();
     }
 

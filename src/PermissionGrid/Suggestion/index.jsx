@@ -18,13 +18,15 @@ class Suggestion extends Component {
         this.debounceGetSuggestions = debounce(500, this.debounceGetSuggestions);
     }
 
-    componentWillReceiveProps() {
-        this.setState({ selectedValue: { value: -1, label: "" }, suggestions: [] });
+    componentDidUpdate(prevProps) {
+        if (this.props.options !== prevProps.options) {
+            this.setState({ selectedValue: { value: -1, label: "" }, suggestions: [] });
+        }
     }
 
     componentDidMount() {
-        if (this.comboBoxDom.childNodes !== undefined){
-                this.comboBoxDom.childNodes[1].setAttribute("aria-label", "Suggestion");
+        if (this.comboBoxDom.childNodes !== undefined) {
+            this.comboBoxDom.childNodes[1].setAttribute("aria-label", "Suggestion");
         }
     }
 

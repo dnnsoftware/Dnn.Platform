@@ -6,19 +6,16 @@ import { EditIcon } from "../SvgIcons";
 import "./style.less";
 
 class EditableField extends Component {
-    constructor() {
-        super();
-        this.uniqueId = "editableField-" + (Date.now() * Math.random());
-    }
-
-    componentWillMount() {
-        const { props } = this;
-        this.setState({
+    constructor(props) {
+        super(props);
+        this.state = {
             editMode: false,
             value: props.value,
             error: false
-        });
+        };
+        this.uniqueId = "editableField-" + (Date.now() * Math.random());
     }
+    
     toggleEditMode() {
         this.setState({
             editMode: !this.state.editMode

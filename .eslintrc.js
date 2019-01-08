@@ -16,7 +16,7 @@ module.exports = {
         "react": {
             "createClass": "createReactClass",
             "pragma": "React",  
-            "version": "15.0",
+            "version": "16.4.2",
             "flowVersion": "0.53"
           },
           "propWrapperFunctions": [ "forbidExtraProps" ]
@@ -60,6 +60,7 @@ module.exports = {
         "import/no-unresolved": 2,
         "import/named": 2,
         "import/default": 2,
-        "filenames/match-exported": 2
+        "filenames/match-exported": 2,
+        "react/no-deprecated": "error"
     }
 };

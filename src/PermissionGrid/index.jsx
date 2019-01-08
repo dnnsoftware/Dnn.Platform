@@ -34,16 +34,14 @@ class PermissionGrid extends Component {
         };
     }
 
-    componentWillMount() {
-        const {props, state} = this;
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            definitions: newProps.permissions.permissionDefinitions,
-            rolePermissions: newProps.permissions.rolePermissions,
-            userPermissions: newProps.permissions.userPermissions
-        });
+    componentDidUpdate(prevProps) {
+        if (this.props.permissions !== prevProps.permissions) {
+            this.setState({
+                definitions: this.props.permissions.permissionDefinitions,
+                rolePermissions: this.props.permissions.rolePermissions,
+                userPermissions: this.props.permissions.userPermissions
+            });
+        }
     }
 
     localize(key) {

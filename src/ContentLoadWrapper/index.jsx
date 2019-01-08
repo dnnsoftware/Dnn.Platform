@@ -23,32 +23,37 @@ export default class ContentLoadWrapper extends Component {
         this._isMounted = false;
     }
 
-    componentWillReceiveProps(props) {
-        if (props.loadComplete) {
-            clearTimeout(this.setTimeout);
-            if (this._isMounted) {
-                this.setState({ percent: 100 }, () => {
-                });
-            }
-            setTimeout(() => {
-                if (typeof props.onCompleteCallback === "function") {
-                    props.onCompleteCallback();
+    componentDidUpdate(prevProps) {
+        let { props } = this;
+        if (props.loadComplete !== prevProps.loadComplete) {
+            if (props.loadComplete) {
+                clearTimeout(this.setTimeout);
+                if (this._isMounted) {
+                    this.setState({ percent: 100 }, () => {
+                    });
                 }
-            }, 300);
-        }
-        if (props.loadError) {
-            clearTimeout(this.setTimeout);
-            if (this._isMounted) {
-                this.setState({ percent: 100 }, () => {
-                });
+                setTimeout(() => {
+                    if (typeof props.onCompleteCallback === "function") {
+                        props.onCompleteCallback();
+                    }
+                }, 300);
             }
-            setTimeout(() => {
-                if (typeof props.onErrorCallback === "function") {
-                    props.onErrorCallback();
-                }
-            }, 300);
         }
-    }
+        if (props.loadError !== prevProps.loadError) {
+            if (props.loadError) {
+                clearTimeout(this.setTimeout);
+                if (this._isMounted) {
+                    this.setState({ percent: 100 }, () => {
+                    });
+                }
+                setTimeout(() => {
+                    if (typeof props.onErrorCallback === "function") {
+                        props.onErrorCallback();
+                    }
+                }, 300);
+            }
+        }
+    }    
 
     increase() {
         let {percent} = this.state;

@@ -5,23 +5,18 @@ import "./style.less";
 
 export default class Checkbox extends Component {
 
-    constructor() {
-        super();
-
+    constructor(props) {
+        super(props);
+        this.state = { checked: props.value ? props.value : false };
         this.id = "checkbox-" + Math.random() + Date.now();
     }
 
-    componentWillMount() {
-        const {props} = this;
-        this.setState({
-            checked: props.value
-        });
-    }
-
-    componentWillReceiveProps(props) {
-        this.setState({
-            checked: props.value
-        });
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value) {
+            this.setState({
+                checked: props.value
+            });
+        }
     }
 
     onClick() {
