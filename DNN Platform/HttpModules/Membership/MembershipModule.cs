@@ -30,6 +30,7 @@ using System.Web.Security;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -267,6 +268,12 @@ namespace DotNetNuke.HttpModules.Membership
                     || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
+                }
+
+                var forceLogout = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged");
+                if (!forceLogout)
+                {
+                    return false;
                 }
 
                 // if user's password changed after the user cookie created, then force user to login again.
