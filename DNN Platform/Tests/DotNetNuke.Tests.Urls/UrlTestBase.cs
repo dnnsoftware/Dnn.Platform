@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Urls
         {
             foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
             {
-                if (alias.HTTPAlias == defaultAlias)
+                if (string.Equals(alias.HTTPAlias, defaultAlias, StringComparison.InvariantCultureIgnoreCase))
                 {
                     alias.IsPrimary = true;
                     PortalAliasController.Instance.UpdatePortalAlias(alias);
