@@ -44,7 +44,7 @@ using DotNetNuke.Services.Localization;
 #endregion
 
 namespace DotNetNuke.Entities.Urls
-{    
+{
     public class RewriteController
     {
         internal const int SiteRootRewrite = -3;
