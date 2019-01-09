@@ -30,7 +30,6 @@ using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Dto.Portal;
 using DotNetNuke.Services.Localization;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-using DotNetNuke.Entities.Portals;
 
 namespace Dnn.ExportImport.Components.Services
 {
