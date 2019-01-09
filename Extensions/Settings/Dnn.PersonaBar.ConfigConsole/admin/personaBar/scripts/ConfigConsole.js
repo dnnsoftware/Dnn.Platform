@@ -10,14 +10,14 @@ All Rights Reserved
 */
 'use strict';
 define(['jquery',
-        'knockout',
-        'knockout.mapping',
-		'jquery-ui.min',
-        'main/codeEditor',
-		'main/config',
-        'jquery.easydropdown.min',
-        'dnn.jquery',
-        'main/koBindingHandlers/jScrollPane'],
+    'knockout',
+    'knockout.mapping',
+    'jquery-ui.min',
+    'main/codeEditor',
+    'main/config',
+    'jquery.easydropdown.min',
+    'dnn.jquery',
+    'main/koBindingHandlers/jScrollPane'],
     function ($, ko, koMapping, jqueryUI, codeEditor, cf) {
         var config = cf.init();
 
@@ -32,6 +32,9 @@ define(['jquery',
 
         var getConfigs = function () {
             requestService('get', 'GetConfigFilesList', {}, function (data) {
+                // add the caption as first option
+                data.Results.unshift(viewModel.resx.plConfigHelp);
+
                 viewModel.configs(data.Results);
 
                 $('.configConsolePanel select').easyDropDown({ wrapperClass: 'pb-dropdown', cutOff: 10, inFocus: true });
@@ -42,12 +45,17 @@ define(['jquery',
         }
 
         var getConfigFile = function () {
-            requestService('get', 'GetConfigFile', { 'fileName': curConfigName }, function (data) {
-                configEditor.setValue(data.FileContent);
-            }, function () {
-                // failed
-                utility.notifyError('Failed...');
-            });
+            if (curConfigName === viewModel.resx.plConfigHelp) {
+                // it's the caption, so empty the editor
+                configEditor.setValue('');
+            } else {
+                requestService('get', 'GetConfigFile', { 'fileName': curConfigName }, function (data) {
+                    configEditor.setValue(data.FileContent);
+                }, function () {
+                    // failed
+                    utility.notifyError('Failed...');
+                });
+            }
         }
 
         var saveConfigFile = function () {
@@ -86,12 +94,6 @@ define(['jquery',
                 configs: ko.observableArray([]),
                 config: ko.observable('')
             };
-
-            viewModel.caption = ko.dependentObservable(function () {
-                if (!this.config()) {
-                    return utility.resx.ConfigConsole.plConfigHelp;
-                }
-            }, viewModel);
         }
 
         var configSelectionChanged = function (data) {
