@@ -105,6 +105,7 @@
                     }
                 }
                 span {
+                    float: left;
                     width: 100%;
                     display: inline-block;
                     border-left: 1px solid @alto;
@@ -112,7 +113,6 @@
                         float: left;
                         width: 250px;
                         height: 34px;
-                        line-height: 34px;
                         vertical-align: middle;
                         padding: 0;
                         border: none;
@@ -120,7 +120,7 @@
                         border-radius: 0;
                         display: inline-block;
                         box-shadow: none;
-                        background: transparent;
+                        background: transparent;                        						
                         button {
                             display: none;
                         }
@@ -150,6 +150,16 @@
                             background-color: transparent;
                             &::-ms-clear {
                                 display: none;
+                            }
+                        }
+                        .rw-widget-picker.rw-widget-container {
+                            height: 32px;
+                            line-height: 32px;
+                            border: none;
+                            input {
+                                height: inherit;
+                                line-height: inherit;
+                                border: inherit;
                             }
                         }
                         .rw-popup-container {
