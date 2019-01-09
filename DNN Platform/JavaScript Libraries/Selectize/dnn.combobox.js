@@ -77,15 +77,18 @@
                 this.$control.find('input.summary').remove();
                 var $summary = $('<input class="summary" aria-label="Summary" />').prependTo(this.$control);
 
-                var options = this.get_options().length;
-                var items = this.items.length;
+                var options = this.options;
+                var items = this.items;
+                var labels = items.map(function(i) {
+                    return options[i][opts.labelField];
+                });
                 var summaryText = "";
-                if (items === options) {
+                if (items.length === this.get_options().length) {
                     summaryText = opts.localization["AllItemsChecked"];
-                } else if (items === 1) {
-                    summaryText = this.items.join(',');
+                } else if (items.length === 1) {
+                    summaryText = labels.join(',');
                 } else {
-                    summaryText = items + ' ' + opts.localization["ItemsChecked"];
+                    summaryText = items.length + ' ' + opts.localization["ItemsChecked"];
                 }
 
                 $summary.val(summaryText);

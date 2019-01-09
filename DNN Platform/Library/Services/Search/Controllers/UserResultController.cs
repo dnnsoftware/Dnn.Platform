@@ -94,6 +94,15 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchResult.UniqueKey.Contains("allusers"))
             {
+                var scopeForRoles =
+                    PortalController.GetPortalSetting("SearchResult_ScopeForRoles", searchResult.PortalId, string.Empty)
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                if (scopeForRoles.Count > 0 && scopeForRoles.All(i => !userInSearchResult.IsInRole(i)))
+                {
+                    return false;
+                }
+
                 return true;
             }
 

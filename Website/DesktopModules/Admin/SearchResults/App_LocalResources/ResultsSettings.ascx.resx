@@ -153,6 +153,12 @@
   <data name="plResultsScopeForPortals.Text" xml:space="preserve">
     <value>Results Scope for Site(s)</value>
   </data>
+  <data name="plResultsScopeForRoles.Help" xml:space="preserve">
+    <value>Limit the search results by selecting the role(s).</value>
+  </data>
+  <data name="plResultsScopeForRoles.Text" xml:space="preserve">
+    <value>Results Scope for Role(s)</value>
+  </data>
   <data name="plShowDescription.Help" xml:space="preserve">
     <value>Show Description</value>
   </data>

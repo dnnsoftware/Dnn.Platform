@@ -30,6 +30,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Internals;
 
@@ -107,6 +108,16 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
+                    var scopeForRoles = 
+                        PortalController.GetPortalSetting("SearchResult_ScopeForRoles", PortalId, string.Empty)
+                        .Split(new []{','}, StringSplitOptions.RemoveEmptyEntries);
+                    var roles = RoleController.Instance.GetRoles(PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
+                    foreach (var role in roles)
+                    {
+                        var item = new ListItem(role.RoleName, role.RoleName) { Selected = scopeForRoles.Length == 0 || scopeForRoles.Contains(role.RoleName) };
+                        comboBoxRoles.Items.Add(item);
+                    }
+
                     chkEnableWildSearch.Checked = GetBooleanSetting("EnableWildSearch", true);
                     chkShowDescription.Checked = GetBooleanSetting("ShowDescription", true);
                     chkShowFriendlyTitle.Checked = GetBooleanSetting("ShowFriendlyTitle", true);
@@ -139,6 +150,9 @@ namespace DotNetNuke.Modules.SearchResults
                     var selectedFilters = comboBoxFilters.Value.Replace(",", "|");
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
+
+                    var selectedRoles = comboBoxRoles.Value;
+                    PortalController.UpdatePortalSetting(PortalId, "SearchResult_ScopeForRoles", selectedRoles);
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "EnableWildSearch", chkEnableWildSearch.Checked.ToString());
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowDescription", chkShowDescription.Checked.ToString());
