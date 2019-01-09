@@ -169,17 +169,20 @@ namespace Cantarus.Modules.PolyDeploy.Components
         /// </summary>
         private void Upgrade_00_09_00()
         {
+            string oldTableName = "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption]";
+            string newTableName = "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]";
+
             using (IDataContext context = DataContext.Instance())
             {
                 // Get all existing api user ids.
-                IEnumerable<int> apiUserIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT [APIUserID] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]");
+                IEnumerable<int> apiUserIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, $"SELECT [APIUserID] FROM {oldTableName}");
 
                 foreach (int apiUserId in apiUserIds)
                 {
                     // Read old data.
-                    string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [Name] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
-                    string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [APIKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
-                    string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT [EncryptionKey] FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0] WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [Name] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [APIKey] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [EncryptionKey] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
 
                     // Generate a salt.
                     string auSalt = APIUser.GenerateSalt();
@@ -191,10 +194,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     string auEncryptionKeyEnc = Crypto.Encrypt(auEncryptionKey, auApiKey);
 
                     // Insert in to new table.
-                    string insertSql = "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ON;"
-                        + "INSERT INTO {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt])"
-                        + "VALUES (@0, @1, @2, @3, @4);"
-                        + "SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers] OFF;";
+                    string insertSql = $"SET IDENTITY_INSERT {newTableName} ON;"
+                        + $"INSERT INTO {newTableName} ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt])"
+                        + $"VALUES (@0, @1, @2, @3, @4);"
+                        + $"SET IDENTITY_INSERT {newTableName} OFF;";
 
                     context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
                 }

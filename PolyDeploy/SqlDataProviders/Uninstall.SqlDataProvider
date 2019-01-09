@@ -87,19 +87,19 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_APIUsers_Pre0.9.0 TABLE ************************************************************/
+/*** Cantarus_PolyDeploy_APIUsers_PreEncryption TABLE ****************************************************/
 /*********************************************************************************************************/
 
-IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     BEGIN
-        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_Pre0.9.0]
+        DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption]
     END
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_PostUpgrade0.9.0 STORED PROCEDURE ***********************************************/
+/*** Cantarus_PolyDeploy_PostUpgrade_00.09.00 STORED PROCEDURE *******************************************/
 /*********************************************************************************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.9.0]'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade0.9.0]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.00]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_PostUpgrade_00.09.00]
 GO
