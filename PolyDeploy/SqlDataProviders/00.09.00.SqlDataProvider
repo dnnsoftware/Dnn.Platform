@@ -73,6 +73,7 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
     BEGIN
         EXEC sp_rename '{objectQualifier}Cantarus_PolyDeploy_APIUsers', '{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption'
         EXEC sp_rename 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers', 'PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers_PreEncryption'
+        EXEC sp_rename '{objectQualifier}DF_Cantarus_PolyDeploy_APIUsers_BypassIPWhitelist', '{objectQualifier}DF_Cantarus_PolyDeploy_APIUsers_PreEncryption_BypassIPWhitelist'
     END
 GO
 
@@ -85,6 +86,9 @@ IF NOT EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner
             [APIKey_Sha]        [CHAR](64) NOT NULL,
             [EncryptionKey_Enc] [CHAR](172) NOT NULL,
             [Salt]              [CHAR](32) NOT NULL,
+            [BypassIPWhitelist] [BIT] NOT NULL
+                CONSTRAINT [DF_{objectQualifier}Cantarus_PolyDeploy_APIUsers_BypassIPWhitelist]
+                    DEFAULT (0),
 
             CONSTRAINT [PK_{objectQualifier}Cantarus_PolyDeploy_APIUsers]
                 PRIMARY KEY CLUSTERED ([APIUserID]),

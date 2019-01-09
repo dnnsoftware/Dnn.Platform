@@ -183,6 +183,7 @@ namespace Cantarus.Modules.PolyDeploy.Components
                     string auName = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [Name] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
                     string auApiKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [APIKey] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
                     string auEncryptionKey = context.ExecuteQuery<string>(System.Data.CommandType.Text, $"SELECT [EncryptionKey] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
+                    bool auBypass = context.ExecuteQuery<bool>(System.Data.CommandType.Text, $"SELECT [BypassIPWhitelist] FROM {oldTableName} WHERE APIUserID = @0", apiUserId).FirstOrDefault();
 
                     // Generate a salt.
                     string auSalt = APIUser.GenerateSalt();
@@ -195,11 +196,11 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
                     // Insert in to new table.
                     string insertSql = $"SET IDENTITY_INSERT {newTableName} ON;"
-                        + $"INSERT INTO {newTableName} ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt])"
-                        + $"VALUES (@0, @1, @2, @3, @4);"
+                        + $"INSERT INTO {newTableName} ([APIUserID], [Name], [APIKey_Sha], [EncryptionKey_Enc], [Salt], [BypassIPWhitelist])"
+                        + $"VALUES (@0, @1, @2, @3, @4, @5);"
                         + $"SET IDENTITY_INSERT {newTableName} OFF;";
 
-                    context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt);
+                    context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt, auBypass);
                 }
             }
         }
