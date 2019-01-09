@@ -86,7 +86,7 @@ class SchedulerEditor extends Component {
 
     runSchedule() {
         const { props } = this;
-        let { scheduleItemDetail } = this.props;
+        let { scheduleItemDetail } = props;
         props.dispatch(TaskActions.runScheduleItem(scheduleItemDetail, () => {
             util.utilities.notify(resx.get("RunNow"));
         }, () => {
@@ -98,40 +98,47 @@ class SchedulerEditor extends Component {
         return !date || new Date(date).getFullYear() < 1970;
     }
 
+    getDefaultIfNull(obj, key, defaultValue) {
+        if (obj === undefined || key === undefined || obj[key] === undefined) {
+            return defaultValue;
+        }
+        return obj[key].toString();
+    }
+
     getValue(selectKey) {
         const { props } = this;
         switch (selectKey) {
             case "FriendlyName":
-                return props.scheduleItemDetail.FriendlyName !== undefined ? props.scheduleItemDetail.FriendlyName.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "FriendlyName", "");
             case "TypeFullName":
-                return props.scheduleItemDetail.TypeFullName !== undefined ? props.scheduleItemDetail.TypeFullName.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "TypeFullName", "");
             case "RetainHistoryNum":
-                return props.scheduleItemDetail.RetainHistoryNum !== undefined ? props.scheduleItemDetail.RetainHistoryNum.toString() : "0";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "RetainHistoryNum", "0");
             case "Servers":
-                return props.scheduleItemDetail.Servers !== undefined ? props.scheduleItemDetail.Servers.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "Servers", "");
             case "ObjectDependencies":
-                return props.scheduleItemDetail.ObjectDependencies !== undefined ? props.scheduleItemDetail.ObjectDependencies.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "ObjectDependencies", "");
             case "ScheduleStartDate":
-                if (!this.isEmptyDate(props.scheduleItemDetail.ScheduleStartDate)) {
+                if (!this.isEmptyDate(this.getDefaultIfNull(props.scheduleItemDetail, "ScheduleStartDate", null))) {
                     return new Date(props.scheduleItemDetail.ScheduleStartDate);
                 }
                 else {
                     return null;
                 }
             case "TimeLapse":
-                return props.scheduleItemDetail.TimeLapse !== undefined ? props.scheduleItemDetail.TimeLapse.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "TimeLapse", "");
             case "TimeLapseMeasurement":
-                return props.scheduleItemDetail.TimeLapseMeasurement !== undefined ? props.scheduleItemDetail.TimeLapseMeasurement.toString() : "s";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "TimeLapseMeasurement", "s");
             case "RetryTimeLapse":
-                return props.scheduleItemDetail.RetryTimeLapse !== undefined ? props.scheduleItemDetail.RetryTimeLapse.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "RetryTimeLapse", "");
             case "RetryTimeLapseMeasurement":
-                return props.scheduleItemDetail.RetryTimeLapseMeasurement !== undefined ? props.scheduleItemDetail.RetryTimeLapseMeasurement.toString() : "s";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "RetryTimeLapseMeasurement", "s");
             case "AttachToEvent":
-                return props.scheduleItemDetail.AttachToEvent !== undefined ? props.scheduleItemDetail.AttachToEvent.toString() : "";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "AttachToEvent", "");
             case "CatchUpEnabled":
-                return props.scheduleItemDetail.CatchUpEnabled !== undefined ? props.scheduleItemDetail.CatchUpEnabled.toString() : "false";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "CatchUpEnabled", "false");
             case "Enabled":
-                return props.scheduleItemDetail.Enabled !== undefined ? props.scheduleItemDetail.Enabled.toString() : "false";
+                return this.getDefaultIfNull(props.scheduleItemDetail, "Enabled", "false");
             default:
                 break;
         }
