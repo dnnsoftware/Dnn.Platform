@@ -36,22 +36,25 @@ export class PersonaBarPageTreeParentExpand extends Component {
 
     render_li() {
         const {listItems} = this.props;
-        if(listItems && listItems.length > 0)
-        return listItems.map((item)=>{
-            return (
-                <li key={item.id} className="list-item-menu">
-                    <div
-                        className={(item.selected) ? "list-item-highlight" : null}
-                        style={{height:"28px"}}>
+        if (listItems && listItems.length > 0) {
+            let index = 0;
+            return listItems.map((item) => {
+                index++;
+                return (
+                    <li key={"list-item-menu-key-" + index} className="list-item-menu">
+                        <div
+                            className={(item.selected) ? "list-item-highlight" : null}
+                            style={{height:"28px"}}>
 
-                        <div className="draft-pencil">
-                           {this.render_parentExpandButton(item)}
+                            <div className="draft-pencil">
+                            {this.render_parentExpandButton(item)}
+                            </div>
                         </div>
-                    </div>
-                    { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
-                </li>
-            );
-        });
+                        { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }
+                    </li>
+                );
+            });
+        }
     }
 
     render() {

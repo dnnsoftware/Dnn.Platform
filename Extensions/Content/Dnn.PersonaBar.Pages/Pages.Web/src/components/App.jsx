@@ -477,7 +477,7 @@ class App extends Component {
 
     onCancelPage(parentPageId) {
         this._removePageFromTree(parentPageId);
-        this.props.changeSelectedPagePath("");
+        this.props.changeSelectedPagePath([]);
         (parentPageId !== -1) ? this.props.onCancelPage(parentPageId) : this.props.onCancelPage();
         this.setState({inDuplicateMode: false});
     }
@@ -526,7 +526,7 @@ class App extends Component {
             runUpdateStore(pageList);
 
             const onConfirm = () => {
-                this.props.changeSelectedPagePath("");
+                this.props.changeSelectedPagePath([]);
                 
                 this.props.getNewPage(parentPage).then(()=>{
                     if (parentPage && parentPage.id) {
@@ -706,7 +706,7 @@ class App extends Component {
 
         } else {
             this.onCancelPage();
-            this.props.changeSelectedPagePath("");
+            this.props.changeSelectedPagePath([]);
 
         }
     }
