@@ -17,14 +17,17 @@ const testProperties =
     [
         {
             id: 1,
+            index: 0,
             name: "Item 1"
         },
         {
             id: 2,
+            index: 1,
             name: "Item 2"
         },
         {
             id: 3,
+            index: 2,
             name: "Item 3"
         }
     ];
