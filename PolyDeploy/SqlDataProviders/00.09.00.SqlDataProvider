@@ -187,7 +187,7 @@ GO
     (https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql#binary-styles)
 */
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUserByAPIKey]
-    @ApiKey [VARCHAR](64)
+    @ApiKey [NVARCHAR](64)
 AS
     SELECT *
         FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_APIUsers]
