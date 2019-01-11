@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SortableContainer from "./SortableContainer";
+import ReactDOM from "react-dom";
 import "./style.less";
 
 export default class Sortable extends Component {
@@ -18,17 +19,13 @@ export default class Sortable extends Component {
             },
             isDraggingOver: false
         };
-
-        this.dnnSortableRef = React.createRef();
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.items !== prevProps.items) {
-            const items = this.props.items.map((item, index) => {
-                return { index, item, id: index };
-            });
-            this.setState({items});
-        }
+    UNSAFE_componentWillReceiveProps(newProps) {
+        const items = newProps.items.map((item, index) => {
+            return { index, item, id: index };
+        });
+        this.setState({items});
     }
 
     sortColumns(a, b) {
@@ -39,7 +36,9 @@ export default class Sortable extends Component {
         return 0;
     }
 
-    onDragStart(component, event) {                
+    onDragStart(component, event) {
+        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
+
         let dragging = {
             isDragging: true
         };
@@ -70,7 +69,7 @@ export default class Sortable extends Component {
         let {items} = this.state;
 
         items.forEach((items) => {
-            if (items.id === id) {
+            if (items.id == id) {
                 items.selected = selected;
             } else {
                 items.selected = false;
@@ -130,8 +129,8 @@ export default class Sortable extends Component {
     sortItem(newIndex) {
         const curIndex = this.currentIndex;
         let {items} = this.state;
-        let currentItem = items.find(i => i.index === curIndex);
-        let itemToReplace = items.find(i => i.index === newIndex);
+        let currentItem = items.find(i => i.index == curIndex);
+        let itemToReplace = items.find(i => i.index == newIndex);
         if (!itemToReplace) {
             return;
         }
@@ -143,7 +142,7 @@ export default class Sortable extends Component {
     }
 
     moveItem(items, id, index) {
-        let item = items.find(i => i.id === id);
+        let item = items.find(i => i.id == id);
         item.index = index;
     }
 
@@ -158,17 +157,17 @@ export default class Sortable extends Component {
 
     sortOnDrag(event, dropX, dropY) {
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
-        const itemElement = this.dnnSortableRef.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
+        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
         itemElement.getAttribute("data-index");
         const sortableItems = document.getElementsByClassName("sortable-item");
         let newIndex = this.getNewIndex(sortableItems, dropY);
 
-        if (this.currentIndex === -1) {
+        if (this.currentIndex == -1) {
             const currentIndex = itemElement.getAttribute("data-index");
             this.currentIndex = currentIndex;
         }
 
-        const isSameIndex = newIndex === this.currentIndex;
+        const isSameIndex = newIndex == this.currentIndex;
         if (isSameIndex) {
             return;
         }
@@ -183,13 +182,13 @@ export default class Sortable extends Component {
             return;
         }
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
-        const itemElement = this.dnnSortableRef.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
+        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
         itemElement.classList.remove("sortable-selected");
         this.removePlaceholder();
         const sortableItems = document.getElementsByClassName("sortable-item");
         let newIndex = this.getNewIndex(sortableItems, dropY);
         const currentIndex = event.draggable._element.getAttribute("data-index");
-        const isSameIndex = currentIndex !== null && (newIndex === currentIndex || newIndex - 1 === currentIndex);
+        const isSameIndex = currentIndex != null && (newIndex == currentIndex || newIndex - 1 == currentIndex);
         if (isSameIndex) {
             return;
         }
@@ -207,6 +206,7 @@ export default class Sortable extends Component {
     }
 
 
+
     resetIndexes(items = this.state.items) {
         items.sort(this.sortColumns);
         items.forEach((item, index) => {
@@ -217,8 +217,7 @@ export default class Sortable extends Component {
 
     render() {
         const {children, items} = this.props;
-        if (children.length !== items.length) {
-            //console.error("Children.length and items.length should be equal");
+        if (children.length != items.length) {
             return false;
         }
         const listItems = children.map((child, index) => {
@@ -229,7 +228,7 @@ export default class Sortable extends Component {
             });
         });
 
-        return <div className="dnn-sortable" ref={this.dnnSortableRef}>
+        return <div className="dnn-sortable" ref="dnnSortable">
             <SortableContainer
                 onDragMove={this.onDragMove.bind(this) }
                 onDragStart={this.onDragStart.bind(this) }
@@ -239,7 +238,7 @@ export default class Sortable extends Component {
                 onDragLeave={this.onDragLeave.bind(this) }
                 isDragging={this.state.dragging.isDragging}
                 isDraggingOver={this.state.isDraggingOver}
-            >
+                >
                 {listItems}
             </SortableContainer>
         </div>;

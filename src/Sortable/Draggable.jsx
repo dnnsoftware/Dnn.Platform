@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import interact from "interact.js";
 
@@ -10,7 +11,6 @@ export default (Component) => {
         constructor() {
             super();
             this.initialScrollY = 0;
-            this.node = React.createRef();
         }
 
         showGhostTargetOnClone(currentTarget) {            
@@ -57,7 +57,7 @@ export default (Component) => {
         }
 
         destroyClone(clone) {
-            if (clone.parentNode) {
+            if(clone.parentNode) {
                 clone.parentNode.removeChild(clone);
             }
         }
@@ -105,26 +105,26 @@ export default (Component) => {
 
         componentDidMount() {
             const self = this;
-            const dragElement = this.node;   
+            const dragElement = ReactDOM.findDOMNode(this);   
             if (!dragElement) {
                 return;
             }     
             const {
-                cloneElementOnDrag,
-                onDragStart, 
-                onDragMove,
-                onDragEnd,
-                getDragPreview,
-                showGhostOnClone
+                 cloneElementOnDrag,
+                 onDragStart, 
+                 onDragMove,
+                 onDragEnd,
+                 getDragPreview,
+                 showGhostOnClone
             } = this.props;
             
-            interact(dragElement).ignoreFrom("input, *[contenteditable=true], .ignoreDraggable").draggable({                
+            interact(dragElement).ignoreFrom("input, *[contenteditable=true], .ignoreDraggable").draggable({
                 manualStart: cloneElementOnDrag,
                 onmove: (event) => {                            
                     this.moveTarget(event);
                     
                     // Notify drag move
-                    if (typeof(onDragMove) === "function") {
+                    if(typeof(onDragMove) === "function") {
                         onDragMove(self, event);
                     }
                 },
@@ -150,15 +150,15 @@ export default (Component) => {
                 if (interaction.pointerIsDown && !interaction.interacting() && interaction.prepared.name === "drag") {  
                     const currentTarget = event.currentTarget;   
                     
-                    if (!cloneElementOnDrag) {            
+                    if(!cloneElementOnDrag) {            
                         this.setDraggingStyle(currentTarget);
                         return;
                     }
                     
                     let clone = null;
-                    if (typeof(getDragPreview) === "function") {
+                    if(typeof(getDragPreview) === "function") {
                         const dragPreviewComponent = getDragPreview(self);
-                        const dragPreviewDOMElement = dragPreviewComponent.node;
+                        const dragPreviewDOMElement = ReactDOM.findDOMNode(dragPreviewComponent);
                         clone = this.clonePreviewElement(dragPreviewDOMElement, event);
                     } else {                                    
                         clone = this.cloneTarget(currentTarget);  
@@ -169,7 +169,7 @@ export default (Component) => {
                     // start a drag interaction targeting the clone
                     interaction.start({ name: "drag" }, event.interactable, clone);
                 }
-            }).on("dragstart", (event) => {                
+            }).on("dragstart", (event) => {
                 this.initialScrollY = window.scrollY;
                 if (typeof(onDragStart) === "function") {
                     onDragStart(self, event);
@@ -178,7 +178,7 @@ export default (Component) => {
         }
 
         render() {
-            return <Component {...this.props} ref={node => this.node = node} />;
+            return <Component {...this.props} />;
         }
     }
     
