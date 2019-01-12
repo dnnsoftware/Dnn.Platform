@@ -283,9 +283,6 @@ namespace Dnn.PersonaBar.Users.Components
                     case (int) Globals.PortalRegistrationType.VerifiedRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationVerified, portalSettings);
                         break;
-                    case (int)Globals.PortalRegistrationType.NoRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-                        break;
                 }
             }
 
