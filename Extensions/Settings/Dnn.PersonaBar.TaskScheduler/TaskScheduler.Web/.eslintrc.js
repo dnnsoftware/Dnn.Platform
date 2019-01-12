@@ -9,15 +9,14 @@ module.exports = {
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "settings": {
         "react":{
-            "verstion": "16"
+            "version": "16"
         }
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true,
-            "experimentalObjectRestSpread": true
+            "jsx": true
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },        
     "globals": {

@@ -92,24 +92,24 @@ class App extends Component {
         const viewParams = utils.getViewParams();
         window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
-        this.props.getPageList();
-        const selectedPageId = utils.getCurrentPageId();
-        selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
-       
-        if (viewName === "edit") {
-            this.onLoadPage(utils.getCurrentPageId());
-        }
+        this.props.getPageList().then(() => {
+            const selectedPageId = utils.getCurrentPageId();
+            selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
+        
+            if (viewName === "edit") {
+                this.onLoadPage(utils.getCurrentPageId());
+            }
 
-        if (!utils.isPlatform()) {
-            this.props.getWorkflowsList();
-        }
+            if (!utils.isPlatform()) {
+                this.props.getWorkflowsList();
+            }
 
-        //Resolve tab being viewed, if view params are present.
-        this.resolveTabBeingViewed(viewParams);
+            //Resolve tab being viewed, if view params are present.
+            this.resolveTabBeingViewed(viewParams);
 
-        //Listen to event fired to view page settings (from site settings)
-        document.addEventListener("viewPageSettings", this.resolveTabBeingViewed.bind(this), false);
-
+            //Listen to event fired to view page settings (from site settings)
+            document.addEventListener("viewPageSettings", this.resolveTabBeingViewed.bind(this), false);
+        });
     }
 
     //Update referral text if coming from a referral. (ex: "SiteSettings", resx.get("BackToLanguages"))
@@ -477,7 +477,7 @@ class App extends Component {
 
     onCancelPage(parentPageId) {
         this._removePageFromTree(parentPageId);
-        this.props.changeSelectedPagePath("");
+        this.props.changeSelectedPagePath([]);
         (parentPageId !== -1) ? this.props.onCancelPage(parentPageId) : this.props.onCancelPage();
         this.setState({inDuplicateMode: false});
     }
@@ -526,7 +526,7 @@ class App extends Component {
             runUpdateStore(pageList);
 
             const onConfirm = () => {
-                this.props.changeSelectedPagePath("");
+                this.props.changeSelectedPagePath([]);
                 
                 this.props.getNewPage(parentPage).then(()=>{
                     if (parentPage && parentPage.id) {
@@ -706,7 +706,7 @@ class App extends Component {
 
         } else {
             this.onCancelPage();
-            this.props.changeSelectedPagePath("");
+            this.props.changeSelectedPagePath([]);
 
         }
     }

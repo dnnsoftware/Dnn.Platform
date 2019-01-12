@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" InitialTargets="RunYarnExportables" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\..\Solution.build" />
   <PropertyGroup>
       <Extension>zip</Extension>
@@ -9,4 +9,8 @@
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
+  <Target Name="RunYarnExportables" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\Users.Web\src\_exportables" IgnoreExitCode="false"  />
+    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\Users.Web\src\_exportables" IgnoreExitCode="false"  />
+  </Target>
 </Project>

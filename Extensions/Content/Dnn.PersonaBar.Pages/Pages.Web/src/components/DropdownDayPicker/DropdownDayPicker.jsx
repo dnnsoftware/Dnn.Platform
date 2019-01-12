@@ -66,7 +66,7 @@ class DropdownDayPicker extends Component  {
                                 </GridCell>
                                 <GridCell columnSize={100}>
                                     <div className="calendar-dropdown-action-buttons">
-                                        <Button type="secondary" style={{"margin-right":"5px"}} onClick={()=>clearChanges()}>{Localization.get("Clear")}</Button>
+                                        <Button type="secondary" style={{marginRight:"5px"}} onClick={()=>clearChanges()}>{Localization.get("Clear")}</Button>
                                         <Button type="primary" onClick={()=>applyChanges()}>{Localization.get("Apply")}</Button>
                                     </div>
                                 </GridCell>

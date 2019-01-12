@@ -141,10 +141,17 @@ define(['jquery'], function ($) {
                         if (typeof confirmHandler === 'function') confirmHandler.apply();
                         $('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
                     });
-                    $('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function () {
-                        if (typeof cancelHandler === 'function') cancelHandler.apply();
-                        $('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
-                    });
+					
+					if (cancelBtn != '') {
+						$('#confirmation-dialog a#cancelbtn').show();
+						$('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function () {
+							if (typeof cancelHandler === 'function') cancelHandler.apply();
+							$('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
+						});
+					} else {
+						$('#confirmation-dialog a#cancelbtn').hide();
+					}
+                    
                     $('#mask').show();
                     $('#confirmation-dialog').fadeIn(200, 'linear');
 
@@ -462,11 +469,6 @@ define(['jquery'], function ($) {
 });
 
 define('css', {
-    normalize: function(name, normalize) {
-        name = name.replace('main/../css/', 'cssPath/');
-        name = name.replace('main/../modules/', 'modules/');
-        return normalize(name);
-    },
     load: function (name, require, load, config) {
         function inject(filename) {
             var head = document.getElementsByTagName('head')[0];
@@ -489,7 +491,7 @@ define('css', {
             path = config.baseUrl + path;
         }
 
-        inject(path + config.urlArgs(name, path));
+        inject(path + '?' + config.urlArgs);
         load(true);
     },
     pluginBuilder: './css-build'

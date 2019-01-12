@@ -78,6 +78,7 @@ class PageSettings extends Component {
 
     getCopyAppearanceToDescendantPagesButton() {
         return <Button
+            key="secondaryAppearanceButton"
             type="secondary"
             onClick={this.props.onCopyAppearanceToDescendantPages}>
             {Localization.get("CopyAppearanceToDescendantPages")}
@@ -86,6 +87,7 @@ class PageSettings extends Component {
 
     getCopyPermissionsToDescendantPagesButton() {
         return <Button
+            key="secondaryPermissionsButton"
             type="secondary"
             onClick={this.props.onCopyPermissionsToDescendantPages}>
             {Localization.get("CopyPermissionsToDescendantPages")}

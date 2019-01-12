@@ -161,7 +161,7 @@ export class PersonaBarPageTreeview extends Component {
             const style = item.canManagePage ? { "whiteSpace": "nowrap", height: "28px", lineHeight: "35px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
             const itemNameHidden = item.status === "Hidden" ? "item-name-hidden" : "";
             return (
-                <li key={item.id} id={`list-item-${item.name}-${item.id}`}>
+                <li key={"list-item-key-" + index} id={`list-item-${item.name}-${item.id}`}>
                     <div className={item.onDragOverState && item.id !== draggedItem.id ? "dropZoneActive" : "dropZoneInactive"} >
                         {this.renderDropZone("before", item)}
                         <div
@@ -181,7 +181,7 @@ export class PersonaBarPageTreeview extends Component {
                         </div>
 
                         <div style={style} className={this.getClassName(item)}>
-                            <PersonaBarPageIcon iconType={item.pageType} selected={item.selected} />
+                            <PersonaBarPageIcon iconType={item.pageType} selected={item.selected || false} />
                             <span
                                 className={`item-name ${itemNameHidden}`}
                                 onClick={() => item.canManagePage ? onSelection(item) : onNoPermissionSelection(item)}>
@@ -189,7 +189,7 @@ export class PersonaBarPageTreeview extends Component {
                                     (
                                         <SingleLineInput 
                                             style={{ marginBottom: "0px", width:"80%", height:"100%"}}
-                                            value={name}/>
+                                            defaultValue={name}/>
                                     ):
                                     name
                                 }

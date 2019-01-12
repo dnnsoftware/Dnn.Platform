@@ -27,7 +27,7 @@ class ResourceList extends Component {
             searchText: ""
         };
     }
-    componentDIdMount() {
+    componentDidMount() {
         this.setState({
             resources: this.props.list
         });

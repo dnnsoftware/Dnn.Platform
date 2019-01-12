@@ -24,16 +24,14 @@ class UserTable extends Component {
         };
     }
 
-    componentWillReceiveProps() {
+    componentDidMount() {
         this.collapse();
     }
 
-    uncollapse(id, index) {
-        setTimeout(() => {
-            this.setState({
-                openId: id,
-                renderIndex: index
-            });
+    unCollapse(id, index) {
+        this.setState({
+            openId: id,
+            renderIndex: index
         });
     }
     collapse() {
@@ -46,7 +44,7 @@ class UserTable extends Component {
     }
     toggle(openId, index) {
         if (openId !== "") {
-            this.uncollapse(openId, index);
+            this.unCollapse(openId, index);
         } else {
             this.collapse();
         }
@@ -59,7 +57,7 @@ class UserTable extends Component {
         children = children.concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
         if (canViewSettings(this.props.appSettings.applicationSettings.settings))
         {
-            const userSettings = <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } appSettings={this.props.appSettings}/>;
+            const userSettings = <UserSettings key={`usersettings-${user.userId}`} userId={user.userId} collapse={this.collapse.bind(this) } appSettings={this.props.appSettings}/>;
             children = children.concat([{
                 index: 10,
                 content: userSettings
@@ -70,7 +68,7 @@ class UserTable extends Component {
         {
             children = children.concat([{
                 index: 5,
-                content: <UsersRoles userDetails={user} />
+                content: <UsersRoles key={`usersroles-${user.userId}`} userDetails={user} />
             }]);
         }
 
@@ -78,7 +76,7 @@ class UserTable extends Component {
         {
             children = children.concat([{
                 index: 15,
-                content: <EditProfile  userId={user.userId} />
+                content: <EditProfile key={`editprofile-${user.userId}`} userId={user.userId} />
             }]);
         }
         return sort(children, "index", "desc").map((child) => {
@@ -119,7 +117,7 @@ class UserTable extends Component {
             <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>
                 <DetailRow
-                    Collapse={this.collapse.bind(this) }
+                    Collapse={this.toggle.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
                     currentIndex={this.state.renderIndex}
                     openId={this.state.openId }
@@ -128,6 +126,8 @@ class UserTable extends Component {
                     columnSizes={props.columnSizes}
                     id={"add"}
                     addIsOpened={addIsOpened ? "add-opened" : "closed"}
+                    getUserMenu={props.getUserMenu && props.getUserMenu.bind(this)}
+                    userMenuAction={props.userMenuAction && props.userMenuAction.bind(this)}
                     filter={props.filter}>
                     <CollapsibleSwitcher>
                         {createUserBox()}

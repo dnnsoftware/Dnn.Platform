@@ -21,7 +21,7 @@ class TopPane extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         const persistedSettings = util.utilities.persistent.load();
 

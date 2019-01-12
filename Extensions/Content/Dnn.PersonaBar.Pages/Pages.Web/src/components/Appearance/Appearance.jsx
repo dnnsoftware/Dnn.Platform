@@ -162,14 +162,14 @@ class Appearance extends Component {
                         onSelectContainer={this.onSelectContainer.bind(this) } />
                 </GridCell>
                 <GridCell>
-                    <GridCell columnSize="50">
+                    <GridCell columnSize={50}>
                         <SingleLineInputWithError style={{ width: "100%" }}
                             label={Localization.get("PageStyleSheet") }
                             tooltipMessage={Localization.get("PageStyleSheetTooltip") }
                             value={page.pageStyleSheet}
                             onChange={this.onChangePageStyleSheet.bind(this) } />
                     </GridCell>
-                    <GridCell columnSize="50">
+                    <GridCell columnSize={50}>
                         <Button type="secondary" onClick={this.previewPage.bind(this) } style={{ marginTop: "25px", float: "right" }}>
                             {Localization.get("PreviewThemeLayoutAndContainer") }
                         </Button>

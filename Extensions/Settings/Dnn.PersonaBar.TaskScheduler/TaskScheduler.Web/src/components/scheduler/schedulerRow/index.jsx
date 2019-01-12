@@ -21,7 +21,7 @@ class SchedulerRow extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         this.setState({
             opened

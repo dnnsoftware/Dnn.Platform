@@ -2,12 +2,6 @@
 # yarn lockfile v1
 
 
-"@babel/code-frame@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/code-frame/-/@babel/code-frame-7.0.0-beta.44.tgz#2a02643368de80916162be70865c97774f3adbd9"
-  dependencies:
-    "@babel/highlight" "7.0.0-beta.44"
-
 "@babel/code-frame@^7.0.0":
   version "7.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/code-frame/-/@babel/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
@@ -32,16 +26,6 @@
     resolve "^1.3.2"
     semver "^5.4.1"
     source-map "^0.5.0"
-
-"@babel/generator@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/generator/-/@babel/generator-7.0.0-beta.44.tgz#c7e67b9b5284afcf69b309b50d7d37f3e5033d42"
-  dependencies:
-    "@babel/types" "7.0.0-beta.44"
-    jsesc "^2.5.1"
-    lodash "^4.2.0"
-    source-map "^0.5.0"
-    trim-right "^1.0.1"
 
 "@babel/generator@^7.1.6":
   version "7.1.6"
@@ -96,14 +80,6 @@
     "@babel/traverse" "^7.1.0"
     "@babel/types" "^7.0.0"
 
-"@babel/helper-function-name@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/helper-function-name/-/@babel/helper-function-name-7.0.0-beta.44.tgz#e18552aaae2231100a6e485e03854bc3532d44dd"
-  dependencies:
-    "@babel/helper-get-function-arity" "7.0.0-beta.44"
-    "@babel/template" "7.0.0-beta.44"
-    "@babel/types" "7.0.0-beta.44"
-
 "@babel/helper-function-name@^7.1.0":
   version "7.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/helper-function-name/-/@babel/helper-function-name-7.1.0.tgz#a0ceb01685f73355d4360c1247f582bfafc8ff53"
@@ -111,12 +87,6 @@
     "@babel/helper-get-function-arity" "^7.0.0"
     "@babel/template" "^7.1.0"
     "@babel/types" "^7.0.0"
-
-"@babel/helper-get-function-arity@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/helper-get-function-arity/-/@babel/helper-get-function-arity-7.0.0-beta.44.tgz#d03ca6dd2b9f7b0b1e6b32c56c72836140db3a15"
-  dependencies:
-    "@babel/types" "7.0.0-beta.44"
 
 "@babel/helper-get-function-arity@^7.0.0":
   version "7.0.0"
@@ -195,12 +165,6 @@
     "@babel/template" "^7.1.0"
     "@babel/types" "^7.0.0"
 
-"@babel/helper-split-export-declaration@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/helper-split-export-declaration/-/@babel/helper-split-export-declaration-7.0.0-beta.44.tgz#c0b351735e0fbcb3822c8ad8db4e583b05ebd9dc"
-  dependencies:
-    "@babel/types" "7.0.0-beta.44"
-
 "@babel/helper-split-export-declaration@^7.0.0":
   version "7.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/helper-split-export-declaration/-/@babel/helper-split-export-declaration-7.0.0.tgz#3aae285c0311c2ab095d997b8c9a94cad547d813"
@@ -223,14 +187,6 @@
     "@babel/template" "^7.1.2"
     "@babel/traverse" "^7.1.5"
     "@babel/types" "^7.1.5"
-
-"@babel/highlight@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/highlight/-/@babel/highlight-7.0.0-beta.44.tgz#18c94ce543916a80553edcdcf681890b200747d5"
-  dependencies:
-    chalk "^2.0.0"
-    esutils "^2.0.2"
-    js-tokens "^3.0.0"
 
 "@babel/highlight@^7.0.0":
   version "7.0.0"
@@ -589,15 +545,6 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/template@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/template/-/@babel/template-7.0.0-beta.44.tgz#f8832f4fdcee5d59bf515e595fc5106c529b394f"
-  dependencies:
-    "@babel/code-frame" "7.0.0-beta.44"
-    "@babel/types" "7.0.0-beta.44"
-    babylon "7.0.0-beta.44"
-    lodash "^4.2.0"
-
 "@babel/template@^7.1.0", "@babel/template@^7.1.2":
   version "7.1.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/template/-/@babel/template-7.1.2.tgz#090484a574fef5a2d2d7726a674eceda5c5b5644"
@@ -605,21 +552,6 @@
     "@babel/code-frame" "^7.0.0"
     "@babel/parser" "^7.1.2"
     "@babel/types" "^7.1.2"
-
-"@babel/traverse@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/traverse/-/@babel/traverse-7.0.0-beta.44.tgz#a970a2c45477ad18017e2e465a0606feee0d2966"
-  dependencies:
-    "@babel/code-frame" "7.0.0-beta.44"
-    "@babel/generator" "7.0.0-beta.44"
-    "@babel/helper-function-name" "7.0.0-beta.44"
-    "@babel/helper-split-export-declaration" "7.0.0-beta.44"
-    "@babel/types" "7.0.0-beta.44"
-    babylon "7.0.0-beta.44"
-    debug "^3.1.0"
-    globals "^11.1.0"
-    invariant "^2.2.0"
-    lodash "^4.2.0"
 
 "@babel/traverse@^7.1.0", "@babel/traverse@^7.1.5", "@babel/traverse@^7.1.6":
   version "7.1.6"
@@ -635,14 +567,6 @@
     globals "^11.1.0"
     lodash "^4.17.10"
 
-"@babel/types@7.0.0-beta.44":
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/types/-/@babel/types-7.0.0-beta.44.tgz#6b1b164591f77dec0a0342aca995f2d046b3a757"
-  dependencies:
-    esutils "^2.0.2"
-    lodash "^4.2.0"
-    to-fast-properties "^2.0.0"
-
 "@babel/types@^7.0.0", "@babel/types@^7.1.2", "@babel/types@^7.1.5", "@babel/types@^7.1.6":
   version "7.1.6"
   resolved "https://www.myget.org/F/dnn-software-public/npm/@babel/types/-/@babel/types-7.1.6.tgz#0adb330c3a281348a190263aceb540e10f04bcce"
@@ -651,10 +575,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@2.0.8":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.8.tgz#0bb7a4033bea8934b1e511a777806a65246be250"
-  integrity sha512-bFibsk6X2mHtp2fclxochTN5FmK1Em9ggauMvjMsNT4XSuRVSFqo/Ntj7uJIAGjWkyp2Kh3mg1f4dyDGahV5aQ==
+"@dnnsoftware/dnn-react-common@2.0.9":
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.9.tgz#e6539d97dae2a1890bcf326aa3b953805f0e0c33"
+  integrity sha512-SapKszLKevpte4eMM82a1m906ta1yGo6V4ou9Wtf+5hRfyTY4zRoNXlJt8gar2R/AQ43Y8y2lxS173u7z4FHyQ==
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"
@@ -1063,17 +987,6 @@ babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-eslint@8.2.3:
-  version "8.2.3"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/babel-eslint/-/babel-eslint-8.2.3.tgz#1a2e6681cc9bc4473c32899e59915e19cd6733cf"
-  dependencies:
-    "@babel/code-frame" "7.0.0-beta.44"
-    "@babel/traverse" "7.0.0-beta.44"
-    "@babel/types" "7.0.0-beta.44"
-    babylon "7.0.0-beta.44"
-    eslint-scope "~3.7.1"
-    eslint-visitor-keys "^1.0.0"
-
 babel-loader@8.0.4:
   version "8.0.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/babel-loader/-/babel-loader-8.0.4.tgz#7bbf20cbe4560629e2e41534147692d3fecbdce6"
@@ -1082,10 +995,6 @@ babel-loader@8.0.4:
     loader-utils "^1.0.2"
     mkdirp "^0.5.1"
     util.promisify "^1.0.0"
-
-babylon@7.0.0-beta.44:
-  version "7.0.0-beta.44"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/babylon/-/babylon-7.0.0-beta.44.tgz#89159e15e6e30c5096e22d738d8c0af8a0e8ca1d"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -1822,10 +1731,6 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
-dnn-svg-icons@^0.1.22:
-  version "0.1.22"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/dnn-svg-icons/-/dnn-svg-icons-0.1.22.tgz#16e78c0393595a6de5b35596d6f9997009d2b6a7"
-
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
@@ -1850,7 +1755,7 @@ doctrine@1.5.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-doctrine@^2.0.2, doctrine@^2.1.0:
+doctrine@^2.1.0:
   version "2.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/doctrine/-/doctrine-2.1.0.tgz#5cd01fc101621b42c4cd7f5d1a66243716d3f39d"
   dependencies:
@@ -2031,40 +1936,12 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://www.myget.org/F/dnn-software-public/npm/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-eslint-config-dnn@*:
-  version "0.0.16"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-config-dnn/-/eslint-config-dnn-0.0.16.tgz#7cf4e769fff8555c9b1bbc18ea9abd151b002eaa"
-  dependencies:
-    babel-eslint "8.2.3"
-    eslint-import-resolver-webpack "0.9.0"
-    eslint-plugin-babel "4.1.2"
-    eslint-plugin-filenames "1.2.0"
-    eslint-plugin-import "2.11.0"
-    eslint-plugin-react "7.7.0"
-    eslint-plugin-spellcheck "^0.0.7"
-
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
   dependencies:
     debug "^2.6.9"
     resolve "^1.5.0"
-
-eslint-import-resolver-webpack@0.9.0:
-  version "0.9.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-import-resolver-webpack/-/eslint-import-resolver-webpack-0.9.0.tgz#231ce1578ad5124da5799f029bd33d28137623e3"
-  dependencies:
-    array-find "^1.0.0"
-    debug "^2.6.8"
-    enhanced-resolve "~0.9.0"
-    find-root "^1.1.0"
-    has "^1.0.1"
-    interpret "^1.0.0"
-    is-absolute "^0.2.3"
-    lodash.get "^4.4.2"
-    node-libs-browser "^1.0.0 || ^2.0.0"
-    resolve "^1.4.0"
-    semver "^5.3.0"
 
 eslint-import-resolver-webpack@^0.10.1:
   version "0.10.1"
@@ -2098,19 +1975,6 @@ eslint-module-utils@^2.2.0:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
 
-eslint-plugin-babel@4.1.2:
-  version "4.1.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-babel/-/eslint-plugin-babel-4.1.2.tgz#79202a0e35757dd92780919b2336f1fa2fe53c1e"
-
-eslint-plugin-filenames@1.2.0:
-  version "1.2.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-filenames/-/eslint-plugin-filenames-1.2.0.tgz#aee9c1c90189c95d2e49902c160eceefecd99f53"
-  dependencies:
-    lodash.camelcase "4.3.0"
-    lodash.kebabcase "4.1.1"
-    lodash.snakecase "4.1.1"
-    lodash.upperfirst "4.3.1"
-
 eslint-plugin-filenames@^1.0.0:
   version "1.3.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-filenames/-/eslint-plugin-filenames-1.3.2.tgz#7094f00d7aefdd6999e3ac19f72cea058e590cf7"
@@ -2119,21 +1983,6 @@ eslint-plugin-filenames@^1.0.0:
     lodash.kebabcase "4.1.1"
     lodash.snakecase "4.1.1"
     lodash.upperfirst "4.3.1"
-
-eslint-plugin-import@2.11.0:
-  version "2.11.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-import/-/eslint-plugin-import-2.11.0.tgz#15aeea37a67499d848e8e981806d4627b5503816"
-  dependencies:
-    contains-path "^0.1.0"
-    debug "^2.6.8"
-    doctrine "1.5.0"
-    eslint-import-resolver-node "^0.3.1"
-    eslint-module-utils "^2.2.0"
-    has "^1.0.1"
-    lodash "^4.17.4"
-    minimatch "^3.0.3"
-    read-pkg-up "^2.0.0"
-    resolve "^1.6.0"
 
 eslint-plugin-import@^2.14.0:
   version "2.14.0"
@@ -2160,15 +2009,6 @@ eslint-plugin-react@7.11.1:
     jsx-ast-utils "^2.0.1"
     prop-types "^15.6.2"
 
-eslint-plugin-react@7.7.0:
-  version "7.7.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-react/-/eslint-plugin-react-7.7.0.tgz#f606c719dbd8a1a2b3d25c16299813878cca0160"
-  dependencies:
-    doctrine "^2.0.2"
-    has "^1.0.1"
-    jsx-ast-utils "^2.0.1"
-    prop-types "^15.6.0"
-
 eslint-plugin-spellcheck@0.0.11:
   version "0.0.11"
   resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-spellcheck/-/eslint-plugin-spellcheck-0.0.11.tgz#f3fcff70a0446e1f04eacd5ebaa8cab23e691b4a"
@@ -2177,24 +2017,9 @@ eslint-plugin-spellcheck@0.0.11:
     hunspell-spellchecker "^1.0.2"
     lodash "^4.14.2"
 
-eslint-plugin-spellcheck@^0.0.7:
-  version "0.0.7"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-plugin-spellcheck/-/eslint-plugin-spellcheck-0.0.7.tgz#f4800eba0119f5f441443b2a78faf7224fa42ff5"
-  dependencies:
-    globals "^6.4.1"
-    hunspell-spellchecker "^1.0.0"
-    lodash "^3.3.1"
-
 eslint-scope@^4.0.0:
   version "4.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-scope/-/eslint-scope-4.0.0.tgz#50bf3071e9338bcdc43331794a0cb533f0136172"
-  dependencies:
-    esrecurse "^4.1.0"
-    estraverse "^4.1.1"
-
-eslint-scope@~3.7.1:
-  version "3.7.3"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/eslint-scope/-/eslint-scope-3.7.3.tgz#bb507200d3d17f60247636160b4826284b108535"
   dependencies:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
@@ -2444,7 +2269,7 @@ fast-json-stable-stringify@^2.0.0:
   version "2.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
 
-fast-levenshtein@~2.0.4:
+fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://www.myget.org/F/dnn-software-public/npm/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
 
@@ -2721,7 +2546,7 @@ global-modules-path@^2.3.0:
   version "2.3.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/global-modules-path/-/global-modules-path-2.3.0.tgz#b0e2bac6beac39745f7db5c59d26a36a0b94f7dc"
 
-global@~4.3.0:
+global@^4.3.0, global@~4.3.0:
   version "4.3.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/global/-/global-4.3.2.tgz#e76989268a6c74c38908b1305b10fc0e394e9d0f"
   dependencies:
@@ -2731,10 +2556,6 @@ global@~4.3.0:
 globals@^11.1.0, globals@^11.3.0, globals@^11.7.0:
   version "11.9.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/globals/-/globals-11.9.0.tgz#bde236808e987f290768a93d065060d78e6ab249"
-
-globals@^6.4.1:
-  version "6.4.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/globals/-/globals-6.4.1.tgz#8498032b3b6d1cc81eebc5f79690d8fe29fabf4f"
 
 globby@^6.1.0:
   version "6.1.0"
@@ -2839,6 +2660,11 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+hoist-non-react-statics@^2.5.0:
+  version "2.5.5"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+  integrity sha1-xZA89AnA39kI84jmGdhrnBF0y0c=
+
 hoist-non-react-statics@^3.1.0:
   version "3.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/hoist-non-react-statics/-/hoist-non-react-statics-3.2.0.tgz#d21b9fc72b50fdc38c5d88f6e2c52f2c2dbe5ee2"
@@ -2919,7 +2745,7 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
-hunspell-spellchecker@^1.0.0, hunspell-spellchecker@^1.0.2:
+hunspell-spellchecker@^1.0.2:
   version "1.0.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/hunspell-spellchecker/-/hunspell-spellchecker-1.0.2.tgz#a10b0bd2fa00a65ab62a4c6b734ce496d318910e"
 
@@ -3034,7 +2860,7 @@ interpret@^1.0.0, interpret@^1.1.0:
   version "1.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
 
-invariant@^2.2.0, invariant@^2.2.2, invariant@^2.2.4:
+invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   dependencies:
@@ -3059,13 +2885,6 @@ ipaddr.js@1.8.0:
 ipaddr.js@^1.5.2:
   version "1.8.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/ipaddr.js/-/ipaddr.js-1.8.1.tgz#fa4b79fa47fd3def5e3b159825161c0a519c9427"
-
-is-absolute@^0.2.3:
-  version "0.2.6"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/is-absolute/-/is-absolute-0.2.6.tgz#20de69f3db942ef2d87b9c2da36f172235b1b5eb"
-  dependencies:
-    is-relative "^0.2.1"
-    is-windows "^0.2.0"
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
@@ -3215,12 +3034,6 @@ is-regex@^1.0.4:
   dependencies:
     has "^1.0.1"
 
-is-relative@^0.2.1:
-  version "0.2.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/is-relative/-/is-relative-0.2.1.tgz#d27f4c7d516d175fb610db84bbeef23c3bc97aa5"
-  dependencies:
-    is-unc-path "^0.1.1"
-
 is-resolvable@^1.1.0:
   version "1.1.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/is-resolvable/-/is-resolvable-1.1.0.tgz#fb18f87ce1feb925169c9a407c19318a3206ed88"
@@ -3238,16 +3051,6 @@ is-symbol@^1.0.2:
 is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
-
-is-unc-path@^0.1.1:
-  version "0.1.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/is-unc-path/-/is-unc-path-0.1.2.tgz#6ab053a72573c10250ff416a3814c35178af39b9"
-  dependencies:
-    unc-path-regex "^0.1.0"
-
-is-windows@^0.2.0:
-  version "0.2.0"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/is-windows/-/is-windows-0.2.0.tgz#de1aa6d63ea29dd248737b69f1ff8b8002d2108c"
 
 is-windows@^1.0.2:
   version "1.0.2"
@@ -3294,13 +3097,13 @@ js-levenshtein@^1.1.3:
   version "1.1.4"
   resolved "https://www.myget.org/F/dnn-software-public/npm/js-levenshtein/-/js-levenshtein-1.1.4.tgz#3a56e3cbf589ca0081eb22cd9ba0b1290a16d26e"
 
-js-tokens@^3.0.0, js-tokens@^3.0.2:
-  version "3.0.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+
+js-tokens@^3.0.2:
+  version "3.0.2"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
 js-yaml@^3.12.0:
   version "3.12.0"
@@ -3506,13 +3309,14 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://www.myget.org/F/dnn-software-public/npm/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
-lodash.get@^4.4.2:
-  version "4.4.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-
 lodash.kebabcase@4.1.1:
   version "4.1.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/lodash.kebabcase/-/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
+
+lodash.merge@^4.6.1:
+  version "4.6.1"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+  integrity sha1-rcJdnLmbk5HFliTzefu6YNcRHVQ=
 
 lodash.snakecase@4.1.1:
   version "4.1.1"
@@ -3522,11 +3326,7 @@ lodash.upperfirst@4.3.1:
   version "4.3.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
 
-lodash@^3.3.1:
-  version "3.10.1"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-
-lodash@^4.14.2, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0:
+lodash@^4.14.2, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.11"
   resolved "https://www.myget.org/F/dnn-software-public/npm/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -3753,6 +3553,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
 moment@^2.22.2:
   version "2.22.2"
   resolved "https://www.myget.org/F/dnn-software-public/npm/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
+moment@^2.23.0:
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -4564,6 +4368,21 @@ react-height@^3.0.0:
   dependencies:
     prop-types "15.5.8"
 
+react-hot-loader@^4.6.3:
+  version "4.6.3"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/react-hot-loader/-/react-hot-loader-4.6.3.tgz#d9c8923c45b35fd51538ba4297081a00be6bccb1"
+  integrity sha1-2ciSPEWzX9UVOLpClwgaAL5rzLE=
+  dependencies:
+    fast-levenshtein "^2.0.6"
+    global "^4.3.0"
+    hoist-non-react-statics "^2.5.0"
+    loader-utils "^1.1.0"
+    lodash.merge "^4.6.1"
+    prop-types "^15.6.1"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^1.0.2"
+    source-map "^0.7.3"
+
 react-is@^16.3.2, react-is@^16.6.0:
   version "16.6.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-is/-/react-is-16.6.3.tgz#d2d7462fcfcbe6ec0da56ad69047e47e56e7eac0"
@@ -4592,7 +4411,6 @@ react-motion@^0.5.2:
 react-portal-tooltip@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
-  integrity sha512-scer683Y1Sc9p3YilEbEZf7er9AZzJBaQ/c8hymxgJ0+Sa7RqUiOEvjA/L2fycM/yKKMH7aHOOxhMzeL2ff22A==
 
 react-redux@^5.1.1:
   version "5.1.1"
@@ -5074,6 +4892,11 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
+shallowequal@^1.0.2:
+  version "1.1.0"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
+  integrity sha1-GI1SHelbkIdAT9TctosT3wrk5/g=
+
 shebang-command@^1.2.0:
   version "1.2.0"
   resolved "https://www.myget.org/F/dnn-software-public/npm/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
@@ -5177,6 +5000,11 @@ source-map@^0.5.0, source-map@^0.5.6:
 source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://www.myget.org/F/dnn-software-public/npm/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
+
+source-map@^0.7.3:
+  version "0.7.3"
+  resolved "https://www.myget.org/F/dnn-software-public/npm/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
+  integrity sha1-UwL4FpAxc1ImVECS5kmB91F1A4M=
 
 spdx-correct@^3.0.0:
   version "3.0.2"
@@ -5546,10 +5374,6 @@ typedarray@^0.0.6:
 ua-parser-js@^0.7.18:
   version "0.7.19"
   resolved "https://www.myget.org/F/dnn-software-public/npm/ua-parser-js/-/ua-parser-js-0.7.19.tgz#94151be4c0a7fb1d001af7022fdaca4642659e4b"
-
-unc-path-regex@^0.1.0:
-  version "0.1.2"
-  resolved "https://www.myget.org/F/dnn-software-public/npm/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
 
 uncontrollable@^5.0.0:
   version "5.1.0"

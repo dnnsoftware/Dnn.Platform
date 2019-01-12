@@ -6,29 +6,24 @@ import "./style.less";
 import { SingleLineInput, MultiLineInput, Modal, SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class ResourceEditor extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             inFullMode: false,
-            content: ""
+            content: props.value ? props.value : ""
         };
-    }
-
-    componentDIdMount() {
-        const { props } = this;
-
         this.debouncedOnChange = debounce(this.changeContent, 500);
-        this.setState({content: props.value});
     }
 
-    componentDidUpdate(newProps) {
-        this.setState({content: newProps.value});
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value){
+            this.setState({content: this.props.value});
+        }
     }
 
     onChange(e) {
-        this.setState({content: e.target.value}, () => {
-            this.debouncedOnChange();
-        });  
+        this.setState({content: e.target.value});
+        this.debouncedOnChange();
     }
 
     changeContent() {

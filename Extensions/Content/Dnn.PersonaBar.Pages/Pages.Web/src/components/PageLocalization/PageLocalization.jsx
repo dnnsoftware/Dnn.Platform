@@ -43,7 +43,7 @@ class PageLocalization extends Component {
 
     removeLocaleFromState(cultureCode){
         const {Locales} = this.state;
-        let index = Locales.findIndex(l => l.CultureCode == cultureCode);
+        let index = Locales.findIndex(l => l.CultureCode === cultureCode);
         if(index > -1){
             Locales.splice(index, 1);
             this.setState({ Locales });

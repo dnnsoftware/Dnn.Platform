@@ -26,7 +26,7 @@ class HtmlEditorManagerPanelBody extends Component {
         return (
             <div className="dnn-persona-bar-page-body">
                 <div className={styles.htmlEditorManager}>
-                    <BackToLink onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
+                    <BackToLink onClick={this.props.closeHtmlEditorManager} text={resx.get("BackToSiteBehavior") } />
                     <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
                 </div>
             </div>

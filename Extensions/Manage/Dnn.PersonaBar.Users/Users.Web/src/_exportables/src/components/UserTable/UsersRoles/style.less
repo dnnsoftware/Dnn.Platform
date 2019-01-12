@@ -77,6 +77,7 @@
                     }
                 }
                 span {
+                    float: left;
                     width: 100%;
                     display: inline-block;
                     border-left: 1px solid @alto;
@@ -93,6 +94,16 @@
                         display: inline-block;
                         box-shadow: none;
                         background: transparent;
+                        .rw-widget-picker.rw-widget-container {
+                            height: 32px;
+                            line-height: 32px;
+                            border: none;
+                            input {
+                                height: inherit;
+                                line-height: inherit;
+                                border: inherit;
+                            }
+                        }
                         button {
                             display: none;
                         }
@@ -136,7 +147,7 @@
                                     li {
                                         padding-left: 15px;
                                         height: 30px;
-                                        line-height: 30px;
+                                        line-height: 26px;
                                         color: @rollingStone;
                                         border: none;
                                         outline: none;

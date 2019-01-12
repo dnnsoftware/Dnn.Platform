@@ -55,7 +55,7 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-    cardId: PropTypes.string.isRequired,
+    cardId: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired,
     hoverText: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
