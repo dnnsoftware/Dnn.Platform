@@ -575,7 +575,7 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@2.0.17":
+"@dnnsoftware/dnn-react-common@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.17.tgz#c1c0f764f41e6ba04876298a7862879949299e2a"
   integrity sha512-NjuFOuvwkMKm45qH6q7oukJsKInaMtQDvaBiALK5LOXgpQtVRIqpJ2VIGkKFkwIgEWTFlUBWd9HR5BuA2RjKlg==
