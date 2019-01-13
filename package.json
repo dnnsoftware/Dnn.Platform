@@ -91,7 +91,7 @@
     "webpack": "^4.17.1",
     "webpack-bundle-size-analyzer": "^2.7.0",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "3.1.10",
+    "webpack-dev-server": "^3.1.14",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
