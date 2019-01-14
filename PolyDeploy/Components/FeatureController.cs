@@ -128,6 +128,10 @@ namespace Cantarus.Modules.PolyDeploy.Components
                         Upgrade_00_09_00();
                         break;
 
+                    case "00.09.01":
+                        Upgrade_00_09_01();
+                        break;
+
                     default:
                         result = $"No upgrade logic for {version}.";
                         break;
@@ -201,6 +205,53 @@ namespace Cantarus.Modules.PolyDeploy.Components
                         + $"SET IDENTITY_INSERT {newTableName} OFF;";
 
                     context.Execute(System.Data.CommandType.Text, insertSql, apiUserId, auName, auApiKeySha, auEncryptionKeyEnc, auSalt, auBypass);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Upgrades to 00.09.01
+        /// 
+        /// Operations:
+        /// - Generate a Salt.
+        /// - Hash existing Address' using the new Salt.
+        /// - Insert in to new table.
+        /// </summary>
+        private void Upgrade_00_09_01()
+        {
+            string oldTableName = "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs_PreEncryption]";
+            string newTableName = "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs]";
+
+            using (IDataContext context = DataContext.Instance())
+            {
+                // Get all existing IPSpec ids.
+                IEnumerable<int> ipSpecIds = context.ExecuteQuery<int>(System.Data.CommandType.Text, $"SELECT [IPSpecID] FROM {oldTableName}");
+
+                foreach (int ipSpecId in ipSpecIds)
+                {
+                    // Read old data.
+                    string isAddress = context.ExecuteQuery<string>(
+                        System.Data.CommandType.Text,
+                        $"SELECT [Address] FROM {oldTableName} WHERE IPSpecID = @0",
+                        ipSpecId
+                    ).FirstOrDefault();
+
+                    // Create a name.
+                    string isName = $"Unnamed#{ipSpecId}";
+
+                    // Generate a salt.
+                    string isSalt = IPSpec.GenerateSalt();
+
+                    // Use existing plain text address and salt to create a hashed address.
+                    string isAddressSha = IPSpec.GenerateHash(isAddress, isSalt);
+
+                    // Insert in to new table.
+                    string insertSql = $"SET IDENTITY_INSERT {newTableName} ON;"
+                        + $"INSERT INTO {newTableName} ([IPSpecID], [Name], [Address_Sha], [Salt])"
+                        + $"VALUES (@0, @1, @2, @3);"
+                        + $"SET IDENTITY_INSERT {newTableName} OFF;";
+
+                    context.Execute(System.Data.CommandType.Text, insertSql, ipSpecId, isName, isAddressSha, isSalt);
                 }
             }
         }

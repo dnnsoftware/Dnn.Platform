@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Cantarus.PolyDeploy" type="Module" version="00.09.00">
+    <package name="Cantarus.PolyDeploy" type="Module" version="00.09.01">
       <friendlyName>Cantarus PolyDeploy</friendlyName>
       <description>Cantarus PolyDeploy module</description>
       <iconFile>Images/polydeploy-logo-icon.png</iconFile>
@@ -69,7 +69,7 @@
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
               <BusinessControllerClass>Cantarus.Modules.PolyDeploy.Components.FeatureController</BusinessControllerClass>
-              <UpgradeVersionsList>00.09.00</UpgradeVersionsList>
+              <UpgradeVersionsList>00.09.00,00.09.01</UpgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -132,6 +132,13 @@
               <path>SqlDataProviders</path>
               <name>00.09.00.SqlDataProvider</name>
               <version>00.09.00</version>
+            </script>
+
+            <!-- v0.9.1 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.01.SqlDataProvider</name>
+              <version>00.09.01</version>
             </script>
 
             <!-- Uninstall -->
