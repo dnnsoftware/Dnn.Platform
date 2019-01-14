@@ -112,7 +112,7 @@ class UserTable extends Component {
         let opened = (this.state.openId === "add");
         const addIsOpened = opened && canAddUser(this.props.appSettings.applicationSettings.settings);
         const headers = this.getHeaders();
-        const createUserBox = () => [<CreateUserBox key={`create-user-box-${i}`} filter={props.filter} onCancel={this.collapse.bind(this) } appSettings={props.appSettings}/>];
+        const createUserBox = () => [<CreateUserBox key={`create-user-box-${i++}`} filter={props.filter} onCancel={this.collapse.bind(this) } appSettings={props.appSettings}/>];
         return (
             <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>

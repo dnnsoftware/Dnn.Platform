@@ -23,25 +23,20 @@ class UserMenu extends Component {
     }
 
     handleClick(event) {
-        if ((typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
+        if (!(this.rootElement && this.rootElement.contains(event.target)) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
             this.props.onClose();
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener("click", this.handleClick, false);
         let {props} = this;
-        if (props.userDetails === undefined || props.userDetails.userId !== props.userId) {
-            this.showMenu = false;
-            this.getUserDetails(props);
-        }
-        else {
-            this.showMenu = true;
-        }
+        this.showMenu = false;
+        this.getUserDetails(props);
     }
-    componentWillReceiveProps(newProps) {
-        if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId) {
+    componentDidUpdate() {
+        if (this.props.userDetails === undefined && this.props.userDetails.userId !== this.props.userId) {
             this.showMenu = false;
-            this.getUserDetails(newProps);
+            this.getUserDetails(this.props);
         }
         else {
             this.showMenu = true;
@@ -243,20 +238,23 @@ class UserMenu extends Component {
         
         if (showMenu)
         {
-            return ( <GridCell className="dnn-user-menu menu-popup" ref={(node) => this.rootElement = node}>
-                {!this.state.ChangePasswordVisible &&
-                    <Menu>
-                        {
-                            visibleMenus.map((menu, index) => {
-                                return <MenuItem key={`menu_item_${index}`} onMenuAction={this.onItemClick.bind(this, menu.key) }>{menu.title}</MenuItem>;
-                            })
-                        }
-                    </Menu>
-                }
-                {this.state.ChangePasswordVisible &&
-                    <ChangePassword onCancel={this.toggleChangePassword.bind(this, true) } userId={this.props.userId} />
-                }
-            </GridCell>
+            return (
+            <div ref={node => this.rootElement = node}>
+                <GridCell className="dnn-user-menu menu-popup">
+                    {!this.state.ChangePasswordVisible &&
+                        <Menu>
+                            {
+                                visibleMenus.map((menu, index) => {
+                                    return <MenuItem key={`menu_item_${index}`} onMenuAction={this.onItemClick.bind(this, menu.key) }>{menu.title}</MenuItem>;
+                                })
+                            }
+                        </Menu>
+                    }
+                    {this.state.ChangePasswordVisible &&
+                        <ChangePassword onCancel={this.toggleChangePassword.bind(this, true) } userId={this.props.userId} />
+                    }
+                </GridCell>
+            </div>
             );
         }
         else
@@ -271,8 +269,8 @@ UserMenu.propTypes = {
     userId: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     userDetails: PropTypes.object,
-    getUserMenu: PropTypes.func.isRequired,
-    userMenuAction: PropTypes.func.isRequired,
+    getUserMenu: PropTypes.func,
+    userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
     filter: PropTypes.number
 };

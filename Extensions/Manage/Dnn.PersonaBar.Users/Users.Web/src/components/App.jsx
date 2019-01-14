@@ -9,7 +9,7 @@ class App extends Component {
     constructor() {
         super();
     }
-    componentWillMount() {
+    componentDidMount() {
         const {props} = this;
         props.dispatch(CommonUsersActions.getUsers({
             searchText: "",

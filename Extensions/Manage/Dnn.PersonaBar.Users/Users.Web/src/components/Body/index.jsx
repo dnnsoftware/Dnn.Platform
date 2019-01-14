@@ -28,7 +28,7 @@ class Body extends Component {
             searchParameters
         };
     }
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(CommonUsersActions.getUserFilters((data) => {
             let userFilters = Object.assign([], JSON.parse(JSON.stringify(data)));
             this.setState({

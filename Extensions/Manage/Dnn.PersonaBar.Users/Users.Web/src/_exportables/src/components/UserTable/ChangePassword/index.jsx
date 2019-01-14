@@ -150,7 +150,7 @@ class ChangePassword extends Component {
 }
 ChangePassword.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    userId: PropTypes.array.isRequired,
+    userId: PropTypes.number.isRequired,
     visible: PropTypes.bool,
     onCancel: PropTypes.func
 };

@@ -178,8 +178,8 @@ DetailsRow.propTypes = {
     currentIndex: PropTypes.number,
     getUserTabsIcons: PropTypes.func,
     getUserColumns: PropTypes.func,
-    getUserMenu: PropTypes.func.isRequired,
-    userMenuAction: PropTypes.func.isRequired,
+    getUserMenu: PropTypes.func,
+    userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
     columnSizes: PropTypes.array,
     filter: PropTypes.number
