@@ -419,10 +419,13 @@ class ProfilePropertyEditor extends Component {
                 </InputGroup>
                 <InputGroup>
                     <div className="profileProperty-row_switch">
+                        {/* Setting a style here to workaround this issue: https://github.com/romainberger/react-portal-tooltip/issues/84
+                            TODO: remove the style once the underlying issue is resolved */}
                         <Label
                             labelType="inline"
                             tooltipMessage={resx.get("ProfilePropertyDefinition_Required.Help")}
-                            label={resx.get("ProfilePropertyDefinition_Required")}
+                            label={resx.get("ProfilePropertyDefinition_Required")}                            
+                            tooltipStyle={{ width: "1%" }}   
                         />
                         <Switch
                             onText={resx.get("SwitchOn")}
@@ -461,9 +464,12 @@ class ProfilePropertyEditor extends Component {
             </div>;
             const columnTwo = <div key="column-two" className="right-column">
                 <InputGroup>
+                    {/* Setting a style here to workaround this issue: https://github.com/romainberger/react-portal-tooltip/issues/84
+                        TODO: remove the style once the underlying issue is resolved */}
                     <Label
                         tooltipMessage={resx.get("ProfilePropertyDefinition_DataType.Help")}
-                        label={resx.get("ProfilePropertyDefinition_DataType") + "*"}
+                        label={resx.get("ProfilePropertyDefinition_DataType") + "*"}                        
+                        tooltipStyle={{ float: "", width: "52%" }}                        
                     />
                     <DropdownWithError
                         options={this.getProfileDataTypeOptions()}

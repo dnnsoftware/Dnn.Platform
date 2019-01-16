@@ -170,9 +170,12 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                 </InputGroup>
                 <InputGroup>
+                    {/* Setting a style here to workaround this issue: https://github.com/romainberger/react-portal-tooltip/issues/84
+                        TODO: remove the style once the underlying issue is resolved */}
                     <Label
                         tooltipMessage={resx.get("plRegisterTabId.Help")}
-                        label={resx.get("plRegisterTabId")}
+                        label={resx.get("plRegisterTabId")}                        
+                        tooltipStyle={{ float: "", width : "68%"}}                        
                     />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
