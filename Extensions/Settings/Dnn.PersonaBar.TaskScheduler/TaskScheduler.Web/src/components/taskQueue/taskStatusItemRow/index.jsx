@@ -75,7 +75,7 @@ TaskStatusItemRow.propTypes = {
     scheduleId: PropTypes.number,
     friendlyName: PropTypes.string,
     overdue: PropTypes.bool,
-    remainingTime: PropTypes.number,
+    remainingTime: PropTypes.string,
     nextStart: PropTypes.string,
     objectDependencies: PropTypes.string,
     scheduleSource: PropTypes.string,
