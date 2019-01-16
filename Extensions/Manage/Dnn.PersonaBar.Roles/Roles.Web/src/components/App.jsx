@@ -32,7 +32,7 @@ class Root extends Component {
     }
 }
 
-Root.PropTypes = {
+Root.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number

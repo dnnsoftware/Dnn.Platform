@@ -9,7 +9,7 @@ import util from "utils";
 let canEdit = false;
 
 const roleLabelStyle = {
-    "word-wrap": "break-word"
+    wordWrap: "break-word"
 };
 
 class RoleRow extends Component {
