@@ -11,15 +11,15 @@ class EditProfile extends Component {
             userDetails: props.userDetails
         };
     }
-    componentWillMount() {
+    componentDidMount() {
         let {props} = this;
         if (props.userDetails === undefined || props.userDetails.userId !== props.userId) {
             this.getUserDetails(props);
         }
     }
-    componentWillReceiveProps(newProps) {
-        if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId) {
-            this.getUserDetails(newProps);
+    componentDidUpdate() {
+        if (this.props.userDetails === undefined && this.props.userDetails.userId !== this.props.userId) {
+            this.getUserDetails(this.props);
         }
     }
     getUserDetails(props) {
@@ -31,9 +31,10 @@ class EditProfile extends Component {
         }));
     }
     render() {
-        return this.state.userDetails !== undefined && this.state.userDetails.editProfileUrl !== undefined  && <iframe 
+            return <iframe 
             className="edit-profile" seamless
-            src={this.state.userDetails.editProfileUrl}
+            src={this.state.userDetails !== undefined && this.state.userDetails.editProfileUrl !== undefined ? 
+                this.state.userDetails.editProfileUrl : ""}
             />;
     }
 }

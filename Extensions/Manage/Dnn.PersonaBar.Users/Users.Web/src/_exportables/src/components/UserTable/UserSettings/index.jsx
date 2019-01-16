@@ -337,7 +337,7 @@ class UserSettings extends Component {
 }
 UserSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    userId: PropTypes.array.isRequired,
+    userId: PropTypes.number.isRequired,
     collapse: PropTypes.func.isRequired,
     userDetails: PropTypes.object,
     appSettings: PropTypes.object
