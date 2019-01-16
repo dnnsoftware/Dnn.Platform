@@ -12,7 +12,6 @@ const page = /Firefox/.test(navigator.userAgent) ?
 export default class Collapsible extends Component {
     constructor(props) {
         super(props);
-        this.collapsibleRef = React.createRef();
     }
 
     componentWillUnmount() {
@@ -21,14 +20,15 @@ export default class Collapsible extends Component {
             this.scrollTimeout = null;
         }
     }
-    scroll(height, width) {
+    scroll(size) {
+        const {height} = size;
         const {scrollDelay} = this.props;
         const delay = scrollDelay || scrollDelay === 0 ? scrollDelay : defaultDelay;
         if (!this.props.isOpened || !this.props.autoScroll ) {
             return;
         }
         this.scrollTimeout = setTimeout(()=> {
-            const collapsible = this.collapsibleRef.current;
+            const collapsible = this.collapsibleRef;
             const collapsibleTop = collapsible.getBoundingClientRect().top;
             const collapsibleHeight = this.props.fixedHeight || height;
             const bodyTop = document.body.getBoundingClientRect().top;
@@ -50,15 +50,16 @@ export default class Collapsible extends Component {
         const {isOpened, style, fixedHeight} = this.props;
         const className = this.props.className || "";
         return (
-            <ReactCollapse 
-                isOpened={isOpened}
-                style={style}
-                ref={this.collapsibleRef}
-                className={className}
-                onMeasure={this.scroll.bind(this)}
-                fixedHeight={fixedHeight}>
-                {this.props.children}
-            </ReactCollapse>
+            <div ref={(node) => this.collapsibleRef = node} style={{height: "100%", width:"100%"}}>
+                <ReactCollapse
+                    isOpened={isOpened}
+                    style={style}
+                    className={className}
+                    onMeasure={this.scroll.bind(this)}
+                    fixedHeight={fixedHeight}>
+                    {this.props.children}
+                </ReactCollapse>
+            </div>
         );
     }
 }
