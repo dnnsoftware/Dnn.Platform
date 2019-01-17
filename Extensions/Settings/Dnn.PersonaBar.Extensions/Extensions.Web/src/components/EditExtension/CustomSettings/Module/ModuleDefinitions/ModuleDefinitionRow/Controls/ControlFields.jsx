@@ -19,7 +19,7 @@ class ControlFields extends Component {
         const {props} = this;
         return (
             <GridCell className="edit-module-control-box">
-                  <GridSystem>
+                <GridSystem>
                     <div>
                         <SingleLineInputWithError
                             label={Localization.get("AddModuleControl_Key.Label")}
@@ -64,7 +64,7 @@ class ControlFields extends Component {
                         value={props.controlBeingEdited.source}
                         error={props.triedToSave && props.error.source}
                         onSelect={this.onSelect.bind(this, "source")}
-                        />
+                    />
                 </GridCell>
                 <GridSystem>
                     <div>
