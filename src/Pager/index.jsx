@@ -241,44 +241,49 @@ class Pager extends Component {
     }
     render() {
         const { state, props } = this;
-        return (state.totalPages > 1 || (props.totalRecords >= 10 && state.totalPages === 1 && this.props.showPageSizeOptions)) &&
-            <div className="dnn-pager do-not-close" style={props.style}>
-                <div className="dnn-pager-summary-box">
-                    {this.getPageSummary()}
-                </div>
-                <div className="dnn-pager-control">
-                    <div className="dnn-pager-paging-box">
-                        <ul>
-                            {
-                                this.props.showStartEndButtons &&
-                                this.renderIcon(this.onPageChanged.bind(this, "<<"), ArrowEndLeftIcon, state.currentPage < 1)
-                            }
-                            {
-                                this.renderIcon(this.onPageChanged.bind(this, "<"), ArrowLeftIcon, state.currentPage < 1)
-                            }
-                            {this.getPagingBoxes()}
-                            {
-                                this.renderIcon(this.onPageChanged.bind(this, ">"), ArrowRightIcon, state.totalPages <= (state.currentPage + 1))
-                            }
-                            {
-                                this.props.showStartEndButtons &&
-                                this.renderIcon(this.onPageChanged.bind(this, ">>"), ArrowEndRightIcon, state.totalPages <= (state.currentPage + 1))
-                            }
-                        </ul>
+        if (state.totalPages > 1 || (props.totalRecords >= 10 && state.totalPages === 1 && this.props.showPageSizeOptions)) {
+            return (
+                <div className="dnn-pager do-not-close" style={props.style}>
+                    <div className="dnn-pager-summary-box">
+                        {this.getPageSummary()}
                     </div>
-                    {this.props.showPageInfo && !this.props.showPageSizeOptions &&
-                        <div className="dnn-pager-options-info-box">
-                            {this.format(this.props.pageInfoText, this.formatCommaSeparate(state.currentPage + 1), this.formatCommaSeparate(state.totalPages))}
+                    <div className="dnn-pager-control">
+                        <div className="dnn-pager-paging-box">
+                            <ul>
+                                {
+                                    this.props.showStartEndButtons &&
+                                    this.renderIcon(this.onPageChanged.bind(this, "<<"), ArrowEndLeftIcon, state.currentPage < 1)
+                                }
+                                {
+                                    this.renderIcon(this.onPageChanged.bind(this, "<"), ArrowLeftIcon, state.currentPage < 1)
+                                }
+                                {this.getPagingBoxes()}
+                                {
+                                    this.renderIcon(this.onPageChanged.bind(this, ">"), ArrowRightIcon, state.totalPages <= (state.currentPage + 1))
+                                }
+                                {
+                                    this.props.showStartEndButtons &&
+                                    this.renderIcon(this.onPageChanged.bind(this, ">>"), ArrowEndRightIcon, state.totalPages <= (state.currentPage + 1))
+                                }
+                            </ul>
                         </div>
-                    }
-                    {
-                        this.props.showPageSizeOptions &&
-                        <div className="dnn-pager-pageSize-box">
-                            {this.getPageSizeDropDown()}
-                        </div>
-                    }
-                </div>
-            </div >;
+                        {this.props.showPageInfo && !this.props.showPageSizeOptions &&
+                            <div className="dnn-pager-options-info-box">
+                                {this.format(this.props.pageInfoText, this.formatCommaSeparate(state.currentPage + 1), this.formatCommaSeparate(state.totalPages))}
+                            </div>
+                        }
+                        {
+                            this.props.showPageSizeOptions &&
+                            <div className="dnn-pager-pageSize-box">
+                                {this.getPageSizeDropDown()}
+                            </div>
+                        }
+                    </div>
+                </div >
+            );
+        } else {
+            return <div />;
+        }
     }
 }
 Pager.propTypes = {
