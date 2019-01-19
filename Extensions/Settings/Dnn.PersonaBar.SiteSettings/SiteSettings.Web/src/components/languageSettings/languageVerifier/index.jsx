@@ -15,12 +15,9 @@ class LanguageVerifierPanelBody extends Component {
         super();
     }
 
-    componentDidMount() {
-
-    }
-
-    componentDidUpdate(props) {
-        if (props.selectedPage === 2) {
+    componentDidUpdate(prevProps, prevState) {
+        const { props } = this;
+        if (prevProps.selectedPage !== props.selectedPage && props.selectedPage === 2) {
             if (props.verificationResults) {
                 this.setState({
                     verificationResults: props.verificationResults
