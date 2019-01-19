@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { formatLabel, getColumnsFromRow} from "utils/helpers";
+import { formatLabel, getColumnsFromRow} from "../utils/helpers";
 import Parser from "html-react-parser";
-import DomKey from "services/DomKey";
+import DomKey from "../services/DomKey";
 
 const DataTable = ({rows, columns, cssClass}) => {
 

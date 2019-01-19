@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Parser from "html-react-parser";
-import Localization from "localization/Localization";
+import Localization from "../localization/Localization";
 //import { sort } from "utils/helpers";
-import DomKey from "services/DomKey";
+import DomKey from "../services/DomKey";
 
 const Command = ({commandList, IsPaging}) => {
 

@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Parser from "html-react-parser";
-import Localization from "localization/Localization";
-import DataTable from "components/DataTable";
-import TextLine from "components/TextLine";
-import { stripWhiteSpaces } from "utils/helpers";
-import DomKey from "services/DomKey";
+import Localization from "../localization/Localization";
+import DataTable from "../components/DataTable";
+import TextLine from "../components/TextLine";
+import { stripWhiteSpaces } from "../utils/helpers";
+import DomKey from "../services/DomKey";
 
 const Help = ({ style, isError, error, name, description, options, IsPaging, resultHtml }) => {
 

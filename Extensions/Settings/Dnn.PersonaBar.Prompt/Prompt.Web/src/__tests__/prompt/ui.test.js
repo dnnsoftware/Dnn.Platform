@@ -9,7 +9,7 @@ import Enzyme, {mount, shallow, render} from "enzyme";
 import {Output} from "../../components/Output";
 import reducer from "../../reducers/promptReducers";
 import types from "../../constants/actionTypes";
-import Adapter from "enzyme-adapter-react-15";
+import Adapter from "enzyme-adapter-react-16";
 import DataTable from "../../components/DataTable";
 import {formatLabel} from "../../utils/helpers";
 import Help from "../../components/Help";
