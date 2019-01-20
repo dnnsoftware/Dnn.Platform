@@ -70,8 +70,8 @@ class TextOverflowWrapperNew extends Component {
 TextOverflowWrapperNew.propTypes = {
     text: PropTypes.string,
     hotspotStyles: PropTypes.object,
-    type: PropTypes.string.isRequired,
-    place: PropTypes.string.isRequired,
+    type: PropTypes.string,
+    place: PropTypes.string,
     effect: PropTypes.string,
     offset: PropTypes.number,
     multiline: PropTypes.bool,
