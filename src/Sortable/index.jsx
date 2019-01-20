@@ -68,6 +68,7 @@ export default class Sortable extends Component {
     setFieldSelected(id, selected) {
         let {items} = this.state;
 
+        // This file uses == intead of === at multiple places, please do not fix until we rewrite this or the sorting will fail
         items.forEach((items) => {
             if (items.id == id) {
                 items.selected = selected;

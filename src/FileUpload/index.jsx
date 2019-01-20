@@ -63,6 +63,8 @@ export default class FileUpload extends Component {
         if (file) {
             this.updateStateAndReloadImage(file);
         }
+        window.addEventListener("dragover", this.prevent);
+        window.addEventListener("drop", this.prevent);
     }
 
     componentDidUpdate(prevProps) {
@@ -81,11 +83,6 @@ export default class FileUpload extends Component {
         if (props.portalId !== prevProps.portalId) {         
             this.setState({ showFolderPicker: false });
         }
-    }
-
-    componentDidMount() {
-        window.addEventListener("dragover", this.prevent);
-        window.addEventListener("drop", this.prevent);
     }
 
     prevent(e) {

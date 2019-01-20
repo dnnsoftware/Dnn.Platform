@@ -61,6 +61,7 @@ module.exports = {
         "import/named": 2,
         "import/default": 2,
         "filenames/match-exported": 2,
-        "react/no-deprecated": "error"
+        "react/no-deprecated": "error",
+        "no-dupe-class-members": "error"
     }
 };
