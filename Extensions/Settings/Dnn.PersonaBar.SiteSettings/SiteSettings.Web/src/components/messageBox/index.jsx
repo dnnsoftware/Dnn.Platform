@@ -62,7 +62,7 @@ class MessageBox extends Component {
 }
 
 MessageBox.propTypes = {
-    text: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
     link: PropTypes.string,
     isOpened: PropTypes.bool,
     onClose: PropTypes.func.isRequired
