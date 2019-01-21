@@ -13,6 +13,9 @@ module.exports = {
         publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: moduleName + "-bundle.js"
     },
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     resolve: {
         extensions: ["*", ".js", ".json", ".jsx"],
         modules: [

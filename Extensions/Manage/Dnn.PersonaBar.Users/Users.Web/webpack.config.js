@@ -13,6 +13,9 @@ module.exports = {
         filename: "users-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     module: {
         rules: [
             {

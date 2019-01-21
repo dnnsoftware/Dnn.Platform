@@ -18,6 +18,9 @@ module.exports = {
         publicPath: isProduction ? "" : "http://localhost:8100/dist/",
         filename: 'prompt-bundle.js'
     },
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     devtool: '#source-map',
     resolve: {
         extensions: ["*", ".js", ".json", ".jsx"],
