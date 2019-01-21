@@ -14,19 +14,18 @@ import utils from "utils";
 
 
 class TranslatePageContent extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             pageList: [],
             basicSettings: null,
-            languageBeingEdited: null
+            languageBeingEdited: Object.assign({}, props.languageBeingEdited)
         };
-        this.getProgressData = this.getProgressData.bind(this);
+        this.init(); 
     }
 
-    componentDidMount() {
-        const {props} = this;
-        this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited) });
+    init() {        
+        this.getProgressData = this.getProgressData.bind(this);
         this.getPageList();
         this.getBasicSettings();
         this.getProgressData();
@@ -230,7 +229,7 @@ class TranslatePageContent extends Component {
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
-                                value={languageBeingEdited.Active}
+                                value={state.languageBeingEdited.Active}
                                 readOnly={!isEnabled}
                                 onChange={this.onToggleActive.bind(this) }
                             />
