@@ -179,7 +179,7 @@ class LanguageSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.languageSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div className="left-column" key="language-settings-left-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("systemDefaultLabel.Help")}
@@ -207,7 +207,7 @@ class LanguageSettingsPanelBody extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div className="right-column" key="language-settings-right-column">
                 <InputGroup>
                     <div className="languageSettings-row_switch">
                         <Label
