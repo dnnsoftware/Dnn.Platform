@@ -35,6 +35,24 @@ class SiteAliasEditor extends Component {
         }
     }
 
+    componentDidUpdate(prevProps){
+        const {props, state} = this;
+        if ((props !== prevProps) && props.aliasDetail ){
+            if (props.aliasDetail["HTTPAlias"] === undefined || props.aliasDetail["HTTPAlias"] === "") {
+                state.error["alias"] = true;
+            }
+            else if (props.aliasDetail["HTTPAlias"] !== "" && props.aliasDetail["HTTPAlias"] !== undefined) {
+                state.error["alias"] = false;
+            }
+    
+            this.setState({
+                aliasDetail: Object.assign({}, props.aliasDetail),
+                triedToSubmit: false,
+                error: state.error
+            });
+        }
+    }
+
     onSettingChange(key, event) {
         let {state, props} = this;
         let aliasDetail = Object.assign({}, state.aliasDetail);
