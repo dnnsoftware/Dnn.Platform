@@ -5,7 +5,7 @@ import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import { TextOverflowWrapperNew } from "@dnnsoftware/dnn-react-common";
+import { TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import SvgIcon from "../../SvgIcon";
 import utils from "utils";
 import "./style.less";
@@ -106,7 +106,7 @@ class Theme extends Component {
         return (
             <div className={this.getClassName() }>
                 {this.renderThumbnail() }
-                <TextOverflowWrapperNew text={props.theme.packageName} maxWidth={168} className="title" />
+                <TextOverflowWrapper text={props.theme.packageName} maxWidth={168} className="title" />
             </div>
         );
     }
