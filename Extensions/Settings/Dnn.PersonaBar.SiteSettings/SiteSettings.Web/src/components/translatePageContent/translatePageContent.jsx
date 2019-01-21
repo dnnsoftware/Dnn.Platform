@@ -20,7 +20,7 @@ class TranslatePageContent extends Component {
             pageList: [],
             basicSettings: null,
             languageBeingEdited: Object.assign({}, props.languageBeingEdited)
-        };       
+        };
         this.init(); 
     }
 
