@@ -145,7 +145,7 @@ class SiteAliasesPanel extends Component {
                         browser={item.BrowserType}
                         skin={item.Skin}
                         language={item.CultureCode}
-                        isPrimary={item.IsPrimary}
+                        isPrimary={!!item.IsPrimary}
                         deletable={item.Deletable}
                         editable={item.Editable}
                         showLanguageColumn={this.props.siteAliases.Languages && this.props.siteAliases.Languages.length > 1}
