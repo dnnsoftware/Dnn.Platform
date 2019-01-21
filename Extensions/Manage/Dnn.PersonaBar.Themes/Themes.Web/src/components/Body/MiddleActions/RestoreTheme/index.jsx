@@ -23,7 +23,7 @@ class RestoreTheme extends Component {
 
     render() {
         return (
-            <GridCell className="restore-theme" columnSize="50">
+            <GridCell className="restore-theme" columnSize={50}>
                 <Button onClick={this.restoreTheme.bind(this)}>{Localization.get("RestoreTheme")}</Button>
             </GridCell>
         );

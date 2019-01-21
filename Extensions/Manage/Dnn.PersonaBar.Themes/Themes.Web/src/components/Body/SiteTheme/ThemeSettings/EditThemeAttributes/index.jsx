@@ -207,7 +207,7 @@ class EditThemeAttributes extends Component {
                     <div>
                         <h3>{Localization.get("EditThemeAttributes")}</h3>
                         <GridCell>
-                            <GridCell columnSize="50">
+                            <GridCell columnSize={50}>
                                 <DropdownWithError
                                     defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getThemeOptions()}
@@ -217,7 +217,7 @@ class EditThemeAttributes extends Component {
                                     error={state.startSave && !state.themeName}
                                     label={Localization.get("Theme")} />
                             </GridCell>
-                            <GridCell columnSize="50" className="right-column">
+                            <GridCell columnSize={50} className="right-column">
                                 <RadioButtons
                                     options={[{ value: "layout", label: Localization.get("Layout") }, { value: "container", label: Localization.get("Container") }]}
                                     onChange={this.onThemeTypeChanged.bind(this)}
@@ -225,7 +225,7 @@ class EditThemeAttributes extends Component {
                                     float="none" />
                             </GridCell>
                             <div className="clear split" />
-                            <GridCell columnSize="50">
+                            <GridCell columnSize={50}>
                                 <DropdownWithError
                                     defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getThemeFileOptions()}
@@ -236,7 +236,7 @@ class EditThemeAttributes extends Component {
                                     error={state.startSave && !state.path}
                                     label={Localization.get("File")} />
                             </GridCell>
-                            <GridCell columnSize="50" className="right-column">
+                            <GridCell columnSize={50} className="right-column">
                                 <DropdownWithError
                                     defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getSettingOptions()}
@@ -247,7 +247,7 @@ class EditThemeAttributes extends Component {
                                     error={state.startSave && !state.setting}
                                     label={Localization.get("Setting")} />
                             </GridCell>
-                            <GridCell columnSize="50">
+                            <GridCell columnSize={50}>
                                 <DropdownWithError
                                     defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getTokenOptions()}
@@ -258,10 +258,10 @@ class EditThemeAttributes extends Component {
                                     error={state.startSave && !state.token}
                                     label={Localization.get("Token")} />
                             </GridCell>
-                            <GridCell columnSize="50" className="right-column">
+                            <GridCell columnSize={50} className="right-column">
                                 {this.renderValueField()}
                             </GridCell>
-                            <GridCell columnSize="100" className="actions-cell">
+                            <GridCell columnSize={100} className="actions-cell">
                                 <Button onClick={this.cancelEdit.bind(this)}>{Localization.get("Cancel")}</Button>
                                 <Button type="primary" onClick={this.Save.bind(this)}>{Localization.get("Apply")}</Button>
                             </GridCell>
