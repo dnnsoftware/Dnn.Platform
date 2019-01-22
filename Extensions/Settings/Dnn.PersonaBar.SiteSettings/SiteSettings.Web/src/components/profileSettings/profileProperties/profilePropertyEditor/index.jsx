@@ -52,13 +52,11 @@ class ProfilePropertyEditor extends Component {
 
         if (!props.profileProperty) {
             return;
-        }
-
-        const { PropertyName, PropertyCategory, profileProperty, propertyLocalization} = props;
+        }        
 
         let updateState = false;
-        Object.keys(profileProperty).forEach((key) => {
-            const current = profileProperty[key];
+        Object.keys(props.profileProperty).forEach((key) => {
+            const current = props.profileProperty[key];
             const previous = prevProps.profileProperty ? prevProps.profileProperty[key] : undefined;
 
             if(current !== previous) {
@@ -66,20 +64,53 @@ class ProfilePropertyEditor extends Component {
             }
         });
 
-        error.name["required"] = !PropertyName;
-        error.name["noSpecialCharacter"] = this.props.id === ADD_PROPERTY_FLAG && !this.isValidName(PropertyName);
-        error["category"] = !PropertyCategory;
-        error["datatype"] = !profileProperty["DataType"];
-        error["length"] = this.isValidLength(profileProperty["Length"]);
+        if (props.profileProperty["PropertyName"] === undefined || props.profileProperty["PropertyName"] === "") {
+            error.name["required"] = true;
+        }
+        else {
+            error.name["required"] = false;
+        }
+        
+        if (props.id === ADD_PROPERTY_FLAG && !this.isValidName(props.profileProperty["PropertyName"])) {
+            error.name["noSpecialCharacter"] = true; 
+        } 
+        else {
+            error.name["noSpecialCharacter"] = false;
+        }
 
-        if (propertyLocalization) {
-            error["localeName"] = !propertyLocalization["PropertyName"];
+        if (props.profileProperty["PropertyCategory"] === "" || props.profileProperty["PropertyCategory"] === undefined) {
+            error["category"] = true;
+        }
+        else {
+            error["category"] = false;
+        }
+        if (props.profileProperty["DataType"] === "" || props.profileProperty["DataType"] === undefined) {
+            error["datatype"] = true;
+        }
+        else {
+            error["datatype"] = false;
+        }
+        let length = props.profileProperty["Length"];
+        if (this.isValidLength(length)) {
+            error["length"] = false;
+        }
+        else {
+            error["length"] = true;
+        }
+
+        if (props.propertyLocalization) {
+            if (props.propertyLocalization["PropertyName"] === "" || props.propertyLocalization["PropertyName"] === undefined) {
+                error["localeName"] = true;
+            }
+            else {
+                error["localeName"] = false;
+            }
         }
 
         if(updateState) {
             this.setState({
-                profileProperty: Object.assign({}, profileProperty),
-                propertyLocalization: Object.assign({}, propertyLocalization),
+                profileProperty: Object.assign({}, props.profileProperty),
+                propertyLocalization: Object.assign({}, props.propertyLocalization),
                 triedToSubmit: state.triedToSubmit,
                 error
             });
@@ -261,6 +292,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     onNext() {
+
         const { props, state } = this;
         this.setState({
             triedToSubmit: true
