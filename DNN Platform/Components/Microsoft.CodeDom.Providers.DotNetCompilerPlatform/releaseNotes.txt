@@ -1,5 +1,5 @@
 ﻿<h3>Microsoft CodeDom .NET Compiler</h3>
-<strong>1.0.7</strong>
+<strong>2.0.1</strong>
 <p class="Contributor">
 	DotNetNuke Corporation <br />
 	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />

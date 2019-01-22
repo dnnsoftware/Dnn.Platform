@@ -1,0 +1,65 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="02.00.01" isSystem="false">
+      <friendlyName>Microsoft CodeDom .NET Compiler for .NET 4.6+</friendlyName>
+      <description>Provides compiler support for C# 7 and VB 15.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license />
+      <releaseNotes src="releaseNotes.txt"></releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
+              <version>2.0.1</version>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>bin/roslyn</basePath>
+              <resourceFile>
+                <name>roslyn.zip</name>
+              </resourceFile>
+            </resourceFiles>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration" action="update" targetpath="/configuration/system.codedom" collision="ignore">
+                    <system.codedom></system.codedom>
+                  </node>
+                  <node path="/configuration/system.codedom" action="update" targetpath="/configuration/system.codedom/compilers" collision="ignore">
+                    <compilers></compilers>
+                  </node>
+                  <node path="/configuration/system.codedom/compilers" action="update" key="extension" collision="overwrite">
+                    <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:1659;1699;1701" />
+                    <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:41008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.cs']" action="remove" />
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.vb']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
