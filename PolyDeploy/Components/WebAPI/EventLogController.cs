@@ -32,10 +32,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             }
 
             // Get event logs.
-            List<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity).ToList();
+            IEnumerable<EventLog> eventLogs = EventLogManager.Browse(pageIndex, pageSize, eventType, actualSeverity);
 
             // Work out pagination details.
-            int rowCount = EventLogManager.EventCount();
+            int rowCount = EventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
             int pageCount = (int)Math.Ceiling((double)(rowCount / pageSize));
 
             // Start building meta.
