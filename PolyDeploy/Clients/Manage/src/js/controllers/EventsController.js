@@ -96,8 +96,58 @@
         }
 
         // Get array for pagination.
-        function getPages(number) {
-            return new Array(number);
+        function getPages(pageCount, currentPage) {
+
+            // Number of selectable pages to show at any given time. This should
+            // be an odd number so the current page can be centralised.
+            var pageOptionCount = 9;
+
+            // This is the number of selectable pages that appear on either side
+            // of the current page. It's derived from the pageOptionCount.
+            var bufferSize = (pageOptionCount - 1) / 2;
+
+            // Initialise array.
+            var numArray = [];
+
+            // Work out what the bounds will be.
+            var lowPage = 0;
+            var highPage = 0;
+
+            if (pageCount < pageOptionCount) {
+
+                lowPage = 1;
+                highPage = pageCount;
+
+            } else {
+
+                lowPage = currentPage - bufferSize;
+                highPage = currentPage + bufferSize;
+
+                // Gone too low?
+                if (lowPage < 1) {
+
+                    // How far?
+                    highPage = highPage + Math.abs(lowPage) + 1;
+
+                    lowPage = 1;
+                }
+
+                // Gone too high?
+                if (highPage > pageCount) {
+
+                    // How far?
+                    lowPage = lowPage - Math.abs(highPage - pageCount);
+
+                    highPage = pageCount;
+                }
+            }
+
+            // Build array.
+            for (var i = lowPage; i <= highPage; i++) {
+                numArray.push(i);
+            }
+
+            return numArray;
         }
 
     }];
