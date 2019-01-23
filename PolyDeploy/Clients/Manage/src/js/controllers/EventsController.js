@@ -4,7 +4,7 @@
         // Defaults.
         var options = {
             pageIndex: 0,
-            pageSize: 10,
+            pageSize: 20,
             eventType: undefined,
             severity: undefined
         };
@@ -145,6 +145,22 @@
             // Build array.
             for (var i = lowPage; i <= highPage; i++) {
                 numArray.push(i);
+            }
+
+            // Clipping at the bottom?
+            if (numArray[0] !== 1) {
+
+                // Yes.
+                numArray[0] = 1;
+                numArray[1] = '...';
+            }
+
+            // Clipping at the top?
+            if (numArray[numArray.length - 1] !== pageCount) {
+
+                // Yes.
+                numArray[numArray.length - 1] = pageCount;
+                numArray[numArray.length - 2] = '...';
             }
 
             return numArray;
