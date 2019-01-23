@@ -75,7 +75,7 @@ LanguageInfoView.propTypes = {
     getResxEntries: PropTypes.func,
     resxBeingEdited: PropTypes.string,
     onToggleTree: PropTypes.func,
-    resxBeingEditedDisplay: PropTypes.func,
+    resxBeingEditedDisplay: PropTypes.string,
     selectedMode: PropTypes.string,
     onSelectMode: PropTypes.func,
     onCancel: PropTypes.func,
