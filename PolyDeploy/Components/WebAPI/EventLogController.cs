@@ -36,7 +36,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
 
             // Work out pagination details.
             int rowCount = EventLogManager.BrowseCount(pageIndex, pageSize, eventType, actualSeverity);
-            int pageCount = (int)Math.Ceiling((double)(rowCount / pageSize));
+            int pageCount = (int)Math.Ceiling(rowCount / (double)pageSize);
 
             // Start building meta.
             Dictionary<string, dynamic> pagination = new Dictionary<string, dynamic>();
