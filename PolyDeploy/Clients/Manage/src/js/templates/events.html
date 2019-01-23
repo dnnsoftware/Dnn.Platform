@@ -19,7 +19,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="eventLog in eventLogs">
+                            <tr ng-repeat="eventLog in eventLogs"
+                                ng-class="{ warning: eventLog.Severity === 1, danger: eventLog.Severity === 2, critical: eventLog.Severity === 3 }">
                                 <td>{{ eventLog.Date }}</td>
                                 <td>{{ eventLog.EventType }}</td>
                                 <td>{{ eventLog.Message }}</td>
