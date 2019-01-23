@@ -18,8 +18,9 @@ class TextOverflowWrapper extends Component {
         return Object.assign({ maxWidth: props.maxWidth }, props.style);
     }
 
-    shouldComponentUpdate() {
+    componentDidMount() {
         //Set time out to ensure calculation happens after render
+        setTimeout(() => {
             let input = this.overflowTooltipRef;
             if (typeof input !== "undefined" && input.current.getBoundingClientRect()) {
                 let inputRect = input.current.getBoundingClientRect();
@@ -31,9 +32,8 @@ class TextOverflowWrapper extends Component {
                     itemWidth: this.props.maxWidth
                 });
             }
-        return true;
+        }, 500);
     }
-
     render() {
         const {props, state} = this;
         return (
