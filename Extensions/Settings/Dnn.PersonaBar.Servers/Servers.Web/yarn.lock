@@ -648,21 +648,21 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@^2.0.37":
-  version "2.0.37"
-  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.37.tgz#df7fbaf6beee9f178d1043624b811e578d231491"
-  integrity sha512-14GH4C2y14Rul7bANBQLL+hQxpKKnxM1rAh+qhw+B6DsOsfweqYOFesMwiOR1yDMMy8am0qbfhlcO1V8WYJvGA==
+"@dnnsoftware/dnn-react-common@^2.0.51":
+  version "2.0.51"
+  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.51.tgz#d1c40d45db32585738f7aa3ebd2360eed92863ce"
+  integrity sha512-/oY5YYerwIdAjMC2QT3AOnlKoLot0G1hj1n1UrTri+fZteMc+YjDOKZkmIggsvrPBxLFrxwrASi7BPCy/BaHRg==
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"
     raw-loader "0.5.1"
+    react-accessible-tooltip "^2.0.3"
     react-collapse "^4.0.3"
     react-custom-scrollbars "^4.2.1"
     react-day-picker "^7.1.10"
     react-height "^3.0.0"
     react-modal "^3.5.1"
     react-motion "^0.5.2"
-    react-portal-tooltip "^2.4.2"
     react-scrollbar "^0.5.4"
     react-slider "0.11.2"
     react-tabs "2.3.0"
@@ -4852,6 +4852,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-accessible-tooltip@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-accessible-tooltip/-/react-accessible-tooltip-2.0.3.tgz#d676f23fda74c1df5733834869d27722a2649331"
+  integrity sha512-T/QPT8qBrrco+E8KQUuhtQAv46/B3Xpf+adLkKA2bofE/9db2wSaqr6XOlxO/Rx59dqt2V844kxrmT7WA2Q9kw==
+
 react-collapse@^4.0.3:
   version "4.0.3"
   resolved "https://www.myget.org/F/dnn-software-public/npm/react-collapse/-/react-collapse-4.0.3.tgz#b96de959ed0092a43534630b599a4753dd76d543"
@@ -4940,11 +4945,6 @@ react-motion@^0.5.2:
     performance-now "^0.2.0"
     prop-types "^15.5.8"
     raf "^3.1.0"
-
-react-portal-tooltip@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
-  integrity sha512-scer683Y1Sc9p3YilEbEZf7er9AZzJBaQ/c8hymxgJ0+Sa7RqUiOEvjA/L2fycM/yKKMH7aHOOxhMzeL2ff22A==
 
 react-scrollbar@^0.5.4:
   version "0.5.4"

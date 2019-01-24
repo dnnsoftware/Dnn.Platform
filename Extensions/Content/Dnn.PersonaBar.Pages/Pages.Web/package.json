@@ -21,7 +21,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "^2.0.37",
+    "@dnnsoftware/dnn-react-common": "^2.0.51",
     "@types/knockout": "^3.4.60",
     "@types/redux": "3.6.31",
     "babel-core": "^7.0.0-bridge.0",
