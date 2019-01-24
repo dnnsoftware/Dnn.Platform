@@ -3,25 +3,51 @@
     <!-- Content -->
     <div class="row">
 
+        <!-- Disable/Enable Whitelist -->
+        <div class="col-xs-12 col-sm-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Whitelist Configuration</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group form-group-middle">
+                        <label class="col-sm-4 col-md-3 control-label">State</label>
+                        <div class="col-sm-8 col-md-9">
+                            <select>
+                                <option ng-repeat="opt in whitelistStates" value="{{ opt.value }}">{{ opt.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-9 col-sm-offset-4 col-md-offset-3">
+                        <div class="controls">
+                            <button type="button" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- /Disable/Enable Whitelist -->
+
         <!-- Create Whitelist Entry -->
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-7">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">New Whitelist Entry</h3>
                 </div>
                 <div class="panel-body">
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">IPv4 Address</label>
-                        <div class="col-sm-10">
+                    <div class="form-group form-group-middle">
+                        <label class="col-sm-3 col-lg-2 control-label">Address</label>
+                        <div class="col-sm-9 col-lg-10">
                             <input type="text" ng-model="newIpv4Address" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
+                        <div class="controls">
                             <button type="button" class="btn btn-success" ng-click="createSpec(newIpv4Address)">Create</button>
                         </div>
                     </div>
+
                     <div class="clearfix"></div>
                 </div>
             </div>

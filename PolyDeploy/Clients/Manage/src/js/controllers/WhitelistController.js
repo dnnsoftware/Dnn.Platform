@@ -1,6 +1,17 @@
 ﻿module.exports = ['$scope', 'IPSpecDataService',
     function ($scope, IPSpecDataService) {
 
+        $scope.whitelistStates = [
+            {
+                name: 'Enabled',
+                value: true
+            },
+            {
+                name: 'Disabled',
+                value: false
+            }
+        ];
+
         // Load specs.
         refreshSpecs();
 
