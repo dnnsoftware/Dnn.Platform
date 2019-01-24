@@ -43,7 +43,7 @@ END
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_EventLogsPaginated STORED PROCEDURE *********************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPage STORED PROCEDURE ***********************************************/
 /***                                                                                                   ***/
 /*** Create stored procedure for retrieving pages of data from the EventLogs table.                    ***/
 /*********************************************************************************************************/
@@ -51,13 +51,13 @@ GO
 IF EXISTS (
     SELECT *
     FROM dbo.sysobjects
-    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]'))
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]'))
 BEGIN
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
 END
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
     @PageNumber [INT],
     @PageSize [INT],
     @EventType [NVARCHAR](32) = null,
@@ -73,7 +73,7 @@ AS
 GO
 
 /*********************************************************************************************************/
-/*** Cantarus_PolyDeploy_EventLogsPaginatedRows STORED PROCEDURE *****************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPageTotal STORED PROCEDURE ******************************************/
 /***                                                                                                   ***/
 /*** Create stored procedure for retrieving total number of results when using pagination.             ***/
 /*********************************************************************************************************/
@@ -81,13 +81,13 @@ GO
 IF EXISTS (
     SELECT *
     FROM dbo.sysobjects
-    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]'))
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]'))
 BEGIN
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
 END
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
     @PageNumber [INT],
     @PageSize [INT],
     @EventType [NVARCHAR](32) = null,

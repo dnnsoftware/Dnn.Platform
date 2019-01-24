@@ -43,7 +43,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             {
                 return context.ExecuteQuery<EventLog>(
                     System.Data.CommandType.StoredProcedure,
-                    "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]",
+                    "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]",
                     pageIndex,
                     pageSize,
                     eventType,
@@ -58,7 +58,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             {
                 return context.ExecuteQuery<int>(
                     System.Data.CommandType.StoredProcedure,
-                    "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]",
+                    "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]",
                     pageIndex,
                     pageSize,
                     eventType,
