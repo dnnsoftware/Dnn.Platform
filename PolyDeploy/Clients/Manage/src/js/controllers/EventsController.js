@@ -98,6 +98,11 @@
         // Get array for pagination.
         function getPages(pageCount, currentPage) {
 
+            // Check there are pages to paginate.
+            if (pageCount < 1) {
+                return [1];
+            }
+
             // Number of selectable pages to show at any given time. This should
             // be an odd number so the current page can be centralised.
             var pageOptionCount = 9;
