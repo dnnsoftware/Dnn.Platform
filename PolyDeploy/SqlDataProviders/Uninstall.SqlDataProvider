@@ -14,6 +14,32 @@
 /*** Cantarus_PolyDeploy_EventLogsPaginated STORED PROCEDURE *********************************************/
 /*********************************************************************************************************/
 
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_EventLogsPaginatedRows STORED PROCEDURE *****************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginatedRows]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_EventLogsPaginated STORED PROCEDURE *********************************************/
+/*********************************************************************************************************/
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
 GO
