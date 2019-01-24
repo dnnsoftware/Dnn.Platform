@@ -1,37 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactPortalTooltip from "react-portal-tooltip";
-import uniqueId from "lodash/uniqueId";
+import { Tooltip as AccessibleTooltip } from "react-accessible-tooltip";
 import InfoIcon from "./InfoIcon";
 import ErrorIcon from "./ErrorIcon";
 import GlobalIcon from "./GlobalIcon";
 import CustomIcon from "./CustomIcon";
 import "./style.less";
-
-const colors = {
-    error: "#EA2134",
-    warning: "#EA9C00",
-    info: "#4b4e4f",
-    global: "#21A3DA"
-};
-
-function getStyle(type, _color) {
-    const color = _color || colors[type];
-    return {
-        style: {
-            background: color,
-            color: "white",
-            padding: "10px 20px",
-            transition: "opacity 0.2s ease-in-out, visibility 0.2s ease-in-out",
-            boxShadow: "none",
-            fontFamily: "'proxima_nova', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-        },
-        arrowStyle: {
-            color,
-            borderColor: false
-        }
-    };
-}
 
 const getTooltipText = function (messages) {
     if (!messages || !messages.length) {
@@ -57,47 +31,48 @@ class Tooltip extends Component {
 
     constructor() {
         super();
-        const id = uniqueId("tooltip-");
-        this.state = {
-            id: id, 
-            active: false
-        };
-    }
+    }    
 
-    showTooltip() {
-        this.setState({isTooltipActive: true});
-    }
-
-    hideTooltip() {
-        this.setState({isTooltipActive: false});
-    }
-    
     render() {
-        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick, tooltipColor, maxWidth} = this.props;
+        const {messages, rendered, type, className, style} = this.props;
         const containerClass = "dnn-ui-common-tooltip " + type + " " + (className ? className : "");
         const message = getTooltipText(messages);
-        const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
+        
 
         if (!message || rendered === false) {
             return <noscript />;
         }
-        const tooltipStyle = this.props.tooltipStyle || getStyle(type, tooltipColor);
         return (
             <div className={containerClass} style={style}>
-                <div id={this.state.id} className="icon" onClick={onClick}
-                    onMouseEnter={this.showTooltip.bind(this)}
-                    onMouseLeave={this.hideTooltip.bind(this)}>
-                    <TooltipIcon icon={customIcon ? customIcon : null} />
-                </div>
-                <ReactPortalTooltip
-                    style={tooltipStyle}
-                    active={this.state.isTooltipActive}
-                    position={tooltipPlace}
-                    tooltipTimeout={delayHide}
-                    arrow="center"
-                    parent={"#" + this.state.id}>
-                    <div style={{maxWidth: maxWidth + "px"}} dangerouslySetInnerHTML={{ __html: message }} />
-                </ReactPortalTooltip>
+                <AccessibleTooltip 
+                    label={props => {  
+                        const {customIcon, type, onClick} = this.props;
+                        const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
+                        return(
+                            <div className="icon" onClick={onClick} {...props.labelAttributes} >
+                                <TooltipIcon icon={customIcon ? customIcon : null} />
+                            </div>
+                        );
+                    }}
+                    overlay={props => {
+                        const {tooltipPlace, maxWidth} = this.props;
+                        
+                        const classNames = [];
+                        classNames.push("tooltip-overlay");
+                        if (props.isHidden){
+                            classNames.push("tooltip-overlay--hidden");
+                        }
+                        classNames.push(tooltipPlace);
+                        return(
+                            <div
+                                {...props.overlayAttributes}
+                                className={classNames.join(" ")}
+                            >
+                                <div className="tooltip-inner" style={{maxWidth: maxWidth}} dangerouslySetInnerHTML={{__html: message}} />
+                            </div>
+                        );
+                    }}
+                />
             </div>
         );
     }
@@ -112,7 +87,6 @@ Tooltip.propTypes = {
     tooltipStyle: PropTypes.object,
     tooltipColor: PropTypes.string,
     className: PropTypes.string,
-    delayHide: PropTypes.number,
     customIcon: PropTypes.node,
     tooltipClass: PropTypes.string,
     onClick: PropTypes.func,
@@ -122,7 +96,6 @@ Tooltip.propTypes = {
 Tooltip.defaultProps = {
     tooltipPlace: "top",
     type: "info",
-    delayHide: 100,
     maxWidth: 400
 };
 
