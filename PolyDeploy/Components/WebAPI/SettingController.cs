@@ -21,7 +21,7 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
 
             try
             {
-               setting = SettingManager.GetSetting(group, key);
+                setting = SettingManager.GetSetting(group, key);
             }
             catch (SettingNotFoundException ex)
             {

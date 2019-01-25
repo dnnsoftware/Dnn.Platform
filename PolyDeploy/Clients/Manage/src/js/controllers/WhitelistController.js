@@ -16,11 +16,20 @@
 
         SettingDataService.whitelist.getState()
             .then(function (setting) {
-                $scope.whitelistState = setting;
+
+                var selected = undefined;
+
+                angular.forEach($scope.whitelistStates, function (state) {
+                    if (state.value === setting) {
+                        selected = state;
+                    }
+                });
+
+                $scope.whitelistState = selected;
             });
 
         $scope.updateWhitelistState = function (state) {
-            SettingDataService.whitelist.setState(state);
+            SettingDataService.whitelist.setState(state.value);
         };
 
         // Load specs.

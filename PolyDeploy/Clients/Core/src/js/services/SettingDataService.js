@@ -17,17 +17,11 @@
         }
 
         // POST
-        // Create a new IPSpec.
+        // Update or create a Setting.
         function setSetting(group, key, value) {
 
-            var data = {
-                group: group,
-                key: key,
-                value: value
-            };
-
             // Make request.
-            return $http.post(controllerUrl + 'Set', data).then(
+            return $http.post(controllerUrl + `Set?group=${group}&key=${key}&value=${value}`).then(
                 function (response) {
 
                     // Return unpacked data.
