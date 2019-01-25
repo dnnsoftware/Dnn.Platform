@@ -112,6 +112,13 @@
               <version>00.07.00</version>
             </script>
 
+            <!-- v0.9.3 -->
+            <script type="Install">
+              <path>SqlDataProviders</path>
+              <name>00.09.03.SqlDataProvider</name>
+              <version>00.09.03</version>
+            </script>
+
             <!-- Uninstall -->
             <script type="Uninstall">
               <path>SqlDataProviders</path>
