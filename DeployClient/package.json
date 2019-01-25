@@ -1,6 +1,6 @@
 {
   "name": "deploy-client",
-  "version": "0.8.0",
+  "version": "0.9.3",
   "main": "gulpfile.js",
   "license": "Apache-2.0",
   "private": true,

@@ -7,6 +7,6 @@
     */
     MODULE_NAME: 'PolyDeploy',
     MODULE_DOMAIN: 'Modules',
-    MODULE_VERSION: '00.08.00',
+    MODULE_VERSION: '00.09.03',
     WEBSITE_PATH: '../../Website/'
 };
