@@ -1,5 +1,5 @@
-﻿module.exports = ['$scope', 'IPSpecDataService',
-    function ($scope, IPSpecDataService) {
+﻿module.exports = ['$scope', 'IPSpecDataService', 'SettingDataService',
+    function ($scope, IPSpecDataService, SettingDataService) {
 
         $scope.whitelistStates = [
             {
@@ -11,6 +11,17 @@
                 value: false
             }
         ];
+
+        $scope.whitelistState = false;
+
+        SettingDataService.whitelist.getState()
+            .then(function (setting) {
+                $scope.whitelistState = setting;
+            });
+
+        $scope.updateWhitelistState = function (state) {
+            SettingDataService.whitelist.setState(state);
+        };
 
         // Load specs.
         refreshSpecs();

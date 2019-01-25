@@ -13,7 +13,7 @@
                     <div class="form-group form-group-middle">
                         <label class="col-sm-4 col-md-3 control-label">State</label>
                         <div class="col-sm-8 col-md-9">
-                            <select>
+                            <select ng-model="whitelistState" ng-change="updateWhitelistState(whitelistState)">
                                 <option ng-repeat="opt in whitelistStates" value="{{ opt.value }}">{{ opt.name }}</option>
                             </select>
                         </div>
