@@ -49,3 +49,17 @@ IF EXISTS(SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{o
         DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogs]
     END
 GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_Settings TABLE ******************************************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]')
+        AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+    DROP TABLE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]
+END
+GO
