@@ -1,7 +1,6 @@
-﻿// DotNetNuke® - http://www.dotnetnuke.com
-//
-// Copyright (c) 2002-2018 DotNetNuke Corporation
-// All rights reserved.
+﻿// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 
 (function ($) {
 

@@ -1,9 +1,9 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -368,7 +368,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //special case, if no extensions and the last part of the tabKeyVal contains default.aspx, then
-            //split off the default.aspx part and try again - compensating for gemini issue http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=8651&PROJID=39
+            //split off the default.aspx part and try again - compensating for gemini issue http://support.dnnsoftware.com/issue/ViewIssue.aspx?id=8651&PROJID=39
             if (!found && settings.PageExtensionUsageType != PageExtensionUsageType.AlwaysUse)
             {
                 found = CheckSpecialCase(tabLookUpKey, tabDict);

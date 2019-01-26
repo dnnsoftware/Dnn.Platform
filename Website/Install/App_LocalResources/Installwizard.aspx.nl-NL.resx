@@ -355,7 +355,7 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value>Installatieversie toevoegen</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Bekijk Installatie Video&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="http://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Bekijk Installatie Video&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>De objectqualifier moet met een letter beginnen en mag niet langer zijn dan 20 tekens</value>

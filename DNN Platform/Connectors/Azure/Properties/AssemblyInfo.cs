@@ -1,8 +1,7 @@
 ﻿﻿#region Copyright
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2015
-// by DotNetNuke Corporation
-// All Rights Reserved
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 #endregion
 
 #region Usings

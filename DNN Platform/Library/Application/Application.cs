@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -32,7 +32,7 @@ using DotNetNuke.Data;
 namespace DotNetNuke.Application
 {
     /// <summary>
-    /// The Application class contains properties that describe the DotNetNuke Application.
+    /// The Application class contains properties that describe the DNN Application.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -45,9 +45,9 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the company to which the DotNetNuke application is related.
+        /// Gets the company to which the DNN application is related.
         /// </summary>
-        /// <value>Fixed result: DotNetNuke Corporation</value>
+        /// <value>Fixed result: DNN Corporation</value>
         public string Company
         {
             get
@@ -96,12 +96,12 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the legal copyright.
         /// </summary>
-        /// <value>Dynamic: DotNetNuke� is copyright 2002-todays year by DotNetNuke Corporation"</value>
+        /// <value>Dynamic: DNN and DotNetNuke is Copyright ©2002-todays year by DNN Corp"</value>
         public string LegalCopyright
         {
             get
             {
-                return string.Concat("DotNetNuke� is copyright 2002-", DateTime.Today.ToString("yyyy")," by DotNetNuke Corporation");
+                return string.Concat("DNN® and DotNetNuke® is Copyright ©2002-", DateTime.Today.ToString("yyyy")," by DNN Corp");
             }
         }
 
@@ -130,7 +130,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Gets the status of the DotnetNuke application
+        /// Gets the status of the DNN application
         /// </summary>
         /// <remarks>
 		/// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
@@ -197,7 +197,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the upgrade URL.
         /// </summary>
-        /// <value>Fixed value: http://update.dotnetnuke.com </value>
+        /// <value>Fixed value: http://update.dnnsoftware.com </value>
         public string UpgradeUrl
         {
             get
@@ -205,7 +205,7 @@ namespace DotNetNuke.Application
 	            var url = Config.GetSetting("UpdateServiceUrl");
 				if (string.IsNullOrEmpty(url))
 				{
-					return "http://update.dotnetnuke.com";
+					return "http://update.dnnsoftware.com";
 				}
 	            return url;
             }
@@ -214,17 +214,17 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the URL of the application
         /// </summary>
-        /// <value>Fixed value: http://www.dotnetnuke.com </value>
+        /// <value>Fixed value: http://www.dnnsoftware.com </value>
         public string Url
         {
             get
             {
-                return "http://www.dotnetnuke.com";
+                return "http://www.dnnsoftware.com";
             }
         }
 
         /// <summary>
-        /// Gets the version of the DotNetNuke framework/application
+        /// Gets the version of the DNN framework/application
         /// </summary>
         /// <value>The version as retreieved from the Executing assembly.</value>
         public virtual Version Version

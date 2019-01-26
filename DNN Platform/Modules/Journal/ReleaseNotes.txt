@@ -1,8 +1,8 @@
 ﻿<h3>Journal</h3>
 <p class="Contributor">
-	DotNetNuke Corporation <br />
-	<a href="mailto:training@dotnetnuke.com">training@dotnetnuke.com</a><br />
-	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+	DNN Corp <br />
+	<a href="mailto:training@dnnsoftware.com">training@dnnsoftware.com</a><br />
+	<a href=http://www.dnnsoftware.com>http://www.dnnsoftware.com</a><br />
 </p>
 <hr/>
 <div class="License">

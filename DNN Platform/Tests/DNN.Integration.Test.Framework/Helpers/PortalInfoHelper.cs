@@ -1,6 +1,6 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2018, DNN Corp.
-// All Rights Reserved
+﻿// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 
 using System;
 using System.Linq;

@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -28,9 +28,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DotNetNuke.Test.AspNetClientCapabilityProvider")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DotNetNuke Corporation")]
+[assembly: AssemblyCompany("DNN Corp")]
 [assembly: AssemblyProduct("DotNetNuke.Test.AspNetClientCapabilityProvider")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DotNetNuke Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DNN and DotNetNuke is Copyright ©2002-2019 by DNN Corp. All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

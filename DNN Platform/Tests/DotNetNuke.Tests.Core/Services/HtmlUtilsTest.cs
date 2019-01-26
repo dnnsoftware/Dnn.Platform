@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Core.Services
     public class HtmlUtilsTests
     {
         private const string HtmlStr =
-            "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"http://www.dotnetnuke.com\">DotNetNuke Corp.</a>";
+            "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"http://www.dnnsoftware.com\">DNN Corp.</a>";
 
         private const string Filters = "alt|href|src|title";
         private string _expected = "";
@@ -55,7 +55,7 @@ namespace DotNetNuke.Tests.Core.Services
         [Timeout(2000)]
         public void DNN_12926_IsHtml_Detection()
         {
-            var result = HtmlUtils.IsHtml("this is a test of dnnmail: <a href='http://www.dotnetnuke.com'>DotNetNuke</a>");
+            var result = HtmlUtils.IsHtml("this is a test of dnnmail: <a href='http://www.dnnsoftware.com'>DNN Corp</a>");
 
             Assert.IsTrue(result);
         }
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Services
             // Arrange
             SetUp();
             _expected =
-                "Hello World This is a sample HTML text for testing DotNetNuke Corp HappyFaceAlt HappyFaceTitle /dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif http://www.dotnetnuke.com ";
+                "Hello World This is a sample HTML text for testing DNN Corp HappyFaceAlt HappyFaceTitle /dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif http://www.dnnsoftware.com ";
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Services
             // Arrange
             SetUp();
             _expected =
-                "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"http://www.dotnetnuke.com\"";
+                "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"http://www.dnnsoftware.com\"";
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);

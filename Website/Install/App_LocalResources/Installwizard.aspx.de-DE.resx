@@ -353,7 +353,7 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value>füge Installationsversion hinzu</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="dnnSecondaryAction" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
+    <value>&lt;a class="dnnSecondaryAction" href="http://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>Der Objekt-Präfix mus mit einem Buchstaben beginnen und darf nicht mehr als 20 Zeichen haben.</value>

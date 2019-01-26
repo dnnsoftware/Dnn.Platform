@@ -32,7 +32,7 @@
                                         <controlTitle>Console</controlTitle>
                                         <controlType>View</controlType>
                                         <iconFile></iconFile>
-                                        <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Console/About the Console Module.htm</helpUrl>
+                                        <helpUrl>https://www.dnnsoftware.com/Content/Dnn.Platform/Documentation/Building%20Your%20Site/Installed%20Modules/Console/About%20the%20Console%20Module.htm</helpUrl>
                                         <viewOrder>0</viewOrder>
                                         <supportsPartialRendering>True</supportsPartialRendering>
                                         <supportsPopUps>True</supportsPopUps>

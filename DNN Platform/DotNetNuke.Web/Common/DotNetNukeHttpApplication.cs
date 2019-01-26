@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -57,7 +57,7 @@ using DotNetNuke.Services.Installer.Blocker;
 namespace DotNetNuke.Web.Common.Internal
 {
     /// <summary>
-    /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
+    /// DNN Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
     /// </summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {

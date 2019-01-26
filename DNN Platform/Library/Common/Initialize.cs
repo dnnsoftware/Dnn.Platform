@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -97,7 +97,7 @@ namespace DotNetNuke.Common
                 case Globals.UpgradeStatus.Error:
                     // here we need to check if the application is already installed
                     // or is in pre-install state.
-                    // see http://support.dotnetnuke.com/project/DNN/2/item/26053 for scenarios
+                    // see http://support.dnnsoftware.com/project/DNN/2/item/26053 for scenarios
                     bool isInstalled = Globals.IsInstalled();
 
                     if (!isInstalled && (useWizard || autoUpgrade))

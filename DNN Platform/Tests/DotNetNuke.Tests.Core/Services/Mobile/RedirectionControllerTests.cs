@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 	    public const bool EnabledFlag = true;
         public const bool DisabledFlag = false;
         public const bool IncludeChildTabsFlag = true;
-	    public const string ExternalSite = "http://www.dotnetnuke.com";
+	    public const string ExternalSite = "http://www.dnnsoftware.com";
 
 		private const string DisableMobileRedirectCookieName = "disablemobileredirect";
 		private const string DisableRedirectPresistCookieName = "disableredirectpresist";

@@ -600,8 +600,8 @@
                         }
                         else {
                             $("#bannerLink").off('click');// click(function () { return false; });
-                            $("#bannerImage").attr("src", "http://cdn.dotnetnuke.com/installer/banners/banner_" + installWizard.bannerIndex + ".jpg");
-                            $("#bannerLink").attr("href", "http://www.dotnetnuke.com/installation/Banner" + installWizard.bannerIndex + ".aspx");
+                            $("#bannerImage").attr("src", "http://cdn.dnnsoftware.com/installer/banners/banner_" + installWizard.bannerIndex + ".jpg");
+                            $("#bannerLink").attr("href", "http://www.dnnsoftware.com/installation/Banner" + installWizard.bannerIndex + ".aspx");
                             $("#bannerLink").attr("target", "_blank");
                             if (installWizard.bannerIndex != -1) {
                                 $("#bannerLink").hide();

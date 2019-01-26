@@ -2,40 +2,40 @@
 <WebPlatform>
   <Links>
     <AddLink InDashboard="True">
-      <Title>Installing DotNetNuke for the First Time</Title>
-      <Description>If this is your first time to install DotNetNuke you may wish to review this short installation video.  It will guide you through the initial setup and configuration of your new DotNetNuke site.</Description>
-      <Uri>http://www.dotnetnuke.com/Resources/Video-Library/Viewer/VideoId/408/Installing-DotNetNuke-With-WebMatrix.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/first.png</ImageUri>
+      <Title>Installing DNN for the First Time</Title>
+      <Description>If this is your first time to install DNN you may wish to review this short installation video.  It will guide you through the initial setup and configuration of your new DotNetNuke site.</Description>
+      <Uri>http://www.dnnsoftware.com/Resources/Video-Library/Viewer/VideoId/408/Installing-DotNetNuke-With-WebMatrix.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/first.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
-      <Title>Using DotNetNuke</Title>
+      <Title>Using DNN</Title>
       <Description>Now that you've successfully created your DotNetNuke site, what next?  Browse training videos and learn how to use all of the features of DotNetNuke.</Description>
-      <Uri>http://www.dotnetnuke.com/Resources/Training/Tutorials.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/using.png</ImageUri>
+      <Uri>http://www.dnnsoftware.com/Resources/Training/Tutorials.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/using.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True" InLearn="True">
-      <Title>Extending DotNetNuke</Title>
+      <Title>Extending DNN</Title>
       <Description>You don't have to write any code to use or extend DotNetNuke. But if you want to create your own extensions we'll show you how.</Description>
-      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge/Development.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/extend.png</ImageUri>
+      <Uri>http://www.dnnsoftware.com/Community/Extensions-Forge/Development.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/extend.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
-      <Title>DotNetNuke Forge - Open Source Community Projects</Title>
+      <Title>DNN Forge - Open Source Community Projects</Title>
       <Description>Find a free, open source extension to use in your site or learn from for your own development. The forge includes extensions of all kinds; modules, widgets, skins, libraries, etc.</Description>
-      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/forge.png</ImageUri>
+      <Uri>http://www.dnnsoftware.com/Community/Extensions-Forge.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/forge.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
-      <Title>Shop for DotNetNuke Apps</Title>
-      <Description>Nearly 10,000 DotNetNuke apps to enhance your site are available from hundreds of vendors.</Description>
-      <Uri>http://www.snowcovered.com/Snowcovered2/Default.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/store.png</ImageUri>
+      <Title>Shop for DNN Apps</Title>
+      <Description>Nearly 10,000 DNN apps to enhance your site are available from hundreds of vendors.</Description>
+      <Uri>http://store.dnnsoftware.com/?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/store.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
       <Title>DotNetNuke Professional Products</Title>
       <Description>DotNetNuke Corporation also offers Professional and Enterprise edition products with extended features for your most important business asset.</Description>
-      <Uri>http://www.dotnetnuke.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
-      <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/pro.png</ImageUri>
+      <Uri>http://www.dnnsoftware.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
+      <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/pro.png</ImageUri>
     </AddLink>
   </Links>
   
@@ -43,19 +43,19 @@
 <AddRibbonButton>
 <Label>Site Admin</Label>
 <Uri>/Admin.aspx</Uri>
-<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/admin.png</ImageUri>
+<ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/admin.png</ImageUri>
 </AddRibbonButton>
     
 <AddRibbonButton>
 <Label>Get Answers</Label>
-<Uri>http://www.dotnetnuke.com/Community/Community-Exchange.aspx?from=webmatrix</Uri>
-<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/qa.png</ImageUri>
+<Uri>http://www.dnnsoftware.com/Community/Community-Exchange.aspx?from=webmatrix</Uri>
+<ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/qa.png</ImageUri>
 </AddRibbonButton>
 
 <AddRibbonButton>
 <Label>Our Community</Label>
-<Uri>http://www.dotnetnuke.com/Community/Community-Overview.aspx?from=webmatrix</Uri>
-<ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/triad.png</ImageUri>
+<Uri>http://www.dnnsoftware.com/Community/Community-Overview.aspx?from=webmatrix</Uri>
+<ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/triad.png</ImageUri>
 </AddRibbonButton>
 
 </Ribbon>

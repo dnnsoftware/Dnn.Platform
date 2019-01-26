@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -29,10 +29,10 @@ using System.Web.UI;
 
 [assembly: AssemblyTitle("DotNetNuke")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: AssemblyCompany("DotNetNuke Corporation")]
-[assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2013 by DotNetNuke Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DotNetNuke")]
+[assembly: AssemblyCompany("DNN Corp.")]
+[assembly: AssemblyProduct("http://www.dnnsoftware.com")]
+[assembly: AssemblyCopyright("DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.")]
+[assembly: AssemblyTrademark("DNN")]
 [assembly: CLSCompliant(true)]
 [assembly: Guid("3D57E77F-F723-48BB-A58C-3FAB63C562D4")]
 [assembly: AssemblyVersion("6.2.1.11")]

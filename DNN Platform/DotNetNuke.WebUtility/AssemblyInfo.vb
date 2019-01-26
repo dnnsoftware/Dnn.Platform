@@ -1,7 +1,7 @@
 '
-' DotNetNuke? - http://www.dotnetnuke.com
-' Copyright (c) 2002-2018
-' by DotNetNuke Corporation
+' DNN® and DotNetNuke® - http://www.DNNSoftware.com
+' Copyright ©2002-2018
+' by DNN Corp
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 ' documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -30,10 +30,10 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("DotNetNuke")> 
 <Assembly: AssemblyDescription("Open Source Web Application Framework")> 
-<Assembly: AssemblyCompany("DotNetNuke Corporation")> 
+<Assembly: AssemblyCompany("DNN Corp")> 
 <Assembly: AssemblyProduct("DotNetNuke.WebUtility")> 
-<Assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DotNetNuke Corporation. All Rights Reserved.")> 
-<Assembly: AssemblyTrademark("DotNetNuke")> 
+<Assembly: AssemblyCopyright("DNN and DotNetNuke is Copyright ©2002-2019 by DNN Corp. All Rights Reserved.")> 
+<Assembly: AssemblyTrademark("DNN")> 
 <Assembly: CLSCompliant(True)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM

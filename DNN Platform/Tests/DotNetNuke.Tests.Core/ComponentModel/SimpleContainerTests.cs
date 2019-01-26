@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
     public class SimpleContainerTests
     {
         [Test]
-        //DNN-17622  http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=17622&PROJID=2
+        //DNN-17622  http://support.dnnsoftware.com/issue/ViewIssue.aspx?id=17622&PROJID=2
         public void GetComponenetListSupportsInterfaces()
         {
             var container = new SimpleContainer();

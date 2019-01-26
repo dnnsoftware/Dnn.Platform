@@ -1,8 +1,8 @@
 #region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
+// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    strRightArrow = "breadcrumb.gif"; //removed APPIMAGEPATH token - http://www.dotnetnuke.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
+                    strRightArrow = "breadcrumb.gif"; //removed APPIMAGEPATH token - http://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
 				
 				//image for down facing arrow
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    strDownArrow = "menu_down.gif"; //removed APPIMAGEPATH token - http://www.dotnetnuke.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
+                    strDownArrow = "menu_down.gif"; //removed APPIMAGEPATH token - http://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
 				
 				//Set correct image path for all separator images
