@@ -14,7 +14,7 @@
       DNN Platform is an open source web application framework.
       This package contains only the core DNN Platform library.
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright ©2002-2019 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
     <file src="..\..\..\Website\bin\DotNetNuke.dll" target="lib\net40" />

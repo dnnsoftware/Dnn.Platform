@@ -1,4 +1,6 @@
-﻿// Copyright (c) DNN Software. All rights reserved.
+﻿// DNN® and DotNetNuke® - http://www.DNNSoftware.com
+// Copyright ©2002-2019
+// by DNN Corp
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 using System;
 using System.Web;

@@ -1,7 +1,7 @@
 ﻿<h3>Microsoft CodeDom .NET Compiler</h3>
 <strong>1.0.7</strong>
 <p class="Contributor">
-	DotNetNuke Corporation <br />
+	DNN Corp <br />
 	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
 	<a href=https://www.dnnsoftware.com>www.dnnsoftware.com</a><br />
 </p>

@@ -1,6 +1,6 @@
 ﻿The MIT License (MIT)
 
-Copyright (c) 2002-2018 DNN Software (http://www.dnnsoftware.com)
+Copyright ©2002-2019 DNN Corp (http://www.dnnsoftware.com)
 Copyright (c) .NET Foundation and Contributors
 
 All Rights Reserved

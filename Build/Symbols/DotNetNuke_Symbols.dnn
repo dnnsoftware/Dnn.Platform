@@ -4,8 +4,8 @@
       <friendlyName>DNN @@VER_NAME@@ Symbols</friendlyName>
       <description>This package contains Debug Symbols and Intellisense files for DNN @@VER_NAME@@ Edition.</description>
       <owner>
-        <name>DNN Corporation</name>
-        <organization>DNN Corporation</organization>
+        <name>DNN Corp</name>
+        <organization>DNN Corp</organization>
         <url>https://www.dnnsoftware.com</url>
         <email>support@dnnsoftware.com</email>
       </owner>

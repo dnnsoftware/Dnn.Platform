@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("DotNetNuke CorporationJournal")]
-[assembly: AssemblyDescription("A DotNetNuke Module from DotNetNuke Corporation Software")]
+[assembly: AssemblyTitle("DNN CorpJournal")]
+[assembly: AssemblyDescription("A DotNetNuke Module from DNN Corp Software")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

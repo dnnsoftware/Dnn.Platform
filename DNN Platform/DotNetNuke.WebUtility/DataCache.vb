@@ -1,6 +1,6 @@
 '
 ' DNN® and DotNetNuke® - http://www.dnnsoftware.com
-' Copyright ©2002-2018
+' Copyright ©©2002-2019
 ' by DNN Corp
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

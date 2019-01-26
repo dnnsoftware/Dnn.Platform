@@ -1,4 +1,4 @@
-﻿// Copyright (c) DNN Software. All rights reserved.
+﻿// Copyright ©DNN Corp - www.DNNSoftware.com. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;

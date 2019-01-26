@@ -2,7 +2,7 @@
   <packages>
     <package name="DigitalAssetsManagement" type="Module" isSystem="true">
       <friendlyName>Digital Asset Management</friendlyName>
-      <description>DotNetNuke Corporation Digital Asset Management module</description>
+      <description>DNN Corp Digital Asset Management module</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
       <owner>
         <name>DNN</name>

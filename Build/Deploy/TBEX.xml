@@ -33,7 +33,7 @@
     </AddLink>
     <AddLink InDashboard="True">
       <Title>DotNetNuke Professional Products</Title>
-      <Description>DotNetNuke Corporation also offers Professional and Enterprise edition products with extended features for your most important business asset.</Description>
+      <Description>DNN Corp also offers Professional and Enterprise edition products with extended features for your most important business asset.</Description>
       <Uri>http://www.dnnsoftware.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dnnsoftware.com/images/webmatrix/pro.png</ImageUri>
     </AddLink>

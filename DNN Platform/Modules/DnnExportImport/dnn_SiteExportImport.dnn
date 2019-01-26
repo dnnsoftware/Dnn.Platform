@@ -2,7 +2,7 @@
   <packages>
     <package name="SiteExportImport" type="Library" version="09.03.00" isSystem="false">
       <friendlyName>Site Export Import</friendlyName>
-      <description>DotNetNuke Corporation Site Export Import Library</description>
+      <description>DNN Corp Site Export Import Library</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
       <owner>
         <name>DNN</name>

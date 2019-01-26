@@ -30,7 +30,7 @@ using System.Reflection;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyCompany("DNN Corporation")]
+[assembly: AssemblyCompany("DNN Corp")]
 [assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DNN Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DNN and DotNetNuke is copyright ©2002-2019 by DNN Corp. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]

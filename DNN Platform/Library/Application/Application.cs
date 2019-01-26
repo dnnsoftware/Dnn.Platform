@@ -47,12 +47,12 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the company to which the DNN application is related.
         /// </summary>
-        /// <value>Fixed result: DNN Corporation</value>
+        /// <value>Fixed result: DNN Corp</value>
         public string Company
         {
             get
             {
-                return "DNN Corporation";
+                return "DNN Corp";
             }
         }
 

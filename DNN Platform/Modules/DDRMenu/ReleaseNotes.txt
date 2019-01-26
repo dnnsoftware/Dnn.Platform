@@ -61,7 +61,7 @@ DDRMenu - DotNetNuke navigation provider.
 <li>Token based template parser added.</li>
 <li>DNN 5.6.0 version added with Razor template parser.</li>
 <li>Namespace changed from DNNGarden to DotNetNuke.Web.</li>
-<li>License and attribution changed to DotNetNuke Corporation.</li>
+<li>License and attribution changed to DNN Corp.</li>
 </ul>
 <h3>01.99.00 (aka 2.0 beta 1) (2011-03-03)</h3>
 <ul>
