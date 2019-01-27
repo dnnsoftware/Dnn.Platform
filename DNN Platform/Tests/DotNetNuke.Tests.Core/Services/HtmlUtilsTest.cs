@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Services
         {
             // Arrange
             SetUp();
-            _expected = "Hello World This is a sample HTML text for testing DotNetNuke Corp ";
+            _expected = "Hello World This is a sample HTML text for testing DNN Corp ";
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Services
             // Arrange
             SetUp();
             _expected =
-                "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"http://www.dnnsoftware.com\"";
+                "Hello World!This is a sample HTML text for testing!DNN Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"http://www.dnnsoftware.com\"";
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Core.Services
         {
             // Arrange
             SetUp();
-            _expected = "Hello World!This is a sample HTML text for testing!DotNetNuke Corp.";
+            _expected = "Hello World!This is a sample HTML text for testing!DNN Corp.";
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
