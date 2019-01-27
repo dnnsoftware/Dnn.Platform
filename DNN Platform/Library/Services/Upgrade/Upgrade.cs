@@ -3207,6 +3207,8 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
         {
+	    DnnInstallLogger.InstallLogInfo(string.Concat(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile), "Package:", packageName, " Type:", packageType, " Version:", version));
+	    
             var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => 
                 p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) 
                 && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase)
