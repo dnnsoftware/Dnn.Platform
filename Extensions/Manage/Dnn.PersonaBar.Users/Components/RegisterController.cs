@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Users.Components
             newUser.Membership.PasswordQuestion = registerationDetails.Question;
             newUser.Membership.PasswordAnswer = registerationDetails.Answer;
             //final creation of user
-            var createStatus = UserController.CreateUser(ref newUser);
+            var createStatus = UserController.CreateUser(ref newUser, registerationDetails.Notify);
 
             //clear cache
             if (createStatus == UserCreateStatus.Success)
@@ -267,24 +267,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
                 SendAdminNotification(newUser, portalSettings);
-            }
-
-            //send email to user
-            if (registerationDetails.Notify)
-            {
-                switch (portalSettings.UserRegistration)
-                {
-                    case (int) Globals.PortalRegistrationType.PrivateRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, portalSettings);
-                        break;
-                    case (int) Globals.PortalRegistrationType.PublicRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-                        break;
-                    case (int) Globals.PortalRegistrationType.VerifiedRegistration:
-                        Mail.SendMail(newUser, MessageType.UserRegistrationVerified, portalSettings);
-                        break;
-                }
-            }
+            }            
 
             return UserBasicDto.FromUserInfo(newUser);
         }
