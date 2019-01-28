@@ -259,7 +259,7 @@ class ProfilePropertiesPanel extends Component {
                     </div>
                     <div className="property-items-grid">
                         {this.renderHeader() }
-                        <Collapsible isOpened={opened} autoScroll={true} style={{ overflow: "visible", width: "100%" }}>
+                        <Collapsible isOpened={opened} autoScroll={true} style={{ overflow: opened ? "visible" : "hidden", width: "100%" }}>
                             <ProfilePropertyRow
                                 name={"-"}
                                 dataType={"-"}
