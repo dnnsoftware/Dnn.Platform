@@ -201,6 +201,7 @@
     <Content Include="Clients\Core\src\js\app.js" />
     <Content Include="Clients\Core\src\js\bootstrap.js" />
     <Content Include="Clients\Core\src\js\services\EventLogDataService.js" />
+    <Content Include="Clients\Core\src\js\services\WarnService.js" />
     <Content Include="Clients\Core\src\js\services\SettingDataService.js" />
     <Content Include="Clients\Core\src\js\services\IPSpecDataService.js" />
     <Content Include="Clients\Core\src\js\services\DnnService.js" />
