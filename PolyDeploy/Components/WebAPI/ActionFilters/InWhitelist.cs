@@ -16,6 +16,21 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
         {
             base.OnActionExecuting(actionContext);
 
+            // Get whitelist state.
+            bool whitelistDisabled = SettingManager.GetSetting("WHITELIST", "STATE").Value.ToLower() == "false";
+
+            // Get api user.
+            string apiKey = actionContext.Request.GetApiKey();
+            APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
+
+            // Is the whitelist disabled or does the api user have permission to
+            // bypass it?
+            if (whitelistDisabled || (apiUser != null && apiUser.BypassIPWhitelist))
+            {
+                // No need to perform whitelisting checks, return early.
+                return;
+            }
+
             bool authenticated = false;
             string message = "Access denied.";
 
@@ -56,17 +71,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 message = "An error occurred while trying to authenticate this request.";
 
                 EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, null, ex);
-            }
-
-            // If IP is not whitelisted, check if API user can bypass whitelist
-            if (!authenticated)
-            {
-                string apiKey = actionContext.Request.GetApiKey();
-                APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
-                if (apiUser != null && apiUser.BypassIPWhitelist)
-                {
-                    authenticated = true;
-                }
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.
