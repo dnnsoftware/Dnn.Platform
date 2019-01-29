@@ -8,7 +8,7 @@
             // States.
             $stateProvider
                 .state('menu', {
-                    template: require('./templates/menu.html'),
+                    template: require('./templates/menu.html')
                 })
                 .state('menu.welcome', {
                     url: '/',

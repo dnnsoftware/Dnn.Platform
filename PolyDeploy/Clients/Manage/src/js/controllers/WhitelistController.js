@@ -14,26 +14,35 @@
 
         $scope.whitelistState = false;
 
+        // Load specs.
+        refreshSpecs();
+
+        // Retrieve whitelist state.
         SettingDataService.whitelist.getState()
             .then(function (setting) {
 
+                // Selected option.
                 var selected = undefined;
 
+                // Loop options.
                 angular.forEach($scope.whitelistStates, function (state) {
+
+                    // Is this the selected option?
                     if (state.value === setting) {
                         selected = state;
                     }
                 });
 
+                // Set on scope.
                 $scope.whitelistState = selected;
             });
 
+        // Update whitelist state.
         $scope.updateWhitelistState = function (state) {
+
+            // Save value.
             SettingDataService.whitelist.setState(state.value);
         };
-
-        // Load specs.
-        refreshSpecs();
 
         // Create spec.
         $scope.createSpec = function (ipAddress) {
