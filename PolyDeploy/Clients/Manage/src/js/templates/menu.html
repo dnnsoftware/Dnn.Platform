@@ -13,11 +13,25 @@
         </div>
         <!-- /Menu -->
 
-        <!-- Menu -->
         <div class="col-sm-10">
+
+            <!-- Warnings -->
+            <div ng-controller="WarningController">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger" ng-repeat="warning in warnings" ng-if="warning.active">
+                            <strong>Warning!</strong> {{ warning.message }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Warnings-->
+
+            <!-- Content -->
             <div ui-view></div>
+            <!-- /Content -->
+
         </div>
-        <!-- /Menu -->
 
     </div>
 
