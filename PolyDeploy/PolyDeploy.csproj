@@ -243,7 +243,6 @@
     <Content Include="Clients\Deploy\src\js\templates\upload.html" />
     <Content Include="Clients\Deploy\src\js\templates\summary.html" />
     <Content Include="Clients\Deploy\src\js\templates\install.html" />
-    <Content Include="Clients\Deploy\src\js\templates\main.html" />
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
     <Content Include="Clients\Core\src\css\main.less" />
