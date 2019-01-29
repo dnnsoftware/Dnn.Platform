@@ -35,5 +35,22 @@ BEGIN
         CONSTRAINT [UQ_{objectQualifier}Cantarus_PolyDeploy_Settings_GroupKey]
             UNIQUE ([Group], [Key])
     )
+
+    INSERT INTO {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings] (
+            [Group],
+            [Key],
+            [Value]
+        )
+    VALUES ('WHITELIST', 'STATE', 'false')
+
+    IF EXISTS (
+        SELECT *
+        FROM {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecs])
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_Settings]
+        SET [Value] = 'false'
+        WHERE [Group] = 'WHITELIST'
+            AND [Key] = 'STATE'
+    END
 END
 GO
