@@ -14,7 +14,7 @@ export default class Checkbox extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.value !== prevProps.value) {
             this.setState({
-                checked: props.value
+                checked: this.props.value
             });
         }
     }

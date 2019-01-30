@@ -6762,6 +6762,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-accessible-tooltip@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-accessible-tooltip/-/react-accessible-tooltip-2.0.3.tgz#d676f23fda74c1df5733834869d27722a2649331"
+  integrity sha512-T/QPT8qBrrco+E8KQUuhtQAv46/B3Xpf+adLkKA2bofE/9db2wSaqr6XOlxO/Rx59dqt2V844kxrmT7WA2Q9kw==
+
 react-addons-test-utils@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
@@ -6904,11 +6909,6 @@ react-motion@^0.5.2:
     performance-now "^0.2.0"
     prop-types "^15.5.8"
     raf "^3.1.0"
-
-react-portal-tooltip@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-2.4.2.tgz#228595a8e02eccc4800457a6f8fde799603acc35"
-  integrity sha512-scer683Y1Sc9p3YilEbEZf7er9AZzJBaQ/c8hymxgJ0+Sa7RqUiOEvjA/L2fycM/yKKMH7aHOOxhMzeL2ff22A==
 
 react-scrollbar@^0.5.4:
   version "0.5.4"

@@ -19,13 +19,16 @@ export default class Sortable extends Component {
             },
             isDraggingOver: false
         };
+        this.dnnSortableRef = React.createRef();
     }
 
-    UNSAFE_componentWillReceiveProps(newProps) {
-        const items = newProps.items.map((item, index) => {
-            return { index, item, id: index };
-        });
-        this.setState({items});
+    componentDidUpdate(prevProps) {
+        if (prevProps.items !== this.props.items){
+            const items = this.props.items.map((item, index) => {
+                return { index, item, id: index };
+            });
+            this.setState({items});
+        }
     }
 
     sortColumns(a, b) {
@@ -37,8 +40,6 @@ export default class Sortable extends Component {
     }
 
     onDragStart(component, event) {
-        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-
         let dragging = {
             isDragging: true
         };
@@ -68,6 +69,7 @@ export default class Sortable extends Component {
     setFieldSelected(id, selected) {
         let {items} = this.state;
 
+        // This file uses == intead of === at multiple places, please do not fix until we rewrite this or the sorting will fail
         items.forEach((items) => {
             if (items.id == id) {
                 items.selected = selected;
@@ -75,11 +77,6 @@ export default class Sortable extends Component {
                 items.selected = false;
             }
         });
-        // const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-        // if (selected) {
-        //     return itemElement.classList.add("sortable-selected");
-        // }
-        // itemElement.classList.remove("sortable-selected");
     }
 
     onDragMove() {
@@ -129,7 +126,7 @@ export default class Sortable extends Component {
     sortItem(newIndex) {
         const curIndex = this.currentIndex;
         let {items} = this.state;
-        let currentItem = items.find(i => i.index == curIndex);
+        let currentItem = items.find(i => i.index == curIndex);                
         let itemToReplace = items.find(i => i.index == newIndex);
         if (!itemToReplace) {
             return;
@@ -157,21 +154,24 @@ export default class Sortable extends Component {
 
     sortOnDrag(event, dropX, dropY) {
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
-        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-        itemElement.getAttribute("data-index");
-        const sortableItems = document.getElementsByClassName("sortable-item");
-        let newIndex = this.getNewIndex(sortableItems, dropY);
+        if (this.dnnSortableRef.current)
+        {
+            const itemElement = this.dnnSortableRef.current.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
+            itemElement.getAttribute("data-index");
+            const sortableItems = document.getElementsByClassName("sortable-item");
+            let newIndex = this.getNewIndex(sortableItems, dropY);
 
-        if (this.currentIndex == -1) {
-            const currentIndex = itemElement.getAttribute("data-index");
-            this.currentIndex = currentIndex;
-        }
+            if (this.currentIndex == -1) {
+                const currentIndex = itemElement.getAttribute("data-index");
+                this.currentIndex = currentIndex;
+            }
 
-        const isSameIndex = newIndex == this.currentIndex;
-        if (isSameIndex) {
-            return;
+            const isSameIndex = newIndex == this.currentIndex;
+            if (isSameIndex) {
+                return;
+            }
+            this.sortItem(newIndex);
         }
-        this.sortItem(newIndex);
     }
 
     onDrop(event, dropX, dropY) {
@@ -182,22 +182,24 @@ export default class Sortable extends Component {
             return;
         }
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
-        const itemElement = ReactDOM.findDOMNode(this.refs.dnnSortable).querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
-        itemElement.classList.remove("sortable-selected");
-        this.removePlaceholder();
-        const sortableItems = document.getElementsByClassName("sortable-item");
-        let newIndex = this.getNewIndex(sortableItems, dropY);
-        const currentIndex = event.draggable._element.getAttribute("data-index");
-        const isSameIndex = currentIndex != null && (newIndex == currentIndex || newIndex - 1 == currentIndex);
-        if (isSameIndex) {
-            return;
-        }
+        if (this.dnnSortableRef.current){
+            const itemElement = this.dnnSortableRef.current.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
+            itemElement.classList.remove("sortable-selected");
+            this.removePlaceholder();
+            const sortableItems = document.getElementsByClassName("sortable-item");
+            let newIndex = this.getNewIndex(sortableItems, dropY);
+            const currentIndex = event.draggable._element.getAttribute("data-index");
+            const isSameIndex = currentIndex != null && (newIndex == currentIndex || newIndex - 1 == currentIndex);
+            if (isSameIndex) {
+                return;
+            }
 
-        let {items} = this.state;
-        items = this.updateIndexes(items, newIndex);
-        this.moveItem(items, id, newIndex);
-        this.resetIndexes(items);
-        this.setState({ items }, this.callProps.bind(this));
+            let {items} = this.state;
+            items = this.updateIndexes(items, newIndex);
+            this.moveItem(items, id, newIndex);
+            this.resetIndexes(items);
+            this.setState({ items }, this.callProps.bind(this));
+        }
     }
 
     callProps() {
@@ -228,7 +230,7 @@ export default class Sortable extends Component {
             });
         });
 
-        return <div className="dnn-sortable" ref="dnnSortable">
+        return <div className="dnn-sortable" ref={this.dnnSortableRef}>
             <SortableContainer
                 onDragMove={this.onDragMove.bind(this) }
                 onDragStart={this.onDragStart.bind(this) }
@@ -249,6 +251,5 @@ Sortable.propTypes = {
     children: PropTypes.node.isRequired,
     items: PropTypes.array.isRequired,
     onSort: PropTypes.func.isRequired,
-
     sortOnDrag: PropTypes.bool
 };
