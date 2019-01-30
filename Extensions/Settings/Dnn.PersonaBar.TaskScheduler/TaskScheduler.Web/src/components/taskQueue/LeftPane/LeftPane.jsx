@@ -57,7 +57,7 @@ LeftPane.propTypes = {
     friendlyName: PropTypes.string,
     nextStart: PropTypes.string,
     overdue: PropTypes.bool,
-    remainingTime: PropTypes.number,
+    remainingTime: PropTypes.string,
     elapsedTime: PropTypes.number,
     startDate: PropTypes.string
 };

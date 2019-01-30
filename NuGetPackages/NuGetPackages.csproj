@@ -46,65 +46,51 @@
     <Reference Include="ClientDependency.Core, Version=1.9.2.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DNN.Integration.Test.Framework, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-alpha0053\lib\DNN.Integration.Test.Framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DNN.Integration.Test.Framework, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-rc0000\lib\DNN.Integration.Test.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Core.9.3.0-alpha0053\lib\net40\DotNetNuke.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Core.9.3.0-rc0000\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-alpha0053\lib\DotNetNuke.HttpModules.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.HttpModules, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-rc0000\lib\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.3.0-alpha0053\lib\net40\DotNetNuke.Instrumentation.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Instrumentation, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.3.0-rc0000\lib\net40\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.log4net, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.3.0-alpha0053\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Log4Net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.3.0-rc0000\lib\net40\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-alpha0053\lib\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-rc0000\lib\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-alpha0053\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-rc0000\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.9.3.0-alpha0053\lib\net40\DotNetNuke.Web.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.9.3.0-rc0000\lib\net40\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Client.9.3.0-alpha0053\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Client.9.3.0-rc0000\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.3.0-alpha0053\lib\net40\DotNetNuke.Web.Deprecated.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Deprecated, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.3.0-rc0000\lib\net40\DotNetNuke.Web.Deprecated.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Mvc, Version=9.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Mvc.9.3.0-alpha0053\lib\net45\DotNetNuke.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Mvc, Version=9.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Mvc.9.3.0-rc0000\lib\net45\DotNetNuke.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-alpha0053\lib\DotNetNuke.WebControls.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.3.0-rc0000\lib\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.9.3.0-alpha0053\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.9.3.0-rc0000\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Core.9.3.0-alpha0053\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Core.9.3.0-rc0000\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
@@ -161,9 +147,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4">
-      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.3.0-alpha0053\lib\net40\Telerik.Web.UI.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.3.0-rc0000\lib\net40\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

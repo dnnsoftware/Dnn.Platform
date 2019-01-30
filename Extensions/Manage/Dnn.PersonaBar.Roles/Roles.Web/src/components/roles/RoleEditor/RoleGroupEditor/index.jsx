@@ -39,7 +39,7 @@ class RoleGroupEditor extends Component {
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
-        var node = this.node.current;
+        var node = this.rootElement !== undefined ? this.rootElement.current : null;
         if (node && !node.contains(event.target) &&
             (event.target.firstChild !== null && typeof event.target.firstChild.className === "string" && event.target.firstChild.className.indexOf("do-not-close") === -1)) {
             if (typeof this.props.onCancel === "function") {
@@ -50,7 +50,7 @@ class RoleGroupEditor extends Component {
     }
     onEditFieldChanged(name, event) {
         let {group} = this.state;
-        group[name] = event.target.value;
+        group[name] = event.target.value || "";
         this.setState({
             group
         }, () => {
@@ -101,7 +101,7 @@ class RoleGroupEditor extends Component {
     render() {
         const {props, state} = this;
         let group = Object.assign({}, state.group);
-        return props.visible && <div ref={node => this.node = node} className="role-group-editor" onClick={this.props.onClick.bind(this) }>
+        return props.visible && <div ref={node => this.rootElement = node} className="role-group-editor" onClick={this.props.onClick.bind(this) }>
             <h2>{resx.get(props.title) }</h2>
             <div className="edit-form">
                 <div className="form-items">

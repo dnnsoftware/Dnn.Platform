@@ -193,7 +193,7 @@ class RolesEditor extends Component {
     /* eslint-disable react/no-danger */
     render() {
         let { state, props } = this;
-        const columnOne = <div className="editor-container">
+        const columnOne = <div key="editor-container-columnOne" className="editor-container">
             <div className="editor-row divider">
                 <SingleLineInputWithError
                     value={state.roleDetails.name}
@@ -250,7 +250,7 @@ class RolesEditor extends Component {
             </div>
         </div>;
 
-        const columnTwo = <div className="editor-container right-column">
+        const columnTwo = <div key="editor-container-columnTwo" className="editor-container right-column">
             <div className="editor-row divider">
                 <Label
                     label={resx.get("plRoleGroups")}

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Parser from "html-react-parser";
-import DomKey from "services/DomKey";
+import DomKey from "../services/DomKey";
 
 const TextLine = ({txt, css}) => {
     if (!txt) {

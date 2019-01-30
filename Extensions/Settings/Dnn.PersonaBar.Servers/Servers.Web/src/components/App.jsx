@@ -9,7 +9,7 @@ import ServerActions from "../actions/server";
 import utils from "../utils";
 
 const restartAppButtonStyle = {
-    "margin-right": "10px"
+    "marginRight": "10px"
 };
 
 class App extends Component { 
@@ -53,7 +53,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
     onRestartApplicationClicked: PropTypes.func.isRequired,

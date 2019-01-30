@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Localization from "localization/Localization";
-import { util, formatString } from "utils/helpers";
-import "components/Prompt.less";
+import { util, formatString } from "../utils/helpers";
+import "../components/Prompt.less";
 //import Cookies from "universal-cookie";
 //const cookies = new Cookies();
-import {commands as Cmd, modes as Mode} from "constants/promptLabel";
+import {commands as Cmd, modes as Mode} from "../constants/promptLabel";
 
 class Input extends Component {
 

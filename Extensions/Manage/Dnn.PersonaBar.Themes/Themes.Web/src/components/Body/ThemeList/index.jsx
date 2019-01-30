@@ -38,7 +38,7 @@ class ThemeList extends Component {
                             autoHeightMax={480}>
                             <GridCell>
                                 {globalThemes.map((theme, i) => {
-                                    return <GridCell key={i} columnSize="25"><Theme theme={theme} /></GridCell>;
+                                    return <GridCell key={i} columnSize={25}><Theme theme={theme} /></GridCell>;
                                 })}
                             </GridCell>
                         </Scrollbars>
@@ -57,7 +57,7 @@ class ThemeList extends Component {
                             autoHeightMax={480}>
                             <GridCell>
                                 {siteThemes.map((theme, i) => {
-                                    return <GridCell key={i} columnSize="25"><Theme theme={theme} /></GridCell>;
+                                    return <GridCell key={i} columnSize={25}><Theme theme={theme} /></GridCell>;
                                 })}
                             </GridCell>
                         </Scrollbars>

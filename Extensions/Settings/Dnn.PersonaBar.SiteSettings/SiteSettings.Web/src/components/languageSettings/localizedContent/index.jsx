@@ -156,7 +156,7 @@ LocalizedContent.propTypes = {
     closePersonaBarPage: PropTypes.func,
     languages: PropTypes.array,
     isOpen: PropTypes.bool,
-    languageSettings: PropTypes.obj,
+    languageSettings: PropTypes.object,
     portalId: PropTypes.number
 };
 

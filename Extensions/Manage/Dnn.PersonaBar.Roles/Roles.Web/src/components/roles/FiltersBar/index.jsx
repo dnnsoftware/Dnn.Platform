@@ -54,11 +54,13 @@ class FiltersBar extends Component {
     }
     closeDropDown() {
         /*This is done in order to keep the dropdown closed on click on edit/delete*/
-        let {state} = this.groupsDropdownRef.current;
-        state.dropDownOpen = false;
-        this.groupsDropdownRef.current.setState({
-            state
-        });
+        let {state} = this.groupsDropdownRef;
+        if (state) {
+            state.dropDownOpen = false;
+            this.groupsDropdownRef.setState({
+                state
+            });
+        }
     }
     onSelect(option) {
         this.updateSelectedGroup(option);

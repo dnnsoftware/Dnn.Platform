@@ -81,6 +81,10 @@ DeleteExtension.propTypes = {
     selectedInstalledPackageType: PropTypes.string
 };
 
+DeleteExtension.defaultProps = { 
+    deleteExtensionFiles: false
+};
+
 function mapStateToProps(state) {
     return {
         selectedInstalledPackageType: state.extension.selectedInstalledPackageType,

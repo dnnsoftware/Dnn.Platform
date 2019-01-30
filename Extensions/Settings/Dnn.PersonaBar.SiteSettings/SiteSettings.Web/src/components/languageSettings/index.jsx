@@ -11,13 +11,13 @@ import resx from "../../resources";
 import styles from "./style.less";
 import { InputGroup, GridSystem, Dropdown, Flag, RadioButtons, Switch, Tooltip, Label, Button } from "@dnnsoftware/dnn-react-common";
 
-
 class LanguageSettingsPanelBody extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             languageSettings: undefined
         };
+        this.init(props);
     }
 
     isHost() {
@@ -29,8 +29,7 @@ class LanguageSettingsPanelBody extends Component {
         return props.languageSettings !== undefined && props.languageSettings.AllowContentLocalization === true;
     }
 
-    loadData() {
-        const {props} = this;
+    init(props) {
         props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 languageSettings: Object.assign({}, data.Settings)
@@ -38,8 +37,14 @@ class LanguageSettingsPanelBody extends Component {
         }));
     }
 
-    componentDidMount() {
-        this.loadData();
+    componentDidUpdate(prevProps) {
+        const { props } = this;
+
+        if (prevProps.languageSettings !== props.languageSettings) {
+            this.setState({
+                languageSettings: Object.assign({}, props.languageSettings)
+            });
+        }
     }
 
     onSettingChange(key, event) {
@@ -179,7 +184,7 @@ class LanguageSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
         if (state.languageSettings) {
-            const columnOne = <div className="left-column">
+            const columnOne = <div className="left-column" key="language-settings-left-column">
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("systemDefaultLabel.Help")}
@@ -207,7 +212,7 @@ class LanguageSettingsPanelBody extends Component {
                     />
                 </InputGroup>
             </div>;
-            const columnTwo = <div className="right-column">
+            const columnTwo = <div className="right-column" key="language-settings-right-column">
                 <InputGroup>
                     <div className="languageSettings-row_switch">
                         <Label

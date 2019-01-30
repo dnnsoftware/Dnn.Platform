@@ -60,4 +60,8 @@ License.propTypes = {
     onToggleLicenseAccept: PropTypes.func
 };
 
+License.defaultProps = { 
+    licenseAccepted: false
+};
+
 export default License;

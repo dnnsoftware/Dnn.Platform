@@ -11,6 +11,9 @@ module.exports = {
         filename: "pages-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     module: {
         rules: [
             {

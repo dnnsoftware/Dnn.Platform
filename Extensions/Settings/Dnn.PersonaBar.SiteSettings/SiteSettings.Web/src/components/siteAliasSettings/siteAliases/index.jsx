@@ -12,13 +12,12 @@ import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import util from "../../../utils";
 import resx from "../../../resources";
 
-let tableFields = [];
-
 class SiteAliasesPanel extends Component {
     constructor() {
         super();
         this.state = {
-            openId: ""
+            openId: "",
+            tableFields: []
         };
     }
 
@@ -46,20 +45,25 @@ class SiteAliasesPanel extends Component {
         props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
     }
 
-    componentDidUpdate(props) {
-        if (tableFields.length === 0) {
-            tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });
-            tableFields.push({ "name": resx.get("Browser.Header"), "id": "Browser" });
-            tableFields.push({ "name": resx.get("Theme.Header"), "id": "Theme" });
-            if (props.siteAliases !== undefined && props.siteAliases. Languages.length > 1) {
-                tableFields.push({ "name": resx.get("Language.Header"), "id": "Language" });
+    componentDidUpdate(prevProps) {
+        const {props} = this;
+        if (props !== prevProps){
+            let tableFields = [];
+            if (tableFields.length === 0) {
+                tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });
+                tableFields.push({ "name": resx.get("Browser.Header"), "id": "Browser" });
+                tableFields.push({ "name": resx.get("Theme.Header"), "id": "Theme" });
+                if (props.siteAliases !== undefined && props.siteAliases. Languages.length > 1) {
+                    tableFields.push({ "name": resx.get("Language.Header"), "id": "Language" });
+                }
+                tableFields.push({ "name": resx.get("Primary.Header"), "id": "Primary" });
             }
-            tableFields.push({ "name": resx.get("Primary.Header"), "id": "Primary" });
+            this.setState({tableFields});
         }
     }
 
     renderHeader() {
-        let tableHeaders = tableFields.map((field) => {
+        let tableHeaders = this.state.tableFields.map((field) => {
             let className = "alias-items header-" + field.id;
             return <div className={className} key={"header-" + field.id}>
                 <span>{field.name}&nbsp; </span>
@@ -141,7 +145,7 @@ class SiteAliasesPanel extends Component {
                         browser={item.BrowserType}
                         skin={item.Skin}
                         language={item.CultureCode}
-                        isPrimary={item.IsPrimary}
+                        isPrimary={!!item.IsPrimary}
                         deletable={item.Deletable}
                         editable={item.Editable}
                         showLanguageColumn={this.props.siteAliases.Languages && this.props.siteAliases.Languages.length > 1}
@@ -179,13 +183,13 @@ class SiteAliasesPanel extends Component {
                     </div>
                     <div className="alias-items-grid">
                         {this.renderHeader()}
-                        <Collapsible isOpened={opened} style={{width: "100%", overflow: "visible" }}>
+                        <Collapsible isOpened={opened} style={{width: "100%", overflow: opened ? "visible" : "hidden"}}>
                             <SiteAliasRow
                                 alias={"-"}
                                 browser={"-"}
                                 skin={"-"}
                                 language={"-"}
-                                isPrimary={"-"}
+                                isPrimary={false}
                                 deletable={false}
                                 editable={false}
                                 showLanguageColumn={this.props.siteAliases && this.props.siteAliases.Languages && this.props.siteAliases.Languages.length > 1}

@@ -23,7 +23,9 @@ module.exports = {
         filename: moduleName + "-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
-
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     module: {
         rules: [
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },

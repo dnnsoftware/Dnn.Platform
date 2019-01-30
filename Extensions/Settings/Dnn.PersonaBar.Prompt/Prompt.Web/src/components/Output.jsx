@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import "components/Prompt.less";
-import DataTable from "components/DataTable";
-import Command from "components/Command";
-import TextLine from "components/TextLine";
-import Help from "components/Help";
-import { renderObject } from "utils/helpers";
-import DomKey from "services/DomKey";
+import "../components/Prompt.less";
+import DataTable from "../components/DataTable";
+import Command from "../components/Command";
+import TextLine from "../components/TextLine";
+import Help from "../components/Help";
+import { renderObject } from "../utils/helpers";
+import DomKey from "../services/DomKey";
 
 export class Output extends Component {
 

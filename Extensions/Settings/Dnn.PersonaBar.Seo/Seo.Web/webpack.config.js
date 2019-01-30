@@ -14,7 +14,9 @@ module.exports = {
         publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: "seo-bundle.js"
     },
-
+    devServer: {
+        disableHostCheck: !isProduction
+    },
     resolve: {
         extensions: ["*", ".js", ".json", ".jsx"],
         modules: [

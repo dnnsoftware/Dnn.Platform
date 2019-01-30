@@ -26,7 +26,7 @@ export default class AlreadyInstalled extends Component {
 }
 
 AlreadyInstalled.propTypes = {
-    errorText: PropTypes.string.isRequired,
+    errorText: PropTypes.string,
     fileName: PropTypes.string.isRequired,
     repairInstall: PropTypes.func,
     cancelRepair: PropTypes.func,

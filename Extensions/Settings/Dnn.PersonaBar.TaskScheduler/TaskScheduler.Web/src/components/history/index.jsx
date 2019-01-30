@@ -85,7 +85,7 @@ class HistoryPanelBody extends Component {
                     showPageInfo={false}
                     numericCounters={4}
                     pageSize={state.pageSize}
-                    totalRecords={props.totalCount}
+                    totalRecords={props.totalCount || 0}
                     onPageChanged={this.onPageChange.bind(this)}
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={resx.get("pageSizeOption")}
