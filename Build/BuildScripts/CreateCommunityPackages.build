@@ -135,15 +135,6 @@
   </Target>
 
   <Target Name="CopyBrandedFiles" DependsOnTargets="VersionCheck">
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\iconbar_logo.png" ReadOnly="false" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\logo.gif" ReadOnly="false" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\DNN_logo.png" ReadOnly="false" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\iconbar_logo.png" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\logo.gif" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\Dnn_logo.png" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\iconbar_logo.png" ReadOnly="true" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\logo.gif" ReadOnly="true" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\DNN_logo.png" ReadOnly="true" />
     <!--Pacakge the Telerik zip-->
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
