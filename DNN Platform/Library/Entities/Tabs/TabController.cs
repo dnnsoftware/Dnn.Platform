@@ -207,7 +207,7 @@ namespace DotNetNuke.Entities.Tabs
             return tab.TabID;
         }
 
-        private void CreateLocalizedCopyInternal(TabInfo originalTab, Locale locale, bool allTabsModulesFromDefault, bool clearCache)
+        private void CreateLocalizedCopyInternal(TabInfo originalTab, Locale locale, bool allTabsModulesFromDefault, bool clearCache, bool insertAfterOriginal = false)
         {
 			try
 			{
@@ -268,7 +268,10 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
+                var afterTabId = insertAfterOriginal ? originalTab.TabID : -1;
+                const int beforeTabId = -1;
+                const bool includeAllModules = false;
+                AddTabInternal(localizedCopy, afterTabId, beforeTabId, includeAllModules); //not include modules show on all page, it will handled in copy modules action.
 
 				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
 				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
@@ -907,7 +910,7 @@ namespace DotNetNuke.Entities.Tabs
                     // we are adding missing languages to a single culture page that is not in the default language
                     // so we must first add a page in the default culture
 
-                    CreateLocalizedCopyInternal(workingTab, defaultLocale, false, true);
+                    CreateLocalizedCopyInternal(workingTab, defaultLocale, false, true, insertAfterOriginal: true);
                 }
 
                 if (currentTab.DefaultLanguageTab != null)
@@ -926,7 +929,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         if (missing)
                         {
-                            CreateLocalizedCopyInternal(workingTab, locale, false, true);
+                            CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
                         }
                     }
                 }
