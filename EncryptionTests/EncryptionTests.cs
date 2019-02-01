@@ -9,7 +9,7 @@ namespace EncryptionTests
     public class EncryptionTests : TestBase
     {
         [TestMethod]
-        public void String()
+        public void EncryptString_RandomString_ObfuscatedAfterEncryption()
         {
             for (int i = 0; i < Iterations; i++)
             {
@@ -23,7 +23,7 @@ namespace EncryptionTests
         }
 
         [TestMethod]
-        public void Byte()
+        public void EncryptBytes_RandomBytes_ObfuscatedAfterEncryption()
         {
             for (int i = 0; i < Iterations; i++)
             {
@@ -37,7 +37,7 @@ namespace EncryptionTests
         }
 
         [TestMethod]
-        public void Stream()
+        public void EncryptStream_StreamOfRandomBytes_ObfuscatedAfterEncryption()
         {
             for (int i = 0; i < Iterations; i++)
             {

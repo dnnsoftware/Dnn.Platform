@@ -9,7 +9,7 @@ namespace EncryptionTests
     public class RoundTripTests : TestBase
     {
         [TestMethod]
-        public void String()
+        public void RoundTrip_RandomString_MatchesAfterEncryptDecrypt()
         {
             for (int i = 0; i < Iterations; i++)
             {
@@ -25,7 +25,7 @@ namespace EncryptionTests
         }
 
         [TestMethod]
-        public void Byte()
+        public void RoundTrip_RandomBytes_MatchesAfterEncryptDecrypt()
         {
             for (int i = 0; i < Iterations; i++)
             {
@@ -41,7 +41,7 @@ namespace EncryptionTests
         }
 
         [TestMethod]
-        public void Stream()
+        public void RoundTrip_RandomStreamOfBytes_MatchesAfterEncryptDecrypt()
         {
             for (int i = 0; i < Iterations; i++)
             {
