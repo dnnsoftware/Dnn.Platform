@@ -5,25 +5,23 @@ using System.Text;
 namespace EncryptionTests
 {
     [TestClass]
-    public abstract class TestBase
+    internal static class TestUtilities
     {
-        protected const int Iterations = 100;
-
-        protected string GeneratePassPhrase()
+        public static string GeneratePassPhrase()
         {
             Random rand = new Random();
 
             return GenerateRandomString(rand.Next(8, (256 + 1)));
         }
 
-        protected byte[] GeneratePayload()
+        public static byte[] GeneratePayload()
         {
             Random rand = new Random();
 
             return GenerateRandomBytes(rand.Next(16, (512 + 1)));
         }
 
-        private string GenerateRandomString(int length)
+        private static string GenerateRandomString(int length)
         {
             byte[] bytes = new byte[length];
 
@@ -53,7 +51,7 @@ namespace EncryptionTests
             return Encoding.UTF8.GetString(bytes);
         }
 
-        private byte[] GenerateRandomBytes(int length)
+        private static byte[] GenerateRandomBytes(int length)
         {
             Random rand = new Random();
 

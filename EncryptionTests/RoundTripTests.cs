@@ -6,15 +6,17 @@ using System.Text;
 namespace EncryptionTests
 {
     [TestClass]
-    public class RoundTripTests : TestBase
+    public class RoundTripTests
     {
+        private const int Iterations = 100;
+
         [TestMethod]
         public void RoundTrip_RandomString_MatchesAfterEncryptDecrypt()
         {
             for (int i = 0; i < Iterations; i++)
             {
-                string passPhrase = GeneratePassPhrase();
-                string beforeString = Encoding.UTF8.GetString(GeneratePayload());
+                string passPhrase = TestUtilities.GeneratePassPhrase();
+                string beforeString = Encoding.UTF8.GetString(TestUtilities.GeneratePayload());
 
                 string encryptedString = Crypto.Encrypt(beforeString, passPhrase);
 
@@ -29,8 +31,8 @@ namespace EncryptionTests
         {
             for (int i = 0; i < Iterations; i++)
             {
-                string passPhrase = GeneratePassPhrase();
-                byte[] beforeBytes = GeneratePayload();
+                string passPhrase = TestUtilities.GeneratePassPhrase();
+                byte[] beforeBytes = TestUtilities.GeneratePayload();
 
                 byte[] encryptedBytes = Crypto.Encrypt(beforeBytes, passPhrase);
 
@@ -45,8 +47,8 @@ namespace EncryptionTests
         {
             for (int i = 0; i < Iterations; i++)
             {
-                string passPhrase = GeneratePassPhrase();
-                byte[] beforeBytes = GeneratePayload();
+                string passPhrase = TestUtilities.GeneratePassPhrase();
+                byte[] beforeBytes = TestUtilities.GeneratePayload();
                 byte[] afterBytes;
 
                 using (MemoryStream plainStream = new MemoryStream(beforeBytes))
