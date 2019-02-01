@@ -7,32 +7,41 @@ namespace EncryptionTests
     [TestClass]
     internal static class TestUtilities
     {
+        private static Random rand;
+
+        private static Random Rand
+        {
+            get
+            {
+                if (rand == null)
+                {
+                    rand = new Random();
+                }
+
+                return rand;
+            }
+        }
+
         public static string GeneratePassPhrase()
         {
-            Random rand = new Random();
-
-            return GenerateRandomString(rand.Next(8, (256 + 1)));
+            return GenerateRandomString(Rand.Next(8, (256 + 1)));
         }
 
         public static byte[] GeneratePayload()
         {
-            Random rand = new Random();
-
-            return GenerateRandomBytes(rand.Next(16, (512 + 1)));
+            return GenerateRandomBytes(Rand.Next(16, (512 + 1)));
         }
 
         private static string GenerateRandomString(int length)
         {
             byte[] bytes = new byte[length];
 
-            Random rand = new Random();
-
             for (int i = 0; i < bytes.Length; i++)
             {
                 int min;
                 int max;
 
-                if (rand.Next(0, 2) > 0)
+                if (Rand.Next(0, 2) > 0)
                 {
                     min = 65;
                     max = 90;
@@ -43,7 +52,7 @@ namespace EncryptionTests
                     max = 122;
                 }
 
-                int num = rand.Next(min, max);
+                int num = Rand.Next(min, max);
 
                 bytes[i] = (byte)num;
             }
@@ -53,11 +62,9 @@ namespace EncryptionTests
 
         private static byte[] GenerateRandomBytes(int length)
         {
-            Random rand = new Random();
-
             byte[] bytes = new byte[length];
 
-            rand.NextBytes(bytes);
+            Rand.NextBytes(bytes);
 
             return bytes;
         }
