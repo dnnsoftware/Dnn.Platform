@@ -48,7 +48,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncryptDecryptTests.cs" />
+    <Compile Include="EncryptionTests.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="RoundTripTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
