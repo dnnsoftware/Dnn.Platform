@@ -1,0 +1,21 @@
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - dnn
+image: Visual Studio 2017
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+version: 1.9.2.{build}
+
+environment:
+  ProductVersion: 1.9.2
+  
+before_build:
+- ps: Update-AppveyorBuild -Version "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER-$env:APPVEYOR_JOB_ID"
+- ps: Set-AppveyorBuildVariable -Name 'BuildVersion' -Value "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER"
+build_script:
+- ps: .\Build-Release.ps1 $env:BuildVersion ''
+after_build:
+- ps: Push-AppveyorArtifact build\Releases\v$env:BuildVersion\Dnn.ClientDependency.$env:BuildVersion.nupkg

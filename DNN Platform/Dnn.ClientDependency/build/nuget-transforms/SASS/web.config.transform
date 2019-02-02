@@ -1,0 +1,15 @@
+<configuration>
+  <system.web>
+    <httpHandlers>
+      <add path="*.sass,*.scss" verb="GET" type="ClientDependency.SASS.SassHandler, ClientDependency.SASS" />
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <remove name="CdfSasSHandler" />
+      <remove name="CdfScssHandler" />
+      <add name="CdfSasSHandler" path="*.sass" verb="GET" type="ClientDependency.SASS.SassHandler, ClientDependency.SASS" resourceType="File" preCondition="" />
+      <add name="CdfScssHandler" path="*.scss" verb="GET" type="ClientDependency.SASS.SassHandler, ClientDependency.SASS" resourceType="File" preCondition="" />
+    </handlers>
+  </system.webServer>
+</configuration>

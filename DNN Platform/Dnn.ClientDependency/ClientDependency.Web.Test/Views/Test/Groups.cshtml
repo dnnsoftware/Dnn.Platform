@@ -1,0 +1,28 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{
+    Html.RequiresCss("Content.css", "Styles")
+        .RequiresJs("jquery-1.3.2.min.js", "Scripts", 1, 1)
+        .RequiresJs("jquery-ui-1.8.13.custom.min.js", "Scripts", 2, 1)
+        .RequiresJs("AnotherTest.js?v=1234", "Scripts", 1, 2);
+}
+
+<div class="mainContent">
+    <h2>Dependency groups</h2>
+    <div>
+        <p>
+            On this page, we've got the jquery libraries grouped so that they are shared across pages, other dependencies are loaded normally.
+        </p>
+        
+    </div>
+</div>

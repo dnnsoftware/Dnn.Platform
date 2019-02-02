@@ -1,0 +1,17 @@
+﻿body {
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.2, rgb(99,194,21)),
+    color-stop(0.53, rgb(229,235,47)),
+    color-stop(0.75, rgb(210,238,249))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(99,194,21) 20%,
+    rgb(229,235,47) 53%,
+    rgb(210,238,249) 75%
+);
+
+}

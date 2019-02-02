@@ -1,0 +1,5 @@
+<configuration>
+  <configSections>
+    <section name="dotless" type="dotless.Core.configuration.DotlessConfigurationSectionHandler, dotless.Core" requirePermission="false" />
+  </configSections>
+</configuration>

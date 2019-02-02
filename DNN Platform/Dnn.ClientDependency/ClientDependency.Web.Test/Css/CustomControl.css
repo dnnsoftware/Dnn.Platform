@@ -1,0 +1,12 @@
+﻿.myControl
+{
+	margin:10px;
+	display:block;
+	width:230px;
+	height:100px;
+	border:dashed 1px white;
+}
+.myControl div 
+{
+	padding:40px;
+}

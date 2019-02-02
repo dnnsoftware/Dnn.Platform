@@ -1,0 +1,34 @@
+﻿div 
+{	
+	font-size:100pt;
+	text-align:center;
+	font-size:100pt;
+}
+
+a 
+{
+	font-size:100pt;
+	text-decoration:none;		
+	display:block;
+}
+
+div.link
+{
+	margin:auto;
+	margin-bottom:10px;
+	border: dashed 1px #542D03;
+	width:700px;
+}
+a:hover
+{	
+	display:block;
+	background-color:#033C52;
+	color:#FFEBD5;
+	text-decoration:none;
+	cursor:pointer;
+}
+.choose 
+{
+	font-size:22pt;
+	margin:20px;
+}

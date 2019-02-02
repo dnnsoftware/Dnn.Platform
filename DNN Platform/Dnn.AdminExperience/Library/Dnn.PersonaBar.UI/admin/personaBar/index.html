@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PersonaBar</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <style>
+        #topLevelMenu .hovermenu > ul, ul.personabarnav {list-style-type: none;}
+    </style>
+    <script type="text/javascript">
+        window.Sys = !window.Sys ? window.top.Sys : window.Sys;
+        window.dnn = !window.dnn ? window.top.dnn : window.dnn;
+
+        if (typeof window.Sys._isInstanceOfType === "function") {
+            var originalFunc = window.Sys._isInstanceOfType;
+            window.Sys._isInstanceOfType = function(type, instance) {
+                if (typeof type === "function" && typeof instance === "function") {
+                    return true;
+                }
+
+                return originalFunc.apply(this, arguments);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="personabar-wrap">
+        <div class="personabar" id="personabar">
+            <div class="personabarLogo">
+                <a class="update" target="_blank" data-bind="attr: {'href': updateLink}, html: updateText, css: {'normal-update': updateType() === 1, 'critical-update': updateType() === 2}"></a>
+            </div>
+            <div id="topLevelMenu">
+                <ul class="personabarnav">
+                    <!-- ko foreach: { data: menu.menuItems, as: 'menuItem' } -->
+                    <li data-bind="
+                        attr: {
+                            'id': menuItem.id,
+                            'data-path': menuItem.path, 
+                            'data-query': menuItem.query,
+                            'data-module-name': menuItem.moduleName,
+                            'data-folder-name': menuItem.folderName,
+                            'data-hovermenu-id': menuItem.id + 'hovermenu',
+                            'data-name': menuItem.displayName,
+                            'class': 'btn_panel ' + (menuItem.css || ''),
+                            'href': menuItem.link,
+                            'aria-haspopup': menuItem.menuItems.length > 0 ? 'true' : null,
+                            'aria-expanded': menuItem.menuItems.length > 0 ? 'false' : null
+                        }">
+                        <span data-bind="html: menuItem.displayName"></span>
+                        <span class="icon-loader" data-bind="visible: menuItem.icon.length > 0, attr: {'data-path': menuItem.icon, 'data-name': menuItem.displayName, 'data-id': menuItem.id}"></span>
+                            <!-- ko if: menuItem.menuItems.length > 0 -->
+                        <div class="hovermenu" data-bind="
+                             attr: { 'id': menuItem.id + 'hovermenu' }, 
+                             css: menuItem.id + 'hovermenu'">
+                            <label data-bind="html: menuItem.displayName"></label>
+                            <!-- ko foreach: { data: menuItem.menuItems, as: 'columnItem' } -->
+                            <ul data-bind="foreach: { data: columnItem, as: 'subMenuItem' }">
+                                <li data-bind="
+                                            html: subMenuItem.displayName,
+                                            attr: {
+                                                'id': subMenuItem.id,
+                                                'data-path': subMenuItem.path,
+                                                'data-query': subMenuItem.query,
+                                                'data-module-name': subMenuItem.moduleName,
+                                                'data-folder-name': subMenuItem.folderName,
+                                                'data-name': subMenuItem.displayName,
+                                                'class': (subMenuItem.css || ''),
+                                                'href': subMenuItem.link,
+                                                'target': subMenuItem.link ? '_blank' : ''
+                                            }"></li>
+                            </ul>
+                            <!-- /ko -->
+                        </div>
+                            <!-- /ko -->
+                    </li>
+                    <!-- /ko -->
+                    <li id="showsite"><span data-bind="html: resx.nav_Site"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="socialmask"></div>
+        <div class="socialpanel-placeholder"></div>
+        <div id="personabar-panels"></div>
+        <!-- extra -->
+        <div id="mask"></div>
+        <div id="confirmation-dialog" style="display: none;">
+            <img class="notify-check" src="images/icon_exclamation.svg" alt="Warning"/>
+            <p></p>
+            <div class="buttonpanel">
+                <a id="cancelbtn" aria-label="Cancel"></a>
+                <a id="confirmbtn" aria-label="Confirm"></a>
+            </div>
+        </div>
+        <div id="notification-dialog" style="display: none;">
+            <img class="notify-check" src="images/notify_check.svg" alt="Success"/>
+            <img class="notify-error" src="images/notify_error.svg" alt="Error"/>
+            <div id="notification-message-container">
+                <p id="notification-message"></p>
+            </div>
+
+            <div class="buttonpanel">
+                <button id="close-notification" class="dnn-ui-common-button" role="primary" aria-label="Close"></button>
+            </div>
+        </div>
+        <div id="personaBar-loadingbar" style="display: none;">
+            <div></div>
+            <span></span>
+            <img id="close-load-error" class="thin-close-x" src="images/x_thin.svg" alt="Close">
+        </div>
+    </div>
+    <!-- end extra -->
+    <script type="text/javascript">
+        (function injectboostrap() {
+            if (window.parent['personaBarSettings']) {
+                var debugMode = window.parent['personaBarSettings']['debugMode'] === true;
+                var cdv = window.parent['personaBarSettings']['buildNumber'];
+                var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
+                var body = document.getElementsByTagName('body')[0];
+                var boostrapScript = document.createElement('script');
+                boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
+                body.appendChild(boostrapScript);
+            }
+        })();
+    </script>
+</body>
+</html>

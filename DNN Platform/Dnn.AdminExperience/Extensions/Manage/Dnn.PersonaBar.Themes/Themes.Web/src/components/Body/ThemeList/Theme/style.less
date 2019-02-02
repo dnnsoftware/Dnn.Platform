@@ -1,0 +1,120 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.theme-skin, .theme-container{
+
+    img {
+        width: 168px;
+        height: 168px;
+    }
+
+    span.thumbnail{
+        display: inline-block;
+        width: 168px;
+        height: 168px;
+        margin: 9px 0;
+        position: relative;
+        vertical-align: top;
+
+        &.empty{
+            &:before{
+                content: "";
+                display: block;
+                width: 168px;
+                height: 168px;
+                background-color: @mercury;
+            }
+        }
+
+        & > svg{
+            fill: @alto;
+            width: 128px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        span.actions{
+            position: absolute;
+            display: block;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(30, 136, 195, 0.6);
+            padding: 15px 10px;
+            transition: opacity 100ms linear;
+            text-align: center;
+
+            ul{
+                margin: 0;
+                white-space: nowrap;
+                padding: 0;
+                list-style: none;
+                height: 32px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+
+                li{
+                    width: 32px;
+                    height: 32px;
+                    margin-left: 10px;
+                    position: relative;
+                    cursor: pointer;
+                    display: inline-block;
+                    svg{
+                        width: 32px;
+                        fill: @white;
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+                li:first-child{
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &:hover span.actions{
+            opacity: 1;
+        }
+    }
+
+    div.title{
+        display: block;
+        text-align: center;
+        font-family: inherit;
+        line-height: 36px;
+        font-weight: 600;
+    }
+
+    &.selected{
+        span.thumbnail{
+            border: 4px solid @curiousBlue;
+            margin: 0;
+            width: 186px;
+            height: 186px;
+            padding: 5px;
+        }
+
+        span.checkmark{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: @curiousBlue;
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            svg{
+                width: 100%;
+                fill: @white;
+            }
+        }
+    }
+}

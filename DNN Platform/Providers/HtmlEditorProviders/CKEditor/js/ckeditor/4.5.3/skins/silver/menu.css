@@ -1,0 +1,198 @@
+/*
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+
+/*
+menu.css (part of editor.css)
+===============================
+
+This file styles menus used in the editor UI. These menus are the list of
+options available inside some "floating panels", like menu buttons of the
+toolbar or the context menu.
+
+Note that the menu itself doesn't include the floating element that holds it.
+That element is styles in the panel.css file.
+
+The following is a visual representation of the main elements of a menu:
+
++-- .cke_menu -----------------+
+| +-- .cke_menuitem  --------+ |
+| | +-- .cke_menubutton ---+ | |
+| | |                      | | |
+| | +----------------------+ | |
+| +--------------------------+ |
+| +-- .cke_menuseparator ----+ |
+| ...                          |
++------------------------------+
+
+This is the .cke_menubutton structure:
+(Note that the menu button icon shares with toolbar button the common class .cke_button_icon to achieve the same outlook.)
+
++-- .cke_menubutton ------------------------------------------+
+| +-- .cke_menubutton_icon ---+ +-- .cke_menubutton_label --+ |
+| | +-- .cke_button_icon ---+ | |                           | |
+| | |                       | | |                           | |
+| | +-----------------------+ | |                           | |
+| +---------------------------+ +---------------------------+ |
++-------------------------------------------------------------+
+
+Special outer level classes used in this file:
+
+	.cke_hc: Available when the editor is rendered on "High Contrast".
+	.cke_rtl: Available when the editor UI is on RTL.
+*/
+
+/* .cke_menuitem is the element that holds the entire structure of each of the
+   menu items. */
+
+.cke_menubutton
+{
+	/* The "button" inside a menu item is a <a> element.
+	   Transforms it into a block. */
+	display:block;
+}
+
+.cke_menuitem span
+{
+	/* Avoid the text selection cursor inside menu items. */
+	cursor: default;
+}
+
+.cke_menubutton:hover,
+.cke_menubutton:focus,
+.cke_menubutton:active
+{
+	background-color: #dddddd;
+	display:block;
+}
+
+.cke_hc .cke_menubutton:hover,
+.cke_hc .cke_menubutton:focus,
+.cke_hc .cke_menubutton:active
+{
+	border: 2px solid;
+}
+
+/* The menu item icon. */
+.cke_menubutton_icon
+{
+	background-color: #f1f1f1;
+	border-right: solid 1px #ddd;
+	opacity: 0.70; /* Safari, Opera and Mozilla */
+	filter: alpha(opacity=70); /* IE */
+	width: 16px;
+	height: 16px;
+	padding: 6px;
+	float: left;
+	clear: both;
+}
+
+.cke_rtl .cke_menubutton_icon
+{
+	border-left: solid 1px #ddd;
+	border-right: 0;
+	float: right;
+}
+
+.cke_menubutton:hover .cke_menubutton_icon,
+.cke_menubutton:focus .cke_menubutton_icon,
+.cke_menubutton:active .cke_menubutton_icon
+{
+	background-color: #9d9d9d;
+	border: solid 4px #9d9d9d;
+}
+
+.cke_menubutton_disabled:hover .cke_menubutton_icon,
+.cke_menubutton_disabled:focus .cke_menubutton_icon,
+.cke_menubutton_disabled:active .cke_menubutton_icon
+{
+	/* The icon will get opacity as well when hovered. */
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+}
+
+/* The textual part of each menu item. */
+.cke_menubutton_label
+{
+	display:block;
+	padding: 5px 10px 4px 8px;
+	height:19px;
+	margin-left: 30px;
+	margin-right: 3px;
+	background-color: #fff;
+}
+
+.cke_rtl .cke_menubutton_label
+{
+	margin-right: 30px;
+}
+
+.cke_menubutton_disabled .cke_menubutton_label
+{
+	/* Greyed label text indicates a disabled menu item. */
+	opacity: 0.3;
+	filter: alpha(opacity=30);
+}
+
+.cke_menubutton:hover .cke_menubutton_label,
+.cke_menubutton:focus .cke_menubutton_label,
+.cke_menubutton:active .cke_menubutton_label
+{
+	background-color: #dddddd;
+}
+
+.cke_panel_frame .cke_menubutton_label
+{
+	display: none;
+}
+
+/* The separator used to separate menu item groups. */
+.cke_menuseparator
+{
+	background-color: #dddddd;
+	height: 1px;
+	filter: alpha(opacity=70); /* IE */
+	opacity: 0.70; /* Safari, Opera and Mozilla */
+}
+
+/* The small arrow shown for item with sub-menus. */
+.cke_menuarrow
+{
+	/* arrowright.gif*/
+	background-image: url(images/sprites.png);
+	background-position: 0 -1411px;
+	background-repeat: no-repeat;
+	height: 5px;
+	width: 3px;
+	float: right;
+	margin-right: 2px;
+	margin-top: 3px;
+}
+
+.cke_rtl .cke_menuarrow
+{
+	float: left;
+	margin-right: 0;
+	margin-left: 2px;
+	/* arrowleft.gif*/
+	background-image: url(images/sprites.png);
+	background-position: 0px -1390px;
+	background-repeat: no-repeat;
+}
+
+.cke_menuarrow span
+{
+	display: none;
+}
+
+.cke_hc .cke_menuarrow
+{
+	width: auto;
+	margin-top: 0;
+}
+
+.cke_hc .cke_menuarrow span
+{
+	display: inline;
+}

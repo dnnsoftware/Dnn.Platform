@@ -1,0 +1,118 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{09017A90-7F59-40F8-8121-8B4284697BBD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		SolutionInfo.cs = SolutionInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{C5D95718-11A7-4F12-A41A-10229A87F428}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		Build-Release.ps1 = Build-Release.ps1
+		build\ClientDependency-Coffee.nuspec = build\ClientDependency-Coffee.nuspec
+		build\ClientDependency-Less.nuspec = build\ClientDependency-Less.nuspec
+		build\ClientDependency-Mvc.nuspec = build\ClientDependency-Mvc.nuspec
+		build\ClientDependency-Mvc5.nuspec = build\ClientDependency-Mvc5.nuspec
+		build\ClientDependency-SASS.nuspec = build\ClientDependency-SASS.nuspec
+		build\ClientDependency-TypeScript.nuspec = build\ClientDependency-TypeScript.nuspec
+		build\ClientDependency.nuspec = build\ClientDependency.nuspec
+		UpgradingUmbraco.txt = UpgradingUmbraco.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config Transforms", "Config Transforms", "{37C50F26-9EDE-45F6-BDCC-39F51E0E312C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{D8142A9E-6FDC-46BC-9767-F63767C46887}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\Mvc\web.config.transform = build\nuget-transforms\Mvc\web.config.transform
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4D8DC7DA-0202-4338-B154-72A077FA88E8}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\Core\web.config.install.xdt = build\nuget-transforms\Core\web.config.install.xdt
+		build\nuget-transforms\Core\web.config.uninstall.xdt = build\nuget-transforms\Core\web.config.uninstall.xdt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{86C3F7CD-2FDA-4025-805B-7DC6C8A44DDA}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Less", "Less", "{3EAA2D5D-A830-4BA8-90AE-FBB8B307B3FD}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\Less\web.config.transform = build\nuget-transforms\Less\web.config.transform
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coffee", "Coffee", "{761DC809-2861-4C89-8EA2-CF55304A1FD1}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\Coffee\web.config.transform = build\nuget-transforms\Coffee\web.config.transform
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sass", "Sass", "{9598A99A-018C-405C-ACAA-75D7165F3104}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\SASS\web.config.transform = build\nuget-transforms\SASS\web.config.transform
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript", "TypeScript", "{CABF4276-D3DD-4497-BF63-B7527A91A1D8}"
+	ProjectSection(SolutionItems) = preProject
+		build\nuget-transforms\TypeScript\web.config.transform = build\nuget-transforms\TypeScript\web.config.transform
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientDependency.Core", "ClientDependency.Core\ClientDependency.Core.csproj", "{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco4.ClientDependency", "Umbraco4.ClientDependency\Umbraco4.ClientDependency.csproj", "{08DFBA02-97A5-496C-9272-09CE98C50BF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug-MVC5|Any CPU = Debug-MVC5|Any CPU
+		Debug-Net45|Any CPU = Debug-Net45|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Release-MVC5|Any CPU = Release-MVC5|Any CPU
+		Release-Net45|Any CPU = Release-Net45|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug-MVC5|Any CPU.ActiveCfg = Debug-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug-MVC5|Any CPU.Build.0 = Debug-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug-Net45|Any CPU.ActiveCfg = Debug-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Debug-Net45|Any CPU.Build.0 = Debug-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release-MVC5|Any CPU.ActiveCfg = Release-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release-MVC5|Any CPU.Build.0 = Release-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release-Net45|Any CPU.ActiveCfg = Release-Net45|Any CPU
+		{EA35B06D-0CC8-4830-A3F7-9BB3D36D0FAF}.Release-Net45|Any CPU.Build.0 = Release-Net45|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Debug-MVC5|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release-MVC5|Any CPU.ActiveCfg = Release|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release-MVC5|Any CPU.Build.0 = Release|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{08DFBA02-97A5-496C-9272-09CE98C50BF5}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37C50F26-9EDE-45F6-BDCC-39F51E0E312C} = {C5D95718-11A7-4F12-A41A-10229A87F428}
+		{D8142A9E-6FDC-46BC-9767-F63767C46887} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+		{4D8DC7DA-0202-4338-B154-72A077FA88E8} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+		{3EAA2D5D-A830-4BA8-90AE-FBB8B307B3FD} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+		{761DC809-2861-4C89-8EA2-CF55304A1FD1} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+		{9598A99A-018C-405C-ACAA-75D7165F3104} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+		{CABF4276-D3DD-4497-BF63-B7527A91A1D8} = {37C50F26-9EDE-45F6-BDCC-39F51E0E312C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C38899F-9719-49EE-9862-7F1A265F9250}
+	EndGlobalSection
+EndGlobal

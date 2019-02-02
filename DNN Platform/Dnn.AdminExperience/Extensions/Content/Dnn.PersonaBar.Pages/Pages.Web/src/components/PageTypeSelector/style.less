@@ -1,0 +1,75 @@
+@import "../../less/globals.less";
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.pageTypeSelector){
+    padding-bottom: 30px;
+    border-bottom: 1px solid #c8c8c8;
+
+    > div {
+        display: inline-block;
+    }
+
+    .page-info-row{
+        &.page-name{
+            font-weight: bold;
+            font-size: 140%;
+            word-wrap: break-word;
+            max-width: 680px;
+        }
+        margin-bottom: 10px;
+        .page-info-item{
+
+            display: inline-block;
+            word-break: keep-all;
+            white-space: nowrap;
+            &.page-parent-info-style-large {
+                margin: 10px 0px 10px 0px;
+            }
+            
+            &.page-type {
+                text-overflow: clip;
+                -ms-text-overflow: clip;
+            }
+
+            .page-info-item-label{
+                font-weight: bold;
+
+                &.parent-page-style-label-large {
+                    display: inline-block;
+                }
+            }
+
+            .page-info-item-value{
+                padding-left: 20px;
+                margin-right: 30px;
+                &.parent-page-name {
+                    word-break: break-all;
+                    white-space: normal;
+                    min-width: 50px;
+
+                    &.parent-page-style-content-large {
+                        display: inline-block;
+                        vertical-align: top;
+                        max-width: 650px;
+
+                    }
+                }
+
+                .dnn-radio-buttons {
+                    float: none !important;
+                    display: inline-block;
+                    height: 24px !important;
+                    overflow: hidden;
+                    vertical-align: middle !important;
+
+                    label {
+                        float: none !important;
+                        display: inline-block;
+                        vertical-align: middle;
+                        padding: 2px 0 0 28px;
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,14 @@
+syntax: glob
+_ReSharper*
+*/bin/*
+*/obj/*
+TestResults/*
+*.suo
+*.vsmdi
+*.sdf
+*ReSharper.user
+*.csproj.user
+*build/Releases/*
+*/App_Data/ClientDependency/*
+packages/*
+ClientDependency.sln.DotSettings.user

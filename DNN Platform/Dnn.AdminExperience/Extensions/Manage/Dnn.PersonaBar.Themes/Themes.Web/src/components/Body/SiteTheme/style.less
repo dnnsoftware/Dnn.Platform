@@ -1,0 +1,37 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.site-theme {
+    border: 1px solid @curiousBlue;
+    padding: 30px 22px;
+    min-height: 235px;
+    background-color: @white;
+    .site-theme-tabs {
+        position: relative;
+        .site-theme-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            line-height: 30px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            span {
+                margin-left: 13px;
+            }
+        }
+        .dnn-tabs.react-tabs.secondary > ul {
+            float: right;
+            width: 100%;
+            li {
+                float: right;
+                margin: 0 15px;
+                padding-top: 5px;
+                &:first-child {
+                    margin-right: 0;
+                }
+                &:last-child {
+                    margin-right: 15px;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

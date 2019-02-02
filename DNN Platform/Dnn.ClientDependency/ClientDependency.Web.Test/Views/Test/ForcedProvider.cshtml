@@ -1,0 +1,34 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section HeadContent
+{
+    
+}
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles")
+       .RequiresJs(new JavascriptFile("~/Js/SomeLazyLoadScript.js") {ForceProvider = "LazyLoadRenderer"})
+       .RequiresCss(new CssFile("Test.css") { PathNameAlias = "Styles", ForceProvider = "LazyLoadRenderer" }); }
+
+<div class="mainContent">
+    <h2>
+        This tests forcing providers</h2>
+    <div>
+        <p>On this page all JS will be rendered normally except for one which we've forced to use the lazy load provider</p>
+        <p class="lazyLoaded">
+			
+		</p>
+    </div>
+</div>
+
+@Html.RenderJsHere("LazyLoadRenderer")
+@Html.RenderCssHere("LazyLoadRenderer")

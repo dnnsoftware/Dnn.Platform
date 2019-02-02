@@ -1,0 +1,47 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Master.master.cs" Inherits="ClientDependency.Web.Test.Pages.Master" %>
+<%@ Register Namespace="ClientDependency.Core.Controls" Assembly="ClientDependency.Core" TagPrefix="CD" %>
+
+<%@ Register Src="../Controls/Header.ascx" TagName="Header"  TagPrefix="uc1" %>
+<%@ Register Src="../Controls/Sidebar.ascx" TagName="Sidebar" TagPrefix="uc2" %>
+<%@ Register Src="../Controls/Footer.ascx"  TagName="Footer" TagPrefix="uc3" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <%--Renders the CSS here--%>
+    <asp:PlaceHolder runat="server" ID="CssPlaceHolder"></asp:PlaceHolder>
+</head>
+<body>	
+	<form runat="server">
+	
+	<CD:ClientDependencyLoader runat="server" id="Loader" >
+		<Paths>
+			<CD:ClientDependencyPath Name="Styles" Path="~/Css" />
+			<%--You can even data bind!--%>
+			<CD:ClientDependencyPath Name="Scripts" Path='<%#"~/Js"%>' />
+		</Paths>
+	</CD:ClientDependencyLoader>
+	
+	<CD:CssInclude ID="CssInclude1" runat="server" FilePath="Site.css" PathNameAlias="Styles" />
+	<CD:CssInclude ID="CssInclude2" runat="server" FilePath="ColorScheme.css" PathNameAlias="Styles" />
+
+    
+    
+    
+    
+    <uc1:Header ID="Header1" runat="server" />    
+    <div class="clearfix">
+		<uc2:Sidebar ID="Sidebar1" runat="server" />    
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+    </div>
+	<uc3:Footer ID="Footer1" runat="server" />
+
+    </form>
+    
+    <asp:PlaceHolder runat="server" ID="JavaScriptPlaceHolder"></asp:PlaceHolder>
+</body>
+</html>

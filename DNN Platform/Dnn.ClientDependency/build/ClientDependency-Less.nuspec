@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>ClientDependency-Less</id>
+    <title>Client Dependency Framework for .Less</title>
+    <version>0.0.0.0</version>
+    <authors>Shannon Deminick</authors>
+    <description>An extension for the ClientDependency framework to support .Less (dotless)</description>
+    <summary>ClientDependency for .Less (dotless)</summary>
+    <language>en-US</language>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>https://github.com/Shandem/ClientDependency</projectUrl>
+    <tags>.less dotless css html clientdependency cdf minification minify compress combine</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © Shannon Deminick $copyrightyear$</copyright>
+    <dependencies>
+      <dependency id="dotless" version="1.5" />
+      <dependency id="ClientDependency" version="1.8" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="*.dll" target="lib" />
+    <file src="*.pdb" target="lib" />
+    <file src="nuget-transforms\web.config.transform" target="Content" />
+  </files>
+</package>

@@ -1,0 +1,35 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles"); }
+
+<div class="mainContent">
+    <h2>Using the default provider specified in the web.config</h2>
+    <div>
+        <p>
+            Nothing fancy here, just rendering the script and style blocks using the default renderer. 
+This library ships with the <b>StandardRenderer</b> set to the default renderer. 
+The default renderer will render out standard script/style html blocks wherever you specify using
+the HtmlHelper:
+        </p>
+        <p>
+            &lt;%= Html.RenderCssHere(new BasicPath(""Styles"", ""/Css"")) %&gt;
+        </p>
+        <p>
+            To make a page/view/etc... dependent on a script or file just use this HtmlHelper methods:
+        </p>
+        <p>
+            <% Html.RequiresCss(""Site.css"", ""Styles""); %><br />
+            &lt;% Html.RequiresJs(""/Js/jquery-1.3.2.min.js""); %&gt;
+        </p>
+    </div>
+</div>

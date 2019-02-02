@@ -1,0 +1,160 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.licensingPlatform) {
+    border-bottom: none;
+    .licenses-header-row {
+        border-bottom: 1px solid @alto;
+        padding: 10px 0 10px 0;
+        width: 100%;
+        float: left;
+        overflow: hidden;
+        margin-top: 5px;
+        color: @mountainMist;
+        .header-LicenseType {
+            width: 15%;
+            float: left;
+            font-weight: bolder;
+            padding-left: 20px;
+        }
+        .header-InvoiceNumber {
+            width: 27%;
+            float: left;
+            font-weight: bolder;
+        }
+        .header-WebServer {
+            width: 15%;
+            float: left;
+            font-weight: bolder;
+        }
+        .header-Activated {
+            width: 15%;
+            float: left;
+            font-weight: bolder;
+        }
+        .header-Expires {
+            width: 25%;
+            float: left;
+            font-weight: bolder;
+        }
+    }
+    .nolicense {
+        text-align: center;
+        padding: 100px 0 20px 0;
+        border: 1px solid @alto;
+        .nolicense-header {
+            margin: 0 0 15px 0;
+            font-size: 25px;
+            color: @thunder;
+        }
+        .nolicense-body {
+            font-size: 15px;
+            color: @mountainMist;
+            margin: 0 0 100px 0;
+        }
+    }
+    .links-wrapper {
+        float: left;
+        margin-top: 30px;
+        border: 1.5px solid @alto;
+        font-weight: bolder;
+        display: flex;
+        .link-evoq-wrapper {
+            border-right: 1px solid @alto;
+            float: left;
+            width: 265px;
+            margin: 25px 0;
+            .link-evoq {
+                height: 100%;
+                cursor: pointer;
+                float: left;
+                margin: 0 20px;
+                text-align: center;
+                border: 1px solid #fafafa;
+                min-height: 290px;
+                &:hover {
+                    border: 1px solid @cerulean;
+                    background-color: @alabaster;
+                }
+                .link-evoq-header {
+                    margin: 10px 0 20px 0;
+                    color: @thunder;
+                }
+                .link-evoq-desc {
+                    margin: 0 25px 20px 25px;
+                }
+                .star-icon {
+                    margin-top: 10px;
+                    > svg {
+                        width: 80px;
+                        height: 80px;
+                        fill: @seagull;
+                    }
+                }
+            }
+        }
+        .link-upgrade-wrapper {
+            border-right: 1px solid @alto;
+            float: left;
+            width: 264px;
+            margin: 25px 0;
+            .link-upgrade {
+                height: 100%;
+                cursor: pointer;
+                float: left;
+                margin: 0 20px;
+                text-align: center;
+                border: 1px solid #fafafa;
+                min-height: 290px;
+                &:hover {
+                    border: 1px solid @cerulean;
+                    background-color: @alabaster;
+                }
+                .link-upgrade-header {
+                    margin: -10px 0 20px 0;
+                    color: @thunder;
+                }
+                .link-upgrade-desc {
+                    margin: 0 25px 20px 25px;
+                }
+                .evoq-icon {
+                    > svg {
+                        width: 110px;
+                        height: 110px;
+                    }
+                }
+            }
+        }
+        .link-doc-wrapper {
+            float: left;
+            width: 265px;
+            margin: 25px 0;
+            .link-doc {
+                height: 100%;
+                cursor: pointer;
+                float: left;
+                margin: 0 20px;
+                text-align: center;
+                border: 1px solid #fafafa;
+                min-height: 290px;
+                &:hover {
+                    border: 1px solid @cerulean;
+                    background-color: @alabaster;
+                }
+                .link-doc-header {
+                    margin: 10px 0 20px 0;
+                    color: @thunder;
+                }
+                .link-doc-desc {
+                    margin: 0 25px 20px 25px;
+                }
+                .info-icon {
+                    margin-top: 10px;
+                    > svg {
+                        width: 80px;
+                        height: 80px;
+                        fill: @seagull;
+                    }
+                }
+            }
+        }
+    }
+}

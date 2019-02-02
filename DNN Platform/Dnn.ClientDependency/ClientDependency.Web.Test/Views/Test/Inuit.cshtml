@@ -1,0 +1,61 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{
+    Html.RequiresCss("Content.css", "Styles")
+        .RequiresCss("Inuit/style.scss", "Styles");
+}
+
+<div class="mainContent">
+    <h2>
+        This tests Inuit</h2>
+    <div class="content-navigation border">
+        @*This is the result of SCSS style sheet:<br/>
+        <pre>
+            $blue: #3bbfce;
+            $margin: 16px;
+
+            .content-navigation {
+            border-color: $blue;
+            color:
+            darken($blue, 9%);
+            }
+
+            .border {
+            padding: $margin / 2;
+            margin: $margin / 2;
+            border-color: $blue;
+            }
+        </pre>*@
+    </div>   
+   @* <table class="hl">
+        <tr>
+            <th>cell header</th>
+            <td class="ln">
+                <span class="highlight">This table</span> and cells were  styled using this SASS style sheet:
+                <pre>
+                table.hl
+                  width:100%
+                  margin: 2em 0
+                  td.ln
+                    text-align: right
+
+                span.highlight
+                  font:
+                    family: serif
+                    weight: bold
+                    size: 1.2em
+                </pre>
+            </td>
+        </tr>
+    </table>*@
+</div>

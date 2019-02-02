@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Dnn.ClientDependency</id>
+    <title>Client Dependency Framework - Dnn Fork</title>
+    <version>0.0.0.0</version>
+    <authors>Shannon Deminick</authors>
+    <description>Forked for DNN. ClientDependency is a framework for simplifying colaborative development of ASP.NET components, allowing components to state what CSS and JavaScript files they require, and ensuring that each file only is only added once to the response. ClientDependency also handles combination, minification and compression of CSS and JavaScript.</description>
+    <summary>A library for handling CSS and JavaScript dependencies</summary>
+    <language>en-US</language>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>https://github.com/Shandem/ClientDependency</projectUrl>
+    <tags>css html javascript minify compress combine</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © Shannon Deminick $copyrightyear$</copyright>
+  </metadata>
+  <files>
+    <file src="net40\*.dll" target="lib\net40" />
+    <file src="net40\*.pdb" target="lib\net40" />
+
+    <file src="net45\*.dll" target="lib\net45" />
+    <file src="net45\*.pdb" target="lib\net45" />
+
+    <file src="nuget-transforms\web.config.install.xdt" target="Content" />
+    <file src="nuget-transforms\web.config.uninstall.xdt" target="Content" />
+  </files>
+</package>

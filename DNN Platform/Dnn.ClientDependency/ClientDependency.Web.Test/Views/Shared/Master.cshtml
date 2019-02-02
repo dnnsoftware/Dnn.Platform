@@ -1,0 +1,33 @@
+﻿@model dynamic
+@using ClientDependency.Core.Mvc
+@using ClientDependency.Core
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        @RenderSection("TitleContent")
+    </title>
+    @RenderSection("HeadContent", false)
+    @Html.RenderCssHere(new BasicPath("Styles", "~/Css"))
+</head>
+
+<body>
+
+    @Html.RenderJsHere(new BasicPath("Scripts", "~/Js"))
+
+    @{
+        Html.RequiresCss("ColorScheme.css", "Styles");
+        Html.RequiresCss("Site.css", "Styles");
+    }
+
+    @Html.Partial("Header")
+    <div class="clearfix">
+        @Html.Partial("SideBar")
+        @RenderBody()
+    </div>
+    @Html.Partial("Footer")
+
+
+</body>
+</html>

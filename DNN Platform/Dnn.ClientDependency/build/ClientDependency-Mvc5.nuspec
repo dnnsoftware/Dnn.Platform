@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>ClientDependency-Mvc5</id>
+    <title>Client Dependency Framework for MVC 5</title>
+    <version>0.0.0.0</version>
+    <authors>Shannon Deminick</authors>
+    <description>An extension for the ClientDependency framework to support ASP.NET MVC 5.</description>
+    <summary>ClientDependency for MVC 5</summary>
+    <language>en-US</language>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>https://github.com/Shandem/ClientDependency</projectUrl>
+    <tags>mvc css html javascript clientdependency cdf minify compress combine</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © Shannon Deminick $copyrightyear$</copyright>
+    <dependencies>
+
+      <dependency id="Microsoft.AspNet.Mvc" version="5.0.0" />
+      <dependency id="ClientDependency" version="1.8" />
+
+    </dependencies>
+  </metadata>
+  <files>
+
+    <file src="net45\*.dll" target="lib\net45" />
+    <file src="net45\*.pdb" target="lib\net45" />
+
+    <file src="nuget-transforms\web.config.transform" target="Content" />
+
+  </files>
+</package>

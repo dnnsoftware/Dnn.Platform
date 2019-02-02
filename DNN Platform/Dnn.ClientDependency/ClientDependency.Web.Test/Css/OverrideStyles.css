@@ -1,0 +1,28 @@
+﻿html body
+{
+    background-color:#DFF0CB ! important;
+}
+
+html body *.bg-primary-1 { background-color: #DFF0CB ! important; }
+html body *.bg-primary-2 { background-color: #A5AE9A ! important; }
+html body *.bg-primary-3 { background-color: #6A9338 ! important; }
+html body *.bg-primary-4 { background-color: #E9F6D8 ! important; }
+html body *.bg-primary-5 { background-color: #ECF6DE ! important; }
+
+html body *.bg-complement-1 { background-color: #E8C4D2 ! important; }
+html body *.bg-complement-2 { background-color: #A8959C ! important; }
+html body *.bg-complement-3 { background-color: #8E365A ! important; }
+html body *.bg-complement-4 { background-color: #F1D4E0 ! important; }
+html body *.bg-complement-5 { background-color: #F1DAE3  ! important;}
+
+html body *.f-primary-1 { color: #DFF0CB ! important; }
+html body *.f-primary-2 { color: #A5AE9A ! important; }
+html body *.f-primary-3 { color: #6A9338 ! important; }
+html body *.f-primary-4 { color: #E9F6D8 ! important; }
+html body *.f-primary-5 { color: #ECF6DE ! important; }
+
+html body *.f-complement-1 { color: #E8C4D2 ! important; }
+html body *.f-complement-2 { color: #A8959C ! important; }
+html body *.f-complement-3 { color: #8E365A ! important; }
+html body *.f-complement-4 { color: #F1D4E0 ! important; }
+html body *.f-complement-5 { color: #F1DAE3  ! important;}

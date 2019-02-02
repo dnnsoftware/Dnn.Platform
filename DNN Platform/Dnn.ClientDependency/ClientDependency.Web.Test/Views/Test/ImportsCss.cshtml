@@ -1,0 +1,21 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Imports.css", "Styles"); }
+
+<div class="mainContent">
+    <h2>
+        This tests @@import statement in css</h2>
+    <div>
+        <p>The Imports.css file is used here which also imports the Content.css and the OverrideStyles.css</p>
+    </div>
+</div>

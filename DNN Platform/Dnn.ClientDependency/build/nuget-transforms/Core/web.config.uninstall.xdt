@@ -1,0 +1,73 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <configSections>
+
+    <section name="clientDependency" type="ClientDependency.Core.Config.ClientDependencySection, ClientDependency.Core" requirePermission="false"
+            xdt:Transform="Remove"
+    xdt:Locator="Condition(@name='clientDependency' and count(/configuration/clientDependency[@configSource])=0)" />
+
+  </configSections>
+
+  <clientDependency version="1" xdt:Transform="Remove" xdt:Locator="Condition(count(@configSource)=0)">
+    <!-- Full config documentation is here: https://github.com/Shandem/ClientDependency/wiki/Configuration -->
+  </clientDependency>
+
+  <system.web>
+    <pages>
+
+      <namespaces>
+        <add namespace="ClientDependency.Core" xdt:Transform="Remove" xdt:Locator="Condition(@namespace='ClientDependency.Core')" />
+      </namespaces>
+
+      <namespaces xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+
+    </pages>
+    <httpModules>
+      <!-- ** Need to add the dependency module -->
+      <add name="ClientDependencyModule" type="ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core"
+           xdt:Transform="Remove"
+           xdt:Locator="Condition(@name='ClientDependencyModule')" />
+    </httpModules>
+    <httpHandlers>
+      <!-- ** Need to add the dependency handler -->
+      <add verb="GET" path="DependencyHandler.axd"  type="ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core "
+           xdt:Transform="Remove"
+           xdt:Locator="Condition(@path='DependencyHandler.axd')"/>
+    </httpHandlers>
+
+    <pages xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+    <httpModules xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+    <httpHandlers xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+
+  </system.web>
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false" />
+    <modules>
+      <remove name="ClientDependencyModule"
+              xdt:Transform="Remove"
+              xdt:Locator="Condition(@name='ClientDependencyModule')"/>
+
+      <!-- ** Need to add the dependency module -->
+      <add name="ClientDependencyModule" type="ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core"
+           xdt:Transform="Remove"
+           xdt:Locator="Condition(@name='ClientDependencyModule')"/>
+    </modules>
+    <handlers>
+      <!-- ** Need to add the dependency handler -->
+      <remove name="DependencyHandler"
+              xdt:Transform="Remove"
+              xdt:Locator="Condition(@name='DependencyHandler')"/>
+
+      <add name="DependencyHandler" preCondition="integratedMode" verb="GET" path="DependencyHandler.axd"  type="ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core "
+           xdt:Transform="Remove"
+           xdt:Locator="Condition(@name='DependencyHandler')"/>
+    </handlers>
+
+    <modules xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+    <handlers xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+
+  </system.webServer>
+
+  <configSections xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+
+
+</configuration>

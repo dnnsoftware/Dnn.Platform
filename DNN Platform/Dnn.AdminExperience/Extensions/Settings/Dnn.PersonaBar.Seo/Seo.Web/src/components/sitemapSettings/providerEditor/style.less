@@ -1,0 +1,60 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.providerSettingEditor) {
+    padding: 0 20px;
+    .dnn-ui-common-input-group {
+        width: 100%;
+        &:first-child {
+            margin: 0 0 20px 0;
+        }
+        padding: 0 0 10px 0;
+        margin: 0 0 10px 0;
+        .providerSettings-row_switch {
+            .dnn-switch-container {
+                float: right;
+            }
+        }
+        .providerSettings-row_dropdown {
+            float: left;
+            width: 100%;
+            .dnn-dropdown {
+                width: 120px;
+                float: right;
+                .collapsible-label {
+                    width: auto;
+                }
+            }
+            .dnn-label {
+                width: 180px;
+                margin-top: 8px;
+                label {
+                    float: left;
+                    font-weight: bolder;
+                }
+            }
+        }
+        .dnn-single-line-input-with-error {
+            width: 99.5%;
+        }
+        .dnn-radio-buttons {
+            float: left;
+            width: 300px;
+            margin: 9px 0 0 30px;
+            label {
+                font-size: 14px;
+                float: left;
+            }
+            li {
+                margin: 0 20px 0 0;
+            }
+        }
+    }
+    .buttons-box-secondary {
+        width: 100%;
+        text-align: center;
+        float: left;
+        margin: 0 0 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+}

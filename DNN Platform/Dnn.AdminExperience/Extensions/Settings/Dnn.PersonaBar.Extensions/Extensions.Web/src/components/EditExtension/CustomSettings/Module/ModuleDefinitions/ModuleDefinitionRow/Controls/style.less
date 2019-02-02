@@ -1,0 +1,74 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.extensions-app {
+    .extension-form {
+        .module-controls {
+            padding: 10px;
+            .header-container {
+                .box-title {
+                    text-transform: none;
+                    font-size: 13px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+            }
+            .module-controls-table {
+                padding: 0;
+                border: 1px solid @alto;
+                margin-top: 25px;
+                .module-control-row:first-child {
+                    border: none;
+                }
+                .module-control-title-header, .module-control-source-header {
+                    border-top: 1px solid @alto;
+                    text-transform: uppercase;
+                }
+                .edit-module-control {
+                    > div {
+                        float: left;
+                    }
+                }
+                .edit-module-control-box {
+                    padding: 0;
+                    margin-top: 20px;
+                    .dnn-dropdown-with-error .dropdown-tooltip-container {
+                        margin-bottom: 32px;
+                    }
+                    .dnn-switch-container {
+                        width: 100%;
+                        margin-bottom: 32px;
+                        padding-top: 15px;
+                        .switch-label {
+                            max-width: 50%;
+                        }
+                        .dnn-switch {
+                            float: right;
+                        }
+                    }
+                }
+                .add-control-box {
+                    > div {
+                        float: left;
+                    }
+                }
+                .module-control-row {
+                    padding: 10px 15px;
+                    border-top: 1px solid @alto;
+                    .module-control-title, .module-control-source {
+                        padding: 0;
+                    }
+                    .action-buttons {
+                        padding: 0;
+                        > div {
+                            float: right;
+                            cursor: pointer;
+                            > svg {
+                                width: 15px;
+                                height: 15px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

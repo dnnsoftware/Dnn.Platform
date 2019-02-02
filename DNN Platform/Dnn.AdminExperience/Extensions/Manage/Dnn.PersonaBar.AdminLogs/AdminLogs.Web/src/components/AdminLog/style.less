@@ -1,0 +1,234 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+#adminlogs-container {
+    .dnn-persona-bar-page-body {
+        border-bottom: 0;
+        .react-tabs {
+            * {
+                box-sizing: border-box;
+            }
+            .log-detail {
+                margin: 0px 10px 10px 58px;
+                * {
+                    white-space: normal;
+                    word-break: break-all;
+                    word-wrap: break-word;
+                }
+            }
+            .logHeader-wrapper {
+                &:not(:last-child) {
+                    border-bottom: 1px solid @alto;
+                }
+                width: 100%;
+                float: left;
+                padding: 15px 0 15px 0;
+                text-transform: uppercase;
+            }
+            .logHeader-Checkbox {
+                float: left;
+                margin-left: 15px;
+                width: 30px;
+            }
+            .logHeader-LogTypeCSSClass {
+                width: 21px;
+                float: left;
+            }
+            .logHeader-LogCreateDate {
+                width: 130px;
+                float: left;
+                font-weight: bolder;
+            }
+            .logHeader-LogTypeFriendlyName {
+                width: 140px;
+                float: left;
+                font-weight: bolder;
+            }
+            .logHeader-LogUserName {
+                width: 90px;
+                float: left;
+                font-weight: bolder;
+            }
+            .logHeader-LogPortalName {
+                width: 110px;
+                float: left;
+                font-weight: bolder;
+            }
+            .logHeader-Summary {
+                width: 220px;
+                float: left;
+                font-weight: bolder;
+            }
+            .Exception {
+                color: #fff;
+                background-color: #ff1414;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .ItemCreated {
+                color: #fff;
+                background-color: #009900;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .ItemUpdated {
+                color: #fff;
+                background-color: #009999;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .ItemDeleted {
+                color: #000;
+                background-color: #14ffff;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .OperationSuccess {
+                color: #fff;
+                background-color: #999900;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .OperationFailure {
+                color: #fff;
+                background-color: #990000;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .GeneralAdminOperation {
+                color: #fff;
+                background-color: #4d0099;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .AdminAlert {
+                color: #fff;
+                background-color: #148aff;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .HostAlert {
+                color: #fff;
+                background-color: #ff8a14;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .SecurityException {
+                color: #fff;
+                background-color: #000;
+                width: 15px;
+                height: 15px;
+                display: block;
+                float: left;
+                margin: 0px 6px 0 0;
+            }
+            .logContainer {
+                padding: 20px 0;
+                float: left;
+            }
+            .logContainerBox {
+                border: solid 1px @alto;
+                float: left;
+            }
+            .toolbar {
+                border-bottom: solid 1px @alto;
+                display: block;
+                float: left;
+                width: 100%;
+                padding: 7px 0;
+                .adminlogs-filter-container:first-child {
+                    > .dnn-dropdown {
+                        .collapsible-label {
+                            padding-left: 0;
+                        }
+                    }
+                }
+                .adminlogs-filter-container {
+                    width: 26%;
+                    height: 32px;
+                    margin-top: 10px;
+                    border-right: 1px solid @alto;
+                    float: left;
+                    .dnn-dropdown {
+                        .collapsible-toggle {
+                            width: auto;
+                        }
+                    }
+                }
+                .toolbar-button {
+                    float: right;
+                    border-left: solid 1px @alto;
+                    text-align: center;
+                    cursor: pointer;
+                    height: 32px;
+                    width: 100%;
+                    &:hover {
+                        color: #0087C6;
+                        .collapsible-content {
+                            color: #000;
+                        }
+                    }
+                    .collapsible-content {
+                        -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                        margin-top: 13px;
+                        z-index: 1000;
+                        background-color: #fff;
+                        position: absolute;
+                        width: 400px;
+                        margin-left: -288px;
+                        text-align: left;
+                    }
+                }
+                .toolbar-button-actions {
+                    margin-top: 10px;
+                    padding-top: 8px;
+                    font-weight: bold;
+                    color: @thunder;
+                }
+            }
+            .logPager {
+                margin: 0 0 20px 0;
+                float: left;
+                width: 100%;
+            }
+            .logLegend-wrapper {
+                float: left;
+                border-top: solid 1px @alto;
+                width: 100%;
+                padding: 20px 0;
+                .logLegend-item {
+                    float: left;
+                    width: 250px;
+                    padding: 5px 5px 5px 0px;
+                }
+            }
+        }
+    }
+}

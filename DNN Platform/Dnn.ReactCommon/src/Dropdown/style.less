@@ -1,0 +1,128 @@
+@import "../../styles/index";
+.dnn-dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    &.disabled {
+        background: @mercury;
+        color: @mountainMist;
+        svg {
+            fill: @mountainMist;
+        }
+        cursor: not-allowed;
+        .collapsible-label {
+            cursor: not-allowed;
+        }
+    }
+    &.open {
+        .collapsible-content {
+            background: @white;
+            border: 1px solid @alto;
+            margin-top: 3px;
+        }
+        &.with-border {
+            border: 1px solid @curiousBlue;
+        }
+    }
+    &.with-border {
+        border: 1px solid @mountainMist;
+        .collapsible-content {
+            box-shadow: none;
+            margin-top: 0;
+            &.open {
+                border: 1px solid @alto;
+                border-top: none;
+            }
+        }
+        &.disabled {
+            border: 1px solid @mercury;
+        }
+    }
+    &.large {
+        padding: 12px 40px 12px 15px;
+        .dropdown-icon {
+            top: 15px;
+        }
+        .collapsible-label {
+            font-size: 14px;
+        }
+        .collapsible-content {
+            top: 43px;
+            ul {
+                li {
+                    padding: 11px 15px;
+                }
+            }
+        }
+    }
+    .dropdown-icon {
+        position: absolute;
+        width: 13px;
+        height: 13px;
+        right: 10px;
+        top: 9px;
+        svg {
+            fill: @rollingStone;
+        }
+    }
+    .collapsible-label {
+        cursor: pointer;
+        font-family: inherit;
+        position: relative;
+        width: 100%;
+        font-size: 13px;
+        border: none;
+        color: @bulgarianRose;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 8px 40px 8px 15px;
+        &.no-wrap {
+            white-space: nowrap;
+        }
+        .dropdown-prepend {
+            > strong {
+                margin-right: 5px;
+            }
+        }
+    }
+    .collapsible-content {
+        position: absolute;
+        padding: 0;
+        left: -1px;
+        top: 102%;
+        width: 100%;
+        box-sizing: content-box;
+        background-color: @white;
+        z-index: 1000;
+        -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        ul {
+            padding: 15px 0 15px 0;
+            li {
+                padding: 6px 15px 6px 15px;
+                text-indent: 0px;
+                cursor: pointer;
+                font-size: 13px;
+                color: @rollingStone;
+                white-space:nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                /*
+                 * Chrome hack
+                 */
+                display: inline-block;
+                width: 100%;
+                box-sizing: border-box;
+                &.selected {
+                    color: @curiousBlue;
+                    font-weight: bold;
+                }
+                &:hover {
+                    background-color: @gallery;
+                    color: @curiousBlue;
+                }
+            }
+        }
+    }
+}

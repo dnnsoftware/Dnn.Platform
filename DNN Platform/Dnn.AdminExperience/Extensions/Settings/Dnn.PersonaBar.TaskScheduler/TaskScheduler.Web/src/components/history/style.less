@@ -1,0 +1,78 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+#scheduler-container {
+    .dnn-persona-bar-page-body {
+        .react-tabs {
+            .historyIcon {
+                width: 18px;
+                height: 18px;
+                float: left;
+                margin: 19px 10px 10px 15px;
+                > svg {
+                    fill: @thunder;
+                }
+            }
+            .taskHistoryList-title {
+                padding: 19px 0 10px 0;
+                margin: 0 15px 0 15px;
+                border-bottom: solid 1px @alto;
+                font-weight: bolder;
+                color: @thunder;
+            }
+            .taskHistoryList-pager {
+                width: 100%;
+                padding: 0 15px;
+                margin-bottom: 15px;
+                box-sizing: border-box;
+                float: left;
+                * {
+                    box-sizing: border-box;
+                }
+            }
+            .taskHistoryList-grid {
+                border: solid 1px @alto;
+                margin: 15px;
+                float: left;
+                width: 96%;
+                .historyHeader-wrapper {
+                    &:not(:last-child) {
+                        border-bottom: 1px solid @alto;
+                    }
+                    width: 100%;
+                    float: left;
+                    padding: 15px 0 15px 0;
+                }
+                .historyHeader-LogNotes {
+                    width: 30%;
+                    float: left;
+                    margin-left: 15px;
+                    font-weight: bolder;
+                }
+                .historyHeader-Server {
+                    width: 15%;
+                    float: left;
+                    font-weight: bolder;
+                    margin-left: 10px;
+                }
+                .historyHeader-ElapsedTime {
+                    text-align: center;
+                    width: 15%;
+                    float: left;
+                    font-weight: bolder;
+                    margin-left: 10px;
+                }
+                .historyHeader-Succeeded {
+                    text-align: center;
+                    width: 12%;
+                    float: left;
+                    font-weight: bolder;
+                    margin-left: 10px;
+                }
+                .historyHeader-StartEnd {
+                    float: left;
+                    font-weight: bolder;
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}

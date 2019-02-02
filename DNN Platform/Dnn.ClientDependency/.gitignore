@@ -1,0 +1,16 @@
+_ReSharper*
+*/bin/*
+*/obj/*
+TestResults/*
+*.suo
+*.vsmdi
+*.sdf
+*ReSharper.user
+*.csproj.user
+*build/[Rr]eleases/*
+*/App_Data/ClientDependency/*
+packages/*
+ClientDependency.sln.DotSettings.user
+ClientDependency.Web.Test/Css/Inuit/*
+*.orig
+.ClientDependency.boltdata/*

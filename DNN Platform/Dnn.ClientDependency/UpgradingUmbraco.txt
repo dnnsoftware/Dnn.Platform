@@ -1,0 +1,41 @@
+This version has been tested on Umbraco 4.7.x, though it should work with previous version also. You will need to follow the instructions below in order to get CDF to work with Umbraco. The new composite Urls may not work without further configuration modification, CDF has only been tested with Umbraco 4.7.x using the original Base64QueryStrings Url type.
+
+In order to upgrade Umbraco to support ClientDependency v1.4 you will need to modify some configuration and add an assembly:
+
+1. In the ClientDependency.config file, move the configuration attribute: fileDependencyExtensions=".js,.css" to the root <clientDependency element
+
+** Example:
+
+<clientDependency version="40" fileDependencyExtensions=".js,.css">
+
+2a. Download the Umbraco4.ClientDependency.dll assembly from CodePlex: http://clientdependency.codeplex.com/releases/view/72284
+2b. Put this DLL into your /bin folder
+2c. Replace the current "CanvasProvider" in the config with the new provider:
+
+** REMOVE THIS:
+<add name="CanvasProvider" type="umbraco.presentation.LiveEditing.CanvasClientDependencyProvider, umbraco" />
+
+** REPLACE WITH THIS:
+<add name="CanvasProvider" type="Umbraco4.ClientDependency.CanvasClientDependencyProvider, Umbraco4.ClientDependency" />
+
+
+3a. Ensure the "compositeFileHandlerPath" attribute has the value of: "~/DependencyHandler.axd"
+3b. Change the "defaultProvider" attribute of the <compositeFiles element to be "defaultFileProcessingProvider"
+3c. Change the <providers> element under the <compositeFiles element to be: <fileProcessingProviders>
+3d. Add a new attribute to the "CompositeFileProcessor" provider: urlType="Base64QueryStrings"
+
+** Example:
+
+<compositeFiles defaultFileProcessingProvider="CompositeFileProcessor" compositeFileHandlerPath="~/DependencyHandler.axd">
+  <fileProcessingProviders>
+    <add name="CompositeFileProcessor"
+          type="ClientDependency.Core.CompositeFiles.Providers.CompositeFileProcessingProvider, ClientDependency.Core"
+          enableCssMinify="true"
+          enableJsMinify="true"
+          persistFiles="true"
+          compositeFilePath="~/App_Data/TEMP/ClientDependency"
+          urlType="Base64QueryStrings"/>
+  </fileProcessingProviders>
+
+
+4. Ensure you update your CDF version once these changes have been made

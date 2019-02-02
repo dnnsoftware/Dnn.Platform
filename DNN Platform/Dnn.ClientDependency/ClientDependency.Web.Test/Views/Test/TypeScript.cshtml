@@ -1,0 +1,27 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles").RequiresJs("MyFirstTypeScript.ts", "Scripts");}
+
+<div class="mainContent">
+    <h2>This tests TypeScript</h2>
+    <div>
+        This page will compile a TypeScript on the fly, it shows an alert which is the result of this TypeScript:
+        <pre>
+            function greeter(person: string) {
+                return "Hello, " += person;
+            }
+            var user = "Jane User";
+            alert(user);
+        </pre>
+    </div>
+</div>

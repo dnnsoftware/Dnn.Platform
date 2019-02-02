@@ -1,0 +1,28 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Import Namespace="ClientDependency.Core.Mvc" %>
+<%@ Import Namespace="ClientDependency.Core" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>    
+    <%= Html.RenderCssHere(new BasicPath("Styles", "~/Css")) %>
+</head>
+
+<body>
+	
+	<%= Html.RenderJsHere(new BasicPath("Scripts", "~/Js")) %>
+	
+	<% Html.RequiresCss("ColorScheme.css", "Styles"); %>
+    <% Html.RequiresCss("Site.css", "Styles"); %>
+	
+    <% Html.RenderPartial("Header"); %>
+    <div class="clearfix">            
+        <% Html.RenderPartial("SideBar"); %>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+    </div>
+    <% Html.RenderPartial("Footer"); %>
+
+
+</body>
+</html>

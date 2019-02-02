@@ -1,0 +1,22 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles")
+       .RequiresCssBundle("CssBundle"); }
+
+<div class="mainContent">
+    <h2>
+        This tests pre-defined bundles</h2>
+    <div>
+        <p>We've defined a pre-defined css bundle in the global.asax called CssBundle and we have put a dependency on that bundle in this view</p>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<configuration>
+  <system.web>
+    <httpHandlers>
+      <add path="*.coffee" verb="GET" type="ClientDependency.Coffee.CoffeeHandler, ClientDependency.Coffee" />
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <remove name="CdfCoffeeHandler" />
+      <add name="CdfCoffeeHandler" path="*.coffee" verb="GET" type="ClientDependency.Coffee.CoffeeHandler, ClientDependency.Coffee" resourceType="File" preCondition="" />
+    </handlers>
+  </system.webServer>
+</configuration>

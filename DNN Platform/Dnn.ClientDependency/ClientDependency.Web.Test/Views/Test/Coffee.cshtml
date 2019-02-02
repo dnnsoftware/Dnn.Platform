@@ -1,0 +1,26 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles").RequiresJs("MyFirstCoffee.coffee", "Scripts");}
+
+<div class="mainContent">
+    <h2>This tests CoffeeScript</h2>
+    <div>
+        This page will compile a coffee script on the fly, it shows an alert which is the result of this coffee script:
+        <pre>
+            # CoffeeScript
+            square = (x) -> x * x
+            cube   = (x) -> square(x) * x
+            alert(square 2 * cube 2);
+        </pre>
+    </div>
+</div>

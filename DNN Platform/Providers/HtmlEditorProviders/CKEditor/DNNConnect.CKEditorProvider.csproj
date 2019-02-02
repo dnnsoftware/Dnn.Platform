@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE7E021E-7C7B-4003-9BD6-5A04C781C277}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DNNConnect.CKEditorProvider</RootNamespace>
+    <AssemblyName>DNNConnect.CKEditorProvider</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
+    <NOWARN>1591</NOWARN>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
+    <NOWARN>1591</NOWARN>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetNuke">
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client">
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility">
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Browser\FileUploader.ashx.cs">
+      <DependentUpon>FileUploader.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Constants\Browser.cs" />
+    <Compile Include="Constants\EnterModus.cs" />
+    <Compile Include="Constants\LanguageDirection.cs" />
+    <Compile Include="Constants\LinkMode.cs" />
+    <Compile Include="Constants\LinkType.cs" />
+    <Compile Include="Constants\SettingConstants.cs" />
+    <Compile Include="Constants\FileListView.cs" />
+    <Compile Include="Constants\ToolBarLocation.cs" />
+    <Compile Include="Controls\Pager.cs" />
+    <Compile Include="Controls\UrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Extensions\CustomAttributeExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helper\TreeViewHelper.cs" />
+    <Compile Include="Module\EditorConfigManager.ascx.cs">
+      <DependentUpon>EditorConfigManager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Module\EditorConfigManager.ascx.designer.cs">
+      <DependentUpon>EditorConfigManager.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Module\UpgradeController.cs" />
+    <Compile Include="Objects\CodeMirror.cs" />
+    <Compile Include="Objects\EditorConfig.cs" />
+    <Compile Include="Objects\EditorHostSetting.cs" />
+    <Compile Include="Objects\EditorProviderSettings.cs" />
+    <Compile Include="Objects\FileUploadStatus.cs" />
+    <Compile Include="Objects\SettingBase.cs" />
+    <Compile Include="Objects\ToolbarButton.cs" />
+    <Compile Include="Objects\ToolbarGroup.cs" />
+    <Compile Include="Objects\ToolbarSet.cs" />
+    <Compile Include="Objects\UploadSizeRoles.cs" />
+    <Compile Include="Objects\WordCountConfig.cs" />
+    <Compile Include="Tabs.ashx.cs">
+      <DependentUpon>Tabs.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Utilities\AnchorFinder.cs" />
+    <Compile Include="Browser\Browser.aspx.cs">
+      <DependentUpon>Browser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Browser\Browser.aspx.designer.cs">
+      <DependentUpon>Browser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Browser\ProcessImage.ashx.cs">
+      <DependentUpon>ProcessImage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CKEditorOptions.ascx.cs">
+      <DependentUpon>CKEditorOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CKEditorOptions.ascx.designer.cs">
+      <DependentUpon>CKEditorOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HtmlGenericSelfClosing.cs" />
+    <Compile Include="Objects\LinkItem.cs" />
+    <Compile Include="Options.aspx.cs">
+      <DependentUpon>Options.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Options.aspx.designer.cs">
+      <DependentUpon>Options.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CKHtmlEditorProvider.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Constants\SettingsMode.cs" />
+    <Compile Include="Objects\Toolbar.cs" />
+    <Compile Include="Objects\ToolbarRoles.cs" />
+    <Compile Include="Utilities\EditorController.cs" />
+    <Compile Include="Utilities\SettingsUtil.cs" />
+    <Compile Include="Utilities\ToolbarUtil.cs" />
+    <Compile Include="Utilities\Utility.cs" />
+    <Compile Include="Web\EditorControl.cs">
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Browser\Browser.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Browser\Browser.comb.css">
+      <DependentUpon>Browser.comb.css.bundle</DependentUpon>
+    </Content>
+    <Content Include="Browser\Browser.comb.min.css">
+      <DependentUpon>Browser.comb.css</DependentUpon>
+    </Content>
+    <Content Include="Browser\Browser.css" />
+    <Content Include="Browser\jquery.fileupload-ui.css" />
+    <Content Include="Browser\jquery.fileupload.css" />
+    <Content Include="Browser\js\Browser.js" />
+    <Content Include="Browser\js\jquery.cropzoom.js" />
+    <Content Include="Browser\js\jquery.fileupload.comb.min.js" />
+    <Content Include="Browser\js\jquery.ImageResizer.js" />
+    <Content Include="Browser\js\jquery.ImageSlider.js" />
+    <Content Include="Browser\js\jquery.pagemethod.js" />
+    <Content Include="CKEditorConfig.png" />
+    <Content Include="css\CKEditorOverride.css" />
+    <Content Include="css\CkEditorContents.css" />
+    <Content Include="css\CkEditorToolBars.css" />
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="Install\Dnn.CKEditorDefaultSettings.xml" />
+    <Content Include="CKEditorOptions.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="css\jquery.notification.css" />
+    <Content Include="css\Options.css" />
+    <Content Include="Install\DNNCkeditor.license.txt" />
+    <Content Include="js\editorOverride.js" />
+    <Content Include="js\jquery.ckeditor.adapter.js" />
+    <Content Include="js\jquery.notification.js" />
+    <Content Include="js\jquery.ui.controls.js" />
+    <Content Include="js\Options.js" />
+    <Content Include="Install\Dnn.CKToolbarButtons.xml" />
+    <Content Include="Install\Dnn.CKToolbarSets.xml" />
+    <Content Include="Install\license.txt" />
+    <Content Include="Install\releaseNotes.txt" />
+    <Content Include="LogoCKEditor.png" />
+    <Content Include="Module\EditorConfigManager.ascx" />
+    <Content Include="Options.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Browser.aspx.de-DE.resx" />
+    <Content Include="App_LocalResources\Browser.aspx.resx" />
+    <Content Include="App_LocalResources\Options.aspx.de-DE.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Options.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditorConfigManager.ascx.de-DE.resx" />
+    <Content Include="App_LocalResources\EditorConfigManager.ascx.resx" />
+    <Content Include="App_LocalResources\Browser.aspx.pl-PL.resx" />
+    <Content Include="App_LocalResources\EditorConfigManager.ascx.pl-PL.resx" />
+    <Content Include="App_LocalResources\Options.aspx.pl-PL.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <EmbeddedResource Include="Browser\Browser.aspx.resx">
+      <DependentUpon>Browser.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CKEditorOptions.ascx.resx">
+      <DependentUpon>CKEditorOptions.ascx.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Browser\ProcessImage.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UrlControl.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Browser\FileUploader.ashx" />
+    <Content Include="Browser\Browser.comb.css.bundle" />
+    <Content Include="Install\01.00.00.SqlDataProvider" />
+    <None Include="Install\Uninstall.SqlDataProvider" />
+    <None Include="DNNConnect.CKEditorProvider.dnn">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Tabs.ashx" />
+    <Content Include="packages.config" />
+    <Content Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)/Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:33952/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildProjectDirectory)\BuildScripts\Package.Targets" />
+</Project>

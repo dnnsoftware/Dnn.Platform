@@ -1,0 +1,20 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles").RequiresJs("~/Js/JsFromAspx.aspx");}
+
+<div class="mainContent">
+    <h2>This tests results from an aspx page</h2>
+    <div>
+        In some strange cases people return JavaScript or CSS from an ASPX page, this tests that it works.
+    </div>
+</div>

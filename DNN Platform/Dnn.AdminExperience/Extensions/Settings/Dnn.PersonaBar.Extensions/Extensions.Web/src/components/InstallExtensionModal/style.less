@@ -1,0 +1,36 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.installExtensionModal) {
+    box-sizing: border-box;
+    .install-extension-box {
+        padding: 25px 45px;
+        .box-title{
+            font-size: 15px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+        .upload-package-box.dnn-grid-cell {
+            padding: 0;
+            margin: 15px auto 25px;
+        }
+        .dnn-checkbox-container {
+            float: left;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+        .modal-pagination {
+            text-align: center;
+        }
+        .package-already-exists {
+            > p {
+                padding: 0 25px;
+                &.package-exists-help-text {
+                    margin-bottom: 15px;
+                }
+                &.package-exists-error {
+                    margin-bottom: 15px;
+                }
+                &.package-exists-error-help-text {}
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+﻿@model ClientDependency.Web.Test.Models.TestModel
+@using ClientDependency.Core.Mvc
+
+@{
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+@section TitleContent
+{
+Home Page
+}
+
+@{ Html.RequiresCss("Content.css", "Styles").RequiresCss("MyFirstLess.less", "Styles");}
+
+<div class="mainContent">
+    <h2>
+        This tests DotLess</h2>
+    <div>
+        <h5>This is the color #CC0000 which is the result of styling with a dotless stylesheet</h5>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<configuration>
+  <system.web>
+    <httpHandlers>
+      <add path="*.ts" verb="GET" type="ClientDependency.TypeScript.TypeScriptHandler, ClientDependency.TypeScript" />
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <handlers>
+      <remove name="CdfTypeScriptHandler" />
+      <add name="CdfTypeScriptHandler" path="*.ts" verb="GET" type="ClientDependency.TypeScript.TypeScriptHandler, ClientDependency.TypeScript" resourceType="File" preCondition="" />
+    </handlers>
+  </system.webServer>
+</configuration>

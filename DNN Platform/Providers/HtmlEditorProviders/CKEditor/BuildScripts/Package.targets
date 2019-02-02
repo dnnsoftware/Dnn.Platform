@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>DNNConnect.CKEditorProvider</DNNFileName>
+    <PackageName>DNNConnect.CKEditorProvider</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\BuildScripts</BuildScriptsPath>
+    <PackagePath>$(MSBuildProjectDirectory)\Packages</PackagePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DotNetNukeMSBuildTasksLib>$(BuildScriptsPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
+  <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
+
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;Package">
+  </Target>
+
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt;*.Cleanup.txt" />
+    </ItemGroup>
+    <ItemGroup>
+      <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
+    </ItemGroup>
+    <ItemGroup>
+      <CssFiles Include="css\*.css;Browser\*.css" />
+    </ItemGroup>
+    <ItemGroup>
+      <JsFiles Include="js\*.js;Browser\js\*.js;js\**\*.*" />
+    </ItemGroup>
+    <ItemGroup>
+      <ImagesFiles Include="Browser\images\**\*.*" />
+    </ItemGroup>
+    <ItemGroup>
+      <ResourceFiles Include="App_LocalResources\*.resx" />
+    </ItemGroup>
+    <ItemGroup>
+      <CKEditor Include="CKEditor\**\*.*" />
+    </ItemGroup>
+    <ItemGroup>
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);" />
+    </ItemGroup>
+    <ItemGroup>
+      <CleanupFiles Include="*.Cleanup.txt" />
+    </ItemGroup>
+    <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\%(RecursiveDir)" />
+    <Copy SourceFiles="@(CKEditor)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\App_LocalResources\" />
+  </Target>
+  <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <XmlRead 
+      Prefix="n"
+      Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+      XPath="dotnetnuke/packages/package[1]/@version"
+      XmlFileName="$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    <ExtensionPackager Manifest="$(DNNFileName).dnn" WorkingFolder="$(MSBuildProjectDirectory)\">
+      <Output TaskParameter="PackageFiles" PropertyName="PackageFiles">
+      </Output>
+    </ExtensionPackager>
+    <Copy SourceFiles="$(DNNFileName).dnn" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Zip Files="@(Resources)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+    <ItemGroup>
+      <LicenseFiles Include="**\license.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <ItemGroup>
+      <ReleaseNotesFiles Include="**\releaseNotes.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <CreateItem Include="$(PackageFiles)">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Copy SourceFiles="$(OutputContent)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(OutputContent.RecursiveDir)" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(PackagePath)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
+  </Target>
+</Project>

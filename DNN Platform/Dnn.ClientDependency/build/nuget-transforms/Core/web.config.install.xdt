@@ -1,0 +1,56 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+
+  <configSections xdt:Transform="InsertBefore(/configuration/*[1])" />
+  <configSections xdt:Locator="XPath(/configuration/configSections[last()])">
+    <section name="clientDependency" type="ClientDependency.Core.Config.ClientDependencySection, ClientDependency.Core" requirePermission="false"
+            xdt:Transform="InsertIfMissing"
+            xdt:Locator="Condition(@name='clientDependency')" />
+  </configSections>
+  <configSections xdt:Transform="RemoveAll" xdt:Locator="Condition(count(*)=0)" />
+
+  <clientDependency version="1" xdt:Transform="InsertIfMissing">
+    <!-- Full config documentation is here: https://github.com/Shazwazza/ClientDependency/wiki/Configuration -->
+  </clientDependency>
+
+  <system.web xdt:Transform="InsertIfMissing">
+    <pages xdt:Transform="InsertIfMissing">
+      <namespaces xdt:Transform="InsertIfMissing">
+        <add namespace="ClientDependency.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@namespace='ClientDependency.Core')" />
+      </namespaces>
+    </pages>
+    <httpModules xdt:Transform="InsertIfMissing">
+
+      <add name="ClientDependencyModule" type="ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core"
+           xdt:Transform="InsertIfMissing"
+           xdt:Locator="Condition(@name='ClientDependencyModule')" />
+    </httpModules>
+    <httpHandlers xdt:Transform="InsertIfMissing">
+
+      <add verb="GET" path="DependencyHandler.axd"  type="ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core "
+           xdt:Transform="InsertIfMissing"
+           xdt:Locator="Condition(@path='DependencyHandler.axd')"/>
+    </httpHandlers>
+  </system.web>
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <validation validateIntegratedModeConfiguration="false" xdt:Transform="InsertIfMissing" />
+    <modules xdt:Transform="InsertIfMissing">
+      <remove name="ClientDependencyModule"
+              xdt:Transform="InsertIfMissing"
+              xdt:Locator="Condition(@name='ClientDependencyModule')"/>
+
+      <add name="ClientDependencyModule" type="ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core"
+           xdt:Transform="InsertIfMissing"
+           xdt:Locator="Condition(@name='ClientDependencyModule')"/>
+    </modules>
+    <handlers xdt:Transform="InsertIfMissing">
+
+      <remove name="DependencyHandler"
+              xdt:Transform="InsertIfMissing"
+              xdt:Locator="Condition(@name='DependencyHandler')"/>
+
+      <add name="DependencyHandler" preCondition="integratedMode" verb="GET" path="DependencyHandler.axd"  type="ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core "
+           xdt:Transform="InsertIfMissing"
+           xdt:Locator="Condition(@name='DependencyHandler')"/>
+    </handlers>
+  </system.webServer>
+</configuration>
