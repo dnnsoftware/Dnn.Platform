@@ -56,6 +56,7 @@
     <HttpCompression>0</HttpCompression>
     <HttpCompressionLevel>0</HttpCompressionLevel>
     <ModuleCaching>MemoryModuleCachingProvider</ModuleCaching>
+    <PageCaching>MemoryOutputCachingProvider</PageCaching>
     <PageQuota></PageQuota>
     <PageStatePersister>P</PageStatePersister>
     <PaymentProcessor>PayPal</PaymentProcessor>
