@@ -1,20 +1,41 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Exceptions;
+using DotNetNuke.Common.Utilities;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
     internal class SettingManager
     {
+        private const string SettingCacheKey = "Cantarus:PolyDeploy:Setting_";
+
         private static SettingDataController SettingDC = new SettingDataController();
 
         public static Setting GetSetting(string group, string key)
         {
-            Setting setting = SettingDC.GetSetting(group, key);
+            Setting setting;
 
+            // Attempt to retrieve from cache.
+            string cacheKey = BuildCacheKey(group, key);
+
+            setting = DataCache.GetCache<Setting>(cacheKey);
+
+            // Was in cache?
             if (setting == null)
             {
-                throw SettingNotFoundException.Create(group, key);
+                // Not in cache, go to database.
+                setting = SettingDC.GetSetting(group, key);
+
+                // Was in db?
+                if (setting != null)
+                {
+                    // Cache it for future.
+                    DataCache.SetCache(cacheKey, setting);
+                }
+                else
+                {
+                    throw SettingNotFoundException.Create(group, key);
+                }
             }
 
             return setting;
@@ -45,6 +66,14 @@ namespace Cantarus.Modules.PolyDeploy.Components
 
                 SettingDC.Update(setting);
             }
+
+            // Clear cache.
+            DataCache.RemoveCache(BuildCacheKey(group, key));
+        }
+
+        private static string BuildCacheKey(string group, string key)
+        {
+            return $"{SettingCacheKey}{group}_{key}";
         }
     }
 }
