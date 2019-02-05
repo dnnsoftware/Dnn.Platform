@@ -2,6 +2,7 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Exceptions;
 using DotNetNuke.Common.Utilities;
+using System;
 
 namespace Cantarus.Modules.PolyDeploy.Components
 {
@@ -29,8 +30,8 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 // Was in db?
                 if (setting != null)
                 {
-                    // Cache it for future.
-                    DataCache.SetCache(cacheKey, setting);
+                    // Cache it for 15 minutes.
+                    DataCache.SetCache(cacheKey, setting, TimeSpan.FromMinutes(15));
                 }
                 else
                 {
