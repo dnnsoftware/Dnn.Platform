@@ -17,6 +17,15 @@ namespace Cantarus.Libraries.Encryption
         // This is divided by 8 later to get the equivalent number of bytes.
         private const int KeySize = 256;
 
+        // The AES specification states that the block size must be 128.
+        private const int BlockSize = 128;
+
+        // Initialisation vector size.
+        private const int IvSize = 128;
+
+        // Salt size.
+        private const int SaltSize = 256;
+
         // Determines the number of iterations used during password generation.
         private const int DerivationIterations = 1000;
 
@@ -60,8 +69,8 @@ namespace Cantarus.Libraries.Encryption
         public static byte[] Encrypt(byte[] plainBytes, string passPhrase)
         {
             // Bytes for salt and initialisation vector are generated randomly each time.
-            byte[] saltBytes = Generate256BitsOfRandomEntropy();
-            byte[] ivBytes = Generate256BitsOfRandomEntropy();
+            byte[] saltBytes = GenerateRandomEntropy(SaltSize);
+            byte[] ivBytes = GenerateRandomEntropy(IvSize);
 
             // Prepare store for encrypted bytes.
             byte[] encryptedBytes;
@@ -70,9 +79,9 @@ namespace Cantarus.Libraries.Encryption
             {
                 byte[] keyBytes = password.GetBytes(KeySize / 8);
 
-                using (RijndaelManaged symmetricKey = new RijndaelManaged())
+                using (AesManaged symmetricKey = new AesManaged())
                 {
-                    symmetricKey.BlockSize = 256;
+                    symmetricKey.BlockSize = BlockSize;
                     symmetricKey.Mode = CipherMode.CBC;
                     symmetricKey.Padding = PaddingMode.PKCS7;
 
@@ -144,14 +153,22 @@ namespace Cantarus.Libraries.Encryption
 
         public static byte[] Decrypt(byte[] encryptedBytesWithSaltAndIv, string passPhrase)
         {
-            // Get the salt bytes by extracting the first 32 bytes.
-            byte[] saltBytes = encryptedBytesWithSaltAndIv.Take(KeySize / 8).ToArray();
+            // Get the salt bytes by extracting the first (SaltSize / 8) bytes.
+            byte[] saltBytes = encryptedBytesWithSaltAndIv
+                .Take(SaltSize / 8)
+                .ToArray();
 
-            // Get the initialisation vector bytes by extracting the next 32 bytes after the salt.
-            byte[] ivBytes = encryptedBytesWithSaltAndIv.Skip(KeySize / 8).Take(KeySize / 8).ToArray();
+            // Get the initialisation vector bytes by extracting the next (IvSize / 8) bytes after the salt.
+            byte[] ivBytes = encryptedBytesWithSaltAndIv
+                .Skip(SaltSize / 8)
+                .Take(IvSize / 8)
+                .ToArray();
 
-            // Get the actual encrypted bytes by removing the first 64 bytes.
-            byte[] encryptedBytes = encryptedBytesWithSaltAndIv.Skip((KeySize / 8) * 2).Take(encryptedBytesWithSaltAndIv.Length - ((KeySize / 8) * 2)).ToArray();
+            // Get the actual encrypted bytes by removing the salt and iv bytes.
+            byte[] encryptedBytes = encryptedBytesWithSaltAndIv
+                .Skip((SaltSize / 8) + (IvSize / 8))
+                .Take(encryptedBytesWithSaltAndIv.Length - ((SaltSize / 8) + (IvSize / 8)))
+                .ToArray();
 
             // Prepare store for decrypted string and bytes read.
             byte[] plainTextBytes;
@@ -161,9 +178,9 @@ namespace Cantarus.Libraries.Encryption
             {
                 byte[] keyBytes = password.GetBytes(KeySize / 8);
 
-                using (RijndaelManaged symmetricKey = new RijndaelManaged())
+                using (AesManaged symmetricKey = new AesManaged())
                 {
-                    symmetricKey.BlockSize = 256;
+                    symmetricKey.BlockSize = BlockSize;
                     symmetricKey.Mode = CipherMode.CBC;
                     symmetricKey.Padding = PaddingMode.PKCS7;
 
@@ -187,9 +204,9 @@ namespace Cantarus.Libraries.Encryption
             return plainTextBytes.Take(decryptedByteCount).ToArray();
         }
 
-        private static byte[] Generate256BitsOfRandomEntropy()
+        private static byte[] GenerateRandomEntropy(int bitCount)
         {
-            byte[] randomBytes = CryptoUtilities.GenerateRandomBytes(32);
+            byte[] randomBytes = CryptoUtilities.GenerateRandomBytes(bitCount / 8);
 
             return randomBytes;
         }
