@@ -17,7 +17,6 @@ class LanguageSettingsPanelBody extends Component {
         this.state = {
             languageSettings: undefined
         };
-        this.init(props);
     }
 
     isHost() {
@@ -29,7 +28,8 @@ class LanguageSettingsPanelBody extends Component {
         return props.languageSettings !== undefined && props.languageSettings.AllowContentLocalization === true;
     }
 
-    init(props) {
+    loadData() {
+        const {props} = this;
         props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 languageSettings: Object.assign({}, data.Settings)
@@ -37,13 +37,31 @@ class LanguageSettingsPanelBody extends Component {
         }));
     }
 
-    componentDidUpdate(prevProps) {
-        const { props } = this;
+    componentDidMount() {
+        this.loadData();
+    }
 
-        if (prevProps.languageSettings !== props.languageSettings) {
-            this.setState({
-                languageSettings: Object.assign({}, props.languageSettings)
-            });
+    componentDidUpdate() {
+        const { props } = this;
+        if (props.languageSettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;            
+            if (props.portalId === undefined || props.languageSettings.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
+            if (props.cultureCode === undefined || props.languageSettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
+                this.loadData();
+            }
         }
     }
 
@@ -365,7 +383,7 @@ function mapStateToProps(state) {
         languageDisplayModes: state.languages.languageDisplayModes,
         languageSettingsClientModified: state.languages.languageSettingsClientModified,
         languageList: state.languages.languageList,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined
     };
 }
 

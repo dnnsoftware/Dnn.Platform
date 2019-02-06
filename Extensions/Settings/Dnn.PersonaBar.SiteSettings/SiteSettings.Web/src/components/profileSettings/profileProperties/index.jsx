@@ -22,34 +22,29 @@ class ProfilePropertiesPanel extends Component {
         };
     }
 
-    loadData() {
+    componentDidUpdate() {
         const {props} = this;
         if (props.profileProperties) {
             if (props.portalId === undefined || props.profileProperties.PortalId === props.portalId) {
-                return false;
+                return;
             }
             else {
-                return true;
+                this.loadData();
             }
-        }
-        else {
-            return true;
         }
     }
 
     componentDidMount() {
-        const {props} = this;
+        this.loadData();
+    }
 
-        if (!this.loadData()) {
-            return;
-        }
-        else {
-            props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId, (data) => {
-                this.setState({
-                    pid: data.PortalId
-                });
-            }));
-        }
+    loadData() {
+        const {props} = this;
+        props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId, (data) => {
+            this.setState({
+                profileProperties: data.Properties
+            });
+        }));
 
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });

@@ -23,11 +23,19 @@ class SiteAliasSettingsPanelBody extends Component {
         this.loadData();
     }
 
-    componentDidUpdate(prevProps) {
-        const { props } = this;
-        const portalIdChanged = !prevProps || prevProps.portalId !== props.portalId;
-        if(portalIdChanged) {
-            this.loadData();
+    componentDidUpdate() {
+        const { props } = this;        
+        if (props.urlMappingSettings) {
+            let portalIdChanged = false;
+            if (props.portalId === undefined || props.urlMappingSettings.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
+            if (portalIdChanged) {
+                this.loadData();
+            }
         }
     }
 
@@ -165,7 +173,7 @@ function mapStateToProps(state) {
         urlMappingSettings: state.siteBehavior.urlMappingSettings,
         portalAliasMappingModes: state.siteBehavior.portalAliasMappingModes,
         urlMappingSettingsClientModified: state.siteBehavior.urlMappingSettingsClientModified,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 
