@@ -39,9 +39,9 @@ class LanguageEditor extends Component {
         }
     }
 
-    componentDidUpdate(newProps) {
+    componentDidUpdate(prevProps) {
         const { props } = this;
-        if(props.languageDetail !== newProps.languageDetail) {
+        if(props.languageDetail !== prevProps.languageDetail) {
             this.setState({
                 languageDetail: Object.assign({}, props.languageDetail)
             });

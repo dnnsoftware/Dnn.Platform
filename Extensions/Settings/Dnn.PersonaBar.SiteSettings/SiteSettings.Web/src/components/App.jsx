@@ -136,8 +136,8 @@ class App extends Component {
         }
     }
 
-    componentDidUpdate(props) {
-        const {state} = this;
+    componentDidUpdate() {
+        const {props, state} = this;
         if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
             this.changePortalIdCultureCode(props.portalId, props.cultureCode);
         }

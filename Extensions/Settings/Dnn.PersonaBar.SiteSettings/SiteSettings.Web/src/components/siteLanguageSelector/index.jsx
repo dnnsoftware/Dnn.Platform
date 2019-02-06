@@ -44,10 +44,19 @@ class SiteLanguageSelector extends Component {
         }, false);
     }
 
-    componentDidUpdate(props) {
-        const { state } = this;
-        if (props.portalId !== state.portalId && props.portalId !== undefined) {
-            this.onSiteChange({ value: props.portalId });
+    componentDidUpdate(prevProps) {
+        const { props, state } = this;
+        if (props.portals !== undefined) {
+            props.portals.map((item) => {
+                if (item.IsCurrentPortal && state.portalId === undefined) {
+                    this.setState({
+                        portalId: item.PortalID
+                    });
+                }
+            });
+        }
+        if (props.portalId !== undefined && props.portalId !== prevProps.portalId) {
+            this.onSiteChange({ value: props.portalId });         
         }
         if (props.cultureCode !== state.cultureCode) {
             this.onLanguageChange({ value: props.cultureCode });
@@ -102,15 +111,10 @@ class SiteLanguageSelector extends Component {
     }
 
     getSiteOptions() {
-        const {state, props} = this;
+        const {props} = this;
         let options = [];
         if (props.portals !== undefined) {
             options = props.portals.map((item) => {
-                if (item.IsCurrentPortal && state.portalId === undefined) {
-                    this.setState({
-                        portalId: item.PortalID
-                    });
-                }
                 return {
                     label: item.PortalName, value: item.PortalID
                 };
