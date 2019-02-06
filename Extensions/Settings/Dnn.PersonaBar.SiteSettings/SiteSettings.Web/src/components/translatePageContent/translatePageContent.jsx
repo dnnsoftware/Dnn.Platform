@@ -31,9 +31,9 @@ class TranslatePageContent extends Component {
         this.getProgressData();
     }
 
-    componentDidUpdate(newProps) {
+    componentDidUpdate(prevProps) {
         const { props } = this;
-        if(newProps.languageBeingEdited !== props.languageBeingEdited) {
+        if (prevProps.languageBeingEdited !== props.languageBeingEdited) {
             this.setState({languageBeingEdited: Object.assign({}, props.languageBeingEdited)});
         }
     }

@@ -153,7 +153,7 @@ class BasicSearchSettingsPanelBody extends Component {
         const {state} = this;
         if (this.isHost()) {
             if (state.basicSearchSettings) {
-                const columnOne = <div className="left-column">
+                const columnOne = <div className="left-column" key="columnOneSearchSettingsPanel">
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("lblIndexWordMinLength.Help")}
@@ -197,7 +197,7 @@ class BasicSearchSettingsPanelBody extends Component {
                         />
                     </InputGroup>
                 </div>;
-                const columnTwo = <div className="right-column">
+                const columnTwo = <div className="right-column" key="columnTwoSearchSettingsPanel">
                     <DropdownWithError
                         style={{ maxWidth: "100%" }}
                         options={this.getAnalyzerTypeOptions()}
