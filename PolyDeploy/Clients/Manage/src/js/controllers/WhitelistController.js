@@ -1,6 +1,13 @@
 ﻿module.exports = ['$scope', 'IPSpecDataService', 'SettingDataService',
     function ($scope, IPSpecDataService, SettingDataService) {
 
+        $scope.newIp = {
+            name: '',
+            ipv4Address: ''
+        };
+
+        $scope.errorMessage = null;
+
         $scope.whitelistStates = [
             {
                 name: 'Enabled',
@@ -44,15 +51,26 @@
             SettingDataService.whitelist.setState(state.value);
         };
 
+        // Dismiss error message.
+        $scope.dismissError = function () {
+
+            $scope.errorMessage = null;
+        };
+
         // Create spec.
-        $scope.createSpec = function (ipAddress) {
+        $scope.createSpec = function (ipSpec) {
 
             // Create the new spec and append it.
-            IPSpecDataService.createSpec(ipAddress).then(
-                function (createdSpec) {
+            IPSpecDataService.createSpec(ipSpec.name, ipSpec.ipv4Address).then(
+                function (resp) {
+
+                    if (resp.err) {
+                        $scope.errorMessage = resp.err;
+                        return;
+                    }
 
                     // Push on to specs.
-                    $scope.specs.push(createdSpec);
+                    $scope.specs.push(resp.ipSpec);
                 });
         };
 

@@ -8,6 +8,21 @@
 
 #cantarus-poly-deploy {
 
+    #menu {
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                list-style: inherit;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
     .form-group {
         &.form-group-middle {
             label {
@@ -25,41 +40,25 @@
     }
 
     .can-pagination {
-        position: relative;
-        height: 20px;
+        text-align: center;
 
-        .prev, .next {
-            position: absolute;
-            height: 100%;
-            width: 20px;
-            top: 0;
-            text-align: center;
-            line-height: 30px;
-            cursor: pointer;
-        }
-
-        .prev {
-            left: 0;
-        }
-
-        .next {
-            right: 0;
-        }
-
-        .pages {
-            list-style: none;
-            margin: 0 20px;
-            text-align: center;
-
+        ul {
             li {
-                display: inline-block;
-                line-height: 20px;
-                padding: 0 5px;
-                margin: 0 5px;
-                cursor: pointer;
+                user-select: none;
 
-                &.current {
-                    font-weight: bold;
+                a {
+                    cursor: pointer;
+                    width: 45px;
+                }
+            }
+        }
+    }
+
+    table {
+        &.table {
+            tr {
+                &.critical {
+                    background-color: #f77e7e;
                 }
             }
         }

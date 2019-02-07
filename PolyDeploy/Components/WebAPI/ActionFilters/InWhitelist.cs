@@ -1,6 +1,5 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
-using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Net;
 using System.Net.Http;
