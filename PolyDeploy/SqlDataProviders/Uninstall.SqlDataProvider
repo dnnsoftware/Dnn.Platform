@@ -11,6 +11,40 @@
 /************************************************************/
 
 /*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPage STORED PROCEDURE ***********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPage]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_GetEventLogsPageTotal STORED PROCEDURE ******************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (
+    SELECT *
+    FROM dbo.sysobjects
+    WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]'))
+BEGIN
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_GetEventLogsPageTotal]
+END
+GO
+
+/*********************************************************************************************************/
+/*** Cantarus_PolyDeploy_EventLogsPaginated STORED PROCEDURE *********************************************/
+/*********************************************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_EventLogsPaginated]
+GO
+
+/*********************************************************************************************************/
 /*** MODULE TABLES ***************************************************************************************/
 /*********************************************************************************************************/
 

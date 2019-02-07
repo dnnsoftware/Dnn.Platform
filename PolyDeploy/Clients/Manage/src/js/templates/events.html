@@ -19,7 +19,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="eventLog in eventLogs">
+                            <tr ng-repeat="eventLog in eventLogs"
+                                ng-class="{ warning: eventLog.Severity === 1, danger: eventLog.Severity === 2, critical: eventLog.Severity === 3 }">
                                 <td>{{ eventLog.Date }}</td>
                                 <td>{{ eventLog.EventType }}</td>
                                 <td>{{ eventLog.Message }}</td>
@@ -28,18 +29,32 @@
                     </table>
 
                     <!-- Pagination -->
-                    <div class="can-pagination">
-                        <span class="prev"
-                              ng-click="prevPage()"
-                              ng-disable="hasPrevPage()"><</span>
-                        <ul class="pages">
-                            <li ng-repeat="i in getPages(pageCount) track by $index" 
-                                ng-click="loadPage($index+1)" 
-                                ng-class="{ current: $index+1 === currentPage }">{{ $index+1 }}</li>
-                        </ul>
-                        <span class="next"
-                              ng-click="nextPage()"
-                              ng-disable="hasNextPage()">></span>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <nav class="can-pagination">
+                                <ul class="pagination pagination-sm">
+                                    <li>
+                                        <a ng-click="prevPage()"
+                                            ng-class="{ disabled: hasPrevPage() }">
+                                            <span>&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li ng-repeat="i in getPages(pageCount, currentPage) track by $index"
+                                        ng-click="loadPage(i)"
+                                        ng-class="{ active: i === currentPage }">
+                                        <a ng-click="loadPage(i)">
+                                            {{ i }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a ng-click="nextPage()"
+                                            ng-class="{ disabled: hasNextPage() }">
+                                            <span>&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                     <!-- /Pagination -->
                 </div>

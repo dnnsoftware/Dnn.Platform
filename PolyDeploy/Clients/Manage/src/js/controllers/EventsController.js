@@ -4,7 +4,7 @@
         // Defaults.
         var options = {
             pageIndex: 0,
-            pageSize: 10,
+            pageSize: 20,
             eventType: undefined,
             severity: undefined
         };
@@ -96,8 +96,79 @@
         }
 
         // Get array for pagination.
-        function getPages(number) {
-            return new Array(number);
+        function getPages(pageCount, currentPage) {
+
+            // Check there are pages to paginate.
+            if (pageCount < 1) {
+                return [1];
+            }
+
+            // Number of selectable pages to show at any given time. This should
+            // be an odd number so the current page can be centralised.
+            var pageOptionCount = 9;
+
+            // This is the number of selectable pages that appear on either side
+            // of the current page. It's derived from the pageOptionCount.
+            var bufferSize = (pageOptionCount - 1) / 2;
+
+            // Initialise array.
+            var numArray = [];
+
+            // Work out what the bounds will be.
+            var lowPage = 0;
+            var highPage = 0;
+
+            if (pageCount < pageOptionCount) {
+
+                lowPage = 1;
+                highPage = pageCount;
+
+            } else {
+
+                lowPage = currentPage - bufferSize;
+                highPage = currentPage + bufferSize;
+
+                // Gone too low?
+                if (lowPage < 1) {
+
+                    // How far?
+                    highPage = highPage + Math.abs(lowPage) + 1;
+
+                    lowPage = 1;
+                }
+
+                // Gone too high?
+                if (highPage > pageCount) {
+
+                    // How far?
+                    lowPage = lowPage - Math.abs(highPage - pageCount);
+
+                    highPage = pageCount;
+                }
+            }
+
+            // Build array.
+            for (var i = lowPage; i <= highPage; i++) {
+                numArray.push(i);
+            }
+
+            // Clipping at the bottom?
+            if (numArray[0] !== 1) {
+
+                // Yes.
+                numArray[0] = 1;
+                numArray[1] = '...';
+            }
+
+            // Clipping at the top?
+            if (numArray[numArray.length - 1] !== pageCount) {
+
+                // Yes.
+                numArray[numArray.length - 1] = pageCount;
+                numArray[numArray.length - 2] = '...';
+            }
+
+            return numArray;
         }
 
     }];
