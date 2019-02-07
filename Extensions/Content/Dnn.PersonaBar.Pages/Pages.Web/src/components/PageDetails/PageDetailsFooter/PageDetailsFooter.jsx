@@ -36,7 +36,9 @@ class PageDetailsFooter extends Component {
                 onChangeIncludeInMenu={this.onChangeValue.bind(this,"includeInMenu")} />];
             if (includeTemplates && page.tabId === 0) {
                 defaultLeftColumnComponents.push(
-                    <Template templates={page.templates} 
+                    <Template 
+                        key={"templateKey-" + page.tabId}
+                        templates={page.templates} 
                         selectedTemplateId={page.templateId}
                         onSelect={this.onChangeField.bind(this, "templateId")} />
                 );
