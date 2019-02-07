@@ -15,7 +15,7 @@ class JobRow extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         let opened = (this.props.openId !== "" && this.props.jobId === this.props.openId);
         this.setState({
             opened
@@ -92,12 +92,12 @@ class JobRow extends Component {
 }
 
 JobRow.propTypes = {
-    jobId: PropTypes.string,
+    jobId: PropTypes.number,
     jobType: PropTypes.string,
     jobDate: PropTypes.string,
     jobUser: PropTypes.string,
     jobPortal: PropTypes.string,
-    jobStatus: PropTypes.string,
+    jobStatus: PropTypes.number,
     jobCancelled: PropTypes.bool,
     children: PropTypes.node,
     className: PropTypes.string,

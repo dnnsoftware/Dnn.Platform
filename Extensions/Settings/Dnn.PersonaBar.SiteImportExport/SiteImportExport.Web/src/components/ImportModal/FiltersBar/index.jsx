@@ -73,7 +73,6 @@ class FiltersBar extends Component {
     }
 }
 FiltersBar.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     onFilterChanged: PropTypes.func.isRequired,
     onKeywordChanged: PropTypes.func.isRequired
 };
