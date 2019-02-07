@@ -1,6 +1,5 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
-using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -62,8 +61,9 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
             if (!authenticated)
             {
                 string apiKey = actionContext.Request.GetApiKey();
-                APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
-                if (apiUser != null && apiUser.BypassIPWhitelist)
+                APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
+
+                if (apiUser != null && apiUser.Prepared && apiUser.BypassIPWhitelist)
                 {
                     authenticated = true;
                 }

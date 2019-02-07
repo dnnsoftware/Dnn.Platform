@@ -1,8 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
-using DotNetNuke.Services.Log.EventLog;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -29,10 +27,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 if (apiKey != null && apiKey.Length == 32)
                 {
                     // Attempt to look up the api user.
-                    APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
+                    APIUser apiUser = APIUserManager.FindAndPrepare(apiKey);
 
-                    // Did we find one and double check the api key.
-                    if (apiUser != null && apiUser.APIKey == apiKey)
+                    // Did we find one and is it ready to use?
+                    if (apiUser != null && apiUser.Prepared)
                     {
                         // Genuine API user.
                         authenticated = true;

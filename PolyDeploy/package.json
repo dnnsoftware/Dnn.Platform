@@ -1,6 +1,6 @@
 {
   "name": "poly-deploy",
-  "version": "0.8.0",
+  "version": "0.9.1",
   "main": "app.js",
   "license": "Apache-2.0",
   "private": true,
