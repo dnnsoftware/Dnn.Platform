@@ -1,4 +1,5 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Exceptions;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
 using System;
 using System.Net;
@@ -16,7 +17,18 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
             base.OnActionExecuting(actionContext);
 
             // Get whitelist state.
-            bool whitelistDisabled = SettingManager.GetSetting("WHITELIST", "STATE").Value.ToLower() == "false";
+            bool whitelistDisabled;
+
+            try
+            {
+                // Attempt to retrieve disabled state.
+                whitelistDisabled = SettingManager.GetSetting("WHITELIST", "STATE").Value.ToLower() == "false";
+            }
+            catch (SettingNotFoundException ex)
+            {
+                // Setting not set, default to off.
+                whitelistDisabled = true;
+            }
 
             // Get api user.
             string apiKey = actionContext.Request.GetApiKey();
