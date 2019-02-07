@@ -43,13 +43,25 @@ namespace Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers
             }
         }
 
-        public IPSpec FindByAddress(string address)
+        public IPSpec Get(string address)
+        {
+            using (IDataContext context = DataContext.Instance())
+            {
+                return context.ExecuteSingleOrDefault<IPSpec>(
+                    System.Data.CommandType.StoredProcedure,
+                    "{databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_IPSpecByAddress]",
+                    address
+                );
+            }
+        }
+
+        public IPSpec GetByName(string name)
         {
             using (IDataContext context = DataContext.Instance())
             {
                 var repo = context.GetRepository<IPSpec>();
 
-                return repo.Find("WHERE Address = @0", address).FirstOrDefault<IPSpec>();
+                return repo.Find("WHERE [Name] = @0", name).FirstOrDefault<IPSpec>();
             }
         }
 

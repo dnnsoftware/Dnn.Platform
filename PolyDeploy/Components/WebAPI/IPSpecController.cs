@@ -1,4 +1,5 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Exceptions;
 using Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters;
 using DotNetNuke.Web.Api;
 using System;
@@ -24,9 +25,22 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         }
 
         [HttpPost]
-        public HttpResponseMessage Create(string ip)
+        public HttpResponseMessage Create(string name, string ip)
         {
-            IPSpec ipSpec = IPSpecManager.Create(ip);
+            IPSpec ipSpec = null;
+
+            try
+            {
+                 ipSpec = IPSpecManager.Create(name, ip);
+            }
+            catch (IPSpecExistsException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.Conflict, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
 
             return Request.CreateResponse(HttpStatusCode.Created, ipSpec);
         }

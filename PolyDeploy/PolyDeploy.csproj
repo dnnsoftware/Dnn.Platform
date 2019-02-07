@@ -151,6 +151,8 @@
     <Compile Include="Components\APIUserManager.cs" />
     <Compile Include="Components\DataAccess\DataControllers\EventLogDataController.cs" />
     <Compile Include="Components\DataAccess\Models\EventLog.cs" />
+    <Compile Include="Components\DataAccess\Models\Obfuscated.cs" />
+    <Compile Include="Components\Exceptions\IPSpecExistsException.cs" />
     <Compile Include="Components\Logging\EventLogSeverity.cs" />
     <Compile Include="Components\Logging\EventLogManager.cs" />
     <Compile Include="Components\RemoteDeployment.cs" />
@@ -212,7 +214,6 @@
     <Content Include="Clients\Manage\src\js\controllers\EventsController.js" />
     <Content Include="Clients\Manage\src\js\controllers\WhitelistController.js" />
     <Content Include="Clients\Manage\src\js\controllers\UsersController.js" />
-    <Content Include="Clients\Manage\src\js\services\APIUserDataService.js" />
     <Content Include="Clients\Manage\src\js\services\index.js" />
     <Content Include="Clients\Manage\src\js\templates\events.html" />
     <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
@@ -255,6 +256,8 @@
     <Content Include="SqlDataProviders\00.04.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.06.00.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.07.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.09.00.SqlDataProvider" />
+    <Content Include="SqlDataProviders\00.09.01.SqlDataProvider" />
     <Content Include="SqlDataProviders\00.09.02.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
