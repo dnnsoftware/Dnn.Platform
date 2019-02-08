@@ -19,7 +19,7 @@ class TextOverflowWrapper extends Component {
 
     componentDidMount() {
         //Set time out to ensure calculation happens after render
-        setTimeout(() => {
+        this.timerId = setTimeout(() => {
             let input = this.overflowTooltipRef;
             if (typeof input !== "undefined" && input.current.getBoundingClientRect()) {
                 let inputRect = input.current.getBoundingClientRect();
@@ -33,6 +33,11 @@ class TextOverflowWrapper extends Component {
             }
         }, 500);
     }
+
+    componentWillUnmount() {
+        clearTimeout(this.timerId);
+    }
+
     render() {
         const {props, state} = this;
         return (
