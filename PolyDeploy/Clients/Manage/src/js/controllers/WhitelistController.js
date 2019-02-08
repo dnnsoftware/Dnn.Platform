@@ -1,8 +1,5 @@
-﻿module.exports = ['$scope', 'IPSpecDataService',
-    function ($scope, IPSpecDataService) {
-
-        // Load specs.
-        refreshSpecs();
+﻿module.exports = ['$scope', 'IPSpecDataService', 'SettingDataService',
+    function ($scope, IPSpecDataService, SettingDataService) {
 
         $scope.newIp = {
             name: '',
@@ -10,6 +7,49 @@
         };
 
         $scope.errorMessage = null;
+
+        $scope.whitelistStates = [
+            {
+                name: 'Enabled',
+                value: true
+            },
+            {
+                name: 'Disabled',
+                value: false
+            }
+        ];
+
+        $scope.whitelistState = false;
+
+        // Load specs.
+        refreshSpecs();
+
+        // Retrieve whitelist state.
+        SettingDataService.whitelist.getState()
+            .then(function (setting) {
+
+                // Selected option.
+                var selected = undefined;
+
+                // Loop options.
+                angular.forEach($scope.whitelistStates, function (state) {
+
+                    // Is this the selected option?
+                    if (state.value === setting) {
+                        selected = state;
+                    }
+                });
+
+                // Set on scope.
+                $scope.whitelistState = selected;
+            });
+
+        // Update whitelist state.
+        $scope.updateWhitelistState = function (state) {
+
+            // Save value.
+            SettingDataService.whitelist.setState(state.value);
+        };
 
         // Dismiss error message.
         $scope.dismissError = function () {
