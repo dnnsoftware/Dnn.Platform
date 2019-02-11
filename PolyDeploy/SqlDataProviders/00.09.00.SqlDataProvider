@@ -213,8 +213,9 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Cantarus_PolyDeploy_SpExists]
 AS
     SELECT CASE WHEN EXISTS (
         SELECT *
-            FROM dbo.sysobjects
-            WHERE id = object_id(@SpName)
+        FROM dbo.sysobjects
+        WHERE id = object_id(@SpName)
+        AND OBJECTPROPERTY(id, N'IsProcedure') = 1
     )
     THEN CAST(1 AS BIT)
     ELSE CAST(0 AS BIT)
