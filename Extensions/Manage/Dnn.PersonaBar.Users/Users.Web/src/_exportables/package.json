@@ -15,7 +15,7 @@
     "@babel/plugin-transform-react-jsx": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "^2.0.64",
+    "@dnnsoftware/dnn-react-common": "^2.0.67",
     "babel-loader": "8.0.4",
     "create-react-class": "^15.6.3",
     "css-loader": "1.0.1",
