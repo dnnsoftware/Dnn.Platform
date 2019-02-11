@@ -1,9 +1,20 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Cantarus.Modules.PolyDeploy.Components.Exceptions
 {
-    internal class IPSpecExistsException : Exception
+    [Serializable]
+    public class IPSpecExistsException : Exception
     {
-        public IPSpecExistsException(string message) : base(message) { }
+        public IPSpecExistsException() { }
+
+        public IPSpecExistsException(string message)
+            : base(message) { }
+
+        public IPSpecExistsException(string message, Exception innerException)
+            : base(message, innerException) { }
+
+        public IPSpecExistsException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
     }
 }
