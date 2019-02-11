@@ -10,16 +10,19 @@
                     <h3 class="panel-title">Whitelist Configuration</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group form-group-middle">
-                        <label class="col-sm-4 col-md-3 control-label">State</label>
-                        <div class="col-sm-8 col-md-9">
-                            <select
-                                ng-model="whitelistState"
-                                ng-change="updateWhitelistState(whitelistState)"
-                                ng-options="opt as opt.name for opt in whitelistStates track by opt.value">
-                            </select>
+                    <div class="form-horizontal">
+                        <div class="form-group form-group-last">
+                            <label class="col-sm-4 col-md-3 control-label">State</label>
+                            <div class="col-sm-8 col-md-9">
+                                <select
+                                    ng-model="whitelistState"
+                                    ng-change="updateWhitelistState(whitelistState)"
+                                    ng-options="opt as opt.name for opt in whitelistStates track by opt.value">
+                                </select>
+                            </div>
                         </div>
                     </div>
+
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -33,28 +36,30 @@
                     <h3 class="panel-title">New Whitelist Entry</h3>
                 </div>
                 <div class="panel-body">
+
                     <div class="alert alert-danger alert-dismissable" ng-if="errorMessage">
                         <button type="button" class="close" ng-click="dismissError()">&times</button>
                         {{ errorMessage }}
                     </div>
-
-                    <div class="form-group form-group-middle">
-                        <label class="col-sm-3 col-lg-2 control-label">Name</label>
-                        <div class="col-sm-9 col-lg-10">
-                            <input type="text" ng-model="newIp.name" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Name</label>
+                            <div class="col-sm-9 col-lg-10">
+                                <input type="text" ng-model="newIp.name" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group form-group-middle">
-                        <label class="col-sm-3 col-lg-2 control-label">Address</label>
-                        <div class="col-sm-9 col-lg-10">
-                            <input type="text" ng-model="newIp.ipv4Address" />
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Address</label>
+                            <div class="col-sm-9 col-lg-10">
+                                <input type="text" ng-model="newIp.ipv4Address" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
-                        <div class="controls">
-                            <button type="button" class="btn btn-success" ng-click="createSpec(newIp)">Create</button>
+                        <div class="form-group form-group-last">
+                            <div class="col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
+                                <button type="button" class="btn btn-success" ng-click="createSpec(newIp)">Create</button>
+                            </div>
                         </div>
                     </div>
 
