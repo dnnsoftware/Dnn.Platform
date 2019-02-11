@@ -226,7 +226,6 @@
     <Content Include="Clients\Manage\src\js\services\index.js" />
     <Content Include="Clients\Manage\src\js\templates\events.html" />
     <Content Include="Clients\Manage\src\js\templates\whitelist.html" />
-    <Content Include="Clients\Manage\src\js\templates\welcome.html" />
     <Content Include="Clients\Manage\src\js\templates\menu.html" />
     <Content Include="Clients\Manage\src\js\templates\users.html" />
     <Content Include="Images\polydeploy-logo-icon.png" />

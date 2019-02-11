@@ -3,16 +3,12 @@
         function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
             // Default route.
-            $urlRouterProvider.otherwise('/');
+            $urlRouterProvider.otherwise('/events');
 
             // States.
             $stateProvider
                 .state('menu', {
                     template: require('./templates/menu.html')
-                })
-                .state('menu.welcome', {
-                    url: '/',
-                    template: require('./templates/welcome.html')
                 })
                 .state('menu.users', {
                     url: '/users',
