@@ -4,6 +4,22 @@
         // Store for errors.
         $scope.errors = [];
 
+        // Should we be able to click continue?
+        $scope.canContinue = function () {
+
+            var canCon = true;
+
+            // Have we uploaded at least one thing and is everything uploaded?
+            if ($scope.uploader.getNotUploadedItems().length > 0
+                || $scope.uploader.queue.length < 1) {
+
+                // Can't continue.
+                canCon = false;
+            }
+
+            return canCon;
+        };
+
         // Wait for session guid.
         SessionService.sessionPromise.then(setupUploader);
 
