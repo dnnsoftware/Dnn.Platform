@@ -2,14 +2,12 @@
     function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
         // Default route.
-        $urlRouterProvider.otherwise('/install/upload');
+        $urlRouterProvider.otherwise('/upload');
 
         // States.
         $stateProvider
             .state('install', {
-                url: '/install',
-                template: require('./templates/install.html'),
-                controller: 'InstallController'
+                template: require('./templates/install.html')
             })
             .state('install.upload', {
                 url: '/upload',
@@ -17,12 +15,10 @@
                 controller: require('./controllers/UploadController')
             })
             .state('install.summary', {
-                url: '/summary',
                 template: require('./templates/summary.html'),
                 controller: 'SummaryController'
             })
             .state('install.result', {
-                url: '/result',
                 template: require('./templates/result.html'),
                 controller: 'ResultController'
             })
