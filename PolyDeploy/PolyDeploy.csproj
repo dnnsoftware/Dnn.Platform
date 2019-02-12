@@ -231,7 +231,6 @@
     <Content Include="Images\polydeploy-logo-icon.png" />
     <Content Include="webpack.base.js" />
     <Content Include="Clients\Deploy\src\js\app.js" />
-    <Content Include="Clients\Deploy\src\js\controllers\InstallController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\ResultController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\SummaryController.js" />
     <Content Include="Clients\Deploy\src\js\controllers\UploadController.js" />
