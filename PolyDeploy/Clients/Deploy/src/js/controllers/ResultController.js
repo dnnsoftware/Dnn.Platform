@@ -80,8 +80,6 @@
                 panelClass = modPackage.Success ? 'panel-success' : 'panel-danger';
             }
 
-            console.log(panelClass);
-
             return panelClass;
         };
 
