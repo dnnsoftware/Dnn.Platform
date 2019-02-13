@@ -237,7 +237,6 @@
     <Content Include="Clients\Core\src\js\services\APIUserDataService.js" />
     <Content Include="Clients\Core\src\js\services\SessionDataService.js" />
     <Content Include="Clients\Deploy\src\js\services\SessionService.js" />
-    <Content Include="Clients\Deploy\src\js\templates\manage-users.html" />
     <Content Include="Clients\Deploy\src\js\templates\result.html" />
     <Content Include="Clients\Deploy\src\js\templates\upload.html" />
     <Content Include="Clients\Deploy\src\js\templates\summary.html" />
