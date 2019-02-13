@@ -12,7 +12,7 @@
             .state('install.upload', {
                 url: '/upload',
                 template: require('./templates/upload.html'),
-                controller: require('./controllers/UploadController')
+                controller: 'UploadController'
             })
             .state('install.summary', {
                 template: require('./templates/summary.html'),
@@ -21,11 +21,6 @@
             .state('install.result', {
                 template: require('./templates/result.html'),
                 controller: 'ResultController'
-            })
-            .state('manage-users', {
-                url: '/manage-users',
-                template: require('./templates/manage-users.html'),
-                controller: 'ManageUsersController'
             });
 
         // Add $http interceptor for DNN Services Framework.
