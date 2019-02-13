@@ -68,7 +68,6 @@
                 function (session) {
 
                     // Get session summary.
-                    console.log('GetSummary: ' + session.Guid);
                     return SessionDataService.summary(session.Guid);
                 });
         }
