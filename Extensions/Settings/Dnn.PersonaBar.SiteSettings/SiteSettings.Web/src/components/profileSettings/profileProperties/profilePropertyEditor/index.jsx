@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import { SingleLineInputWithError, GridSystem, Label, Button, Switch, DropdownWithError, MultiLineInput, InputGroup, ListEntries, Dropdown } from "@dnnsoftware/dnn-react-common";
+import { SingleLineInputWithError, GridSystem, Label, Button, Switch, DropdownWithError, MultiLineInput, InputGroup, Dropdown } from "@dnnsoftware/dnn-react-common";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../../../actions";
 import util from "../../../../utils";
 import resx from "../../../../resources";
+import ListEntries from "./listEntries";
 
 const re = /^([0-9]+|[1-9])$/;
 
