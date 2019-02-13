@@ -19,6 +19,12 @@
             <h4>{{ currentStatus(session) }}</h4>
             <!-- /Current -->
 
+            <button
+                type="button"
+                class="btn btn-primary"
+                ng-disabled="!isComplete()"
+                ng-click="restart()">New Session</button>
+
             <div class="row">
 
                 <!-- Packages -->
