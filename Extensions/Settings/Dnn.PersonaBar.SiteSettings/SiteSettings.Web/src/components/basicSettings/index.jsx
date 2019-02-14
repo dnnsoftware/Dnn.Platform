@@ -147,10 +147,11 @@ class BasicSettingsPanelBody extends Component {
 
     onCancel() {
         const {props} = this;
-        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteInfoActions.getPortalSettings((data) => {
+        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {            
+            props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
+                let basicSettings = Object.assign({}, data.Settings);
                 this.setState({
-                    basicSettings: Object.assign({}, data.Settings)
+                    basicSettings
                 });
             }));
         });
