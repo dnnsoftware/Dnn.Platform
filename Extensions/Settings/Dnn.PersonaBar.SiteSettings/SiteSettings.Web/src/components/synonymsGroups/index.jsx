@@ -45,15 +45,29 @@ class SynonymsGroupsPanel extends Component {
         this.loadData();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         const { props } = this;
 
-        if (props.synonymsGroups !== prevProps.synonymsGroups) {
-            const culture = props.synonymsGroups.CultureCode ? props.synonymsGroups.CultureCode : props.cultureCode;
-            this.setState({
-                synonymsGroups: props.synonymsGroups,
-                culture
-            });
+        if (props.synonymsGroups) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+            if (props.portalId === undefined || props.synonymsGroups.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.synonymsGroups.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
+                this.loadData();
+            }
         }
     }
 
@@ -273,7 +287,7 @@ class SynonymsGroupsPanel extends Component {
 SynonymsGroupsPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    synonymsGroups: PropTypes.array,
+    synonymsGroups: PropTypes.object,
     cultures: PropTypes.array,
     portalId: PropTypes.number,
     cultureCode: PropTypes.string
@@ -284,7 +298,7 @@ function mapStateToProps(state) {
         synonymsGroups: state.search.synonymsGroups,
         cultures: state.search.cultures,
         tabIndex: state.pagination.tabIndex,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

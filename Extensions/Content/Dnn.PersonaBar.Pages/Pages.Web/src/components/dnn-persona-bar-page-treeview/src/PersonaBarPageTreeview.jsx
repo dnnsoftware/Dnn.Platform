@@ -189,7 +189,8 @@ export class PersonaBarPageTreeview extends Component {
                                     (
                                         <SingleLineInput 
                                             style={{ marginBottom: "0px", width:"80%", height:"100%"}}
-                                            defaultValue={name}/>
+                                            onChange={() => void(0)}
+                                            value={name}/>
                                     ):
                                     name
                                 }

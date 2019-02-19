@@ -28,16 +28,17 @@ class ProgressBar extends Component {
         this.setState({ percent: 0 });
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.visible !== undefined) {
+    componentDidUpdate() {
+        let { props } = this;
+        if (props.visible !== undefined) {
 
-            if (!nextProps.visible && this.started) {
+            if (!props.visible && this.started) {
                 this.started = false;
                 this.setState({ percent: 0 });
                 clearTimeout(this.timeout);
             }
 
-            if (nextProps.visible && !this.started) {
+            if (props.visible && !this.started) {
                 this.started = true;
                 this.setState({ percent: 0 });
                 this.increase();

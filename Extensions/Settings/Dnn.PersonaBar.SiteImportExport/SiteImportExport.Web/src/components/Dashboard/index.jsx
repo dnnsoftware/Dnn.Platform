@@ -481,6 +481,10 @@ DashboardPanelBody.propTypes = {
     currentJobId: PropTypes.number
 };
 
+DashboardPanelBody.defaultProps = {
+    totalJobs: 0
+};
+
 function mapStateToProps(state) {
     return {
         jobs: state.importExport.jobs,

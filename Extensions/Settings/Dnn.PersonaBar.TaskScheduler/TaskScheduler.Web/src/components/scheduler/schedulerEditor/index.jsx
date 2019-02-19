@@ -99,10 +99,10 @@ class SchedulerEditor extends Component {
     }
 
     getDefaultIfNull(obj, key, defaultValue) {
-        if (obj === undefined || key === undefined || obj[key] === undefined) {
-            return defaultValue;
+        if (obj && key && obj[key]) {
+            return obj[key].toString();
         }
-        return obj[key].toString();
+        return defaultValue;
     }
 
     getValue(selectKey) {

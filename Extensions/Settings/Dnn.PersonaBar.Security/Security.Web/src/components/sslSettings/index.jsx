@@ -31,12 +31,7 @@ class SslSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SecurityActions.getSslSettings((data) => {
-            let sslSettings = Object.assign({}, data.Results.Settings);
-            this.setState({
-                sslSettings
-            });
-        }));
+        this.getSslSettings();
     }
 
     onSettingChange(key, event) {
@@ -55,21 +50,26 @@ class SslSettingsPanelBody extends Component {
 
         props.dispatch(SecurityActions.updateSslSettings(state.sslSettings, () => {
             util.utilities.notify(resx.get("SslSettingsUpdateSuccess"));
+            this.getSslSettings();
         }, () => {
             util.utilities.notifyError(resx.get("SslSettingsError"));
         }));
     }
 
     onCancel() {
-        const {props} = this;
         util.utilities.confirm(resx.get("SslSettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SecurityActions.getSslSettings((data) => {
-                let sslSettings = Object.assign({}, data.Results.Settings);
-                this.setState({
-                    sslSettings
-                });
-            }));
+            this.getSslSettings();
         });
+    }
+
+    getSslSettings() {
+        const {props} = this;
+        props.dispatch(SecurityActions.getSslSettings((data) => {
+            let sslSettings = Object.assign({}, data.Results.Settings);
+            this.setState({
+                sslSettings
+            });
+        }));
     }
 
     /* eslint-disable react/no-danger */

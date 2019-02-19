@@ -58,8 +58,26 @@ namespace Dnn.PersonaBar.Security.Services
     public class SecurityController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
-        private readonly Components.SecurityController _controller = new Components.SecurityController();
+        private readonly Components.SecurityController _controller;
+        private readonly IPortalAliasController _portalAliasController;
         private const string BULLETIN_XMLNODE_PATH = "//channel/item";
+
+        public SecurityController()
+            : this(
+                new Components.SecurityController(),
+                PortalAliasController.Instance
+            )
+        {
+        }
+
+        internal SecurityController(
+            Components.SecurityController controller,
+            IPortalAliasController portalAliasController
+            )
+        {
+            _controller = controller;
+            _portalAliasController = portalAliasController;
+        }
 
         #region Login Settings
 
@@ -1064,19 +1082,20 @@ namespace Dnn.PersonaBar.Security.Services
 
         #region Helpers
 
-        private string AddPortalAlias(string portalAlias, int portalId)
+        internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!String.IsNullOrEmpty(portalAlias))
             {
+                portalAlias = portalAlias.ToLowerInvariant().Trim('/');
                 if (portalAlias.IndexOf("://", StringComparison.Ordinal) != -1)
                 {
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
-                var alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+                var alias = _portalAliasController.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
                     alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    PortalAliasController.Instance.AddPortalAlias(alias);
+                    _portalAliasController.AddPortalAlias(alias);
                 }
             }
             return portalAlias;

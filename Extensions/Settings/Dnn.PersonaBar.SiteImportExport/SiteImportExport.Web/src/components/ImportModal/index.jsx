@@ -36,7 +36,7 @@ class ImportModal extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props, state } = this;
         props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
 
@@ -48,8 +48,8 @@ class ImportModal extends Component {
         });
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
-        const { state } = this;
+    componentDidUpdate() {
+        const { props, state } = this;
         const { importRequest } = state;
         if (importRequest.PortalId === -1 || importRequest.PortalId !== props.portalId) {
             importRequest.PortalId = props.portalId;
@@ -301,7 +301,7 @@ class ImportModal extends Component {
 ImportModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
     portalId: PropTypes.number.isRequired,
-    portalName: PropTypes.string.isRequired,
+    portalName: PropTypes.string,
     onCancel: PropTypes.func,
     wizardStep: PropTypes.number,
     importPackages: PropTypes.array,
@@ -309,6 +309,10 @@ ImportModal.propTypes = {
     importSummary: PropTypes.object,
     totalPackages: PropTypes.number,
     packageVerified: PropTypes.bool
+};
+
+ImportModal.defaultProps = {
+    totalPackages: 0
 };
 
 function mapStateToProps(state) {

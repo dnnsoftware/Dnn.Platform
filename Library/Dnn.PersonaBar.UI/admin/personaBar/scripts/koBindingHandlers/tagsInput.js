@@ -3,7 +3,7 @@ define([
         'jquery',
         'knockout',
         'dnn.jquery',
-        'css!main/../css/tags-input.css'
+        'css!cssPath/tags-input.css'
 ],
 
 function($, ko) {

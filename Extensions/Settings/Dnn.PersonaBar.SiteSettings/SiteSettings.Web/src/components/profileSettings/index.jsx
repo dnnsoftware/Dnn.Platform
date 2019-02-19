@@ -19,29 +19,24 @@ class ProfileSettingsPanelBody extends Component {
         };
     }
 
-    loadData() {
+    componentDidUpdate() {
         const {props} = this;
         if (props.profileSettings) {
             if (props.portalId === undefined || props.profileSettings.PortalId === props.portalId) {
-                return false;
+                return;
             }
             else {
-                return true;
+                this.loadData();
             }
-        }
-        else {
-            return true;
         }
     }
 
     componentDidMount() {
+        this.loadData();
+    }
+
+    loadData() {
         const {props} = this;
-        if (!this.loadData()) {
-            this.setState({
-                profileSettings: props.profileSettings
-            });
-            return;
-        }
         props.dispatch(SiteBehaviorActions.getProfileSettings(props.portalId, (data) => {
             this.setState({
                 profileSettings: Object.assign({}, data.Settings)

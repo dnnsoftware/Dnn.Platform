@@ -28,23 +28,30 @@ class PrivacySettingsPanelBody extends Component {
     }
 
     componentDidMount() {
-        const { props } = this;
-        props.dispatch(
-            SiteBehaviorActions.getPrivacySettings(props.portalId, data => {
-                this.setState({
-                    privacySettings: Object.assign({}, data.Settings)
-                });
-            })
-        );
+        this.loadData();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         const { props } = this;
-        const portalIdChanged = !prevProps.portalId && prevProps.portalId !== props.portalId;
-        const cultureCodeChanged = !prevProps.cultureCode && prevProps.cultureCode !== props.cultureCode;
+        if (props.privacySettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;            
+            if (props.portalId === undefined || props.privacySettings.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
+            if (props.cultureCode === undefined || props.privacySettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
 
-        if(portalIdChanged || cultureCodeChanged) {
-            this.loadData();
+            if (portalIdChanged || cultureCodeChanged) {
+                this.loadData();
+            }
         }
     }
 
@@ -265,7 +272,7 @@ function mapStateToProps(state) {
         tabIndex: state.pagination.tabIndex,
         privacySettings: state.siteBehavior.privacySettings,
         privacySettingsClientModified: state.siteBehavior.privacySettingsClientModified,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

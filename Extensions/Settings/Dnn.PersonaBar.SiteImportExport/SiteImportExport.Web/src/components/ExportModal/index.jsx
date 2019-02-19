@@ -66,7 +66,7 @@ class ExportModal extends Component {
             .map(item => item.category);
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props, state } = this;
         const { exportRequest } = state;
         exportRequest.PortalId = props.portalId;
@@ -75,8 +75,8 @@ class ExportModal extends Component {
         });
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
-        const { state } = this;
+    componentDidUpdate() {
+        const { props, state } = this;
         const { exportRequest } = state;
         let { reloadPages } = state;
         if (exportRequest.PortalId !== props.portalId) {
@@ -501,7 +501,7 @@ ExportModal.propTypes = {
     exportLogs: PropTypes.array,
     viewingLog: PropTypes.bool,
     portalId: PropTypes.number.isRequired,
-    portalName: PropTypes.string.isRequired,
+    portalName: PropTypes.string,
     exportJobId: PropTypes.number,
     lastExportTime: PropTypes.string,
     getInitialPortalTabs: PropTypes.func.isRequired

@@ -43,7 +43,7 @@ class App extends Component {
         });
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props } = this;
 
         document.addEventListener("siteImportExport", (e) => {
@@ -149,7 +149,7 @@ class App extends Component {
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,

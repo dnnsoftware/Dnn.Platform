@@ -4,7 +4,15 @@ import { connect } from "react-redux";
 import {
     siteInfo as SiteInfoActions
 } from "../../actions";
-import { InputGroup, SingleLineInputWithError, MultiLineInputWithError, GridSystem, Dropdown, FileUpload, Label, Button } from "@dnnsoftware/dnn-react-common";
+import { 
+    InputGroup, 
+    SingleLineInputWithError, 
+    MultiLineInputWithError, 
+    GridSystem, 
+    Dropdown, 
+    FileUpload, 
+    Label, 
+    Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -41,14 +49,27 @@ class BasicSettingsPanelBody extends Component {
         this.getPortalSettings();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         let { props} = this;
+        if (props.basicSettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;            
+            if (props.portalId === undefined || props.basicSettings.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
+            if (props.cultureCode === undefined || props.basicSettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
 
-        const portalIdChanged = !prevProps.portalId && prevProps.portalId !== props.portalId;
-        const cultureCodeChanged = !prevProps.cultureCode && prevProps.cultureCode !== props.cultureCode;
-
-        if(portalIdChanged || cultureCodeChanged) {
-            this.getPortalSettings();
+            if (portalIdChanged || cultureCodeChanged) {
+                this.getPortalSettings();
+            }
         }
     }
 
@@ -126,10 +147,11 @@ class BasicSettingsPanelBody extends Component {
 
     onCancel() {
         const {props} = this;
-        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteInfoActions.getPortalSettings((data) => {
+        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {            
+            props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
+                let basicSettings = Object.assign({}, data.Settings);
                 this.setState({
-                    basicSettings: Object.assign({}, data.Settings)
+                    basicSettings
                 });
             }));
         });
@@ -372,7 +394,7 @@ function mapStateToProps(state) {
         timeZones: state.siteInfo.timeZones,
         iconSets: state.siteInfo.iconSets,
         clientModified: state.siteInfo.clientModified,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

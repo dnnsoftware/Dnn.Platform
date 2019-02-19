@@ -45,15 +45,29 @@ class IgnoreWordsPanel extends Component {
         this.loadData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const { props, state } = this;
+    componentDidUpdate() {
+        const { props } = this;
 
-        const cultureCodeChanged = props.cultureCode !== prevProps.cultureCode;
-        const portalIdChanged = props.portalId !== prevProps.portalId;
-        const currentCultureChanged = state.culture !== prevState.culture;
+        if (props.ignoreWords) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+            if (props.portalId === undefined || props.ignoreWords.PortalId === props.portalId) {
+                portalIdChanged = false;
+            }
+            else {
+                portalIdChanged = true;
+            }
 
-        if(cultureCodeChanged || portalIdChanged || currentCultureChanged) {
-            this.loadData();
+            if (props.cultureCode === undefined || props.ignoreWords.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
+                this.loadData();
+            }
         }
     }
 
@@ -253,7 +267,7 @@ function mapStateToProps(state) {
         ignoreWords: state.search.ignoreWords,
         tabIndex: state.pagination.tabIndex,
         cultures: state.search.cultures,
-        portalId: state.siteInfo.settings ? state.siteInfo.settings.PortalId : undefined,
+        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

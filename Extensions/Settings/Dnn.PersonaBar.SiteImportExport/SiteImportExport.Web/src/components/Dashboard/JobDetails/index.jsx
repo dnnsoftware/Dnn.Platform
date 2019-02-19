@@ -17,15 +17,16 @@ class JobDetails extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         if (props.jobId) {
             props.dispatch(ImportExportActions.getJobDetails(props.jobId));
         }
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
-        if (props.cancelled !== this.state.cancelled) {
+    componentDidUpdate(prevProps) {
+        let {props} = this;
+        if (props.cancelled !== prevProps.cancelled) {
             this.setState({
                 cancelled: props.cancelled
             });
