@@ -253,6 +253,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
+                        UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                         AddTabRelatedItems(localTab, otherTab, false);
                         TriggerImportEvent(localTab);
                         Result.AddLogEntry("Updated Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
@@ -330,6 +331,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
+                UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                 AddTabRelatedItems(localTab, otherTab, true);
 
                 TriggerImportEvent(localTab);
@@ -367,6 +369,52 @@ namespace Dnn.ExportImport.Components.Services
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
             }
+        }
+
+        /// <summary>
+        /// Updates the default language unique identifier for the local page.
+        /// </summary>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="localTab">The local tab.</param>
+        /// <param name="exportedTab">The exported tab.</param>
+        /// <param name="exportedTabs">The list of all exported tabs.</param>
+        private void UpdateDefaultLanguageGuid(int portalId, TabInfo localTab, ExportTab exportedTab, IList<ExportTab> exportedTabs)
+        {
+            // Tab language GUID should correspond to the unique ID of the default locale page (see dbo.[Tabs] for reference)
+            // see sample below, DefaultLanguageGuid of translated pages is equal to UniqueId of default locale page
+
+            // Page          UniqueId                               DefaultLanguageGuid                    Culture
+            // Home          E568189C-CE35-40FB-9A5F-4AC28920FAA0   NULL                                   en-US
+            // Home (fr-FR)  DAD43443-206B-4932-9052-BDBE8A8473B1   E568189C-CE35-40FB-9A5F-4AC28920FAA0   fr-FR
+            // Home (it-IT)  7D5C7185-16AC-4AE8-AB29-A90CCB84E7BE   E568189C-CE35-40FB-9A5F-4AC28920FAA0   it-IT
+
+            // On import, we should care about DefaultLanguageGuid for the pages we override and newly created tabs
+            
+            // 1. Define whether DefaultLanguageGuid of exported page is not null
+            // 2. Find exported page where UniqueId = DefaultLanguageGuid to define default lang page
+            // 3. Find corresponding id of local default lang tab
+            // 4. Take UniqueId of local default lang tab and set it for the page we are going to create/update
+            // 5. Use fallback value if something from above scenario does not work
+
+            if (exportedTab.DefaultLanguageGuid == Null.NullGuid)
+            {
+                return;
+            }
+
+            var defaultLanguagePageToImport = exportedTabs.FirstOrDefault(tab => tab.UniqueId == exportedTab.DefaultLanguageGuid);
+
+            if (defaultLanguagePageToImport != null &&
+                defaultLanguagePageToImport.LocalId.HasValue)
+            {
+                var defaultLanguagePageLocal = _tabController.GetTab(defaultLanguagePageToImport.LocalId.Value, portalId);
+
+                if (defaultLanguagePageLocal != null)
+                {
+                    localTab.DefaultLanguageGuid = defaultLanguagePageLocal.UniqueId;
+                    return;
+                }
+            }
+            localTab.DefaultLanguageGuid = exportedTab.DefaultLanguageGuid ?? Null.NullGuid;
         }
 
         private void TriggerImportEvent(TabInfo localTab)
@@ -1251,7 +1299,6 @@ namespace Dnn.ExportImport.Components.Services
             localTab.CultureCode = otherTab.CultureCode;
             //localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
-            localTab.DefaultLanguageGuid = otherTab.DefaultLanguageGuid ?? Guid.Empty;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
             localTab.Level = otherTab.Level;
             localTab.TabPath = otherTab.TabPath;
