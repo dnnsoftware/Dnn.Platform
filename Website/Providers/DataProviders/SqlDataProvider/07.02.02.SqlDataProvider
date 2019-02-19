@@ -1156,49 +1156,49 @@ GO
  /***** Fix bug DNN-4770: update default skin packages as normal package to allow delete it. *****/
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Gravity" type="Skin" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Gravity</skinName><basePath>Portals\_default\Skins\Gravity</basePath></skinFiles></component></components></package>'
+    Manifest = '<package name="Gravity" type="Skin" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Skin"><skinFiles><skinName>Gravity</skinName><basePath>Portals\_default\Skins\Gravity</basePath></skinFiles></component></components></package>'
     WHERE FriendlyName  = 'Gravity' AND PackageType = 'Skin'
 GO
 
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Gravity" type="Container" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Gravity</containerName><basePath>Portals\_default\Containers\Gravity</basePath></containerFiles></component></components></package>'
+    Manifest = '<package name="Gravity" type="Container" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Container"><containerFiles><containerName>Gravity</containerName><basePath>Portals\_default\Containers\Gravity</basePath></containerFiles></component></components></package>'
     WHERE FriendlyName  = 'Gravity' AND PackageType = 'Container'
 GO
 
 UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Facebook" type="Skin" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Facebook</skinName><basePath>Portals\_default\Skins\Facebook</basePath></skinFiles></component></components></package>'
+    Manifest = '<package name="Facebook" type="Skin" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Skin"><skinFiles><skinName>Facebook</skinName><basePath>Portals\_default\Skins\Facebook</basePath></skinFiles></component></components></package>'
     WHERE FriendlyName  = 'Facebook' AND PackageType = 'Skin'
 GO
 
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Facebook" type="Container" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Facebook</containerName><basePath>Portals\_default\Containers\Facebook</basePath></containerFiles></component></components></package>'
+    Manifest = '<package name="Facebook" type="Container" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Container"><containerFiles><containerName>Facebook</containerName><basePath>Portals\_default\Containers\Facebook</basePath></containerFiles></component></components></package>'
     WHERE FriendlyName  = 'Facebook' AND PackageType = 'Container'
 GO
 
 UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Aphelia" type="Skin" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Aphelia</skinName><basePath>Portals\_default\Skins\Aphelia</basePath></skinFiles></component></components></package>'
+    Manifest = '<package name="Aphelia" type="Skin" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Skin"><skinFiles><skinName>Aphelia</skinName><basePath>Portals\_default\Skins\Aphelia</basePath></skinFiles></component></components></package>'
     WHERE FriendlyName  = 'Aphelia' AND PackageType = 'Skin'
 GO
 
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="Aphelia" type="Container" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Aphelia</containerName><basePath>Portals\_default\Containers\Aphelia</basePath></containerFiles></component></components></package>'
+    Manifest = '<package name="Aphelia" type="Container" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Container"><containerFiles><containerName>Aphelia</containerName><basePath>Portals\_default\Containers\Aphelia</basePath></containerFiles></component></components></package>'
     WHERE FriendlyName  = 'Aphelia' AND PackageType = 'Container'
 GO
 
 UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="DarkKnightMobile" type="Skin" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>DarkKnightMobile</skinName><basePath>Portals\_default\Skins\DarkKnightMobile</basePath></skinFiles></component></components></package>'
+    Manifest = '<package name="DarkKnightMobile" type="Skin" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Skin"><skinFiles><skinName>DarkKnightMobile</skinName><basePath>Portals\_default\Skins\DarkKnightMobile</basePath></skinFiles></component></components></package>'
     WHERE FriendlyName  = 'DarkKnightMobile' AND PackageType = 'Skin'
 GO
 
  UPDATE {databaseOwner}{objectQualifier}Packages SET 
     IsSystemPackage = 0,
-    Manifest = '<package name="DarkKnightMobile" type="Container" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>DarkKnightMobile</containerName><basePath>Portals\_default\Containers\DarkKnightMobile</basePath></containerFiles></component></components></package>'
+    Manifest = '<package name="DarkKnightMobile" type="Container" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DNN Corp</organization><url>www.DNNSoftware.com</url><email>support@DNNSoftware.com</email></owner><components><component type="Container"><containerFiles><containerName>DarkKnightMobile</containerName><basePath>Portals\_default\Containers\DarkKnightMobile</basePath></containerFiles></component></components></package>'
     WHERE FriendlyName  = 'DarkKnightMobile' AND PackageType = 'Container'
 GO
 

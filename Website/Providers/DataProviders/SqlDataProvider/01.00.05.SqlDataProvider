@@ -2309,9 +2309,9 @@ GO
 
 exec UpdateHostSetting 'HostTitle', 'DotNetNuke'
 GO
-exec UpdateHostSetting 'HostURL', 'www.dotnetnuke.com'
+exec UpdateHostSetting 'HostURL', 'www.DNNSoftware.com'
 GO
-exec UpdateHostSetting 'HostEmail', 'support@dotnetnuke.com'
+exec UpdateHostSetting 'HostEmail', 'support@DNNSoftware.com'
 GO
 exec UpdateHostSetting 'PayPalId', ''
 GO

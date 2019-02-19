@@ -99,7 +99,7 @@ SELECT @PackageID = MAX(PackageID) + 1 FROM {databaseOwner}[{objectQualifier}Pac
 SELECT @SkinControlID = MAX(SkinControlID) + 1 FROM {databaseOwner}[{objectQualifier}SkinControls]
 
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] ON
-INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (@PackageID, NULL, N'DotNetNuke.ToastSkinObject', N'Toast SkinObject', N'', N'SkinObject', N'07.02.00', N'', N'', N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', N'', 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL)
+INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (@PackageID, NULL, N'DotNetNuke.ToastSkinObject', N'Toast SkinObject', N'', N'SkinObject', N'07.02.00', N'', N'', N'DotNetNuke', N'DNN Corp', N'www.DNNSoftware.com', N'support@DNNSoftware.com', N'', 0, NULL, GETDATE(), NULL, GETDATE(), NULL, NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] OFF
 
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] ON

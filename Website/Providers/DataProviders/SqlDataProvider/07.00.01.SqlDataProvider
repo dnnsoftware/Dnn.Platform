@@ -11,7 +11,7 @@
 
 /************************************************************/
 
-UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue ='http://help.dotnetnuke.com/070000/default.htm' Where SettingName='HelpURL'
+UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue ='http://DNNSoftware.com/Docs' Where SettingName='HelpURL'
 
 /***** Fix bug 23885: make sure return correct row numbers *****/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
@@ -123,9 +123,9 @@ BEGIN
       <description>Facebook</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -141,9 +141,9 @@ BEGIN
       <description>Facebook</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -159,8 +159,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -230,9 +230,9 @@ BEGIN
       <description>Facebook skin</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -248,9 +248,9 @@ BEGIN
       <description>Facebook</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -266,8 +266,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -345,9 +345,9 @@ BEGIN
       <description>Aphelia</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -363,9 +363,9 @@ BEGIN
       <description>Aphelia</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -381,8 +381,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -452,9 +452,9 @@ BEGIN
       <description>Aphelia skin</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -470,9 +470,9 @@ BEGIN
       <description>Aphelia</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -488,8 +488,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -567,9 +567,9 @@ BEGIN
       <description>DarkKnightMobile</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -585,9 +585,9 @@ BEGIN
       <description>DarkKnightMobile</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -603,8 +603,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -674,9 +674,9 @@ BEGIN
       <description>DarkKnightMobile skin</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Skin">
@@ -692,9 +692,9 @@ BEGIN
       <description>DarkKnightMobile</description>
       <owner>
         <name>DotNetNuke</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <organization>DNN Corp>
+        <url>www.DNNSoftware.com</url>
+        <email>support@DNNSoftware.com</email>
       </owner>
       <components>
         <component type="Container">
@@ -710,8 +710,8 @@ BEGIN
 		'',
 		'DotNetNuke',
 		'DotNetNuke Corp',
-		'www.dotnetnuke.com',
-		'support@dotnetnuke.com',
+		'www.DNNSoftware.com',
+		'support@DNNSoftware.com',
 		1,
 		-1,
 		getdate(),
@@ -876,9 +876,9 @@ IF NOT EXISTS ( SELECT  PackageID
             @License = NULL, -- ntext
             @Manifest = NULL, -- ntext
             @Owner = N'DotNetNuke', -- nvarchar(100)
-            @Organization = N'DotNetNuke Corporation', -- nvarchar(100)
-            @Url = N'www.dotnetnuke.com', -- nvarchar(250)
-            @Email = N'support@dotnetnuke.com', -- nvarchar(100)
+            @Organization = N'DNN Corp(100)
+            @Url = N'www.DNNSoftware.com', -- nvarchar(250)
+            @Email = N'support@DNNSoftware.com', -- nvarchar(100)
             @ReleaseNotes = NULL, -- ntext
             @IsSystemPackage = 0, -- bit
             @CreatedByUserID = -1, -- int

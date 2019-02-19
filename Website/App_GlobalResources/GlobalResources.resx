@@ -852,7 +852,7 @@ Thank you,
                     &lt;br /&gt;
                     URL: http://www.domain.com/default.aspx = Domain Name: www.domain.com&lt;br /&gt;
                     URL: http://209.75.24.131/default.aspx = Domain Name: 209.75.24.131&lt;br /&gt;
-                    URL: http://localhost/DotNetNuke/default.aspx = Domain Name: localhost/DotNetNuke&lt;br /&gt;
+                    URL: http://localhost/dnn/default.aspx = Domain Name: localhost/dnn&lt;br /&gt;
                     URL: http://www.domain.com/virtualdirectory/default.aspx = Domain Name: www.domain.com/virtualdirectory&lt;br /&gt;
                     URL: http://www.domain.com/directory/default.aspx = Domain Name: www.domain.com/directory&lt;br /&gt;
                     &lt;br /&gt;
@@ -868,10 +868,10 @@ Thank you,
                     Example:
                     &lt;br /&gt;
                     &lt;br /&gt;
-                    URL: http://localhost/DotNetNuke/default.aspx&lt;br /&gt;
-                    URL: http://MACHINENAME/DotNetNuke/default.aspx&lt;br /&gt;
-                    URL: http://209.32.134.65/DotNetNuke/default.aspx&lt;br /&gt;
-                    PortalAlias: localhost/DotNetNuke,MACHINENAME/DotNetNuke,209.32.134.65/DotNetNuke
+                    URL: http://localhost/dnn/default.aspx&lt;br /&gt;
+                    URL: http://MACHINENAME/dnn/default.aspx&lt;br /&gt;
+                    URL: http://209.32.134.65/dnn/default.aspx&lt;br /&gt;
+                    PortalAlias: localhost/dnn,MACHINENAME/dnn,209.32.134.65/dnn
                     &lt;br /&gt;
                     &lt;br /&gt;
                     Note: If you are installing the application to a remote server you must modify the
@@ -893,7 +893,7 @@ Thank you,
         permissions). DNN has extensive file upload capabilities for content, modules,
         and themes. These features require custom security settings so that the application
         is able to create and remove files in your website.&lt;/p&gt;
-        &lt;p&gt;Using Windows Explorer, browse to the root folder of the website ( C:\DotNetNuke
+        &lt;p&gt;Using Windows Explorer, browse to the root folder of the website ( C:\dnn
         by default ). Right-click the folder and select Sharing and Security from the popup
         menu ( please note that if you are using Windows XP you may need to &lt;a href="http://support.microsoft.com/default.aspx/kb/307874"
             target="_blank"&gt;Disable Simple File Sharing&lt;/a&gt; before these options are displayed
@@ -983,7 +983,7 @@ Operation Completed:  [Custom:3]
     <value>Authentication</value>
   </data>
   <data name="License.Text" xml:space="preserve">
-    <value>&lt;p&gt;DotNetNuke&amp;reg; - http://www.dnnsoftware.com&lt;br /&gt;
+    <value>&lt;p&gt;dnn&amp;reg; - http://www.dnnsoftware.com&lt;br /&gt;
 Copyright ©2002-2019&lt;br/&gt;
     by DNN Corp&lt;/p&gt;
     &lt;p&gt;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 

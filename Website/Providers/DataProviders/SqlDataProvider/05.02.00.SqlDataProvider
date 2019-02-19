@@ -1812,7 +1812,7 @@ IF (NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Packages WHERE Name
 BEGIN
 	EXEC {databaseOwner}{objectQualifier}AddPackage @PortalID=NULL,@Name=N'DotNetNuke.LEFTMENUSkinObject',@FriendlyName=N'LEFTMENU SkinObject'
 		,@Description=N'',@PackageType=N'SkinObject',@Version=N'1.0.0',@License=N'',@Manifest=N'',@Owner=N'DotNetNuke'
-		,@Organization=N'DotNetNuke Corporation',@Url=N'www.dotnetnuke.com',@Email=N'support@dotnetnuke.com',@ReleaseNotes=N'',@IsSystemPackage=0,@CreatedByUserID=NULL
+		,@Organization=N'DNN Corp',@Url=N'www.DNNSoftware.com',@Email=N'support@DNNSoftware.com',@ReleaseNotes=N'',@IsSystemPackage=0,@CreatedByUserID=NULL
 
 	DECLARE @NewPackageID AS INT
 	SELECT @NewPackageID = PackageID FROM {databaseOwner}{objectQualifier}Packages WHERE Name='DotNetNuke.LEFTMENUSkinObject'

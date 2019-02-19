@@ -168,7 +168,7 @@ UPDATE {databaseOwner}{objectQualifier}DesktopModules
 GO
 
 UPDATE {databaseOwner}{objectQualifier}ModuleControls
-	SET [HelpUrl] = N'http://www.dotnetnuke.com/default.aspx?tabid=787'
+	SET [HelpUrl] = N'http://www.DNNSoftware.com/docs/'
 FROM	{databaseOwner}{objectQualifier}DesktopModules 
 	INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions ON {databaseOwner}{objectQualifier}DesktopModules.DesktopModuleID = {databaseOwner}{objectQualifier}ModuleDefinitions.DesktopModuleID
 	INNER JOIN {databaseOwner}{objectQualifier}ModuleControls ON {databaseOwner}{objectQualifier}ModuleDefinitions.ModuleDefID = {databaseOwner}{objectQualifier}ModuleControls.ModuleDefID
@@ -1044,7 +1044,7 @@ INSERT {databaseOwner}{objectQualifier}HostSettings
 GO
 
 INSERT {databaseOwner}{objectQualifier}HostSettings
-	VALUES (N'HelpURL',N'http://www.dotnetnuke.com/default.aspx?tabid=787', 0)
+	VALUES (N'HelpURL',N'http://www.DNNSoftware.com/default.aspx?tabid=787', 0)
 GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}Vendors ADD

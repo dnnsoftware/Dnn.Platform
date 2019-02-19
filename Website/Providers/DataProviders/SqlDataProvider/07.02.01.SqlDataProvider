@@ -2266,10 +2266,10 @@ UPDATE {databaseOwner}[{objectQualifier}Packages] SET
 	Organization = 'DNN Corp.',
 	Url = 'http://www.dnnsoftware.com',
 	Email = 'support@dnnsoftware.com'
-	WHERE Owner IN ('DotNetNuke', 'DotNetNuke Corporation', 'DotNetNuke RadEditor Provider', 'DNNCorp')
-	AND Organization IN ('DotNetNuke Corporation', 'DotNetNuke Corp')
-	AND Url IN ('www.dotnetnuke.com', 'http://www.dotnetnuke.com')
-	AND Email IN ('support@dotnetnuke.com', '')
+	WHERE Owner IN ('DotNetNuke', 'DNN Corp', 'DotNetNuke RadEditor Provider', 'DNNCorp')
+	AND Organization IN ('DNN Corp', 'DotNetNuke Corp')
+	AND Url IN ('www.DNNSoftware.com', 'http://www.DNNSoftware.com')
+	AND Email IN ('support@DNNSoftware.com', '')
 GO
 
 -- DNN-4305

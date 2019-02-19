@@ -51,9 +51,9 @@ IF NOT EXISTS ( SELECT  PackageID
             @License = NULL, -- ntext
             @Manifest = NULL, -- ntext
             @Owner = N'DotNetNuke', -- nvarchar(100)
-            @Organization = N'DotNetNuke Corporation', -- nvarchar(100)
-            @Url = N'www.dotnetnuke.com', -- nvarchar(250)
-            @Email = N'support@dotnetnuke.com', -- nvarchar(100)
+            @Organization = N'DNN Corp(100)
+            @Url = N'www.DNNSoftware.com', -- nvarchar(250)
+            @Email = N'support@DNNSoftware.com', -- nvarchar(100)
             @ReleaseNotes = NULL, -- ntext
             @IsSystemPackage = 0, -- bit
             @CreatedByUserID = -1, -- int
