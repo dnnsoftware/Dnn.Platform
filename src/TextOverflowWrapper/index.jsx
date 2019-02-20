@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.less";
-import ReactTooltip from "react-tooltip";
-
+import Tooltip from "../Tooltip";
 
 class TextOverflowWrapper extends Component {
     constructor() {
@@ -20,7 +19,7 @@ class TextOverflowWrapper extends Component {
 
     componentDidMount() {
         //Set time out to ensure calculation happens after render
-        setTimeout(() => {
+        this.timerId = setTimeout(() => {
             let input = this.overflowTooltipRef;
             if (typeof input !== "undefined" && input.current.getBoundingClientRect()) {
                 let inputRect = input.current.getBoundingClientRect();
@@ -34,6 +33,11 @@ class TextOverflowWrapper extends Component {
             }
         }, 500);
     }
+
+    componentWillUnmount() {
+        clearTimeout(this.timerId);
+    }
+
     render() {
         const {props, state} = this;
         return (
@@ -46,16 +50,15 @@ class TextOverflowWrapper extends Component {
                 title={props.doNotUseTitleAttribute ? "" : props.text}>
                 {!props.isAnchor && props.text}
                 {props.isAnchor && <a href={props.href} target={props.target}>{props.text}</a>}
-                {props.doNotUseTitleAttribute && state.itemWidth >= props.maxWidth && <ReactTooltip
-                    id={this.uniqueId}
-                    effect={props.effect}
-                    place={props.place}
+                {props.doNotUseTitleAttribute && state.itemWidth >= props.maxWidth && <Tooltip
+                    key={this.uniqueId}
+                    tooltipPlace={props.place}
                     type={props.type}
-                    class={"overflow-tooltip" + (props.tooltipClassName ? " " + props.tooltipClassName : "")}
-                    multiline={props.multiline}
-                    delayHide={props.delayHide}>
-                    {props.text}
-                </ReactTooltip>
+                    className={"overflow-tooltip" + (props.tooltipClassName ? " " + props.tooltipClassName : "")}
+                    messages={[props.text]}
+                    style={props.style}
+                    tooltipStyle={props.tooltipStyle}
+                />
                 }
             </div>
         );
@@ -74,17 +77,15 @@ TextOverflowWrapper.propTypes = {
     doNotUseTitleAttribute: PropTypes.bool,
     isAnchor: PropTypes.bool,
     href: PropTypes.string,
-    target: PropTypes.string,
-    delayHide: PropTypes.number
+    target: PropTypes.string
 };
 
 TextOverflowWrapper.defaultProps = {
     maxWidth: 200,
     effect: "solid",
     place: "top",
-    type: "dark",
-    multiline: true,
-    delayHide: 250
+    type: "info",
+    multiline: true
 };
 
 export default TextOverflowWrapper;
