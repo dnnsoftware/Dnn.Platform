@@ -21,20 +21,20 @@ class MessagingSettingsPanelBody extends Component {
         };
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const {props} = this;
         if (props.messagingSettings) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;
 
-            if (props.portalId === undefined || props.messagingSettings.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
 
-            if (props.cultureCode === undefined || props.messagingSettings.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {

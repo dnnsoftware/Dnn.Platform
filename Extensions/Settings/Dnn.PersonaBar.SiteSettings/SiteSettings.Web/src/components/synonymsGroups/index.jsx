@@ -25,8 +25,7 @@ class SynonymsGroupsPanel extends Component {
 
     loadData() {
         const { props } = this;
-        const culture = this.getCurrentCulture();
-        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, culture, (data) => {
+        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 synonymsGroups: Object.assign({}, data)
             });
@@ -45,20 +44,20 @@ class SynonymsGroupsPanel extends Component {
         this.loadData();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { props } = this;
 
         if (props.synonymsGroups) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;
-            if (props.portalId === undefined || props.synonymsGroups.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
 
-            if (props.cultureCode === undefined || props.synonymsGroups.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {
@@ -67,19 +66,6 @@ class SynonymsGroupsPanel extends Component {
 
             if (portalIdChanged || cultureCodeChanged) {
                 this.loadData();
-            }
-        }
-    }
-
-    getCurrentCulture() {
-        const { state, props } = this;
-        if(state.culture) {
-            return state.culture;
-        } else {
-            if(props.synonymsGroups !== undefined && props.synonymsGroups.CultureCode !== undefined) {
-                return props.synonymsGroups.CultureCode;
-            } else {
-                return props.cultureCode;
             }
         }
     }
@@ -246,7 +232,7 @@ class SynonymsGroupsPanel extends Component {
                         {this.props.cultures && this.props.cultures.length > 1 &&
                             <div className="synonyms-filter">
                                 <Dropdown
-                                    value={this.state.culture}
+                                    value={this.props.cultureCode}
                                     style={{ width: "auto" }}
                                     options={this.getCultureOptions()}
                                     withBorder={false}

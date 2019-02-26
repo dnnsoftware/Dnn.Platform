@@ -41,18 +41,18 @@ class LanguageSettingsPanelBody extends Component {
         this.loadData();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { props } = this;
         if (props.languageSettings) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;            
-            if (props.portalId === undefined || props.languageSettings.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
-            if (props.cultureCode === undefined || props.languageSettings.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {
