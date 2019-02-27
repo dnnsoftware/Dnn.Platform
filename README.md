@@ -49,3 +49,8 @@ In addition, since DNN is part of the .NET Foundation, we require our contributo
 ## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
+
+## NDepend
+
+We monitor code quality of the DNN Platform using [NDepend] (https://www.ndepend.com).
+![NDepend] (.github/images/poweredbyndepend.png)
