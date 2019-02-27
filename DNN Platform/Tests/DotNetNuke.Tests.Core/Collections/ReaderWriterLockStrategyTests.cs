@@ -31,5 +31,17 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             return new ReaderWriterLockStrategy();
         }
+
+        [Test] // no ExpectedException attribute
+        public override void DoubleReadLockThrows()
+        {
+            base.DoubleReadLockThrows();
+        }
+
+        [Test] // no ExpectedException attribute
+        public override void DoubleWriteLockThrows()
+        {
+            base.DoubleWriteLockThrows();
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿Test,					UserName,	VanityUrl,	VanityUrlPrefix,	Scheme,		Page Name,		Params,					Expected Url,	
-No Vanity Url,			test,		,			,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/ActivityFeed/UserId/{userId}
-Vanity Url Default,		test,		testuser,	,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/users/{vanityUrl}
-Vanity Url members,		test,		testuser,	members,			http://,	Activity Feed,	&UserId={userId},		http://{alias}/members/{vanityUrl}
-Vanity Url Messages,	test,		testuser,	,					http://,	Messages,		&UserId={userId},		http://{alias}/users/{vanityUrl}/Messages
+No Vanity Url,			test1,		,			,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/ActivityFeed/UserId/{userId}
+Vanity Url Default,		test1,		testuser,	,					http://,	Activity Feed,	&UserId={userId},		http://{alias}/users/{vanityUrl}
+Vanity Url members,		test1,		testuser,	members,			http://,	Activity Feed,	&UserId={userId},		http://{alias}/members/{vanityUrl}
+Vanity Url Messages,	test1,		testuser,	,					http://,	Messages,		&UserId={userId},		http://{alias}/users/{vanityUrl}/Messages
