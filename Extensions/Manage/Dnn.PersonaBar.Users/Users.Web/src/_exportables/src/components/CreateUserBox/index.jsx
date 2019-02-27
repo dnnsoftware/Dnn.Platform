@@ -48,12 +48,11 @@ class CreateUserBox extends Component {
     onChangePassword(event) {
         this.setState({
             UserDetails:{
-                ...this.state.UserDetails,password: event.target.value
+                password: event.target.value
             },
-            errors:{...this.state.errors, password:false}
+            errors:{password:false}
         }); 
     }
-
 
     onChange(key, item) {
         let {UserDetails} = this.state;
