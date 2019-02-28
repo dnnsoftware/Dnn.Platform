@@ -6,18 +6,20 @@
     <title>DNN Platform (Client Resources)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      DNN Platform is an open source web application framework.
-      This package contains components which can be used for managing client-side resources (e.g. JavaScript and CSS) within DNN Platform.
+      Provides API references for usage of the Client Dependency Framework (CDF) for the inclusion of CSS and JS files within DNN Platform
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="$version$" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.dll" target="lib\net40\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\net40\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.dll" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\net45\" />
   </files>
 </package>

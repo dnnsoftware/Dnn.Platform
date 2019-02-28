@@ -3,15 +3,14 @@
   <metadata>
     <id>DotNetNuke.SiteExportImport</id>
     <version>$version$</version>
-    <title>DNN Site Export/Import</title>
+    <title>DNN Platform (Site Export/Import)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      DNN Platform is an open source web application framework.
       This package contains components required for developing extensiong to utilize site export/import features.
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
@@ -22,10 +21,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\net45\"/>
 
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\net45\"/>
   </files>
 </package>
