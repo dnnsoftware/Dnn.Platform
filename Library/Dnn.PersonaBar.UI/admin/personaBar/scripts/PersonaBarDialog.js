@@ -38,7 +38,7 @@
  *  button if you want to use ko validation for this. Ex: On your return viewModel => _viewModel.enableAcceptForDialog = _viewModel.stateName.isValid;
  */
 
-define(['jquery', 'knockout', 'jquery-ui.min', 'css!main/../../Dnn.PersonaBar/css/personaBarDialog.css'], function ($, ko) {
+define(['jquery', 'knockout', 'jquery-ui.min', 'css!cssPath/personaBarDialog.css'], function ($, ko) {
     var PersonaBarDialogClass;
 
     PersonaBarDialogClass = (function IIFE() {
