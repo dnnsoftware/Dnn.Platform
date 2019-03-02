@@ -47,11 +47,9 @@ class CreateUserBox extends Component {
 
     onChangePassword(event) {
         this.setState({
-            UserDetails:{
-                password: event.target.value
-            },
-            errors:{password:false}
-        }); 
+            UserDetails: Object.assign(this.state.UserDetails, {password : event.target.value}),
+            errors: Object.assign(this.state.errors, {password:false})
+        });
     }
 
     onChange(key, item) {
@@ -306,4 +304,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(()=>{},mapDispatchToProps)(CreateUserBox);
+export default connect(() => { return {}; },mapDispatchToProps)(CreateUserBox);
