@@ -18,7 +18,7 @@ module.exports = {
     module: {
         rules: [
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader" },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader", options: { presets: ['@babel/preset-env'] } },
             { test: /\.(less|css)$/, loader: ["style-loader","css-loader","less-loader"] },
             { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
             { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
