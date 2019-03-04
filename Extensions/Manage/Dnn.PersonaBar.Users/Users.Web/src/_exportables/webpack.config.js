@@ -13,12 +13,20 @@ module.exports = {
     output: {
         path: path.resolve("../../../admin/personaBar/scripts/exportables/Users"),
         filename: "UsersCommon.js",
-        publicPath: "http://localhost:8050/dist/"
+        publicPath: isProduction ? "" : "http://localhost:8050/dist/"
     },
     module: {
         rules: [
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader", options: { presets: ['@babel/preset-env'] } },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader", 
+                options: { 
+                    presets: ['@babel/preset-env', '@babel/preset-react'], 
+                    "plugins": [
+                        "@babel/plugin-transform-react-jsx",
+                        "@babel/plugin-proposal-object-rest-spread"
+                    ] 
+                } 
+            },
             { test: /\.(less|css)$/, loader: ["style-loader","css-loader","less-loader"] },
             { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
             { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
@@ -36,5 +44,5 @@ module.exports = {
             path.resolve(__dirname, "../../node_modules")
         ]
     },
-    devtool: "inline-source-map"
+    devtool: "source-map"
 };
