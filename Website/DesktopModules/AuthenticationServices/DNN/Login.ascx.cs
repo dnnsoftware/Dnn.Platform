@@ -296,16 +296,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				{
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
-
-                if (objUser != null && loginStatus != UserLoginStatus.LOGIN_FAILURE && emailUsedAsUsername)
-                {
-                    //make sure internal username matches current e-mail address
-                    if (objUser.Username.ToLower() != objUser.Email.ToLower())
-                    {
-                        UserController.ChangeUsername(objUser.UserID, objUser.Email);
-                        userName = objUser.Username = objUser.Email;
-                    }
-                }
 				
 				//Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
