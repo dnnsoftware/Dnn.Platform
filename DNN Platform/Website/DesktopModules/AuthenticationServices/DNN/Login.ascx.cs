@@ -262,25 +262,25 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text,
-										PortalSecurity.FilterFlag.NoScripting |
-                                        PortalSecurity.FilterFlag.NoAngleBrackets |
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
+										PortalSecurity.FilterFlag.NoScripting | 
+                                        PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup);
 
                 //DNN-6093
                 //check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);                
 
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalId, userName);
+                    userByEmail = UserController.GetUserByEmail(PortalId, userName);                     
 
                     if (userByEmail != null)
                     {
                         //we need the username of the account in order to authenticate in the next step
-                        userName = userByEmail.Username;
+                        userName = userByEmail.Username; 
                     }
                 }
 
@@ -301,21 +301,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				{
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
-
-                if (objUser != null && loginStatus != UserLoginStatus.LOGIN_FAILURE && emailUsedAsUsername)
-                {
-                    //make sure internal username matches current e-mail address
-                    if (objUser.Username.ToLower() != objUser.Email.ToLower())
-                    {
-                        UserController.ChangeUsername(objUser.UserID, objUser.Email);
-                        userName = objUser.Username = objUser.Email;
-                    }
-                }
-
+				
 				//Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
 				                    {
-				                        Authenticated = authenticated,
+				                        Authenticated = authenticated, 
                                         Message = message,
                                         RememberMe = chkCookie.Checked
 				                    };
