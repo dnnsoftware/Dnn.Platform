@@ -355,7 +355,11 @@ namespace DNNConnect.CKEditorProvider
             var moduleId = Request.QueryString.GetValueOrDefault("ModuleId", Null.NullInteger);
             if (moduleId != Null.NullInteger && ModuleId == Null.NullInteger)
             {
-                ModuleId = moduleId;
+                var module = ModuleController.Instance.GetModule(moduleId, TabId, false);
+                if (module != null)
+                {
+                    ModuleConfiguration = module;
+                }
             }
         }
 
@@ -1274,9 +1278,10 @@ namespace DNNConnect.CKEditorProvider
                 }
 
 
-                if (!IsHostMode && request.QueryString["tid"] != null)
+                if (!IsHostMode)
                 {
-                    CurrentOrSelectedTabId = int.Parse(request.QueryString["tid"]);
+                    var tabIdString = request.QueryString["tid"];
+                    CurrentOrSelectedTabId = !string.IsNullOrWhiteSpace(tabIdString) ? int.Parse(tabIdString) : PortalSettings.ActiveTab.TabID;
                 }
 
                 if (!IsHostMode && request.QueryString["PortalID"] != null)
@@ -1856,6 +1861,7 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
         private void LoadSettings(int currentMode, bool changeMode = true)
         {
+            moduleInstanceName = request.QueryString["minc"];
             CurrentSettingsMode = (SettingsMode)Enum.Parse(typeof(SettingsMode), currentMode.ToString());
 
             lnkRemoveAll.Visible = !currentMode.Equals(0);

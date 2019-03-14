@@ -970,7 +970,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                            (string)
                                            hshModSet[string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS)]
                                        select
-                                           new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
+                                           new UploadSizeRoles { RoleId = objRole.RoleID, RoleName = objRole.RoleName, UploadFileLimit = Convert.ToInt32(uploadFileLimit) })
                 .ToList();
 
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}#{2}", key, "-1", SettingConstants.UPLOADFILELIMITS)]))
