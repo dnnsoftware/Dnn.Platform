@@ -93,7 +93,7 @@
                             <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                         </div>
                         <div class="dnnFormItem information-checkbox">
-                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
+                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
                             <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                         </div>
                     </div>

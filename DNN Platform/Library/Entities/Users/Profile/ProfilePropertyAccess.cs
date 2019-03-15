@@ -58,59 +58,6 @@ namespace DotNetNuke.Entities.Users
 
         #region Private Members
 
-        internal static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
-        {
-			var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
-
-            //Use properties visible property but admins and hosts can always see the property
-            var isVisible = property.Visible || isAdminUser;
-
-            if (isVisible && !isAdminUser)
-            {
-                switch (property.ProfileVisibility.VisibilityMode)
-                {
-                    case UserVisibilityMode.FriendsAndGroups:
-						isVisible = IsUser(accessingUser, targetUser);
-                        if(!isVisible)
-                        {
-                            //Relationships
-                            foreach (Relationship relationship in property.ProfileVisibility.RelationshipVisibilities)
-                            {
-								if (targetUser.Social.UserRelationships.Any(userRelationship =>
-                                                                          (userRelationship.RelationshipId == relationship.RelationshipId
-                                                                              && userRelationship.Status == RelationshipStatus.Accepted
-																			  && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
-																					|| (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))
-                                                                      ))
-                                {
-                                    isVisible = true;
-                                    break;
-                                }
-                            }
-                            //Groups/Roles
-                            if (property.ProfileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
-                            {
-                                isVisible = true;
-                            }
-                        }
-                        break;
-                    case UserVisibilityMode.AllUsers:
-                        // property is visible to everyone so do nothing
-                        break;
-                    case UserVisibilityMode.MembersOnly:
-                        // property visible if accessing user is a member
-                        isVisible = IsMember(accessingUser);
-                        break;
-                    case UserVisibilityMode.AdminOnly:
-                        //accessing user not admin user so property is hidden (unless it is the user him/herself)
-						isVisible = IsUser(accessingUser, targetUser);
-                        break;
-                }               
-            }
-
-            return isVisible;
-        }
-
 		private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
         {
             bool isAdmin = false;
@@ -192,6 +139,67 @@ namespace DotNetNuke.Entities.Users
         }
 
         #endregion
+
+        /// <summary>
+        /// Checks whether profile property is accessible.
+        /// </summary>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="accessingUser">The accessing user.</param>
+        /// <param name="targetUser">The target user.</param>
+        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        public static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
+        {
+            var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
+
+            //Use properties visible property but admins and hosts can always see the property
+            var isVisible = property.Visible || isAdminUser;
+
+            if (isVisible && !isAdminUser)
+            {
+                switch (property.ProfileVisibility.VisibilityMode)
+                {
+                    case UserVisibilityMode.FriendsAndGroups:
+                        isVisible = IsUser(accessingUser, targetUser);
+                        if (!isVisible)
+                        {
+                            //Relationships
+                            foreach (Relationship relationship in property.ProfileVisibility.RelationshipVisibilities)
+                            {
+                                if (targetUser.Social.UserRelationships.Any(userRelationship =>
+                                                                          (userRelationship.RelationshipId == relationship.RelationshipId
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted
+                                                                              && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
+                                                                                    || (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))
+                                                                      ))
+                                {
+                                    isVisible = true;
+                                    break;
+                                }
+                            }
+                            //Groups/Roles
+                            if (property.ProfileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
+                            {
+                                isVisible = true;
+                            }
+                        }
+                        break;
+                    case UserVisibilityMode.AllUsers:
+                        // property is visible to everyone so do nothing
+                        break;
+                    case UserVisibilityMode.MembersOnly:
+                        // property visible if accessing user is a member
+                        isVisible = IsMember(accessingUser);
+                        break;
+                    case UserVisibilityMode.AdminOnly:
+                        //accessing user not admin user so property is hidden (unless it is the user him/herself)
+                        isVisible = IsUser(accessingUser, targetUser);
+                        break;
+                }
+            }
+
+            return isVisible;
+        }
 
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {

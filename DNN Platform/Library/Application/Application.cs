@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 using DotNetNuke.Common.Utilities;
@@ -71,7 +72,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the description of the application
         /// </summary>
-        /// <value>Fixed result: DotNetNuke Community Edition</value>
+        /// <value>Fixed result: DNN Platform</value>
         public virtual string Description
         {
             get
@@ -83,12 +84,12 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the help URL related to the DotNetNuke application
         /// </summary>
-        /// <value>Fixed result: http://www.dotnetnuke.com/default.aspx?tabid=787 </value>
+        /// <value>Fixed result: https://www.dnnsoftware.com/docs/ </value>
         public string HelpUrl
         {
             get
             {
-                return "http://www.dotnetnuke.com/default.aspx?tabid=787";
+                return "https://www.dnnsoftware.com/docs/";
             }
         }
 
@@ -230,7 +231,9 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version;
+                var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                var fileVersion = FileVersionInfo.GetVersionInfo(assemblyLocation).FileVersion;
+                return new Version(fileVersion);
             }
         }
 

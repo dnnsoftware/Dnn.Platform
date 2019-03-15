@@ -43,7 +43,7 @@ namespace DotNetNuke.Collections
         #region Constructors
 
         /// <summary>
-        ///  Creates a paged list containing objects from the selected enumerable source
+        ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source
         /// </summary>
         /// <param name = "source">The <see cref = "IEnumerable{T}" /> data store containing objects to be retrieved</param>
         /// <param name = "pageIndex">The index of the page to retrieve</param>
@@ -55,7 +55,7 @@ namespace DotNetNuke.Collections
         }
 
         /// <summary>
-        ///  Creates a paged list containing objects from a collection of items
+        ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source
         /// </summary>
         /// <param name="items">The items that constitute the page</param>
         /// <param name="totalCount">The total number of items in the original source</param>
@@ -128,22 +128,22 @@ namespace DotNetNuke.Collections
         public bool IsLastPage { get; private set; }
 
         /// <summary>
-        ///   The no of pages in this list
+        ///   Gets or sets the number of pages in this list 
         /// </summary>
         public int PageCount { get; set; }
 
         /// <summary>
-        ///   The index of the page contained in this list
+        ///   Gets or sets the index of the page contained in this list
         /// </summary>
         public int PageIndex { get; set; }
 
         /// <summary>
-        ///   The size of the page in this list
+        ///   Gets or sets the size of the page in this list 
         /// </summary>
         public int PageSize { get; set; }
 
         /// <summary>
-        ///   The total number of objects in the data store
+        ///   Gets or ses the total number of objects in the data store 
         /// </summary>
         public int TotalCount { get; set; }
 

@@ -174,7 +174,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
-            if (request.IsSecureConnection)
+            var isRequestSSLOffloaded = IsRequestSSLOffloaded(request);
+            if (request.IsSecureConnection || isRequestSSLOffloaded)
             {
                 return true;
             }
@@ -191,6 +192,21 @@ namespace DotNetNuke.Common.Utilities
                         return true;
                     }
                     
+                }
+            }
+            return false;
+        }
+               
+        private static bool IsRequestSSLOffloaded(HttpRequest request)
+        {
+            var sslOffLoadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
+
+            if (!string.IsNullOrEmpty(sslOffLoadHeader))
+            {
+                string ssloffload = request.Headers[sslOffLoadHeader];
+                if (!string.IsNullOrEmpty(ssloffload))
+                {
+                    return true;
                 }
             }
             return false;
@@ -382,6 +398,11 @@ namespace DotNetNuke.Common.Utilities
         public static bool InPopUp()
         {
             return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        public static bool IsPopUp(string url)
+        {
+            return url .IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>

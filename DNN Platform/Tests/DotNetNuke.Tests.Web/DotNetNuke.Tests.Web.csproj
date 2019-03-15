@@ -95,6 +95,7 @@
     <Compile Include="InternalServices\SearchServiceControllerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InternalServices\TabVersionControllerTests.cs" />
     <Compile Include="Mvp\ModuleSettingsPresenterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Api\DnnApiControllerTests.cs" />

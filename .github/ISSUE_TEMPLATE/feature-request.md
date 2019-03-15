@@ -16,9 +16,6 @@ Provide a clear and concise description of what you want to happen.
 ## Description of alternatives considered
 Provide a clear and concise description of any alternative solutions or features you have considered.
 
-## Additional context
-Provide a clear and concise description of what you expected to happen.
-
 ## Screenshots
 If applicable, provide screenshots to help explain your problem and/or feature.
 
@@ -28,6 +25,7 @@ Add any other context about the feature that may be helpful with implementation.
 ## Affected version
 <!-- Check all that apply and add more if necessary -->
 
+* [x] 9.3.0
 * [x] 9.2.2
 * [x] 9.2.1
 * [x] 9.2

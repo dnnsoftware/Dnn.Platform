@@ -3,3 +3,4 @@ myalias.com,				Parent
 mychildalias.com/child,		Child
 192.168.1.1,				IPAdress
 localhost/vdir,				VirtualDirectory
+MyAliasMultiCase.Com,		MultiCase

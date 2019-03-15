@@ -84,6 +84,8 @@ namespace DotNetNuke.Admin.Containers
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
 
+        protected string ModuleTitle { get; set; }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -117,7 +119,7 @@ namespace DotNetNuke.Admin.Containers
             {
                 SupportsQuickSettings = false;
                 DisplayQuickSettings = false;
-
+                ModuleTitle = ModuleContext.Configuration.ModuleTitle;
                 var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
                 var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
 

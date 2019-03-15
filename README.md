@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/3mts88xl9t34ytel?svg=true)](https://ci.appveyor.com/project/DnnAutomation/dnn-platform)
+[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/DNN%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=27&branchName=development)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 

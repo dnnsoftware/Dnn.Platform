@@ -446,6 +446,18 @@ namespace DotNetNuke.Framework
 				var customStylesheet = Path.Combine(PortalSettings.HomeDirectory, PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
 				ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
 			}
+
+            // Cookie Consent
+            if (PortalSettings.ShowCookieConsent)
+            {
+                ClientAPI.RegisterClientVariable(this, "cc_morelink", PortalSettings.CookieMoreLink, true);
+                ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
+                ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
+                ClientAPI.RegisterClientVariable(this, "cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
+                ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
+                ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
+                ClientResourceManager.RegisterScript(Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -658,6 +670,11 @@ namespace DotNetNuke.Framework
                 {
                     var originalurl = Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     CanonicalLinkUrl = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
+
+                    if (UrlUtils.IsSecureConnectionOrSslOffload(Request))
+                    {
+                        CanonicalLinkUrl = CanonicalLinkUrl.Replace("http://", "https://");
+                    }
                 }
             }
 

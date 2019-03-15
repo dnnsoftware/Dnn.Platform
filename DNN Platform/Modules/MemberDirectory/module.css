@@ -339,4 +339,4 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 .dnnForm .dnnFormItem .mdFilterLists input { float: none;}
 .dnnForm .dnnFormItem .mdFilterLists input, .dnnForm .dnnFormItem .mdFilterLists select { width: 45%;}
 .dnnForm .dnnFormItem .mdFilterBy { background-color: #F0F0F0; margin-left: 36%; width: 50%;}
-
+.ui-helper-hidden-accessible { display:none; }

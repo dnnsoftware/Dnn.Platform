@@ -101,7 +101,160 @@ END
 
 GO
 
+/***** DNN-9651: Drop duplicate index and unused calculated column *****/
+IF Exists (SELECT * FROM sys.indexes WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LowerEmail')
+	DROP INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}[{objectQualifier}Users];
+GO
 
+IF Exists (SELECT * FROM sys.columns WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'LowerEmail')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users] DROP COLUMN LowerEmail;
+GO
+
+/***** DNN-24542: Journal_GET SP Performance: Timing out when 1k+ Friends. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    DECLARE @RegisteredRoleId INT
+    DECLARE @PermissionCheck INT
+    SELECT  @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+    SET @PermissionCheck = 1
+    IF (@SecurityCheck = 1 AND NOT EXISTS(SELECT js.JournalId FROM {databaseOwner}[{objectQualifier}Journal_Security] js
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey
+		WHERE js.JournalId = @JournalId))
+    BEGIN
+		-- access denied when security check is required but the key was not found
+		SET @PermissionCheck = 0
+    END
+	
+    SELECT  	j.JournalId, 
+				j.JournalTypeId, 
+				j.Title, 
+				j.Summary, 
+				j.UserId, 
+				j.DateCreated, 
+				j.DateUpdated, 
+				j.PortalId,
+				j.ProfileId, 
+				j.GroupId, 
+				j.ObjectKey, 
+				j.AccessKey,
+				'JournalOwner' = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				'JournalAuthor' = CASE WHEN ISNULL(a.UserId, -1) > 0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				'JournalOwnerId' = ISNULL(j.ProfileId,j.UserId),
+				jt.Icon, 
+				jt.JournalType,
+				'Profile' = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				'SimilarCount' = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, 
+				ContentItemId, 
+				j.ItemData, 
+				j.IsDeleted, 
+				j.CommentsDisabled, 
+				j.CommentsHidden
+    FROM  	    {databaseOwner}[{objectQualifier}Journal] AS j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE		@PermissionCheck = 1 AND
+				((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) OR 
+				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
+/***** DNN-22117: update sp GetFiles to get files from folder and all sub folders in one time. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderId INT,
+    @RetrieveUnpublishedFiles BIT = 0,
+    @Recursive BIT = 0
+AS
+    DECLARE @FolderPath NVARCHAR(300)
+    DECLARE @PortalId INT
+    SELECT @FolderPath = FolderPath, @PortalId = ISNULL(PortalId, -1) FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderId = @FolderId
+    IF @RetrieveUnpublishedFiles = 0 
+    BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        ORDER BY [Folder], [FileName]
+    END
+    ELSE BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        ORDER BY [Folder], [FileName]
+    END
+GO
 
 /* Fix GetMessageConversations Procedure */
 /*****************************************/
@@ -234,11 +387,19 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
 	ORDER BY RowNumber ASC;
 GO
 
-
-
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'UsernameUnallowedCharacters')
+	INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+		([SettingName]
+		,[SettingValue]
+		,[SettingIsSecure]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate])
+	VALUES (N'UsernameUnallowedCharacters', N'!"#$%&''()*+,/:;<=>?[\]^`{|}', 0, -1, GETDATE(), NULL, NULL)
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
 /************************************************************/
-

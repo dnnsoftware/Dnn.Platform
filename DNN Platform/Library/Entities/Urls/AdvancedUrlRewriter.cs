@@ -57,6 +57,7 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex AumDebugRegex = new Regex(@"(&|\?)_aumdebug=[A-Z]+(?:&|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+        private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         #region Private Members
 
@@ -152,31 +153,53 @@ namespace DotNetNuke.Entities.Urls
 
         private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
         {
-            PortalAliasInfo alias = null;
+            PortalAliasInfo aliasInfo = null;
             redirectAlias = false;
             wrongAlias = null;
             isPrimaryAlias = false;
-            OrderedDictionary portalRegexes = TabIndexController.GetPortalAliasRegexes(settings);
-            foreach (string regexPattern in portalRegexes.Keys)
+            OrderedDictionary portalAliases = TabIndexController.GetPortalAliases(settings);
+            foreach (string alias in portalAliases.Keys)
             {
-                //split out the portal alias from the regex pattern representing that alias
-                var regex = RegexUtils.GetCachedRegex(regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                var aliasMatch = regex.Match(requestUrl);
+                var urlToMatch = requestUrl;
+                // in fact, requested url should contain alias
+                // for better performance, need to check whether we want to proceed with a whole url matching or not
+                // if alias is not a part of url -> let's proceed to the next iteration
+                var aliasIndex = urlToMatch.IndexOf(alias, StringComparison.InvariantCultureIgnoreCase);
+                if (aliasIndex < 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    // we do not accept URL if the first occurence of alias is presented somewhere in the query string
+                    var queryIndex = urlToMatch.IndexOf("?", StringComparison.InvariantCultureIgnoreCase);
+                    if (queryIndex >= 0 && queryIndex < aliasIndex)
+                    {
+                        // alias is in the query string, go to the next alias
+                        continue;
+                    }
+                    // we are fine here, lets prepare URL to be validated in regex
+                    urlToMatch = urlToMatch.ReplaceIgnoreCase(alias, "_ALIAS_");
+                }
+                // check whether requested URL has the right URL format containing existing alias
+                // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
+                // in the below expression we will validate following value http://_ALIAS_/query?string=test
+                var aliasMatch = AliasUrlRegex.Match(urlToMatch);
                 if (aliasMatch.Success)
                 {
                     //check for mobile browser and matching
-                    var aliasEx = (PortalAliasInfo)portalRegexes[regexPattern];
+                    var aliasEx = (PortalAliasInfo)portalAliases[alias];
                     redirectAlias = aliasEx.Redirect;
                     if (redirectAlias)
                     {
-                        wrongAlias = aliasMatch.Groups["alias"].Value;
+                        wrongAlias = alias;
                     }
                     isPrimaryAlias = aliasEx.IsPrimary;
-                    alias = aliasEx;
+                    aliasInfo = aliasEx;
                     break;
                 }
             }
-            return alias;
+            return aliasInfo;
         }
 
         private void ProcessRequest(HttpContext context,
@@ -1554,8 +1577,11 @@ namespace DotNetNuke.Entities.Urls
                     //check ssl enforced
                     if (portalSettings.SSLEnforced)
                     {
-                        //check page is not secure, connection is secure
-                        if (!portalSettings.ActiveTab.IsSecure && result.IsSecureConnection)
+                        // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe 
+                        // from an unsecure page
+                        if (!portalSettings.ActiveTab.IsSecure && 
+                            result.IsSecureConnection &&
+                            !UrlUtils.IsPopUp(url))
                         {
                             //has connection already been forced to secure?
                             if (queryStringCol["ssl"] == null)

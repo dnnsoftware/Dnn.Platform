@@ -25,12 +25,15 @@ using System.Linq;
 
 namespace DotNetNuke.Collections
 {
+    /// <summary>
+    /// Provides extensions to IEnumerable
+    /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// Extension method to convert dynamic data to a DataTable. Useful for databinding.
+        /// Converts dynamic data to a DataTable. Useful for databinding.
         /// </summary>
-        /// <param name="items"></param>
+        /// <param name="items">The items in the IEnumerable</param>
         /// <returns>A DataTable with the copied dynamic data.</returns>
         public static DataTable ToDataTable(this IEnumerable<dynamic> items)
         {
@@ -41,7 +44,7 @@ namespace DotNetNuke.Collections
 
             var dt = new DataTable();
             
-            //Create the columns
+            // Create the columns
             foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
             {
                 dt.Columns.Add(key);
