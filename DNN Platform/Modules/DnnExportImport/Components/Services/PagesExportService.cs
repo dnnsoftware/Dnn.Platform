@@ -667,7 +667,8 @@ namespace Dnn.ExportImport.Components.Services
         {
             var count = 0;
             var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.Id).ToList();
-            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id).ToList();
+            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id)
+                .OrderBy(m => m.PaneName?.ToLowerInvariant()).ThenBy(m => m.ModuleOrder).ToList();
             var localExportModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
