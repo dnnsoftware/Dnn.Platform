@@ -52,14 +52,7 @@ Task("Restore-NuGet-Packages")
 
 Task("Build")
     .IsDependentOn("CleanArtifacts")
-    .IsDependentOn("CreateSource")
-
 	.IsDependentOn("CompileSource")
-	
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-	.IsDependentOn("CreateDeploy")
-    .IsDependentOn("CreateSymbols")
     
     .Does(() =>
 	{
@@ -69,9 +62,7 @@ Task("Build")
 Task("BuildWithDatabase")
     .IsDependentOn("CleanArtifacts")
     .IsDependentOn("CreateSource")
-
 	.IsDependentOn("CompileSource")
-	
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
 	.IsDependentOn("CreateDeploy")
@@ -85,10 +76,8 @@ Task("BuildWithDatabase")
 Task("BuildInstallUpgradeOnly")
     .IsDependentOn("CleanArtifacts")
 	.IsDependentOn("CompileSource")
-	
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
-
     .Does(() =>
 	{
 
@@ -96,17 +85,14 @@ Task("BuildInstallUpgradeOnly")
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
-    .IsDependentOn("CreateSource")
 	.IsDependentOn("CompileSource")
-
 	.IsDependentOn("ExternalExtensions")
-
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
     .IsDependentOn("CreateDeploy")
 	.IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
-    
+    .IsDependentOn("CreateSource")
     .Does(() =>
 	{
 
@@ -175,13 +161,7 @@ Task("CreateSource")
 	{
 		
 		CleanDirectory("./src/Projects/");
-	
-		using (var process = StartAndReturnProcess("git", new ProcessSettings{Arguments = "clean -xdf -e tools/ -e .vs/"}))
-		{
-			process.WaitForExit();
-			Information("Git Clean Exit code: {0}", process.GetExitCode());
-		};
-        
+
         CreateDirectory("./Artifacts");
 	
 		MSBuild(createCommunityPackages, c =>
