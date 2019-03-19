@@ -189,13 +189,6 @@
   </Target>
 
   <Target Name="CreateInstall" DependsOnTargets="VersionCheck">
-    <!-- Copy CKEditor Provider assembly into bin folder -->
-    <ItemGroup>
-      <CKEditorPackage Include="$(PlatformCheckout)\DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
-    </ItemGroup>
-    <Unzip ZipFileName="@(CKEditorPackage)" TargetDirectory="$(PlatformCheckout)\CKEditorPackage" />
-    <Copy SourceFiles="$(PlatformCheckout)\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(PlatformCheckout)\Website\bin\" />
-    <RemoveDir Directories="$(PlatformCheckout)\CKEditorPackage" />
     <ItemGroup>
       <InstallPackage Include="$(PlatformCheckout)\Website\**\*.*" Exclude="@(InstallExclude)" />
       <InstallPackage Include="$(PlatformCheckout)\Website\Install\InstallWizard.aspx.cs" />
