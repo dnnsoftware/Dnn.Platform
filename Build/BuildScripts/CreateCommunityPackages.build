@@ -17,6 +17,9 @@
     <CESourceExclude Include="$(PlatformCheckout)\**\.github\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\**\.nuget\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\**\.vs\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Modules\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Projects\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Providers\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\tools\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
@@ -24,6 +27,8 @@
     <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Website\Documentation\*.doc" />
     <CESourceExclude Include="$(PlatformCheckout)\**\*.md" />
+    <CESourceExclude Include="$(PlatformCheckout)\DNN Platform\**\bin\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\DNN Platform\**\obj\**\*" />
   </ItemGroup>
   <ItemGroup>
     <InstallExclude Include="$(PlatformCheckout)\**\*.cs" />
