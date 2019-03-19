@@ -6,17 +6,22 @@
     <title>DNN Platform (ASP.NET MVC)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      DNN Platform is an open source web application framework.
-      This package contains components required for developing DNN Platform modules using ASP.NET MVC.
+      Provides API references needed to develop ASP.MVC extensions for DNN Platform
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Web" version="$version$" />
+      <dependency id="DotNetNuke.Web.Client" version="$version$" />
+      <dependency id="DotNetNuke.WebApi" version="$version$" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.1.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.1.1" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.1.1" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
     </dependencies>
   </metadata>
   <files>

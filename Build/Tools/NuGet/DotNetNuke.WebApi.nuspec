@@ -6,20 +6,18 @@
     <title>DNN Platform (ASP.NET Web API)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      DNN Platform is an open source web application framework.
-      This package contains components required for developing web services for DNN Platform.
+      This package contains components required for developing WebAPI based services for DNN Platform.
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
-      <dependency id="Microsoft.AspNet.WebApi.Client" version="4.0.20710.0" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+      <dependency id="NewtonSoft.Json" version="10.0.3" />
       <dependency id="DotNetNuke.Web" version="$version$" />
     </dependencies>
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Web.Http" targetFramework="net40" />
-    </frameworkAssemblies>
   </metadata>
   <files>
     <file src=".\*" exclude="**\*" />

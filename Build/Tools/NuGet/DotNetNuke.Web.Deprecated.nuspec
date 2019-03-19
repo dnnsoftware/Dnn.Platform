@@ -6,23 +6,22 @@
     <title>DNN Platform (Deprecated Components)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      DNN Platform is an open source web application framework.
-      This package contains components which are deprecated and expected to be removed from DNN Platform in a later version.
+      	Provides API references for deprecated items removed from the primary API's, such as DNN's Telerik component.  These elements may not be distributed with DNN in the future
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Web" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\net40\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\net40\" />
-    <file src="..\..\..\Website\bin\Telerik.Web.UI.dll" target="lib\net40\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\Telerik.Web.UI.dll" target="lib\net45\" />
     <file src="..\..\..\Website\Licenses\Telerik RadControls for ASP.NET AJAX (Custom).pdf" />
   </files>
 </package>
