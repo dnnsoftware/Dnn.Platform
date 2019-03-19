@@ -6,19 +6,18 @@
     <title>DNN Platform (Core)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
-    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
-      DNN Platform is an open source web application framework.
-      This package contains only the core DNN Platform library.
+      Provides basic references to the DotNetNuke.dll to develop extensions for the DNN Platform.  For MVC or WebAPI please see other packages available as well
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.dll" target="lib\net40" />
-    <file src="..\..\..\Website\bin\DotNetNuke.pdb" target="lib\net40" />
-    <file src="..\..\..\Website\bin\Microsoft.ApplicationBlocks.Data.dll" target="lib\net40\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.dll" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\Microsoft.ApplicationBlocks.Data.dll" target="lib\net45\" />
   </files>
 </package>
