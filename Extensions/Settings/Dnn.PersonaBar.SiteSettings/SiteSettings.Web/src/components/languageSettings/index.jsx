@@ -41,18 +41,18 @@ class LanguageSettingsPanelBody extends Component {
         this.loadData();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { props } = this;
         if (props.languageSettings) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;            
-            if (props.portalId === undefined || props.languageSettings.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
-            if (props.cultureCode === undefined || props.languageSettings.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {
@@ -66,8 +66,8 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     onSettingChange(key, event) {
-        let {state, props} = this;
-        let languageSettings = Object.assign({}, state.languageSettings);
+        let {props} = this;
+        let languageSettings = Object.assign({}, props.languageSettings);
 
         if (key === "LanguageDisplayMode") {
             languageSettings[key] = event;
@@ -88,9 +88,9 @@ class LanguageSettingsPanelBody extends Component {
 
     onUpdate(event) {
         event.preventDefault();
-        const {props, state} = this;
+        const {props} = this;
 
-        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, props.languageList, () => {
+        props.dispatch(LanguagesActions.updateLanguageSettings(props.languageSettings, props.languageList, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -109,11 +109,11 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     getLanguageOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {
-                if (state.languageSettings.LanguageDisplayMode === "NATIVE") {
+                if (props.languageSettings.LanguageDisplayMode === "NATIVE") {
                     return {
                         label: <div title={item.NativeName} style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
@@ -172,9 +172,9 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     disableLocalizedContentButton() {
-        const {state} = this;
+        const {props} = this;
 
-        if (this.allowContentLocalization() !== state.languageSettings.AllowContentLocalization) {
+        if (this.allowContentLocalization() !== props.languageSettings.AllowContentLocalization) {
             return true;
         }
         else {
@@ -183,25 +183,25 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     getDefaultLanguageDisplay() {
-        const {state} = this;
+        const {props} = this;
         return (
             <div className="default-language">
                 <div className="language-container">
                     <div style={{ float: "left", display: "flex" }}>
                         <div className="language-flag">
-                            <img src={state.languageSettings.SystemDefaultLanguageIcon} alt={state.languageSettings.SystemDefaultLanguage} />
+                            <img src={props.languageSettings.SystemDefaultLanguageIcon} alt={props.languageSettings.SystemDefaultLanguage} />
                         </div>
-                        <div className="language-name">{state.languageSettings.SystemDefaultLanguage}</div>
+                        <div className="language-name">{props.languageSettings.SystemDefaultLanguage}</div>
                     </div>
                 </div>
             </div>
         );
     }
 
-    /* eslint-disable react/no-danger */
+    /* eslint-disable react/no-danger test */
     render() {
-        const {props, state} = this;
-        if (state.languageSettings) {
+        const {props} = this;
+        if (props.languageSettings) {
             const columnOne = <div className="left-column" key="language-settings-left-column">
                 <InputGroup>
                     <Label
@@ -217,16 +217,16 @@ class LanguageSettingsPanelBody extends Component {
                     />
                     <Dropdown
                         options={this.getLanguageOptions()}
-                        value={state.languageSettings.SiteDefaultLanguage}
+                        value={props.languageSettings.SiteDefaultLanguage}
                         onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
-                        enabled={!state.languageSettings.ContentLocalizationEnabled}
+                        enabled={!props.languageSettings.ContentLocalizationEnabled}
                         getLabelText={(label) => label.props.title}
                     />
                     <RadioButtons
                         onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
                         options={this.getLanguageDisplayModes()}
                         buttonGroup="languageDisplayMode"
-                        value={state.languageSettings.LanguageDisplayMode}
+                        value={props.languageSettings.LanguageDisplayMode}
                     />
                 </InputGroup>
             </div>;
@@ -241,9 +241,9 @@ class LanguageSettingsPanelBody extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={state.languageSettings.EnableUrlLanguage}
+                            value={props.languageSettings.EnableUrlLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableUrlLanguage")}
-                            readOnly={state.languageSettings.ContentLocalizationEnabled}
+                            readOnly={props.languageSettings.ContentLocalizationEnabled}
                         />
                     </div>
                 </InputGroup>
@@ -257,7 +257,7 @@ class LanguageSettingsPanelBody extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={state.languageSettings.EnableBrowserLanguage}
+                            value={props.languageSettings.EnableBrowserLanguage}
                             onChange={this.onSettingChange.bind(this, "EnableBrowserLanguage")}
                         />
                     </div>
@@ -272,7 +272,7 @@ class LanguageSettingsPanelBody extends Component {
                         <Switch
                             onText={resx.get("SwitchOn")}
                             offText={resx.get("SwitchOff")}
-                            value={state.languageSettings.AllowUserUICulture}
+                            value={props.languageSettings.AllowUserUICulture}
                             onChange={this.onSettingChange.bind(this, "AllowUserUICulture")}
                         />
                     </div>
@@ -294,20 +294,20 @@ class LanguageSettingsPanelBody extends Component {
                             <Switch
                                 onText={resx.get("SwitchOn")}
                                 offText={resx.get("SwitchOff")}
-                                value={state.languageSettings.AllowContentLocalization}
+                                value={props.languageSettings.AllowContentLocalization}
                                 onChange={this.onSettingChange.bind(this, "AllowContentLocalization")}
                             />
                         </div>
                     </InputGroup>
                 }
-                <div className={"collapsible-button" + (this.allowContentLocalization() || state.languageSettings.ContentLocalizationEnabled ? " open" : "")}>
-                    {!state.languageSettings.ContentLocalizationEnabled && <Button
+                <div className={"collapsible-button" + (this.allowContentLocalization() || props.languageSettings.ContentLocalizationEnabled ? " open" : "")}>
+                    {!props.languageSettings.ContentLocalizationEnabled && <Button
                         type="secondary"
                         onClick={this.enableLocalizedContent.bind(this)}
                         disabled={this.disableLocalizedContentButton()}>
                         {resx.get("EnableLocalizedContent")}
                     </Button>}
-                    {state.languageSettings.ContentLocalizationEnabled && <Button
+                    {props.languageSettings.ContentLocalizationEnabled && <Button
                         type="secondary"
                         onClick={this.disableLocalizedContent.bind(this)}
                         disabled={this.disableLocalizedContentButton()}>
@@ -320,8 +320,8 @@ class LanguageSettingsPanelBody extends Component {
                 <div className={styles.languageSettings}>
                     <Languages
                         portalId={this.props.portalId}
-                        languageDisplayMode={state.languageSettings.LanguageDisplayMode}
-                        contentLocalizationEnabled={state.languageSettings.ContentLocalizationEnabled}
+                        languageDisplayMode={props.languageSettings.LanguageDisplayMode}
+                        contentLocalizationEnabled={props.languageSettings.ContentLocalizationEnabled}
                     />
                     <div className="sectionTitle">{resx.get("LanguageSettings")}</div>
                     <GridSystem numberOfColumns={2}>{[columnOne, columnTwo]}</GridSystem>

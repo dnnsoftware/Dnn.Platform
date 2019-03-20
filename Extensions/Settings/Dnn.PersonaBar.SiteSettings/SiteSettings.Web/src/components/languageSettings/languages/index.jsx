@@ -30,49 +30,27 @@ class LanguagesPanel extends Component {
 
     loadData() {
         const {props} = this;
-        if (props.languageList) {
-            if (props.portalId === undefined || props.languageList.PortalId === props.portalId) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
-    }
-
-    componentDidMount() {
-        const {props} = this;
 
         this.getHeaderColumns(props.contentLocalizationEnabled);
 
-        if (!this.loadData()) {
-            this.setState({
-                languageList: props.languageList,
-                contentLocalizationEnabled: props.contentLocalizationEnabled
-            });
-            return;
-        }
         props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
             this.setState({
-                languageList: Object.assign({}, data.Languages),
+                languageList: data.Languages,
                 contentLocalizationEnabled: props.contentLocalizationEnabled
             });
         }));
     }
 
-    componentDidUpdate(props) {
-        let {state} = this;        
+    componentDidMount() {
+        this.loadData();
+    }
 
-        if (state.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
-            props.dispatch(LanguagesActions.getLanguages(props.portalId, () => {
-                this.getHeaderColumns(props.contentLocalizationEnabled);
-                this.setState({
-                    contentLocalizationEnabled: props.contentLocalizationEnabled
-                });
-            }));
+    componentDidUpdate(prevProps) {
+        let { props } = this;
+
+        if (prevProps.portalId !== props.portalId || 
+            prevProps.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
+            this.loadData();
         }
     }
 

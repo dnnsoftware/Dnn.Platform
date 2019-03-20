@@ -44,7 +44,7 @@ Password.propTypes = {
     error:PropTypes.object,
     style: PropTypes.object.isRequired,
     UserDetails: PropTypes.object.isRequired,
-    requiresQuestionAndAnswer : PropTypes.bool.isRequired,
+    requiresQuestionAndAnswer : PropTypes.bool,
     onChangePassword : PropTypes.func.isRequired,
     passwordStrengthOptions : PropTypes.object,
     loadPasswordStrengthOptions : PropTypes.func

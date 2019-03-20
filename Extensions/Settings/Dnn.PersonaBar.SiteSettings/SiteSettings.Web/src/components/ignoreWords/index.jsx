@@ -24,9 +24,8 @@ class IgnoreWordsPanel extends Component {
     }
 
     loadData() {
-        const { props, state } = this;
-        const culture = state.culture ? state.culture : props.cultureCode;
-        props.dispatch(SearchActions.getIgnoreWords(props.portalId, culture, (data) => {
+        const { props } = this;
+        props.dispatch(SearchActions.getIgnoreWords(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 ignoreWords: Object.assign({}, data),
                 culture: data.CultureCode
@@ -45,20 +44,20 @@ class IgnoreWordsPanel extends Component {
         this.loadData();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { props } = this;
 
         if (props.ignoreWords) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;
-            if (props.portalId === undefined || props.ignoreWords.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
 
-            if (props.cultureCode === undefined || props.ignoreWords.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {

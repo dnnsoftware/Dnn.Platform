@@ -29,9 +29,13 @@ module.exports = {
                 exclude: [/node_modules/],
                 use: {
                     loader:'babel-loader',
-                    options: {
-                        presets: ['@babel/react']
-                    },
+                    options: { 
+                        presets: ['@babel/preset-env', '@babel/preset-react'], 
+                        "plugins": [
+                            "@babel/plugin-transform-react-jsx",
+                            "@babel/plugin-proposal-object-rest-spread"
+                        ] 
+                    } 
                 }
             },
             { test: /\.(less|css)$/, loader: ["style-loader","css-loader","less-loader"] },
@@ -57,17 +61,5 @@ module.exports = {
             "dnn-users-common-reducers": "window.dnn.Users.CommonReducers",
             "dnn-users-common-actions":"window.dnn.Users.CommonActions"
         }),
-    devtool: "inline-source-map",
-    plugins: isProduction ? [
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version),
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        })
-    ] : [
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify(packageJson.version)
-        })
-    ]
+    devtool: "source-map"
 };

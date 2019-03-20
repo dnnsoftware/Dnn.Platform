@@ -89,9 +89,9 @@ export class Body extends Component {
                 if (a.RenderOrder < b.RenderOrder) return -1;
                 if (a.RenderOrder > b.RenderOrder) return 1;
                 return 0;
-            }).forEach((searchExtra) => {
+            }).forEach((searchExtra, index) => {
                 searchTabHeaders.push(searchExtra.TabHeader);
-                searchTabContent.push(searchExtra.Component);
+                searchTabContent.push(<div key={"content-" + index}>{searchExtra.Component}</div>);
             });
         }
 

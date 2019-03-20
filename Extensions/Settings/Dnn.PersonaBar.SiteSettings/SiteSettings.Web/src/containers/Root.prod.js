@@ -7,9 +7,10 @@ class Root extends Component {
     }
     render() {
         let culture = window.parent["personaBarSettings"]["culture"];
+        let portalId = window.parent["personaBarSettings"]["portalId"];
         return (
             <div className="siteSettings-Root">
-                <App cultureCode={culture} />
+                <App cultureCode={culture} portalId={portalId} />
             </div>
         );
     }

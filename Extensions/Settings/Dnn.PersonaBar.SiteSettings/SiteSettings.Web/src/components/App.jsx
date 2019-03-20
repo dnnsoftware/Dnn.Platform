@@ -55,8 +55,8 @@ class App extends Component {
     }
 
     changePortalId(portalId) {
-        const { props } = this;
-        if (portalId === undefined) return;
+        const { props, state } = this;
+        if (portalId === undefined || portalId === state.portalId) return;
         this.setState({
             bodyShowing: true,
             portalId
@@ -66,7 +66,8 @@ class App extends Component {
     }
 
     changeCultureCode(cultureCode) {
-        if (cultureCode === undefined) return;
+        const { state } = this;
+        if (cultureCode === undefined || cultureCode === state.cultureCode) return;
         this.setState({
             bodyShowing: false
         }, () => {
@@ -78,6 +79,7 @@ class App extends Component {
     }
 
     changePortalIdCultureCode(portalId, cultureCode) {
+        let { props } = this;
         if (portalId === undefined && cultureCode === undefined) return;
         else if (portalId === undefined) {
             this.changeCultureCode(cultureCode);
@@ -93,7 +95,8 @@ class App extends Component {
                     bodyShowing: true,
                     portalId,
                     cultureCode
-                });
+                    }, () => props.dispatch(siteInfo.updatePortalId(portalId))
+                );
             });
         }
     }
@@ -125,19 +128,6 @@ class App extends Component {
             this.updateReferrerInfo(e);
         }, false);
 
-        if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
-            this.changePortalIdCultureCode(props.portalId, props.cultureCode);
-        }
-        else if (state.portalId !== props.portalId) {
-            this.changePortalId(props.portalId);
-        }
-        else if (state.cultureCode !== props.cultureCode) {
-            this.changeCultureCode(props.cultureCode);
-        }
-    }
-
-    componentDidUpdate() {
-        const {props, state} = this;
         if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
             this.changePortalIdCultureCode(props.portalId, props.cultureCode);
         }
@@ -232,7 +222,8 @@ App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     siteInfo: PropTypes.object,
-    cultureCode: PropTypes.string
+    cultureCode: PropTypes.string,
+    portalId: PropTypes.number
 };
 
 

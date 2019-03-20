@@ -31,18 +31,18 @@ class PrivacySettingsPanelBody extends Component {
         this.loadData();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { props } = this;
         if (props.privacySettings) {
             let portalIdChanged = false;
             let cultureCodeChanged = false;            
-            if (props.portalId === undefined || props.privacySettings.PortalId === props.portalId) {
+            if (props.portalId === undefined || prevProps.portalId === props.portalId) {
                 portalIdChanged = false;
             }
             else {
                 portalIdChanged = true;
             }
-            if (props.cultureCode === undefined || props.privacySettings.CultureCode === props.cultureCode) {
+            if (props.cultureCode === undefined || prevProps.cultureCode === props.cultureCode) {
                 cultureCodeChanged = false;
             }
             else {

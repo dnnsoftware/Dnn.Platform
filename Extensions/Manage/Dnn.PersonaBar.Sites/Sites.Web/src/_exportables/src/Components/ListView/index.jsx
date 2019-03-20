@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
 import Localization from "localization";
-import { CommonVisiblePanelActions, CommonPortalListActions, CommonExportPortalActions } from "actions";
+import { CommonVisiblePanelActions, CommonPortalListActions } from "actions";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
 import Moment from "moment";
