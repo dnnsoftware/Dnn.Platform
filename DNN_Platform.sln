@@ -94,6 +94,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{7E98CA08-903E-45F7-BD83-853763D5E15B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetCCP", "DNN Platform\Tests\DotNetNuke.Tests.AspNetCCP\DotNetNuke.Tests.AspNetCCP.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject

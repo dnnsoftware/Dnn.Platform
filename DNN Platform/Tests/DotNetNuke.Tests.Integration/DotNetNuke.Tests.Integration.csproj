@@ -150,7 +150,7 @@
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNN.Integration.Test.Framework\DNN.Integration.Test.Framework.csproj">
