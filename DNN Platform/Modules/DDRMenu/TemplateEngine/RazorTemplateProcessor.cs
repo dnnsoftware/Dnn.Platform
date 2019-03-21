@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.UI;
-
+using System.Web.WebPages;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
-using DotNetNuke.Web.Razor;
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
@@ -40,13 +40,20 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 model.SkinPath = resolver.Resolve("/", PathResolver.RelativeTo.Skin);
                 var modelDictionary = model as IDictionary<string, object>;
                 liveDefinition.TemplateArguments.ForEach(a => modelDictionary.Add(a.Name, a.Value));
-
-                var razorEngine = new RazorEngine(liveDefinition.TemplateVirtualPath, null, null);
-                var writer = new StringWriter();
-                razorEngine.Render<dynamic>(writer, model);
-
-                htmlWriter.Write(writer.ToString());
+                htmlWriter.Write(RenderTemplate(liveDefinition.TemplateVirtualPath, model));
             }
+        }
+
+        private StringWriter RenderTemplate(string virtualPath, dynamic model)
+        {
+            var page = (WebPage)WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
+            var pageContext = new WebPageContext(httpContext, page, model);
+
+            var writer = new StringWriter();
+            page.ExecutePageHierarchy(pageContext, writer);
+
+            return writer;
         }
 
         protected static string ConvertToJson(List<ClientOption> options)
