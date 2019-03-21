@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.PersonaBar.Vocabularies" type="PersonaBar" version="01.06.01">
+    <package name="Dnn.PersonaBar.Vocabularies" type="PersonaBar" version="02.00.00">
       <friendlyName>Dnn.PersonaBar.Vocabularies</friendlyName>
       <description></description>
       <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
