@@ -3,7 +3,7 @@ assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSo
 mode: ContinuousDeployment
 branches:
   development:
-    regex: development      
+    regex: development
     tag: 'alpha'
     increment: Patch
     is-mainline: true
