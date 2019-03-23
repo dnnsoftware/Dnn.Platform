@@ -16,7 +16,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public EditorConfig()
         {
-            this.AllowedContent = "true";
+            this.AllowedContent = "false";
             this.AutoGrow_BottomSpace = 0;
             this.AutoGrow_MaxHeight = 0;
             this.AutoGrow_MinHeight = 200;
