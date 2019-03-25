@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Providers.AspNetClientCapabilityProvider</RootNamespace>
     <AssemblyName>DotNetNuke.Providers.AspNetClientCapabilityProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
