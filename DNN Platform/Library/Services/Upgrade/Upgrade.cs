@@ -796,7 +796,7 @@ namespace DotNetNuke.Services.Upgrade
             string script = FileSystemUtils.ReadFile(scriptFile);
 
             // execute SQL installation script
-            string exceptions = DataProvider.Instance().ExecuteScript(script);
+            string exceptions = DataProvider.Instance().ExecuteScript(script, 300);
 
             //add installer logging
             if (string.IsNullOrEmpty(exceptions))
