@@ -105,18 +105,14 @@ namespace log4net.Core
 			{
 				throw new ArgumentNullException("levelName");
 			}
-			if (displayName == null)
-			{
-				throw new ArgumentNullException("displayName");
-			}
 
-			m_levelValue = level;
+            m_levelValue = level;
 #if NETSTANDARD1_3
 			m_levelName = levelName;
 #else
 			m_levelName = string.Intern(levelName);
 #endif
-			m_levelDisplayName = displayName;
+			m_levelDisplayName = displayName ?? throw new ArgumentNullException("displayName");
 		}
 
 		/// <summary>

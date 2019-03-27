@@ -1160,12 +1160,9 @@ namespace log4net.Layout
 		/// </remarks>
 		public void AddConverter(string name, Type type)
 		{
-            if (name == null) throw new ArgumentNullException("name");
-            if (type == null) throw new ArgumentNullException("type");
-
             ConverterInfo converterInfo = new ConverterInfo();
-            converterInfo.Name = name;
-            converterInfo.Type = type;
+            converterInfo.Name = name ?? throw new ArgumentNullException("name");
+            converterInfo.Type = type ?? throw new ArgumentNullException("type");
 
             AddConverter(converterInfo);
 		}

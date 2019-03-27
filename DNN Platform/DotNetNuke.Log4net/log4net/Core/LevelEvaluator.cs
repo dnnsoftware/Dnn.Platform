@@ -77,12 +77,7 @@ namespace log4net.Core
 		/// </remarks>
 		public LevelEvaluator(Level threshold)
 		{
-			if (threshold == null)
-			{
-				throw new ArgumentNullException("threshold");
-			}
-
-			m_threshold = threshold;
+            m_threshold = threshold ?? throw new ArgumentNullException("threshold");
 		}
 
 		/// <summary>

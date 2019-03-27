@@ -51,11 +51,7 @@ namespace log4net.Util
 		/// </remarks>
 		public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer)
 		{
-			if (errorHandler == null)
-			{
-				throw new ArgumentNullException("errorHandler");
-			}
-			ErrorHandler = errorHandler;
+            ErrorHandler = errorHandler ?? throw new ArgumentNullException("errorHandler");
 		}
 
 		#endregion Public Instance Constructors
@@ -78,12 +74,8 @@ namespace log4net.Util
 			get { return m_errorHandler; }
 			set
 			{
-				if (value == null)
-				{
-					// This is a programming error on the part of the enclosing appender.
-					throw new ArgumentNullException("value");
-				}
-				m_errorHandler = value;
+                //This indicates an error on the calling appender
+                m_errorHandler = value ?? throw new ArgumentNullException("value");
 			}
 		}	
 

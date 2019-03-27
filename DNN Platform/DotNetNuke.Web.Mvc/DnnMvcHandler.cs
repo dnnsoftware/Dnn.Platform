@@ -18,12 +18,7 @@ namespace DotNetNuke.Web.Mvc
     {
         public DnnMvcHandler(RequestContext requestContext)
         {
-            if (requestContext == null)
-            {
-                throw new ArgumentNullException("requestContext");
-            }
-
-            RequestContext = requestContext;
+            RequestContext = requestContext ?? throw new ArgumentNullException("requestContext");
         }
 
         public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";

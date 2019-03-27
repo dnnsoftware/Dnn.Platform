@@ -193,12 +193,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public Hierarchy(PropertiesDictionary properties, ILoggerFactory loggerFactory) : base(properties)
 		{
-			if (loggerFactory == null)
-			{
-				throw new ArgumentNullException("loggerFactory");
-			}
-
-			m_defaultFactory = loggerFactory;
+            m_defaultFactory = loggerFactory ?? throw new ArgumentNullException("loggerFactory");
 
 			m_ht = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
 		}
@@ -267,11 +262,7 @@ namespace log4net.Repository.Hierarchy
 			get { return m_defaultFactory; }
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-				m_defaultFactory = value;
+                m_defaultFactory = value ?? throw new ArgumentNullException("value");
 			}
 		}
 

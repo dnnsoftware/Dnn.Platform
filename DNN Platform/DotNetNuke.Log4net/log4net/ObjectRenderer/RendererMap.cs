@@ -323,12 +323,8 @@ namespace log4net.ObjectRenderer
 			{
 				throw new ArgumentNullException("typeToRender");
 			}
-			if (renderer == null)
-			{
-				throw new ArgumentNullException("renderer");
-			}
 
-			m_map[typeToRender] = renderer;
+            m_map[typeToRender] = renderer ?? throw new ArgumentNullException("renderer");
 		}	
 	}
 }

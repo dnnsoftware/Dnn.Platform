@@ -62,12 +62,7 @@ namespace log4net.Core
 		/// <param name="triggerOnSubClass">If true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.</param>
 		public ExceptionEvaluator(Type exType, bool triggerOnSubClass)
 		{
-			if (exType == null)
-			{
-				throw new ArgumentNullException("exType");
-			}
-
-			m_type = exType;
+            m_type = exType ?? throw new ArgumentNullException("exType");
 			m_triggerOnSubclass = triggerOnSubClass;
 		}
 

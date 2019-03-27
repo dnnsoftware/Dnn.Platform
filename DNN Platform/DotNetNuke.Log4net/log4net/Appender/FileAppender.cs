@@ -153,11 +153,7 @@ namespace log4net.Appender
 			public LockingStream(LockingModelBase locking)
 				: base()
 			{
-				if (locking == null)
-				{
-					throw new ArgumentException("Locking model may not be null", "locking");
-				}
-				m_lockingModel = locking;
+                m_lockingModel = locking ?? throw new ArgumentException("Locking model may not be null", "locking");
 			}
 
 			#region Override Implementation of Stream
