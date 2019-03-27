@@ -57,10 +57,12 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         public void UserRequestIPAddress_ShouldReturnIP_IfAnyHeaderIsPresent(string requestIp, string headerName)
         {
             //Arrange
-            var expectedIp = "111.111.111.111";                    
+            var expectedIp = "111.111.111.111";
 
-            NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
-            headersWithXForwardedHeaders.Add(headerName, requestIp);
+            NameValueCollection headersWithXForwardedHeaders = new NameValueCollection
+            {
+                { headerName, requestIp }
+            };
             _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
             _mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
 
@@ -79,8 +81,10 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             var remoteVariable = "REMOTE_ADDR";
             var requestIp = "111.111.111.111";
 
-            NameValueCollection serverVariables = new NameValueCollection();
-            serverVariables.Add(remoteVariable, requestIp);
+            NameValueCollection serverVariables = new NameValueCollection
+            {
+                { remoteVariable, requestIp }
+            };
             _mockRequest.Setup(x => x.ServerVariables).Returns(serverVariables);
 
             //Act
@@ -114,10 +118,12 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         public void UserRequestIPAddress_ShouldReturnEmptyString_IfIPAddressIsNotValid(string requestIp)
         {
             //Arrange
-            var headerName = "X-Forwarded-For";           
+            var headerName = "X-Forwarded-For";
 
-            NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
-            headersWithXForwardedHeaders.Add(headerName, requestIp);
+            NameValueCollection headersWithXForwardedHeaders = new NameValueCollection
+            {
+                { headerName, requestIp }
+            };
             _mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
             _mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
             

@@ -76,8 +76,10 @@ namespace DotNetNuke.Tests.Data
         public void DataProvider_DatabaseOwner_Property_Is_Valid(string databaseOwner)
         {
             //Arrange
-            var settings = new Dictionary<string, string>();
-            settings["databaseOwner"] = databaseOwner;
+            var settings = new Dictionary<string, string>
+            {
+                ["databaseOwner"] = databaseOwner
+            };
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
@@ -95,8 +97,10 @@ namespace DotNetNuke.Tests.Data
         public void DataProvider_ObjectQualifier_Property_Is_Valid(string objectQualifier)
         {
             //Arrange
-            var settings = new Dictionary<string, string>();
-            settings["objectQualifier"] = objectQualifier;
+            var settings = new Dictionary<string, string>
+            {
+                ["objectQualifier"] = objectQualifier
+            };
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
@@ -114,8 +118,10 @@ namespace DotNetNuke.Tests.Data
         public void DataProvider_ProviderName_Property_Is_Valid(string providerName)
         {
             //Arrange
-            var settings = new Dictionary<string, string>();
-            settings["providerName"] = providerName;
+            var settings = new Dictionary<string, string>
+            {
+                ["providerName"] = providerName
+            };
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
@@ -133,8 +139,10 @@ namespace DotNetNuke.Tests.Data
         public void DataProvider_ProviderPath_Property_Is_Valid(string providerPath)
         {
             //Arrange
-            var settings = new Dictionary<string, string>();
-            settings["providerPath"] = providerPath;
+            var settings = new Dictionary<string, string>
+            {
+                ["providerPath"] = providerPath
+            };
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));

@@ -856,87 +856,88 @@ namespace log4net.Layout
 		/// </remarks>
 		static PatternLayout()
 		{
-			s_globalRulesRegistry = new Hashtable(45);
+            s_globalRulesRegistry = new Hashtable(45)
+            {
+                { "literal", typeof(LiteralPatternConverter) },
+                { "newline", typeof(NewLinePatternConverter) },
+                { "n", typeof(NewLinePatternConverter) },
 
-			s_globalRulesRegistry.Add("literal", typeof(LiteralPatternConverter));
-			s_globalRulesRegistry.Add("newline", typeof(NewLinePatternConverter));
-			s_globalRulesRegistry.Add("n", typeof(NewLinePatternConverter));
-
-// .NET Compact Framework 1.0 has no support for ASP.NET
-// SSCLI 1.0 has no support for ASP.NET
+                // .NET Compact Framework 1.0 has no support for ASP.NET
+                // SSCLI 1.0 has no support for ASP.NET
 #if !NETCF && !SSCLI && !CLIENT_PROFILE && !NETSTANDARD1_3
-			s_globalRulesRegistry.Add("aspnet-cache", typeof(AspNetCachePatternConverter));
-			s_globalRulesRegistry.Add("aspnet-context", typeof(AspNetContextPatternConverter));
-			s_globalRulesRegistry.Add("aspnet-request", typeof(AspNetRequestPatternConverter));
-			s_globalRulesRegistry.Add("aspnet-session", typeof(AspNetSessionPatternConverter));
+                { "aspnet-cache", typeof(AspNetCachePatternConverter) },
+                { "aspnet-context", typeof(AspNetContextPatternConverter) },
+                { "aspnet-request", typeof(AspNetRequestPatternConverter) },
+                { "aspnet-session", typeof(AspNetSessionPatternConverter) },
 #endif
 
-			s_globalRulesRegistry.Add("c", typeof(LoggerPatternConverter));
-			s_globalRulesRegistry.Add("logger", typeof(LoggerPatternConverter));
+                { "c", typeof(LoggerPatternConverter) },
+                { "logger", typeof(LoggerPatternConverter) },
 
-			s_globalRulesRegistry.Add("C", typeof(TypeNamePatternConverter));
-			s_globalRulesRegistry.Add("class", typeof(TypeNamePatternConverter));
-			s_globalRulesRegistry.Add("type", typeof(TypeNamePatternConverter));
+                { "C", typeof(TypeNamePatternConverter) },
+                { "class", typeof(TypeNamePatternConverter) },
+                { "type", typeof(TypeNamePatternConverter) },
 
-			s_globalRulesRegistry.Add("d", typeof(DatePatternConverter));
-			s_globalRulesRegistry.Add("date", typeof(DatePatternConverter));
+                { "d", typeof(DatePatternConverter) },
+                { "date", typeof(DatePatternConverter) },
 
-			s_globalRulesRegistry.Add("exception", typeof(ExceptionPatternConverter));
+                { "exception", typeof(ExceptionPatternConverter) },
 
-			s_globalRulesRegistry.Add("F", typeof(FileLocationPatternConverter));
-			s_globalRulesRegistry.Add("file", typeof(FileLocationPatternConverter));
+                { "F", typeof(FileLocationPatternConverter) },
+                { "file", typeof(FileLocationPatternConverter) },
 
-			s_globalRulesRegistry.Add("l", typeof(FullLocationPatternConverter));
-			s_globalRulesRegistry.Add("location", typeof(FullLocationPatternConverter));
+                { "l", typeof(FullLocationPatternConverter) },
+                { "location", typeof(FullLocationPatternConverter) },
 
-			s_globalRulesRegistry.Add("L", typeof(LineLocationPatternConverter));
-			s_globalRulesRegistry.Add("line", typeof(LineLocationPatternConverter));
+                { "L", typeof(LineLocationPatternConverter) },
+                { "line", typeof(LineLocationPatternConverter) },
 
-			s_globalRulesRegistry.Add("m", typeof(MessagePatternConverter));
-			s_globalRulesRegistry.Add("message", typeof(MessagePatternConverter));
+                { "m", typeof(MessagePatternConverter) },
+                { "message", typeof(MessagePatternConverter) },
 
-			s_globalRulesRegistry.Add("M", typeof(MethodLocationPatternConverter));
-			s_globalRulesRegistry.Add("method", typeof(MethodLocationPatternConverter));
+                { "M", typeof(MethodLocationPatternConverter) },
+                { "method", typeof(MethodLocationPatternConverter) },
 
-			s_globalRulesRegistry.Add("p", typeof(LevelPatternConverter));
-			s_globalRulesRegistry.Add("level", typeof(LevelPatternConverter));
+                { "p", typeof(LevelPatternConverter) },
+                { "level", typeof(LevelPatternConverter) },
 
-			s_globalRulesRegistry.Add("P", typeof(PropertyPatternConverter));
-			s_globalRulesRegistry.Add("property", typeof(PropertyPatternConverter));
-			s_globalRulesRegistry.Add("properties", typeof(PropertyPatternConverter));
+                { "P", typeof(PropertyPatternConverter) },
+                { "property", typeof(PropertyPatternConverter) },
+                { "properties", typeof(PropertyPatternConverter) },
 
-			s_globalRulesRegistry.Add("r", typeof(RelativeTimePatternConverter));
-			s_globalRulesRegistry.Add("timestamp", typeof(RelativeTimePatternConverter));
-			
+                { "r", typeof(RelativeTimePatternConverter) },
+                { "timestamp", typeof(RelativeTimePatternConverter) },
+
 #if !(NETCF || NETSTANDARD1_3)
-			s_globalRulesRegistry.Add("stacktrace", typeof(StackTracePatternConverter));
-            s_globalRulesRegistry.Add("stacktracedetail", typeof(StackTraceDetailPatternConverter));
+                { "stacktrace", typeof(StackTracePatternConverter) },
+                { "stacktracedetail", typeof(StackTraceDetailPatternConverter) },
 #endif
 
-			s_globalRulesRegistry.Add("t", typeof(ThreadPatternConverter));
-			s_globalRulesRegistry.Add("thread", typeof(ThreadPatternConverter));
+                { "t", typeof(ThreadPatternConverter) },
+                { "thread", typeof(ThreadPatternConverter) },
 
-			// For backwards compatibility the NDC patterns
-			s_globalRulesRegistry.Add("x", typeof(NdcPatternConverter));
-			s_globalRulesRegistry.Add("ndc", typeof(NdcPatternConverter));
+                // For backwards compatibility the NDC patterns
+                { "x", typeof(NdcPatternConverter) },
+                { "ndc", typeof(NdcPatternConverter) },
 
-			// For backwards compatibility the MDC patterns just do a property lookup
-			s_globalRulesRegistry.Add("X", typeof(PropertyPatternConverter));
-			s_globalRulesRegistry.Add("mdc", typeof(PropertyPatternConverter));
+                // For backwards compatibility the MDC patterns just do a property lookup
+                { "X", typeof(PropertyPatternConverter) },
+                { "mdc", typeof(PropertyPatternConverter) },
 
-			s_globalRulesRegistry.Add("a", typeof(AppDomainPatternConverter));
-			s_globalRulesRegistry.Add("appdomain", typeof(AppDomainPatternConverter));
+                { "a", typeof(AppDomainPatternConverter) },
+                { "appdomain", typeof(AppDomainPatternConverter) },
 
-			s_globalRulesRegistry.Add("u", typeof(IdentityPatternConverter));
-			s_globalRulesRegistry.Add("identity", typeof(IdentityPatternConverter));
+                { "u", typeof(IdentityPatternConverter) },
+                { "identity", typeof(IdentityPatternConverter) },
 
-			s_globalRulesRegistry.Add("utcdate", typeof(UtcDatePatternConverter));
-			s_globalRulesRegistry.Add("utcDate", typeof(UtcDatePatternConverter));
-			s_globalRulesRegistry.Add("UtcDate", typeof(UtcDatePatternConverter));
+                { "utcdate", typeof(UtcDatePatternConverter) },
+                { "utcDate", typeof(UtcDatePatternConverter) },
+                { "UtcDate", typeof(UtcDatePatternConverter) },
 
-			s_globalRulesRegistry.Add("w", typeof(UserNamePatternConverter));
-			s_globalRulesRegistry.Add("username", typeof(UserNamePatternConverter));
-		}
+                { "w", typeof(UserNamePatternConverter) },
+                { "username", typeof(UserNamePatternConverter) }
+            };
+        }
 
 		#endregion Static Constructor
 

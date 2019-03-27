@@ -178,9 +178,11 @@ namespace DotNetNuke.Services.Search
                                 }
                                 else
                                 {
-									//Create new TabId keyed Dictionary
-                                    var dic = new Dictionary<int, SearchResultsInfo>();
-                                    dic.Add(result.TabId, result);
+                                    //Create new TabId keyed Dictionary
+                                    var dic = new Dictionary<int, SearchResultsInfo>
+                                    {
+                                        { result.TabId, result }
+                                    };
 
                                     //Add new Dictionary to SearchResults
                                     dicResults.Add(result.SearchItemID, dic);

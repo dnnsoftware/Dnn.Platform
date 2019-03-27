@@ -118,13 +118,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString());
             }
 
-            var includeVaryByKeys = new StringCollection();
-            includeVaryByKeys.Add("ctl");
-            includeVaryByKeys.Add("returnurl");
-            includeVaryByKeys.Add("tabid");
-            includeVaryByKeys.Add("portalid");
-            includeVaryByKeys.Add("locale");
-			includeVaryByKeys.Add("alias");
+            var includeVaryByKeys = new StringCollection
+            {
+                "ctl",
+                "returnurl",
+                "tabid",
+                "portalid",
+                "locale",
+                "alias"
+            };
             //make sure to always add keys in lowercase only
 
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)

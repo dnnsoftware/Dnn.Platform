@@ -183,11 +183,13 @@ namespace Dnn.ExportImport.Components.Services
 
         private IList<string> GetExportThemes()
         {
-            var exportThemes = new List<string>();
+            var exportThemes = new List<string>
+            {
 
-            //get site level themes
-            exportThemes.Add(_portalSettings.DefaultPortalSkin);
-            exportThemes.Add(_portalSettings.DefaultPortalContainer);
+                //get site level themes
+                _portalSettings.DefaultPortalSkin,
+                _portalSettings.DefaultPortalContainer
+            };
 
             if (!exportThemes.Contains(_portalSettings.DefaultAdminSkin))
             {

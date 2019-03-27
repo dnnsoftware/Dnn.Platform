@@ -154,27 +154,33 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                var actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "add.gif",
-                            EditUrl("EditProfileProperty"),
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
-                actions.Add(GetNextActionID(),
-                            Localization.GetString("Cancel.Action", LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "lt.gif",
-                            ReturnUrl,
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
+                var actions = new ModuleActionCollection
+                {
+                    {
+                        GetNextActionID(),
+                        Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
+                        ModuleActionType.AddContent,
+                        "",
+                        "add.gif",
+                        EditUrl("EditProfileProperty"),
+                        false,
+                        SecurityAccessLevel.Admin,
+                        true,
+                        false
+                    },
+                    {
+                        GetNextActionID(),
+                        Localization.GetString("Cancel.Action", LocalResourceFile),
+                        ModuleActionType.AddContent,
+                        "",
+                        "lt.gif",
+                        ReturnUrl,
+                        false,
+                        SecurityAccessLevel.Admin,
+                        true,
+                        false
+                    }
+                };
                 return actions;
             }
         }

@@ -169,8 +169,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 if (key.Contains("Portal-1_"))
                 {
-                    var portals = new List<PortalInfo>();
-                    portals.Add(new PortalInfo() { PortalID = 0 });
+                    var portals = new List<PortalInfo>
+                    {
+                        new PortalInfo() { PortalID = 0 }
+                    };
 
                     return portals;
                 }

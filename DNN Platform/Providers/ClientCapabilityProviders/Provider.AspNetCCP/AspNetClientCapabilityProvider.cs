@@ -218,8 +218,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             var factory = new BrowserCapabilitiesFactory();
             var browserCaps = new HttpBrowserCapabilities();
-            var hashtable = new Hashtable(180, StringComparer.OrdinalIgnoreCase);
-            hashtable[string.Empty] = userAgent;
+            var hashtable = new Hashtable(180, StringComparer.OrdinalIgnoreCase)
+            {
+                [string.Empty] = userAgent
+            };
             browserCaps.Capabilities = hashtable;
             factory.ConfigureBrowserCapabilities(headers, browserCaps);
             factory.ConfigureCustomCapabilities(headers, browserCaps);

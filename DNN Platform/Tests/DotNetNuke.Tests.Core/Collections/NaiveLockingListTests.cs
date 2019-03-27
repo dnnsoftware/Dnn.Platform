@@ -41,9 +41,10 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void Add()
         {
-            var list = new NaiveLockingList<string>();
-
-            list.Add("sumthin");
+            var list = new NaiveLockingList<string>
+            {
+                "sumthin"
+            };
 
             CollectionAssert.AreEqual(new[] {"sumthin"}, list);
         }

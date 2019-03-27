@@ -390,10 +390,12 @@ namespace Dnn.Modules.Console
 
 					_tabs = new List<TabInfo>();
 
-					IList<int> tabIdList = new List<int>();
-					tabIdList.Add(ConsoleTabID);
+                    IList<int> tabIdList = new List<int>
+                    {
+                        ConsoleTabID
+                    };
 
-                    if(IncludeParent)
+                    if (IncludeParent)
                     {
                         TabInfo consoleTab = TabController.Instance.GetTab(ConsoleTabID, PortalId);
                         if (consoleTab != null)

@@ -243,12 +243,13 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected virtual IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {
-            var l = new List<Action<ILockStrategy>>();
-
-            l.Add((ILockStrategy strategy) => strategy.GetReadLock());
-            l.Add((ILockStrategy strategy) => strategy.GetWriteLock());
-            l.Add((ILockStrategy strategy) => Console.WriteLine(strategy.ThreadCanRead));
-            l.Add((ILockStrategy strategy) => Console.WriteLine(strategy.ThreadCanWrite));
+            var l = new List<Action<ILockStrategy>>
+            {
+                (ILockStrategy strategy) => strategy.GetReadLock(),
+                (ILockStrategy strategy) => strategy.GetWriteLock(),
+                (ILockStrategy strategy) => Console.WriteLine(strategy.ThreadCanRead),
+                (ILockStrategy strategy) => Console.WriteLine(strategy.ThreadCanWrite)
+            };
 
             return l;
         }

@@ -202,8 +202,7 @@ namespace DotNetNuke.Common.Lists
                 return;
             }
 
-            var lists = new SortedList<string, ListInfo>();
-            lists.Add(list.Key, list);
+            var lists = new SortedList<string, ListInfo> {{list.Key, list}};
             //add Children
             if (includeChildren)
             {

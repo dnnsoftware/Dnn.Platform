@@ -94,8 +94,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         private Dictionary<string, string> GetPortalSettingsDictionaryMock()
         {
-            var portalSettingsDictionary = new Dictionary<string,string>();
-            portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
+            var portalSettingsDictionary = new Dictionary<string, string>
+            {
+                { "AddCachebusterToResourceUris", true.ToString() }
+            };
 
             return portalSettingsDictionary;
         }

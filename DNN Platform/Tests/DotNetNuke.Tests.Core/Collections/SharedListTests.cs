@@ -179,20 +179,21 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected IEnumerable<Action<SharedList<string>>> GetReadMethods()
         {
-            var list = new List<Action<SharedList<string>>>();
+            var list = new List<Action<SharedList<string>>>
+            {
+                l => l.Contains("value"),
+                l => Console.WriteLine(l.Count),
+                l => Console.WriteLine(l.IsReadOnly),
+                l => l.GetEnumerator(),
+                l => l.IndexOf("value"),
+                l => Console.WriteLine(l[0]),
 
-            list.Add(l => l.Contains("value"));
-            list.Add(l => Console.WriteLine(l.Count));
-            list.Add(l => Console.WriteLine(l.IsReadOnly));
-            list.Add(l => l.GetEnumerator());
-            list.Add(l => l.IndexOf("value"));
-            list.Add(l => Console.WriteLine(l[0]));
-
-            list.Add(l =>
-                         {
-                             var arr = new string[2];
-                             l.CopyTo(arr, 0);
-                         });
+                l =>
+                             {
+                                 var arr = new string[2];
+                                 l.CopyTo(arr, 0);
+                             }
+            };
 
             return list;
         }

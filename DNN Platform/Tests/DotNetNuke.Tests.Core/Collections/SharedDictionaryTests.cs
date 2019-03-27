@@ -181,43 +181,45 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected IEnumerable<Action<SharedDictionary<string, string>>> GetReadMethods()
         {
-            var l = new List<Action<SharedDictionary<string, string>>>();
+            var l = new List<Action<SharedDictionary<string, string>>>
+            {
+                d => d.ContainsKey("key"),
+                d => d.Contains(new KeyValuePair<string, string>("key", "value")),
+                d => Console.WriteLine(d.Count),
+                d => d.GetEnumerator(),
+                d => ((IEnumerable)d).GetEnumerator(),
+                d => Console.WriteLine(d.IsReadOnly),
+                d => Console.WriteLine(d["key"]),
+                d => Console.WriteLine(d.Keys),
+                d => Console.WriteLine(d.Values),
 
-            l.Add(d => d.ContainsKey("key"));
-            l.Add(d => d.Contains(new KeyValuePair<string, string>("key", "value")));
-            l.Add(d => Console.WriteLine(d.Count));
-            l.Add(d => d.GetEnumerator());
-            l.Add(d => ((IEnumerable) d).GetEnumerator());
-            l.Add(d => Console.WriteLine(d.IsReadOnly));
-            l.Add(d => Console.WriteLine(d["key"]));
-            l.Add(d => Console.WriteLine(d.Keys));
-            l.Add(d => Console.WriteLine(d.Values));
+                d =>
+                          {
+                              var arr = new KeyValuePair<string, string>[1];
+                              d.CopyTo(arr, 0);
+                          },
 
-            l.Add(d =>
-                      {
-                          var arr = new KeyValuePair<string, string>[1];
-                          d.CopyTo(arr, 0);
-                      });
-
-            l.Add((SharedDictionary<string, string> d) =>
-                      {
-                          string value = "";
-                          d.TryGetValue("key", out value);
-                      });
+                (SharedDictionary<string, string> d) =>
+                          {
+                              string value = "";
+                              d.TryGetValue("key", out value);
+                          }
+            };
 
             return l;
         }
 
         protected IEnumerable<Action<SharedDictionary<string, string>>> GetWriteMethods()
         {
-            var l = new List<Action<SharedDictionary<string, string>>>();
-
-            l.Add(d => d.Add("more", "value"));
-            l.Add(d => d.Add(new KeyValuePair<string, string>("more", "value")));
-            l.Add(d => d.Clear());
-            l.Add(d => d.Remove(new KeyValuePair<string, string>("more", "value")));
-            l.Add(d => d.Remove("key"));
-            l.Add(d => d["key"] = "different");
+            var l = new List<Action<SharedDictionary<string, string>>>
+            {
+                d => d.Add("more", "value"),
+                d => d.Add(new KeyValuePair<string, string>("more", "value")),
+                d => d.Clear(),
+                d => d.Remove(new KeyValuePair<string, string>("more", "value")),
+                d => d.Remove("key"),
+                d => d["key"] = "different"
+            };
 
             return l;
         }

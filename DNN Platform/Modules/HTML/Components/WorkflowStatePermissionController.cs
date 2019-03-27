@@ -102,10 +102,12 @@ namespace DotNetNuke.Security.Permissions
                     else
                     {
                         //Create new WorkflowStatePermission Collection for WorkflowStatePermissionID
-                        var collection = new WorkflowStatePermissionCollection();
+                        var collection = new WorkflowStatePermissionCollection
+                        {
 
-                        //Add Permission to Collection
-                        collection.Add(obj);
+                            //Add Permission to Collection
+                            obj
+                        };
 
                         //Add Collection to Dictionary
                         dic.Add(obj.StateID, collection);

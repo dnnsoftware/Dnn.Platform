@@ -48,9 +48,11 @@ namespace DotNetNuke.Tests.Urls
                 //Read Test File Data
                 TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
                             {
-                                var fieldList = new Dictionary<string, string>();
-                                fieldList["TestName"] = testName;
-                                fieldList["Alias"] = alias;
+                                var fieldList = new Dictionary<string, string>
+                                {
+                                    ["TestName"] = testName,
+                                    ["Alias"] = alias
+                                };
                                 string[] headers = header.Split(',');
                                 string[] fields = line.Split(',');
                                 for (int i = 0; i < fields.Length; i++ )

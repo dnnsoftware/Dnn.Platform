@@ -52,8 +52,10 @@ namespace Dnn.Modules.Console
 
             IList<TabInfo> tabList = new List<TabInfo>();
 
-            IList<int> tabIdList = new List<int>();
-            tabIdList.Add(tabId);
+            IList<int> tabIdList = new List<int>
+            {
+                tabId
+            };
 
             if (includeParent)
             {

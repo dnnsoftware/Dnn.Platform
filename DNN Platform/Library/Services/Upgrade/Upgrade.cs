@@ -3258,13 +3258,15 @@ namespace DotNetNuke.Services.Upgrade
             {
                 case "FriendRequest":
                     var friendRequestType = new NotificationType { Name = notificationTypeName, Description = "Friend Request" };
-                    var friendRequestTypeActions = new List<NotificationTypeAction>();
-                    friendRequestTypeActions.Add(new NotificationTypeAction
+                    var friendRequestTypeActions = new List<NotificationTypeAction>
                     {
-                        NameResourceKey = "Accept",
-                        DescriptionResourceKey = "AcceptFriend",
-                        APICall = "API/InternalServices/RelationshipService/AcceptFriend"
-                    });
+                        new NotificationTypeAction
+                        {
+                            NameResourceKey = "Accept",
+                            DescriptionResourceKey = "AcceptFriend",
+                            APICall = "API/InternalServices/RelationshipService/AcceptFriend"
+                        }
+                    };
                     NotificationsController.Instance.CreateNotificationType(friendRequestType);
                     NotificationsController.Instance.SetNotificationTypeActions(friendRequestTypeActions, friendRequestType.NotificationTypeId);
                     break;
@@ -3274,14 +3276,16 @@ namespace DotNetNuke.Services.Upgrade
                     break;
                 case "FollowBackRequest":
                     var followBackRequestType = new NotificationType { Name = notificationTypeName, Description = "Follow Back Request" };
-                    var followBackRequestTypeActions = new List<NotificationTypeAction>();
-                    followBackRequestTypeActions.Add(new NotificationTypeAction
+                    var followBackRequestTypeActions = new List<NotificationTypeAction>
                     {
-                        NameResourceKey = "FollowBack",
-                        DescriptionResourceKey = "FollowBack",
-                        ConfirmResourceKey = "",
-                        APICall = "API/InternalServices/RelationshipService/FollowBack"
-                    });
+                        new NotificationTypeAction
+                        {
+                            NameResourceKey = "FollowBack",
+                            DescriptionResourceKey = "FollowBack",
+                            ConfirmResourceKey = "",
+                            APICall = "API/InternalServices/RelationshipService/FollowBack"
+                        }
+                    };
                     NotificationsController.Instance.CreateNotificationType(followBackRequestType);
                     NotificationsController.Instance.SetNotificationTypeActions(followBackRequestTypeActions, followBackRequestType.NotificationTypeId);
                     break;

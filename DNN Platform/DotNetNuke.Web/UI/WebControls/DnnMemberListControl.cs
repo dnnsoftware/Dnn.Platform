@@ -165,12 +165,14 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // Filters
             if (Filters == null) Filters = new Dictionary<string, string>();
-            var additionalFilters = new Dictionary<string, string>();
-            additionalFilters.Add("Records", PageSize.ToString());
-            additionalFilters.Add("PageIndex", PageIndex.ToString());
-            additionalFilters.Add("Rowsize", RowSize.ToString());
-            additionalFilters.Add("SortBy", SortBy);
-            additionalFilters.Add("SortAscending", SortAscending.ToString());
+            var additionalFilters = new Dictionary<string, string>
+            {
+                { "Records", PageSize.ToString() },
+                { "PageIndex", PageIndex.ToString() },
+                { "Rowsize", RowSize.ToString() },
+                { "SortBy", SortBy },
+                { "SortAscending", SortAscending.ToString() }
+            };
 
             // Currently Not Used by the SPROC
             var filterUser = Filters.ContainsKey("UserId") && Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(Filters["UserId"]) } : new UserInfo() { PortalID = _currentUser.PortalID };

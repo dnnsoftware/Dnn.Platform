@@ -54,27 +54,33 @@ namespace DotNetNuke.Modules.RazorHost
         {
             get
             {
-                var Actions = new ModuleActionCollection();
-                Actions.Add(ModuleContext.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.EditContent, LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "edit.gif",
-                            ModuleContext.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Host,
-                            true,
-                            false);
-                Actions.Add(ModuleContext.GetNextActionID(),
-                            Localization.GetString("CreateModule.Action", LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "edit.gif",
-                            ModuleContext.EditUrl("CreateModule"),
-                            false,
-                            SecurityAccessLevel.Host,
-                            true,
-                            false);
+                var Actions = new ModuleActionCollection
+                {
+                    {
+                        ModuleContext.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.EditContent, LocalResourceFile),
+                        ModuleActionType.AddContent,
+                        "",
+                        "edit.gif",
+                        ModuleContext.EditUrl(),
+                        false,
+                        SecurityAccessLevel.Host,
+                        true,
+                        false
+                    },
+                    {
+                        ModuleContext.GetNextActionID(),
+                        Localization.GetString("CreateModule.Action", LocalResourceFile),
+                        ModuleActionType.AddContent,
+                        "",
+                        "edit.gif",
+                        ModuleContext.EditUrl("CreateModule"),
+                        false,
+                        SecurityAccessLevel.Host,
+                        true,
+                        false
+                    }
+                };
                 return Actions;
             }
         }

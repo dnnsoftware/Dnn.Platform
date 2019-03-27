@@ -145,10 +145,12 @@ namespace log4net.Appender
 		{
 			base.ActivateOptions();
 
-			IDictionary channelProperties = new Hashtable(); 
-			channelProperties["typeFilterLevel"] = "Full";
+            IDictionary channelProperties = new Hashtable
+            {
+                ["typeFilterLevel"] = "Full"
+            };
 
-			m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), m_sinkUrl, channelProperties);
+            m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), m_sinkUrl, channelProperties);
 		}
 
 		#endregion

@@ -166,16 +166,18 @@ namespace DotNetNuke.UI.WebControls
 
         private Hashtable GetFieldNames()
         {
-            var fields = new Hashtable();
-            fields.Add("Category", CategoryDataField);
-            fields.Add("Editor", EditorDataField);
-            fields.Add("Name", NameDataField);
-            fields.Add("Required", RequiredDataField);
-            fields.Add("Type", TypeDataField);
-            fields.Add("ValidationExpression", ValidationExpressionDataField);
-            fields.Add("Value", ValueDataField);
-            fields.Add("ProfileVisibility", VisibilityDataField);
-            fields.Add("Length", LengthDataField);
+            var fields = new Hashtable
+            {
+                { "Category", CategoryDataField },
+                { "Editor", EditorDataField },
+                { "Name", NameDataField },
+                { "Required", RequiredDataField },
+                { "Type", TypeDataField },
+                { "ValidationExpression", ValidationExpressionDataField },
+                { "Value", ValueDataField },
+                { "ProfileVisibility", VisibilityDataField },
+                { "Length", LengthDataField }
+            };
 
             return fields;
         }

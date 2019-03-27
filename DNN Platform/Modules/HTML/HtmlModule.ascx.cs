@@ -289,17 +289,21 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             get
             {
                 // add the Edit Text action
-                var Actions = new ModuleActionCollection();
-                Actions.Add(GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "",
-                            EditUrl(),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
+                var Actions = new ModuleActionCollection
+                {
+                    {
+                        GetNextActionID(),
+                        Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
+                        ModuleActionType.AddContent,
+                        "",
+                        "",
+                        EditUrl(),
+                        false,
+                        SecurityAccessLevel.Edit,
+                        true,
+                        false
+                    }
+                };
 
                 // get the content
                 var objHTML = new HtmlTextController();

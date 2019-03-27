@@ -270,13 +270,15 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private void ExchangeCodeForToken()
         {
-            IList<QueryParameter> parameters = new List<QueryParameter>();
-            parameters.Add(new QueryParameter(OAuthClientIdKey, APIKey));
-            parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())));
-            //DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
-            parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(APISecret.ToString())));
-            parameters.Add(new QueryParameter(OAuthGrantTyepKey, "authorization_code"));
-            parameters.Add(new QueryParameter(OAuthCodeKey, VerificationCode));
+            IList<QueryParameter> parameters = new List<QueryParameter>
+            {
+                new QueryParameter(OAuthClientIdKey, APIKey),
+                new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())),
+                //DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
+                new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(APISecret.ToString())),
+                new QueryParameter(OAuthGrantTyepKey, "authorization_code"),
+                new QueryParameter(OAuthCodeKey, VerificationCode)
+            };
 
             //DNN-6265 Support for OAuth V2 optional parameter
             if (!String.IsNullOrEmpty(APIResource))
