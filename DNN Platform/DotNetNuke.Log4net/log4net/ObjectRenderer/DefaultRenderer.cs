@@ -208,7 +208,7 @@ namespace log4net.ObjectRenderer
 			}
 
 			string str = obj.ToString();
-			writer.Write( (str==null) ? SystemInfo.NullText : str );
+			writer.Write( str ?? SystemInfo.NullText );
 		}
 
 		#endregion

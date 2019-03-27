@@ -425,7 +425,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				if (IsEnabledFor(level))
 				{
-                    ForcedLog((callerStackBoundaryDeclaringType != null) ? callerStackBoundaryDeclaringType : declaringType, level, message, exception);
+                    ForcedLog(callerStackBoundaryDeclaringType ?? declaringType, level, message, exception);
 				}
 			}
 			catch (Exception ex)

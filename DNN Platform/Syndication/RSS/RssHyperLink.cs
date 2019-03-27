@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Syndication
         protected override void OnPreRender(EventArgs e)
         {
             // modify the NavigateUrl to include optional user name and channel name
-            string channel = _channelName != null ? _channelName : string.Empty;
+            string channel = _channelName ?? string.Empty;
             string user = _includeUserName ? Context.User.Identity.Name : string.Empty;
             NavigateUrl = RssHttpHandlerHelper.GenerateChannelLink(NavigateUrl, channel, user);
 
