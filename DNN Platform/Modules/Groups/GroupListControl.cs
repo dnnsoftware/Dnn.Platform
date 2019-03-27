@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         private static object GetOrderByProperty(object obj, string property)
         {
             var propertyInfo = obj.GetType().GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null);
+            return propertyInfo?.GetValue(obj, null);
         }
 
         protected override void Render(HtmlTextWriter output)

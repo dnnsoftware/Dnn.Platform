@@ -28,12 +28,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public ModuleInfo ActiveModule
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
+            get { return ModuleContext?.Configuration; }
         }
 
         public TabInfo ActivePage
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
+            get { return PortalSettings?.ActiveTab; }
         }
 
         public Page DnnPage { get; set; }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public PortalSettings PortalSettings
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
+            get { return ModuleContext?.PortalSettings; }
         }
 
         protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
@@ -71,13 +71,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get
             {
                 var actionInvoker = ActionInvoker as ResultCapturingActionInvoker;
-                return (actionInvoker != null) ?  actionInvoker.ResultOfLastInvoke : null;
+                return actionInvoker?.ResultOfLastInvoke;
             }
         }
 
         public new UserInfo User
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
+            get { return PortalSettings?.UserInfo; }
         }
 
         protected override ViewResult View(IView view, object model)

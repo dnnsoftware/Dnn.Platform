@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Portals
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
             var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
-            var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
+            var items = HttpContext.Current?.Items;
             if (items != null && items.Contains(key))
             {
                 ActiveTab = items[key] as TabInfo;

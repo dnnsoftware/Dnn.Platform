@@ -48,12 +48,12 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public ModuleInfo ActiveModule
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
+            get { return ModuleContext?.Configuration; }
         }
 
         public TabInfo ActivePage
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
+            get { return PortalSettings?.ActiveTab; }
         }
 
         public Page DnnPage { get; set; }
@@ -71,14 +71,14 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public PortalSettings PortalSettings
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
+            get { return ModuleContext?.PortalSettings; }
         }
 
         public RouteCollection RouteCollection { get { return HtmlHelper.RouteCollection; } }
 
         public UserInfo User
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
+            get { return PortalSettings?.UserInfo; }
         }
 
         public dynamic ViewBag { get { return HtmlHelper.ViewBag; } }

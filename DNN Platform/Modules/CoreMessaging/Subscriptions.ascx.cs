@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         public ModuleInfo ModuleConfiguration
         {
-            get { return ModuleContext != null ? ModuleContext.Configuration : null; }
+            get { return ModuleContext?.Configuration; }
             set
             {
                 ModuleContext.Configuration = value;
@@ -164,11 +164,9 @@ namespace DotNetNuke.Modules.CoreMessaging
                     ? moduleInfo.DesktopModule.FolderName
                     : null;
 
-            var moduleTitle = moduleInfo != null
-                ? moduleInfo.ModuleTitle
-                : null;
+            var moduleTitle = moduleInfo?.ModuleTitle;
 
-            var moduleId = moduleInfo != null ? moduleInfo.ModuleID : Null.NullInteger;
+            var moduleId = moduleInfo?.ModuleID ?? Null.NullInteger;
 
             var moduleSettings = moduleInfo != null ? moduleInfo.ModuleSettings : new Hashtable();
 

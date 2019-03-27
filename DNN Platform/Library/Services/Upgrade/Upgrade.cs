@@ -6043,7 +6043,7 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ActivatingLicense", Localization.Localization.GlobalResourceFile));
 
                 var installConfig = InstallController.Instance.GetInstallConfig();
-                var licenseConfig = (installConfig != null) ? installConfig.License : null;
+                var licenseConfig = installConfig?.License;
 
                 if (licenseConfig != null)
                 {

@@ -132,7 +132,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var searchModule = GetSearchModule();
-            return searchModule != null ? searchModule.ModuleSettings : null;
+            return searchModule?.ModuleSettings;
         }
 
         private bool GetBooleanSetting(string settingName, bool defaultValue)

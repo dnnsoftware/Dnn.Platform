@@ -507,7 +507,7 @@ namespace DotNetNuke.Services.Cache
         public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
                                    CacheItemRemovedCallback onRemoveCallback)
 		{
-		    Cache.Insert(cacheKey, itemToCache, dependency == null ? null : dependency.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
+		    Cache.Insert(cacheKey, itemToCache, dependency?.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
 		}
 
 	    /// <summary>

@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
 		private TabInfo LocaliseTab(TabInfo tab)
 		{
-			return (LocalisationApi == null) ? null : LocalisationApi.LocaliseTab(tab, portalId);
+			return LocalisationApi?.LocaliseTab(tab, portalId);
 		}
 	}
 }

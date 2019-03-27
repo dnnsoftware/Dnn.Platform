@@ -1955,7 +1955,7 @@ namespace DotNetNuke.Services.Localization
         {
             try
             {
-                var response = HttpContext.Current == null ? null : HttpContext.Current.Response;
+                var response = HttpContext.Current?.Response;
                 if (response == null)
                 {
                     return;

@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Search.Internals
             var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
             var list = CBO.GetCachedObject<IList<SearchStopWords>>(cachArg, GetSearchStopWordsCallBack);
-            return list == null ? null : list.FirstOrDefault();
+            return list?.FirstOrDefault();
         }
 
         public int AddSearchStopWords(string stopWords, int portalId, string cultureCode)

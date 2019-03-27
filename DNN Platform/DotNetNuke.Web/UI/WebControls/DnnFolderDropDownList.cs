@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                var folderName = value != null ? value.FolderName : null;
+                var folderName = value?.FolderName;
                 if (folderName == string.Empty)
                 {
                     folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;

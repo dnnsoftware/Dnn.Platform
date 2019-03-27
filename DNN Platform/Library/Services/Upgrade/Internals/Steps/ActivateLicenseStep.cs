@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             Details = Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
-            var licenseConfig = (installConfig != null) ? installConfig.License : null;            
+            var licenseConfig = installConfig?.License;            
 
             if (licenseConfig != null && (!string.IsNullOrEmpty(licenseConfig.AccountEmail) && !string.IsNullOrEmpty(licenseConfig.InvoiceNumber)
                                 && !string.IsNullOrEmpty(licenseConfig.LicenseType) && !string.IsNullOrEmpty(licenseConfig.WebServer)))
