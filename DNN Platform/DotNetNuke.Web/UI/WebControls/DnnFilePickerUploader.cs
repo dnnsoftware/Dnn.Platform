@@ -201,7 +201,7 @@ namespace DotNetNuke.Web.UI.WebControls
 	    {
 		    get
 		    {
-			    return !_portalId.HasValue ? PortalSettings.Current.PortalId : _portalId.Value;
+			    return _portalId ?? PortalSettings.Current.PortalId;
 		    }
 			set
 			{

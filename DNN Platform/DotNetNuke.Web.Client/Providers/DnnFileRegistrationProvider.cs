@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Client.Providers
             get
             {
                 var settingsVersion = dnnSettingsHelper.AreCompositeFilesEnabled();
-                return settingsVersion.HasValue ? settingsVersion.Value : base.EnableCompositeFiles;
+                return settingsVersion ?? base.EnableCompositeFiles;
             }
         }
     }

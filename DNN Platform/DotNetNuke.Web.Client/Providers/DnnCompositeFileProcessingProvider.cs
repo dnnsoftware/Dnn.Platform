@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.Client.Providers
             get
             {
                 var enableCssMinification = clientResourceSettings.EnableCssMinification();
-                return enableCssMinification.HasValue ? enableCssMinification.Value : EnableCssMinify;
+                return enableCssMinification ?? EnableCssMinify;
             }
         }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.Client.Providers
             get
             {
                 var enableJsMinification = clientResourceSettings.EnableJsMinification();
-                return enableJsMinification.HasValue ? enableJsMinification.Value : EnableJsMinify;
+                return enableJsMinification ?? EnableJsMinify;
             }
         }
     }
