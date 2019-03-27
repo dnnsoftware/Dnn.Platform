@@ -204,12 +204,14 @@ namespace log4net.Layout
 			};
 			var xmlWriter = XmlWriter.Create(new ProtectCloseTextWriter(writer), settings);
 #else
-			XmlTextWriter xmlWriter = new XmlTextWriter(new ProtectCloseTextWriter(writer));
-			xmlWriter.Formatting = Formatting.None;
-			xmlWriter.Namespaces = false;
+            XmlTextWriter xmlWriter = new XmlTextWriter(new ProtectCloseTextWriter(writer))
+            {
+                Formatting = Formatting.None,
+                Namespaces = false
+            };
 #endif
-			// Write the event to the writer
-			FormatXml(xmlWriter, loggingEvent);
+            // Write the event to the writer
+            FormatXml(xmlWriter, loggingEvent);
 
 			xmlWriter.WriteWhitespace(SystemInfo.NewLine);
 
