@@ -78,8 +78,10 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         skinpath = ((Skin) Parent).SkinPath;
                     }
-                    var objLink = new HtmlLink();
-                    objLink.ID = Globals.CreateValidID(Name);
+                    var objLink = new HtmlLink
+                    {
+                        ID = Globals.CreateValidID(Name)
+                    };
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
                     objLink.Href = skinpath + StyleSheet;
@@ -123,10 +125,14 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else
             {
-                var openif = new Literal();
-                openif.Text = string.Format("<!--[if {0}]>", Condition);
-                var closeif = new Literal();
-                closeif.Text = "<![endif]-->";
+                var openif = new Literal
+                {
+                    Text = string.Format("<!--[if {0}]>", Condition)
+                };
+                var closeif = new Literal
+                {
+                    Text = "<![endif]-->"
+                };
                 if (InsertAt == -1)
                 {
                     cssRoot.Controls.Add(openif);

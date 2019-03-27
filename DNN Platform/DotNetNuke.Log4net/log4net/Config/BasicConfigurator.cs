@@ -160,13 +160,14 @@ namespace log4net.Config
             using (new LogLog.LogReceivedAdapter(configurationMessages))
             {
                 // Create the layout
-                PatternLayout layout = new PatternLayout();
-                layout.ConversionPattern = PatternLayout.DetailConversionPattern;
+                PatternLayout layout = new PatternLayout
+                {
+                    ConversionPattern = PatternLayout.DetailConversionPattern
+                };
                 layout.ActivateOptions();
 
                 // Create the appender
-                ConsoleAppender appender = new ConsoleAppender();
-                appender.Layout = layout;
+                ConsoleAppender appender = new ConsoleAppender {Layout = layout};
                 appender.ActivateOptions();
 
                 InternalConfigure(repository, appender);

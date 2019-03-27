@@ -157,9 +157,11 @@ namespace log4net.Util
 			{
 				result = ((StackFrame)(stack.Pop())).Message;
 			}
-			LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
-			ltcs.m_stack = stack;
-			m_registerNew(m_propertyKey, ltcs);
+            LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_propertyKey, m_registerNew)
+            {
+                m_stack = stack
+            };
+            m_registerNew(m_propertyKey, ltcs);
 			return result;
 		}
 
@@ -192,9 +194,11 @@ namespace log4net.Util
 			Stack stack = new Stack(new Stack(m_stack));
 			stack.Push(new StackFrame(message, (stack.Count > 0) ? (StackFrame)stack.Peek() : null));
 
-			LogicalThreadContextStack contextStack = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
-			contextStack.m_stack = stack;
-			m_registerNew(m_propertyKey, contextStack);
+            LogicalThreadContextStack contextStack = new LogicalThreadContextStack(m_propertyKey, m_registerNew)
+            {
+                m_stack = stack
+            };
+            m_registerNew(m_propertyKey, contextStack);
 			return new AutoPopStackFrame(contextStack, stack.Count - 1);
 		}
 
@@ -414,9 +418,11 @@ namespace log4net.Util
 					{
 						stack.Pop();
 					}
-					LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_logicalThreadContextStack.m_propertyKey, m_logicalThreadContextStack.m_registerNew);
-					ltcs.m_stack = stack;
-					m_logicalThreadContextStack.m_registerNew(m_logicalThreadContextStack.m_propertyKey,
+                    LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_logicalThreadContextStack.m_propertyKey, m_logicalThreadContextStack.m_registerNew)
+                    {
+                        m_stack = stack
+                    };
+                    m_logicalThreadContextStack.m_registerNew(m_logicalThreadContextStack.m_propertyKey,
 						ltcs);
 				}
 			}

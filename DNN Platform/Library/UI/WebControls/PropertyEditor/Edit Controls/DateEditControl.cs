@@ -186,10 +186,12 @@ namespace DotNetNuke.UI.WebControls
 
             Controls.Add(new LiteralControl("&nbsp;"));
 
-            linkCalendar = new HyperLink();
-            linkCalendar.CssClass = "CommandButton";
-            linkCalendar.Text = "<img src=\"" + Globals.ApplicationPath + "/images/calendar.png\" border=\"0\" />&nbsp;&nbsp;" + Localization.GetString("Calendar");
-            linkCalendar.NavigateUrl = Calendar.InvokePopupCal(dateField);
+            linkCalendar = new HyperLink
+            {
+                CssClass = "CommandButton",
+                Text = "<img src=\"" + Globals.ApplicationPath + "/images/calendar.png\" border=\"0\" />&nbsp;&nbsp;" + Localization.GetString("Calendar"),
+                NavigateUrl = Calendar.InvokePopupCal(dateField)
+            };
             Controls.Add(linkCalendar);
         }
 
@@ -222,10 +224,12 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="e">An EventArgs object</param>
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DateValue;
-            args.OldValue = OldDateValue;
-            args.StringValue = DateValue.ToString(CultureInfo.InvariantCulture);
+            var args = new PropertyEditorEventArgs(Name)
+            {
+                Value = DateValue,
+                OldValue = OldDateValue,
+                StringValue = DateValue.ToString(CultureInfo.InvariantCulture)
+            };
             base.OnValueChanged(args);
         }
 

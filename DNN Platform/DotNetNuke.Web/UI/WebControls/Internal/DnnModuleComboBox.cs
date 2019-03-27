@@ -179,9 +179,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            _moduleCombo = new DnnComboBox();
-            _moduleCombo.DataValueField = "key";
-            _moduleCombo.DataTextField = "value";
+            _moduleCombo = new DnnComboBox
+            {
+                DataValueField = "key",
+                DataTextField = "value"
+            };
             Controls.Add(_moduleCombo);
         }
 

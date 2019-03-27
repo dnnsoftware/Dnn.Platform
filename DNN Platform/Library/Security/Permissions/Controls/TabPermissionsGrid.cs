@@ -184,13 +184,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
-            var objPermission = new TabPermissionInfo(permission);
-            objPermission.TabID = TabID;
-            objPermission.RoleID = roleId;
-            objPermission.RoleName = roleName;
-            objPermission.AllowAccess = allowAccess;
-            objPermission.UserID = userId;
-            objPermission.DisplayName = displayName;
+            var objPermission = new TabPermissionInfo(permission)
+            {
+                TabID = TabID,
+                RoleID = roleId,
+                RoleName = roleName,
+                AllowAccess = allowAccess,
+                UserID = userId,
+                DisplayName = displayName
+            };
             _TabPermissions.Add(objPermission, true);
 
             //Clear Permission List

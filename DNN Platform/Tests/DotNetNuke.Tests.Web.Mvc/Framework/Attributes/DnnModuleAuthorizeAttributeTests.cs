@@ -125,8 +125,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             _mockActionDescriptor.SetupGet(x => x.ControllerDescriptor).Returns(_mockControllerDescriptor.Object);
 
-            var moduleContext = new ModuleInstanceContext();
-            moduleContext.Configuration = new ModuleInfo();
+            var moduleContext = new ModuleInstanceContext
+            {
+                Configuration = new ModuleInfo()
+            };
             var fakeController = new Fakes.FakeDnnController { ModuleContext = moduleContext };
             var controllerContext = new ControllerContext(new RequestContext(), fakeController);
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);
@@ -150,8 +152,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             _mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             _mockActionDescriptor.SetupGet(x => x.ControllerDescriptor).Returns(_mockControllerDescriptor.Object);
 
-            var moduleContext = new ModuleInstanceContext();
-            moduleContext.Configuration = new ModuleInfo();
+            var moduleContext = new ModuleInstanceContext
+            {
+                Configuration = new ModuleInfo()
+            };
             var fakeController = new Fakes.FakeDnnController { ModuleContext = moduleContext };
             var controllerContext = new ControllerContext(new RequestContext(), fakeController);
             var context = new AuthorizationContext(controllerContext, _mockActionDescriptor.Object);

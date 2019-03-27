@@ -226,10 +226,14 @@ namespace DotNetNuke.Services.Installer.Log
             foreach (LogEntry entry in Logs)
             {
                 var tr = new HtmlTableRow();
-                var tdType = new HtmlTableCell();
-                tdType.InnerText = Util.GetLocalizedString("LOG.PALogger." + entry.Type);
-                var tdDescription = new HtmlTableCell();
-                tdDescription.InnerText = entry.Description;
+                var tdType = new HtmlTableCell
+                {
+                    InnerText = Util.GetLocalizedString("LOG.PALogger." + entry.Type)
+                };
+                var tdDescription = new HtmlTableCell
+                {
+                    InnerText = entry.Description
+                };
                 tr.Cells.Add(tdType);
                 tr.Cells.Add(tdDescription);
                 switch (entry.Type)

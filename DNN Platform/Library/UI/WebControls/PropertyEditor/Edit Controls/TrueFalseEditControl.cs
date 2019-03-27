@@ -145,10 +145,12 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = BooleanValue;
-            args.OldValue = OldBooleanValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(Name)
+            {
+                Value = BooleanValue,
+                OldValue = OldBooleanValue,
+                StringValue = StringValue
+            };
             base.OnValueChanged(args);
         }
 

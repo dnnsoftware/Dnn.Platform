@@ -67,11 +67,13 @@ namespace DotNetNuke.Services.Syndication
             Channel["webMaster"] = Settings.Email;
             
             IList<SearchResult> searchResults = null;
-            var query = new SearchQuery();
-            query.PortalIds = new[] { Settings.PortalId };
-            query.TabId = TabId;
-            query.ModuleId = ModuleId;
-            query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
+            var query = new SearchQuery
+            {
+                PortalIds = new[] { Settings.PortalId },
+                TabId = TabId,
+                ModuleId = ModuleId,
+                SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId }
+            };
 
             try
             {

@@ -146,13 +146,15 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
-            var objPermission = new DesktopModulePermissionInfo(permission);
-            objPermission.PortalDesktopModuleID = PortalDesktopModuleID;
-            objPermission.RoleID = roleId;
-            objPermission.RoleName = roleName;
-            objPermission.AllowAccess = allowAccess;
-            objPermission.UserID = userId;
-            objPermission.DisplayName = displayName;
+            var objPermission = new DesktopModulePermissionInfo(permission)
+            {
+                PortalDesktopModuleID = PortalDesktopModuleID,
+                RoleID = roleId,
+                RoleName = roleName,
+                AllowAccess = allowAccess,
+                UserID = userId,
+                DisplayName = displayName
+            };
             _DesktopModulePermissions.Add(objPermission, true);
 
             //Clear Permission List

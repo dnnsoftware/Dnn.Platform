@@ -882,8 +882,10 @@ namespace DotNetNuke.Common
             int intColumn;
             int intKeyColumn;
             // create dataset
-            var crosstab = new DataSet(DataSetName);
-            crosstab.Namespace = "NetFrameWork";
+            var crosstab = new DataSet(DataSetName)
+            {
+                Namespace = "NetFrameWork"
+            };
             // create table
             var tab = new DataTable(DataSetName);
             // split fixed columns
@@ -904,8 +906,10 @@ namespace DotNetNuke.Common
                 for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                 {
                     arrField = arrVariableColumns[intColumn].Split('|');
-                    var col = new DataColumn(arrField[0], Type.GetType("System." + arrField[1]));
-                    col.AllowDBNull = true;
+                    var col = new DataColumn(arrField[0], Type.GetType("System." + arrField[1]))
+                    {
+                        AllowDBNull = true
+                    };
                     tab.Columns.Add(col);
                 }
             }
@@ -1426,8 +1430,10 @@ namespace DotNetNuke.Common
             {
                 PortalId = Host.HostPortalID;
                 // use the host portal
-                objPortalAliasInfo = new PortalAliasInfo();
-                objPortalAliasInfo.PortalID = PortalId;
+                objPortalAliasInfo = new PortalAliasInfo
+                {
+                    PortalID = PortalId
+                };
             }
             // load the PortalSettings into current context
             return new PortalSettings(TabId, objPortalAliasInfo);

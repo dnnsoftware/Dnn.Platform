@@ -261,10 +261,12 @@ namespace DotNetNuke.Services.Sitemap
                 }
 
                 // Initialize writer
-                var settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.Encoding = Encoding.UTF8;
-                settings.OmitXmlDeclaration = false;
+                var settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    Encoding = Encoding.UTF8,
+                    OmitXmlDeclaration = false
+                };
 
                 using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {
@@ -309,10 +311,12 @@ namespace DotNetNuke.Services.Sitemap
             using (sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + CacheFileName, false, Encoding.UTF8))
             {
                 // Initialize writer
-                var settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.Encoding = Encoding.UTF8;
-                settings.OmitXmlDeclaration = false;
+                var settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    Encoding = Encoding.UTF8,
+                    OmitXmlDeclaration = false
+                };
 
                 using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {

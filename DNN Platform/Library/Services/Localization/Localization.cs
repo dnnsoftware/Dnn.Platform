@@ -579,13 +579,15 @@ namespace DotNetNuke.Services.Localization
 
             if (role == null)
             {
-                role = new RoleInfo();
-                role.RoleGroupID = Null.NullInteger;
-                role.PortalID = portalID;
-                role.RoleName = roleName;
-                role.Description = string.Format("A role for {0} translators", language.EnglishName);
-                role.SecurityMode = SecurityMode.SecurityRole;
-                role.Status = RoleStatus.Approved;
+                role = new RoleInfo
+                {
+                    RoleGroupID = Null.NullInteger,
+                    PortalID = portalID,
+                    RoleName = roleName,
+                    Description = string.Format("A role for {0} translators", language.EnglishName),
+                    SecurityMode = SecurityMode.SecurityRole,
+                    Status = RoleStatus.Approved
+                };
                 RoleController.Instance.AddRole(role);
             }
 

@@ -191,8 +191,10 @@ namespace DotNetNuke.Tests.Content
             var mockDataService = new Mock<IDataService>();
             var vocabularyController = new VocabularyController(mockDataService.Object);
 
-            Vocabulary vocabulary = new Vocabulary();
-            vocabulary.VocabularyId = Null.NullInteger;
+            Vocabulary vocabulary = new Vocabulary
+            {
+                VocabularyId = Null.NullInteger
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => vocabularyController.DeleteVocabulary(vocabulary));

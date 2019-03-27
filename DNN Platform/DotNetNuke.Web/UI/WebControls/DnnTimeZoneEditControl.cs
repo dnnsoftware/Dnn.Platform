@@ -55,8 +55,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            TimeZones = new DnnTimeZoneComboBox();
-            TimeZones.ViewStateMode = ViewStateMode.Disabled;
+            TimeZones = new DnnTimeZoneComboBox
+            {
+                ViewStateMode = ViewStateMode.Disabled
+            };
 
             Controls.Clear();
             Controls.Add(TimeZones);
@@ -80,10 +82,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = TimeZoneInfo.FindSystemTimeZoneById(StringValue);
-            args.OldValue = OldStringValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(Name)
+            {
+                Value = TimeZoneInfo.FindSystemTimeZoneById(StringValue),
+                OldValue = OldStringValue,
+                StringValue = StringValue
+            };
             base.OnValueChanged(args);
         }
 

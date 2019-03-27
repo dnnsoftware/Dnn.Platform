@@ -233,8 +233,10 @@ namespace DotNetNuke.UI.WebControls
                 case ListItemType.EditItem:
                     if (EditMode == ImageCommandColumnEditMode.URL)
                     {
-                        var hypLink = new HyperLink();
-                        hypLink.ToolTip = Text;
+                        var hypLink = new HyperLink
+                        {
+                            ToolTip = Text
+                        };
                         if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
                         {
                             var img = new Image();
@@ -280,8 +282,10 @@ namespace DotNetNuke.UI.WebControls
                         }
                         if (!String.IsNullOrEmpty(Text) && !ShowImage)
                         {
-                            var colLink = new LinkButton();
-                            colLink.ToolTip = Text;
+                            var colLink = new LinkButton
+                            {
+                                ToolTip = Text
+                            };
                             if (!String.IsNullOrEmpty(OnClickJS))
                             {
                                 ClientAPI.AddButtonConfirm(colLink, OnClickJS);

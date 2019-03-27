@@ -377,8 +377,10 @@ namespace DotNetNuke.Services.Scheduling
 			                }
 
 			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
-                            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
-                            scheduleHistoryItem.StartDate = DateTime.Now;
+                            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem)
+                            {
+                                StartDate = DateTime.Now
+                            };
                             delegateFunc.BeginInvoke(scheduleHistoryItem, null, null);
                             Thread.Sleep(1000);
 
@@ -880,8 +882,10 @@ namespace DotNetNuke.Services.Scheduling
                     //Loop until KeepRunning = false
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
-                        var log = new LogInfo();
-                        log.LogTypeKey = "SCHEDULER_STARTED";
+                        var log = new LogInfo
+                        {
+                            LogTypeKey = "SCHEDULER_STARTED"
+                        };
                         LogController.Instance.AddLog(log);
                     }
 

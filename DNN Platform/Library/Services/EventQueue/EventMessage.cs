@@ -271,8 +271,10 @@ namespace DotNetNuke.Services.EventQueue
         {
             string attName = Null.NullString;
             string attValue = Null.NullString;
-            var settings = new XmlReaderSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
+            var settings = new XmlReaderSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
             XmlReader reader = XmlReader.Create(new StringReader(configXml));
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
@@ -305,9 +307,11 @@ namespace DotNetNuke.Services.EventQueue
 
         public string SerializeAttributes()
         {
-            var settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            settings.OmitXmlDeclaration = true;
+            var settings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true
+            };
 
             var sb = new StringBuilder();
 

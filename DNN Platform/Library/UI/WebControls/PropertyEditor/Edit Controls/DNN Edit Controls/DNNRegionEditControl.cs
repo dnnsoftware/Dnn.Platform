@@ -183,11 +183,13 @@ namespace DotNetNuke.UI.WebControls
 
 		protected override void OnDataChanged(EventArgs e)
 		{
-			PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name);
-			args.Value = StringValue;
-			args.OldValue = OldStringValue;
-			args.StringValue = StringValue;
-			base.OnValueChanged(args);
+            PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name)
+            {
+                Value = StringValue,
+                OldValue = OldStringValue,
+                StringValue = StringValue
+            };
+            base.OnValueChanged(args);
 		}
 
 		protected override void CreateChildControls()

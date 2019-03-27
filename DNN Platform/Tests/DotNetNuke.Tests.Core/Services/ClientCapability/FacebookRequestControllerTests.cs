@@ -114,19 +114,23 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Get_Request()
 		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "GET";
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "")
+            {
+                RequestType = "GET"
+            };
 
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 			Assert.IsNull(request);
 		}
 
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Invalid_Request()
 		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "POST";
-			SetReadonly(httpRequest.Form, false);
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "")
+            {
+                RequestType = "POST"
+            };
+            SetReadonly(httpRequest.Form, false);
 			httpRequest.Form.Add("signed_request", _requestDics["Invalid"]);
 
 			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
@@ -136,9 +140,11 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Valid_Request()
 		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "POST";
-			SetReadonly(httpRequest.Form, false);
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "")
+            {
+                RequestType = "POST"
+            };
+            SetReadonly(httpRequest.Form, false);
 			httpRequest.Form.Add("signed_request", _requestDics["Valid"]);
 
 			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);

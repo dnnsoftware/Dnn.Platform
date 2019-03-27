@@ -188,8 +188,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void ExistsFolder_Returns_True_When_Folder_Exists()
         {
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
 
             _folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(new FolderInfo());
 
@@ -201,8 +203,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void ExistsFolder_Returns_False_When_Folder_Does_Not_Exist()
         {
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
 
             FolderInfo folder = null;
             _folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(folder);
@@ -422,8 +426,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Calls_FolderManager_GetFoldersByParentFolder()
         {
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
 
             _folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(_folderInfo.Object);
             _folderManager.Setup(fm => fm.GetFolders(_folderInfo.Object)).Returns(new List<IFolderInfo>());
@@ -436,8 +442,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Count_Equals_DataProvider_GetFoldersByParentFolder_Count()
         {
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
 
             var subFolders = new List<IFolderInfo>() {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
@@ -460,8 +468,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 Constants.FOLDER_OtherValidSubFolderRelativePath
             };
 
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
 
             var subFolders = new List<IFolderInfo> {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },

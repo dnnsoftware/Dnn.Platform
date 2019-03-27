@@ -2153,8 +2153,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             _folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
-            IFolderInfo destinationFolder = new FolderInfo();
-            destinationFolder.FolderPath = Constants.FOLDER_ValidFolderRelativePath;
+            IFolderInfo destinationFolder = new FolderInfo
+            {
+                FolderPath = Constants.FOLDER_ValidFolderRelativePath
+            };
 
             _pathUtils.Setup(pu => pu.FormatFolderPath(Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
@@ -2169,10 +2171,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             _folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
             _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            
-            IFolderInfo destinationFolder = new FolderInfo();
-            destinationFolder.FolderPath = Constants.FOLDER_OtherValidFolderRelativePath;
-            destinationFolder.FolderMappingID = Constants.FOLDER_ValidFolderMappingID;
+
+            IFolderInfo destinationFolder = new FolderInfo
+            {
+                FolderPath = Constants.FOLDER_OtherValidFolderRelativePath,
+                FolderMappingID = Constants.FOLDER_ValidFolderMappingID
+            };
 
             _pathUtils.Setup(pu => pu.FormatFolderPath(Constants.FOLDER_OtherValidFolderRelativePath)).Returns(Constants.FOLDER_OtherValidFolderRelativePath);
 

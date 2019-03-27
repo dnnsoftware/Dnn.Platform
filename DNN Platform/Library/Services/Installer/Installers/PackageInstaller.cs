@@ -96,8 +96,10 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             IsValid = true;
             DeleteFiles = Null.NullBoolean;
-            Package = new PackageInfo(info);
-            Package.Manifest = packageManifest;
+            Package = new PackageInfo(info)
+            {
+                Manifest = packageManifest
+            };
 
             if (!string.IsNullOrEmpty(packageManifest))
             {

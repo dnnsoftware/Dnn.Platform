@@ -616,10 +616,12 @@ namespace DotNetNuke.Common.Utilities
        /// -----------------------------------------------------------------------------
         public static XmlWriterSettings GetXmlWriterSettings(ConformanceLevel conformance)
         {
-            var settings = new XmlWriterSettings();
-            settings.ConformanceLevel = conformance;
-            settings.OmitXmlDeclaration = true;
-            settings.Indent = true;
+            var settings = new XmlWriterSettings
+            {
+                ConformanceLevel = conformance,
+                OmitXmlDeclaration = true,
+                Indent = true
+            };
             return settings;
         }
 

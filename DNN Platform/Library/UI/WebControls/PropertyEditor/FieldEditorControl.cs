@@ -357,10 +357,12 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="editInfo">The EditorInfo object for this control</param>
 		private void BuildDiv(EditorInfo editInfo)
 		{
-			var propLabel = new PropertyLabelControl();
-            propLabel.ViewStateMode = ViewStateMode.Disabled;
+            var propLabel = new PropertyLabelControl
+            {
+                ViewStateMode = ViewStateMode.Disabled
+            };
 
-			var propEditor = BuildEditor(editInfo);
+            var propEditor = BuildEditor(editInfo);
 			var visibility = BuildVisibility(editInfo);
 
 			if (editInfo.LabelMode != LabelMode.None)
@@ -579,10 +581,12 @@ namespace DotNetNuke.UI.WebControls
 			BuildValidators(editInfo, propEditor.ID);
 
 			var validatorsRow = new TableRow();
-			var validatorsCell = new TableCell();
-			validatorsCell.ColumnSpan = 2;
-			//Add the Validators to the editor cell
-			foreach (BaseValidator validator in Validators)
+            var validatorsCell = new TableCell
+            {
+                ColumnSpan = 2
+            };
+            //Add the Validators to the editor cell
+            foreach (BaseValidator validator in Validators)
 			{
 				validatorsCell.Controls.Add(validator);
 			}
@@ -607,11 +611,13 @@ namespace DotNetNuke.UI.WebControls
 			//Add Required Validators
 			if (editInfo.Required)
 			{
-				var reqValidator = new RequiredFieldValidator();
-				reqValidator.ID = editInfo.Name + "_Req";
-				reqValidator.ControlToValidate = targetId;
-				reqValidator.Display = ValidatorDisplay.Dynamic;
-				reqValidator.ControlStyle.CopyFrom(ErrorStyle);
+                var reqValidator = new RequiredFieldValidator
+                {
+                    ID = editInfo.Name + "_Req",
+                    ControlToValidate = targetId,
+                    Display = ValidatorDisplay.Dynamic
+                };
+                reqValidator.ControlStyle.CopyFrom(ErrorStyle);
 			    if(String.IsNullOrEmpty(reqValidator.CssClass))
 			    {
 			        reqValidator.CssClass = "dnnFormMessage dnnFormError";
@@ -625,12 +631,14 @@ namespace DotNetNuke.UI.WebControls
 			//Add Regular Expression Validators
 			if (!String.IsNullOrEmpty(editInfo.ValidationExpression))
 			{
-				var regExValidator = new RegularExpressionValidator();
-				regExValidator.ID = editInfo.Name + "_RegEx";
-				regExValidator.ControlToValidate = targetId;
-				regExValidator.ValidationExpression = editInfo.ValidationExpression;
-				regExValidator.Display = ValidatorDisplay.Dynamic;
-				regExValidator.ControlStyle.CopyFrom(ErrorStyle);
+                var regExValidator = new RegularExpressionValidator
+                {
+                    ID = editInfo.Name + "_RegEx",
+                    ControlToValidate = targetId,
+                    ValidationExpression = editInfo.ValidationExpression,
+                    Display = ValidatorDisplay.Dynamic
+                };
+                regExValidator.ControlStyle.CopyFrom(ErrorStyle);
 			    if(String.IsNullOrEmpty(regExValidator.CssClass))
 			    {
                     regExValidator.CssClass = "dnnFormMessage dnnFormError";

@@ -261,10 +261,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         /// <param name="e">An EventArgs object</param>
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DateValue;
-            args.OldValue = OldDateValue;
-            args.StringValue = DateValue.ToString(CultureInfo.InvariantCulture);
+            var args = new PropertyEditorEventArgs(Name)
+            {
+                Value = DateValue,
+                OldValue = OldDateValue,
+                StringValue = DateValue.ToString(CultureInfo.InvariantCulture)
+            };
             base.OnValueChanged(args);
         }
 

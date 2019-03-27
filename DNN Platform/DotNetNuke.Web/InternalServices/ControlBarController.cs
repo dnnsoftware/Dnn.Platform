@@ -465,9 +465,11 @@ namespace DotNetNuke.Web.InternalServices
                 var cookie = Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
                 if (cookie != null && !string.IsNullOrEmpty(cookie["StayInEditMode"].Value))
                 {
-                    var expireCookie = new CookieHeaderValue("StayInEditMode", "");
-                    expireCookie.Expires = DateTimeOffset.Now.AddDays(-1);
-                    expireCookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
+                    var expireCookie = new CookieHeaderValue("StayInEditMode", "")
+                    {
+                        Expires = DateTimeOffset.Now.AddDays(-1),
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                    };
                     response.Headers.AddCookies(new List<CookieHeaderValue> { expireCookie });
                 }
             }

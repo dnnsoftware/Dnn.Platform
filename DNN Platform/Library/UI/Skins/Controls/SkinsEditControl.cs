@@ -182,18 +182,22 @@ namespace DotNetNuke.UI.Skins.Controls
             switch (eventArgument.Substring(0, 3))
             {
                 case "Del":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = DictionaryValue;
-                    args.OldValue = OldDictionaryValue;
-                    args.Key = int.Parse(eventArgument.Substring(7));
-                    args.Changed = true;
+                    args = new PropertyEditorEventArgs(Name)
+                    {
+                        Value = DictionaryValue,
+                        OldValue = OldDictionaryValue,
+                        Key = int.Parse(eventArgument.Substring(7)),
+                        Changed = true
+                    };
                     base.OnItemDeleted(args);
                     break;
                 case "Add":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = AddedItem;
-                    args.StringValue = AddedItem;
-                    args.Changed = true;
+                    args = new PropertyEditorEventArgs(Name)
+                    {
+                        Value = AddedItem,
+                        StringValue = AddedItem,
+                        Changed = true
+                    };
                     base.OnItemAdded(args);
                     break;
             }
@@ -213,11 +217,13 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DictionaryValue;
-            args.OldValue = OldDictionaryValue;
-            args.StringValue = "";
-            args.Changed = true;
+            var args = new PropertyEditorEventArgs(Name)
+            {
+                Value = DictionaryValue,
+                OldValue = OldDictionaryValue,
+                StringValue = "",
+                Changed = true
+            };
             base.OnValueChanged(args);
         }
 

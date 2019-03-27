@@ -206,17 +206,19 @@ namespace DotNetNuke.UI.Containers
             {
                 if (action != null && ActionManager.IsVisible(action))
                 {
-					//Create a new ActionCommandButton
-                    var actionButton = new ActionCommandButton();
+                    //Create a new ActionCommandButton
+                    var actionButton = new ActionCommandButton
+                    {
 
-                    //Set all the properties
-                    actionButton.ModuleAction = action;
-                    actionButton.ModuleControl = ModuleControl;
-                    actionButton.CommandName = CommandName;
-                    actionButton.CssClass = CssClass;
-                    actionButton.DisplayLink = DisplayLink;
-                    actionButton.DisplayIcon = DisplayIcon;
-                    actionButton.ImageUrl = ImageURL;
+                        //Set all the properties
+                        ModuleAction = action,
+                        ModuleControl = ModuleControl,
+                        CommandName = CommandName,
+                        CssClass = CssClass,
+                        DisplayLink = DisplayLink,
+                        DisplayIcon = DisplayIcon,
+                        ImageUrl = ImageURL
+                    };
 
                     //Add a handler for the Action Event
                     actionButton.Action += ActionButtonClick;

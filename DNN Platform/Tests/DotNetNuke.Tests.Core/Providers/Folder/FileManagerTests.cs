@@ -938,8 +938,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
 
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
+            var folderMapping = new FolderMappingInfo
+            {
+                FolderProviderType = Constants.FOLDER_ValidFolderProviderType
+            };
 
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
@@ -1003,8 +1005,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
 
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
+            var folderMapping = new FolderMappingInfo
+            {
+                FolderProviderType = Constants.FOLDER_ValidFolderProviderType
+            };
 
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 

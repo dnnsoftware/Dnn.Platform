@@ -147,10 +147,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private static void ProcessControls(XPathNavigator controlNav, string moduleFolder, ModuleDefinitionInfo definition)
         {
-            var moduleControl = new ModuleControlInfo();
-
-            moduleControl.ControlKey = Util.ReadElement(controlNav, "key");
-            moduleControl.ControlTitle = Util.ReadElement(controlNav, "title");
+            var moduleControl = new ModuleControlInfo
+            {
+                ControlKey = Util.ReadElement(controlNav, "key"),
+                ControlTitle = Util.ReadElement(controlNav, "title")
+            };
 
             //Write controlSrc
             string controlSrc = Util.ReadElement(controlNav, "src");
@@ -224,9 +225,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void ProcessModules(XPathNavigator moduleNav, string moduleFolder)
         {
-            var definition = new ModuleDefinitionInfo();
-
-            definition.FriendlyName = Util.ReadElement(moduleNav, "friendlyname");
+            var definition = new ModuleDefinitionInfo
+            {
+                FriendlyName = Util.ReadElement(moduleNav, "friendlyname")
+            };
             string cacheTime = Util.ReadElement(moduleNav, "cachetime");
             if (!string.IsNullOrEmpty(cacheTime))
             {

@@ -196,13 +196,15 @@ namespace DotNetNuke.UI.ControlPanels
         /// -----------------------------------------------------------------------------
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
-            var objModulePermission = new ModulePermissionInfo();
-            objModulePermission.ModuleID = objModule.ModuleID;
-            objModulePermission.PermissionID = permission.PermissionID;
-            objModulePermission.RoleID = roleId;
-            objModulePermission.UserID = userId;
-            objModulePermission.PermissionKey = permission.PermissionKey;
-            objModulePermission.AllowAccess = allowAccess;
+            var objModulePermission = new ModulePermissionInfo
+            {
+                ModuleID = objModule.ModuleID,
+                PermissionID = permission.PermissionID,
+                RoleID = roleId,
+                UserID = userId,
+                PermissionKey = permission.PermissionKey,
+                AllowAccess = allowAccess
+            };
 
             //add the permission to the collection
             if (!objModule.ModulePermissions.Contains(objModulePermission))

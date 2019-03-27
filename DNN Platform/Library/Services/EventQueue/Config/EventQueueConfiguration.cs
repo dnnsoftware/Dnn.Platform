@@ -65,19 +65,23 @@ namespace DotNetNuke.Services.EventQueue.Config
                 xmlDoc.LoadXml(configXml);
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/PublishedEvents/Event"))
                 {
-                    var oPublishedEvent = new PublishedEvent();
-                    oPublishedEvent.EventName = xmlItem.SelectSingleNode("EventName").InnerText;
-                    oPublishedEvent.Subscribers = xmlItem.SelectSingleNode("Subscribers").InnerText;
+                    var oPublishedEvent = new PublishedEvent
+                    {
+                        EventName = xmlItem.SelectSingleNode("EventName").InnerText,
+                        Subscribers = xmlItem.SelectSingleNode("Subscribers").InnerText
+                    };
                     PublishedEvents.Add(oPublishedEvent.EventName, oPublishedEvent);
                 }
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/EventQueueSubscribers/Subscriber"))
                 {
-                    var oSubscriberInfo = new SubscriberInfo();
-                    oSubscriberInfo.ID = xmlItem.SelectSingleNode("ID").InnerText;
-                    oSubscriberInfo.Name = xmlItem.SelectSingleNode("Name").InnerText;
-                    oSubscriberInfo.Address = xmlItem.SelectSingleNode("Address").InnerText;
-                    oSubscriberInfo.Description = xmlItem.SelectSingleNode("Description").InnerText;
-                    oSubscriberInfo.PrivateKey = xmlItem.SelectSingleNode("PrivateKey").InnerText;
+                    var oSubscriberInfo = new SubscriberInfo
+                    {
+                        ID = xmlItem.SelectSingleNode("ID").InnerText,
+                        Name = xmlItem.SelectSingleNode("Name").InnerText,
+                        Address = xmlItem.SelectSingleNode("Address").InnerText,
+                        Description = xmlItem.SelectSingleNode("Description").InnerText,
+                        PrivateKey = xmlItem.SelectSingleNode("PrivateKey").InnerText
+                    };
                     EventQueueSubscribers.Add(oSubscriberInfo.ID, oSubscriberInfo);
                 }
             }
@@ -85,9 +89,11 @@ namespace DotNetNuke.Services.EventQueue.Config
 
         public static void RegisterEventSubscription(EventQueueConfiguration config, string eventname, SubscriberInfo subscriber)
         {
-            var e = new PublishedEvent();
-            e.EventName = eventname;
-            e.Subscribers = subscriber.ID;
+            var e = new PublishedEvent
+            {
+                EventName = eventname,
+                Subscribers = subscriber.ID
+            };
             config.PublishedEvents.Add(e.EventName, e);
             if (!config.EventQueueSubscribers.ContainsKey(subscriber.ID))
             {
@@ -97,11 +103,13 @@ namespace DotNetNuke.Services.EventQueue.Config
 
         private string Serialize()
         {
-            var settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Document;
-            settings.Indent = true;
-            settings.CloseOutput = true;
-            settings.OmitXmlDeclaration = false;
+            var settings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Document,
+                Indent = true,
+                CloseOutput = true,
+                OmitXmlDeclaration = false
+            };
 
             var sb = new StringBuilder();
 
@@ -159,10 +167,12 @@ namespace DotNetNuke.Services.EventQueue.Config
                 }
                 else
                 {
-					//make a default config file
-                    config = new EventQueueConfiguration();
-                    config.PublishedEvents = new Dictionary<string, PublishedEvent>();
-                    config.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
+                    //make a default config file
+                    config = new EventQueueConfiguration
+                    {
+                        PublishedEvents = new Dictionary<string, PublishedEvent>(),
+                        EventQueueSubscribers = new Dictionary<string, SubscriberInfo>()
+                    };
                     var subscriber = new SubscriberInfo("DNN Core");
                     RegisterEventSubscription(config, "Application_Start", subscriber);
                     RegisterEventSubscription(config, "Application_Start_FirstRequest", subscriber);

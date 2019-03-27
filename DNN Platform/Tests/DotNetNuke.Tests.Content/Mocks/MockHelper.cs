@@ -50,13 +50,15 @@ namespace DotNetNuke.Tests.Content.Mocks
 
                 for (int i = Constants.VOCABULARY_ValidVocabularyId; i < Constants.VOCABULARY_ValidVocabularyId + Constants.VOCABULARY_ValidCount; i++)
                 {
-                    Vocabulary vocabulary = new Vocabulary();
-                    vocabulary.VocabularyId = i;
-                    vocabulary.Name = ContentTestHelper.GetVocabularyName(i);
-                    vocabulary.Type = (i == Constants.VOCABULARY_HierarchyVocabularyId) ? VocabularyType.Hierarchy : VocabularyType.Simple;
-                    vocabulary.Description = ContentTestHelper.GetVocabularyName(i);
-                    vocabulary.ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId;
-                    vocabulary.Weight = Constants.VOCABULARY_ValidWeight;
+                    Vocabulary vocabulary = new Vocabulary
+                    {
+                        VocabularyId = i,
+                        Name = ContentTestHelper.GetVocabularyName(i),
+                        Type = (i == Constants.VOCABULARY_HierarchyVocabularyId) ? VocabularyType.Hierarchy : VocabularyType.Simple,
+                        Description = ContentTestHelper.GetVocabularyName(i),
+                        ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId,
+                        Weight = Constants.VOCABULARY_ValidWeight
+                    };
 
                     vocabularies.Add(vocabulary);
                 }

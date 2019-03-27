@@ -395,11 +395,13 @@ namespace DotNetNuke.Common.Utilities
             if (objMap == null)
             {
                 //Create an ObjectMappingInfo instance
-                objMap = new ObjectMappingInfo();
-                objMap.ObjectType = objType.FullName;
-                //Reflect on class to create Object Map
-                objMap.PrimaryKey = GetPrimaryKey(objType);
-                objMap.TableName = GetTableName(objType);
+                objMap = new ObjectMappingInfo
+                {
+                    ObjectType = objType.FullName,
+                    //Reflect on class to create Object Map
+                    PrimaryKey = GetPrimaryKey(objType),
+                    TableName = GetTableName(objType)
+                };
                 //Iterate through the objects properties and add each one to the ObjectMappingInfo's Properties Dictionary 
                 foreach (PropertyInfo objProperty in objType.GetProperties())
                 {

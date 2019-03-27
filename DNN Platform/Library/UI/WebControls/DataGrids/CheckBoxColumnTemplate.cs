@@ -210,8 +210,10 @@ namespace DotNetNuke.UI.WebControls
             }
             if (ItemType != ListItemType.Header || (ItemType == ListItemType.Header && HeaderCheckBox))
             {
-                var box = new CheckBox();
-                box.AutoPostBack = AutoPostBack;
+                var box = new CheckBox
+                {
+                    AutoPostBack = AutoPostBack
+                };
                 box.DataBinding += Item_DataBinding;
                 box.CheckedChanged += OnCheckChanged;
                 container.Controls.Add(box);

@@ -978,17 +978,18 @@ namespace log4net.Config
 				m_repository = repository;
 				m_configFile = configFile;
 
-				// Create a new FileSystemWatcher and set its properties.
-				m_watcher = new FileSystemWatcher();
+                // Create a new FileSystemWatcher and set its properties.
+                m_watcher = new FileSystemWatcher
+                {
+                    Path = m_configFile.DirectoryName,
+                    Filter = m_configFile.Name,
 
-				m_watcher.Path = m_configFile.DirectoryName;
-				m_watcher.Filter = m_configFile.Name;
+                    // Set the notification filters
+                    NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName
+                };
 
-				// Set the notification filters
-				m_watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
-
-				// Add event handlers. OnChanged will do for all event handlers that fire a FileSystemEventArgs
-				m_watcher.Changed += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
+                // Add event handlers. OnChanged will do for all event handlers that fire a FileSystemEventArgs
+                m_watcher.Changed += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
 				m_watcher.Created += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
 				m_watcher.Deleted += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
 				m_watcher.Renamed += new RenamedEventHandler(ConfigureAndWatchHandler_OnRenamed);

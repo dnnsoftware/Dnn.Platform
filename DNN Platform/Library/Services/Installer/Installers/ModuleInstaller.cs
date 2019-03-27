@@ -315,10 +315,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 string friendlyName = Util.ReadElement(moduleDefinitionNav, "friendlyName");
                 foreach (XPathNavigator permissionNav in moduleDefinitionNav.Select("permissions/permission"))
                 {
-                    var permission = new PermissionInfo();
-                    permission.PermissionCode = Util.ReadAttribute(permissionNav, "code");
-                    permission.PermissionKey = Util.ReadAttribute(permissionNav, "key");
-                    permission.PermissionName = Util.ReadAttribute(permissionNav, "name");
+                    var permission = new PermissionInfo
+                    {
+                        PermissionCode = Util.ReadAttribute(permissionNav, "code"),
+                        PermissionKey = Util.ReadAttribute(permissionNav, "key"),
+                        PermissionName = Util.ReadAttribute(permissionNav, "name")
+                    };
                     ModuleDefinitionInfo moduleDefinition = _desktopModule.ModuleDefinitions[friendlyName];
                     if (moduleDefinition != null)
                     {

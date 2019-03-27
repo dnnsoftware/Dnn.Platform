@@ -78,13 +78,15 @@ namespace DotNetNuke.UI.UserControls
 			{
 				if (value != null)
 				{
-					var entity = new EntityInfo();
-					entity.CreatedByUserID = value.CreatedByUserID;
-					entity.CreatedOnDate = value.CreatedOnDate;
-					entity.LastModifiedByUserID = value.LastModifiedByUserID;
-					entity.LastModifiedOnDate = value.LastModifiedOnDate;
+                    var entity = new EntityInfo
+                    {
+                        CreatedByUserID = value.CreatedByUserID,
+                        CreatedOnDate = value.CreatedOnDate,
+                        LastModifiedByUserID = value.LastModifiedByUserID,
+                        LastModifiedOnDate = value.LastModifiedOnDate
+                    };
 
-					ViewState["Entity"] = entity;
+                    ViewState["Entity"] = entity;
 				}
 				else
 				{

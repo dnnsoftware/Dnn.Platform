@@ -1010,10 +1010,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                         }
                         if (!blnExists)
                         {
-                            objUser = new UserInfo();
-                            objUser.UserID = permission.UserID;
-                            objUser.Username = permission.Username;
-                            objUser.DisplayName = permission.DisplayName;
+                            objUser = new UserInfo
+                            {
+                                UserID = permission.UserID,
+                                Username = permission.Username,
+                                DisplayName = permission.DisplayName
+                            };
                             arrUsers.Add(objUser);
                         }
                     }

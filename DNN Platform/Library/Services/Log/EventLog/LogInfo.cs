@@ -107,9 +107,11 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
                 }
-                var objLogDetailInfo = new LogDetailInfo();
-                objLogDetailInfo.PropertyName = PropertyName;
-                objLogDetailInfo.PropertyValue = PropertyValue;
+                var objLogDetailInfo = new LogDetailInfo
+                {
+                    PropertyName = PropertyName,
+                    PropertyValue = PropertyValue
+                };
                 LogProperties.Add(objLogDetailInfo);
             }
             catch (Exception exc)
@@ -220,9 +222,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string Serialize()
         {
-            var settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            settings.OmitXmlDeclaration = true;
+            var settings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true
+            };
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {

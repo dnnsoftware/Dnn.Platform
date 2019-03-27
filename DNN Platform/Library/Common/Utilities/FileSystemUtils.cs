@@ -213,9 +213,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 //Create Zip Entry
-                var entry = new ZipEntry(Path.Combine(folder, fileName));
-                entry.DateTime = DateTime.Now;
-                entry.Size = fs.Length;
+                var entry = new ZipEntry(Path.Combine(folder, fileName))
+                {
+                    DateTime = DateTime.Now,
+                    Size = fs.Length
+                };
                 fs.Close();
 
                 //Compress file and add to Zip file

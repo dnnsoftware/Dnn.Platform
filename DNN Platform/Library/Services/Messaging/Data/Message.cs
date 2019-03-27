@@ -308,17 +308,19 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public Message GetReplyMessage()
         {
-            var message = new Message();
-            message.AllowReply = AllowReply;
-            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", MessageDate, FromUserName) + Body;
-            message.Conversation = Conversation;
-            message.FromUserID = ToUserID;
-            message.ToUserID = FromUserID;
-            message.ToUserName = FromUserName;
-            message.PortalID = PortalID;
-            message.ReplyTo = MessageID;
-            message.SkipInbox = SkipInbox;
-            message.Subject = "RE:" + Subject;
+            var message = new Message
+            {
+                AllowReply = AllowReply,
+                Body = string.Format("<br><br><br>On {0} {1} wrote ", MessageDate, FromUserName) + Body,
+                Conversation = Conversation,
+                FromUserID = ToUserID,
+                ToUserID = FromUserID,
+                ToUserName = FromUserName,
+                PortalID = PortalID,
+                ReplyTo = MessageID,
+                SkipInbox = SkipInbox,
+                Subject = "RE:" + Subject
+            };
 
             return message;
         }

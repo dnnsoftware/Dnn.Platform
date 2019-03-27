@@ -89,12 +89,14 @@ namespace DotNetNuke.Services.Installer.Writers
             _Language.Fallback = Localization.Localization.SystemLocale;
 
             //Create a Package
-            Package = new PackageInfo(installer);
-            Package.Name = Language.Text;
-            Package.FriendlyName = Language.Text;
-            Package.Description = Null.NullString;
-            Package.Version = new Version(1, 0, 0);
-            Package.License = Util.PACKAGE_NoLicense;
+            Package = new PackageInfo(installer)
+            {
+                Name = Language.Text,
+                FriendlyName = Language.Text,
+                Description = Null.NullString,
+                Version = new Version(1, 0, 0),
+                License = Util.PACKAGE_NoLicense
+            };
 
             ReadLegacyManifest(manifestNav);
 
@@ -488,9 +490,11 @@ namespace DotNetNuke.Services.Installer.Writers
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
                                         Package.Name += "_" + dependentPackage.Name;
                                         Package.FriendlyName += " " + dependentPackage.FriendlyName;
-                                        _LanguagePack = new LanguagePackInfo();
-                                        _LanguagePack.DependentPackageID = dependentPackage.PackageID;
-                                        _LanguagePack.LanguageID = locale.LanguageId;
+                                        _LanguagePack = new LanguagePackInfo
+                                        {
+                                            DependentPackageID = dependentPackage.PackageID,
+                                            LanguageID = locale.LanguageId
+                                        };
                                         break;
                                     }
                                 }

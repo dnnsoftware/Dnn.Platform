@@ -265,11 +265,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
-            SkinPackage = new SkinPackageInfo();
-            SkinPackage.PortalID = Package.PortalID;
+            SkinPackage = new SkinPackageInfo
+            {
+                PortalID = Package.PortalID,
 
-            //Get the Skin name
-            SkinPackage.SkinName = Util.ReadElement(nav, SkinNameNodeName);
+                //Get the Skin name
+                SkinName = Util.ReadElement(nav, SkinNameNodeName)
+            };
 
             //Call base class
             base.ReadCustomManifest(nav);

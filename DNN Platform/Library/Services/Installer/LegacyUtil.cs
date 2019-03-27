@@ -65,14 +65,16 @@ namespace DotNetNuke.Services.Installer
 
         private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
         {
-			//Create a Package
-            var package = new PackageInfo(new InstallerInfo());
-            package.Name = skin.SkinName;
-            package.FriendlyName = skin.SkinName;
-            package.Description = Null.NullString;
-            package.Version = new Version(1, 0, 0);
-            package.PackageType = skin.SkinType;
-            package.License = Util.PACKAGE_NoLicense;
+            //Create a Package
+            var package = new PackageInfo(new InstallerInfo())
+            {
+                Name = skin.SkinName,
+                FriendlyName = skin.SkinName,
+                Description = Null.NullString,
+                Version = new Version(1, 0, 0),
+                PackageType = skin.SkinType,
+                License = Util.PACKAGE_NoLicense
+            };
 
             //See if the Skin is using a Namespace (or is a known skin)
             ParsePackageName(package);
@@ -83,9 +85,11 @@ namespace DotNetNuke.Services.Installer
         private static void CreateSkinManifest(XmlWriter writer, string skinFolder, string skinType, string tempInstallFolder, string subFolder)
         {
             string skinName = Path.GetFileNameWithoutExtension(skinFolder);
-            var skin = new SkinPackageInfo();
-            skin.SkinName = skinName;
-            skin.SkinType = skinType;
+            var skin = new SkinPackageInfo
+            {
+                SkinName = skinName,
+                SkinType = skinType
+            };
 
             //Create a Package
             PackageInfo package = CreateSkinPackage(skin);
@@ -106,9 +110,11 @@ namespace DotNetNuke.Services.Installer
             string skinName = Path.GetFileName(skinFolder);
             if (skinName != "_default")
             {
-                var skin = new SkinPackageInfo();
-                skin.SkinName = skinName;
-                skin.SkinType = skinType;
+                var skin = new SkinPackageInfo
+                {
+                    SkinName = skinName,
+                    SkinType = skinType
+                };
 
                 //Create a Package
                 PackageInfo package = CreateSkinPackage(skin);
@@ -278,10 +284,12 @@ namespace DotNetNuke.Services.Installer
                 {
                     if (nav.NodeType != XPathNodeType.Comment)
                     {
-                        var language = new Locale();
-                        language.Text = Util.ReadAttribute(nav, "name");
-                        language.Code = Util.ReadAttribute(nav, "key");
-                        language.Fallback = Util.ReadAttribute(nav, "fallback");
+                        var language = new Locale
+                        {
+                            Text = Util.ReadAttribute(nav, "name"),
+                            Code = Util.ReadAttribute(nav, "key"),
+                            Fallback = Util.ReadAttribute(nav, "fallback")
+                        };
                         //Save Language
                         Localization.Localization.SaveLanguage(language);
                         if (language.Code != Localization.Localization.SystemLocale)
@@ -394,12 +402,14 @@ namespace DotNetNuke.Services.Installer
                 }
 
                 //Module is not affiliated with a Package
-                var package = new PackageInfo(new InstallerInfo());
-                package.Name = desktopModule.ModuleName;
+                var package = new PackageInfo(new InstallerInfo())
+                {
+                    Name = desktopModule.ModuleName,
 
-                package.FriendlyName = desktopModule.FriendlyName;
-                package.Description = desktopModule.Description;
-                package.Version = new Version(1, 0, 0);
+                    FriendlyName = desktopModule.FriendlyName,
+                    Description = desktopModule.Description,
+                    Version = new Version(1, 0, 0)
+                };
                 if (!string.IsNullOrEmpty(desktopModule.Version))
                 {
                     package.Version = new Version(desktopModule.Version);
@@ -467,14 +477,16 @@ namespace DotNetNuke.Services.Installer
                 {
                     try
                     {
-						//SkinControl is not affiliated with a Package
-                        var package = new PackageInfo(new InstallerInfo());
-                        package.Name = skinControl.ControlKey;
+                        //SkinControl is not affiliated with a Package
+                        var package = new PackageInfo(new InstallerInfo())
+                        {
+                            Name = skinControl.ControlKey,
 
-                        package.FriendlyName = skinControl.ControlKey;
-                        package.Description = Null.NullString;
-                        package.Version = new Version(1, 0, 0);
-                        package.PackageType = "SkinObject";
+                            FriendlyName = skinControl.ControlKey,
+                            Description = Null.NullString,
+                            Version = new Version(1, 0, 0),
+                            PackageType = "SkinObject"
+                        };
 
                         //See if the SkinControl is using a "Namespace" for its name
                         ParsePackageName(package);

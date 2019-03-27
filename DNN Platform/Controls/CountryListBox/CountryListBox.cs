@@ -193,9 +193,11 @@ namespace DotNetNuke.UI.WebControls
                         string _UserCountry = _CountryLookup.LookupCountryName(IP);
                         if (_UserCountry != "N/A")
                         {
-                            var newItem = new ListItem();
-                            newItem.Value = _UserCountryCode;
-                            newItem.Text = _UserCountry;
+                            var newItem = new ListItem
+                            {
+                                Value = _UserCountryCode,
+                                Text = _UserCountry
+                            };
                             Items.Insert(0, newItem);
 							//Now let's Pre-Select it
                             Items.FindByValue(_UserCountryCode).Selected = true;

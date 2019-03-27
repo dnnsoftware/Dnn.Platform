@@ -90,8 +90,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
             Controls.Add(new LiteralControl("&nbsp;"));
 
-            _Label = new Label();
-            _Label.ViewStateMode = ViewStateMode.Disabled;
+            _Label = new Label
+            {
+                ViewStateMode = ViewStateMode.Disabled
+            };
             Controls.Add(_Label);
 
             //Call base class's method

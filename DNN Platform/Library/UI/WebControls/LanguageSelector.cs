@@ -299,10 +299,12 @@ namespace DotNetNuke.UI.WebControls
 		protected override void CreateChildControls()
 		{
 			Controls.Clear();
-			pnlControl = new Panel();
-			pnlControl.CssClass = "dnnLangSelector";
+            pnlControl = new Panel
+            {
+                CssClass = "dnnLangSelector"
+            };
 
-			Controls.Add(pnlControl);
+            Controls.Add(pnlControl);
 			pnlControl.Controls.Add(new LiteralControl("<ul>"));
 
 			foreach (var c in GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture))
@@ -312,10 +314,12 @@ namespace DotNetNuke.UI.WebControls
 				var lblLocale = new HtmlGenericControl("label");
 				if (SelectionMode == LanguageSelectionMode.Single)
 				{
-					var optLocale = new RadioButton();
-					optLocale.ID = "opt" + c.Name;
-					optLocale.GroupName = pnlControl.ID + "_Locale";
-					if (c.Name == Localization.SystemLocale)
+                    var optLocale = new RadioButton
+                    {
+                        ID = "opt" + c.Name,
+                        GroupName = pnlControl.ID + "_Locale"
+                    };
+                    if (c.Name == Localization.SystemLocale)
 					{
 						optLocale.Checked = true;
 					}
@@ -324,19 +328,23 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					var chkLocale = new CheckBox();
-					chkLocale.ID = "chk" + c.Name;
-					pnlControl.Controls.Add(chkLocale);
+                    var chkLocale = new CheckBox
+                    {
+                        ID = "chk" + c.Name
+                    };
+                    pnlControl.Controls.Add(chkLocale);
 					lblLocale.Attributes["for"] = chkLocale.ClientID;
 				}
 
 				pnlControl.Controls.Add(lblLocale);
 				if (ItemStyle != LanguageItemStyle.CaptionOnly)
 				{
-					var imgLocale = new Image();
-					imgLocale.ImageUrl = ResolveUrl("~/images/Flags/" + c.Name + ".gif");
-					imgLocale.AlternateText = c.DisplayName;
-					imgLocale.Style["vertical-align"] = "middle";
+                    var imgLocale = new Image
+                    {
+                        ImageUrl = ResolveUrl("~/images/Flags/" + c.Name + ".gif"),
+                        AlternateText = c.DisplayName
+                    };
+                    imgLocale.Style["vertical-align"] = "middle";
 					lblLocale.Controls.Add(imgLocale);
 				}
 				if (ItemStyle != LanguageItemStyle.FlagOnly)

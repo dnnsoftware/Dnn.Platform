@@ -206,9 +206,11 @@ namespace DotNetNuke.Framework
         /// </remarks>
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {
-            var updatePanel = new UpdatePanel();
-            updatePanel.ID = objControl.ID + "_UP";
-            updatePanel.UpdateMode = UpdatePanelUpdateMode.Conditional;
+            var updatePanel = new UpdatePanel
+            {
+                ID = objControl.ID + "_UP",
+                UpdateMode = UpdatePanelUpdateMode.Conditional
+            };
 
             Control objContentTemplateContainer = updatePanel.ContentTemplateContainer;
 
@@ -229,15 +231,19 @@ namespace DotNetNuke.Framework
             if (blnIncludeProgress)
             {
                 //create image for update progress control
-                var objImage = new Image();
-                objImage.ImageUrl = "~/images/progressbar.gif";
-                //hardcoded
-                objImage.AlternateText = "ProgressBar";
+                var objImage = new Image
+                {
+                    ImageUrl = "~/images/progressbar.gif",
+                    //hardcoded
+                    AlternateText = "ProgressBar"
+                };
 
-                var updateProgress = new UpdateProgress();
-                updateProgress.AssociatedUpdatePanelID = updatePanel.ID;
-                updateProgress.ID = updatePanel.ID + "_Prog";
-                updateProgress.ProgressTemplate = new LiteralTemplate(objImage);
+                var updateProgress = new UpdateProgress
+                {
+                    AssociatedUpdatePanelID = updatePanel.ID,
+                    ID = updatePanel.ID + "_Prog",
+                    ProgressTemplate = new LiteralTemplate(objImage)
+                };
 
                 objContentTemplateContainer.Controls.Add(updateProgress);
             }

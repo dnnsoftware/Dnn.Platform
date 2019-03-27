@@ -61,27 +61,29 @@ namespace DotNetNuke.UI.WebControls
         {
 
             var info = (SettingInfo) DataMember;
-            var editInfo = new EditorInfo();
+            var editInfo = new EditorInfo
+            {
 
-            //Get the Name of the property
-            editInfo.Name = info.Name;
+                //Get the Name of the property
+                Name = info.Name,
 
-			editInfo.Category = string.Empty;
+                Category = string.Empty,
 
-            //Get Value Field
-            editInfo.Value = info.Value;
+                //Get Value Field
+                Value = info.Value,
 
-            //Get the type of the property
-            editInfo.Type = info.Type.AssemblyQualifiedName;
+                //Get the type of the property
+                Type = info.Type.AssemblyQualifiedName,
 
-            //Get Editor Field
-            editInfo.Editor = info.Editor;
+                //Get Editor Field
+                Editor = info.Editor,
 
-            //Get LabelMode Field
-            editInfo.LabelMode = LabelMode.Left;
+                //Get LabelMode Field
+                LabelMode = LabelMode.Left,
 
-            //Get Required Field
-            editInfo.Required = false;
+                //Get Required Field
+                Required = false
+            };
 
             //Set ResourceKey Field
             editInfo.ResourceKey = editInfo.Name;

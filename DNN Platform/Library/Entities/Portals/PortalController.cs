@@ -506,19 +506,21 @@ namespace DotNetNuke.Entities.Portals
         private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency,
                                bool isPublic, bool isAuto)
         {
-            RoleInfo objRoleInfo = new RoleInfo();
-            objRoleInfo.PortalID = portalId;
-            objRoleInfo.RoleName = roleName;
-            objRoleInfo.RoleGroupID = Null.NullInteger;
-            objRoleInfo.Description = description;
-            objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
-            objRoleInfo.BillingPeriod = billingPeriod;
-            objRoleInfo.BillingFrequency = billingFrequency;
-            objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
-            objRoleInfo.TrialPeriod = trialPeriod;
-            objRoleInfo.TrialFrequency = trialFrequency;
-            objRoleInfo.IsPublic = isPublic;
-            objRoleInfo.AutoAssignment = isAuto;
+            RoleInfo objRoleInfo = new RoleInfo
+            {
+                PortalID = portalId,
+                RoleName = roleName,
+                RoleGroupID = Null.NullInteger,
+                Description = description,
+                ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee),
+                BillingPeriod = billingPeriod,
+                BillingFrequency = billingFrequency,
+                TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee),
+                TrialPeriod = trialPeriod,
+                TrialFrequency = trialFrequency,
+                IsPublic = isPublic,
+                AutoAssignment = isAuto
+            };
             return CreateRole(objRoleInfo);
         }
 
@@ -1248,16 +1250,18 @@ namespace DotNetNuke.Entities.Portals
                 {
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
-                objProfileDefinition = new ProfilePropertyDefinition(portalId);
-                objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
-                objProfileDefinition.ModuleDefId = Null.NullInteger;
-                objProfileDefinition.PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory");
-                objProfileDefinition.PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname");
-                objProfileDefinition.Required = false;
-                objProfileDefinition.Visible = true;
-                objProfileDefinition.ViewOrder = orderCounter;
-                objProfileDefinition.Length = XmlUtils.GetNodeValueInt(node, "length");
+                objProfileDefinition = new ProfilePropertyDefinition(portalId)
+                {
+                    DataType = typeInfo.EntryID,
+                    DefaultValue = "",
+                    ModuleDefId = Null.NullInteger,
+                    PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory"),
+                    PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname"),
+                    Required = false,
+                    Visible = true,
+                    ViewOrder = orderCounter,
+                    Length = XmlUtils.GetNodeValueInt(node, "length")
+                };
 
                 switch (XmlUtils.GetNodeValueInt(node, "defaultvisibility", 2))
                 {
@@ -1299,17 +1303,19 @@ namespace DotNetNuke.Entities.Portals
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
 
-                objProfileDefinition = new ProfilePropertyDefinition(portalId);
-                objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
-                objProfileDefinition.ModuleDefId = Null.NullInteger;
-                objProfileDefinition.PropertyCategory = "Preferences";
-                objProfileDefinition.PropertyName = "PreferredTimeZone";
-                objProfileDefinition.Required = false;
-                objProfileDefinition.Visible = true;
-                objProfileDefinition.ViewOrder = orderCounter;
-                objProfileDefinition.Length = 0;
-                objProfileDefinition.DefaultVisibility = UserVisibilityMode.AdminOnly;
+                objProfileDefinition = new ProfilePropertyDefinition(portalId)
+                {
+                    DataType = typeInfo.EntryID,
+                    DefaultValue = "",
+                    ModuleDefId = Null.NullInteger,
+                    PropertyCategory = "Preferences",
+                    PropertyName = "PreferredTimeZone",
+                    Required = false,
+                    Visible = true,
+                    ViewOrder = orderCounter,
+                    Length = 0,
+                    DefaultVisibility = UserVisibilityMode.AdminOnly
+                };
                 ProfileController.AddPropertyDefinition(objProfileDefinition);
             }
         }

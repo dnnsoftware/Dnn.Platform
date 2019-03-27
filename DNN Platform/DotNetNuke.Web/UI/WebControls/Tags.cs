@@ -189,8 +189,10 @@ namespace DotNetNuke.Web.UI.WebControls
                             if (term == null)
                             {
                                 //Add term
-                                term = new Term(TagVocabulary.VocabularyId);
-                                term.Name = tagName;
+                                term = new Term(TagVocabulary.VocabularyId)
+                                {
+                                    Name = tagName
+                                };
                                 termController.AddTerm(term);
                             }
 

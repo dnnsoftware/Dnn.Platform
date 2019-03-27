@@ -371,18 +371,24 @@ namespace DotNetNuke.UI.WebControls
             {
                 CssClass = "CommandButton";
             }
-            icon = new ImageButton();
-            icon.Visible = true;
-            icon.CausesValidation = true;
+            icon = new ImageButton
+            {
+                Visible = true,
+                CausesValidation = true
+            };
             icon.Click += RaiseImageClick;
             icon.Command += RaiseCommand;
             Controls.Add(icon);
-            separator = new LiteralControl();
-            separator.Text = "&nbsp;";
+            separator = new LiteralControl
+            {
+                Text = "&nbsp;"
+            };
             Controls.Add(separator);
-            link = new LinkButton();
-            link.Visible = true;
-            link.CausesValidation = true;
+            link = new LinkButton
+            {
+                Visible = true,
+                CausesValidation = true
+            };
             link.Click += RaiseClick;
             link.Command += RaiseCommand;
             Controls.Add(link);

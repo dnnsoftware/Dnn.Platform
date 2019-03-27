@@ -115,12 +115,14 @@ namespace DotNetNuke.Web.UI
 
                 foreach (PermissionInfo permission in permissions)
                 {
-                    TabPermissionInfo newTabPermission = new TabPermissionInfo();
-                    newTabPermission.PermissionID = permission.PermissionID;
-                    newTabPermission.PermissionKey = permission.PermissionKey;
-                    newTabPermission.PermissionName = permission.PermissionName;
-                    newTabPermission.AllowAccess = true;
-                    newTabPermission.RoleID = PortalSettings.Current.AdministratorRoleId;
+                    TabPermissionInfo newTabPermission = new TabPermissionInfo
+                    {
+                        PermissionID = permission.PermissionID,
+                        PermissionKey = permission.PermissionKey,
+                        PermissionName = permission.PermissionName,
+                        AllowAccess = true,
+                        RoleID = PortalSettings.Current.AdministratorRoleId
+                    };
                     newTab.TabPermissions.Add(newTabPermission);
                 }
             }
@@ -323,12 +325,14 @@ namespace DotNetNuke.Web.UI
 
                         foreach (PermissionInfo permission in permissions)
                         {
-                            TabPermissionInfo newTabPermission = new TabPermissionInfo();
-                            newTabPermission.PermissionID = permission.PermissionID;
-                            newTabPermission.PermissionKey = permission.PermissionKey;
-                            newTabPermission.PermissionName = permission.PermissionName;
-                            newTabPermission.AllowAccess = true;
-                            newTabPermission.RoleID = PortalSettings.Current.AdministratorRoleId;
+                            TabPermissionInfo newTabPermission = new TabPermissionInfo
+                            {
+                                PermissionID = permission.PermissionID,
+                                PermissionKey = permission.PermissionKey,
+                                PermissionName = permission.PermissionName,
+                                AllowAccess = true,
+                                RoleID = PortalSettings.Current.AdministratorRoleId
+                            };
                             tab.TabPermissions.Add(newTabPermission);
                         }
                     }

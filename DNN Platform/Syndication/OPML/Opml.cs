@@ -249,12 +249,14 @@ namespace DotNetNuke.Services.Syndication
 
         public void AddOutline(string text, string type, Uri xmlUrl, string category, OpmlOutlines outlines)
         {
-            var item = new OpmlOutline();
-            item.Text = text;
-            item.Type = type;
-            item.XmlUrl = xmlUrl;
-            item.Category = category;
-            item.Outlines = outlines;
+            var item = new OpmlOutline
+            {
+                Text = text,
+                Type = type,
+                XmlUrl = xmlUrl,
+                Category = category,
+                Outlines = outlines
+            };
             _outlines.Add(item);
         }
 
@@ -475,12 +477,13 @@ namespace DotNetNuke.Services.Syndication
 
         internal static OpmlOutline ParseXml(XmlElement node)
         {
-            var newOutline = new OpmlOutline();
-
-            newOutline.Text = ParseElement(node, "text");
-            newOutline.Type = ParseElement(node, "type");
-            newOutline.IsComment = (ParseElement(node, "isComment") == "true" ? true : false);
-            newOutline.IsBreakpoint = (ParseElement(node, "isBreakpoint") == "true" ? true : false);
+            var newOutline = new OpmlOutline
+            {
+                Text = ParseElement(node, "text"),
+                Type = ParseElement(node, "type"),
+                IsComment = (ParseElement(node, "isComment") == "true" ? true : false),
+                IsBreakpoint = (ParseElement(node, "isBreakpoint") == "true" ? true : false)
+            };
             try
             {
                 newOutline.Created = DateTime.Parse(ParseElement(node, "created"));

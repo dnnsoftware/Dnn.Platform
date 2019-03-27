@@ -262,38 +262,42 @@ namespace Dnn.Module.ModuleCreator
                     if (controlName != "")
                     {
                         //Create package
-                        var objPackage = new PackageInfo();
-                        objPackage.Name = GetClassName();
-                        objPackage.FriendlyName = txtModule.Text;
-                        objPackage.Description = txtDescription.Text;
-                        objPackage.Version = new Version(1, 0, 0);
-                        objPackage.PackageType = "Module";
-                        objPackage.License = "";
-                        objPackage.Owner = txtOwner.Text;
-                        objPackage.Organization = txtOwner.Text;
-                        objPackage.FolderName = "DesktopModules/" + GetFolderName();
+                        var objPackage = new PackageInfo
+                        {
+                            Name = GetClassName(),
+                            FriendlyName = txtModule.Text,
+                            Description = txtDescription.Text,
+                            Version = new Version(1, 0, 0),
+                            PackageType = "Module",
+                            License = "",
+                            Owner = txtOwner.Text,
+                            Organization = txtOwner.Text,
+                            FolderName = "DesktopModules/" + GetFolderName()
+                        };
                         objPackage.License = "The license for this package is not currently included within the installation file, please check with the vendor for full license details.";
                         objPackage.ReleaseNotes = "This package has no Release Notes.";
                         PackageController.Instance.SaveExtensionPackage(objPackage);
 
                         //Create desktopmodule
-                        var objDesktopModule = new DesktopModuleInfo();
-                        objDesktopModule.DesktopModuleID = Null.NullInteger;
-                        objDesktopModule.ModuleName = GetClassName();
-                        objDesktopModule.FolderName = GetFolderName();
-                        objDesktopModule.FriendlyName = txtModule.Text;
-                        objDesktopModule.Description = txtDescription.Text;
-                        objDesktopModule.IsPremium = false;
-                        objDesktopModule.IsAdmin = false;
-                        objDesktopModule.Version = "01.00.00";
-                        objDesktopModule.BusinessControllerClass = "";
-                        objDesktopModule.CompatibleVersions = "";
-                        objDesktopModule.AdminPage = "";
-                        objDesktopModule.HostPage = "";
-                        objDesktopModule.Dependencies = "";
-                        objDesktopModule.Permissions = "";
-                        objDesktopModule.PackageID = objPackage.PackageID;
-						objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
+                        var objDesktopModule = new DesktopModuleInfo
+                        {
+                            DesktopModuleID = Null.NullInteger,
+                            ModuleName = GetClassName(),
+                            FolderName = GetFolderName(),
+                            FriendlyName = txtModule.Text,
+                            Description = txtDescription.Text,
+                            IsPremium = false,
+                            IsAdmin = false,
+                            Version = "01.00.00",
+                            BusinessControllerClass = "",
+                            CompatibleVersions = "",
+                            AdminPage = "",
+                            HostPage = "",
+                            Dependencies = "",
+                            Permissions = "",
+                            PackageID = objPackage.PackageID
+                        };
+                        objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
 						objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
 
                         //Add OwnerName to the DesktopModule taxonomy and associate it with this module
@@ -322,29 +326,33 @@ namespace Dnn.Module.ModuleCreator
                         DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
 
                         //Create module definition
-                        var objModuleDefinition = new ModuleDefinitionInfo();
-                        objModuleDefinition.ModuleDefID = Null.NullInteger;
-                        objModuleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
-                        // need core enhancement to have a unique DefinitionName  
-                        objModuleDefinition.FriendlyName = GetClassName();
-                        //objModuleDefinition.FriendlyName = txtModule.Text;
-                        //objModuleDefinition.DefinitionName = GetClassName();
-                        objModuleDefinition.DefaultCacheTime = 0;
+                        var objModuleDefinition = new ModuleDefinitionInfo
+                        {
+                            ModuleDefID = Null.NullInteger,
+                            DesktopModuleID = objDesktopModule.DesktopModuleID,
+                            // need core enhancement to have a unique DefinitionName  
+                            FriendlyName = GetClassName(),
+                            //objModuleDefinition.FriendlyName = txtModule.Text;
+                            //objModuleDefinition.DefinitionName = GetClassName();
+                            DefaultCacheTime = 0
+                        };
                         objModuleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(objModuleDefinition, false, true);
 
                         //Create modulecontrol
-                        var objModuleControl = new ModuleControlInfo();
-                        objModuleControl.ModuleControlID = Null.NullInteger;
-                        objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
-                        objModuleControl.ControlKey = "";
-                        objModuleControl.ControlSrc = "DesktopModules/" + GetFolderName() + "/" + controlName;
-                        objModuleControl.ControlTitle = "";
-                        objModuleControl.ControlType = SecurityAccessLevel.View;
-                        objModuleControl.HelpURL = "";
-                        objModuleControl.IconFile = "";
-                        objModuleControl.ViewOrder = 0;
-                        objModuleControl.SupportsPartialRendering = false;
-                        objModuleControl.SupportsPopUps = false;
+                        var objModuleControl = new ModuleControlInfo
+                        {
+                            ModuleControlID = Null.NullInteger,
+                            ModuleDefID = objModuleDefinition.ModuleDefID,
+                            ControlKey = "",
+                            ControlSrc = "DesktopModules/" + GetFolderName() + "/" + controlName,
+                            ControlTitle = "",
+                            ControlType = SecurityAccessLevel.View,
+                            HelpURL = "",
+                            IconFile = "",
+                            ViewOrder = 0,
+                            SupportsPartialRendering = false,
+                            SupportsPopUps = false
+                        };
                         ModuleControlController.AddModuleControl(objModuleControl);
 
                         //Update current module to reference new moduledefinition

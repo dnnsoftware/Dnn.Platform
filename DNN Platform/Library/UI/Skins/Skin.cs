@@ -1053,9 +1053,11 @@ namespace DotNetNuke.UI.Skins
             {
                 if (!folder.EndsWith(Globals.glbHostSkinFolder))
                 {
-                    var skin = new InstalledSkinInfo();
-                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
-                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "");
+                    var skin = new InstalledSkinInfo
+                    {
+                        SkinName = folder.Substring(folder.LastIndexOf("\\") + 1),
+                        InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "")
+                    };
                     list.Add(skin);
                 }
             }

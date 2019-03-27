@@ -60,11 +60,13 @@ namespace DotNetNuke.Services.ClientCapability
 
 			try
 			{
-				var facebookRequest = new FacebookRequest();
-				facebookRequest.RawSignedRequest = rawSignedRequest;
-				facebookRequest.IsValid = false;
+                var facebookRequest = new FacebookRequest
+                {
+                    RawSignedRequest = rawSignedRequest,
+                    IsValid = false
+                };
 
-				string[] signedRequestSplit = rawSignedRequest.Split('.');
+                string[] signedRequestSplit = rawSignedRequest.Split('.');
 				string expectedSignature = signedRequestSplit[0];
 				string payload = signedRequestSplit[1];
 

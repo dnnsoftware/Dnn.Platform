@@ -131,14 +131,18 @@ namespace DotNetNuke.UI.WebControls
                 case ListItemType.Item:
                 case ListItemType.AlternatingItem:
                 case ListItemType.SelectedItem:
-                    var lblText = new Label();
-                    lblText.Width = Width;
+                    var lblText = new Label
+                    {
+                        Width = Width
+                    };
                     lblText.DataBinding += Item_DataBinding;
                     container.Controls.Add(lblText);
                     break;
                 case ListItemType.EditItem:
-                    var txtText = new TextBox();
-                    txtText.Width = Width;
+                    var txtText = new TextBox
+                    {
+                        Width = Width
+                    };
                     txtText.DataBinding += Item_DataBinding;
                     container.Controls.Add(txtText);
                     break;

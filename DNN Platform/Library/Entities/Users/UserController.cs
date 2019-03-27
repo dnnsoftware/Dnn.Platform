@@ -466,26 +466,28 @@ namespace DotNetNuke.Entities.Users
 
         private static void SendDeleteEmailNotifications(UserInfo user, PortalSettings portalSettings)
         {
-            var message = new Message();
-            message.FromUserID = portalSettings.AdministratorId;
-            message.ToUserID = portalSettings.AdministratorId;
-            message.Subject = Localization.GetSystemMessage(user.Profile.PreferredLocale,
+            var message = new Message
+            {
+                FromUserID = portalSettings.AdministratorId,
+                ToUserID = portalSettings.AdministratorId,
+                Subject = Localization.GetSystemMessage(user.Profile.PreferredLocale,
                                                             portalSettings,
                                                             "EMAIL_USER_UNREGISTER_SUBJECT",
                                                             user,
                                                             Localization.GlobalResourceFile,
                                                             null,
                                                             "",
-                                                            portalSettings.AdministratorId);
-            message.Body = Localization.GetSystemMessage(user.Profile.PreferredLocale,
+                                                            portalSettings.AdministratorId),
+                Body = Localization.GetSystemMessage(user.Profile.PreferredLocale,
                                                          portalSettings,
                                                          "EMAIL_USER_UNREGISTER_BODY",
                                                          user,
                                                          Localization.GlobalResourceFile,
                                                          null,
                                                          "",
-                                                         portalSettings.AdministratorId);
-            message.Status = MessageStatusType.Unread;
+                                                         portalSettings.AdministratorId),
+                Status = MessageStatusType.Unread
+            };
             Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
         }
 

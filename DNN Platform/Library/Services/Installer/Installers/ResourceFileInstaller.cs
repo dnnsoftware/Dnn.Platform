@@ -154,10 +154,12 @@ namespace DotNetNuke.Services.Installer.Installers
                     Directory.CreateDirectory(PhysicalBasePath);
                 }
                 fs = new FileStream(Path.Combine(PhysicalBasePath, Manifest), FileMode.Create, FileAccess.Write);
-                var settings = new XmlWriterSettings();
-                settings.ConformanceLevel = ConformanceLevel.Fragment;
-                settings.OmitXmlDeclaration = true;
-                settings.Indent = true;
+                var settings = new XmlWriterSettings
+                {
+                    ConformanceLevel = ConformanceLevel.Fragment,
+                    OmitXmlDeclaration = true,
+                    Indent = true
+                };
 
                 writer = XmlWriter.Create(fs, settings);
 

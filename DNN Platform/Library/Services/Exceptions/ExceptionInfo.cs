@@ -165,10 +165,12 @@ namespace DotNetNuke.Services.Exceptions
 
 		public string Serialize()
 		{
-			var settings = new XmlWriterSettings();
-			settings.ConformanceLevel = ConformanceLevel.Fragment;
-			settings.OmitXmlDeclaration = true;
-			var sb = new StringBuilder();
+            var settings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true
+            };
+            var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
                 WriteXml(writer);

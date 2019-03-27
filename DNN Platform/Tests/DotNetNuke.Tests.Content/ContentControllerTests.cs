@@ -450,8 +450,10 @@ namespace DotNetNuke.Tests.Content
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            ContentItem content = new ContentItem();
-            content.ContentItemId = Null.NullInteger;
+            ContentItem content = new ContentItem
+            {
+                ContentItemId = Null.NullInteger
+            };
 
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.UpdateContentItem(content));
         }

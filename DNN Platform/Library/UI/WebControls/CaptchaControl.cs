@@ -453,11 +453,13 @@ namespace DotNetNuke.UI.WebControls
 				emSize += 8;
 				f = new Font(ff, emSize);
 
-				var fmt = new StringFormat();
-				fmt.Alignment = StringAlignment.Center;
-				fmt.LineAlignment = StringAlignment.Center;
+                var fmt = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
 
-				textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
+                textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
 				WarpText(ref textPath, new Rectangle(0, 0, width, height));
 			}
 			catch (Exception exc)

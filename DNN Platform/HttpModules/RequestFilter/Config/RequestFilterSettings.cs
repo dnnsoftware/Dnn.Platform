@@ -141,8 +141,10 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 xmlRule.Attributes.Append(location);
                 ruleRoot.AppendChild(xmlRule);
             }
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
+            var settings = new XmlWriterSettings
+            {
+                Indent = true
+            };
             using (XmlWriter writer = XmlWriter.Create(filePath, settings))
             {
                 doc.WriteContentTo(writer);

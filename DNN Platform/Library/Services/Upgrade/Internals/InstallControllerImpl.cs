@@ -332,18 +332,20 @@ namespace DotNetNuke.Services.Upgrade.Internals
             XmlNode connectionNode = installTemplate.SelectSingleNode("//dotnetnuke/connection");
             if (connectionNode != null)
             {
-                var connectionConfig = new ConnectionConfig();
+                var connectionConfig = new ConnectionConfig
+                {
 
-                //Build connection string from the file
-                connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
-                connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
-                connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
-                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true";
-                connectionConfig.User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user");
-                connectionConfig.Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password");
-                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true";
-                connectionConfig.Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier");
-                connectionConfig.UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring");
+                    //Build connection string from the file
+                    Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server"),
+                    Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database"),
+                    File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file"),
+                    Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true",
+                    User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user"),
+                    Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password"),
+                    RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true",
+                    Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier"),
+                    UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring")
+                };
 
                 installConfig.Connection = connectionConfig;
             }
@@ -352,15 +354,16 @@ namespace DotNetNuke.Services.Upgrade.Internals
             XmlNode superUserNode = installTemplate.SelectSingleNode("//dotnetnuke/superuser");
             if (superUserNode != null)
             {
-                var superUserConfig = new SuperUserConfig();
-
-                superUserConfig.FirstName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "firstname");
-                superUserConfig.LastName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "lastname");
-                superUserConfig.UserName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "username");
-                superUserConfig.Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password");
-                superUserConfig.Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email");
-                superUserConfig.Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale");
-                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true";
+                var superUserConfig = new SuperUserConfig
+                {
+                    FirstName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "firstname"),
+                    LastName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "lastname"),
+                    UserName = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "username"),
+                    Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password"),
+                    Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email"),
+                    Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale"),
+                    UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true"
+                };
 
                 installConfig.SuperUser = superUserConfig;
             }
@@ -369,12 +372,13 @@ namespace DotNetNuke.Services.Upgrade.Internals
             XmlNode licenseNode = installTemplate.SelectSingleNode("//dotnetnuke/license");
             if (licenseNode != null)
             {
-                var licenseConfig = new LicenseConfig();
-
-                licenseConfig.AccountEmail = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "accountEmail");
-                licenseConfig.InvoiceNumber = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "invoiceNumber");
-                licenseConfig.WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer");
-                licenseConfig.LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType");
+                var licenseConfig = new LicenseConfig
+                {
+                    AccountEmail = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "accountEmail"),
+                    InvoiceNumber = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "invoiceNumber"),
+                    WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer"),
+                    LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType")
+                };
 
                 if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
                 {
@@ -419,8 +423,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     if (portalNode != null)
                     {
-                        var portalConfig = new PortalConfig();
-                        portalConfig.PortalName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "portalname");
+                        var portalConfig = new PortalConfig
+                        {
+                            PortalName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "portalname")
+                        };
 
                         XmlNode adminNode = portalNode.SelectSingleNode("administrator");
                         if (adminNode != null)

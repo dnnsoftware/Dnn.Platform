@@ -102,22 +102,24 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
-            var editInfo = new EditorInfo();
+            var editInfo = new EditorInfo
+            {
 
-            //Get the Name of the property
-            editInfo.Name = objProperty.Name;
+                //Get the Name of the property
+                Name = objProperty.Name,
 
-            //Get the value of the property
-            editInfo.Value = objProperty.GetValue(dataSource, null);
+                //Get the value of the property
+                Value = objProperty.GetValue(dataSource, null),
 
-            //Get the type of the property
-            editInfo.Type = objProperty.PropertyType.AssemblyQualifiedName;
+                //Get the type of the property
+                Type = objProperty.PropertyType.AssemblyQualifiedName,
 
-            //Get the Custom Attributes for the property
-            editInfo.Attributes = objProperty.GetCustomAttributes(true);
+                //Get the Custom Attributes for the property
+                Attributes = objProperty.GetCustomAttributes(true),
 
-            //Get Category Field
-            editInfo.Category = string.Empty;
+                //Get Category Field
+                Category = string.Empty
+            };
             object[] categoryAttributes = objProperty.GetCustomAttributes(typeof (CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {

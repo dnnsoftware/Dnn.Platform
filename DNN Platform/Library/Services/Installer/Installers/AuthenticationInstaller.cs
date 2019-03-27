@@ -157,19 +157,21 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            AuthSystem = new AuthenticationInfo();
+            AuthSystem = new AuthenticationInfo
+            {
 
-            //Get the type
-            AuthSystem.AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", Log, Util.AUTHENTICATION_TypeMissing);
+                //Get the type
+                AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", Log, Util.AUTHENTICATION_TypeMissing),
 
-            //Get the SettingsSrc
-            AuthSystem.SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", Log, Util.AUTHENTICATION_SettingsSrcMissing);
+                //Get the SettingsSrc
+                SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", Log, Util.AUTHENTICATION_SettingsSrcMissing),
 
-            //Get the LoginSrc
-            AuthSystem.LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", Log, Util.AUTHENTICATION_LoginSrcMissing);
+                //Get the LoginSrc
+                LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", Log, Util.AUTHENTICATION_LoginSrcMissing),
 
-            //Get the LogoffSrc
-            AuthSystem.LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc");
+                //Get the LogoffSrc
+                LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc")
+            };
 
             if (Log.Valid)
             {

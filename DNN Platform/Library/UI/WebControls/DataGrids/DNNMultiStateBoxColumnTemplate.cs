@@ -242,9 +242,11 @@ namespace DotNetNuke.UI.WebControls
             }
             if (ItemType != ListItemType.Header)
             {
-                var box = new DNNMultiStateBox();
-                box.AutoPostBack = AutoPostBack;
-                box.ImagePath = ImagePath;
+                var box = new DNNMultiStateBox
+                {
+                    AutoPostBack = AutoPostBack,
+                    ImagePath = ImagePath
+                };
                 foreach (DNNMultiState objState in States)
                 {
                     box.States.Add(objState);

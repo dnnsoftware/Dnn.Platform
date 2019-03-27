@@ -81,9 +81,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             string cacheKey = analyticsEngineName + "." + PortalSettings.Current.PortalId;
 
-            var Config = new AnalyticsConfiguration();
-            Config.Rules = new AnalyticsRuleCollection();
-            Config.Settings = new AnalyticsSettingCollection();
+            var Config = new AnalyticsConfiguration
+            {
+                Rules = new AnalyticsRuleCollection(),
+                Settings = new AnalyticsSettingCollection()
+            };
 
             FileStream fileReader = null;
             string filePath = "";
@@ -103,24 +105,30 @@ namespace DotNetNuke.Services.Analytics.Config
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                     var doc = new XPathDocument(fileReader);
-                    Config = new AnalyticsConfiguration();
-                    Config.Rules = new AnalyticsRuleCollection();
-                    Config.Settings = new AnalyticsSettingCollection();
+                    Config = new AnalyticsConfiguration
+                    {
+                        Rules = new AnalyticsRuleCollection(),
+                        Settings = new AnalyticsSettingCollection()
+                    };
 
                     var allSettings = new Hashtable();
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Settings/AnalyticsSetting"))
                     {
-                        var setting = new AnalyticsSetting();
-                        setting.SettingName = nav.SelectSingleNode("SettingName").Value;
-                        setting.SettingValue = nav.SelectSingleNode("SettingValue").Value;
+                        var setting = new AnalyticsSetting
+                        {
+                            SettingName = nav.SelectSingleNode("SettingName").Value,
+                            SettingValue = nav.SelectSingleNode("SettingValue").Value
+                        };
                         Config.Settings.Add(setting);
                     }
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Rules/AnalyticsRule"))
                     {
-                        var rule = new AnalyticsRule();
-                        rule.RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value);
-                        rule.TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value);
-                        rule.Label = nav.SelectSingleNode("Label").Value;
+                        var rule = new AnalyticsRule
+                        {
+                            RoleId = Convert.ToInt32(nav.SelectSingleNode("RoleId").Value),
+                            TabId = Convert.ToInt32(nav.SelectSingleNode("TabId").Value),
+                            Label = nav.SelectSingleNode("Label").Value
+                        };
                         var valueNode = nav.SelectSingleNode("Value");
                         if (valueNode != null)
                         {
