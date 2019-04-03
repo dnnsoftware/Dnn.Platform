@@ -514,7 +514,9 @@ namespace DotNetNuke.Security.Membership
                             IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                             UserID = Null.SetNullInteger(dr["UserID"]),
                             DisplayName = Null.SetNullString(dr["DisplayName"]),
-                            LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
+                            LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
+                            HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]),
+                            HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"])
                         };
 
                     var schema = dr.GetSchemaTable();
@@ -1670,6 +1672,32 @@ namespace DotNetNuke.Security.Membership
             }
             DataCache.RemoveCache(GetCacheKey(user.Username));
             return retValue;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// User has agreed to terms and conditions for the portal
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="user">The agreeing user.</param>
+        /// -----------------------------------------------------------------------------
+        public override void UserAgreedToTerms(UserInfo user)
+        {
+            _dataProvider.UserAgreedToTerms(user.PortalID, user.UserID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Reset all agreements on portal so all users need to agree again at next login
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">Portal for which to reset agreements.</param>
+        /// -----------------------------------------------------------------------------
+        public override void ResetTermsAgreement(int portalId)
+        {
+            _dataProvider.ResetTermsAgreement(portalId);
         }
 
         /// -----------------------------------------------------------------------------

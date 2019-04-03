@@ -702,6 +702,26 @@ namespace DotNetNuke.Entities.Users
             AutoAssignUsersToRoles(user, settings.PortalId);
         }
 
+        /// <summary>
+        /// User has agreed to terms and conditions. The time is recorded at the same time in SQL.
+        /// </summary>
+        /// <param name="user">The user that agreed.</param>
+        public static void UserAgreedToTerms(UserInfo user)
+        {
+            Requires.NotNull("user", user);
+            MembershipProvider.Instance().UserAgreedToTerms(user);
+        }
+
+        /// <summary>
+        /// When called all users in the portal will need to agree to terms and conditions again.
+        /// </summary>
+        /// <param name="portalId">The portal for which to reset.</param>
+        public static void ResetTermsAgreement(int portalId)
+        {
+            Requires.NotNull("portalId", portalId);
+            MembershipProvider.Instance().ResetTermsAgreement(portalId);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePassword attempts to change the users password

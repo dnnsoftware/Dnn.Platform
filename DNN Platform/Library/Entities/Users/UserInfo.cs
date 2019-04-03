@@ -196,6 +196,22 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets and sets whether the user has agreed to the terms and conditions
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public bool HasAgreedToTerms { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets when the user last agreed to the terms and conditions
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public DateTime HasAgreedToTermsOn { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets and sets the Profile Object
         /// </summary>
         /// -----------------------------------------------------------------------------
