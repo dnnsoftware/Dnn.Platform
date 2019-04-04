@@ -25,10 +25,10 @@ using DotNetNuke.Security;
 
 namespace DotNetNuke.Modules.RazorHost
 {
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public static class RazorHostSettingsExtensions
     {
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public static Settings LoadRazorSettingsControl(this UserControl parent, ModuleInfo configuration, string localResourceFile)
         {
             var control = (Settings) parent.LoadControl("~/DesktopModules/RazorModules/RazorHost/Settings.ascx");

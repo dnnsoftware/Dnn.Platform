@@ -31,18 +31,18 @@ using System;
 
 namespace DotNetNuke.Web.Razor.Helpers
 {
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class DnnHelper
     {
         private readonly ModuleInstanceContext _context;
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public DnnHelper(ModuleInstanceContext context)
         {
             _context = context;
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleInfo Module
         {
             get
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Razor.Helpers
             }
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public TabInfo Tab
         {
             get
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Razor.Helpers
             }
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public PortalSettings Portal
         {
             get
@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Razor.Helpers
             }
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UserInfo User
         {
             get

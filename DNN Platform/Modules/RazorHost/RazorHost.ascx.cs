@@ -31,12 +31,12 @@ using System;
 
 namespace DotNetNuke.Modules.RazorHost
 {
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class RazorHost : RazorModuleBase, IActionable
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override string RazorScriptFile
         {
             get
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         #region IActionable Members
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
         {
             get

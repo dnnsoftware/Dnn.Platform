@@ -23,21 +23,21 @@ using DotNetNuke.Web.Razor.Helpers;
 
 namespace DotNetNuke.Web.Razor
 {
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public abstract class DotNetNukeWebPage : WebPageBase
     {
         private dynamic _model;
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal DnnHelper Dnn { get; internal set; }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal HtmlHelper Html { get; internal set; }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal UrlHelper Url { get; internal set; }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void ConfigurePage(WebPageBase parentPage)
         {
             base.ConfigurePage(parentPage);
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Razor
             Context = parentPage.Context;
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public dynamic Model
         {
             get { return _model ?? (_model = PageContext.Model); }
@@ -54,12 +54,12 @@ namespace DotNetNuke.Web.Razor
         }
     }
 
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public abstract class DotNetNukeWebPage<TModel> :DotNetNukeWebPage where TModel : class
     {
         private TModel _model;
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
             get { return _model ?? (_model = PageContext.Model as TModel); }

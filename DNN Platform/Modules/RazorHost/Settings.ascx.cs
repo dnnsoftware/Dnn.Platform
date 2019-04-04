@@ -30,12 +30,12 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.RazorHost
 {
-    [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class Settings : ModuleSettingsBase
     {
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public override void LoadSettings()
         {
             string basePath = Server.MapPath(razorScriptFolder);
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.RazorHost
             base.LoadSettings();
         }
 
-        [Obsolete("Deprecated in 9.3.1, will be removed in 11.0.0, use Razor Pages instead")]
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public override void UpdateSettings()
         {
             ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScriptFile", scriptList.SelectedValue);
