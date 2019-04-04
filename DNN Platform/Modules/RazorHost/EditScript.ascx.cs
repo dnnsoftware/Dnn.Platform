@@ -35,12 +35,13 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.RazorHost
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
-
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {
             get
@@ -108,6 +109,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -119,6 +121,7 @@ namespace DotNetNuke.Modules.RazorHost
             scriptList.SelectedIndexChanged += scriptList_SelectedIndexChanged;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

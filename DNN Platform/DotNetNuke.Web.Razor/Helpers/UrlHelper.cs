@@ -22,25 +22,30 @@
 
 using DotNetNuke.Common;
 using DotNetNuke.UI.Modules;
+using System;
 
 #endregion
 
 namespace DotNetNuke.Web.Razor.Helpers
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class UrlHelper
     {
         private readonly ModuleInstanceContext _context;
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
             _context = context;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl()
         {
             return Globals.NavigateURL(_context.TabId);
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl(string controlKey)
         {
             return Globals.NavigateURL(_context.TabId, controlKey, "mid=" + _context.ModuleId);

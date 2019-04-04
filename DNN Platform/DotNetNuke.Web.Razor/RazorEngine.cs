@@ -36,8 +36,10 @@ using DotNetNuke.Web.Razor.Helpers;
 
 namespace DotNetNuke.Web.Razor
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorEngine
     {
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorEngine(string razorScriptFile, ModuleInstanceContext moduleContext, string localResourceFile)
         {
             RazorScriptFile = razorScriptFile;
@@ -62,16 +64,25 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile { get; set; }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected ModuleInstanceContext ModuleContext { get; set; }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string LocalResourceFile { get; set; }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public DotNetNukeWebPage Webpage { get; set; }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected HttpContextBase HttpContext
         {
             get { return new HttpContextWrapper(System.Web.HttpContext.Current); }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public Type RequestedModelType()
         {
             if (Webpage != null)
@@ -85,6 +96,7 @@ namespace DotNetNuke.Web.Razor
             return null;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public void Render<T>(TextWriter writer, T model)
         {
             try
@@ -97,6 +109,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public void Render(TextWriter writer)
         {
             try
@@ -109,6 +122,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public void Render(TextWriter writer, WebPageContext context)
         {
             try
