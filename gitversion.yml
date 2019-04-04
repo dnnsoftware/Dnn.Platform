@@ -1,4 +1,4 @@
-next-version: 9.3.1
+next-version: 9.4.0
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
 mode: ContinuousDeployment
 branches:
