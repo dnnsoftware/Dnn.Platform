@@ -306,6 +306,19 @@ namespace DotNetNuke.Entities.Portals
                 if (timeZone != null)
                     portalSettings.TimeZone = timeZone;
             }
+
+            setting = settings.GetValueOrDefault("GdprActive", "False");
+            portalSettings.GdprActive = bool.Parse(setting);
+            setting = settings.GetValueOrDefault("GdprTermsLastChange", "");
+            if (!string.IsNullOrEmpty(setting))
+            {
+                portalSettings.GdprTermsLastChange = DateTime.Parse(setting);
+            }
+            setting = settings.GetValueOrDefault("GdprConsentRedirect", "-1");
+            portalSettings.GdprConsentRedirect = int.Parse(setting);
+            setting = settings.GetValueOrDefault("GdprUserDeleteAction", "0");
+            portalSettings.GdprUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+
         }
 
         protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)
