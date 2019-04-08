@@ -8,8 +8,7 @@
   <Import Project="MSBuild.Community.Tasks.Targets" />
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
   <UsingTask AssemblyFile="$(YuiLib)" TaskName="CssCompressorTask" />
-  <UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />
-
+  <!--<UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />-->
 
   <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <XmlRead Prefix="n"
@@ -54,11 +53,13 @@
     <Unzip ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" TargetDirectory="$(MSBuildProjectDirectory)\Package\Resources" />
     <Delete Files="$(MSBuildProjectDirectory)\Package\Resources.zip" />
     <ItemGroup>
-      <_JSFilesToMinify Include="$(MSBuildProjectDirectory)\Package\Resources\**\*.js" Exclude="$(MSBuildProjectDirectory)\Package\Resources\**\*.min.js" />
+      <!--<_JSFilesToMinify Include="$(MSBuildProjectDirectory)\Package\Resources\**\*.js" Exclude="$(MSBuildProjectDirectory)\Package\Resources\**\*.min.js" />-->
       <_Step2FilesToZip Include="$(MSBuildProjectDirectory)\Package\Resources\**\*" />
     </ItemGroup>
+    <!--
     <Message Text="Compressing Javascript files" Importance="high" />
-<!--<JavaScriptCompressorTask Files="@(_JSFilesToMinify)" ContinueOnError="WarnAndContinue" /> -->
+    <JavaScriptCompressorTask Files="@(_JSFilesToMinify)" ContinueOnError="WarnAndContinue" />
+    -->
 
     <ItemGroup>
       <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\**\*.css" Exclude="$(MSBuildProjectDirectory)\Package\**\*;$(MSBuildProjectDirectory)\**\node_modules\**\*" />
