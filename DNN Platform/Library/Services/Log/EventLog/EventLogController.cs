@@ -195,7 +195,9 @@ namespace DotNetNuke.Services.Log.EventLog
             WEBSERVER_DISABLED,
             WEBSERVER_ENABLED,
             WEBSERVER_PINGFAILED,
-            FOLDER_MOVED
+            FOLDER_MOVED,
+            DATA_CONSENT_SUCCESS,
+            DATA_CONSENT_FAILURE
         }
 
         #endregion

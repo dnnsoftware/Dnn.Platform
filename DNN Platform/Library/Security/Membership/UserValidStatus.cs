@@ -26,6 +26,7 @@ namespace DotNetNuke.Security.Membership
         PASSWORDEXPIRED = 1,
         PASSWORDEXPIRING = 2,
         UPDATEPROFILE = 3,
-        UPDATEPASSWORD = 4
+        UPDATEPASSWORD = 4,
+        MUSTAGREETOTERMS = 5
     }
 }

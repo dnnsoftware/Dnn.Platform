@@ -1,5 +1,5 @@
 /************************************************************/
-/*****              GDPR Changes                        *****/
+/*****          Data Consent Changes                    *****/
 /************************************************************/
 
 ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ADD
@@ -105,4 +105,29 @@ AS
 	UPDATE {databaseOwner}{objectQualifier}UserPortals
 	SET HasAgreedToTerms = 0
 	WHERE PortalId = @PortalId
+GO
+
+/*      Add logging for consent             */
+/********************************************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) 
+VALUES (N'DATA_CONSENT_SUCCESS', N'User Consented', N'', N'DotNetNuke.Logging.EventLogType', N'OperationSuccess')
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) 
+VALUES (N'DATA_CONSENT_FAILURE', N'User Failed to Consent', N'', N'DotNetNuke.Logging.EventLogType', N'AdminAlert')
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}EventLogConfig WHERE LogTypeKey = 'DATA_CONSENT_SUCCESS')
+BEGIN  
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ( [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) 
+VALUES ( N'DATA_CONSENT_SUCCESS', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}EventLogConfig WHERE LogTypeKey = 'DATA_CONSENT_FAILURE')
+BEGIN  
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ( [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) 
+VALUES ( N'DATA_CONSENT_FAILURE', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+END
 GO

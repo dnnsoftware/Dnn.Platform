@@ -19,14 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -47,6 +39,14 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace DotNetNuke.Entities.Users
@@ -242,8 +242,8 @@ namespace DotNetNuke.Entities.Users
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
-            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
-                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(),true);
+            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
+                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
         }
 
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
@@ -722,6 +722,17 @@ namespace DotNetNuke.Entities.Users
             MembershipProvider.Instance().ResetTermsAgreement(portalId);
         }
 
+        /// <summary>
+        /// Make personal details of user anonymous and randomize password. This is an alternative to deleting a user
+        /// but avoiding removing the user records from the database
+        /// </summary>
+        /// <param name="user">The user that needs to be anonymized.</param>
+        public static void AnonymizeUser(UserInfo user)
+        {
+            Requires.NotNull("user", user);
+            MembershipProvider.Instance().AnonymizeUser(user);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePassword attempts to change the users password
@@ -1079,7 +1090,7 @@ namespace DotNetNuke.Entities.Users
                     //send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
-                                
+
                 DataCache.ClearPortalUserCountCache(user.PortalID);
                 DataCache.ClearUserCache(user.PortalID, user.Username);
 
@@ -2048,7 +2059,11 @@ namespace DotNetNuke.Entities.Users
                 DataCache.ClearUserCache(portalId, user.Username);
             }
 
-            if (!user.Membership.Approving) return;
+            if (!user.Membership.Approving)
+            {
+                return;
+            }
+
             user.Membership.ConfirmApproved();
             EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
         }
@@ -2244,6 +2259,18 @@ namespace DotNetNuke.Entities.Users
                 }
             }
 
+            // Check if user needs to consent to terms
+            if (validStatus == UserValidStatus.VALID && !(objUser.IsSuperUser || PortalSettings.Current.AdministratorId == objUser.UserID))
+            {
+                if (PortalSettings.Current.GdprActive)
+                {
+                    if (!objUser.HasAgreedToTerms)
+                    {
+                        validStatus = UserValidStatus.MUSTAGREETOTERMS;
+                    }
+                }
+            }
+
             //Check if Profile needs updating
             if (validStatus == UserValidStatus.VALID)
             {
@@ -2253,6 +2280,7 @@ namespace DotNetNuke.Entities.Users
                     validStatus = UserValidStatus.UPDATEPROFILE;
                 }
             }
+
             return validStatus;
         }
 

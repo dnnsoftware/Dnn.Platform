@@ -1700,6 +1700,19 @@ namespace DotNetNuke.Security.Membership
             _dataProvider.ResetTermsAgreement(portalId);
         }
 
+        /// <summary>
+        /// Make personal details of user anonymous and randomize password. This is an alternative to deleting a user
+        /// but avoiding removing the user records from the database
+        /// </summary>
+        /// <param name="user">The user that needs to be anonymized.</param>
+        public override void AnonymizeUser(UserInfo user)
+        {
+            //user.FirstName = 
+            
+            //_dataProvider.UserAgreedToTerms(user.PortalID, user.UserID);
+            // todo
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateUser persists a user to the Data Store
