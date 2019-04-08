@@ -21,7 +21,7 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Pages</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules</basePath>
                         <resourceFile>
                             <name>Resources.zip</name>
                         </resourceFile>
@@ -39,7 +39,7 @@
                     <menu>
                         <identifier>Dnn.Pages</identifier>
                         <moduleName>Pages</moduleName>
-                        <controller>Dnn.PersonaBar.Pages.MenuControllers.PagesMenuController, Dnn.PersonaBar.Pages</controller>
+                        <controller>Dnn.PersonaBar.Pages.MenuControllers.PagesMenuController, Dnn.PersonaBar.Extensions</controller>
                         <resourceKey>nav_Pages</resourceKey>
                         <path>Pages</path>
                         <parent>Content</parent>

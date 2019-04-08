@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.Library", "Edit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.UI", "EditBar\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj", "{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages", "Extensions\Content\Dnn.PersonaBar.Pages\Dnn.PersonaBar.Pages.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Extensions\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Extensions\Content\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
 EndProject
