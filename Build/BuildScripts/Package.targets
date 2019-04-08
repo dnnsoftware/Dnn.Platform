@@ -10,7 +10,7 @@
   <UsingTask AssemblyFile="$(YuiLib)" TaskName="CssCompressorTask" />
   <UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />
 
-  
+
   <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <XmlRead Prefix="n"
                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
@@ -73,6 +73,7 @@
         LoggingType="Info"
         PreserveComments="false"
         LineBreakPosition="-1"
+        Condition="@(_CSSFilesToCompress->Count())!=0"
      />
 
     <Zip Files="@(_Step2FilesToZip)" WorkingDirectory="$(ResourceZipWorkingDirectory)"
