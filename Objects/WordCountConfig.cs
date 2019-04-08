@@ -16,8 +16,6 @@ namespace DNNConnect.CKEditorProvider.Objects
         {
             ShowWordCount = true;
             ShowCharCount = false;
-            /*this.CharLimit = "unlimited";
-            this.WordLimit = "unlimited";*/
         }
 
         /// <summary>
@@ -39,25 +37,5 @@ namespace DNNConnect.CKEditorProvider.Objects
         [XmlAttribute("showWordCount")]
         [Description("Whether or not you want to show the Char Count")]
         public bool ShowWordCount { get; set; }
-        /*
-        /// <summary>
-        /// Gets or sets the char limit.
-        /// </summary>
-        /// <value>
-        /// The char limit.
-        /// </value>
-        [XmlAttribute("charLimit")]
-        [Description("Option to set a maximum limit of Chars in Numbers or use 'unlimited'")]
-        public string CharLimit { get; set; }
-
-        /// <summary>
-        /// Gets or sets the word limit.
-        /// </summary>
-        /// <value>
-        /// The word limit.
-        /// </value>
-        [XmlAttribute("wordLimit")]
-        [Description("Option to set a maximum limit of Words in Numbers or use 'unlimited'")]
-        public string WordLimit { get; set; }*/
     }
 }
