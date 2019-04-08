@@ -203,12 +203,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 // we need .TrimEnd('/') because a portlalias for a specific culture will not have a trailing /, while a returnurl will.
                 var isDefaultPage = redirectURL == "/"
                     || (alias.Contains("/") && redirectURL.TrimEnd('/').Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
-                
+
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
                     if (
-                        NeedRedirectAfterLogin 
-                        && (isDefaultPage || IsRedirectingFromLoginUrl()) 
+                        NeedRedirectAfterLogin
+                        && (isDefaultPage || IsRedirectingFromLoginUrl())
                         && Convert.ToInt32(setting) != Null.NullInteger
                         )
                     {
@@ -262,12 +262,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private bool IsRedirectingFromLoginUrl()
         {
-            return Request.UrlReferrer != null && 
+            return Request.UrlReferrer != null &&
                 Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
-        private bool NeedRedirectAfterLogin => 
-               LoginStatus == UserLoginStatus.LOGIN_SUCCESS 
+        private bool NeedRedirectAfterLogin =>
+               LoginStatus == UserLoginStatus.LOGIN_SUCCESS
             || LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
@@ -357,25 +357,25 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-		/// <summary>
-		/// Gets and sets the current UserName
-		/// </summary>
-		protected string UserName
-		{
-			get
-			{
-				var userName = "";
-				if (ViewState["UserName"] != null)
-				{
+        /// <summary>
+        /// Gets and sets the current UserName
+        /// </summary>
+        protected string UserName
+        {
+            get
+            {
+                var userName = "";
+                if (ViewState["UserName"] != null)
+                {
                     userName = Convert.ToString(ViewState["UserName"]);
-				}
-				return userName;
-			}
-			set
-			{
-				ViewState["UserName"] = value;
-			}
-		}
+                }
+                return userName;
+            }
+            set
+            {
+                ViewState["UserName"] = value;
+            }
+        }
 
         #endregion
 
@@ -744,11 +744,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
             bool showRegister = (PageNo == 1);
             bool showPassword = (PageNo == 2);
             bool showProfile = (PageNo == 3);
+            bool showDataConsent = (PageNo == 4);
             pnlProfile.Visible = showProfile;
             pnlPassword.Visible = showPassword;
             pnlLogin.Visible = showLogin;
             pnlRegister.Visible = showRegister;
             pnlAssociate.Visible = showRegister;
+            pnlDataConsent.Visible = showDataConsent;
             switch (PageNo)
             {
                 case 0:
@@ -764,6 +766,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 case 3:
                     ctlProfile.UserId = UserId;
                     ctlProfile.DataBind();
+                    break;
+                case 4:
+                    ctlDataConsent.UserId = UserId;
+                    ctlDataConsent.DataBind();
                     break;
             }
 
@@ -932,6 +938,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     AddModuleMessage("ProfileUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
                     PageNo = 3;
                     break;
+                case UserValidStatus.MUSTAGREETOTERMS:
+                    //Save UserID in ViewState so that can update profile later.
+                    UserId = objUser.UserID;
+                    AddModuleMessage("MustConsent", ModuleMessage.ModuleMessageType.YellowWarning, true);
+                    PageNo = 4;
+                    break;
             }
             if (okToShowPanel) ShowPanel();
         }
@@ -966,15 +978,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
             ctlPassword.PasswordUpdated += PasswordUpdated;
             ctlProfile.ProfileUpdated += ProfileUpdated;
             ctlUser.UserCreateCompleted += UserCreateCompleted;
+            ctlDataConsent.DataConsentCompleted += DataConsentCompleted;
 
             //Set the User Control Properties
             ctlUser.ID = "User";
 
-            //Set the Profile Control Properties
+            //Set the Password Control Properties
             ctlPassword.ID = "Password";
 
             //Set the Profile Control Properties
             ctlProfile.ID = "Profile";
+
+            //Set the Data Consent Control Properties
+            ctlDataConsent.ID = "DataConsent";
 
             //Override the redirected page title if page has loaded with ctl=Login
             if (Request.QueryString["ctl"] != null)
@@ -1176,6 +1192,28 @@ namespace DotNetNuke.Modules.Admin.Authentication
             else
             {
                 AddModuleMessage(status.ToString(), ModuleMessage.ModuleMessageType.RedError, true);
+            }
+        }
+
+        /// <summary>
+        /// DataConsentCompleted runs after the user has gone through the data consent screen
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
+        {
+            switch (e.Status)
+            {
+                case DataConsent.DataConsentStatus.Consented:
+                    ValidateUser(ctlDataConsent.User, true);
+                    break;
+                case DataConsent.DataConsentStatus.Cancelled:
+                case DataConsent.DataConsentStatus.RemovedAccount:
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId), true);
+                    break;
+                case DataConsent.DataConsentStatus.FailedToRemoveAccount:
+                    AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);
+                    break;
             }
         }
 
