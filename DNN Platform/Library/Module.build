@@ -12,7 +12,7 @@
   <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="GetFiles;DebugProject;ReleasePackages">
   </Target>
-  
+
   <Target Name="GetFiles">
     <ItemGroup>
       <Templates Include="..\Website\Templates\*.*" />
@@ -41,7 +41,7 @@
       <Selectize Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize\*.*" />
     </ItemGroup>
   </Target>
-  
+
   <Target Name="DebugProject">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsiteBinPath)" />
@@ -73,20 +73,20 @@
     <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(WebsiteInstallPath)"/>
 
     <!-- Copy development.config or release.config to web.config -->
-    <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" 
+    <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config"
           Condition="'@(WebConfig)' == '' And '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"/>
-    <Copy SourceFiles="$(WebsitePath)\release.config" DestinationFiles="$(WebsitePath)\web.config" 
+    <Copy SourceFiles="$(WebsitePath)\release.config" DestinationFiles="$(WebsitePath)\web.config"
           Condition="'@(WebConfig)' == '' And '$(Configuration)|$(Platform)' == 'Release|AnyCPU'"/>
-    
+
   </Target>
-  
+
   <Target Name="ReleasePackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Zip Files="@(Knockout)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Knockout"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Knockout.zip" />
 
     <Zip Files="@(jQuery)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQuery"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQuery.zip" />
-    
+
     <Zip Files="@(jQueryUI)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\jQueryUI.zip" />
 
@@ -115,7 +115,7 @@
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
-      
+
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -146,5 +146,21 @@
     </CreateItem>
     <Zip Files="@(DotNetCompilerContent)" WorkingDirectory="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" ZipFileName="$(WebsiteInstallPath)\Library\Microsoft.CodeDom.Providers.DotNetCompilerPlatform_$(DotNetCompilerVersion)_Install.resources" />
     <RemoveDir Directories ="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Package" />
+
+    <XmlRead Prefix="n"
+            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+            XPath="dotnetnuke/packages/package/@version"
+            XmlFileName="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn">
+      <Output TaskParameter="Value" PropertyName="DotNetCompilerVersionNet46" />
+    </XmlRead>
+    <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package\bin" />
+    <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\roslyn.zip" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package" />
+      <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package" />
+      <Copy SourceFiles="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\releaseNotes.txt" DestinationFolder="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package" />
+    <CreateItem Include="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="DotNetCompilerContentNet46" />
+    </CreateItem>
+    <Zip Files="@(DotNetCompilerContentNet46)" WorkingDirectory="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package" ZipFileName="$(WebsiteInstallPath)\Library\Microsoft.CodeDom.Providers.DotNetCompilerPlatform_$(DotNetCompilerVersionNet46)_net46_Install.resources" />
+    <RemoveDir Directories ="..\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46\Package" />
   </Target>
 </Project>

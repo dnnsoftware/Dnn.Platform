@@ -262,11 +262,11 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
-      <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
       <Name>DotNetNuke.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
       <Private>False</Private>
     </ProjectReference>

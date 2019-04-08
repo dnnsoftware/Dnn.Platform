@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Website</RootNamespace>
     <AssemblyName>DotNetNuke.Website</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -3293,6 +3293,8 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.03.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.04.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

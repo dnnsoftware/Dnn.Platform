@@ -3,15 +3,21 @@
   <metadata>
     <id>DotNetNuke.Providers.FolderProviders</id>
     <version>$version$</version>
-    <title>DotNetNuke.Providers.FolderProviders</title>
+    <title>DNN Platform (Folder Providers)</title>
     <authors>DNN Corp.</authors>
     <owners>DNN Corp.</owners>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DotNetNuke Folder Providers</description>
-    <copyright>DotNetNuke is copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <description>
+      Provides API references needed to develop custom folder providers, or to consume folder providers
+    </description>
+    <copyright>DotNetNuke is copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="$version$" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\"/>
-    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\net45\"/>
   </files>
 </package>

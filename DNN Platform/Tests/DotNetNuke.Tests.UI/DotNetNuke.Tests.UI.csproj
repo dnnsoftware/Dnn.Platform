@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Tests.UI</RootNamespace>
     <AssemblyName>DotNetNuke.Tests.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <FileUpgradeFlags>
@@ -79,11 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
-      <Project>{B1699614-39D4-468A-AB1D-A2FBA97CADDF}</Project>
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
       <Name>DotNetNuke.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
