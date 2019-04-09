@@ -27,6 +27,12 @@
         <asp:RequiredFieldValidator runat="server" ID="filtersRequiredFieldValidator" CssClass="dnnFormMessage dnnFormError" Display="Dynamic"
             resourceKey="filtersRequired" ControlToValidate="comboBoxFilters"></asp:RequiredFieldValidator>
     </div>
+    
+    <div class="dnnFormItem" id="scopeForRolesRow">
+        <dnn:Label ID="plResultsScopeForRoles" runat="server" ControlName="comboBoxRoles" />
+        <dnn:DnnComboBox ID="comboBoxRoles" runat="server" CheckBoxes="true" Width="437px">
+        </dnn:DnnComboBox>
+    </div>
 
     <div class="dnnFormItem">
         <dnn:Label ID="plEnableWildSearch" runat="server" ControlName="chkEnableWildSearch" />
@@ -64,16 +70,34 @@
 <script type="text/javascript">
     (function($) {
         $(document.body).ready(function() {
-            var $showDescription = $('#<%=chkShowDescription.ClientID%>');
-            var updateState = function() {
-                var $maxDescriptionLengthRow = $('#maxDescriptionLengthRow');
-                $maxDescriptionLengthRow.toggle($showDescription.is(':checked'));
-            }
+            (function() {
+                var $showDescription = $('#<%=chkShowDescription.ClientID%>');
+                var updateState = function() {
+                    var $maxDescriptionLengthRow = $('#maxDescriptionLengthRow');
+                    $maxDescriptionLengthRow.toggle($showDescription.is(':checked'));
+                }
 
-            updateState();
-            $showDescription.change(function() {
                 updateState();
-            });
+                $showDescription.change(function() {
+                    updateState();
+                });
+            })();
+            
+            (function() {
+                var $filters = $('#<%=comboBoxFilters.ClientID%>');
+                var updateState = function() {
+                    var $scopeForRolesRow = $('#scopeForRolesRow');
+                    var usersSelected = $filters.val().toLowerCase().split(',').filter(function(i) {
+                            return i === "users";
+                        }).length > 0;
+                    $scopeForRolesRow.toggle(usersSelected);
+                }
+
+                updateState();
+                $filters.change(function() {
+                    updateState();
+                });
+            })();
         });
     })(jQuery);
 </script>
