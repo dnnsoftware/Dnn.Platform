@@ -20,17 +20,6 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -54,6 +43,17 @@ using DotNetNuke.Services.UserRequest;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 #endregion
 
@@ -470,8 +470,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         //if there are social authprovider only
                         if (_oAuthControls.Count == 0)
+                        {
                             //Portal has no login controls enabled so load default DNN control
                             DisplayLoginControl(defaultLoginControl, false, false);
+                        }
                     }
                     break;
                 case 1:
@@ -486,7 +488,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 default:
                     //make sure defaultAuth provider control is diplayed first
-                    if (_defaultauthLogin.Count > 0) DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
+                    if (_defaultauthLogin.Count > 0)
+                    {
+                        DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
+                    }
+
                     foreach (AuthenticationLoginBase authLoginControl in _loginControls)
                     {
                         DisplayTabbedLoginControl(authLoginControl, tsLogin.Tabs);
@@ -939,13 +945,25 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     PageNo = 3;
                     break;
                 case UserValidStatus.MUSTAGREETOTERMS:
-                    //Save UserID in ViewState so that can update profile later.
-                    UserId = objUser.UserID;
-                    AddModuleMessage("MustConsent", ModuleMessage.ModuleMessageType.YellowWarning, true);
-                    PageNo = 4;
+                    if (PortalSettings.GdprConsentRedirect == -1)
+                    {
+                        UserId = objUser.UserID;
+                        AddModuleMessage("MustConsent", ModuleMessage.ModuleMessageType.YellowWarning, true);
+                        PageNo = 4;
+                    }
+                    else
+                    {
+                        // Use the reset password token to identify the user during the redirect
+                        UserController.ResetPasswordToken(objUser);
+                        objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.GdprConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                    }
                     break;
             }
-            if (okToShowPanel) ShowPanel();
+            if (okToShowPanel)
+            {
+                ShowPanel();
+            }
         }
 
         private bool UserNeedsVerification()
