@@ -13,7 +13,7 @@
             <license src="License.txt"></license>
             <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
             <dependencies>
-                <dependency type="CoreVersion">08.00.00</dependency>
+                <dependency type="CoreVersion">09.03.00</dependency>
                 <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
                 <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.Themes</dependency>
             </dependencies>
