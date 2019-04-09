@@ -1712,6 +1712,13 @@ namespace DotNetNuke.Security.Membership
             user.LastName = "";
             user.DisplayName = RandomString(15);
             user.Email = string.Format("{0}@anonymous", RandomString(10));
+            user.VanityUrl = "";
+            user.LastIPAddress = "";
+            user.AffiliateID = Null.NullInteger;
+            user.PasswordResetToken = Null.NullGuid;
+            user.PasswordResetExpiration = Null.NullDate;
+            user.HasAgreedToTerms = false;
+            user.HasAgreedToTermsOn = Null.NullDate;
             user.Membership.Password = GeneratePassword();
             user.Membership.Approved = false;
             UpdateUser(user);

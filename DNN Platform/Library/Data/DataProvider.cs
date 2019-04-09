@@ -2412,7 +2412,7 @@ namespace DotNetNuke.Data
                                       isApproved,
                                       refreshRoles,
                                       lastIpAddress,
-                                      passwordResetToken,
+                                      GetNull(passwordResetToken),
                                       GetNull(passwordResetExpiration),
                                       isDeleted,
                                       lastModifiedByUserID);
