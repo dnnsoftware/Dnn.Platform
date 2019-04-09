@@ -660,7 +660,7 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// <param name="user">User for which all roles must be deleted. The PortalId property
         /// is used to determine for which portal roles must be removed.</param>
-        public static void DeleteUserRoles(UserInfo user)
+        internal static void DeleteUserRoles(UserInfo user)
         {
             var ctrl = new RoleController();
             var userRoles = ctrl.GetUserRoles(user, true);

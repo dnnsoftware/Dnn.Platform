@@ -1814,7 +1814,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <param name="user">The user for whom to delete the folder. 
         /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
-        public static void DeleteUserFolder(UserInfo user)
+        private static void DeleteUserFolder(UserInfo user)
         {
             var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
             var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
@@ -2083,10 +2083,7 @@ namespace DotNetNuke.Entities.Users
                 DataCache.ClearUserCache(portalId, user.Username);
             }
 
-            if (!user.Membership.Approving)
-            {
-                return;
-            }
+            if (!user.Membership.Approving) return;
 
             user.Membership.ConfirmApproved();
             EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
