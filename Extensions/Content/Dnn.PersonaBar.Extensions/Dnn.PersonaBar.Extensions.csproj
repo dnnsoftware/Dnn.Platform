@@ -100,6 +100,49 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Extensions\Constants.cs" />
+    <Compile Include="Components\Extensions\CreateModuleController.cs" />
+    <Compile Include="Components\Extensions\Dto\AvailablePackagesDto.cs" />
+    <Compile Include="Components\Extensions\Dto\CreateModuleDto.cs" />
+    <Compile Include="Components\Extensions\Dto\CreatePackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\DeletePackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\DownloadPackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\AuthSystemPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\CoreLanguagePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ExtensionLanguagePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\JsLibraryPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ListItemDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModuleControlDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModuleDefinitionDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModulePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModulePackagePermissionsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\PermissionsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\SkinObjectPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\SkinPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\UsedByPackage.cs" />
+    <Compile Include="Components\Extensions\Dto\InstallerLogEntry.cs" />
+    <Compile Include="Components\Extensions\Dto\InstallResultDto.cs" />
+    <Compile Include="Components\Extensions\Dto\ModuleFolderDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageFilesQueryDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageInfoDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageInfoSlimDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageManifestDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageSettingsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\ParseResultDto.cs" />
+    <Compile Include="Components\Extensions\Editors\AuthSystemPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\CoreLanguagePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\ExtensionLanguagePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\IPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\JsLibraryPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\ModulePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\PackageEditorFactory.cs" />
+    <Compile Include="Components\Extensions\Editors\SkinObjectPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\SkinPackageEditor.cs" />
+    <Compile Include="Components\Extensions\ExtensionsController.cs" />
+    <Compile Include="Components\Extensions\ICreateModuleController.cs" />
+    <Compile Include="Components\Extensions\IInstallController.cs" />
+    <Compile Include="Components\Extensions\InstallController.cs" />
+    <Compile Include="Components\Extensions\Utility.cs" />
     <Compile Include="Components\Pages\BulkPagesController.cs" />
     <Compile Include="Components\Pages\CloneModuleExecutionContext.cs" />
     <Compile Include="Components\Pages\Constants.cs" />
@@ -145,6 +188,19 @@
     <Compile Include="Components\Pages\UrlRewriterUtilsWrapper.cs" />
     <Compile Include="Components\Pages\WorkflowHelper.cs" />
     <Compile Include="Components\Pages\XssCleaner.cs" />
+    <Compile Include="Components\Recyclebin\Constants.cs" />
+    <Compile Include="Components\Recyclebin\Dto\ModuleItem.cs" />
+    <Compile Include="Components\Recyclebin\Dto\PageItem.cs" />
+    <Compile Include="Components\Recyclebin\Dto\UserItem.cs" />
+    <Compile Include="Components\Recyclebin\IRecyclebinController.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgeModule.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgePage.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgeUser.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreModule.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestorePage.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreUser.cs" />
+    <Compile Include="Components\Recyclebin\RecyclebinController.cs" />
+    <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\BulkPage.cs" />
@@ -172,12 +228,28 @@
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
     <Compile Include="Services\Dto\Url.cs" />
+    <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\PagesController.cs" />
+    <Compile Include="Services\RecyclebinController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Extensions\css\extensions.css" />
+    <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\extensions.js" />
     <Content Include="admin\personaBar\Dnn.Pages\css\Pages.css" />
     <Content Include="admin\personaBar\Dnn.Pages\Pages.html" />
     <Content Include="admin\personaBar\Dnn.Pages\scripts\Pages.js" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\css\RecycleBin.css" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\fallback-thumbnail.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icon-Empty-Modules-white.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icon-Empty-Pages-white.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\icon-empty-state-modules.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\icon-empty-state-pages.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icons-RecycleBin.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\Recyclebin.html" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\Recyclebin.js" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\RecycleBin.ViewModel.js" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -203,6 +275,15 @@
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Extensions.dnn" />
     <Content Include="Dnn.PersonaBar.Extensions.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Extensions\App_LocalResources\Extensions.resx" />
+    <EmbeddedResource Include="admin\personaBar\Dnn.Extensions\data\ModuleControlTemplate.resources" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\App_LocalResources\Recyclebin.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.ttf" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
