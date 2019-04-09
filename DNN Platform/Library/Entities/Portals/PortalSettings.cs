@@ -95,6 +95,8 @@ namespace DotNetNuke.Entities.Portals
         private DateTime _dataConsentTermsLastChange = DateTime.MinValue;
         private int _dataConsentConsentRedirect = -1;
         private UserDeleteAction _dataConsentUserDeleteAction = UserDeleteAction.DelayedHardDelete;
+        private int _dataConsentDelay = 1;
+        private string _dataConsentDelayMeasurement = "d";
 
         #region Constructors
 
@@ -710,7 +712,27 @@ namespace DotNetNuke.Entities.Portals
                 PortalController.UpdatePortalSetting(PortalId, "DataConsentUserDeleteAction", ((int)value).ToString(), true);
             }
         }
-        
+
+        public int DataConsentDelay
+        {
+            get { return _dataConsentDelay; }
+            set
+            {
+                _dataConsentDelay = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentDelay", value.ToString(), true);
+            }
+        }
+
+        public string DataConsentDelayMeasurement
+        {
+            get { return _dataConsentDelayMeasurement; }
+            set
+            {
+                _dataConsentDelayMeasurement = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentDelayMeasurement", value, true);
+            }
+        }
+
         #endregion
 
         #region IPropertyAccess Members

@@ -318,6 +318,10 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentConsentRedirect = int.Parse(setting);
             setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
             portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentDelay", "1");
+            portalSettings.DataConsentDelay = int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
+            portalSettings.DataConsentDelayMeasurement = setting;
 
         }
 
