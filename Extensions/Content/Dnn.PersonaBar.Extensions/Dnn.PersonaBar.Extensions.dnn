@@ -36,6 +36,18 @@
                     </assemblies>
                 </component>
                 <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Extensions</identifier>
+                    <moduleName>Extensions</moduleName>
+                    <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Extensions</resourceKey>
+                    <path>extensions</path>
+                    <parent>Settings</parent>
+                    <order>47</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
                     <menu>
                         <identifier>Dnn.Pages</identifier>
                         <moduleName>Pages</moduleName>
