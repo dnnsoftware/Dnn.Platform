@@ -265,6 +265,10 @@
       <Project>{5ad58dbf-e912-46e5-8812-342bb8af8182}</Project>
       <Name>Dnn.PersonaBar.Themes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Manage\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj">
+      <Project>{96e8b714-a431-4cb7-a251-17f171055f64}</Project>
+      <Name>Dnn.PersonaBar.Users</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.config" />
