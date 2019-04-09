@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                switch (PortalSettings.GdprUserDeleteAction)
+                switch (PortalSettings.DataConsentUserDeleteAction)
                 {
                     case PortalSettings.UserDeleteAction.DelayedHardDelete:
                         return LocalizeString("DelayedHardDelete.Confirm");
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private void cmdDeleteMe_Click(object sender, EventArgs e)
         {
             var success = false;
-            switch (PortalSettings.GdprUserDeleteAction)
+            switch (PortalSettings.DataConsentUserDeleteAction)
             {
                 case PortalSettings.UserDeleteAction.DelayedHardDelete:
                     var user = User;

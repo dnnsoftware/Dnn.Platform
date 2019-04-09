@@ -307,17 +307,17 @@ namespace DotNetNuke.Entities.Portals
                     portalSettings.TimeZone = timeZone;
             }
 
-            setting = settings.GetValueOrDefault("GdprActive", "False");
-            portalSettings.GdprActive = bool.Parse(setting);
-            setting = settings.GetValueOrDefault("GdprTermsLastChange", "");
+            setting = settings.GetValueOrDefault("DataConsentActive", "False");
+            portalSettings.DataConsentActive = bool.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", "");
             if (!string.IsNullOrEmpty(setting))
             {
-                portalSettings.GdprTermsLastChange = DateTime.Parse(setting);
+                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting);
             }
-            setting = settings.GetValueOrDefault("GdprConsentRedirect", "-1");
-            portalSettings.GdprConsentRedirect = int.Parse(setting);
-            setting = settings.GetValueOrDefault("GdprUserDeleteAction", "0");
-            portalSettings.GdprUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
+            portalSettings.DataConsentConsentRedirect = int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
+            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
 
         }
 

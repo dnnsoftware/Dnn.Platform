@@ -945,7 +945,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     PageNo = 3;
                     break;
                 case UserValidStatus.MUSTAGREETOTERMS:
-                    if (PortalSettings.GdprConsentRedirect == -1)
+                    if (PortalSettings.DataConsentConsentRedirect == -1)
                     {
                         UserId = objUser.UserID;
                         AddModuleMessage("MustConsent", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -956,7 +956,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         // Use the reset password token to identify the user during the redirect
                         UserController.ResetPasswordToken(objUser);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
-                        Response.Redirect(Globals.NavigateURL(PortalSettings.GdprConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
                     }
                     break;
             }

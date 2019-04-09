@@ -2286,7 +2286,7 @@ namespace DotNetNuke.Entities.Users
             // Check if user needs to consent to terms
             if (validStatus == UserValidStatus.VALID && !(objUser.IsSuperUser || PortalSettings.Current.AdministratorId == objUser.UserID))
             {
-                if (PortalSettings.Current.GdprActive)
+                if (PortalSettings.Current.DataConsentActive)
                 {
                     if (!objUser.HasAgreedToTerms)
                     {

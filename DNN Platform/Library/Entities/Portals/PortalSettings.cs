@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Portals
 
         #endregion
 
-        #region GDPR UserDeleteAction enum
+        #region Data Consent UserDeleteAction enum
         public enum UserDeleteAction
         {
             DelayedHardDelete = 0,
@@ -91,10 +91,10 @@ namespace DotNetNuke.Entities.Portals
         #endregion
 
         private TimeZoneInfo _timeZone = TimeZoneInfo.Local;
-        private bool _gdprActive = false;
-        private DateTime _gdprTermsLastChange = DateTime.MinValue;
-        private int _gdprConsentRedirect = -1;
-        private UserDeleteAction _gdprUserDeleteAction = UserDeleteAction.DelayedHardDelete;
+        private bool _dataConsentActive = false;
+        private DateTime _dataConsentTermsLastChange = DateTime.MinValue;
+        private int _dataConsentConsentRedirect = -1;
+        private UserDeleteAction _dataConsentUserDeleteAction = UserDeleteAction.DelayedHardDelete;
 
         #region Constructors
 
@@ -671,43 +671,43 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        public bool GdprActive
+        public bool DataConsentActive
         {
-            get { return _gdprActive; }
+            get { return _dataConsentActive; }
             set
             {
-                _gdprActive = value;
-                PortalController.UpdatePortalSetting(PortalId, "GdprActive", value.ToString(), true);
+                _dataConsentActive = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentActive", value.ToString(), true);
             }
         }
 
-        public DateTime GdprTermsLastChange
+        public DateTime DataConsentTermsLastChange
         {
-            get { return _gdprTermsLastChange; }
+            get { return _dataConsentTermsLastChange; }
             set
             {
-                _gdprTermsLastChange = value;
-                PortalController.UpdatePortalSetting(PortalId, "GdprTermsLastChange", value.ToString("u"), true);
+                _dataConsentTermsLastChange = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentTermsLastChange", value.ToString("u"), true);
             }
         }
 
-        public int GdprConsentRedirect
+        public int DataConsentConsentRedirect
         {
-            get { return _gdprConsentRedirect; }
+            get { return _dataConsentConsentRedirect; }
             set
             {
-                _gdprConsentRedirect = value;
-                PortalController.UpdatePortalSetting(PortalId, "GdprConsentRedirect", value.ToString(), true);
+                _dataConsentConsentRedirect = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentConsentRedirect", value.ToString(), true);
             }
         }
 
-        public UserDeleteAction GdprUserDeleteAction
+        public UserDeleteAction DataConsentUserDeleteAction
         {
-            get { return _gdprUserDeleteAction; }
+            get { return _dataConsentUserDeleteAction; }
             set
             {
-                _gdprUserDeleteAction = value;
-                PortalController.UpdatePortalSetting(PortalId, "GdprUserDeleteAction", ((int)value).ToString(), true);
+                _dataConsentUserDeleteAction = value;
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentUserDeleteAction", ((int)value).ToString(), true);
             }
         }
         
