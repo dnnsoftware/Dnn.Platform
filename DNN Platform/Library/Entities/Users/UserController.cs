@@ -724,13 +724,15 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>
         /// Make personal details of user anonymous and randomize password. This is an alternative to deleting a user
-        /// but avoiding removing the user records from the database
+        /// but avoiding removing the user records from the database. Note the user's profile and folder are
+        /// permanently deleted.
         /// </summary>
         /// <param name="user">The user that needs to be anonymized.</param>
         public static void AnonymizeUser(UserInfo user)
         {
             Requires.NotNull("user", user);
             MembershipProvider.Instance().AnonymizeUser(user);
+            DeleteUserFolder(user);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1751,6 +1753,11 @@ namespace DotNetNuke.Entities.Users
             RemoveUser(user);
         }
 
+        /// <summary>
+        /// Permanently deletes all users marked as deleted from a portal. It will delete the membership
+        /// user as well if the user has no other portals
+        /// </summary>
+        /// <param name="portalId">Portal ID to get the deleted users for</param>
         public static void RemoveDeletedUsers(int portalId)
         {
             var arrUsers = GetDeletedUsers(portalId);
@@ -1764,6 +1771,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <summary>
+        /// Permanently delete a user and the associated user folder on disk. 
+        /// This also deletes the membership user if the user is
+        /// not a member of any other portal.
+        /// </summary>
+        /// <param name="user">The user to delete</param>
+        /// <returns></returns>
         public static bool RemoveUser(UserInfo user)
         {
             int portalId = user.PortalID;
@@ -1781,37 +1795,7 @@ namespace DotNetNuke.Entities.Users
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
-                var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
-                var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
-                if (userFolder != null)
-                {
-                    FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
-                    var notDeletedSubfolders = new List<IFolderInfo>();
-                    FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
-
-                    if (notDeletedSubfolders.Count == 0)
-                    {
-                        //try to remove the parent folder if there is no other users use this folder.
-                        var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
-                        FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
-                        if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
-                        {
-                            FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
-
-                            if (notDeletedSubfolders.Count == 0)
-                            {
-                                //try to remove the root folder if there is no other users use this folder.
-                                var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
-                                FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
-                                if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
-                                {
-                                    FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
-                                }
-                            }
-                        }
-                    }
-                }
+                DeleteUserFolder(user);
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
@@ -1823,6 +1807,46 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
 
             return retValue;
+        }
+
+        /// <summary>
+        /// Delete the contents and folder that belongs to a user in a specific portal
+        /// </summary>
+        /// <param name="user">The user for whom to delete the folder. 
+        /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
+        public static void DeleteUserFolder(UserInfo user)
+        {
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
+            if (userFolder != null)
+            {
+                FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
+                var notDeletedSubfolders = new List<IFolderInfo>();
+                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
+                if (notDeletedSubfolders.Count == 0)
+                {
+                    //try to remove the parent folder if there is no other users use this folder.
+                    var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                    FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
+                    if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
+                    {
+                        FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
+
+                        if (notDeletedSubfolders.Count == 0)
+                        {
+                            //try to remove the root folder if there is no other users use this folder.
+                            var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                            FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
+                            if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
+                            {
+                                FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

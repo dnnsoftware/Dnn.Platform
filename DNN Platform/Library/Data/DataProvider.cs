@@ -2575,6 +2575,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPropertyDefinitionsByPortal", GetNull(portalId));
         }
 
+        public virtual void DeleteUserProfile(int portalId, int userId)
+        {
+            ExecuteNonQuery("DeleteUserProfile", portalId, userId);
+        }
+
         public virtual IDataReader GetUserProfile(int userId)
         {
             return ExecuteReader("GetUserProfile", userId);
