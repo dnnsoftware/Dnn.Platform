@@ -70,10 +70,6 @@
       <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
       <Name>Dnn.PersonaBar.Pages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dnn.PersonaBar.Recyclebin\Dnn.PersonaBar.Recyclebin.csproj">
-      <Project>{35AD8ED3-CBC3-4208-83D1-660EBC908DE2}</Project>
-      <Name>Dnn.PersonaBar.Recyclebin</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
