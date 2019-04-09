@@ -51,6 +51,41 @@
                       <name>View Page List</name>
                     </permission>
                 </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Recyclebin</identifier>
+                    <moduleName>Recyclebin</moduleName>
+                    <resourceKey>nav_Recyclebin</resourceKey>
+                    <path>Recyclebin</path>
+                    <parent>Content</parent>
+                    <order>30</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>RECYCLEBIN_PAGES_VIEW</key>
+                    <name>Pages View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_PAGES_EDIT</key>
+                    <name>Pages Edit</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_MODULES_VIEW</key>
+                    <name>Modules View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_MODULES_EDIT</key>
+                    <name>Modules Edit</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_USERS_VIEW</key>
+                    <name>Users View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_USERS_EDIT</key>
+                    <name>Users Edit</name>
+                  </permission>
+                </component>
             </components>
         </package>
     </packages>
