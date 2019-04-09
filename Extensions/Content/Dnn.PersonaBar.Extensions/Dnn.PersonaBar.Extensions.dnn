@@ -1,7 +1,7 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Pages" type="PersonaBar" version="01.06.01">
-            <friendlyName>Dnn.PersonaBar.Pages</friendlyName>
+        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="01.06.01">
+            <friendlyName>Dnn.PersonaBar.Extensions</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
             <owner>
@@ -30,7 +30,7 @@
                 <component type="Assembly">
                     <assemblies>
                         <assembly>
-                            <name>Dnn.PersonaBar.Pages.dll</name>
+                            <name>Dnn.PersonaBar.Extensions.dll</name>
                             <path>bin</path>
                         </assembly>
                     </assemblies>
