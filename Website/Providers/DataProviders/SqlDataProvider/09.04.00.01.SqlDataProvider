@@ -156,3 +156,13 @@ AS
 		INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PropertyDefinitionID=up.PropertyDefinitionID
 		WHERE up.UserID=@UserId AND (ppd.PortalID=@PortalId OR ppd.PortalID IS NULL);
 GO
+
+/*    Add scheduled task to delete soft deleted users       */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Services.Users.PurgeDeletedUsers, DOTNETNUKE')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Services.Users.PurgeDeletedUsers, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Purge Deleted Users')
+END
+GO
