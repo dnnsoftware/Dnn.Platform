@@ -1630,45 +1630,6 @@ namespace DotNetNuke.Entities.Host
 	    }
 
 		/// <summary>
-		///   Gets whether to use a hosted version of the Telerik Library
-		/// </summary>
-		/// <remarks>
-		///   Defaults to False
-		/// </remarks>
-		[Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
-		public static bool EnableTelerikCdn
-		{
-			get
-			{
-				return HostController.Instance.GetBoolean("EnableTelerikCDN", false);
-			}
-		}
-
-        /// <summary>
-        /// Get Telerik CDN Basic Path.
-        /// </summary>
-        [Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
-        public static string TelerikCdnBasicUrl
-	    {
-			get
-			{
-				return HostController.Instance.GetString("TelerikCDNBasicUrl");
-			}
-	    }
-
-        /// <summary>
-        /// Get Telerik CDN Secure Path.
-        /// </summary>
-        [Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
-        public static string TelerikCdnSecureUrl
-		{
-			get
-			{
-				return HostController.Instance.GetString("TelerikCDNSecureUrl");
-			}
-		}
-
-		/// <summary>
 		/// Get the time, in seconds, before asynchronous postbacks time out if no response is received.
 		/// </summary>
 		public static int AsyncTimeout

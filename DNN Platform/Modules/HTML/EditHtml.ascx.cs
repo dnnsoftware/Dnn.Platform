@@ -36,7 +36,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
-using Telerik.Web.UI;
 using DotNetNuke.Modules.Html.Components;
 
 #endregion

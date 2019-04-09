@@ -57,25 +57,25 @@ namespace DotNetNuke.Web.UI
 
         #region Public Methods
 
-        public static void ApplySkin(Control telerikControl)
+        public static void ApplySkin(Control control)
         {
-            ApplySkin(telerikControl, "", "", "");
+            ApplySkin(control, "", "", "");
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName)
+        public static void ApplySkin(Control control, string fallBackEmbeddedSkinName)
         {
-            ApplySkin(telerikControl, "", "", fallBackEmbeddedSkinName);
+            ApplySkin(control, "", "", fallBackEmbeddedSkinName);
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)
+        public static void ApplySkin(Control control, string fallBackEmbeddedSkinName, string controlName)
         {
-            ApplySkin(telerikControl, "", controlName, fallBackEmbeddedSkinName);
+            ApplySkin(control, "", controlName, fallBackEmbeddedSkinName);
         }
 
         //Use selected skin's webcontrol skin if one exists
         //or use _default skin's webcontrol skin if one exists
         //or use embedded skin
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
+        public static void ApplySkin(Control control, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
         {
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;
@@ -83,12 +83,12 @@ namespace DotNetNuke.Web.UI
 
             try
             {
-                skinProperty = telerikControl.GetType().GetProperty("Skin");
-                enableEmbeddedSkinsProperty = telerikControl.GetType().GetProperty("EnableEmbeddedSkins");
+                skinProperty = control.GetType().GetProperty("Skin");
+                enableEmbeddedSkinsProperty = control.GetType().GetProperty("EnableEmbeddedSkins");
 
                 if ((string.IsNullOrEmpty(controlName)))
                 {
-                    controlName = telerikControl.GetType().BaseType.Name;
+                    controlName = control.GetType().BaseType.Name;
                     if ((controlName.StartsWith("Rad") || controlName.StartsWith("Dnn")))
                     {
                         controlName = controlName.Substring(3);
@@ -100,13 +100,13 @@ namespace DotNetNuke.Web.UI
                 if (PortalSettings.Current != null)
                     skinVirtualFolder = PortalSettings.Current.ActiveTab.SkinPath.Replace('\\', '/').Replace("//", "/");
                 else
-                    skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
+                    skinVirtualFolder = control.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
 
                 string skinName = "";
                 string webControlSkinName = "";
                 if (skinProperty != null)
                 {
-                    var v = skinProperty.GetValue(telerikControl, null);
+                    var v = skinProperty.GetValue(control, null);
                     if (v != null) 
                         webControlSkinName = v.ToString();
 
@@ -141,7 +141,7 @@ namespace DotNetNuke.Web.UI
                     //No skin, try default folder
                     if ((string.IsNullOrEmpty(systemWebControlSkin)))
                     {
-                        skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/Skins/_default");
+                        skinVirtualFolder = control.ResolveUrl("~/Portals/_default/Skins/_default");
                         skinName = "Default";
 
                         if ((skinVirtualFolder.EndsWith("/")))
@@ -181,8 +181,8 @@ namespace DotNetNuke.Web.UI
                     if (((skinProperty != null) && (enableEmbeddedSkinsProperty != null)))
                     {
                         skinApplied = true;
-                        skinProperty.SetValue(telerikControl, webControlSkinName, null);
-                        enableEmbeddedSkinsProperty.SetValue(telerikControl, false, null);
+                        skinProperty.SetValue(control, webControlSkinName, null);
+                        enableEmbeddedSkinsProperty.SetValue(control, false, null);
                     }
                 }
             }
@@ -199,8 +199,8 @@ namespace DotNetNuke.Web.UI
                 }
 
                 //Set fall back skin Embedded Skin
-                skinProperty.SetValue(telerikControl, fallBackEmbeddedSkinName, null);
-                enableEmbeddedSkinsProperty.SetValue(telerikControl, true, null);
+                skinProperty.SetValue(control, fallBackEmbeddedSkinName, null);
+                enableEmbeddedSkinsProperty.SetValue(control, true, null);
             }
         }
 

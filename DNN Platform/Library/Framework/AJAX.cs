@@ -83,33 +83,6 @@ namespace DotNetNuke.Framework
                         //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
                     }
                 }
-                if (page.Form != null)
-                {
-                    try
-                    {
-                        //DNN-9145 TODO
-                        //using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
-                        //{
-                        //	if (checkCdn)
-                        //	{
-                        //		stylesheetManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
-                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
-                        //		{
-                        //			stylesheetManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
-                        //		}
-                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
-                        //		{
-                        //			stylesheetManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
-                        //		}
-                        //	}
-                        //	page.Form.Controls.AddAt(0, stylesheetManager);
-                        //}
-                    }
-                    catch
-                    {
-                        //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
-                    }
-                }
             }
         }
 
