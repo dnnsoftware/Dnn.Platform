@@ -7,258 +7,189 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-		
--- Pointer used for text / image updates. This might not be needed, but is declared here just in case
-DECLARE @pv binary(16)
-
--- minimum date to set for all creted on last modified on columns
-DECLARE @CreateBy int = -1
-DECLARE @UpdateBy int = NULL
-DECLARE @UpdateByNotNull int = -1
-DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
-DECLARE @UpdateOn datetime = NULL
-DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}TabModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}TabModuleSettings_{objectQualifier}TabModules]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}TabModules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] NOCHECK CONSTRAINT [FK_{objectQualifier}TabModules_{objectQualifier}Modules]
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] NOCHECK CONSTRAINT [FK_{objectQualifier}TabModules_{objectQualifier}Tabs]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}ModuleSettings_{objectQualifier}Modules]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Modules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Modules] NOCHECK CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}Modules] NOCHECK CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}ModuleDefinitions]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Modules from {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions] NOCHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Modules]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ModulePermission_{objectQualifier}Modules from {databaseOwner}[{objectQualifier}ModulePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Modules]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ModuleControls]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleControls] NOCHECK CONSTRAINT [FK_{objectQualifier}ModuleControls_{objectQualifier}ModuleDefinitions]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] NOCHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypeActions_{objectQualifier}CoreMessaging_NotificationTypes]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Skins]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Skins] NOCHECK CONSTRAINT [FK_{objectQualifier}Skins_{objectQualifier}SkinPackages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ModuleDefinitions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleDefinitions] NOCHECK CONSTRAINT [FK_{objectQualifier}ModuleDefinitions_{objectQualifier}DesktopModules]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] NOCHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypes_{objectQualifier}DesktopModules]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes from {databaseOwner}[{objectQualifier}CoreMessaging_Messages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Messages] NOCHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ContentItems_Tags]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}Taxonomy_Terms]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Taxonomy_Terms]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms] NOCHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Terms]
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms] NOCHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Vocabularies]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Tabs]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] NOCHECK CONSTRAINT [FK_{objectQualifier}Tabs_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] NOCHECK CONSTRAINT [FK_{objectQualifier}Tabs_{objectQualifier}Portals]
 ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] NOCHECK CONSTRAINT [FK_{objectQualifier}Tabs_{objectQualifier}Tabs]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabPermission_{objectQualifier}Tabs from {databaseOwner}[{objectQualifier}TabPermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] NOCHECK CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Tabs]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabSettings_{objectQualifier}Tabs from {databaseOwner}[{objectQualifier}TabSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}TabSettings_{objectQualifier}Tabs]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabUrls_Tabs from {databaseOwner}[{objectQualifier}TabUrls]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] NOCHECK CONSTRAINT [FK_{objectQualifier}TabUrls_Tabs]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabVersions_{objectQualifier}TabId from {databaseOwner}[{objectQualifier}TabVersions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabVersions] NOCHECK CONSTRAINT [FK_{objectQualifier}TabVersions_{objectQualifier}TabId]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}SkinPackages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}SkinPackages] NOCHECK CONSTRAINT [FK_{objectQualifier}SkinPackages_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}SkinControls]')
 ALTER TABLE {databaseOwner}[{objectQualifier}SkinControls] NOCHECK CONSTRAINT [FK_{objectQualifier}SkinControls_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}DesktopModules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModules] NOCHECK CONSTRAINT [FK_{objectQualifier}DesktopModules_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}PortalDesktopModules_{objectQualifier}DesktopModules from {databaseOwner}[{objectQualifier}PortalDesktopModules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}PortalDesktopModules] NOCHECK CONSTRAINT [FK_{objectQualifier}PortalDesktopModules_{objectQualifier}DesktopModules]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Authentication]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Authentication] NOCHECK CONSTRAINT [FK_{objectQualifier}Authentication_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Assemblies]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Assemblies] NOCHECK CONSTRAINT [FK_{objectQualifier}PackageAssemblies_PackageAssemblies]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] NOCHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_ScopeTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] NOCHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_VocabularyTypes]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Packages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Packages] NOCHECK CONSTRAINT [FK_{objectQualifier}Packages_{objectQualifier}PackageTypes]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages from {databaseOwner}[{objectQualifier}JavaScriptLibraries]')
 ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries] NOCHECK CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}LanguagePacks_{objectQualifier}Packages from {databaseOwner}[{objectQualifier}LanguagePacks]')
 ALTER TABLE {databaseOwner}[{objectQualifier}LanguagePacks] NOCHECK CONSTRAINT [FK_{objectQualifier}LanguagePacks_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages from {databaseOwner}[{objectQualifier}PackageDependencies]')
 ALTER TABLE {databaseOwner}[{objectQualifier}PackageDependencies] NOCHECK CONSTRAINT [FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}EventLogConfig]')
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] NOCHECK CONSTRAINT [FK_{objectQualifier}EventLogConfig_{objectQualifier}EventLogTypes]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig from {databaseOwner}[{objectQualifier}EventLog]')
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] NOCHECK CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ContentItems]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_{objectQualifier}ContentTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_{objectQualifier}ContentWorkflowStates]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ContentItems_MetaData_{objectQualifier}ContentItems from {databaseOwner}[{objectQualifier}ContentItems_MetaData]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_MetaData_{objectQualifier}ContentItems]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ContentWorkflowLogs_{objectQualifier}ContentItems from {databaseOwner}[{objectQualifier}ContentWorkflowLogs]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowLogs] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentWorkflowLogs_{objectQualifier}ContentItems]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}Files_{objectQualifier}ContentItems from {databaseOwner}[{objectQualifier}Files]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Files] NOCHECK CONSTRAINT [FK_{objectQualifier}Files_{objectQualifier}ContentItems]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ScheduleItemSettings_{objectQualifier}Schedule from {databaseOwner}[{objectQualifier}ScheduleItemSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ScheduleItemSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}ScheduleItemSettings_{objectQualifier}Schedule]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}Roles]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Roles] NOCHECK CONSTRAINT [FK_{objectQualifier}Roles_{objectQualifier}Portals]
 ALTER TABLE {databaseOwner}[{objectQualifier}Roles] NOCHECK CONSTRAINT [FK_{objectQualifier}Roles_{objectQualifier}RoleGroups]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles from {databaseOwner}[{objectQualifier}DesktopModulePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Roles]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}FolderPermission_{objectQualifier}Roles from {databaseOwner}[{objectQualifier}FolderPermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] NOCHECK CONSTRAINT [FK_{objectQualifier}FolderPermission_{objectQualifier}Roles]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ModulePermission_{objectQualifier}Roles from {databaseOwner}[{objectQualifier}ModulePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Roles]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabPermission_{objectQualifier}Roles from {databaseOwner}[{objectQualifier}TabPermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] NOCHECK CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Roles]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}UserRoles_{objectQualifier}Roles from {databaseOwner}[{objectQualifier}UserRoles]')
 ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] NOCHECK CONSTRAINT [FK_{objectQualifier}UserRoles_{objectQualifier}Roles]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}Relationships_{objectQualifier}RelationshipTypes from {databaseOwner}[{objectQualifier}Relationships]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Relationships] NOCHECK CONSTRAINT [FK_{objectQualifier}Relationships_{objectQualifier}RelationshipTypes]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] NOCHECK CONSTRAINT [FK_{objectQualifier}ProfilePropertyDefinition_{objectQualifier}Portals]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}UserProfile_{objectQualifier}ProfilePropertyDefinition from {databaseOwner}[{objectQualifier}UserProfile]')
 ALTER TABLE {databaseOwner}[{objectQualifier}UserProfile] NOCHECK CONSTRAINT [FK_{objectQualifier}UserProfile_{objectQualifier}ProfilePropertyDefinition]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ContentWorkflowStatePermission_{objectQualifier}Permission from {databaseOwner}[{objectQualifier}ContentWorkflowStatePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowStatePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentWorkflowStatePermission_{objectQualifier}Permission]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Permission from {databaseOwner}[{objectQualifier}DesktopModulePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModulePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}DesktopModulePermission_{objectQualifier}Permission]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}FolderPermission_{objectQualifier}Permission from {databaseOwner}[{objectQualifier}FolderPermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}FolderPermission] NOCHECK CONSTRAINT [FK_{objectQualifier}FolderPermission_{objectQualifier}Permission]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ModulePermission_{objectQualifier}Permission from {databaseOwner}[{objectQualifier}ModulePermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] NOCHECK CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Permission]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}TabPermission_{objectQualifier}Permission from {databaseOwner}[{objectQualifier}TabPermission]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] NOCHECK CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Permission]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ContentItems_MetaData{objectQualifier}MetaData from {databaseOwner}[{objectQualifier}ContentItems_MetaData]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentItems_MetaData{objectQualifier}MetaData]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}PortalLanguages_{objectQualifier}PortalLanguages from {databaseOwner}[{objectQualifier}PortalLanguages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}PortalLanguages] NOCHECK CONSTRAINT [FK_{objectQualifier}PortalLanguages_{objectQualifier}PortalLanguages]
-GO
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}FolderMappings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}FolderMappings] NOCHECK CONSTRAINT [FK_{objectQualifier}FolderMappings_{objectQualifier}Portals]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}FolderMappingsSettings_{objectQualifier}FolderMappings from {databaseOwner}[{objectQualifier}FolderMappingsSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}FolderMappingsSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}FolderMappingsSettings_{objectQualifier}FolderMappings]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}Folders_{objectQualifier}FolderMappings from {databaseOwner}[{objectQualifier}Folders]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Folders] NOCHECK CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}FolderMappings]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}EventLog_{objectQualifier}EventLogTypes from {databaseOwner}[{objectQualifier}EventLog]')
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] NOCHECK CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogTypes]
-GO
 
 PRINT(N'Drop constraint FK_{objectQualifier}ContentWorkflowActions_{objectQualifier}ContentTypes from {databaseOwner}[{objectQualifier}ContentWorkflowActions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions] NOCHECK CONSTRAINT [FK_{objectQualifier}ContentWorkflowActions_{objectQualifier}ContentTypes]
-GO
 
 PRINT(N'Add 6 rows to {databaseOwner}[{objectQualifier}ContentTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentTypes] ON
@@ -269,7 +200,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [Co
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [ContentType]) VALUES (5, N'DNNCorp_JournalGroup')
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [ContentType]) VALUES (6, N'File')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentTypes] OFF
+
 GO
+
+-- minimum date to set for all creted on last modified on columns
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Add 146 rows to {databaseOwner}[{objectQualifier}EventLogTypes]')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'ADMIN_ALERT', N'Admin Alert', N'', N'DotNetNuke.Logging.EventLogType', N'AdminAlert')
@@ -418,7 +358,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogT
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_ENABLED', N'Web Server Enabled', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_PINGFAILED', N'Web Server Ping Failed', N'', N'DotNetNuke.Logging.EventLogType', N'OperationFailure')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_UPDATED', N'Web Server Updated', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
-GO
 
 PRINT(N'Add 3 rows to {databaseOwner}[{objectQualifier}FolderMappings]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}FolderMappings] ON
@@ -426,13 +365,11 @@ INSERT INTO {databaseOwner}[{objectQualifier}FolderMappings] ([FolderMappingID],
 INSERT INTO {databaseOwner}[{objectQualifier}FolderMappings] ([FolderMappingID], [PortalID], [MappingName], [FolderProviderType], [Priority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (6, NULL, N'Secure', N'SecureFolderProvider', 2, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}FolderMappings] ([FolderMappingID], [PortalID], [MappingName], [FolderProviderType], [Priority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (7, NULL, N'Database', N'DatabaseFolderProvider', 3, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}FolderMappings] OFF
-GO
 
 PRINT(N'Add 1 row to {databaseOwner}[{objectQualifier}IPFilter]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}IPFilter] ON
 INSERT INTO {databaseOwner}[{objectQualifier}IPFilter] ([IPFilterID], [IPAddress], [SubnetMask], [RuleType], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, N'*', N'', 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}IPFilter] OFF
-GO
 
 PRINT(N'Add 35 rows to {databaseOwner}[{objectQualifier}Journal_Types]')
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (1, N'status', N'', -1, 1, 1, 1, 1, NULL, 1, 1)
@@ -470,13 +407,21 @@ INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [J
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (33, N'product', N'', -1, 1, 1, 1, 1, NULL, 1, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (34, N'challengeadded', N'', -1, 1, 1, 1, 1, NULL, 1, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (35, N'challengecompleted', N'', -1, 1, 1, 1, 1, NULL, 1, 0)
+
 GO
+
+-- minimum date to set for all creted on last modified on columns
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Add 1 row to {databaseOwner}[{objectQualifier}Languages]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Languages] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Languages] ([LanguageID], [CultureCode], [CultureName], [FallbackCulture], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, N'en-US', N'English (United States)', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Languages] OFF
-GO
 
 PRINT(N'Add 5126 rows to {databaseOwner}[{objectQualifier}Lists]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Lists] ON
@@ -5607,7 +5552,16 @@ INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([EntryID], [ListName], [Val
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([EntryID], [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (5147, N'Currency', N'ZMW', N'Zambian Kwacha (ZMW)', 0, 0, 0, -1, NULL, -1, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([EntryID], [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (5148, N'Currency', N'ZWL', N'Zimbabwe Dollar (ZWL)', 0, 0, 0, -1, NULL, -1, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Lists] OFF
+
 GO
+
+-- minimum date to set for all creted on last modified on columns
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Add 15 rows to {databaseOwner}[{objectQualifier}MetaData]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}MetaData] ON
@@ -5627,7 +5581,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ([MetaDataID], [MetaDataN
 INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ([MetaDataID], [MetaDataName], [MetaDataDescription]) VALUES (14, N'Coverage', NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ([MetaDataID], [MetaDataName], [MetaDataDescription]) VALUES (15, N'Rights', NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}MetaData] OFF
-GO
 
 PRINT(N'Add 12 rows to {databaseOwner}[{objectQualifier}PackageTypes]')
 INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'Auth_System', N'Authentication System', 3, N'DesktopModules/Admin/Extensions/Editors/AuthenticationEditor.ascx', 0)
@@ -5641,7 +5594,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Desc
 INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'Skin', N'Skin', 3, N'DesktopModules/Admin/Extensions/Editors/SkinEditor.ascx', 0)
 INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'SkinObject', N'Skin Object', 3, N'DesktopModules/Admin/Extensions/Editors/SkinObjectEditor.ascx', 0)
 INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'Widget', N'Widget', 3, NULL, 0)
-GO
 
 PRINT(N'Add 12 rows to {databaseOwner}[{objectQualifier}Permission]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Permission] ON
@@ -5658,7 +5610,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionID], [Permi
 INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionID], [PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (11, 'SECURITY_MODULE', 15, 'MANAGEUSERS', 'Manage Users', 9999, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionID], [PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (12, 'SECURITY_MODULE', 12, 'MANAGEROLES', 'Manage Roles', 9999, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Permission] OFF
-GO
 
 PRINT(N'Add 21 rows to {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ON
@@ -5684,14 +5635,12 @@ INSERT INTO {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ([Proper
 INSERT INTO {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ([PropertyDefinitionID], [PortalID], [ModuleDefID], [Deleted], [DataType], [DefaultValue], [PropertyCategory], [PropertyName], [Length], [Required], [ValidationExpression], [ViewOrder], [Visible], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [DefaultVisibility], [ReadOnly]) VALUES (20, NULL, -1, 0, 363, N'', N'Preferences', N'PreferredTimeZone', 0, 0, NULL, 35, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 2, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] ([PropertyDefinitionID], [PortalID], [ModuleDefID], [Deleted], [DataType], [DefaultValue], [PropertyCategory], [PropertyName], [Length], [Required], [ValidationExpression], [ViewOrder], [Visible], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [DefaultVisibility], [ReadOnly]) VALUES (21, NULL, -1, 0, 361, N'', N'Preferences', N'Photo', 0, 0, NULL, 42, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0, 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] OFF
-GO
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}RelationshipTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}RelationshipTypes] ON
 INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, 2, N'Friends', N'Friends', @CreateBy, @CreateOn, @UpdateByNotNull, @UpdateOnNotNull)
 INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (2, 1, N'Followers', N'Followers', @CreateBy, @CreateOn, @UpdateByNotNull, @UpdateOnNotNull)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}RelationshipTypes] OFF
-GO
 
 PRINT(N'Add 3 rows to {databaseOwner}[{objectQualifier}Roles]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] ON
@@ -5699,7 +5648,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Roles] ([RoleID], [PortalID], [Role
 INSERT INTO {databaseOwner}[{objectQualifier}Roles] ([RoleID], [PortalID], [RoleName], [Description], [ServiceFee], [BillingFrequency], [TrialPeriod], [TrialFrequency], [BillingPeriod], [TrialFee], [IsPublic], [AutoAssignment], [RoleGroupID], [RSVPCode], [IconFile], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [Status], [SecurityMode], [IsSystemRole]) VALUES (-2, NULL, N'Superusers', NULL, 0.0000, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 1, 0, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}Roles] ([RoleID], [PortalID], [RoleName], [Description], [ServiceFee], [BillingFrequency], [TrialPeriod], [TrialFrequency], [BillingPeriod], [TrialFee], [IsPublic], [AutoAssignment], [RoleGroupID], [RSVPCode], [IconFile], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [Status], [SecurityMode], [IsSystemRole]) VALUES (-1, NULL, N'All Users', NULL, 0.0000, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 1, 0, 1)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Roles] OFF
-GO
 
 PRINT(N'Add 10 rows to {databaseOwner}[{objectQualifier}Schedule]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Schedule] ON
@@ -5713,7 +5661,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullN
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (12, 'DotNetNuke.Services.ClientDependency.PurgeClientDependencyFiles, DOTNETNUKE', 1, 'd', 6, 'h', 5, '', 0, 0, '', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Purge Client Dependency Files', NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (13, 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke', 1, 'm', 30, 's', 10, '', 0, 0, 'OutputCache', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Purge Output Cache', NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Schedule] OFF
-GO
 
 PRINT(N'Add 369 rows to {databaseOwner}[{objectQualifier}SearchCommonWords]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchCommonWords] ON
@@ -6087,7 +6034,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}SearchCommonWords] ([CommonWordID],
 INSERT INTO {databaseOwner}[{objectQualifier}SearchCommonWords] ([CommonWordID], [CommonWord], [Locale]) VALUES (368, N'yourselves', N'en-US')
 INSERT INTO {databaseOwner}[{objectQualifier}SearchCommonWords] ([CommonWordID], [CommonWord], [Locale]) VALUES (369, N'z', N'en-US')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchCommonWords] OFF
-GO
 
 PRINT(N'Add 3 rows to {databaseOwner}[{objectQualifier}SearchTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchTypes] ON
@@ -6095,21 +6041,18 @@ INSERT INTO {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [Sear
 INSERT INTO {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [SearchTypeName], [SearchResultClass], [IsPrivate]) VALUES (2, N'tab', N'DotNetNuke.Services.Search.Controllers.TabResultController', 0)
 INSERT INTO {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [SearchTypeName], [SearchResultClass], [IsPrivate]) VALUES (3, N'user', N'DotNetNuke.Services.Search.Controllers.UserResultController', 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchTypes] OFF
-GO
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes] ([ScopeTypeID], [ScopeType]) VALUES (1, N'Application')
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes] ([ScopeTypeID], [ScopeType]) VALUES (2, N'Portal')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_ScopeTypes] OFF
-GO
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes] ([VocabularyTypeID], [VocabularyType]) VALUES (1, N'Simple')
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes] ([VocabularyTypeID], [VocabularyType]) VALUES (2, N'Heirarchy')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_VocabularyTypes] OFF
-GO
 
 PRINT(N'Add 41 rows to {databaseOwner}[{objectQualifier}ContentItems]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentItems] ON
@@ -6154,7 +6097,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID], [Co
 INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID], [Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID]) VALUES (69, N'Account Registration', 3, -1, -1, N'', 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([ContentItemID], [Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID]) VALUES (70, N'Module Creator', 3, -1, -1, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentItems] OFF
-GO
 
 PRINT(N'Add 119 rows to {databaseOwner}[{objectQualifier}EventLogConfig]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}EventLogConfig] ON
@@ -6278,7 +6220,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey]
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (118, N'IP_LOGIN_BANNED', NULL, 1, 100, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (119, N'SCRIPT_COLLISION', NULL, 1, 100, 0, 1, 1, 1, N'', N'')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}EventLogConfig] OFF
-GO
 
 PRINT(N'Add 73 rows to {databaseOwner}[{objectQualifier}Packages]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] ON
@@ -6376,14 +6317,12 @@ INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID],
 INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (101, NULL, N'DotNetNuke.DNNJSEXCLUDESkinObject', N'DNNJSEXCLUDE SkinObject', N'', N'SkinObject', N'08.00.01', NULL, NULL, N'DNN', N'DNN Corp.', N'http://www.dnnsoftware.com', N'support@dnnsoftware.com', NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL, NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PackageID], [PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (102, NULL, N'DotNetNuke.Module Creator', N'Module Creator', N'Development of modules.', N'Module', N'1.0.0', N'', N'', N'DNN', N'DNN Corp.', N'http://www.dnnsoftware.com', N'support@dnnsoftware.com', N'', 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'', N'~/Icons/Sigma/ModuleCreator_32x32.png')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Packages] OFF
-GO
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] ([VocabularyID], [VocabularyTypeID], [Name], [Description], [Weight], [ScopeID], [ScopeTypeID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsSystem]) VALUES (1, 1, N'Tags', N'System Vocabulary for free form user entered Tags', 0, NULL, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] ([VocabularyID], [VocabularyTypeID], [Name], [Description], [Weight], [ScopeID], [ScopeTypeID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsSystem]) VALUES (2, 1, N'Module_Categories', N'System Vocabulary to manage Module Categories', 0, NULL, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 1)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] OFF
-GO
 
 PRINT(N'Add 24 rows to {databaseOwner}[{objectQualifier}Assemblies]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Assemblies] ON
@@ -6410,13 +6349,11 @@ INSERT INTO {databaseOwner}[{objectQualifier}Assemblies] ([AssemblyID], [Package
 INSERT INTO {databaseOwner}[{objectQualifier}Assemblies] ([AssemblyID], [PackageID], [AssemblyName], [Version]) VALUES (23, NULL, N'WebMatrix.Data.dll', N'2.0.20126')
 INSERT INTO {databaseOwner}[{objectQualifier}Assemblies] ([AssemblyID], [PackageID], [AssemblyName], [Version]) VALUES (24, NULL, N'WebMatrix.WebData.dll', N'2.0.20126')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Assemblies] OFF
-GO
 
 PRINT(N'Add 1 row to {databaseOwner}[{objectQualifier}Authentication]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Authentication] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Authentication] ([AuthenticationID], [PackageID], [AuthenticationType], [IsEnabled], [SettingsControlSrc], [LoginControlSrc], [LogoffControlSrc], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, 67, N'DNN', 1, N'DesktopModules/AuthenticationServices/DNN/Settings.ascx', N'DesktopModules/AuthenticationServices/DNN/Login.ascx', N'', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Authentication] OFF
-GO
 
 PRINT(N'Add 20 rows to {databaseOwner}[{objectQualifier}DesktopModules]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}DesktopModules] ON
@@ -6441,7 +6378,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}DesktopModules] ([DesktopModuleID],
 INSERT INTO {databaseOwner}[{objectQualifier}DesktopModules] ([DesktopModuleID], [FriendlyName], [Description], [Version], [IsPremium], [IsAdmin], [BusinessControllerClass], [FolderName], [ModuleName], [SupportedFeatures], [CompatibleVersions], [Dependencies], [Permissions], [PackageID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [ContentItemId], [Shareable], [AdminPage], [HostPage]) VALUES (69, N'Account Registration', N'Allow users to create membership in the site.', N'08.00.01', 0, 0, N'', N'Admin/Security', N'Registration', 0, NULL, NULL, NULL, 96, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 69, 0, NULL, NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}DesktopModules] ([DesktopModuleID], [FriendlyName], [Description], [Version], [IsPremium], [IsAdmin], [BusinessControllerClass], [FolderName], [ModuleName], [SupportedFeatures], [CompatibleVersions], [Dependencies], [Permissions], [PackageID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [ContentItemId], [Shareable], [AdminPage], [HostPage]) VALUES (70, N'Module Creator', N'Development of modules.', N'01.00.00', 0, 1, N'', N'Admin/ModuleCreator', N'ModuleCreator', 0, NULL, NULL, NULL, 102, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 70, 0, N'', N'')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}DesktopModules] OFF
-GO
 
 PRINT(N'Add 36 rows to {databaseOwner}[{objectQualifier}SkinControls]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] ON
@@ -6482,21 +6418,18 @@ INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [Pa
 INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (43, 100, N'DNNJSINCLUDE', N'Admin/Skins/DnnJsInclude.ascx', NULL, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}SkinControls] ([SkinControlID], [PackageID], [ControlKey], [ControlSrc], [IconFile], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (44, 101, N'DNNJSEXCLUDE', N'Admin/Skins/DnnJsExclude.ascx', NULL, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinControls] OFF
-GO
 
 PRINT(N'Add 8 rows to {databaseOwner}[{objectQualifier}SkinPackages]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinPackages] ON
 INSERT INTO {databaseOwner}[{objectQualifier}SkinPackages] ([SkinPackageID], [PackageID], [PortalID], [SkinName], [SkinType], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, 81, NULL, N'_default', N'Skin', NULL, NULL, NULL, NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}SkinPackages] ([SkinPackageID], [PackageID], [PortalID], [SkinName], [SkinType], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (2, 82, NULL, N'_default', N'Container', NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SkinPackages] OFF
-GO
 
 PRINT(N'Add 7 rows to {databaseOwner}[{objectQualifier}Tabs]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Tabs] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Tabs] ([TabID], [TabOrder], [PortalID], [TabName], [IsVisible], [ParentId], [IconFile], [DisableLink], [Title], [Description], [KeyWords], [IsDeleted], [Url], [SkinSrc], [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IconFileLarge], [CultureCode], [ContentItemID], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [Level], [TabPath], [HasBeenPublished], [IsSystem]) VALUES (7, 1, NULL, N'Host', 0, NULL, N'', 0, N'', N'', N'', 0, N'', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '70041966-019f-46fb-a743-c8ec8ce65686', 'ad13bd37-583e-46bd-90e4-e337140279d9', NULL, 'c7fddd76-4adb-48cc-b54b-ebe3cacb24fe', 0, N'//Host', 1, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}Tabs] ([TabID], [TabOrder], [PortalID], [TabName], [IsVisible], [ParentId], [IconFile], [DisableLink], [Title], [Description], [KeyWords], [IsDeleted], [Url], [SkinSrc], [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IconFileLarge], [CultureCode], [ContentItemID], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [Level], [TabPath], [HasBeenPublished], [IsSystem]) VALUES (19, 7, NULL, N'File Manager', 1, 7, N'~/Icons/Sigma/Files_16X16_Standard.png', 0, N'', N'Manage files.', N'', 0, N'', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0.5, NULL, NULL, NULL, NULL, N'~/Icons/Sigma/Files_32X32_Standard.png', NULL, NULL, 'ef3213d2-9023-410c-88d0-99393c6e64b0', '7810864b-0e43-4187-a98c-25d00d545baf', NULL, '95d3d919-47f8-4b5f-b776-0e6c372a2192', 1, N'//Host//FileManager', 1, 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Tabs] OFF
-GO
 
 PRINT(N'Add 4 rows to {databaseOwner}[{objectQualifier}Taxonomy_Terms]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_Terms] ON
@@ -6505,7 +6438,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_Terms] ([TermID], [Vocabul
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_Terms] ([TermID], [VocabularyID], [ParentTermID], [Name], [Description], [Weight], [TermLeft], [TermRight], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (3, 2, NULL, N'< None >', N'', 0, 0, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}Taxonomy_Terms] ([TermID], [VocabularyID], [ParentTermID], [Name], [Description], [Weight], [TermLeft], [TermRight], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (4, 2, NULL, N'Developer', N'', 0, 0, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Taxonomy_Terms] OFF
-GO
 
 PRINT(N'Add 25 rows to {databaseOwner}[{objectQualifier}ContentItems_Tags]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentItems_Tags] ON
@@ -6534,7 +6466,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentItems_Tags] ([ContentItemTag
 INSERT INTO {databaseOwner}[{objectQualifier}ContentItems_Tags] ([ContentItemTagID], [ContentItemID], [TermID]) VALUES (26, 8, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}ContentItems_Tags] ([ContentItemTagID], [ContentItemID], [TermID]) VALUES (27, 70, 4)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentItems_Tags] OFF
-GO
 
 PRINT(N'Add 11 rows to {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ON
@@ -6550,7 +6481,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ([
 INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ([NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]) VALUES (10, N'ContentWorkflowStartWorkflowNotification', N'Content Workflow Start Workflow Notification', NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] ([NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]) VALUES (11, N'NewUnauthorizedUserRegistration', N'New Unauthorized User Registration Notification', NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] OFF
-GO
 
 PRINT(N'Add 23 rows to {databaseOwner}[{objectQualifier}ModuleDefinitions]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ModuleDefinitions] ON
@@ -6578,14 +6508,12 @@ INSERT INTO {databaseOwner}[{objectQualifier}ModuleDefinitions] ([ModuleDefID], 
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleDefinitions] ([ModuleDefID], [FriendlyName], [DesktopModuleID], [DefaultCacheTime], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [DefinitionName]) VALUES (111, N'Account Registration', 69, -1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Account Registration')
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleDefinitions] ([ModuleDefID], [FriendlyName], [DesktopModuleID], [DefaultCacheTime], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [DefinitionName]) VALUES (112, N'Module Creator', 70, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Module Creator')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ModuleDefinitions] OFF
-GO
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}Skins]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Skins] ON
 INSERT INTO {databaseOwner}[{objectQualifier}Skins] ([SkinID], [SkinPackageID], [SkinSrc]) VALUES (1, 1, N'No Skin.ascx')
 INSERT INTO {databaseOwner}[{objectQualifier}Skins] ([SkinID], [SkinPackageID], [SkinSrc]) VALUES (2, 2, N'No Container.ascx')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Skins] OFF
-GO
 
 PRINT(N'Add 9 rows to {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] ON
@@ -6599,7 +6527,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActio
 INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] ([NotificationTypeActionID], [NotificationTypeID], [NameResourceKey], [DescriptionResourceKey], [ConfirmResourceKey], [Order], [APICall], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (10, 11, N'AuthorizeUser', N'AuthorizeUserDescription', NULL, 1, N'API/InternalServices/NewUserNotificationService/Authorize', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] ([NotificationTypeActionID], [NotificationTypeID], [NameResourceKey], [DescriptionResourceKey], [ConfirmResourceKey], [Order], [APICall], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (11, 11, N'RejectUser', N'RejectUserDescription', NULL, 3, N'API/InternalServices/NewUserNotificationService/Reject', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] OFF
-GO
 
 PRINT(N'Add 90 rows to {databaseOwner}[{objectQualifier}ModuleControls]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ModuleControls] ON
@@ -6692,7 +6619,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleControlID],
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleControlID], [ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (227, NULL, N'WebUpload', N'Upload File', N'Admin/ControlPanel/WebUpload.ascx', NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleControlID], [ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (228, 112, NULL, NULL, N'DesktopModules/Admin/ModuleCreator/CreateModule.ascx', N'~/DesktopModules/Admin/ModuleCreator/icon.png', 3, 0, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ModuleControls] OFF
-GO
 
 PRINT(N'Add 6 rows to {databaseOwner}[{objectQualifier}Modules]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] ON
@@ -6703,7 +6629,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Modules] ([ModuleID], [ModuleDefID]
 INSERT INTO {databaseOwner}[{objectQualifier}Modules] ([ModuleID], [ModuleDefID], [AllTabs], [IsDeleted], [InheritViewPermissions], [StartDate], [EndDate], [PortalID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [LastContentModifiedOnDate], [ContentItemID], [IsShareable], [IsShareableViewOnly]) VALUES (345, 94, 0, 0, 1, NULL, NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL, NULL, 1, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}Modules] ([ModuleID], [ModuleDefID], [AllTabs], [IsDeleted], [InheritViewPermissions], [StartDate], [EndDate], [PortalID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [LastContentModifiedOnDate], [ContentItemID], [IsShareable], [IsShareableViewOnly]) VALUES (352, 102, 0, 0, 1, NULL, NULL, NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, NULL, 12, 1, 1)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] OFF
-GO
 
 PRINT(N'Add 7 rows to {databaseOwner}[{objectQualifier}ModuleSettings]')
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleSettings] ([ModuleID], [SettingName], [SettingValue], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (345, N'Extensions_Mode', N'All', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
@@ -6713,12 +6638,12 @@ INSERT INTO {databaseOwner}[{objectQualifier}ModuleSettings] ([ModuleID], [Setti
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleSettings] ([ModuleID], [SettingName], [SettingValue], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (352, N'DefaultView', N'Hide', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleSettings] ([ModuleID], [SettingName], [SettingValue], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (352, N'OrderTabsByHierarchy', N'True', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 INSERT INTO {databaseOwner}[{objectQualifier}ModuleSettings] ([ModuleID], [SettingName], [SettingValue], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (352, N'ShowTooltip', N'True', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
-GO
 
 PRINT(N'Add 6 rows to {databaseOwner}[{objectQualifier}TabModules]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}TabModules] ON
 INSERT INTO {databaseOwner}[{objectQualifier}TabModules] ([TabModuleID], [TabID], [ModuleID], [PaneName], [ModuleOrder], [CacheTime], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsDeleted], [CacheMethod], [ModuleTitle], [Header], [Footer], [CultureCode], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid]) VALUES (41, 7, 352, N'ContentPane', 1, 0, NULL, NULL, NULL, NULL, 2, NULL, 1, 1, 0, 0, NULL, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0, NULL, N'Basic Features', NULL, NULL, NULL, 'e44d7fb5-34ea-4af7-b715-ab995a6e93b5', '9a7917fb-0a63-4d56-b4a7-3cffb0e8076e', NULL, '47559492-e817-469d-8522-fd4bedc20822')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}TabModules] OFF
+
 GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}TabModuleSettings]')
