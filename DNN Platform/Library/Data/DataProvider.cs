@@ -2428,6 +2428,11 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UserAgreedToTerms", portalId, userId);
         }
 
+        public virtual void UserDesiresRemoval(int portalId, int userId, bool remove)
+        {
+            ExecuteNonQuery("UserDesiresRemoval", portalId, userId, remove);
+        }
+
         #endregion
 
         #region UserRole Methods
@@ -2573,11 +2578,6 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetPropertyDefinitionsByPortal(int portalId)
         {
             return ExecuteReader("GetPropertyDefinitionsByPortal", GetNull(portalId));
-        }
-
-        public virtual void DeleteUserProfile(int portalId, int userId)
-        {
-            ExecuteNonQuery("DeleteUserProfile", portalId, userId);
         }
 
         public virtual IDataReader GetUserProfile(int userId)

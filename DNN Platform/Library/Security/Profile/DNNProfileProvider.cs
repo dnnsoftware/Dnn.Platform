@@ -237,16 +237,6 @@ namespace DotNetNuke.Security.Profile
             }
         }
 
-        /// <summary>
-        /// Remove all user profile records for the PortalId specified in the UserInfo object
-        /// Note this leaves common profile records intact if the user has a profile in any other portal
-        /// </summary>
-        /// <param name="user">The user from whom to delete the profile. The PortalId is taken from this object.</param>
-        public override void DeleteUserProfile(UserInfo user)
-        {
-            _dataProvider.DeleteUserProfile(user.PortalID, user.UserID);
-        }
-
         #endregion
 
         private string GetProfileCacheKey(UserInfo user)

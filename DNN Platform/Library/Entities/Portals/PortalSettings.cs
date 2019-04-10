@@ -84,9 +84,10 @@ namespace DotNetNuke.Entities.Portals
         #region Data Consent UserDeleteAction enum
         public enum UserDeleteAction
         {
-            DelayedHardDelete = 0,
-            HardDelete = 1,
-            Anonymize = 2
+            Off = 0,
+            Manual = 1,
+            DelayedHardDelete = 2,
+            HardDelete = 3
         }
         #endregion
 

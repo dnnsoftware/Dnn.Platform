@@ -4,7 +4,8 @@
 
 ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ADD
   HasAgreedToTerms BIT NOT NULL DEFAULT(0),
-  HasAgreedToTermsOn DATETIME NULL
+  HasAgreedToTermsOn DATETIME NULL,
+  DesiresRemoval BIT NOT NULL DEFAULT(0)
 GO
 
 IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
@@ -32,6 +33,7 @@ AS
         UP.Authorised,
         UP.HasAgreedToTerms,
         UP.HasAgreedToTermsOn,
+        UP.DesiresRemoval,
         U.CreatedByUserId,
         U.CreatedOnDate,
         U.LastModifiedByUserId,
@@ -66,6 +68,7 @@ AS
 		UP.Authorised, 
     UP.HasAgreedToTerms,
     UP.HasAgreedToTermsOn,
+    UP.DesiresRemoval,
 		UP.IsDeleted,
 		UP.RefreshRoles,
 		UP.VanityUrl
@@ -107,6 +110,20 @@ AS
 	WHERE PortalId = @PortalId
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserDesiresRemoval]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserDesiresRemoval]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserDesiresRemoval]
+	@PortalId	INT,
+	@UserId		INT,
+	@Remove		BIT
+AS
+	UPDATE {databaseOwner}{objectQualifier}UserPortals
+	SET DesiresRemoval = @Remove
+	WHERE PortalId = @PortalId AND UserId = @UserId
+GO
+
 /*      Add logging for consent             */
 /********************************************/
 
@@ -130,31 +147,6 @@ BEGIN
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ( [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) 
 VALUES ( N'DATA_CONSENT_FAILURE', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 END
-GO
-
-/*    Used for anonymizing an account       */
-/********************************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteUserProfile]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteUserProfile]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteUserProfile]
-	@PortalId	INT,
-	@UserId INT
-AS
-    IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}UserProfile up 
-				INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PropertyDefinitionID=up.PropertyDefinitionID
-				WHERE up.UserID=@UserId AND ppd.PortalID <> @PortalId)
-		DELETE FROM {databaseOwner}{objectQualifier}UserProfile
-		FROM {databaseOwner}{objectQualifier}UserProfile up 
-		INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PropertyDefinitionID=up.PropertyDefinitionID
-		WHERE up.UserID=@UserId AND ppd.PortalID=@PortalId;
-	ELSE
-		DELETE FROM {databaseOwner}{objectQualifier}UserProfile
-		FROM {databaseOwner}{objectQualifier}UserProfile up 
-		INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PropertyDefinitionID=up.PropertyDefinitionID
-		WHERE up.UserID=@UserId AND (ppd.PortalID=@PortalId OR ppd.PortalID IS NULL);
 GO
 
 /*    Add scheduled task to delete soft deleted users       */

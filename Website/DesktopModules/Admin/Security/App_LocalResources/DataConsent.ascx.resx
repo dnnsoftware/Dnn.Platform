@@ -135,4 +135,7 @@
   <data name="HardDelete.Confirm" xml:space="preserve">
     <value>Your personal data will be removed from this site immediately. After it has been removed it can no longer be recovered and your data will be lost forever. You will also no longer be able to log in using this account. Do you wish to continue?</value>
   </data>
+  <data name="ManualDelete.Confirm" xml:space="preserve">
+    <value>We will work to remove your personal data this site shortly. After it has been removed it can no longer be recovered and your data will be lost forever. You will also no longer be able to log in using this account. Do you wish to continue?</value>
+  </data>
 </root>

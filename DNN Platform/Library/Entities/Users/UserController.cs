@@ -723,16 +723,14 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Make personal details of user anonymous and randomize password. This is an alternative to deleting a user
-        /// but avoiding removing the user records from the database. Note the user's profile and folder are
-        /// permanently deleted.
+        /// A user may request that their account be removed. This sets a flag on the user portal
+        /// so further processing may occur manually by the site admins
         /// </summary>
-        /// <param name="user">The user that needs to be anonymized.</param>
-        public static void AnonymizeUser(UserInfo user)
+        /// <param name="user">The user that desires to be removed.</param>
+        public static void UserDesiresRemoval(UserInfo user, bool remove)
         {
             Requires.NotNull("user", user);
-            MembershipProvider.Instance().AnonymizeUser(user);
-            DeleteUserFolder(user);
+            MembershipProvider.Instance().UserDesiresRemoval(user, remove);
         }
 
         /// -----------------------------------------------------------------------------

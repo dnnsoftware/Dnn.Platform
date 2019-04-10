@@ -212,6 +212,14 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets and sets whether the user has requested they be removed from the site
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public bool DesiresRemoval { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets and sets the Profile Object
         /// </summary>
         /// -----------------------------------------------------------------------------

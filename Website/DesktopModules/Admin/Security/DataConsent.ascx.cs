@@ -40,12 +40,12 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 switch (PortalSettings.DataConsentUserDeleteAction)
                 {
+                    case PortalSettings.UserDeleteAction.Manual:
+                        return LocalizeString("ManualDelete.Confirm");
                     case PortalSettings.UserDeleteAction.DelayedHardDelete:
                         return LocalizeString("DelayedHardDelete.Confirm");
                     case PortalSettings.UserDeleteAction.HardDelete:
                         return LocalizeString("HardDelete.Confirm");
-                    case PortalSettings.UserDeleteAction.Anonymize:
-                        return LocalizeString("Anonymize.Confirm");
                 }
                 return "";
             }
@@ -68,6 +68,7 @@ namespace DotNetNuke.Modules.Admin.Users
             cmdCancel.Click += cmdCancel_Click;
             cmdSubmit.Click += cmdSubmit_Click;
             cmdDeleteMe.Click += cmdDeleteMe_Click;
+            cmdDeleteMe.Visible = PortalSettings.DataConsentUserDeleteAction != PortalSettings.UserDeleteAction.Off;
             if (!Page.IsPostBack)
             {
                 chkAgree.Checked = false;
@@ -95,16 +96,19 @@ namespace DotNetNuke.Modules.Admin.Users
             var success = false;
             switch (PortalSettings.DataConsentUserDeleteAction)
             {
+                case PortalSettings.UserDeleteAction.Manual:
+                    User.Membership.Approved = false;
+                    UserController.UpdateUser(PortalSettings.PortalId, User);
+                    UserController.UserDesiresRemoval(User, true);
+                    success = true;
+                    break;
                 case PortalSettings.UserDeleteAction.DelayedHardDelete:
                     var user = User;
                     success = UserController.DeleteUser(ref user, true, false);
+                    UserController.UserDesiresRemoval(User, true);
                     break;
                 case PortalSettings.UserDeleteAction.HardDelete:
                     success = UserController.RemoveUser(User);
-                    break;
-                case PortalSettings.UserDeleteAction.Anonymize:
-                    UserController.AnonymizeUser(User);
-                    success = true;
                     break;
             }
             if (success)

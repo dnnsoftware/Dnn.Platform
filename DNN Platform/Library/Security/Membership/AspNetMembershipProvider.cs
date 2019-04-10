@@ -514,7 +514,8 @@ namespace DotNetNuke.Security.Membership
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
                         LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
                         HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]),
-                        HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"])
+                        HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]),
+                        DesiresRemoval = Null.SetNullBoolean(dr["DesiresRemoval"])
                     };
 
                     var schema = dr.GetSchemaTable();
@@ -1698,41 +1699,22 @@ namespace DotNetNuke.Security.Membership
             _dataProvider.ResetTermsAgreement(portalId);
         }
 
-        /// <summary>
-        /// Make personal details of user anonymous and randomize password. This is an alternative to deleting a user
-        /// but avoiding removing the user records from the database. This method also deletes the user's profile
-        /// for the portal in the PortalId of the supplied user.
-        /// </summary>
-        /// <param name="user">The user that needs to be anonymized.</param>
-        public override void AnonymizeUser(UserInfo user)
-        {
-            Roles.RoleController.DeleteUserRoles(user);
-            Profile.ProfileProvider.Instance().DeleteUserProfile(user);
-            user.FirstName = "";
-            user.LastName = "";
-            user.DisplayName = RandomString(15);
-            user.Email = string.Format("{0}@anonymous", RandomString(10));
-            user.VanityUrl = "";
-            user.LastIPAddress = "";
-            user.AffiliateID = Null.NullInteger;
-            user.PasswordResetToken = Null.NullGuid;
-            user.PasswordResetExpiration = Null.NullDate;
-            user.HasAgreedToTerms = false;
-            user.HasAgreedToTermsOn = Null.NullDate;
-            user.Membership.Password = GeneratePassword();
-            user.Membership.Approved = false;
-            UpdateUser(user);
-            DataCache.ClearUserCache(user.PortalID, user.Username);
-            DataCache.ClearCache(GetCacheKey(user.Username));
-            _dataProvider.ChangeUsername(user.UserID, Guid.NewGuid().ToString());
-        }
-
         private static Random random = new Random();
         private string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// Sets a boolean on the user portal to indicate this user has requested that their account be deleted
+        /// </summary>
+        /// <param name="user">User for whom to to set the DesiresRemoval</param>
+        /// <param name="remove">Value to set Desires Removal</param>
+        public override void UserDesiresRemoval(UserInfo user, bool remove)
+        {
+            _dataProvider.UserDesiresRemoval(user.PortalID, user.UserID, remove);
         }
 
         /// -----------------------------------------------------------------------------

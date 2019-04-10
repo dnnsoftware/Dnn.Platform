@@ -1158,7 +1158,7 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}UserAgreedToTerms]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}ResetTermsAgreement]
 GO
-DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteUserProfile]
+DROP PROCEDURE {databaseOwner}[{objectQualifier}UserDesiresRemoval]
 GO
 
 /** Remove AspNet Data **/

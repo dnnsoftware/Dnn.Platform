@@ -51,8 +51,6 @@ namespace DotNetNuke.Security.Profile
 
         public abstract void UpdateUserProfile(UserInfo user);
 
-        public abstract void DeleteUserProfile(UserInfo user);
-
 		#endregion
     }
 }
