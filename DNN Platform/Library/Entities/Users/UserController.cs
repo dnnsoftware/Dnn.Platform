@@ -727,10 +727,10 @@ namespace DotNetNuke.Entities.Users
         /// so further processing may occur manually by the site admins
         /// </summary>
         /// <param name="user">The user that desires to be removed.</param>
-        public static void UserDesiresRemoval(UserInfo user, bool remove)
+        public static void UserRequestsRemoval(UserInfo user, bool remove)
         {
             Requires.NotNull("user", user);
-            MembershipProvider.Instance().UserDesiresRemoval(user, remove);
+            MembershipProvider.Instance().UserRequestsRemoval(user, remove);
         }
 
         /// -----------------------------------------------------------------------------

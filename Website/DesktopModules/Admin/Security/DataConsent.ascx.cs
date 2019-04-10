@@ -99,13 +99,13 @@ namespace DotNetNuke.Modules.Admin.Users
                 case PortalSettings.UserDeleteAction.Manual:
                     User.Membership.Approved = false;
                     UserController.UpdateUser(PortalSettings.PortalId, User);
-                    UserController.UserDesiresRemoval(User, true);
+                    UserController.UserRequestsRemoval(User, true);
                     success = true;
                     break;
                 case PortalSettings.UserDeleteAction.DelayedHardDelete:
                     var user = User;
                     success = UserController.DeleteUser(ref user, true, false);
-                    UserController.UserDesiresRemoval(User, true);
+                    UserController.UserRequestsRemoval(User, true);
                     break;
                 case PortalSettings.UserDeleteAction.HardDelete:
                     success = UserController.RemoveUser(User);

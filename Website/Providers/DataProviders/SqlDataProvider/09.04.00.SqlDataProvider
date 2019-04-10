@@ -15,7 +15,7 @@
 ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ADD
   HasAgreedToTerms BIT NOT NULL DEFAULT(0),
   HasAgreedToTermsOn DATETIME NULL,
-  DesiresRemoval BIT NOT NULL DEFAULT(0)
+  RequestsRemoval BIT NOT NULL DEFAULT(0)
 GO
 
 IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
@@ -43,7 +43,7 @@ AS
         UP.Authorised,
         UP.HasAgreedToTerms,
         UP.HasAgreedToTermsOn,
-        UP.DesiresRemoval,
+        UP.RequestsRemoval,
         U.CreatedByUserId,
         U.CreatedOnDate,
         U.LastModifiedByUserId,
@@ -78,7 +78,7 @@ AS
 		UP.Authorised, 
     UP.HasAgreedToTerms,
     UP.HasAgreedToTermsOn,
-    UP.DesiresRemoval,
+    UP.RequestsRemoval,
 		UP.IsDeleted,
 		UP.RefreshRoles,
 		UP.VanityUrl
@@ -120,17 +120,17 @@ AS
 	WHERE PortalId = @PortalId
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserDesiresRemoval]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserDesiresRemoval]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRequestsRemoval]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserDesiresRemoval]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
 	@PortalId	INT,
 	@UserId		INT,
 	@Remove		BIT
 AS
 	UPDATE {databaseOwner}{objectQualifier}UserPortals
-	SET DesiresRemoval = @Remove
+	SET RequestsRemoval = @Remove
 	WHERE PortalId = @PortalId AND UserId = @UserId
 GO
 

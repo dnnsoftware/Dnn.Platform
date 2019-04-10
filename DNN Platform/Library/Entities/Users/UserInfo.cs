@@ -216,7 +216,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
-        public bool DesiresRemoval { get; set; }
+        public bool RequestsRemoval { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

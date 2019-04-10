@@ -515,7 +515,7 @@ namespace DotNetNuke.Security.Membership
                         LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
                         HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]),
                         HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]),
-                        DesiresRemoval = Null.SetNullBoolean(dr["DesiresRemoval"])
+                        RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"])
                     };
 
                     var schema = dr.GetSchemaTable();
@@ -1710,11 +1710,11 @@ namespace DotNetNuke.Security.Membership
         /// <summary>
         /// Sets a boolean on the user portal to indicate this user has requested that their account be deleted
         /// </summary>
-        /// <param name="user">User for whom to to set the DesiresRemoval</param>
-        /// <param name="remove">Value to set Desires Removal</param>
-        public override void UserDesiresRemoval(UserInfo user, bool remove)
+        /// <param name="user">User requesting removal</param>
+        /// <param name="remove">True if user requests removal, false if the value needs to be reset.</param>
+        public override void UserRequestsRemoval(UserInfo user, bool remove)
         {
-            _dataProvider.UserDesiresRemoval(user.PortalID, user.UserID, remove);
+            _dataProvider.UserRequestsRemoval(user.PortalID, user.UserID, remove);
         }
 
         /// -----------------------------------------------------------------------------

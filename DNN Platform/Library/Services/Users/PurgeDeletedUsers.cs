@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Users
                             var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
                             foreach (UserInfo user in deletedUsers)
                             {
-                                if (user.LastModifiedOnDate < thresholdDate && user.DesiresRemoval)
+                                if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
                                 {
                                     UserController.RemoveUser(user);
                                     ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));

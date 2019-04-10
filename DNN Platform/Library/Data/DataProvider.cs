@@ -2428,9 +2428,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UserAgreedToTerms", portalId, userId);
         }
 
-        public virtual void UserDesiresRemoval(int portalId, int userId, bool remove)
+        public virtual void UserRequestsRemoval(int portalId, int userId, bool remove)
         {
-            ExecuteNonQuery("UserDesiresRemoval", portalId, userId, remove);
+            ExecuteNonQuery("UserRequestsRemoval", portalId, userId, remove);
         }
 
         #endregion
