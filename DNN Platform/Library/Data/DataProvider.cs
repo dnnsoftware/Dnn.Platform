@@ -2384,6 +2384,11 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("RemoveUser", userId, GetNull(portalId));
         }
 
+        public virtual void ResetTermsAgreement(int portalId)
+        {
+            ExecuteNonQuery("ResetTermsAgreement", portalId);
+        }
+
         public virtual void RestoreUser(int userId, int portalId)
         {
             ExecuteNonQuery("RestoreUser", userId, GetNull(portalId));
@@ -2407,7 +2412,7 @@ namespace DotNetNuke.Data
                                       isApproved,
                                       refreshRoles,
                                       lastIpAddress,
-                                      passwordResetToken,
+                                      GetNull(passwordResetToken),
                                       GetNull(passwordResetExpiration),
                                       isDeleted,
                                       lastModifiedByUserID);
@@ -2416,6 +2421,16 @@ namespace DotNetNuke.Data
         public virtual void UpdateUserLastIpAddress(int userId, string lastIpAddress)
         {
             ExecuteNonQuery("UpdateUserLastIpAddress", userId, lastIpAddress);
+        }
+
+        public virtual void UserAgreedToTerms(int portalId, int userId)
+        {
+            ExecuteNonQuery("UserAgreedToTerms", portalId, userId);
+        }
+
+        public virtual void UserRequestsRemoval(int portalId, int userId, bool remove)
+        {
+            ExecuteNonQuery("UserRequestsRemoval", portalId, userId, remove);
         }
 
         #endregion

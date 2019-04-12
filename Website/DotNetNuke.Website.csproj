@@ -633,6 +633,13 @@
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.designer.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.cs">
+      <DependentUpon>DataConsent.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.designer.cs">
+      <DependentUpon>DataConsent.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -798,6 +805,7 @@
     <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
+    <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />
     <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
@@ -3295,6 +3303,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.04.00.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3362,6 +3371,9 @@
   <ItemGroup>
     <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\AuthenticationEditor.ascx.resx" />
     <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\EditExtension.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\DataConsent.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

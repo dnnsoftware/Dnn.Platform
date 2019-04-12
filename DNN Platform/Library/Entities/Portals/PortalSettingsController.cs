@@ -306,6 +306,23 @@ namespace DotNetNuke.Entities.Portals
                 if (timeZone != null)
                     portalSettings.TimeZone = timeZone;
             }
+
+            setting = settings.GetValueOrDefault("DataConsentActive", "False");
+            portalSettings.DataConsentActive = bool.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", "");
+            if (!string.IsNullOrEmpty(setting))
+            {
+                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting);
+            }
+            setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
+            portalSettings.DataConsentConsentRedirect = int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
+            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentDelay", "1");
+            portalSettings.DataConsentDelay = int.Parse(setting);
+            setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
+            portalSettings.DataConsentDelayMeasurement = setting;
+
         }
 
         protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)
