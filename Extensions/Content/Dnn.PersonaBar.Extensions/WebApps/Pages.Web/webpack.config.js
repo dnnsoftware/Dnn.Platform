@@ -7,7 +7,7 @@ const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals
 module.exports = {
     entry: "./src/main.jsx",
     output: {
-        path: path.resolve(__dirname, "../admin/personaBar/Dnn.Pages/scripts/bundles/"),
+        path: path.resolve(__dirname, "../../admin/personaBar/Dnn.Pages/scripts/bundles/"),
         filename: "pages-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
