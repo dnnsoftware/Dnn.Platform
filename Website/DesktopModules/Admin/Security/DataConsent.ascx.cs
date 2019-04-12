@@ -122,41 +122,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void LogSuccess()
-        {
-            LogResult(string.Empty);
-        }
-
-        private void LogFailure(string reason)
-        {
-            LogResult(reason);
-        }
-
-        private void LogResult(string message)
-        {
-            var portalSecurity = PortalSecurity.Instance;
-
-            var log = new LogInfo
-            {
-                LogPortalID = PortalSettings.PortalId,
-                LogPortalName = PortalSettings.PortalName,
-                LogUserID = UserId,
-                LogUserName = portalSecurity.InputFilter(User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
-            };
-
-            if (string.IsNullOrEmpty(message))
-            {
-                log.LogTypeKey = "DATA_CONSENT_SUCCESS";
-            }
-            else
-            {
-                log.LogTypeKey = "DATA_CONSENT_FAILURE";
-                log.LogProperties.Add(new LogDetailInfo("Cause", message));
-            }
-
-            LogController.Instance.AddLog(log);
-        }
-
         #region DataConsentEventArgs
 
         /// -----------------------------------------------------------------------------
