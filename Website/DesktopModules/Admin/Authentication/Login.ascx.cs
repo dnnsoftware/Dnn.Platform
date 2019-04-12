@@ -51,6 +51,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
 using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
@@ -887,6 +888,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
                     UserController.UserLogin(PortalId, objUser, PortalSettings.PortalName, ipAddress, RememberMe);
 
+                    //check whether user request comes with IPv6 and log it to make sure admin is aware of that
+                    if (string.IsNullOrWhiteSpace(ipAddress))
+                    {
+                        var ipAddressV6 = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request), IPAddressFamily.IPv6);
+
+                        if (!string.IsNullOrWhiteSpace(ipAddressV6))
+                        {
+                            AddEventLog(objUser.UserID, objUser.Username, PortalId, "IPv6", ipAddressV6);
+                        }
+                    }
+
                     //redirect browser
                     var redirectUrl = RedirectURL;
 
@@ -1336,6 +1348,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void AddEventLog(int userId, string username, int portalId, string propertyName, string propertyValue)
+        {
+            var log = new LogInfo
+            {
+                LogUserID = userId,
+                LogUserName = username,
+                LogPortalID = portalId,
+                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+            };
+            log.AddProperty(propertyName, propertyValue);
+            LogController.Instance.AddLog(log);
         }
 
         #endregion
