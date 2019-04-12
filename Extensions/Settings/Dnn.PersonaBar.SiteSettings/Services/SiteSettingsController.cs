@@ -1576,7 +1576,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         portalSettings.CookieMoreLink,
                         CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
                         DnnImprovementProgram = HostController.Instance.GetBoolean("DnnImprovementProgram", true),
-                        DisplayCopyright = HostController.Instance.GetBoolean("Copyright", true)
+                        DisplayCopyright = HostController.Instance.GetBoolean("Copyright", true),
+                        portalSettings.DataConsentActive,
+                        DataConsentResetTerms = false,
+                        DataConsentConsentRedirect = TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabID,
+                        DataConsentConsentRedirectName = TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabName,
+                        DataConsentUserDeleteAction = (int)portalSettings.DataConsentUserDeleteAction,
+                        PortalSettings.DataConsentDelay,
+                        PortalSettings.DataConsentDelayMeasurement
                     }
                 });
             }
@@ -1611,8 +1618,42 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 HostController.Instance.Update("CheckUpgrade", request.CheckUpgrade ? "Y" : "N", false);
                 HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false);
                 HostController.Instance.Update("Copyright", request.DisplayCopyright ? "Y" : "N", false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentActive", request.DataConsentActive.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentConsentRedirect", ValidateTabId(request.DataConsentConsentRedirect, pid).ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentUserDeleteAction", request.DataConsentUserDeleteAction.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentDelay", request.DataConsentDelay.ToString(), false);
+                PortalController.UpdatePortalSetting(pid, "DataConsentDelayMeasurement", request.DataConsentDelayMeasurement, false);
                 DataCache.ClearCache();
 
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/ResetTermsAgreement
+        /// <summary>
+        /// Resets terms and conditions agreements
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage ResetTermsAgreement(ResetTermsAgreementRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && PortalId != pid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+                UserController.ResetTermsAgreement(pid);
+                PortalController.UpdatePortalSetting(pid, "DataConsentTermsLastChange", DateTime.Now.ToString("u"), true);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)

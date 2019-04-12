@@ -148,6 +148,11 @@ class ApplicationService {
         sf.post("UpdatePrivacySettings", payload, callback, failureCallback);
     }
 
+    resetTermsAgreement(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("ResetTermsAgreement", payload, callback, failureCallback);
+    }
+
     compactSearchIndex(callback, failureCallback) {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("CompactSearchIndex", {}, callback, failureCallback);

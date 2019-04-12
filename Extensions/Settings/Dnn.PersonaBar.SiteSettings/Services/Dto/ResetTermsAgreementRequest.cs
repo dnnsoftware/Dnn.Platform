@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -18,38 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
-
-using Newtonsoft.Json;
-
-#endregion
 
 namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
-    public class UpdatePrivacySettingsRequest
+    public class ResetTermsAgreementRequest
     {
         public int? PortalId { get; set; }
-
-        public string CultureCode { get; set; }
-
-        public bool ShowCookieConsent { get; set; }
-
-        public string CookieMoreLink { get; set; }
-
-        public bool CheckUpgrade { get; set; }
-
-        public bool DnnImprovementProgram { get; set; }
-
-        public bool DisplayCopyright { get; set; }
-
-        public bool DataConsentActive { get; set; }
-
-        public int DataConsentConsentRedirect { get; set; }
-
-        public int DataConsentUserDeleteAction { get; set; }
-
-        public int DataConsentDelay { get; set; }
-
-        public string DataConsentDelayMeasurement { get; set; }
     }
 }

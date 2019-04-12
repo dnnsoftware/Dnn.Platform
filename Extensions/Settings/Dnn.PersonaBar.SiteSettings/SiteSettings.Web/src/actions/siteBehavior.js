@@ -499,6 +499,17 @@ const siteBehaviorActions = {
             });
         };
     },
+    resetTermsAgreement(payload, callback, failureCallback) {
+        ApplicationService.resetTermsAgreement(payload, data => {
+            if (callback) {
+                callback(data);
+            }
+        }, data => {
+            if (failureCallback) {
+                failureCallback(data);
+            }
+        });
+    },
     privacySettingsClientModified(parameter) {
         return (dispatch) => {
             dispatch({

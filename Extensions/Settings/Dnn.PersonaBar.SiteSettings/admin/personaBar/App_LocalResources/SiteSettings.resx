@@ -1072,7 +1072,7 @@
     <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
+    <value />
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
     <value>Click Cancel now if you want to change the current site default.</value>
@@ -1367,5 +1367,71 @@
   </data>
   <data name="plDisplayCopyright.Text" xml:space="preserve">
     <value>Display Copyright</value>
+  </data>
+  <data name="DataConsentActive.Help" xml:space="preserve">
+    <value>When switched on, registered users will be forced to consent to the terms and conditions of this site</value>
+  </data>
+  <data name="DataConsentActive.Text" xml:space="preserve">
+    <value>Data Consent Active</value>
+  </data>
+  <data name="DataConsentConsentRedirect.Help" xml:space="preserve">
+    <value>If a page is selected then users will be taken to this page to sign their consent. If not then DNN will offer a default screen for this.</value>
+  </data>
+  <data name="DataConsentConsentRedirect.Text" xml:space="preserve">
+    <value>Consent Redirect</value>
+  </data>
+  <data name="DataConsentResetTerms.Text" xml:space="preserve">
+    <value>Reset Terms and Conditions</value>
+  </data>
+  <data name="DataConsentResetTerms.Warning" xml:space="preserve">
+    <value>Use the button below to force all users to consent to the terms and conditions again. Use this when terms and conditions have changed.</value>
+  </data>
+  <data name="DataConsentSettings.Text" xml:space="preserve">
+    <value>Data Consent Settings</value>
+  </data>
+  <data name="DataConsentUserDelayedHardDelete.Text" xml:space="preserve">
+    <value>Delayed Hard Delete</value>
+  </data>
+  <data name="DataConsentUserDeleteAction.Help" xml:space="preserve">
+    <value>Specify what should happen when a user opts to delete their profile from the site</value>
+  </data>
+  <data name="DataConsentUserDeleteAction.Text" xml:space="preserve">
+    <value>User Delete Action</value>
+  </data>
+  <data name="DataConsentUserHardDelete.Text" xml:space="preserve">
+    <value>Hard Delete</value>
+  </data>
+  <data name="Reset.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Warning.Text" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="GdprResetTerms.Completed" xml:space="preserve">
+    <value>Consent for terms and conditions have been reset</value>
+  </data>
+  <data name="GdprResetTerms.Confirm" xml:space="preserve">
+    <value>Do you wish to reset all users consent and force everyone to consent to the terms and conditions again?</value>
+  </data>
+  <data name="Days.Text" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Hours.Text" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Weeks.Text" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="DataConsentDelay.ErrorMessage" xml:space="preserve">
+    <value>Must be an integer</value>
+  </data>
+  <data name="DataConsentDelay.Text" xml:space="preserve">
+    <value>Hard Delete Delay</value>
+  </data>
+  <data name="DataConsentUserDeleteManual.Text" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="Off.Text" xml:space="preserve">
+    <value>Off</value>
   </data>
 </root>
