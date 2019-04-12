@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.UI" type="Library" version="02.00.00">
+        <package name="Dnn.PersonaBar.UI" type="Library" version="02.00.01">
             <friendlyName>Dnn.PersonaBar.UI</friendlyName>
             <description></description>
             <dependencies/>

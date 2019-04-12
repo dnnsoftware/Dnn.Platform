@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Licensing" type="PersonaBar" version="02.00.00">
+        <package name="Dnn.PersonaBar.Licensing" type="PersonaBar" version="02.00.01">
             <friendlyName>Dnn.PersonaBar.Licensing</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
