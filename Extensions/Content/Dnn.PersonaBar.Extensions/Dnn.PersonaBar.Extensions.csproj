@@ -100,6 +100,8 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\AdminLogs\AdminLogsController.cs" />
+    <Compile Include="Components\AdminLogs\Constants.cs" />
     <Compile Include="Components\Extensions\Constants.cs" />
     <Compile Include="Components\Extensions\CreateModuleController.cs" />
     <Compile Include="Components\Extensions\Dto\AvailablePackagesDto.cs" />
@@ -200,6 +202,7 @@
     <Compile Include="Components\Recyclebin\Prompt\Commands\RestorePage.cs" />
     <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Components\Recyclebin\RecyclebinController.cs" />
+    <Compile Include="MenuControllers\AdminMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -208,12 +211,15 @@
     <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
+    <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\DnnModuleDto.cs" />
     <Compile Include="Services\Dto\DnnModulesRequest.cs" />
     <Compile Include="Services\Dto\DnnModulesDto.cs" />
     <Compile Include="Services\Dto\DnnPageDto.cs" />
     <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
+    <Compile Include="Services\Dto\EmailLogItemsRequest.cs" />
     <Compile Include="Services\Dto\FileDto.cs" />
     <Compile Include="Services\Dto\ModuleCopyType.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
@@ -227,12 +233,16 @@
     <Compile Include="Services\Dto\SeoUrl.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
+    <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
+    <Content Include="admin\personaBar\Dnn.AdminLogs\css\AdminLogs.css" />
+    <Content Include="admin\personaBar\Dnn.AdminLogs\scripts\AdminLogs.js" />
     <Content Include="admin\personaBar\Dnn.Extensions\css\extensions.css" />
     <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
@@ -282,8 +292,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\App_LocalResources\Extensions.resx" />
+    <Content Include="admin\personaBar\Dnn.AdminLogs\App_LocalResources\AdminLogs.resx" />
     <EmbeddedResource Include="admin\personaBar\Dnn.Extensions\data\ModuleControlTemplate.resources" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\App_LocalResources\Recyclebin.resx" />
+    <Content Include="App_LocalResources\EditLogTypes.ascx.resx" />
+    <Content Include="App_LocalResources\LogViewer.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />

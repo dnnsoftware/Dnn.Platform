@@ -37,6 +37,34 @@
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>
+                    <identifier>Dnn.AdminLogs</identifier>
+                    <moduleName>AdminLogs</moduleName>
+                    <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_AdminLogs</resourceKey>
+                    <path>AdminLogs</path>
+                    <parent>Manage</parent>
+                    <order>50</order>
+                    <defaultPermissions>Administrators|ADMIN_LOGS_VIEW</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>ADMIN_LOGS_VIEW</key>
+                    <name>Admin Logs View</name>
+                  </permission>
+                  <permission>
+                    <key>ADMIN_LOGS_EDIT</key>
+                    <name>Admin Logs Edit</name>
+                  </permission>
+                  <permission>
+                    <key>LOG_SETTINGS_VIEW</key>
+                    <name>Log Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>LOG_SETTINGS_EDIT</key>
+                    <name>Log Settings Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
                     <identifier>Dnn.Extensions</identifier>
                     <moduleName>Extensions</moduleName>
                     <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>

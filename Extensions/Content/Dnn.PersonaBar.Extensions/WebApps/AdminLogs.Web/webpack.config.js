@@ -18,7 +18,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve("../admin/personaBar/scripts/bundles/"),
+        path: path.resolve("../../admin/personaBar/Dnn.AdminLogs/scripts/bundles/"),
         filename: "adminLogs-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
