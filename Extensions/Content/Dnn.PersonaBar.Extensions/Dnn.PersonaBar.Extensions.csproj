@@ -202,10 +202,23 @@
     <Compile Include="Components\Recyclebin\Prompt\Commands\RestorePage.cs" />
     <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Components\Recyclebin\RecyclebinController.cs" />
+    <Compile Include="Components\Roles\Constants.cs" />
+    <Compile Include="Components\Roles\Exceptions\SetRoleException.cs" />
+    <Compile Include="Components\Roles\IRolesController.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\DeleteRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\GetRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\ListRoles.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\NewRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\SetRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Exceptions\SetRoleException.cs" />
+    <Compile Include="Components\Roles\Prompt\Models\RoleModel.cs" />
+    <Compile Include="Components\Roles\Prompt\Models\RoleModelBase.cs" />
+    <Compile Include="Components\Roles\RolesController.cs" />
     <Compile Include="MenuControllers\AdminMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AdminLogsController.cs" />
     <Compile Include="Services\Dto\BulkPage.cs" />
     <Compile Include="Services\Dto\BulkPageResponse.cs" />
     <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
@@ -230,14 +243,18 @@
     <Compile Include="Services\Dto\PagePermissions.cs" />
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageTemplate.cs" />
+    <Compile Include="Services\Dto\RoleDto.cs" />
+    <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\Dto\SeoUrl.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
     <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\Url.cs" />
+    <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
+    <Compile Include="Services\RolesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
@@ -260,6 +277,10 @@
     <Content Include="admin\personaBar\Dnn.Recyclebin\Recyclebin.html" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\Recyclebin.js" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\RecycleBin.ViewModel.js" />
+    <Content Include="admin\personaBar\Dnn.Roles\Roles.html" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\roles-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\Roles.js" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -297,10 +318,15 @@
     <Content Include="admin\personaBar\Dnn.Recyclebin\App_LocalResources\Recyclebin.resx" />
     <Content Include="App_LocalResources\EditLogTypes.ascx.resx" />
     <Content Include="App_LocalResources\LogViewer.ascx.resx" />
+    <Content Include="admin\personaBar\Dnn.Roles\App_LocalResources\Roles.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.eot" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.ttf" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
