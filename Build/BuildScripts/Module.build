@@ -42,6 +42,7 @@
   </Target>
 
   <Target Name="RunYarnCommands">
+	<Message Importance="high" Text="Running Yarn for $(MSBuildProjectDirectory)\$(WorkingDirectory)\" />
     <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)\" IgnoreExitCode="false"  />
     <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)\" IgnoreExitCode="false"  />
   </Target>
