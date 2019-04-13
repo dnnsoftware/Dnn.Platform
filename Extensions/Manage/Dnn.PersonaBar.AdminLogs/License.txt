@@ -1,4 +1,0 @@
-﻿DotNetNuke® - http://www.dnnsoftware.com<br/>
-Copyright (c) 2002-2018<br/>
-by DNN Corporation<br/>
-All Rights Reserved<br/>
