@@ -148,6 +148,18 @@
                     <order>40</order>
                   </menu>
                 </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Themes</identifier>
+                    <moduleName>Themes</moduleName>
+                    <controller>Dnn.PersonaBar.Themes.MenuControllers.ThemeMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Themes</resourceKey>
+                    <path>Themes</path>
+                    <parent>Manage</parent>
+                    <order>30</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
             </components>
         </package>
     </packages>
