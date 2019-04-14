@@ -126,6 +126,28 @@
                     <name>Users Edit</name>
                   </permission>
                 </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Roles</identifier>
+                    <moduleName>Roles</moduleName>
+                    <resourceKey>nav_Roles</resourceKey>
+                    <path>Roles</path>
+                    <parent>Manage</parent>
+                    <order>20</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Sites</identifier>
+                    <moduleName>Sites</moduleName>
+                    <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Sites</resourceKey>
+                    <path>Sites</path>
+                    <parent>Manage</parent>
+                    <order>40</order>
+                  </menu>
+                </component>
             </components>
         </package>
     </packages>

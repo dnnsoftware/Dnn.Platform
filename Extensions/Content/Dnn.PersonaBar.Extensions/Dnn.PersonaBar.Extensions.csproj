@@ -214,9 +214,13 @@
     <Compile Include="Components\Roles\Prompt\Models\RoleModel.cs" />
     <Compile Include="Components\Roles\Prompt\Models\RoleModelBase.cs" />
     <Compile Include="Components\Roles\RolesController.cs" />
+    <Compile Include="Components\Sites\Constants.cs" />
+    <Compile Include="Components\Sites\Dto\HttpAliasDto.cs" />
+    <Compile Include="Components\Sites\SitesController.cs" />
     <Compile Include="MenuControllers\AdminMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
+    <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminLogsController.cs" />
     <Compile Include="Services\Dto\BulkPage.cs" />
@@ -224,6 +228,7 @@
     <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\DnnModuleDto.cs" />
@@ -233,6 +238,7 @@
     <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
     <Compile Include="Services\Dto\EmailLogItemsRequest.cs" />
+    <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
     <Compile Include="Services\Dto\FileDto.cs" />
     <Compile Include="Services\Dto\ModuleCopyType.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
@@ -255,6 +261,7 @@
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Services\RolesController.cs" />
+    <Compile Include="Services\SitesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
@@ -281,6 +288,11 @@
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\roles-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\Roles.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\css\Sites.css" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\bundles\sites-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\exportables\Sites\SitesListView.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\Sites.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\Sites.html" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -319,6 +331,7 @@
     <Content Include="App_LocalResources\EditLogTypes.ascx.resx" />
     <Content Include="App_LocalResources\LogViewer.ascx.resx" />
     <Content Include="admin\personaBar\Dnn.Roles\App_LocalResources\Roles.resx" />
+    <Content Include="admin\personaBar\Dnn.Sites\App_LocalResources\Sites.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />

@@ -19,7 +19,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve("../admin/personaBar/scripts/bundles/"),
+        path: path.resolve("../../admin/personaBar/Dnn.Sites/scripts/bundles/"),
         filename: moduleName + "-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/"
     },
