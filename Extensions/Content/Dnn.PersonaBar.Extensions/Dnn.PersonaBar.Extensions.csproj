@@ -78,6 +78,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,6 +87,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
@@ -217,10 +219,62 @@
     <Compile Include="Components\Sites\Constants.cs" />
     <Compile Include="Components\Sites\Dto\HttpAliasDto.cs" />
     <Compile Include="Components\Sites\SitesController.cs" />
+    <Compile Include="Components\Themes\ApplyThemeScope.cs" />
+    <Compile Include="Components\Themes\Constants.cs" />
+    <Compile Include="Components\Themes\DTO\ApplyDefaultThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ApplyThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ListItemInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ParseThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ThemeFileInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\UpdateThemeInfo.cs" />
+    <Compile Include="Components\Themes\IThemesController.cs" />
+    <Compile Include="Components\Themes\ParseType.cs" />
+    <Compile Include="Components\Themes\ThemeLevel.cs" />
+    <Compile Include="Components\Themes\ThemesController.cs" />
+    <Compile Include="Components\Themes\ThemeType.cs" />
+    <Compile Include="Components\Users\Constants.cs" />
+    <Compile Include="Components\Users\Contracts\CreateUserContract.cs" />
+    <Compile Include="Components\Users\Contracts\GetUsersContract.cs" />
+    <Compile Include="Components\Users\Contracts\RegisterationDetails.cs" />
+    <Compile Include="Components\Users\Dto\ChangePasswordDto.cs" />
+    <Compile Include="Components\Users\Dto\PasswordSettingsDto.cs" />
+    <Compile Include="Components\Users\Dto\ProfileDefinitionDto.cs" />
+    <Compile Include="Components\Users\Dto\ProfileVisibilityDto.cs" />
+    <Compile Include="Components\Users\Dto\RelationshipDto.cs" />
+    <Compile Include="Components\Users\Dto\UserBasicDto.cs" />
+    <Compile Include="Components\Users\Dto\UserBasicDto2.cs" />
+    <Compile Include="Components\Users\Dto\UserDetailDto.cs" />
+    <Compile Include="Components\Users\Dto\UserFilters.cs" />
+    <Compile Include="Components\Users\Dto\UserRoleDto.cs" />
+    <Compile Include="Components\Users\Helpers\SearchTextFilter.cs" />
+    <Compile Include="Components\Users\IRegisterController.cs" />
+    <Compile Include="Components\Users\IUserControllerWrapper.cs" />
+    <Compile Include="Components\Users\IUsersController.cs" />
+    <Compile Include="Components\Users\IUserValidator.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\AddRoles.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\DeleteUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\GetUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\ListUsers.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\NewUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\ResetPassword.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\SetUser.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserModel.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserModelBase.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserRoleModel.cs" />
+    <Compile Include="Components\Users\Prompt\Utilities.cs" />
+    <Compile Include="Components\Users\RegisterController.cs" />
+    <Compile Include="Components\Users\UserControllerWrapper.cs" />
+    <Compile Include="Components\Users\UsersController.cs" />
+    <Compile Include="Components\Users\UsersMenuController.cs" />
+    <Compile Include="Components\Users\UserValidator.cs" />
+    <Compile Include="Data\IUsersDataService.cs" />
+    <Compile Include="Data\UsersDataService.cs" />
     <Compile Include="MenuControllers\AdminMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
+    <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminLogsController.cs" />
     <Compile Include="Services\Dto\BulkPage.cs" />
@@ -262,6 +316,8 @@
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Services\RolesController.cs" />
     <Compile Include="Services\SitesController.cs" />
+    <Compile Include="Services\ThemesController.cs" />
+    <Compile Include="Services\UsersController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
@@ -293,6 +349,15 @@
     <Content Include="admin\personaBar\Dnn.Sites\scripts\exportables\Sites\SitesListView.js" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\Sites.js" />
     <Content Include="admin\personaBar\Dnn.Sites\Sites.html" />
+    <Content Include="admin\personaBar\Dnn.Themes\css\Themes.css" />
+    <Content Include="admin\personaBar\Dnn.Themes\scripts\bundles\themes-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Themes\scripts\Themes.js" />
+    <Content Include="admin\personaBar\Dnn.Themes\Themes.html" />
+    <Content Include="admin\personaBar\Dnn.Users\css\Users.css" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\bundles\users-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\Users.js" />
+    <Content Include="admin\personaBar\Dnn.Users\Users.html" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -303,14 +368,6 @@
     <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Manage\Dnn.PersonaBar.Themes\Dnn.PersonaBar.Themes.csproj">
-      <Project>{5ad58dbf-e912-46e5-8812-342bb8af8182}</Project>
-      <Name>Dnn.PersonaBar.Themes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Manage\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj">
-      <Project>{96e8b714-a431-4cb7-a251-17f171055f64}</Project>
-      <Name>Dnn.PersonaBar.Users</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +389,8 @@
     <Content Include="App_LocalResources\LogViewer.ascx.resx" />
     <Content Include="admin\personaBar\Dnn.Roles\App_LocalResources\Roles.resx" />
     <Content Include="admin\personaBar\Dnn.Sites\App_LocalResources\Sites.resx" />
+    <Content Include="admin\personaBar\Dnn.Themes\App_LocalResources\Themes.resx" />
+    <Content Include="admin\personaBar\Dnn.Users\App_LocalResources\Users.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />
@@ -340,6 +399,17 @@
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.eot" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Users\scripts\bundles\users-bundle.js.map" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.01.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\01.02.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\01.05.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\Install.SqlDataprovider" />
+    <Content Include="SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
