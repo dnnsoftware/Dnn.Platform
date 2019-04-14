@@ -203,7 +203,6 @@ SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentTypes] OFF
 
 GO
 
--- minimum date to set for all creted on last modified on columns
 DECLARE @CreateBy int = -1
 DECLARE @UpdateBy int = NULL
 DECLARE @UpdateByNotNull int = -1
@@ -410,7 +409,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [J
 
 GO
 
--- minimum date to set for all creted on last modified on columns
 DECLARE @CreateBy int = -1
 DECLARE @UpdateBy int = NULL
 DECLARE @UpdateByNotNull int = -1
@@ -5555,7 +5553,6 @@ SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Lists] OFF
 
 GO
 
--- minimum date to set for all creted on last modified on columns
 DECLARE @CreateBy int = -1
 DECLARE @UpdateBy int = NULL
 DECLARE @UpdateByNotNull int = -1
