@@ -814,7 +814,7 @@
     <value>Username</value>
   </data>
   <data name="CheckBiographyFailure.Text" xml:space="preserve">
-    <value>The field is richtext. Spammers may put links to their website in their biography field.</value>
+    <value>The field is richtext. Spammers may put links to their website in their biography field. The field type can be changed in Settings -> Site Settings -> Site Behavior -> User Profiles</value>
   </data>
   <data name="CheckBiographyReason.Text" xml:space="preserve">
     <value>The biography field is a common target for spammers as they can add links/html to it. In DNN 7.2.0 this was changed to a multiline textbox which removes this risk.</value>
