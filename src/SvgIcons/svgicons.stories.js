@@ -54,6 +54,7 @@ storiesOf("SvgIcons", module).add("with content", () => (
         <div>SearchFileSystemIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.SearchFileSystemIcon }}></div></div>
         <div>SearchIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.SearchIcon }}></div></div>
         <div>ShieldIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.ShieldIcon }}></div></div>
+        <div>Signature <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.Signature }}></div></div>
         <div>SiteGroupIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.SiteGroupIcon }}></div></div>
         <div>Steps1Icon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.Steps1Icon }}></div></div>
         <div>Steps2Icon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.Steps2Icon }}></div></div>
@@ -83,6 +84,7 @@ storiesOf("SvgIcons", module).add("with content", () => (
         <div>TreeEdit <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.TreeEdit }}></div></div>
         <div>TreeCopy <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.TreeCopy }}></div></div>
         <div>TreeAnalytics <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.TreeAnalytics }}></div></div>
+        <div>UserSlash <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.UserSlash }}></div></div>
         <div>PagesSearchIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.PagesSearchIcon }}></div></div>
         <div>PagesVerticalMore <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.PagesVerticalMore }}></div></div>
     </div>
