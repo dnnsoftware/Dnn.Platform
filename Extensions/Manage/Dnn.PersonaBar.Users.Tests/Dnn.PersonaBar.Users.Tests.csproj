@@ -78,14 +78,6 @@
       <Project>{9cca271f-cfaa-42a3-b577-7d5cbb38c646}</Project>
       <Name>Dnn.PersonaBar.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dnn.PersonaBar.Roles\Dnn.PersonaBar.Roles.csproj">
-      <Project>{89251729-9768-4245-A657-4D822E3E9122}</Project>
-      <Name>Dnn.PersonaBar.Roles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dnn.PersonaBar.Users\Dnn.PersonaBar.Users.csproj">
-      <Project>{96E8B714-A431-4CB7-A251-17F171055F64}</Project>
-      <Name>Dnn.PersonaBar.Users</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

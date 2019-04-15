@@ -205,7 +205,6 @@
     <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreUser.cs" />
     <Compile Include="Components\Recyclebin\RecyclebinController.cs" />
     <Compile Include="Components\Roles\Constants.cs" />
-    <Compile Include="Components\Roles\Exceptions\SetRoleException.cs" />
     <Compile Include="Components\Roles\IRolesController.cs" />
     <Compile Include="Components\Roles\Prompt\Commands\DeleteRole.cs" />
     <Compile Include="Components\Roles\Prompt\Commands\GetRole.cs" />
