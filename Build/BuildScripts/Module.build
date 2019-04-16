@@ -45,7 +45,7 @@
 
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
 	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnBuildOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
-	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'== 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'== 0"/>
 
   </Target>
 
@@ -62,7 +62,7 @@
   <Target Name="RunYarnInstallAndBuild">
 	<Message Importance="high" Text="Running Yarn Install/Build for $(MSBuildProjectDirectory)\$(WorkingDirectory)" />
 
-	<Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
-    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
+	<Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>
