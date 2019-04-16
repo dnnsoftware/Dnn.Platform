@@ -52,6 +52,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.HttpModules, Version=8.0.5.46, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Instrumentation, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
@@ -294,6 +298,20 @@
     <Compile Include="Components\Security\SecurityController.cs" />
     <Compile Include="Components\Security\SeverityEnum.cs" />
     <Compile Include="Components\Security\Utility.cs" />
+    <Compile Include="Components\Seo\ExtensionMenuController.cs" />
+    <Compile Include="Components\Seo\SeoController.cs" />
+    <Compile Include="Components\Seo\UrlRewritingResult.cs" />
+    <Compile Include="Components\Servers\Constants.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\BackupInfo.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DatabaseController.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DataService.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DbFileInfo.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DbInfo.cs" />
+    <Compile Include="Components\Servers\Log\LogController.cs" />
+    <Compile Include="Components\Servers\PerformanceSettings\PerformanceController.cs" />
+    <Compile Include="Components\Servers\WebServer\ServerInfo.cs" />
+    <Compile Include="Components\SiteImportExport\Constants.cs" />
+    <Compile Include="Components\SiteImportExport\SiteImportExportController.cs" />
     <Compile Include="Components\Sites\Constants.cs" />
     <Compile Include="Components\Sites\Dto\HttpAliasDto.cs" />
     <Compile Include="Components\Sites\SitesController.cs" />
@@ -356,6 +374,8 @@
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="MenuControllers\PromptMenuController.cs" />
     <Compile Include="MenuControllers\SecurityMenuController.cs" />
+    <Compile Include="MenuControllers\ServersMenuController.cs" />
+    <Compile Include="MenuControllers\SiteImportExportMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -394,18 +414,28 @@
     <Compile Include="Services\Dto\RestoreCssRequest.cs" />
     <Compile Include="Services\Dto\RoleDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
+    <Compile Include="Services\Dto\SendTestEmailRequest.cs" />
     <Compile Include="Services\Dto\SeoUrl.cs" />
     <Compile Include="Services\Dto\SettingsDto.cs" />
     <Compile Include="Services\Dto\TabDto.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
     <Compile Include="Services\Dto\UpdateBasicLoginSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateCachingSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateCssRequest.cs" />
+    <Compile Include="Services\Dto\UpdateExtensionUrlProviderStatusRequest.cs" />
+    <Compile Include="Services\Dto\UpdateGeneralSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIpFilterRequest.cs" />
     <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateMemberSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdatePerfSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateRegexSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateRegistrationSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSitemapProviderRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSitemapSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
@@ -415,7 +445,18 @@
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Services\RolesController.cs" />
     <Compile Include="Services\SecurityController.cs" />
+    <Compile Include="Services\SeoController.cs" />
+    <Compile Include="Services\ServerController.cs" />
+    <Compile Include="Services\ServerSettingsLogsController.cs" />
+    <Compile Include="Services\ServerSettingsPerformanceController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpAdminController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpHostController.cs" />
+    <Compile Include="Services\SiteImportExportController.cs" />
     <Compile Include="Services\SitesController.cs" />
+    <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
+    <Compile Include="Services\SystemInfoApplicationHostController.cs" />
+    <Compile Include="Services\SystemInfoDatabaseController.cs" />
+    <Compile Include="Services\SystemInfoWebController.cs" />
     <Compile Include="Services\ThemesController.cs" />
     <Compile Include="Services\UsersController.cs" />
   </ItemGroup>
@@ -482,6 +523,7 @@
     <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js" />
     <Content Include="admin\personaBar\Dnn.Users\scripts\Users.js" />
     <Content Include="admin\personaBar\Dnn.Users\Users.html" />
+    <Content Include="images\module_icon_32x32.png" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
@@ -552,6 +594,9 @@
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css.map" />
     <Content Include="admin\personaBar\Dnn.Prompt\scripts\bundles\prompt-bundle.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.03.00.SqlDataProvider" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
