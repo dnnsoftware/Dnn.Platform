@@ -7,6 +7,7 @@
     <PackageName>Dnn.PersonaBar.Extensions</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\</ModuleFolderName>
 	<YarnWorkingDirectory>WebApps</YarnWorkingDirectory>
+	<YarnWorkingDirectories>WebApps\*\package.json</YarnWorkingDirectories>
   </PropertyGroup>
   
   <Import Project="$(BuildScriptsPath)\Package.Targets" />

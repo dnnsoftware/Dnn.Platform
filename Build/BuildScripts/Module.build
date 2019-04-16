@@ -35,15 +35,34 @@
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <ItemGroup>
-      <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" />
+      <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" Exclude="**/node_modules/**/*" />
+	  <_YarnWorkingDirectories Include="$(YarnWorkingDirectories)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
+	<PropertyGroup>
+	  <YarnWorkingDirectoriesCount>@(_YarnWorkingDirectories->Count())</YarnWorkingDirectoriesCount>
+	</PropertyGroup>
+	<Message Text="Count:   $(YarnWorkingDirectoriesCount)" />
 
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnCommands" Properties="WorkingDirectory=%(_YarnWorkingDirectory.Identity)" />
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnBuildOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RecursiveDir);" Condition="'$(YarnWorkingDirectoriesCount)'== 0 "/>
+
   </Target>
 
-  <Target Name="RunYarnCommands">
-	<Message Importance="high" Text="Running Yarn for $(MSBuildProjectDirectory)\$(WorkingDirectory)\" />
-    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)\" IgnoreExitCode="false"  />
-    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)\" IgnoreExitCode="false"  />
+  <Target Name="RunYarnInstallOnly">
+	<Message Importance="high" Text="Running Yarn Install for $(MSBuildProjectDirectory)\$(WorkingDirectory)" />
+
+    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
+  </Target>
+  <Target Name="RunYarnBuildOnly">
+	<Message Importance="high" Text="Running Yarn Build for $(MSBuildProjectDirectory)\$(WorkingDirectory)" />
+
+    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
+  </Target>
+  <Target Name="RunYarnInstallAndBuild">
+	<Message Importance="high" Text="Running Yarn Install/Build for $(MSBuildProjectDirectory)\$(WorkingDirectory)" />
+
+	<Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
+    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(WorkingDirectory)" IgnoreExitCode="false" />
   </Target>
 </Project>
