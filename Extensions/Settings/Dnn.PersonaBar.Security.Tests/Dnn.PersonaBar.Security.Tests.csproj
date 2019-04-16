@@ -57,13 +57,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Extensions\Settings\Dnn.PersonaBar.Security\Dnn.PersonaBar.Security.csproj">
-      <Project>{e9445fc8-2bbd-4efd-b63d-8c7b8c6eeb50}</Project>
-      <Name>Dnn.PersonaBar.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
+      <Project>{9cca271f-cfaa-42a3-b577-7d5cbb38c646}</Project>
+      <Name>Dnn.PersonaBar.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

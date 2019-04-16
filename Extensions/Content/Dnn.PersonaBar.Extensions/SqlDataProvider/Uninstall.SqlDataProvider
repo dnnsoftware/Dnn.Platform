@@ -1,5 +1,5 @@
 ﻿/************************************************************/
-/*****              SqlDataProvider                     *****/
+/***** Users SqlDataProvider                            *****/
 /*****                                                  *****/
 /*****                                                  *****/
 /***** Note: To manually execute this script you must   *****/
@@ -21,5 +21,21 @@ IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseO
 GO
 
 /************************************************************/
-/*****              SqlDataProvider                     *****/
+/***** Security SqlDataProvider                         *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_SearchAllTables]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_SearchAllTables]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModulesHasHeaderFooter]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModulesHasHeaderFooter]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModifiedSettings]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModifiedSettings]
+GO
+
+/************************************************************/
+/***** End SqlDataProvider                              *****/
 /************************************************************/

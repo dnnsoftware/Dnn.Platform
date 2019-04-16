@@ -17,6 +17,15 @@
                 <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
             </dependencies>
             <azureCompatible>true</azureCompatible>
+            <eventMessage>
+              <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+              <processorCommand>UpgradeModule</processorCommand>
+              <attributes>
+                <businessControllerClass>Dnn.PersonaBar.Security.Components.BusinessController, Dnn.PersonaBar.Extensions</businessControllerClass>
+                <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                <upgradeVersionsList>01.05.00</upgradeVersionsList>
+              </attributes>
+            </eventMessage>
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
@@ -39,7 +48,7 @@
                     <basePath>DesktopModules\admin\Dnn.PersonaBar\Modules\Sql</basePath>
                     <script type="Install">
                       <path>Providers\DataProviders\SqlDataProvider</path>
-                      <name>Install.SqlDataProvider</name>
+                      <name>01.00.00.SqlDataProvider</name>
                       <version>01.00.00</version>
                     </script>
                     <script type="Install">
@@ -167,6 +176,16 @@
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>
+                    <identifier>Dnn.Prompt</identifier>
+                    <moduleName>Prompt</moduleName>
+                    <resourceKey>nav_Prompt</resourceKey>
+                    <path>Prompt</path>
+                    <parent>Settings</parent>
+                    <order>95</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
                     <identifier>Dnn.Recyclebin</identifier>
                     <moduleName>Recyclebin</moduleName>
                     <resourceKey>nav_Recyclebin</resourceKey>
@@ -210,6 +229,34 @@
                     <order>20</order>
                     <defaultPermissions>Administrators</defaultPermissions>
                   </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Security</identifier>
+                    <moduleName>Security</moduleName>
+                    <controller>Dnn.PersonaBar.Security.MenuControllers.SecurityMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Security</resourceKey>
+                    <path>Security</path>
+                    <parent>Settings</parent>
+                    <order>20</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>BASIC_LOGIN_SETTINGS_VIEW</key>
+                    <name>Basic Login Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>BASIC_LOGIN_SETTINGS_EDIT</key>
+                    <name>Basic Login Settings Edit</name>
+                  </permission>
+                  <permission>
+                    <key>REGISTRATION_SETTINGS_VIEW</key>
+                    <name>Registration Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>REGISTRATION_SETTINGS_EDIT</key>
+                    <name>Registration Settings Edit</name>
+                  </permission>
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>

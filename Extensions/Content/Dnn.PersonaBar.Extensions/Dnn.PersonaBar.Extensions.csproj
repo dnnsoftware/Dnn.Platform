@@ -78,6 +78,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
@@ -104,6 +106,8 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\ControllerBase.cs" />
+    <Compile Include="Common\PortalHelper.cs" />
     <Compile Include="Components\AdminLogs\AdminLogsController.cs" />
     <Compile Include="Components\AdminLogs\Constants.cs" />
     <Compile Include="Components\ConfigConsole\ConfigConsoleController.cs" />
@@ -196,6 +200,44 @@
     <Compile Include="Components\Pages\UrlRewriterUtilsWrapper.cs" />
     <Compile Include="Components\Pages\WorkflowHelper.cs" />
     <Compile Include="Components\Pages\XssCleaner.cs" />
+    <Compile Include="Components\Prompt\Commands\Application\RestartApplication.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\ClearHistory.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\ClearScreen.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Clh.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Cls.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Exit.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Reload.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\SetMode.cs" />
+    <Compile Include="Components\Prompt\Commands\Commands\ListCommands.cs" />
+    <Compile Include="Components\Prompt\Commands\Host\ClearCache.cs" />
+    <Compile Include="Components\Prompt\Commands\Host\GetHost.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\AddModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\CopyModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\DeleteModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\GetModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\ListModules.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\MoveModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ClearLog.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\GetPortal.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\GetSite.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ListPortals.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ListSites.cs" />
+    <Compile Include="Components\Prompt\Commands\Utilities\Echo.cs" />
+    <Compile Include="Components\Prompt\Constants.cs" />
+    <Compile Include="Components\Prompt\IModulesController.cs" />
+    <Compile Include="Components\Prompt\Models\Command.cs" />
+    <Compile Include="Components\Prompt\Models\CommandHelp.cs" />
+    <Compile Include="Components\Prompt\Models\CommandInputModel.cs" />
+    <Compile Include="Components\Prompt\Models\CommandOption.cs" />
+    <Compile Include="Components\Prompt\Models\HostModel.cs" />
+    <Compile Include="Components\Prompt\Models\ModuleInfoModel.cs" />
+    <Compile Include="Components\Prompt\Models\ModuleInstanceModel.cs" />
+    <Compile Include="Components\Prompt\Models\PortalModel.cs" />
+    <Compile Include="Components\Prompt\Models\PortalModelBase.cs" />
+    <Compile Include="Components\Prompt\ModulesController.cs" />
+    <Compile Include="Components\Prompt\Repositories\CommandRepository.cs" />
+    <Compile Include="Components\Prompt\Repositories\ICommandRepository.cs" />
+    <Compile Include="Components\Prompt\Utilities.cs" />
     <Compile Include="Components\Recyclebin\Constants.cs" />
     <Compile Include="Components\Recyclebin\Dto\ModuleItem.cs" />
     <Compile Include="Components\Recyclebin\Dto\PageItem.cs" />
@@ -219,6 +261,39 @@
     <Compile Include="Components\Roles\Prompt\Models\RoleModel.cs" />
     <Compile Include="Components\Roles\Prompt\Models\RoleModelBase.cs" />
     <Compile Include="Components\Roles\RolesController.cs" />
+    <Compile Include="Components\Security\Attributes\AuthProviderSupportedAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\CultureCodeExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\RegistrationFieldsAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\RegistrationFormTypeOptionAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\TabExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserEmailAsUsernameAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserRegistrationOptionAttribute.cs" />
+    <Compile Include="Components\Security\AuditChecks.cs" />
+    <Compile Include="Components\Security\BusinessController.cs" />
+    <Compile Include="Components\Security\CheckResult.cs" />
+    <Compile Include="Components\Security\Checks\CheckAllowableFileExtensions.cs" />
+    <Compile Include="Components\Security\Checks\CheckBiography.cs" />
+    <Compile Include="Components\Security\Checks\CheckDebug.cs" />
+    <Compile Include="Components\Security\Checks\CheckDefaultPage.cs" />
+    <Compile Include="Components\Security\Checks\CheckDiskAcccessPermissions.cs" />
+    <Compile Include="Components\Security\Checks\CheckHiddenSystemFiles.cs" />
+    <Compile Include="Components\Security\Checks\CheckModuleHeaderAndFooter.cs" />
+    <Compile Include="Components\Security\Checks\CheckPasswordFormat.cs" />
+    <Compile Include="Components\Security\Checks\CheckRarelyUsedSuperuser.cs" />
+    <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
+    <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
+    <Compile Include="Components\Security\Checks\CheckSuperuserOldPassword.cs" />
+    <Compile Include="Components\Security\Checks\CheckTelerikVulnerability.cs" />
+    <Compile Include="Components\Security\Checks\CheckTracing.cs" />
+    <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
+    <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
+    <Compile Include="Components\Security\Constants.cs" />
+    <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
+    <Compile Include="Components\Security\IAuditCheck.cs" />
+    <Compile Include="Components\Security\SecurityController.cs" />
+    <Compile Include="Components\Security\SeverityEnum.cs" />
+    <Compile Include="Components\Security\Utility.cs" />
     <Compile Include="Components\Sites\Constants.cs" />
     <Compile Include="Components\Sites\Dto\HttpAliasDto.cs" />
     <Compile Include="Components\Sites\SitesController.cs" />
@@ -279,10 +354,13 @@
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="MenuControllers\LicensingMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
+    <Compile Include="MenuControllers\PromptMenuController.cs" />
+    <Compile Include="MenuControllers\SecurityMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminLogsController.cs" />
+    <Compile Include="Services\CommandController.cs" />
     <Compile Include="Services\ConfigConsoleController.cs" />
     <Compile Include="Services\ConnectorsController.cs" />
     <Compile Include="Services\CssEditorController.cs" />
@@ -317,10 +395,18 @@
     <Compile Include="Services\Dto\RoleDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\Dto\SeoUrl.cs" />
+    <Compile Include="Services\Dto\SettingsDto.cs" />
+    <Compile Include="Services\Dto\TabDto.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
+    <Compile Include="Services\Dto\UpdateBasicLoginSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateCssRequest.cs" />
+    <Compile Include="Services\Dto\UpdateIpFilterRequest.cs" />
     <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateMemberSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateRegistrationSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
@@ -328,6 +414,7 @@
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Services\RolesController.cs" />
+    <Compile Include="Services\SecurityController.cs" />
     <Compile Include="Services\SitesController.cs" />
     <Compile Include="Services\ThemesController.cs" />
     <Compile Include="Services\UsersController.cs" />
@@ -359,6 +446,10 @@
     <Content Include="admin\personaBar\Dnn.Pages\css\Pages.css" />
     <Content Include="admin\personaBar\Dnn.Pages\Pages.html" />
     <Content Include="admin\personaBar\Dnn.Pages\scripts\Pages.js" />
+    <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css" />
+    <Content Include="admin\personaBar\Dnn.Prompt\Prompt.html" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\bundles\prompt-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\Prompt.js" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\css\RecycleBin.css" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\images\fallback-thumbnail.png" />
     <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icon-Empty-Modules-white.png" />
@@ -373,6 +464,10 @@
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\roles-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\Roles.js" />
+    <Content Include="admin\personaBar\Dnn.Security\css\Security.css" />
+    <Content Include="admin\personaBar\Dnn.Security\scripts\bundles\security-settings-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Security\scripts\Security.js" />
+    <Content Include="admin\personaBar\Dnn.Security\Security.html" />
     <Content Include="admin\personaBar\Dnn.Sites\css\Sites.css" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\bundles\sites-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\exportables\Sites\SitesListView.js" />
@@ -424,6 +519,14 @@
     <Content Include="admin\personaBar\Dnn.Themes\App_LocalResources\Themes.resx" />
     <Content Include="admin\personaBar\Dnn.Users\App_LocalResources\Users.resx" />
     <Content Include="admin\personaBar\Dnn.Licensing\App_LocalResources\Licensing.resx" />
+    <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
+    <Content Include="admin\personaBar\Dnn.Security\App_LocalResources\Security.resx" />
+    <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\RegRead.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\sums.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\SysAdmin.resources" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />
@@ -441,8 +544,14 @@
     <Content Include="SqlDataProvider\01.01.00.SqlDataProvider" />
     <Content Include="SqlDataProvider\01.02.00.SqlDataProvider" />
     <Content Include="SqlDataProvider\01.05.00.SqlDataProvider" />
-    <Content Include="SqlDataProvider\Install.SqlDataprovider" />
     <Content Include="SqlDataProvider\Uninstall.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.00.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css.map" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\bundles\prompt-bundle.js.map" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
