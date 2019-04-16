@@ -19,7 +19,7 @@ class Password extends Component {
    
     render() {
         return (
-            <div>
+            <div className="passwordContainer">
                 <SingleLineInputWithError label={Localization.get("Password") }
                     error={this.props.error.password}
                     onChange={this.props.onChangePassword }

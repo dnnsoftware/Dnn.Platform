@@ -3,6 +3,9 @@
 @fair: rgb(246, 213, 0);
 @weak: red;
 
+.passwordContainer{
+    position: relative;
+}
 
 .passwordStrength {
     line-height: 1.5pt;
@@ -27,10 +30,11 @@
 }
 
 .passwordStrengthLabel {
-    position: relative;
-    top: -45px;
-    left: 308px;
+    position: absolute;
+    bottom: 30px;
+    right: 1em;
     font-weight: 700;
+    text-align: right;
 
     &.weak{
         color: @weak;
