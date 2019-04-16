@@ -5,7 +5,7 @@
         <DNNFileName>Dnn.PersonaBar.UI</DNNFileName>
         <PackageName>Dnn.PersonaBar.UI</PackageName>
         <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
-        <YarnWorkingDirectory>admin\personaBar\Bundle.Web</YarnWorkingDirectory>
+        <YarnWorkingDirectory>admin\personaBar\Bundle.Web\package.json</YarnWorkingDirectory>
     </PropertyGroup>
     <Import Project="$(BuildScriptsPath)\Package.Targets" />
     <Import Project="$(BuildScriptsPath)\Module.Build"/>
