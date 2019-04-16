@@ -83,6 +83,7 @@
     <Compile Include="AzureFolderProvider\AzureBlob.cs" />
     <Compile Include="AzureFolderProvider\AzureRemoteStorageItem.cs" />
     <Compile Include="AzureFolderProvider\BlobItemExtensions.cs" />
+    <Compile Include="AzureFolderProvider\Constants.cs" />
     <Compile Include="AzureFolderProvider\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
