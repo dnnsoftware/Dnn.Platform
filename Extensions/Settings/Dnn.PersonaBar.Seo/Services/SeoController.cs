@@ -478,7 +478,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     p.Name,
                     p.Enabled,
-                    p.Priority,
+                    Priority = p.Priority / 100f,
                     p.OverridePriority
                 }).ToList();
 
@@ -518,7 +518,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     editedProvider.OverridePriority = request.Priority > -1;
                     if (editedProvider.OverridePriority)
                     {
-                        editedProvider.Priority = request.Priority;
+                        editedProvider.Priority = request.Priority * 100;
                     }
                 }
 
