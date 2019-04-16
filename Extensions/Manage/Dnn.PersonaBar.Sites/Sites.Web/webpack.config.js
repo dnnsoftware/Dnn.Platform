@@ -67,5 +67,6 @@ module.exports = {
             new webpack.DefinePlugin({
                 VERSION: JSON.stringify(packageJson.version)
             })
-        ]
+        ],
+    devtool: "source-map"
 };

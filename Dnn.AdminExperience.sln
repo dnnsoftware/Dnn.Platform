@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Library\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -95,6 +95,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.TaskScheduler", "Extensions\Settings\Dnn.PersonaBar.TaskScheduler\Dnn.PersonaBar.TaskScheduler.csproj", "{EE37275B-1E65-4475-BB1E-0F8F31B3D281}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Vocabularies", "Extensions\Settings\Dnn.PersonaBar.Vocabularies\Dnn.PersonaBar.Vocabularies.csproj", "{B4CBAC32-E561-4426-AD67-8A12284AAED0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2D2487D-79FD-492F-BC7D-327E4D94F4C7}"
+	ProjectSection(SolutionItems) = preProject
+		..\cake.config = ..\cake.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -431,5 +436,8 @@ Global
 		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
 		{EE37275B-1E65-4475-BB1E-0F8F31B3D281} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
 		{B4CBAC32-E561-4426-AD67-8A12284AAED0} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7ADC7A0-7B9C-41BA-A5C4-77E9DD8499A0}
 	EndGlobalSection
 EndGlobal
