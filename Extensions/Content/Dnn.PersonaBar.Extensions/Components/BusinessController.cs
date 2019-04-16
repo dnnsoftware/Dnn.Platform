@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 
-namespace Dnn.PersonaBar.Security.Components
+namespace Dnn.PersonaBar.Extensions.Components
 {
     public class BusinessController : IUpgradeable
     {
@@ -17,6 +18,10 @@ namespace Dnn.PersonaBar.Security.Components
         {
             switch (version)
             {
+                case "01.04.00":
+                    UpdateMenuController();
+                    break;
+
                 case "01.05.00":
                     if (TelerikAssemblyExists())
                     {
@@ -26,6 +31,11 @@ namespace Dnn.PersonaBar.Security.Components
             }
 
             return String.Empty;
+        }
+
+        private void UpdateMenuController()
+        {
+            PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
         }
 
         private bool TelerikAssemblyExists()

@@ -21,9 +21,9 @@
               <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
               <processorCommand>UpgradeModule</processorCommand>
               <attributes>
-                <businessControllerClass>Dnn.PersonaBar.Security.Components.BusinessController, Dnn.PersonaBar.Extensions</businessControllerClass>
+                <businessControllerClass>Dnn.PersonaBar.Extensions.Components.BusinessController, Dnn.PersonaBar.Extensions</businessControllerClass>
                 <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-                <upgradeVersionsList>01.05.00</upgradeVersionsList>
+                <upgradeVersionsList>01.04.00,01.05.00</upgradeVersionsList>
               </attributes>
             </eventMessage>
             <components>
@@ -332,6 +332,28 @@
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>
+                    <identifier>Dnn.SqlConsole</identifier>
+                    <moduleName>SqlConsole</moduleName>
+                    <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SqlConsole</resourceKey>
+                    <path>SqlConsole</path>
+                    <parent>Settings</parent>
+                    <order>80</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.TaskScheduler</identifier>
+                    <moduleName>TaskScheduler</moduleName>
+                    <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_TaskScheduler</resourceKey>
+                    <path>TaskScheduler</path>
+                    <parent>Settings</parent>
+                    <order>60</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
                     <identifier>Dnn.Themes</identifier>
                     <moduleName>Themes</moduleName>
                     <controller>Dnn.PersonaBar.Themes.MenuControllers.ThemeMenuController, Dnn.PersonaBar.Extensions</controller>
@@ -385,6 +407,18 @@
                     <key>MANAGE_PASSWORD</key>
                     <name>Manage Password</name>
                   </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Vocabularies</identifier>
+                    <moduleName>Vocabularies</moduleName>
+                    <controller></controller>
+                    <resourceKey>nav_Vocabularies</resourceKey>
+                    <path>vocabularies</path>
+                    <parent>Settings</parent>
+                    <order>40</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
                 </component>
             </components>
         </package>

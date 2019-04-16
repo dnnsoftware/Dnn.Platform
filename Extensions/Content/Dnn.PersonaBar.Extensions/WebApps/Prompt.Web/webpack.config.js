@@ -14,7 +14,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve(__dirname, '../admin/personaBar/scripts/bundles/'),
+        path: path.resolve(__dirname, '../../admin/personaBar/Dnn.Prompt/scripts/bundles/'),
         publicPath: isProduction ? "" : "http://localhost:8100/dist/",
         filename: 'prompt-bundle.js'
     },

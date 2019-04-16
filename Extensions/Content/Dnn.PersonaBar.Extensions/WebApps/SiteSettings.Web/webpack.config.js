@@ -10,7 +10,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve(__dirname, '../admin/personaBar/scripts/bundles/'),
+        path: path.resolve(__dirname, '../../admin/personaBar/Dnn.SiteSettings/scripts/bundles/'),
         publicPath: isProduction ? "" : "http://localhost:8085/dist/",
         filename: "site-settings-bundle.js"
     },

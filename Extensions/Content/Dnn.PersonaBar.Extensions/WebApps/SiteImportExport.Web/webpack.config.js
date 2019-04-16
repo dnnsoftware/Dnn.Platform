@@ -18,7 +18,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve(__dirname, "../admin/personaBar/scripts/bundles/"),
+        path: path.resolve(__dirname, "../../admin/personaBar/Dnn.SiteImportExport/scripts/bundles/"),
         publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: "siteimportexport-bundle.js"
     },

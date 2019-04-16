@@ -141,17 +141,26 @@ namespace Dnn.PersonaBar.UI.Components
 
         private void UninstallPersonaBarExtensions()
         {
-            UninstallPackage("Dnn.PersonaBar.Pages", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Roles", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.AdminLogs", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Sites", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Users", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Recyclebin", "PersonaBar");
-
             UninstallPackage("Dnn.PersonaBar.ConfigConsole", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.Connectors", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.CssEditor", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.Licensing", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Pages", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Prompt", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Recyclebin", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Roles", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Security", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Seo", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Servers", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.SiteImportExport", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Sites", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.SiteSettings", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.SqlConsole", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.TaskScheduler", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Themes", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Users", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Vocabularies", "PersonaBar");
         }
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")

@@ -56,12 +56,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security.Tests", "Extensions\Settings\Dnn.PersonaBar.Security.Tests\Dnn.PersonaBar.Security.Tests.csproj", "{A64708EF-4972-48A3-B7B9-6B65E47EFE27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SqlConsole", "Extensions\Settings\Dnn.PersonaBar.SqlConsole\Dnn.PersonaBar.SqlConsole.csproj", "{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.TaskScheduler", "Extensions\Settings\Dnn.PersonaBar.TaskScheduler\Dnn.PersonaBar.TaskScheduler.csproj", "{EE37275B-1E65-4475-BB1E-0F8F31B3D281}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Vocabularies", "Extensions\Settings\Dnn.PersonaBar.Vocabularies\Dnn.PersonaBar.Vocabularies.csproj", "{B4CBAC32-E561-4426-AD67-8A12284AAED0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,18 +98,6 @@ Global
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE37275B-1E65-4475-BB1E-0F8F31B3D281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE37275B-1E65-4475-BB1E-0F8F31B3D281}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE37275B-1E65-4475-BB1E-0F8F31B3D281}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE37275B-1E65-4475-BB1E-0F8F31B3D281}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4CBAC32-E561-4426-AD67-8A12284AAED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4CBAC32-E561-4426-AD67-8A12284AAED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4CBAC32-E561-4426-AD67-8A12284AAED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4CBAC32-E561-4426-AD67-8A12284AAED0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,9 +114,6 @@ Global
 		{EF78794D-AAEA-4759-9B82-FB2D38AFD3D4} = {B4BE0735-4220-4FD1-BCE1-42AB9CE9D89F}
 		{15506C01-A730-46B9-8571-99C20226AAE6} = {02E4C0BF-E416-49CC-900E-A1CEC143C4B9}
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
-		{2CDEB8FA-ADFF-4440-84EA-3AF2CCB848D6} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
-		{EE37275B-1E65-4475-BB1E-0F8F31B3D281} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
-		{B4CBAC32-E561-4426-AD67-8A12284AAED0} = {EF78794D-AAEA-4759-9B82-FB2D38AFD3D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3AF33584-3D4E-4F06-B256-DDCC352664C4}
