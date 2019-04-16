@@ -290,9 +290,21 @@
                   <menu>
                     <identifier>Dnn.Servers</identifier>
                     <moduleName>Servers</moduleName>
-                    <controller>Dnn.PersonaBar.Servers.MenuControllers.ServersMenuController, Dnn.PersonaBar.Servers</controller>
+                    <controller>Dnn.PersonaBar.Servers.MenuControllers.ServersMenuController, Dnn.PersonaBar.Extensions</controller>
                     <resourceKey>nav_Servers</resourceKey>
                     <path>Servers</path>
+                    <parent>Settings</parent>
+                    <order>50</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.SiteImportExport</identifier>
+                    <moduleName>SiteImportExport</moduleName>
+                    <controller>Dnn.PersonaBar.SiteImportExport.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SiteImportExport</resourceKey>
+                    <path>SiteImportExport</path>
                     <parent>Settings</parent>
                     <order>50</order>
                     <defaultPermissions>Administrators</defaultPermissions>
