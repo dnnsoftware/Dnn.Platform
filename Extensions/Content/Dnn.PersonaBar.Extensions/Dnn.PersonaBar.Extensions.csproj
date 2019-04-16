@@ -277,6 +277,7 @@
     <Compile Include="MenuControllers\ConfigConsoleMenuController.cs" />
     <Compile Include="MenuControllers\CssEditorMenuController.cs" />
     <Compile Include="MenuControllers\ExtensionMenuController.cs" />
+    <Compile Include="MenuControllers\LicensingMenuController.cs" />
     <Compile Include="MenuControllers\PagesMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
+    <Compile Include="Services\LicensingController.cs" />
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\RecyclebinController.cs" />
     <Compile Include="Services\RolesController.cs" />
@@ -350,6 +352,10 @@
     <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\extensions.js" />
+    <Content Include="admin\personaBar\Dnn.Licensing\css\Licensing.css" />
+    <Content Include="admin\personaBar\Dnn.Licensing\Licensing.html" />
+    <Content Include="admin\personaBar\Dnn.Licensing\scripts\bundles\licensing-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Licensing\scripts\Licensing.js" />
     <Content Include="admin\personaBar\Dnn.Pages\css\Pages.css" />
     <Content Include="admin\personaBar\Dnn.Pages\Pages.html" />
     <Content Include="admin\personaBar\Dnn.Pages\scripts\Pages.js" />
@@ -417,6 +423,7 @@
     <Content Include="admin\personaBar\Dnn.Sites\App_LocalResources\Sites.resx" />
     <Content Include="admin\personaBar\Dnn.Themes\App_LocalResources\Themes.resx" />
     <Content Include="admin\personaBar\Dnn.Users\App_LocalResources\Users.resx" />
+    <Content Include="admin\personaBar\Dnn.Licensing\App_LocalResources\Licensing.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />

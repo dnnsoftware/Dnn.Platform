@@ -147,6 +147,11 @@ namespace Dnn.PersonaBar.UI.Components
             UninstallPackage("Dnn.PersonaBar.Sites", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.Users", "PersonaBar");
             UninstallPackage("Dnn.PersonaBar.Recyclebin", "PersonaBar");
+
+            UninstallPackage("Dnn.PersonaBar.ConfigConsole", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Connectors", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.CssEditor", "PersonaBar");
+            UninstallPackage("Dnn.PersonaBar.Licensing", "PersonaBar");
         }
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")

@@ -128,6 +128,17 @@
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>
+                    <identifier>Dnn.Licensing</identifier>
+                    <moduleName>Licensing</moduleName>
+                    <controller>Dnn.PersonaBar.Licensing.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Licensing</resourceKey>
+                    <path>Licensing</path>
+                    <parent>Settings</parent>
+                    <order>100</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
                     <identifier>Dnn.Extensions</identifier>
                     <moduleName>Extensions</moduleName>
                     <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
