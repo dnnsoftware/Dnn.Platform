@@ -6,7 +6,7 @@
     <DNNFileName>Dnn.PersonaBar.Extensions</DNNFileName>
     <PackageName>Dnn.PersonaBar.Extensions</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\</ModuleFolderName>
-	<YarnWorkingDirectory>WebApps</YarnWorkingDirectory>
+	<YarnWorkingDirectory>WebApps\package.json</YarnWorkingDirectory>
 	<YarnWorkingDirectories>WebApps\*\package.json</YarnWorkingDirectories>
   </PropertyGroup>
   
