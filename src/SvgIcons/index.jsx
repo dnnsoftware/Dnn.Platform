@@ -48,6 +48,7 @@ const PagesIcon = require("./svg/pages.svg");
 const SearchFileSystemIcon = require("./svg/search_filesystem.svg");
 const SearchIcon = require("./svg/search.svg");
 const ShieldIcon = require("./svg/shield.svg");
+const Signature = require("./svg/signature-solid.svg");
 const SiteGroupIcon = require("./svg/site_group.svg");
 const Steps1Icon = require("./svg/steps1.svg");
 const Steps2Icon = require("./svg/steps2.svg");
@@ -55,6 +56,7 @@ const Steps3Icon = require("./svg/steps3.svg");
 const ToolTipIcon = require("./svg/tool_tip.svg");
 const UploadIcon = require("./svg/upload.svg");
 const UploadCircleIcon = require("./svg/upload_circle.svg");
+const UserSlash = require("./svg/user-slash-solid.svg");
 const XIcon = require("./svg/x.svg");
 const XThinIcon = require("./svg/x_thin.svg");
 const ModuleIcon = require("./svg/module.svg");
@@ -159,5 +161,7 @@ export {
     TreeCopy,
     TreeAnalytics,
     PagesSearchIcon,
-    PagesVerticalMore
+    PagesVerticalMore,
+    Signature,
+    UserSlash
 };
