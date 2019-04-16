@@ -312,6 +312,26 @@
                 </component>
                 <component type="PersonaBarMenu">
                   <menu>
+                    <identifier>Dnn.SiteSettings</identifier>
+                    <moduleName>SiteSettings</moduleName>
+                    <controller>Dnn.PersonaBar.SiteSettings.MenuControllers.SiteSettingsMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SiteSettings</resourceKey>
+                    <path>SiteSettings</path>
+                    <parent>Settings</parent>
+                    <order>10</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>SITE_INFO_VIEW</key>
+                    <name>Site Info View</name>
+                  </permission>
+                  <permission>
+                    <key>SITE_INFO_EDIT</key>
+                    <name>Site Info Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
                     <identifier>Dnn.Themes</identifier>
                     <moduleName>Themes</moduleName>
                     <controller>Dnn.PersonaBar.Themes.MenuControllers.ThemeMenuController, Dnn.PersonaBar.Extensions</controller>
