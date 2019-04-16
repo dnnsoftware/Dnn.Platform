@@ -40,7 +40,7 @@ class LazyLoad extends Component {
         return (
             <div>
                 <div>{this.props.children}</div>
-                {this.props.hasMore?<div style={{"text-align":"center"}}>{this.props.loadingComponent}</div>:null}
+                {this.props.hasMore?<div style={{textAlign:"center"}}>{this.props.loadingComponent}</div>:null}
             </div>
         );
     }
