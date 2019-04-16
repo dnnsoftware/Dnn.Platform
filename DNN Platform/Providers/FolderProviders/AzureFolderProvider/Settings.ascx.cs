@@ -36,7 +36,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
             if (folderMappingSettings.ContainsKey(Constants.AccountName))
             {
-                tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);                
+                tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);
             }
 
             if (folderMappingSettings.ContainsKey(Constants.AccountKey))
@@ -68,7 +68,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 chkUseHttps.Checked = bool.Parse(folderMappingSettings[Constants.UseHttps].ToString());
             }
 
-			chkDirectLink.Checked = !folderMappingSettings.ContainsKey(Constants.DirectLink) || folderMappingSettings[Constants.DirectLink].ToString().ToLowerInvariant() == "true";
+            chkDirectLink.Checked = !folderMappingSettings.ContainsKey(Constants.DirectLink) || folderMappingSettings[Constants.DirectLink].ToString().ToLowerInvariant() == "true";
 
             if (folderMappingSettings.ContainsKey(Constants.CustomDomain))
             {
