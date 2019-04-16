@@ -1,6 +1,6 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
@@ -44,7 +44,7 @@
 	<Message Text="Count:   $(YarnWorkingDirectoriesCount)" />
 
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
-	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnBuildOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RootDir)%(_YarnWorkingDirectories.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RootDir)%(_YarnWorkingDirectories.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
 	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'== 0"/>
 
   </Target>
@@ -54,11 +54,7 @@
 
     <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" />
   </Target>
-  <Target Name="RunYarnBuildOnly">
-	<Message Importance="high" Text="Running Yarn Build for $(WorkingDirectory)" />
 
-    <Yarn Command="run build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" />
-  </Target>
   <Target Name="RunYarnInstallAndBuild">
 	<Message Importance="high" Text="Running Yarn Install/Build for $(WorkingDirectory)" />
 

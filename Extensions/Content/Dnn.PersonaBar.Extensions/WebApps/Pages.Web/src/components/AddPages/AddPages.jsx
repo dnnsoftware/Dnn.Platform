@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { Button, MultiLineInput, Label } from "@dnnsoftware/dnn-react-common/";
+import { Button, MultiLineInput, Label } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import styles from "./style.less";
 import BranchParent from "./BranchParent";
