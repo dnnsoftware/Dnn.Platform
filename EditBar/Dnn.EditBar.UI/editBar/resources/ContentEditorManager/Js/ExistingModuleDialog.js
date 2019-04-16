@@ -135,7 +135,8 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                     moduleId: '',
                     serviceRoot: 'InternalServices',
                     rootId: 'Root',
-                    parameters: { includeAllTypes: "true" }
+                    parameters: { includeAllTypes: "true" },
+                    includeDisabled: true
                 },
                 onSelectionChangedBackScript: selectPageProxyCallback
             };
