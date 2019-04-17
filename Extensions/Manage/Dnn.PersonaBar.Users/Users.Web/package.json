@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm run webpack",
     "test": "jest",
+    "watch": "webpack --mode development --progress --colors --watch",
     "build": "set NODE_ENV=production&&webpack -p",
     "webpack": "webpack-dev-server -d --port 8080 --hot --inline --content-base dist/ --history-api-fallback",
     "analyze": "set NODE_ENV=production&&webpack -p --json | webpack-bundle-size-analyzer"

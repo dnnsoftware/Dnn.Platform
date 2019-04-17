@@ -6,6 +6,7 @@
     "start": "npm run webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "set NODE_ENV=production&&webpack -p",
+    "watch": "webpack --mode development --progress --colors --watch",
     "webpack": "webpack-dev-server -d --port 8050 --hot --inline --content-base dist/ --history-api-fallback"
   },
   "license": "UNLICENSED",

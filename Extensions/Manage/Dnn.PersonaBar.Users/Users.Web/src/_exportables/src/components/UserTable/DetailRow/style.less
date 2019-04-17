@@ -1,90 +1,112 @@
 @import "~@dnnsoftware/dnn-react-common/styles/index.less";
 .collapsible-component-users {
-    .collapsible-header-users.false {
-        border-top: 2px solid @curiousBlue;
-        border-bottom: 2px solid @curiousBlue;
-        margin-top: -2px;
-    }
+  .collapsible-header-users.false {
+    border-top: 2px solid @curiousBlue;
+    border-bottom: 2px solid @curiousBlue;
+    margin-top: -2px;
+  }
 }
 
 :local(.extensionDetailRow) {
-    &.closed {
-        padding: 0;
-        border-bottom: none;
+  &.closed {
+    padding: 0;
+    border-bottom: none;
+  }
+  padding: 15px 0 7.5px;
+  border-bottom: 1px solid @alto;
+  .user-avatar {
+    text-align: center;
+    img {
+      border-radius: 25px;
+      width: 40px;
     }
-    padding: 15px 0 7.5px;
-    border-bottom: 1px solid @alto;
-    .user-avatar {
-        text-align: center;
-        img {
-            border-radius: 25px;
-            width: 40px;
-        }
+  }
+  .user-detail-row {
+    float: left;
+    width: 100%;
+    > div {
+      width: 100%;
+      float: left;
     }
-    .user-detail-row {
-        float: left;
-        width: 100%;
-        > div {
-            width: 100%;
-            float: left;
-        }
+  }
+  .user-emails {
+    padding-left: 11px !important;
+  }
+  .email-link {
+    > a {
+      color: @curiousBlue;
+      text-decoration: none;
     }
-    .user-emails {
-        padding-left: 11px !important;
+  }
+  .user-names {
+    padding-left: 2px !important;
+    h6 {
+      font-size: 15px;
     }
-    .email-link {
-        > a {
-            color: @curiousBlue;
-            text-decoration: none;
-        }
+    p {
+      text-transform: lowercase;
     }
-    .user-names {
-        padding-left: 2px !important;
-        h6 {
-            font-size: 15px;
-        }
-        p {
-            text-transform: lowercase;
-        }
+  }
+  .user-joined {
+    padding-left: 22px !important;
+  }
+  .deleted {
+    text-decoration: line-through;
+  }
+  .extension-action {
+    //width: 20px;
+    //height: 20px;
+    margin-left: 5px;
+    float: right;
+    cursor: pointer;
+    svg {
+      width: 20px;
+      float: left;
+      height: 20px;
     }
-    .user-joined {
-        padding-left: 22px !important;
+    &.false {
+      svg {
+        fill: @curiousBlue;
+      }
+      svg:hover {
+        fill: @thunder;
+      }
     }
-    .deleted {
-        text-decoration: line-through;
+    &.more-menu {
+      position: relative;
     }
-    .extension-action {
-        //width: 20px;
-        //height: 20px;
-        margin-left: 5px;
-        float: right;
-        cursor: pointer;
-        svg {
-            width: 20px;
-            float: left;
-            height: 20px;
-        }
-        &.false {
-            svg {
-                fill: @curiousBlue;
-            }
-            svg:hover {
-                fill: @thunder;
-            }
-        }
-        &.more-menu {
-            position: relative;
-        }
+  }
+  .user-status {
+    svg {
+      width: 20px;
+      float: left;
+      height: 20px;
     }
-    .dnn-grid-cell {
-        padding: 0 15px;
-        p {
-            word-wrap: break-word;
-        }
+    &.grey {
+      svg {
+        fill: @alto;
+      }
     }
-    .package-name {
-        word-wrap: break-word;
-        display: inline;
-        vertical-align: top;
+    &.red {
+      svg {
+        fill: @alizarinCrimson;
+      }
     }
+    &.black {
+      svg {
+        fill: @blackPearl;
+      }
+    }
+  }
+  .dnn-grid-cell {
+    padding: 0 15px;
+    p {
+      word-wrap: break-word;
+    }
+  }
+  .package-name {
+    word-wrap: break-word;
+    display: inline;
+    vertical-align: top;
+  }
 }

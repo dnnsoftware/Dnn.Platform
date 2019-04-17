@@ -60,6 +60,12 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "authorized")]
         public bool Authorized { get; set; }
 
+        [DataMember(Name = "hasAgreedToTerms")]
+        public bool HasAgreedToTerms { get; set; }
+
+        [DataMember(Name = "requestsRemoval")]
+        public bool RequestsRemoval { get; set; }
+
         [DataMember(Name = "isSuperUser")]
         public bool IsSuperUser { get; set; }
 
@@ -84,6 +90,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             CreatedOnDate = user.CreatedOnDate;
             IsDeleted = user.IsDeleted;
             Authorized = user.Membership.Approved;
+            HasAgreedToTerms = user.HasAgreedToTerms;
+            RequestsRemoval = user.RequestsRemoval;
             IsSuperUser = user.IsSuperUser;
             IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
         }
@@ -100,6 +108,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Membership.Approved,
+                HasAgreedToTerms=user.HasAgreedToTerms,
+                RequestsRemoval=user.RequestsRemoval,
                 IsSuperUser = user.IsSuperUser
             };
         }
@@ -115,6 +125,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Authorized,
+                HasAgreedToTerms = user.HasAgreedToTerms,
+                RequestsRemoval = user.RequestsRemoval,
                 IsSuperUser = user.IsSuperUser
             };
         }

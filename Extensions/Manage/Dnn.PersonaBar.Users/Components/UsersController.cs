@@ -72,15 +72,21 @@ namespace Dnn.PersonaBar.Users.Components
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false)
         {
             var userFilters = new List<KeyValuePair<string, int>>();
-            for (var i = 0; i < 6; i++)
+            foreach (var filter in Enum.GetValues(typeof(UserFilters)).Cast<UserFilters>())
             {
                 userFilters.Add(
                     new KeyValuePair<string, int>(
-                        Localization.GetString(Convert.ToString((UserFilters)i), Constants.LocalResourcesFile), i));
+                        Localization.GetString(Convert.ToString(filter), Constants.LocalResourcesFile), (int)filter));
             }
             if (!isSuperUser)
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
+            }
+            if (!PortalSettings.DataConsentActive)
+            {
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RequestedRemoval)));
             }
             userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers)));//Temporarily removed registered users.
             return userFilters;
@@ -408,22 +414,31 @@ namespace Dnn.PersonaBar.Users.Components
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    users = GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.Authorized:
-                    users = GetUsers(usersContract, true, false, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, true, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        users = GetUsers(usersContract, null, null, true, out totalRecords);
+                        users = GetUsers(usersContract, null, null, true, null, null, out totalRecords);
                     }
                     break;
                 case UserFilters.UnAuthorized:
-                    users = GetUsers(usersContract, false, false, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, false, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.Deleted:
-                    users = GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, out totalRecords);
+                    users = GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
+                    break;
+                case UserFilters.HasAgreedToTerms:
+                    users = GetUsers(usersContract, null, null, false, true, null, out totalRecords);
+                    break;
+                case UserFilters.HasNotAgreedToTerms:
+                    users = GetUsers(usersContract, null, null, false, false, null, out totalRecords);
+                    break;
+                case UserFilters.RequestedRemoval:
+                    users = GetUsers(usersContract, null, null, false, null, true, out totalRecords);
                     break;
                 case UserFilters.RegisteredUsers:
                     {
@@ -507,7 +522,8 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract,
-            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, out int totalRecords)
+            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, 
+            bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
 
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
@@ -519,14 +535,17 @@ namespace Dnn.PersonaBar.Users.Components
                     usersContract,
                     includeAuthorized, 
                     includeDeleted, 
-                    includeSuperUsers));
+                    includeSuperUsers,
+                    hasAgreedToTerms,
+                    requestsRemoval));
 
             totalRecords = records.Count == 0 ? 0 : records[0].TotalCount;
             return records;
         }
 
         protected virtual IDataReader CallGetUsersBySearchTerm(GetUsersContract usersContract,
-            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers)
+            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
+            bool? hasAgreedToTerms, bool? requestsRemoval)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? "" : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
@@ -540,7 +559,9 @@ namespace Dnn.PersonaBar.Users.Components
                     parsedSearchText,
                     includeAuthorized,
                     includeDeleted,
-                    includeSuperUsers);
+                    includeSuperUsers,
+                    hasAgreedToTerms,
+                    requestsRemoval);
         }
 
         private PortalSettings GetPortalSettings(int portalId)
