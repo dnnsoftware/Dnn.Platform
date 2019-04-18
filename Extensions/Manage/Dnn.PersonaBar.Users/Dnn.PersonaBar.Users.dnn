@@ -57,10 +57,15 @@
               <name>01.05.00.SqlDataProvider</name>
               <version>01.05.00</version>
             </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>03.00.00.SqlDataProvider</name>
+              <version>03.00.00</version>
+            </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>01.00.00</version>
+              <version>03.00.00</version>
             </script>
           </scripts>
         </component>
