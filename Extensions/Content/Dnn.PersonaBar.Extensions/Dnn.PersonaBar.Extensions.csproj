@@ -437,6 +437,7 @@
     <Compile Include="Services\Dto\PagePermissions.cs" />
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageTemplate.cs" />
+    <Compile Include="Services\Dto\ResetTermsAgreementRequest.cs" />
     <Compile Include="Services\Dto\RestoreCssRequest.cs" />
     <Compile Include="Services\Dto\RoleDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
@@ -708,6 +709,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SqlDataProvider\01.03.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\03.00.00.SqlDataProvider" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

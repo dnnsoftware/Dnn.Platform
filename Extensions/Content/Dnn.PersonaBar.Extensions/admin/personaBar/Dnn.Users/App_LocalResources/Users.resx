@@ -1259,4 +1259,31 @@
   <data name="Question.Text" xml:space="preserve">
     <value>Password Question:</value>
   </data>
+  <data name="HasAgreedToTerms.Text" xml:space="preserve">
+    <value>Consented to terms</value>
+  </data>
+  <data name="HasNotAgreedToTerms.Text" xml:space="preserve">
+    <value>Has not consented to terms</value>
+  </data>
+  <data name="RequestedRemoval.Text" xml:space="preserve">
+    <value>Requested Removal</value>
+  </data>
+  <data name="HasAgreedToTerms.title" xml:space="preserve">
+    <value>User has agreed to terms of use</value>
+  </data>
+  <data name="HasNotAgreedToTerms.title" xml:space="preserve">
+    <value>User has not agreed to terms of use</value>
+  </data>
+  <data name="RequestsRemoval.title" xml:space="preserve">
+    <value>User has requested removal from site</value>
+  </data>
+  <data name="HasAgreedToTerms.Help" xml:space="preserve">
+    <value>The user has agreed to the terms of use and privacy statement of this site through the data consent mechanism</value>
+  </data>
+  <data name="LastConsented.Help" xml:space="preserve">
+    <value>The last time the user consented to the terms of this site. If the terms have been changed since, the user may be marked as not having consented</value>
+  </data>
+  <data name="LastConsented.Text" xml:space="preserve">
+    <value>Last consented on</value>
+  </data>
 </root>

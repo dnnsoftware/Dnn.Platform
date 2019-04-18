@@ -76,6 +76,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "hasUserFiles")]
         public bool HasUserFiles { get; set; }
 
+        [DataMember(Name = "hasAgreedToTermsOn")]
+        public DateTime HasAgreedToTermsOn { get; set; }
+
         public UserDetailDto()
         {
             
@@ -101,6 +104,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 var files = FolderManager.Instance.GetFiles(userFolder, true);
                 HasUserFiles = files.Any();
             }
+            HasAgreedToTermsOn = user.HasAgreedToTermsOn;
         }
 
         private static string GetSettingUrl(int portalId, int userId)

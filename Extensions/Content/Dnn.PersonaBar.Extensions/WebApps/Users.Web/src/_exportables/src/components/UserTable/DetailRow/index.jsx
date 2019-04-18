@@ -101,7 +101,36 @@ class DetailsRow extends Component {
         let userActions = this.getUserActions(user, opened);
         let extraColumns = this.props.getUserColumns && this.props.getUserColumns(user);
         let columnSizes =this.props.columnSizes!==undefined? this.props.columnSizes: ColumnSizes;
-        let userColumns = [
+        let userColumns = [];
+        if (this.props.appSettings.applicationSettings.settings.dataConsentActive) {
+            let statusClass = "black";
+            let statusIcon = SvgIcons.Signature;
+            let hoverText = Localization.get("HasAgreedToTerms.title");
+            if (user.requestsRemoval) {
+                statusClass = "red";
+                statusIcon = SvgIcons.UserSlash;
+                hoverText = Localization.get("RequestsRemoval.title");
+            } else if (user.isDeleted) {
+                statusClass = "grey";
+                statusIcon = SvgIcons.UserSlash;
+                hoverText = Localization.get("Deleted");
+            } else if (!user.authorized) {
+                statusClass = "grey";
+                statusIcon = SvgIcons.ShieldIcon;
+                hoverText = Localization.get("UnAuthorized");
+            } else if (!user.hasAgreedToTerms) {
+                statusClass = "grey";
+                hoverText = Localization.get("HasNotAgreedToTerms.title");
+            } 
+            userColumns = [
+                {
+                    index: 3,
+                    content: <GridCell key={`gc-userstatus-${user.userId}`} columnSize={columnSizes.find(x=>x.index===3).size}>
+                            <span dangerouslySetInnerHTML={{__html: statusIcon}} className={"user-status " + statusClass} title={hoverText}></span>
+                        </GridCell>
+                }]
+        }
+        userColumns = userColumns.concat([
             {
                 index: 5,
                 content: <GridCell key={`gc-username-${user.userId}`} columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
@@ -128,7 +157,7 @@ class DetailsRow extends Component {
                 index: 25,
                 content: id !== "add" && <GridCell key={`gc-actions-${user.userId}`} columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right", paddingRight: 2}}>{userActions}</GridCell>
             }
-        ].concat((extraColumns) || []);
+        ]).concat((extraColumns) || []);
 
         return sort(userColumns, "index").map((column) => {
             return column.content;

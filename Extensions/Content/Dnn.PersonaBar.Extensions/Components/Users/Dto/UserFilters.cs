@@ -7,6 +7,9 @@
         Deleted = 2,
         SuperUsers = 3,
         RegisteredUsers = 4,
-        All = 5
+        HasAgreedToTerms = 5,
+        HasNotAgreedToTerms = 6,
+        RequestedRemoval = 7,
+        All = 8
     }
 }

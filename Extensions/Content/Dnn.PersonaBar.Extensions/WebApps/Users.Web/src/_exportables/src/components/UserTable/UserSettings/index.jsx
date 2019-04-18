@@ -167,6 +167,29 @@ class UserSettings extends Component {
 
     render() {
         let {state} = this;
+        let agreedToTerms = this.props.appSettings.applicationSettings.settings.dataConsentActive ? (
+            <GridSystem>
+                <GridCell title={Localization.get("HasAgreedToTerms.Help")}>
+                    {Localization.get("HasAgreedToTerms")}:
+                </GridCell>
+                <GridCell>
+                    {this.stringifyBoolean(state.userDetails.hasAgreedToTerms)}
+                </GridCell>
+            </GridSystem>
+        ) : null;
+        let agreedToTermsOn = this.props.appSettings.applicationSettings.settings.dataConsentActive ? (
+            <GridSystem>
+                <GridCell title={Localization.get("LastConsented.Help")}>
+                    {Localization.get("LastConsented")}:
+                </GridCell>
+                <GridCell>
+                    {formatDate(state.userDetails.hasAgreedToTermsOn, true) === "-" ? Localization.get("Never") : formatDate(state.userDetails.hasAgreedToTermsOn, true) }
+                </GridCell>
+            </GridSystem>
+        ) : null;
+        let userRequestedDeletion = state.userDetails.requestsRemoval ? (
+            <span className="importantNote">{Localization.get("RequestedRemoval")}</span>
+        ) : null;
         return <GridCell className={styles.userSettings}>
             <GridCell>
                 <GridCell className="outer-box" columnSize={50}>
@@ -296,6 +319,8 @@ class UserSettings extends Component {
                             {this.stringifyBoolean(state.userDetails.authorized)}
                         </GridCell>
                     </GridSystem>
+                    {agreedToTerms}
+                    {agreedToTermsOn}
                     <GridSystem>
                         <GridCell title={Localization.get("UpdatePassword.Help")}>
                             {Localization.get("UpdatePassword")}
@@ -309,7 +334,7 @@ class UserSettings extends Component {
                             {Localization.get("IsDeleted")}
                         </GridCell>
                         <GridCell>
-                            {this.stringifyBoolean(state.userDetails.isDeleted)}
+                            {this.stringifyBoolean(state.userDetails.isDeleted)} {userRequestedDeletion}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>

@@ -86,10 +86,15 @@ class UserTable extends Component {
     getHeaders()
     {
         let columnSizes =this.props.columnSizes!==undefined? this.props.columnSizes: ColumnSizes;
-        let headers = [{index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header")},
+        let headers = [];
+        if (this.props.appSettings.applicationSettings.settings.dataConsentActive) {
+            headers = [{index: 3, size: columnSizes.find(x=>x.index===3).size, header: ""}];
+        }
+        headers = headers.concat([
+            {index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header")},
             {index: 10, size: columnSizes.find(x=>x.index===10).size, header: Localization.get("Email.Header")},
             {index: 15, size: columnSizes.find(x=>x.index===15).size, header: Localization.get("Created.Header")},
-            {index: 25, size: columnSizes.find(x=>x.index===25).size, header:""}];
+            {index: 25, size: columnSizes.find(x=>x.index===25).size, header:""}]);
         if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function") {
             let extraColumns = this.props.getUserColumns();
             if (extraColumns!==undefined && extraColumns.length>0)

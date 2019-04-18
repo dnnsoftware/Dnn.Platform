@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.Users.Components
             var settings = new Dictionary<string, object>();
             settings.Add("userId", UserController.Instance.GetCurrentUserInfo().UserID);
             settings.Add("requiresQuestionAndAnswer", MembershipProviderConfig.RequiresQuestionAndAnswer);
+            settings.Add("dataConsentActive", PortalSettings.Current.DataConsentActive);
             return settings;
         }
     }

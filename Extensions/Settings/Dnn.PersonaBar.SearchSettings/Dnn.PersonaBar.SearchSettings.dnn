@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.SearchSettings" type="Module" version="01.06.01">
+        <package name="Dnn.PersonaBar.SearchSettings" type="Module" version="03.00.00">
             <friendlyName>Dnn.PersonaBar.SearchSettings</friendlyName>
             <description></description>
             <iconFile>images/module_icon_32x32.png</iconFile>

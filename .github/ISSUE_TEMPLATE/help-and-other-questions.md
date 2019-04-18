@@ -39,6 +39,8 @@ Add any other context that may be helpful.
 ## Affected version
 <!-- Check all that apply and add more if necessary -->
 
+* [x] 9.3.2
+* [x] 9.3.1
 * [x] 9.2.2
 * [x] 9.2.1
 * [x] 9.2

@@ -41,5 +41,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public bool DnnImprovementProgram { get; set; }
 
         public bool DisplayCopyright { get; set; }
+
+        public bool DataConsentActive { get; set; }
+
+        public int DataConsentConsentRedirect { get; set; }
+
+        public int DataConsentUserDeleteAction { get; set; }
+
+        public int DataConsentDelay { get; set; }
+
+        public string DataConsentDelayMeasurement { get; set; }
     }
 }

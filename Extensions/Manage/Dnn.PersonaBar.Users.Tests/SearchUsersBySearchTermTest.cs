@@ -67,9 +67,11 @@ namespace Dnn.PersonaBar.Users.Tests
 
             protected override IDataReader CallGetUsersBySearchTerm(
                 GetUsersContract usersContract,
-                bool? includeAuthorized,
-                bool? includeDeleted,
-                bool? includeSuperUsers)
+                bool? includeAuthorized, 
+                bool? includeDeleted, 
+                bool? includeSuperUsers,
+                bool? hasAgreedToTerms, 
+                bool? requestsRemoval)
             {
                 LastSearch = SearchTextFilter.CleanWildcards(usersContract.SearchText);
                 dataReader = new Mock<IDataReader>();
