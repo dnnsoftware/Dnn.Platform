@@ -50,7 +50,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "^2.0.67",
+    "@dnnsoftware/dnn-react-common": "^2.1.2",
     "localization": "^1.0.2",
     "react-widgets": "^4.4.6"
   }

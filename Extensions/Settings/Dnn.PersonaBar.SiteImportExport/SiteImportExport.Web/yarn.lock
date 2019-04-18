@@ -638,10 +638,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@dnnsoftware/dnn-react-common@^2.0.67":
-  version "2.0.67"
-  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.0.67.tgz#e45d7f34709add48135a7f78c9bd6db5bc32a027"
-  integrity sha512-iSlJtpTSCVCh9KFBWVj60rkiq+uxCpQdpoZrGwkIxR4cUCKVYOa323aAaF/ClW1IY7BCEcHdRte8K6DuPoI4iQ==
+"@dnnsoftware/dnn-react-common@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.1.2.tgz#8af42e5f4fe8075fb80b7f62d2b1f0893fe397d3"
+  integrity sha512-OvPmcaMGZbSnlxweT0jmhDe9lSiJYxNtHHht+mj8XHKts9g6/41RIP9EnCCbdaOt+bieuu15yG9EHI5aWHS++g==
   dependencies:
     interact.js "^1.2.8"
     moment "^2.22.2"

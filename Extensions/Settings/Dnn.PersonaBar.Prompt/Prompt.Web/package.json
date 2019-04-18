@@ -13,7 +13,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "^2.0.67",
+    "@dnnsoftware/dnn-react-common": "^2.1.2",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
     "babel-core": "^7.0.0-bridge.0",
