@@ -193,55 +193,7 @@
   </profiledefinitions>
   <portalDesktopModules>
     <portalDesktopModule>
-      <friendlyname>Pages</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>SQL</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>Search Results</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Account Login</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Extensions</friendlyname>
-      <portalDesktopModulePermissions />
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Console</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
           <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
@@ -296,17 +248,6 @@
       </portalDesktopModulePermissions>
     </portalDesktopModule>
     <portalDesktopModule>
-      <friendlyname>Configuration Manager</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
       <friendlyname>Message Center</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
@@ -316,10 +257,6 @@
           <rolename>Administrators</rolename>
         </portalDesktopModulePermission>
       </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Dashboard</friendlyname>
-      <portalDesktopModulePermissions />
     </portalDesktopModule>
     <portalDesktopModule>
       <friendlyname>Digital Asset Management</friendlyname>
@@ -382,28 +319,6 @@
     </portalDesktopModule>
     <portalDesktopModule>
       <friendlyname>Social Groups</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Taxonomy Manager</friendlyname>
-      <portalDesktopModulePermissions>
-        <portalDesktopModulePermission>
-          <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
-          <permissionkey>DEPLOY</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </portalDesktopModulePermission>
-      </portalDesktopModulePermissions>
-    </portalDesktopModule>
-    <portalDesktopModule>
-      <friendlyname>Themes</friendlyname>
       <portalDesktopModulePermissions>
         <portalDesktopModulePermission>
           <permissioncode>SYSTEM_DESKTOPMODULE</permissioncode>
