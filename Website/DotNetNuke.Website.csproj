@@ -2839,7 +2839,6 @@
     <Content Include="Licenses\Moq %28BSD%29.txt" />
     <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt" />
     <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt" />
-    <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />

@@ -71,11 +71,6 @@ http://msdn.microsoft.com/en-us/library/aa480459.aspx
 Ocean Browser Detection
 http://owenbrady.net/browsercaps/
 
-SearchSpider
-Used as the spider engine for the module.
-License Type: LGPL
-License Link: http://www.jeffheaton.com/source in that page it references the  LGPL Open Source license.
-
 SharpZipLib
 http://www.icsharpcode.net/opensource/sharpziplib/
 
