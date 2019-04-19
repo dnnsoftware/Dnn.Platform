@@ -11,7 +11,7 @@ module.exports = {
         fs: "empty"
     },
     output: {
-        path: path.resolve("../../../admin/personaBar/scripts/exportables/Users"),
+        path: path.resolve("../../../../admin/personaBar/Dnn.Users/scripts/exportables/Users"),
         filename: "UsersCommon.js",
         publicPath: isProduction ? "" : "http://localhost:8050/dist/"
     },
