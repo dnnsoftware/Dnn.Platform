@@ -1522,7 +1522,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v11.0.0.")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryDebug
         {
             get
@@ -1537,7 +1537,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v11.0.0.")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryHosted
         {
             get
@@ -1553,7 +1553,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v11.0.0.")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string jQueryUrl
         {
             get
@@ -1576,7 +1576,7 @@ namespace DotNetNuke.Entities.Host
 		///   Defaults to the DefaultHostedUrl constant in the jQuery class.
 		///   The framework will default to the latest released 1.x version hosted on Google.
 		/// </remarks>
-		[Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v11.0.0.")]
+		[Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
 		public static string jQueryMigrateUrl
 		{
 			get
@@ -1599,7 +1599,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v11.0.0.")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string jQueryUIUrl
         {
             get
@@ -1635,7 +1635,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
-		[Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
+		[Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1647,7 +1647,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Get Telerik CDN Basic Path.
         /// </summary>
-        [Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
+        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnBasicUrl
 	    {
 			get
@@ -1659,7 +1659,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Get Telerik CDN Secure Path.
         /// </summary>
-        [Obsolete("Not used anymore. Scheduled removal in v11.0.0.")]
+        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnSecureUrl
 		{
 			get

@@ -109,7 +109,7 @@ namespace log4net.Appender
 		/// See <see cref="M:LoggingEvent.FixVolatileData(bool)"/> for more information.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use Fix property. Scheduled removal in v11.0.0.")]
+		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
 		virtual public bool OnlyFixPartialEventData
 		{
 			get { return (Fix == FixFlags.Partial); }

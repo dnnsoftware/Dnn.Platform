@@ -510,7 +510,7 @@ namespace DotNetNuke.Data
 
         #region Portal Methods
 
-        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v10.0.0.")]
         public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
                                         double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
                                          string HomeDirectory, int CreatedByUserID)
@@ -3978,7 +3978,7 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             return ExecuteScalar<int>("AddContentWorkflow",
@@ -3991,19 +3991,19 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflow(int workflowId)
         {
             return ExecuteReader("GetContentWorkflow", workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflows(int portalId)
         {
             return ExecuteReader("GetContentWorkflows", portalId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             ExecuteNonQuery("UpdateContentWorkflow",
@@ -4016,7 +4016,7 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual int AddContentWorkflowState(int workflowId, string stateName, int order,
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
             string onCompleteMessageSubject, string onCompleteMessageBody,
@@ -4036,13 +4036,13 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual void DeleteContentWorkflowState(int stateId)
         {
             ExecuteNonQuery("DeleteContentWorkflowState", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual void UpdateContentWorkflowState(int stateId, string stateName, int order,
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
             string onCompleteMessageSubject, string onCompleteMessageBody,
@@ -4062,19 +4062,19 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflowState(int stateId)
         {
             return ExecuteReader("GetContentWorkflowState", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflowStates(int workflowId)
         {
             return ExecuteReader("GetContentWorkflowStates", workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog. Scheduled removal in v10.0.0.")]
         public virtual int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
         {
             return ExecuteScalar<int>("AddContentWorkflowLog",
@@ -4085,13 +4085,13 @@ namespace DotNetNuke.Data
                 contentItemId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
         {
             return ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
         {
             return ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
@@ -4140,13 +4140,13 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
         {
             return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
         }
 
-        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
         {
             return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
@@ -4348,20 +4348,19 @@ namespace DotNetNuke.Data
 
         #region Obsolete Methods
 
-        [Obsolete(
-            "Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet. Scheduled removal in v10.0.0.")]
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
         {
             return Globals.ConvertDataReaderToDataSet(ExecuteReader(procedureName, commandParameters));
         }
 
-        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  Use the generic version ExecuteScalar<T>.. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  Use the generic version ExecuteScalar<T>.. Scheduled removal in v10.0.0.")]
         public virtual object ExecuteScalar(string procedureName, params object[] commandParameters)
         {
             return ExecuteScalar<object>(procedureName, commandParameters);
         }
 
-        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.. Scheduled removal in v11.0.0.")]
+        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.. Scheduled removal in v10.0.0.")]
         public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
         {
             SqlParameter[] sqlCommandParameters = null;
