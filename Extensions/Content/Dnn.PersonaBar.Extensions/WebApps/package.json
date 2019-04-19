@@ -16,6 +16,7 @@
     "TaskScheduler.Web",
     "Themes.Web",
     "Users.Web",
+    "Users.Web/src/_exportables",
     "Vocabularies.Web"
   ]
 }
