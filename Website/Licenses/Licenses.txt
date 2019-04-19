@@ -59,9 +59,6 @@ lucene.Net Contrib adds a set of advanced functionalites to Lucene.net, like fac
 License Type: Apache License
 License Link: http://www.apache.org/licenses/LICENSE-2.0.html
 
-mbUnit
-http://www.mbunit.com/
-
 MooTools (javascript)
 Used as an additional component by VideoBox
 License Type: MIT
