@@ -12,11 +12,6 @@ http://code.google.com/p/dotnetopenid/
 GeoIP
 http://geoplite.maxmind.com/download/geoip/database/LICENSE.txt
 
-Highlighter
-Used to highlight search results http://search.cpan.org/~tbusch/Lucene-Search-Highlight-0.01/lib/Lucene/Search/Highlight.pm
-License Type: Perl
-License Link: http://search.cpan.org/~tbusch/Lucene-Search-Highlight-0.01/lib/Lucene/Search/Highlight.pm#COPYRIGHT_AND_LICENSE
-
 history.js
 Used in social messaging module
 License link: https://github.com/balupton/history.js/blob/master/license.txt
