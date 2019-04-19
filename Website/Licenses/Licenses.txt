@@ -59,11 +59,6 @@ lucene.Net Contrib adds a set of advanced functionalites to Lucene.net, like fac
 License Type: Apache License
 License Link: http://www.apache.org/licenses/LICENSE-2.0.html
 
-MooTools (javascript)
-Used as an additional component by VideoBox
-License Type: MIT
-License Link(s): link to license on site: http://mootools.net to http://www.opensource.org/licenses/mit-license.php
-
 Moq
 http://code.google.com/p/moq/
 
