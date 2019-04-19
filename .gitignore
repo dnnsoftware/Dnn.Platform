@@ -4,4 +4,4 @@ lib
 PagePicker/.vscode/settings.json
 outdated.log
 yarn-error.log
-dist/dnn-react-common.min.js
+dist
