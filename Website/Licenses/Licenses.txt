@@ -24,11 +24,6 @@ License Link: http://cherne.net/brian/resources/jquery.hoverIntent.js
 jQuery
 http://jquery.com
 
-jQuery Cycle
-Used throughout UI
-License Type: MIT or GPL
-License Link: https://raw.github.com/malsup/cycle/master/jquery.cycle.all.js
-
 jQuery Templates
 Used throughout UI
 License Type: MIT or GPL
