@@ -24,11 +24,6 @@ License Link: http://cherne.net/brian/resources/jquery.hoverIntent.js
 jQuery
 http://jquery.com
 
-jQuery Templates
-Used throughout UI
-License Type: MIT or GPL
-License Link: http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js
-
 jQuery Tokeninput
 Used throughout UI
 License Type: MIT or GPL
