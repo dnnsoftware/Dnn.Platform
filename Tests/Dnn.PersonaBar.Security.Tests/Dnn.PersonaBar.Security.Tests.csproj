@@ -31,37 +31,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
-      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+      <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
+      <HintPath>..\..\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\..\..\bin\Moq.dll</HintPath>
+      <HintPath>..\..\bin\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\..\bin\nunit.framework.dll</HintPath>
+      <HintPath>..\..\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+      <HintPath>..\..\bin\System.Web.Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SolutionInfo.cs">
+    <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Services\SecurityControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+    <ProjectReference Include="..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
+    <ProjectReference Include="..\..\Extensions\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
       <Project>{9cca271f-cfaa-42a3-b577-7d5cbb38c646}</Project>
       <Name>Dnn.PersonaBar.Extensions</Name>
     </ProjectReference>
