@@ -80,11 +80,6 @@ http://www.solpart.com
 Telerik RADControls
 http://www.telerik.com
 
-VideoBox (javascript)
-Used to render the lightbox effect that shows media files.
-License Type: MIT 
-License Link(s): link to license on site: http://videobox-lb.sourceforge.net to http://www.opensource.org/licenses/mit-license.php
-
 WatiN
 http://watin.sourceforge.net
 
