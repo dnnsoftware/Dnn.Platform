@@ -110,32 +110,32 @@
                     <scripts>
                         <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
                         <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>Install.SqlDataProvider</name>
                             <version>01.00.00</version>
                         </script>
                         <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>01.01.00.SqlDataProvider</name>
                             <version>01.01.00</version>
                         </script>
                         <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>01.03.00.SqlDataProvider</name>
                             <version>01.03.00</version>
                         </script>
                         <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>01.04.00.SqlDataProvider</name>
                             <version>01.04.00</version>
                         </script>
                         <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>01.05.00.SqlDataProvider</name>
                             <version>01.05.00</version>
                         </script>
                         <script type="UnInstall">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <path>SqlDataProvider</path>
                             <name>Uninstall.SqlDataProvider</name>
                             <version>01.00.00</version>
                         </script>
@@ -158,7 +158,7 @@
                 <attributes>
                     <businessControllerClass>Dnn.PersonaBar.UI.Components.BusinessController, Dnn.PersonaBar.UI</businessControllerClass>
                     <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-                    <upgradeVersionsList>01.00.00,01.04.00</upgradeVersionsList>
+                    <upgradeVersionsList>01.00.00,01.04.00,03.00.00</upgradeVersionsList>
                 </attributes>
             </eventMessage>
         </package>

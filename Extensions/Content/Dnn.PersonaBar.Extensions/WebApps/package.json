@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "workspaces": [
+    "AdminLogs.Web",
+    "Extensions.Web",
+    "Licensing.Web",
+    "Pages.Web",
+    "Prompt.Web",
+    "Roles.Web",
+    "Security.Web",
+    "Seo.Web",
+    "Servers.Web",
+    "SiteImportExport.Web",
+    "Sites.Web",
+    "SiteSettings.Web",
+    "TaskScheduler.Web",
+    "Themes.Web",
+    "Users.Web",
+    "Users.Web/src/_exportables",
+    "Vocabularies.Web"
+  ]
+}

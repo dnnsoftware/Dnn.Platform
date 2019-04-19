@@ -1,6 +1,6 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
@@ -10,14 +10,14 @@
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
-      <PersonaBar-views Include="admin/personaBar/*.html" />
-      <PersonaBar-images Include="admin/personaBar/images/**/*" />
-      <PersonaBar-data Include="admin/personaBar/data/*.resources" />
-      <PersonaBar-css Include="admin/personaBar/css/**/*" />
-      <PersonaBar-resources Include="admin/personaBar/App_LocalResources/*.resx" />
-      <PersonaBar-controls Include="admin/personaBar/UserControls/*.ascx" />
-      <PersonaBar-scripts Include="admin/personaBar/scripts/*;admin/personaBar/scripts/**/*" />
-      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" />
+      <PersonaBar-views Include="admin/**/*.html" />
+      <PersonaBar-images Include="admin/**/images/**/*" />
+      <PersonaBar-data Include="admin/**/data/*.resources" />
+      <PersonaBar-css Include="admin/**/css/**/*" />
+      <PersonaBar-resources Include="admin/**/App_LocalResources/*.resx" />
+      <PersonaBar-controls Include="admin/**/UserControls/*.ascx" />
+      <PersonaBar-scripts Include="admin/**/scripts/*;admin/**/scripts/**/*" />
+      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)"  Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -34,7 +34,31 @@
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
-    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
+    <ItemGroup>
+      <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" Exclude="**/node_modules/**/*" />
+	  <_YarnWorkingDirectories Include="$(YarnWorkingDirectories)" Exclude="**/node_modules/**/*" />
+    </ItemGroup>
+	<PropertyGroup>
+	  <YarnWorkingDirectoriesCount>@(_YarnWorkingDirectories->Count())</YarnWorkingDirectoriesCount>
+	</PropertyGroup>
+	<Message Text="Count:   $(YarnWorkingDirectoriesCount)" />
+
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RootDir)%(_YarnWorkingDirectories.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
+	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'== 0"/>
+
+  </Target>
+
+  <Target Name="RunYarnInstallOnly">
+	<Message Importance="high" Text="Running Yarn Install for $(WorkingDirectory)" />
+
+    <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" />
+  </Target>
+
+  <Target Name="RunYarnInstallAndBuild">
+	<Message Importance="high" Text="Running Yarn Install/Build for $(WorkingDirectory)" />
+
+	<Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+    <Yarn Command="run build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>
