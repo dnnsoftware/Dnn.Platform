@@ -105,6 +105,18 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DNN 7.3.  Please use the ModuleSettings property of the ModuleInfo object")]
         public Hashtable GetModuleSettings(int ModuleId)
         {
+            var cacheKey = string.Format(DataCache.ModuleSettingsByModuleIdCacheKey, ModuleId);
+            var moduleSettings = ModuleId <= 0 ? GetModuleSettingsInternal(ModuleId) :
+             CBO.GetCachedObject<Hashtable>(
+                new CacheItemArgs(cacheKey, DataCache.ModuleCacheTimeOut, DataCache.ModuleCachePriority),
+                c => GetModuleSettingsInternal(ModuleId)
+             );
+
+            return moduleSettings;
+        }
+
+        private Hashtable GetModuleSettingsInternal(int ModuleId)
+        {
             var settings = new Hashtable();
             IDataReader dr = null;
             try

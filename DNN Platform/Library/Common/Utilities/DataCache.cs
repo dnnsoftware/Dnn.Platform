@@ -164,6 +164,7 @@ namespace DotNetNuke.Common.Utilities
 
         public const string ModuleCacheKey = "Modules{0}";
         public const string ModuleSettingsCacheKey = "ModuleSettings{0}";
+        public static string ModuleSettingsByModuleIdCacheKey => "ModuleSettingsModuleId{0}";
         public const int ModuleCacheTimeOut = 20;
         public const CacheItemPriority ModuleCachePriority = CacheItemPriority.AboveNormal;
 

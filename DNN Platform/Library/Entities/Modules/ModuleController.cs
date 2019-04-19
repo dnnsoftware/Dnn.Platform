@@ -222,6 +222,8 @@ namespace DotNetNuke.Entities.Modules
                 string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
             }
+
+            DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsByModuleIdCacheKey, moduleId));
         }
 
         private static void ClearTabModuleSettingsCache(int tabModuleId, string settingName)
