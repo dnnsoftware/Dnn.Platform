@@ -2824,7 +2824,6 @@
     <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
     <Content Include="Licenses\CountryListBox %28Public Domain%29.txt" />
     <Content Include="Licenses\DotNetOpenID %28New BSD%29.txt" />
-    <Content Include="Licenses\FCKEditor %28LGPL%29.txt" />
     <Content Include="Licenses\GeoIP %28Custom%29.txt" />
     <Content Include="Licenses\Highlighter %28Perl%29.txt" />
     <Content Include="Licenses\hoverintent %28MIT,GPL%29.txt" />
