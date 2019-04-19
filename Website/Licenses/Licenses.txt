@@ -77,11 +77,6 @@ http://www.icsharpcode.net/opensource/sharpziplib/
 SolPart
 http://www.solpart.com
 
-SwfObject (javascript)
-Used as an additional component by VideoBox
-License Type: MIT
-License Link: link to license on site: http://code.google.com/p/swfobject/ to http://www.opensource.org/licenses/mit-license.php
-
 Telerik RADControls
 http://www.telerik.com
 
