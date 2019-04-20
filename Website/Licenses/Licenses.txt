@@ -1,83 +1,53 @@
-SharpZipLib
-http://www.icsharpcode.net/opensource/sharpziplib/
-
-MSDAAB
-http://msdn.microsoft.com/en-us/library/aa480459.aspx
-
-DotNetOpenID
-http://code.google.com/p/dotnetopenid/
-
-SolPart
-http://www.solpart.com
+Client Dependency Framework
+Combining, compressing & minifying JavaScript and CSS files
+License Type: Microsoft Public License (Ms-PL)
+License Link: http://clientdependency.codeplex.com/license
 
 CountryListBox
 http://www.codeproject.com/KB/custom-controls/countrylistbox.aspx
 
+DotNetOpenID
+http://code.google.com/p/dotnetopenid/
+
 GeoIP
 http://geoplite.maxmind.com/download/geoip/database/LICENSE.txt
 
-Telerik RADControls
-http://www.telerik.com
+history.js
+Used in social messaging module
+License link: https://github.com/balupton/history.js/blob/master/license.txt
 
-FCK Editor
-http://ckeditor.com/license
+hoverintent
+Used throughout UI
+License Type: MIT or GPL
+License Link: http://cherne.net/brian/resources/jquery.hoverIntent.js
 
 jQuery
 http://jquery.com
 
-jQuery Boxy Plugin
-http://plugins.jquery.com/project/boxy
+jQuery Tokeninput
+Used throughout UI
+License Type: MIT or GPL
+License Link: http://loopj.com/jquery-tokeninput/
 
-YUI Library
-http://developer.yahoo.com/yui/
-
-Web Forms MVP
-http://webformsmvp.codeplex.com/license
-
-Ocean Browser Detection
-http://owenbrady.net/browsercaps/
-
-mbUnit
-http://www.mbunit.com/
-
-Moq
-http://code.google.com/p/moq/
-
-WatiN
-http://watin.sourceforge.net
-
-Msbuild Community Tasks
-http://msbuildtasks.tigris.org/
-
-Anthem.net
-Used as the Ajax provider.
-License Type: Public Domain license 
-License Link: http://sourceforge.net/projects/anthem-dot-net/
-
-Brettle NeatUploads
-Used as an optional component to enable file uploads up to 2GB
-License Type: LGPL
-License Link: http://www.brettle.com/neatupload#License
-
-VideoBox (javascript)
-Used to render the lightbox effect that shows media files.
-License Type: MIT 
-License Link(s): link to license on site: http://videobox-lb.sourceforge.net to http://www.opensource.org/licenses/mit-license.php
-
-MooTools (javascript)
-Used as an additional component by VideoBox
+jquery-ui
+Used in many places in UI
 License Type: MIT
-License Link(s): link to license on site: http://mootools.net to http://www.opensource.org/licenses/mit-license.php
+License Link: http://jquery-ui.googlecode.com/svn/tags/latest/MIT-LICENSE.txt
 
-SwfObject (javascript)
-Used as an additional component by VideoBox
+Knockout Javascript library
+Used throughout UI
 License Type: MIT
-License Link: link to license on site: http://code.google.com/p/swfobject/ to http://www.opensource.org/licenses/mit-license.php
+License Link: http://knockoutjs.com/
 
-SearchSpider
-Used as the spider engine for the module.
-License Type: LGPL
-License Link: http://www.jeffheaton.com/source in that page it references the  LGPL Open Source license.
+LiteDB
+Used for Export/Import intermediate database
+License Type: MIT
+License link: https://github.com/mbdavid/LiteDB/blob/master/LICENSE
+
+log4net
+Used to provide Instrumentation throughout the core
+License Type: Apache
+License Link: http://logging.apache.org/log4net/license.html
 
 Lucene.net
 Lucene.Net is a port of the Lucene search engine library, written in C# and targeted at .NET runtime users. http://nuget.org/packages/lucene.net http://lucenenet.apache.org/
@@ -89,61 +59,32 @@ lucene.Net Contrib adds a set of advanced functionalites to Lucene.net, like fac
 License Type: Apache License
 License Link: http://www.apache.org/licenses/LICENSE-2.0.html
 
-Highlighter
-Used to highlight search results http://search.cpan.org/~tbusch/Lucene-Search-Highlight-0.01/lib/Lucene/Search/Highlight.pm
-License Type: Perl
-License Link: http://search.cpan.org/~tbusch/Lucene-Search-Highlight-0.01/lib/Lucene/Search/Highlight.pm#COPYRIGHT_AND_LICENSE
+Moq
+http://code.google.com/p/moq/
 
-jquery-ui
-Used in many places in UI
-License Type: MIT
-License Link: http://jquery-ui.googlecode.com/svn/tags/latest/MIT-LICENSE.txt
+Msbuild Community Tasks
+http://msbuildtasks.tigris.org/
 
-log4net
-Used to provide Instrumentation throughout the core
-License Type: Apache
-License Link: http://logging.apache.org/log4net/license.html
+MSDAAB
+http://msdn.microsoft.com/en-us/library/aa480459.aspx
 
-hoverintent
-Used throughout UI
-License Type: MIT or GPL
-License Link: http://cherne.net/brian/resources/jquery.hoverIntent.js
+Ocean Browser Detection
+http://owenbrady.net/browsercaps/
 
-jQuery Cycle
-Used throughout UI
-License Type: MIT or GPL
-License Link: https://raw.github.com/malsup/cycle/master/jquery.cycle.all.js
+SharpZipLib
+http://www.icsharpcode.net/opensource/sharpziplib/
 
-jQuery Templates
-Used throughout UI
-License Type: MIT or GPL
-License Link: http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js
+SolPart
+http://www.solpart.com
 
-Client Dependency Framework
-Combining, compressing & minifying JavaScript and CSS files
-License Type: Microsoft Public License (Ms-PL)
-License Link: http://clientdependency.codeplex.com/license
+Telerik RADControls
+http://www.telerik.com
 
-Knockout Javascript library
-Used throughout UI
-License Type: MIT
-License Link: http://knockoutjs.com/
+WatiN
+http://watin.sourceforge.net
 
-jQuery Tokeninput
-Used throughout UI
-License Type: MIT or GPL
-License Link: http://loopj.com/jquery-tokeninput/
+Web Forms MVP
+http://webformsmvp.codeplex.com/license
 
-history.js
-Used in social messaging module
-License link: https://github.com/balupton/history.js/blob/master/license.txt
-
-HtmlDiff
-Used for Html version comparison
-License Type: MIT
-License link: https://github.com/Rohland/htmldiff.net/blob/master/license.txt
-
-LiteDB
-Used for Export/Import intermediate database
-License Type: MIT
-License link: https://github.com/mbdavid/LiteDB/blob/master/LICENSE
+YUI Library
+http://developer.yahoo.com/yui/
