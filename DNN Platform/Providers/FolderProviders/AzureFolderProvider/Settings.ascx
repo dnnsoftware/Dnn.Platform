@@ -39,3 +39,9 @@
     <asp:RegularExpressionValidator ID="rgBlobEndpoint" CssClass="dnnFormMessage dnnFormError"
             runat="server" ControlToValidate="tbCustomDomain" Display="Dynamic" ResourceKey="tbCustomDomain.Error" ValidationExpression="^http[s]?://([a-zA-Z0-9\-]+\.)*([a-zA-Z]{3,61}|[a-zA-Z]{1,}\.[a-zA-Z]{2,3})$"></asp:RegularExpressionValidator>
 </div>
+<div class="dnnFormItem">
+    <dnn:Label ID="plSyncBatchSize" runat="server" />
+    <asp:TextBox ID="tbSyncBatchSize" runat="server" MaxLength="6" Width="200" />
+    <asp:RegularExpressionValidator ID="rgInteger" CssClass="dnnFormMessage dnnFormError"
+            runat="server" ControlToValidate="tbSyncBatchSize" Display="Dynamic" ResourceKey="tbSyncBatchSize.Error" ValidationExpression="^\d+$"></asp:RegularExpressionValidator>
+</div>

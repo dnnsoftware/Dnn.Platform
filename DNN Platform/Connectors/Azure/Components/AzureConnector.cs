@@ -214,6 +214,10 @@ namespace Dnn.AzureConnector.Components
                 {
                     folderMapping.MappingName = DisplayName;
                 }
+                if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.SyncBatchSize))
+                {
+                    folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString();
+                }
 
                 FolderMappingController.Instance.UpdateFolderMapping(folderMapping);
 

@@ -116,7 +116,12 @@ namespace DotNetNuke.Services.Journal
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
         {
-            var ji = GetJournalItem(portalId, currentUserId, journalId);
+            var ji = GetJournalItem(portalId, currentUserId, journalId, !softDelete);
+            if (ji == null)
+            {
+                return;
+            }
+
             var groupId = ji.SocialGroupId;
 
             if (softDelete)
