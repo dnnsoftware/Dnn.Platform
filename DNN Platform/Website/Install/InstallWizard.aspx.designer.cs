@@ -589,33 +589,6 @@ namespace DotNetNuke.Services.Install {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valDatabaseName;
         
         /// <summary>
-        /// lblDatabaseObjectQualifier control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl lblDatabaseObjectQualifier;
-        
-        /// <summary>
-        /// txtDatabaseObjectQualifier control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDatabaseObjectQualifier;
-        
-        /// <summary>
-        /// valQualifier control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator valQualifier;
-        
-        /// <summary>
         /// lblDatabaseSecurity control.
         /// </summary>
         /// <remarks>
@@ -777,24 +750,7 @@ namespace DotNetNuke.Services.Install {
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl LicenseActivation;
         
-        /// <summary>
-        /// bannerLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor bannerLink;
-        
-        /// <summary>
-        /// bannerImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage bannerImage;
-        
+
         /// <summary>
         /// installViewWebsite control.
         /// </summary>
