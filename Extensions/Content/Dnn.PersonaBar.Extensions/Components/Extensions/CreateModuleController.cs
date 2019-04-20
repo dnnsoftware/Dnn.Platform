@@ -234,7 +234,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             try
             {
                 var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
-                var manifest = Path.Combine(Globals.ApplicationMapPath, "~/DesktopModules/" + folder + "/" + createModuleDto.Manifest);
+                var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
                 var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
 
                 if (installer.IsValid)

@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     //write CSS file
                     using (var writer = File.CreateText(strUploadDirectory + "portal.css"))
                     {
-                        writer.WriteLine(HttpUtility.UrlDecode(request.StyleSheetContent));
+                        writer.WriteLine(request.StyleSheetContent);
                     }
 
                     //Clear client resource cache

@@ -10,7 +10,7 @@ const dropdownStyle = { width: "100%", marginBottom: 64 };
 function getValidateRequired(key) {
     switch (key) {
         case "moduleFolder":
-        case "fileName":
+        case "manifest":
             return true;
         default:
             return false;
@@ -22,7 +22,7 @@ const emptyNewModule = {
     moduleFolder: "",
     ownerFolder: "",
     addPage: true,
-    fileName: "",
+    manifest: "",
     moduleName: "",
     description: ""
 };
@@ -41,8 +41,8 @@ class FromManifest extends Component {
     UNSAFE_componentWillReceiveProps(props) {
         if (props.moduleFiles.length > 0) {
             let { newModule } = this.state;
-            newModule.fileName.value = props.moduleFiles[0].value;
-            newModule.fileName.error = false;
+            newModule.manifest.value = props.moduleFiles[0].value;
+            newModule.manifest.error = false;
 
             this.setState({
                 newModule
@@ -54,16 +54,16 @@ class FromManifest extends Component {
         const { props, state } = this;
         let {newModule, triedToSave} = this.state;
         if (key === "ownerFolder") {
-            newModule.fileName.value = "";
-            newModule.fileName.error = true;
+            newModule.manifest.value = "";
+            newModule.manifest.error = true;
             newModule.moduleFolder.value = "";
             newModule.moduleFolder.error = true;
             triedToSave = false;
             props.onSelectOwnerFolder(option.value);
         }
         if (key === "moduleFolder" && option.value !== "") {
-            newModule.fileName.value = "";
-            newModule.fileName.error = true;
+            newModule.manifest.value = "";
+            newModule.manifest.error = true;
             triedToSave = false;
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
@@ -134,8 +134,8 @@ class FromManifest extends Component {
         if (type === "moduleFolder") {
             newModule.moduleFolder.value = data.moduleFolder;
             newModule.moduleFolder.error = false;
-            newModule.fileName.value = "";
-            newModule.fileName.error = true;
+            newModule.manifest.value = "";
+            newModule.manifest.error = true;
             this.setState({
                 triedToSave: false
             });
@@ -188,9 +188,9 @@ class FromManifest extends Component {
                             tooltipMessage={Localization.get("NewModule_Resource.HelpText")}
                             style={dropdownStyle}
                             options={props.moduleFiles}
-                            onSelect={this.onFolderSelect.bind(this, "fileName")}
-                            value={state.newModule.fileName.value}
-                            error={state.newModule.fileName.error && state.triedToSave} />
+                            onSelect={this.onFolderSelect.bind(this, "manifest")}
+                            value={state.newModule.manifest.value}
+                            error={state.newModule.manifest.error && state.triedToSave} />
                         <Switch value={state.newModule.addPage.value}
                             tooltipMessage={Localization.get("NewModule_AddTestPage.HelpText")}
                             label={Localization.get("NewModule_AddTestPage.Label")}

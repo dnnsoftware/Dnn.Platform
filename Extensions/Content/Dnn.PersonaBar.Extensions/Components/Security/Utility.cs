@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Security.Components
                     let f = new FileInfo(file)
                     select new SearchFileInfo
                     {
-                        FileName = f.Name,
+                        FileName = f.FullName,
                         LastWriteTime = f.LastWriteTime.ToString(CultureInfo.InvariantCulture)
                     };
             }

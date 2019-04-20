@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     CacheSetting = Host.PerformanceSetting,
                     AuthCacheability = Host.AuthenticatedCacheability,
                     UnauthCacheability = Host.UnauthenticatedCacheability,
-                    SslForCacheSynchronization = Host.UpgradeForceSsl,
+                    SslForCacheSynchronization = HostController.Instance.GetBoolean(UseSSLKey, false),
                     ClientResourcesManagementMode = PortalController.GetPortalSetting("ClientResourcesManagementMode", portalId, "h"),
 
                     CurrentHostVersion = Host.CrmVersion.ToString(CultureInfo.InvariantCulture),

@@ -132,28 +132,29 @@ class PageLanguage extends Component {
                         <span>{Localization.get("ModulesOnThisPage") }</span>
                         {!this.props.isDefault && <div className="icons-container">
                             <span
+                            title={this.state.allModulesLinked ? Localization.get("ClickToDeLocalizeAllModules_tooltip") : Localization.get("ClickToLocalizeAllModules_tooltip")}
                             className={`icon float-left ${(this.state.allModulesLinked ? " blue" : "")}`}
                             onClick={this.linkAllModules.bind(this)  }
                             dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
+                            <div title={this.state.allModulesSelected ? Localization.get("UnCheckAllTranslatedModules_tooltip") : Localization.get("CheckToTranslateAllModules_tooltip")} style={{ float: "left", display: "inline-block"}}>
                             <Checkbox
-                            style={{ float: "left" }}
                             value={this.state.allModulesSelected}
-                            onChange={this.selectAllModules.bind(this) } />
+                            onChange={this.selectAllModules.bind(this) } /></div>
                         </div>}
                     </div>
                     {moduleComponents }
                     <div className="module-row footer">
+                        <div title={page.IsTranslated ? Localization.get("UnCheckTransaledPage_tooltip") : Localization.get("CheckToTransalePage_tooltip")} style={{float: "right", display: "inline-block" }}>
                         <Checkbox
-                            style={{ float: "right" }}
                             value={page.IsTranslated}
-                            onChange={this.onUpdatePages.bind(this, "IsTranslated") } />
+                            onChange={this.onUpdatePages.bind(this, "IsTranslated") } /></div>
                         <div>{Localization.get("TranslatedCheckbox") }</div>
                     </div>
                     <div className="module-row footer">
+                        <div title={page.IsPublished ? Localization.get("UnCheckPublishedPage_tooltip") : Localization.get("CheckToPublishPage_tooltip")} style={{ float: "right", display: "inline-block" }}>
                         <Checkbox
-                            style={{ float: "right" }}
                             value={page.IsPublished}
-                            onChange={this.onUpdatePages.bind(this, "IsPublished") } />
+                            onChange={this.onUpdatePages.bind(this, "IsPublished") } /></div>
                         <div>{Localization.get("PublishedCheckbox") }</div>
                     </div>
                 </div>

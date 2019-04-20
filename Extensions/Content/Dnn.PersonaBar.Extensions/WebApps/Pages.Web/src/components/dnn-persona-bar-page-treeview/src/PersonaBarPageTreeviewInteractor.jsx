@@ -29,8 +29,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
             pageY: 0,
             isMouseInTree: false,
             isChildLoaded: false,
-            treeViewActivePage: {},
-            enabled: props.enabled == null ? false : props.enabled
+            treeViewActivePage: {}
         };
         this.origin = window.origin;
         this.treeContentWidth = 200;
@@ -40,56 +39,52 @@ class PersonaBarPageTreeviewInteractor extends Component {
     componentDidMount() {
         this.init();
     }
-    UNSAFE_componentWillReceiveProps(newProps) {
+
+    static getDerivedStateFromProps(props) {
         let setTreeViewExpanded = null;
+        let pageList = null;   
         const {
             activePage,
             NoPermissionSelectionPageId
-        } = newProps;
-        const pageList = cloneDeep(newProps.pageList);
-        this.setState({
-            pageList: pageList,
-            rootLoaded: true
-        });
+        } = props;
+        const pageListCopy = cloneDeep(props.pageList);
         if (activePage || NoPermissionSelectionPageId) {
             const tabId = (activePage && activePage.tabId) || NoPermissionSelectionPageId;
-            this.props._traverse((item, list) => {
+            props._traverse((item, list) => {
                 item.selected = false;
-
                 if (item.id === tabId) {
                     item.selected = true;
-                    item.includeInMenu = activePage.includeInMenu;
-                    this.setState({
-                        pageList: list
-                    }, () => {
-                        this._countTreeOpenDeepParent(this.state.pageList);
-                    });
+                    item.includeInMenu = (activePage && activePage.includeInMenu) ? true : false;
                 }
-            });
+                pageList = list;
+            }, pageListCopy);
         }
         else {
-            this.props._traverse((item, list) => {
+            props._traverse((item, list) => {
                 item.selected = false;
-                this.setState({
-                    pageList: list
-                }, () => {
-                    this._countTreeOpenDeepParent(this.state.pageList);
-                });
-            });
+                pageList = list;
+            }, pageListCopy);
         }
 
-        this.props._traverse((item) => {
+        props._traverse((item) => {
             if (item.isOpen) {
                 setTreeViewExpanded = true;
             }
-        });
+        }, pageListCopy);
 
-        (setTreeViewExpanded) ? this.setState({
-            isTreeviewExpanded: true,
-            initialCollapse: false
-        }) : this.setState({
-            isTreeviewExpanded: false
-        });
+        return {
+            rootLoaded: true,
+            isTreeviewExpanded: setTreeViewExpanded,
+            initialCollapse: !setTreeViewExpanded,
+            pageList: pageList || pageListCopy
+        }
+    }
+
+    componentDidUpdate() {
+        const { pageList } = this.state;
+        if (pageList) {
+            this._countTreeOpenDeepParent(pageList);
+        }
     }
 
     init() {
@@ -673,7 +668,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
 
     render_treeview() {
         return (
-            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.state.enabled && this.setState({ pageX: e.pageX, pageY: e.pageY })} style={{ paddingBottom: "10px" }}>
+            <span className="dnn-persona-bar-treeview-ul tree" onMouseOver={(e) => this.props.enabled ? this.setState({ pageX: e.pageX, pageY: e.pageY }) : () => {}} style={{ paddingBottom: "10px" }}>
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeview
                         draggedItem={this.state.draggedItem}
@@ -682,16 +677,16 @@ class PersonaBarPageTreeviewInteractor extends Component {
                         listItems={this.state.pageList}
                         setEmptyPageMessage={this.props.setEmptyPageMessage}
                         getChildListItems={this.getChildListItems.bind(this)}
-                        onSelection={this.state.enabled ? this.onSelection.bind(this) : null}
-                        onNoPermissionSelection={this.state.enabled ? this.onNoPermissionSelection.bind(this) : null}
-                        onDragEnter={this.state.enabled ? this.onDragEnter.bind(this) : null}
-                        onDrag={this.state.enabled ? this.onDrag.bind(this) : null}
-                        onDragStart={this.state.enabled ? this.onDragStart.bind(this) : null}
-                        onDragOver={this.state.enabled ? this.onDragOver.bind(this) : null}
-                        onDragLeave={this.state.enabled ? this.onDragLeave.bind(this) : null}
-                        onDragEnd={this.state.enabled ? this.onDragEnd.bind(this) : null}
-                        onDrop={this.state.enabled ? this.onDrop.bind(this) : null}
-                        onMovePage={this.state.enabled ? this.onMovePage.bind(this) : null}
+                        onSelection={this.props.enabled ? this.onSelection.bind(this) : () => {}}
+                        onNoPermissionSelection={this.props.enabled ? this.onNoPermissionSelection.bind(this) : () => {}}
+                        onDragEnter={this.props.enabled ? this.onDragEnter.bind(this) : () => {}}
+                        onDrag={this.props.enabled ? this.onDrag.bind(this) : () => {}}
+                        onDragStart={this.props.enabled ? this.onDragStart.bind(this) : () => {}}
+                        onDragOver={this.props.enabled ? this.onDragOver.bind(this) : () => {}}
+                        onDragLeave={this.props.enabled ? this.onDragLeave.bind(this) : () => {}}
+                        onDragEnd={this.props.enabled ? this.onDragEnd.bind(this) : () => {}}
+                        onDrop={this.props.enabled ? this.onDrop.bind(this) : () => {}}
+                        onMovePage={this.props.enabled ? this.onMovePage.bind(this) : () => {}}
                         getPageInfo={this.getPageInfo.bind(this)}
                         selectedPageDirty={this.props.selectedPageDirty}
                         Localization={this.props.Localization}
@@ -706,11 +701,11 @@ class PersonaBarPageTreeviewInteractor extends Component {
             <span className="dnn-persona-bar-treeview-ul" >
                 {this.state.rootLoaded ?
                     <PersonaBarPageTreeMenu
-                        CallCustomAction={this.state.enabled ? this.props.CallCustomAction : null}
-                        onAddPage={this.state.enabled ? this.props.onAddPage : null}
-                        onViewPage={this.state.enabled ? this.props.onViewPage : null}
-                        onViewEditPage={this.state.enabled ? this.props.onViewEditPage : null}
-                        onDuplicatePage={this.state.enabled ? this.onDuplicatePage.bind(this) : null}
+                        CallCustomAction={this.props.enabled ? this.props.CallCustomAction : () => {}}
+                        onAddPage={this.props.enabled ? this.props.onAddPage : () => {}}
+                        onViewPage={this.props.enabled ? this.props.onViewPage : () => {}}
+                        onViewEditPage={this.props.enabled ? this.props.onViewEditPage : () => {}}
+                        onDuplicatePage={this.props.enabled ? this.onDuplicatePage.bind(this) : () => {}}
                         listItems={this.state.pageList}
                         _traverse={this.props._traverse.bind(this)}
                         pageInContextComponents={this.props.pageInContextComponents}
@@ -732,7 +727,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
     render_collapseExpand() {
         return (
             <div
-                onClick={this.state.enabled ? this.toggleExpandAll.bind(this) : null}
+                onClick={this.props.enabled ? this.toggleExpandAll.bind(this) : () => {}}
                 className="collapse-expand" >
                 [{this.state.isTreeviewExpanded ? Localization.get("lblCollapseAll").toUpperCase() : Localization.get("lblExpandAll").toUpperCase()}]
             </div>
