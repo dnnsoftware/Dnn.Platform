@@ -5,24 +5,7 @@ import Localization from "localization";
 import PackageCard from "./PackageCard";
 import PackageCardOverlay from "./PackageCardOverlay";
 
-import { SvgIcons, Tooltip } from "@dnnsoftware/dnn-react-common";
-
-const tooltipStyle = {
-    style: {
-        background: "#fff",
-        color: "white",
-        padding: "10px 20px",
-        transition: "opacity 0.2s ease-in-out, visibility 0.2s ease-in-out",
-        boxShadow: "0 0 10px 1px #C8C8C8",
-        maxWidth: 500,
-        fontFamily: "'proxima_nova', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-        zIndex: 9999
-    },
-    arrowStyle: {
-        color: "#fff",
-        borderColor: "#C8C8C8"
-    }
-};
+import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
 class PackagesList extends Component {
     onSelect(pkg) {
@@ -58,14 +41,16 @@ class PackagesList extends Component {
                                 isSelected={props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId} />
                             {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
                                 <div className="checkmark" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>
-                            }
-                            <Tooltip
-                                tooltipStyle={tooltipStyle}
-                                onClick={this.onSelect.bind(this, pkg)}
-                                messages={[this.renderTooltipMessage(pkg.Description)]}
-                                tooltipPlace="bottom"
-                            />
+                            }                            
                         </PackageCard>
+                        {
+                            pkg.Description &&
+                            <div 
+                                className="package-card-tooltip"
+                                dangerouslySetInnerHTML={{ __html : this.renderTooltipMessage(pkg.Description)}}
+                                onClick={this.onSelect.bind(this, pkg)}
+                            />
+                        }
                     </div>;
                 })}
             </div>;

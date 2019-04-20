@@ -21,3 +21,17 @@ iframe#personaBar-iframe{
 .pb-scroll-wrapper iframe#personaBar-iframe.ipad {
     position: relative !important;
 }
+
+.personabar-visible {
+    margin-left: 80px;
+}
+
+.personabar-placeholder {
+    width: 80px;
+    background-color: #3d3c3c;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}

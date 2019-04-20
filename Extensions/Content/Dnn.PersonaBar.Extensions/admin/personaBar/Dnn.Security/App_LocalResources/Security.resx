@@ -814,13 +814,13 @@
     <value>Username</value>
   </data>
   <data name="CheckBiographyFailure.Text" xml:space="preserve">
-    <value>The field is richtext. Spammers may put links to their website in their biography field.</value>
+    <value>The field is richtext. Spammers may put links to their website in their biography field. The field type can be changed in Settings -> Site Settings -> Site Behavior -> User Profiles</value>
   </data>
   <data name="CheckBiographyReason.Text" xml:space="preserve">
     <value>The biography field is a common target for spammers as they can add links/html to it. In DNN 7.2.0 this was changed to a multiline textbox which removes this risk.</value>
   </data>
   <data name="CheckBiographySuccess.Text" xml:space="preserve">
-    <value>The field is a multiline textbox</value>
+    <value>The field is not enabled or is a multiline textbox</value>
   </data>
   <data name="CheckRarelyUsedSuperuserFailure.Text" xml:space="preserve">
     <value>We have found 1 or more superuser accounts that have not been logged in or had activity in six months. Consider deleting them as a best practice</value>

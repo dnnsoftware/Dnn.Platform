@@ -45,19 +45,38 @@
                     &:not(:last-child) {
                         margin-bottom: 15px;
                     }
-                    .dnn-ui-common-tooltip {
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        top: 0;
-                        cursor: pointer;
-                        .icon {
-                            width: 100%;
-                            height: 100%;
-                            svg {
-                                display: none;
-                            }
-                        }                  
+                    .package-card-tooltip{
+                        background-color: #fff;
+                        position:absolute;
+                        padding: 10px 20px;
+                        background: rgb(255, 255, 255);
+                        box-shadow: rgb(200, 200, 200) 0px 0px 10px 1px;
+                        border-radius: 3px;
+                        transition: opacity 0.2s ease-in-out 0s, visibility 0.2s ease-in-out 0s;                        
+                        color: white;
+                        max-width: 500px;
+                        left: 50%;
+                        margin-left: -25%;
+                        opacity: 0;
+                        visibility: hidden;
+                        ::after{
+                            content: " ";
+                            position: absolute;
+                            bottom: 100%;
+                            left: 50%;
+                            margin-left: -10px;
+                            border-width: 10px;
+                            border-style: solid;
+                            border-color: transparent transparent white transparent;
+                        }
+                    }
+                    &:hover{
+                        .package-card-tooltip{
+                            opacity: 1;
+                            visibility: visible;
+                            z-index: 9999;
+                            cursor: pointer;
+                        }
                     }
                     .package-card {
                         text-align: left;

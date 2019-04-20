@@ -54,7 +54,7 @@ class LogSettingRow extends Component {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         let uniqueId = "settingrow-" + Math.random() + Date.now();
-
+        
         return (
             <div ref={node => this.node = node} className={"collapsible-component-log" + (opened ? " row-opened" : "") } id={uniqueId}>
                 {props.visible && <div className={"collapsible-header-log " + !opened} >
@@ -74,7 +74,7 @@ class LogSettingRow extends Component {
                     }
                 </div>
                 }
-                <Collapse accordion={true} isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>
+                <Collapse isOpened={opened} style={{width: "100%", height: "auto"}}>{opened && props.children}</Collapse>
             </div>
         );
     }

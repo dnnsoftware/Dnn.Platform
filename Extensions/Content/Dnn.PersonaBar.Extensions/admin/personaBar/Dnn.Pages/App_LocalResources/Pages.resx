@@ -1711,4 +1711,43 @@
   <data name="IconFileLarge.Text" xml:space="preserve">
     <value>Large Icon</value>
   </data>
+  <data name="ClickToLocalizeModule_tooltip.Text" xml:space="preserve">
+    <value>Click to enable localization for this module</value>
+  </data>
+  <data name="ClickToDeLocalizeModule_tooltip.Text" xml:space="preserve">
+    <value>Click to disable localization for this module</value>
+  </data>
+  <data name="CheckToTranslateModule_tooltip.Text" xml:space="preserve">
+    <value>Check to flag module as translated</value>
+  </data>
+  <data name="UnCheckTranslatedModule_tooltip.Text" xml:space="preserve">
+    <value>Uncheck to flag module as pending translation</value>
+  </data>
+  <data name="CheckToTranslateAllModules_tooltip.Text" xml:space="preserve">
+    <value>Check to flag all modules as translated</value>
+  </data>
+  <data name="UnCheckAllTranslatedModules_tooltip.Text" xml:space="preserve">
+    <value>Uncheck to flag all modules as pending translation</value>
+  </data>
+  <data name="ClickToLocalizeAllModules_tooltip.Text" xml:space="preserve">
+    <value>Click to localize all modules</value>
+  </data>
+  <data name="ClickToDeLocalizeAllModules_tooltip.Text" xml:space="preserve">
+    <value>Click to disable localization for all modules</value>
+  </data>
+  <data name="CheckToTransalePage_tooltip.Text" xml:space="preserve">
+    <value>Check to flag this page as translated for this language</value>
+  </data>
+  <data name="UnCheckTransaledPage_tooltip.Text" xml:space="preserve">
+    <value>Uncheck to flag this page as pending translation for this language</value>
+  </data>
+  <data name="CheckToPublishPage_tooltip.Text" xml:space="preserve">
+    <value>Check to flag this page as published for this language</value>
+  </data>
+  <data name="UnCheckPublishedPage_tooltip.Text" xml:space="preserve">
+    <value>Uncheck to flag this page as pending publishing for this language</value>
+  </data>
+  <data name="LocalizedSharedModule_tooltip.Text" xml:space="preserve">
+    <value>This is a localized shared module</value>
+  </data>
 </root>

@@ -116,3 +116,4 @@ npm-debug.log
 /**/yarn-error.log
 /**/*-bundle.js
 /Extensions/Manage/Dnn.PersonaBar.Users/admin/personaBar/scripts/exportables/Users/UsersCommon.js
+Extensions/**/*.js.map
