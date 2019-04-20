@@ -743,7 +743,6 @@
 
         getTree: function (sortOrder, onGetFirstLevelItemsCallback) {
             var onGetFirstLevelItemsHandler = $.proxy(this._onGetTree, this, onGetFirstLevelItemsCallback);
-
             var callGetParams = { sortOrder: sortOrder, includeAllTypes: true };
             if (this.options.includeDisabled) {
                 callGetParams.includeDisabled = this.options.includeDisabled;
