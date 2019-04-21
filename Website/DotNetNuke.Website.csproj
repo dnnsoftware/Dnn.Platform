@@ -2847,7 +2847,7 @@
     <EmbeddedResource Include="Licenses\Knockout %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Knockout Mapping %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Licenses.txt.resources" />
-    <Content Include="Licenses\log4net %28Apache%29.txt" />
+    <EmbeddedResource Include="Licenses\log4net %28Apache%29.txt.resources" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net.Contrib %28Apache%29.txt" />
     <Content Include="Licenses\Moq %28BSD%29.txt" />

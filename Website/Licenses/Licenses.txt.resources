@@ -1,8 +1,3 @@
-log4net
-Used to provide Instrumentation throughout the core
-License Type: Apache
-License Link: http://logging.apache.org/log4net/license.html
-
 Lucene.net
 Lucene.Net is a port of the Lucene search engine library, written in C# and targeted at .NET runtime users. http://nuget.org/packages/lucene.net http://lucenenet.apache.org/
 License Type: Apache License
