@@ -1,4 +1,3 @@
-#addin "Cake.FileHelpers"
 
 string connectionString = @"server=(localdb)\MSSQLLocalDB";
 
