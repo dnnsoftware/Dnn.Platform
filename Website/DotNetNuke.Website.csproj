@@ -2835,6 +2835,7 @@
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jquery-history.license.txt" />
     <Content Include="Licenses\json2 %28Public Domain%29.txt" />
+    <EmbeddedResource Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Licenses.txt.resources" />
     <Content Include="Licenses\log4net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
