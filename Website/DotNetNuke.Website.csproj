@@ -2825,7 +2825,7 @@
     <Content Include="js\MicrosoftAjaxWebForms.js" />
     <Content Include="js\PopupCalendar.js" />
     <Content Include="KeepAlive.aspx" />
-    <Content Include="Licenses\CountryListBox %28Public Domain%29.txt" />
+    <EmbeddedResource Include="Licenses\CountryListBox %28Public Domain%29.txt.resources" />
     <EmbeddedResource Include="Licenses\GeoIP %28Custom%29.txt.resources" />
     <Content Include="Licenses\hoverintent %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jQuery FileUpload %28MIT%29.txt" />
