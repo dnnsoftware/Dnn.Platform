@@ -818,6 +818,7 @@
     <EmbeddedResource Include="Licenses\Cake %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -2835,6 +2836,7 @@
     <Content Include="Licenses\json2 %28Public Domain%29.txt" />
     <EmbeddedResource Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Dnn-Connect CkEditorProvider %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\DotNetZip %28Ms-PL%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Licenses.txt.resources" />
     <Content Include="Licenses\log4net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
