@@ -605,6 +605,7 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <EmbeddedResource Include="Licenses\LiteDB %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Moment.js %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Moq %28BSD3%29.txt.resources" />
     <None Include="compilerconfig.json" />
