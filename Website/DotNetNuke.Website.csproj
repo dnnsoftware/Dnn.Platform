@@ -2842,6 +2842,7 @@
     <EmbeddedResource Include="Licenses\jQuery MouseWheel %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\jQuery TimePicker %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\jQuery ToastMessage %28Apache2%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\jQuery UI %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Licenses.txt.resources" />
     <Content Include="Licenses\log4net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
