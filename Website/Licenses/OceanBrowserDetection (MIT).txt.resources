@@ -1,3 +1,13 @@
+PROJECT: Ocean Browser Detection
+
+WHERE WE USE IT: As part of browser detection, see https://github.com/dnnsoftware/Dnn.Platform/search?q=ocean&unscoped_q=ocean
+
+LICENTE TYPE: MIT
+
+PROJECT LINK: http://owenbrady.net/browsercaps/
+
+LICENSE (AS OF 2019-04-20): 
+
 MIT License
 
 Copyright (C) 2002-Present  Owen Brady (Ocean at owenbrady dot net)
