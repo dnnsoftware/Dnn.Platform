@@ -1,13 +1,3 @@
-Lucene.net
-Lucene.Net is a port of the Lucene search engine library, written in C# and targeted at .NET runtime users. http://nuget.org/packages/lucene.net http://lucenenet.apache.org/
-License Type: Apache License
-License Link: Copyright 2013 The Apache Software Foundation, Licensed under the Apache License, Version 2.0 http://www.apache.org/licenses/LICENSE-2.0
-
-Lucene.net.contrib
-lucene.Net Contrib adds a set of advanced functionalites to Lucene.net, like faceted search, spatial queries, highlighters, spell check and more. https://nuget.org/packages/Lucene.Net.Contrib
-License Type: Apache License
-License Link: http://www.apache.org/licenses/LICENSE-2.0.html
-
 Moq
 http://code.google.com/p/moq/
 
