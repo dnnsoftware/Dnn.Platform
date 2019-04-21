@@ -816,6 +816,7 @@
     <Content Include="js\Debug\dnn.cookieconsent.js" />
     <Content Include="js\dnn.cookieconsent.js" />
     <EmbeddedResource Include="Licenses\Cake %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
