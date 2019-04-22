@@ -3148,6 +3148,7 @@
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
     <EmbeddedResource Include="Licenses\SimpleMDE %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
