@@ -2866,7 +2866,7 @@
     <EmbeddedResource Include="Licenses\OceanBrowserDetection %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Selectize %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
-    <Content Include="Licenses\WatiN %28Apache%29.txt" />
+    <EmbeddedResource Include="Licenses\WatiN %28Apache%29.txt.resources" />
     <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt" />
     <Content Include="Licenses\YUI %28BSD%29.txt" />
     <Content Include="Portals\_default\admin.css" />
