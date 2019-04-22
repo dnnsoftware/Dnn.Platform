@@ -2842,7 +2842,7 @@
     <EmbeddedResource Include="Licenses\GeoIP %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\jQuery FileUpload %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\jQuery Iframe Transport %28MIT%29.txt.resources" />
-    <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt" />
+    <EmbeddedResource Include="Licenses\jQuery Slides Plugin %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt.resources" />
     <EmbeddedResource Include="Licenses\json2 %28Public Domain%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
