@@ -1,4 +1,6 @@
-﻿PROJECT: Effority Ealo
+﻿[Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+
+PROJECT: Effority Ealo
 
 WHERE WE USE IT: As part of DDRMenu, see https://github.com/dnnsoftware/Dnn.Platform/blob/development/DNN%20Platform/Modules/DDRMenu/Localisation/Ealo.cs
 
