@@ -2864,7 +2864,7 @@
     <EmbeddedResource Include="Licenses\Lucene.Net %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt.resources" />
     <EmbeddedResource Include="Licenses\OceanBrowserDetection %28MIT%29.txt.resources" />
-    <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
+    <EmbeddedResource Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
     <Content Include="Licenses\WatiN %28Apache%29.txt" />
     <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt" />
     <Content Include="Licenses\YUI %28BSD%29.txt" />
@@ -3146,7 +3146,7 @@
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
-    <None Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf" />
+    <EmbeddedResource Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
