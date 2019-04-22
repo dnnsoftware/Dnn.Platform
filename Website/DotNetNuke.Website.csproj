@@ -611,6 +611,7 @@
     <EmbeddedResource Include="Licenses\Moq %28BSD3%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NBuilder %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Newtonsoft JSON %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\NSubstitute %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NTestDataBuilder %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NUnit %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NUnitTestAdapter %28MIT%29.txt.resources" />
