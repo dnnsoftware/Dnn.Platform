@@ -1,3 +1,15 @@
+[Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
+
+PROJECT: WebFormsMVP
+
+WHERE WE USE IT: As an module MVP pattern, see https://github.com/dnnsoftware/Dnn.Platform/search?q=webformsmvp&unscoped_q=webformsmvp
+
+LICENTE TYPE: Ms-PL
+
+PROJECT LINK: https://github.com/webformsmvp/webformsmvp
+
+LICENSE (AS OF 2019-04-20): 
+
 Microsoft Public License (Ms-PL)
 
 This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
