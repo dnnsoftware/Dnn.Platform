@@ -311,7 +311,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 installConfig.Version = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "version");
                 installConfig.SupportLocalization = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "supportLocalization");
-                installConfig.DisplayBanners = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "displayBanners");
                 installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.Localization.SystemLocale;
             }
 

@@ -87,12 +87,6 @@
   <data name="DatabaseName.Text">
     <value xml:space="preserve">Nombre de la base de datos</value>
   </data>
-  <data name="DatabaseObjectQualifier.Help">
-    <value xml:space="preserve">Introduzca el prefijo de los objectos de la base de datos.</value>
-  </data>
-  <data name="DatabaseObjectQualifier.Text">
-    <value xml:space="preserve">Prefijo de objetos</value>
-  </data>
   <data name="DatabaseOwner.Text">
     <value xml:space="preserve">Propietario base de datos</value>
   </data>
