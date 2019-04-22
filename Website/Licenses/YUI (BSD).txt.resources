@@ -1,3 +1,13 @@
+PROJECT: Yahoo YUI
+
+WHERE WE USE IT: As a reusable css library, see https://github.com/dnnsoftware/Dnn.Platform/search?q=yui&unscoped_q=yui
+
+LICENTE TYPE: BSD
+
+PROJECT LINK: https://yuilibrary.com/
+
+LICENSE (AS OF 2019-04-20): 
+
 BSD License
 
 Copyright (c) 2011, Yahoo! Inc.

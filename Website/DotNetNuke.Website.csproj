@@ -605,6 +605,7 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <EmbeddedResource Include="Licenses\Castle Core %28Apache%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\Dnn AdminExperience %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\LiteDB %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Moment.js %28MIT%29.txt.resources" />
@@ -2859,7 +2860,6 @@
     <EmbeddedResource Include="Licenses\jQuery UI %28Custom%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Knockout %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Knockout Mapping %28MIT%29.txt.resources" />
-    <EmbeddedResource Include="Licenses\Licenses.txt.resources" />
     <EmbeddedResource Include="Licenses\log4net %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\Lucene.Net %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt.resources" />
@@ -2868,7 +2868,7 @@
     <EmbeddedResource Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\WatiN %28Apache%29.txt.resources" />
     <EmbeddedResource Include="Licenses\WebFormsMVP %28MsPL%29.txt.resources" />
-    <Content Include="Licenses\YUI %28BSD%29.txt" />
+    <EmbeddedResource Include="Licenses\YUI %28BSD%29.txt.resources" />
     <Content Include="Portals\_default\admin.css" />
     <Content Include="Portals\_default\Cache\PlaceHolder.txt" />
     <Content Include="Portals\_default\Cache\ReadMe.txt" />
