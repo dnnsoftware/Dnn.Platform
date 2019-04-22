@@ -616,6 +616,7 @@
     <EmbeddedResource Include="Licenses\NUnit %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\NUnitTestAdapter %28MIT%29.txt.resources" />
     <EmbeddedResource Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
+    <EmbeddedResource Include="Licenses\Pikaday %28MIT%29.txt.resources" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
