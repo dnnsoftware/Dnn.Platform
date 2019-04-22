@@ -2,7 +2,7 @@
 
 WHERE WE USE IT: Used at multiple places in our build process, for instance at https://github.com/dnnsoftware/Dnn.Platform/blob/development/build.cake
 
-LICENTE TYPE: MIT
+LICENSE TYPE: MIT
 
 PROJECT LINK: https://github.com/cake-build/cake
 

@@ -2,7 +2,7 @@ PROJECT: jQuery File Upload
 
 WHERE WE USE IT: As a reusable javascript library as well as in multiple places in the UI, see https://github.com/dnnsoftware/Dnn.Platform/search?q=jQueryFileUpload&unscoped_q=jQueryFileUpload
 
-LICENTE TYPE: MIT
+LICENSE TYPE: MIT
 
 PROJECT LINK: https://github.com/blueimp/jQuery-File-Upload
 
@@ -10,7 +10,7 @@ LICENSE (AS OF 2019-04-20):
 
 MIT License
 
-Copyright © 2010 Sebastian Tschan, https://blueimp.net
+Copyright ï¿½ 2010 Sebastian Tschan, https://blueimp.net
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

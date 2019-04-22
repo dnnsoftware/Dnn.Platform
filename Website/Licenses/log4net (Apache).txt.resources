@@ -2,7 +2,7 @@ PROJECT: log4net
 
 WHERE WE USE IT: Used to provide Instrumentation throughout the core, see https://github.com/dnnsoftware/Dnn.Platform/search?q=log4net&unscoped_q=log4net&type=Code
 
-LICENTE TYPE: Apache 2.0
+LICENSE TYPE: Apache 2.0
 
 PROJECT LINK: https://github.com/apache/logging-log4net
 

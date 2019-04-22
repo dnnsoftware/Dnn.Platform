@@ -2,7 +2,7 @@
 
 WHERE WE USE IT: As part of our build scripts, imported here https://github.com/dnnsoftware/Dnn.Platform/blob/development/tools/Modules/packages.config
 
-LICENTE TYPE: MIT
+LICENSE TYPE: MIT
 
 PROJECT LINK: https://github.com/cake-contrib/Cake.LongPath.Module
 

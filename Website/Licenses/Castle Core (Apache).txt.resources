@@ -2,7 +2,7 @@
 
 WHERE WE USE IT: Required by NSubstitute which is required by NTestDataBuild which we use for testing: see https://github.com/dnnsoftware/Dnn.Platform/search?q=castle.core&unscoped_q=castle.core
 
-LICENTE TYPE: Apache 2.0
+LICENSE TYPE: Apache 2.0
 
 PROJECT LINK: https://github.com/castleproject/Core
 

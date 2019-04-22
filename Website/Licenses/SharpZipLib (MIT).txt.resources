@@ -2,13 +2,13 @@ PROJECT: SharpZipLib
 
 WHERE WE USE IT: As a reusable library and as part of Dnn Zip services, see https://github.com/dnnsoftware/Dnn.Platform/search?q=sharpziplib&unscoped_q=sharpziplib
 
-LICENTE TYPE: MIT
+LICENSE TYPE: MIT
 
 PROJECT LINK: https://github.com/icsharpcode/SharpZipLib
 
 LICENSE (AS OF 2019-04-20): 
 
-Copyright © 2000-2018 SharpZipLib Contributors
+Copyright ï¿½ 2000-2018 SharpZipLib Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software

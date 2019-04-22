@@ -2,7 +2,7 @@ PROJECT: Lucene.Net
 
 WHERE WE USE IT: Used in the core search service, see https://github.com/dnnsoftware/Dnn.Platform/search?q=lucene.net&unscoped_q=lucene.net&type=Code
 
-LICENTE TYPE: Apache 2.0
+LICENSE TYPE: Apache 2.0
 
 PROJECT LINK: http://lucenenet.apache.org/index.html
 

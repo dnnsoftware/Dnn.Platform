@@ -2,7 +2,7 @@ PROJECT: json2
 
 WHERE WE USE IT: As a reusable javascript library in https://github.com/dnnsoftware/Dnn.Platform/blob/development/Website/Resources/Shared/scripts/json2.js
 
-LICENTE TYPE: Public Domain
+LICENSE TYPE: Public Domain
 
 PROJECT LINK: https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 

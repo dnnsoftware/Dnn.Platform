@@ -2,7 +2,7 @@ PROJECT: MaxMind GeoIp Lite
 
 WHERE WE USE IT: As part of the CountryListBox control and Entities.Modules.UserModuleBase, see https://github.com/dnnsoftware/Dnn.Platform/search?q=geoip&unscoped_q=geoip
 
-LICENTE TYPE: Custom
+LICENSE TYPE: Custom
 
 PROJECT LINK: https://dev.maxmind.com/geoip/geoip2/geolite2/
 
