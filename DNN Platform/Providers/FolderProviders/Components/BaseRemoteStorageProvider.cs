@@ -107,6 +107,16 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return Boolean.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
         }
         
+        protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
+        {
+            int value;
+            if (int.TryParse(GetSetting(folderMapping, settingName), out value))
+            {
+                return value;
+            }
+            return defaultValue;
+        }
+
         protected abstract Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri);
 
         protected abstract IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping);
