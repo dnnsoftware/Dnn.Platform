@@ -56,7 +56,9 @@ Once a pull request has been reviewed by two designated approvers it may be merg
 > This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
 
 ### Execption for Build Process Pull Requests
-A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, or reconfiguration of the environment for the next version.  
+A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, or reconfiguration of the environment for the next version. 
+
+Additionally a special exception has been granted to merge pull requests created by the Designated Approvers for the purposes of keeping release branches in sync when the pull request ONLY moves previously approved changes.  Such as moving bug fixes from a minor release into the next major release, or otherwise.
 
 ### Milestone (Version) Targeted
 We follow the process outlined in the [Versioning Policy](https://github.com/dnnsoftware/Dnn.Platform/blob/development/.github/VERSIONING_POLICY.md) with regards to major, minor, and revision releases.  As items are reviewed and approved they will be assigned to a milestone based on their impact and risk.  If, when submitting, a specific release is requested coordinate the scope of change with the Designated Approvers or technology advisory group to ensure your item will meet the requirements for the targeted release.  We work dilligently to accept all pull requests, but ultimately must keep the platform stable and predictable for all users.
