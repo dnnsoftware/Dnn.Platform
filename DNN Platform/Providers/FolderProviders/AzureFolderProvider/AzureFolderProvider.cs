@@ -136,7 +136,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                         c =>
                                         {
                                             var container = GetContainer(folderMapping);
-                                            var synchBatchSize = Convert.ToInt32(GetSetting(folderMapping, Constants.SyncBatchSize) ?? Constants.DefaultSyncBatchSize.ToString());
+                                            var synchBatchSize = GetIntegerSetting(folderMapping, Constants.SyncBatchSize, Constants.DefaultSyncBatchSize);
 
                                             BlobContinuationToken continuationToken = null;
                                             BlobResultSegment resultSegment = null;
