@@ -1,7 +1,3 @@
-#addin Cake.XdtTransform
-#addin "Cake.FileHelpers"
-#addin Cake.Powershell
-#tool "nuget:?package=GitVersion.CommandLine&prerelease"
 
 GitVersion version;
 var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
