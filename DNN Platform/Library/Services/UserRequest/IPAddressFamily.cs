@@ -19,25 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web;
+using System;
 
 namespace DotNetNuke.Services.UserRequest
 {
-    public interface IUserRequestIPAddressController
+    /// <summary>
+    /// IP address family
+    /// </summary>
+    public enum IPAddressFamily
     {
-        /// <summary>
-        ///  To retrieve IPv4 of user making request to application.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>IP address</returns>
-        string GetUserRequestIPAddress(HttpRequestBase request);
-
-        /// <summary>
-        ///  To retrieve IPv4/IPv6 of user making request to application
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="ipFamily"></param>
-        /// <returns>IP address</returns>
-        string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily);
+        IPv4,
+        IPv6
     }
 }
