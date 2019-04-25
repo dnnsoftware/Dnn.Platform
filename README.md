@@ -46,6 +46,18 @@ All the details on contributing with Git and on our working methods can be found
 
 In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
 
+## DNN Releases Archives
+
+* [DNN Releases Archive 1.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.1x)
+* [DNN Releases Archive 2.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.2x)
+* [DNN Releases Archive 3.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.3x)
+* [DNN Releases Archive 4.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.4x)
+* [DNN Releases Archive 5.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.5x)
+* [DNN Releases Archive 6.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.6x)
+* [DNN Releases Archive 7.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.7x)
+* [DNN Releases Archive 8.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.8x)
+* [DNN Releases Archive 9.x](https://github.com/dnnsoftware/Dnn.Releases.Archive.9x)
+
 ## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
