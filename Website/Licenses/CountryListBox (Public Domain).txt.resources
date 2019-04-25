@@ -1,0 +1,9 @@
+PROJECT: CountryListBox
+
+WHERE WE USE IT:
+As part of a reusable control at https://github.com/dnnsoftware/Dnn.Platform/tree/development/DNN%20Platform/Controls/CountryListBox
+As part of SolPart Menu at https://github.com/dnnsoftware/Dnn.Platform/tree/development/DNN%20Platform/Controls/SolpartMenu/CountryListBox
+
+LICENSE TYPE: Custom
+
+PROJECT LINK: http://www.codeproject.com/KB/custom-controls/countrylistbox.aspx

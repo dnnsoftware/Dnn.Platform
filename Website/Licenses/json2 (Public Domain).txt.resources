@@ -1,0 +1,22 @@
+PROJECT: json2
+
+WHERE WE USE IT: As a reusable javascript library in https://github.com/dnnsoftware/Dnn.Platform/blob/development/Website/Resources/Shared/scripts/json2.js
+
+LICENSE TYPE: Public Domain
+
+PROJECT LINK: https://github.com/douglascrockford/JSON-js/blob/master/json2.js
+
+LICENSE (AS OF 2019-04-20): 
+
+json2.js
+2017-06-12
+Public Domain.
+NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+
+USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+NOT CONTROL.
+
+This file creates a global JSON object containing two methods: stringify
+and parse. This file provides the ES5 JSON capability to ES3 systems.
+If a project might run on IE8 or earlier, then this file should be included.
+This file does nothing on ES5 systems.
