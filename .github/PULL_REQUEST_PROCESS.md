@@ -21,7 +21,7 @@ The following items must all be true prior to a pull request being submitted to 
 ## Code Review Process
 Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** designated approvers before the change can be approved.  Once approved by two unique designated approvers, the change can be merged. An approver should NEVER merge their own change, even with two supporting approvals.  
 
-### Designed Approvers
+### Designated Approvers
 At the current time the following community members are designated approvers.
 
 * Mitchel Sellers ([mitchelsellers](https://github.com/mitchelsellers)) - Community Technology Advisory Group Lead
