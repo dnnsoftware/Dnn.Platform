@@ -61,7 +61,7 @@ A special exception has been granted to reduce the number of Designed Approval r
 Additionally a special exception has been granted to merge pull requests created by the Designated Approvers for the purposes of keeping release branches in sync when the pull request ONLY moves previously approved changes.  Such as moving bug fixes from a minor release into the next major release, or otherwise.
 
 ### Milestone (Version) Targeted
-We follow the process outlined in the [Versioning Policy](https://github.com/dnnsoftware/Dnn.Platform/blob/development/.github/VERSIONING_POLICY.md) with regards to major, minor, and revision releases.  As items are reviewed and approved they will be assigned to a milestone based on their impact and risk.  If, when submitting, a specific release is requested coordinate the scope of change with the Designated Approvers or technology advisory group to ensure your item will meet the requirements for the targeted release.  We work dilligently to accept all pull requests, but ultimately must keep the platform stable and predictable for all users.
+We follow the process outlined in the [Versioning Policy](VERSIONING_POLICY.md) with regards to major, minor, and revision releases.  As items are reviewed and approved they will be assigned to a milestone based on their impact and risk.  If, when submitting, a specific release is requested coordinate the scope of change with the Designated Approvers or technology advisory group to ensure your item will meet the requirements for the targeted release.  We work diligently to accept all pull requests, but ultimately must keep the platform stable and predictable for all users.
 
 ### Stale Pull Requests
 
