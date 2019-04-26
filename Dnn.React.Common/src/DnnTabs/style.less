@@ -1,0 +1,82 @@
+@import "../../styles/index";
+.dnn-tabs.react-tabs {
+    ul {
+        li {
+            position: relative;
+            list-style: none;
+            border: 1px solid transparent;
+            border-bottom: none;
+            cursor: pointer;
+        }
+    }
+    &.primary {
+        > ul {
+            padding: 0;
+            background-color: @mercury;
+            border: none;
+            margin: 0;
+            li {
+                font-weight: bold;
+                border-radius: 0;
+                padding: 17px 44px;
+                font-size: 10pt;
+                bottom: 0px;
+                color: @bulgarianRose;
+                display: inline-block;
+                &:focus {
+                    box-shadow: none;
+                    outline: none;
+                    border-color: transparent;
+                    &:after {
+                        background: transparent;
+                    }
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+                &[aria-selected=true] {
+                    border: none;
+                    background: @white;
+                }
+            }
+        }
+    }
+    &.secondary {
+        > ul {
+            border-bottom: 1px solid @alto;
+            margin: 0;
+            li {
+                display: inline-block;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-right: 35px;
+                padding: 19px 0 13px;
+                font-size: 9pt;
+                margin: 0 31px;
+                bottom: 0;
+                border: none;
+                border-bottom: 3px solid transparent;
+                color: @mountainMist;
+                &:last-child {
+                    margin-right: 0;
+                }
+                &[aria-selected=true] {
+                    background-color: transparent;
+                    border: none;
+                    border-bottom: 3px solid @curiousBlue;
+                    color: @curiousBlue !important;
+                    &:focus {
+                        box-shadow: none;
+                        outline: medium;
+                        border-color: @curiousBlue !important;
+                        border: none;
+                        border-bottom: 3px solid;
+                        &:after {
+                            background: transparent;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
