@@ -17,11 +17,13 @@ These releases are created primarily to contain hot-fix style improvements from 
 
 ## API Deprecation Policy
 The DNN Platform project is in a state of transition, continuing to modernize the API and work towards a transition to .NET Core.  To this point, it will be necessary for the project to remove public API's.  This will be done methodically, allowing developers to transition away from the older code with time to properly respond to change.
-Any API method to be removed will be flagged as deprecated in a release, major, minor or revision, and will be identified to be removed by a specific version.  This will be done using a C# annotation with a comment similar to the following "Deprecated in x.x.x, will be removed in y.0.0, use ____ instead".  The version number of "y" in this example must be 2 major versions ahead.  
+Any API method to be removed will be flagged as deprecated in a release, major, minor or revision, and will be identified to be removed by a specific version.  This will be done using a C# annotation with a comment similar to the following "Deprecated in x.x.x.  Scheduled for removal in vy.0.0, use ____ instead".  The version number of "y" in this example must be 2 major versions ahead.  
 Therefore, an API marked as Deprecated in 9.2.1 can only be removed in version 11.0.  Additionally, methods marked for removal in a version will GUARANTEED be removed in that revision.
+> Example: [Obsolete("Deprecated in DotNetNuke 7.0. This function has been replaced by AddUserRole with additional params. Scheduled removal in v10.0.0.")]
 
-**_NOTE_** Some legacy API's that do not have this style of commentary may not be removed at the next major release to ensure that the same communication protocol is followed.
-Lastly, each Major release will contain release notes outlining every API method removed.
+### Special DNN 10.x Cleanup
+A number of legacy APIs have been marked as deprecated for more than 7 years and not yet removed.  To continue to clean the API structure a final cleanup is being completed as part of the 10.x release.  All of these API's are more than 2 major revisions older, however, have non-standard indicators for the Obsolete attribute.  These will be removed in 10.x along with other expected removals.
+Lastly, each Major release will contain release notes outlining every API method removed.  More information can be found [in this blog post](https://www.dnnsoftware.com/community-blog/cid/156712/moving-forward-dnn-platform-100-growing-pains-lead-to-improvement)
 
 
 
