@@ -19,7 +19,7 @@ The following items must all be true prior to a pull request being submitted to 
 > NOTE: Changes to methods that have been marked as [Obsolete] will typically not be accepted due to inherit risks associated with code scheduled for removal.  If a critical bug/issue exists, please be sure to document & discuss using an RFC issue prior to submitting your contribution to ensure alignment with acceptance criteria.
 
 ## Code Review Process
-Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** designed approvers before the change can be approved.  Once approved by two unique designated approvers the change can be merged by the secondary approval. An approver should NEVER merge their own change, even with two supporting approvals.  
+Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** designated approvers before the change can be approved.  Once approved by two unique designated approvers, the change can be merged. An approver should NEVER merge their own change, even with two supporting approvals.  
 
 ### Designed Approvers
 At the current time the following community members are designated approvers.
