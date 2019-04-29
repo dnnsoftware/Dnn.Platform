@@ -460,6 +460,9 @@ namespace DotNetNuke.Modules.Admin.Users
                     case PortalSettings.UserDeleteAction.HardDelete:
                         success = UserController.RemoveUser(user);
                         break;
+                    default: // if user delete is switched off under Data Consent then we revert to the old behavior
+                        success = UserController.DeleteUser(ref user, true, false);
+                        break;
                 }
             }
             else
