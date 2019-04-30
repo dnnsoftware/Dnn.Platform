@@ -48,7 +48,7 @@ module.exports = {
             path.resolve('./src'),          // Look in src first
             path.resolve('./exportables'),  // Look in exportables after
             path.resolve('./node_modules'),  // Try local node_modules
-            path.resolve('../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve('../../../../node_modules')   // Last fallback to workspaces node_modules
         ]        
     },
     externals: Object.assign(webpackExternals, {
