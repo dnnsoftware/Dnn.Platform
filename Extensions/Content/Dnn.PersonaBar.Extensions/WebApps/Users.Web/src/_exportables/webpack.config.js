@@ -42,7 +42,7 @@ module.exports = {
             path.resolve(__dirname, "../"),
             path.resolve(__dirname, "node_modules"),
             path.resolve(__dirname, "../../node_modules"),
-            path.resolve(__dirname, "../../../../../../node_modules")
+            path.resolve(__dirname, "../../../../../../../node_modules")
         ]
     },
     devtool: "source-map"
