@@ -150,59 +150,29 @@ namespace DotNetNuke.Common
 
         private static Version GetNETFrameworkVersion()
         {
-            string version = Environment.Version.ToString(2);
-            if (version == "2.0")
+            //Obtain the .NET Framework version, 9.4.0 and later requires .NET 4.7.2 or later
+            var version = Environment.Version.ToString(2);
+
+            //If unknown version return as is.
+            if (version != "4.0")
+                return new Version(version);
+
+            //Otherwise utilize release DWORD from registry to determine version
+            //Reference List: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
+            var release = GetDotNet4ReleaseNumberFromRegistry();
+            if (release >= 528040)
             {
-                //Try and load a 3.0 Assembly
-                try
-                {
-                    AppDomain.CurrentDomain.Load("System.Runtime.Serialization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
-                    version = "3.0";
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-                //Try and load a 3.5 Assembly
-                try
-                {
-                    AppDomain.CurrentDomain.Load("System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
-                    version = "3.5";
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
+                version = "4.8";
             }
-            else if (version == "4.0")
+            else
             {
-                var release = GetReleaseFromRegistry();
-                if (release >= 394254)
-                {
-                    version = "4.6.1";
-                }
-                else if (release >= 393295)
-                {
-                    version = "4.6";
-                }
-                else if (release >= 379893)
-                {
-                    version = "4.5.2";
-                }
-                else if (release >= 378675)
-                {
-                    version = "4.5.1";
-                }
-                else if (release >= 378389)
-                {
-                    version = "4.5";
-                }
+                version = "4.7.2";
             }
 
             return new Version(version);
         }
 
-        private static int GetReleaseFromRegistry()
+        private static int GetDotNet4ReleaseNumberFromRegistry()
         {
             try
             {

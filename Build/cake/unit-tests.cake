@@ -1,5 +1,3 @@
-#tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
-#tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
 Task("EnsureAllProjectsBuilt")
   .IsDependentOn("UpdateDnnManifests")

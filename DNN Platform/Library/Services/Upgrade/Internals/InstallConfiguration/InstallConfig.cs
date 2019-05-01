@@ -49,8 +49,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 
         public bool SupportLocalization { get; set; }
 
-        public bool DisplayBanners { get; set; }
-
         public InstallConfig()
         {
             Portals = new List<PortalConfig>();
