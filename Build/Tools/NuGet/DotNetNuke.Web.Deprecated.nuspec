@@ -22,6 +22,5 @@
     <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\net45\" />
     <file src="..\..\..\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\net45\" />
     <file src="..\..\..\Website\bin\Telerik.Web.UI.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\Licenses\Telerik RadControls for ASP.NET AJAX (Custom).pdf" />
   </files>
 </package>
