@@ -398,7 +398,6 @@ namespace Dnn.ExportImport.Components.Services
 
             // On import, we should care about DefaultLanguageGuid for the pages we override and newly created tabs
 
-            
             // 1. Define whether DefaultLanguageGuid of exported page is not null
             // 2. Find exported page where UniqueId = DefaultLanguageGuid to define default lang page
             // 3. Find corresponding id of local default lang tab
