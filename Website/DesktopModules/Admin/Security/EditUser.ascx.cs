@@ -20,10 +20,6 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -40,6 +36,10 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private void BindUser()
         {
             BindMembership();
-          
+
         }
 
         private void DisableForm()
@@ -378,15 +378,15 @@ namespace DotNetNuke.Modules.Admin.Users
 
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
-            
+
             ctlServices.SubscriptionUpdated += SubscriptionUpdated;
             ctlProfile.ProfileUpdateCompleted += ProfileUpdateCompleted;
             ctlPassword.PasswordUpdated += PasswordUpdated;
             ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
 
-			email.ValidationExpression = PortalSettings.Registration.EmailValidator;
+            email.ValidationExpression = PortalSettings.Registration.EmailValidator;
 
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.Knockout);
 
 
@@ -415,9 +415,9 @@ namespace DotNetNuke.Modules.Admin.Users
             if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
             {
                 displayName.Enabled = false;
-            }            
+            }
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -442,7 +442,34 @@ namespace DotNetNuke.Modules.Admin.Users
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
             UserInfo user = User;
-            if (!UserController.DeleteUser(ref user, true, false))
+            var success = false;
+            if (PortalSettings.DataConsentActive && user.UserID == UserInfo.UserID)
+            {
+                switch (PortalSettings.DataConsentUserDeleteAction)
+                {
+                    case PortalSettings.UserDeleteAction.Manual:
+                        user.Membership.Approved = false;
+                        UserController.UpdateUser(PortalSettings.PortalId, user);
+                        UserController.UserRequestsRemoval(user, true);
+                        success = true;
+                        break;
+                    case PortalSettings.UserDeleteAction.DelayedHardDelete:
+                        success = UserController.DeleteUser(ref user, true, false);
+                        UserController.UserRequestsRemoval(user, true);
+                        break;
+                    case PortalSettings.UserDeleteAction.HardDelete:
+                        success = UserController.RemoveUser(user);
+                        break;
+                    default: // if user delete is switched off under Data Consent then we revert to the old behavior
+                        success = UserController.DeleteUser(ref user, true, false);
+                        break;
+                }
+            }
+            else
+            {
+                success = UserController.DeleteUser(ref user, true, false);
+            }
+            if (!success)
             {
                 AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
             }

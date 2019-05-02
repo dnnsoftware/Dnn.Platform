@@ -186,12 +186,6 @@
   <data name="DatabaseName.Text" xml:space="preserve">
     <value>Nome Database</value>
   </data>
-  <data name="DatabaseObjectQualifier.Help" xml:space="preserve">
-    <value>Oggetto qualificatore per il tuo sito.</value>
-  </data>
-  <data name="DatabaseObjectQualifier.Text" xml:space="preserve">
-    <value>Oggetto Qualificatore</value>
-  </data>
   <data name="DatabaseOwner.Text" xml:space="preserve">
     <value>Proprietario Database</value>
   </data>

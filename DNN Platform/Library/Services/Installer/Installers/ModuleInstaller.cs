@@ -298,7 +298,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             _desktopModule.FriendlyName = Package.FriendlyName;
             _desktopModule.Description = Package.Description;
-            _desktopModule.Version = Globals.FormatVersion(Package.Version);
+            _desktopModule.Version = Globals.FormatVersion(Package.Version, "00", 4, ".");
             _desktopModule.CompatibleVersions = Null.NullString;
             _desktopModule.Dependencies = Null.NullString;
             _desktopModule.Permissions = Null.NullString;

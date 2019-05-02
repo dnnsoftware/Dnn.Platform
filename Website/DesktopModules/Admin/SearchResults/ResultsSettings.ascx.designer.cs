@@ -94,6 +94,24 @@ namespace DotNetNuke.Modules.SearchResults {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator filtersRequiredFieldValidator;
         
         /// <summary>
+        /// plResultsScopeForRoles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.UserControls.LabelControl plResultsScopeForRoles;
+        
+        /// <summary>
+        /// comboBoxRoles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox comboBoxRoles;
+        
+        /// <summary>
         /// plEnableWildSearch control.
         /// </summary>
         /// <remarks>

@@ -19,14 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -47,6 +39,14 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace DotNetNuke.Entities.Users
@@ -242,8 +242,8 @@ namespace DotNetNuke.Entities.Users
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
-            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
-                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(),true);
+            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
+                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
         }
 
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
@@ -702,6 +702,37 @@ namespace DotNetNuke.Entities.Users
             AutoAssignUsersToRoles(user, settings.PortalId);
         }
 
+        /// <summary>
+        /// User has agreed to terms and conditions. The time is recorded at the same time in SQL.
+        /// </summary>
+        /// <param name="user">The user that agreed.</param>
+        public static void UserAgreedToTerms(UserInfo user)
+        {
+            Requires.NotNull("user", user);
+            MembershipProvider.Instance().UserAgreedToTerms(user);
+        }
+
+        /// <summary>
+        /// When called all users in the portal will need to agree to terms and conditions again.
+        /// </summary>
+        /// <param name="portalId">The portal for which to reset.</param>
+        public static void ResetTermsAgreement(int portalId)
+        {
+            Requires.NotNull("portalId", portalId);
+            MembershipProvider.Instance().ResetTermsAgreement(portalId);
+        }
+
+        /// <summary>
+        /// A user may request that their account be removed. This sets a flag on the user portal
+        /// so further processing may occur manually by the site admins
+        /// </summary>
+        /// <param name="user">The user that desires to be removed.</param>
+        public static void UserRequestsRemoval(UserInfo user, bool remove)
+        {
+            Requires.NotNull("user", user);
+            MembershipProvider.Instance().UserRequestsRemoval(user, remove);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePassword attempts to change the users password
@@ -1059,7 +1090,7 @@ namespace DotNetNuke.Entities.Users
                     //send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
-                                
+
                 DataCache.ClearPortalUserCountCache(user.PortalID);
                 DataCache.ClearUserCache(user.PortalID, user.Username);
 
@@ -1720,6 +1751,11 @@ namespace DotNetNuke.Entities.Users
             RemoveUser(user);
         }
 
+        /// <summary>
+        /// Permanently deletes all users marked as deleted from a portal. It will delete the membership
+        /// user as well if the user has no other portals
+        /// </summary>
+        /// <param name="portalId">Portal ID to get the deleted users for</param>
         public static void RemoveDeletedUsers(int portalId)
         {
             var arrUsers = GetDeletedUsers(portalId);
@@ -1733,6 +1769,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <summary>
+        /// Permanently delete a user and the associated user folder on disk. 
+        /// This also deletes the membership user if the user is
+        /// not a member of any other portal.
+        /// </summary>
+        /// <param name="user">The user to delete</param>
+        /// <returns></returns>
         public static bool RemoveUser(UserInfo user)
         {
             int portalId = user.PortalID;
@@ -1750,37 +1793,7 @@ namespace DotNetNuke.Entities.Users
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
-                var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
-                var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
-                if (userFolder != null)
-                {
-                    FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
-                    var notDeletedSubfolders = new List<IFolderInfo>();
-                    FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
-
-                    if (notDeletedSubfolders.Count == 0)
-                    {
-                        //try to remove the parent folder if there is no other users use this folder.
-                        var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
-                        FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
-                        if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
-                        {
-                            FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
-
-                            if (notDeletedSubfolders.Count == 0)
-                            {
-                                //try to remove the root folder if there is no other users use this folder.
-                                var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
-                                FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
-                                if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
-                                {
-                                    FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
-                                }
-                            }
-                        }
-                    }
-                }
+                DeleteUserFolder(user);
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
@@ -1792,6 +1805,46 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
 
             return retValue;
+        }
+
+        /// <summary>
+        /// Delete the contents and folder that belongs to a user in a specific portal
+        /// </summary>
+        /// <param name="user">The user for whom to delete the folder. 
+        /// Note the PortalID is taken to specify which portal to delete the folder from.</param>
+        private static void DeleteUserFolder(UserInfo user)
+        {
+            var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
+            var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
+            var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
+            if (userFolder != null)
+            {
+                FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
+                var notDeletedSubfolders = new List<IFolderInfo>();
+                FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
+                if (notDeletedSubfolders.Count == 0)
+                {
+                    //try to remove the parent folder if there is no other users use this folder.
+                    var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                    FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
+                    if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
+                    {
+                        FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
+
+                        if (notDeletedSubfolders.Count == 0)
+                        {
+                            //try to remove the root folder if there is no other users use this folder.
+                            var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                            FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
+                            if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
+                            {
+                                FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -2029,6 +2082,7 @@ namespace DotNetNuke.Entities.Users
             }
 
             if (!user.Membership.Approving) return;
+
             user.Membership.ConfirmApproved();
             EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });
         }
@@ -2224,6 +2278,18 @@ namespace DotNetNuke.Entities.Users
                 }
             }
 
+            // Check if user needs to consent to terms
+            if (validStatus == UserValidStatus.VALID && !(objUser.IsSuperUser || PortalSettings.Current.AdministratorId == objUser.UserID))
+            {
+                if (PortalSettings.Current.DataConsentActive)
+                {
+                    if (!objUser.HasAgreedToTerms)
+                    {
+                        validStatus = UserValidStatus.MUSTAGREETOTERMS;
+                    }
+                }
+            }
+
             //Check if Profile needs updating
             if (validStatus == UserValidStatus.VALID)
             {
@@ -2233,6 +2299,7 @@ namespace DotNetNuke.Entities.Users
                     validStatus = UserValidStatus.UPDATEPROFILE;
                 }
             }
+
             return validStatus;
         }
 

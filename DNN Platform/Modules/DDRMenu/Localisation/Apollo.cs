@@ -9,12 +9,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 {
     using DotNetNuke.Entities.Portals;
 
+    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
     public class Apollo : ILocalisation
 	{
 		private bool haveChecked;
 		private MethodInfo apiMember;
 
-		public bool HaveApi()
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public bool HaveApi()
 		{
 			if (!haveChecked)
 			{
@@ -38,12 +40,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 			return (apiMember != null);
 		}
 
-		public TabInfo LocaliseTab(TabInfo tab, int portalId)
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public TabInfo LocaliseTab(TabInfo tab, int portalId)
 		{
 			return apiMember.Invoke(null, new object[] {tab}) as TabInfo ?? tab;
 		}
 
-		public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
 		{
 			return null;
 		}

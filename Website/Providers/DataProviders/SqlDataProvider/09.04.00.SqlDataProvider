@@ -1,0 +1,282 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/************************************************************/
+/*****          Data Consent Changes                    *****/
+/************************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals ADD
+  HasAgreedToTerms BIT NOT NULL DEFAULT(0),
+  HasAgreedToTermsOn DATETIME NULL,
+  RequestsRemoval BIT NOT NULL DEFAULT(0)
+GO
+
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT  U.UserId,
+        UP.PortalId,
+        U.Username,
+        U.FirstName,
+        U.LastName,
+        U.DisplayName,
+        U.IsSuperUser,
+        U.Email,
+        UP.VanityUrl,
+        U.AffiliateId,
+        IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
+        UP.RefreshRoles,
+        U.LastIPAddress,
+        U.UpdatePassword,
+        U.PasswordResetToken,
+        U.PasswordResetExpiration,
+        UP.Authorised,
+        UP.HasAgreedToTerms,
+        UP.HasAgreedToTermsOn,
+        UP.RequestsRemoval,
+        U.CreatedByUserId,
+        U.CreatedOnDate,
+        U.LastModifiedByUserId,
+        U.LastModifiedOnDate
+	FROM       {databaseOwner}[{objectQualifier}Users]       AS U
+		LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] AS UP 
+			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByRolename]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByRolename]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByRolename]
+	@PortalID	INT,
+	@Rolename	NVARCHAR(50)
+AS
+	DECLARE @UserPortalId INT
+	DECLARE @PortalGroupId INT
+	SELECT @PortalGroupId = PortalGroupId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalID
+	IF EXISTS(SELECT PortalGroupID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId)
+	BEGIN
+		SELECT @UserPortalId = MasterPortalID FROM {databaseOwner}[{objectQualifier}PortalGroups] WHERE PortalGroupID = @PortalGroupId
+	END
+	ELSE
+	BEGIN
+		SELECT @UserPortalId = @PortalID
+	END
+	SELECT     
+		U.*, 
+		UP.PortalId, 
+		UP.Authorised, 
+    UP.HasAgreedToTerms,
+    UP.HasAgreedToTermsOn,
+    UP.RequestsRemoval,
+		UP.IsDeleted,
+		UP.RefreshRoles,
+		UP.VanityUrl
+	FROM {databaseOwner}{objectQualifier}UserPortals AS UP 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}UserRoles  UR 
+			INNER JOIN {databaseOwner}{objectQualifier}Roles R ON UR.RoleID = R.RoleID 
+			RIGHT OUTER JOIN {databaseOwner}{objectQualifier}Users AS U ON UR.UserID = U.UserID 
+		ON UP.UserId = U.UserID	
+	WHERE ( UP.PortalId = @UserPortalId OR @UserPortalId IS Null )
+		AND (UP.IsDeleted = 0 OR UP.IsDeleted Is NULL)
+		AND (R.RoleName = @Rolename)
+		AND (R.PortalId = @PortalID OR @PortalID IS Null )
+	ORDER BY U.FirstName + ' ' + U.LastName
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserAgreedToTerms]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserAgreedToTerms]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserAgreedToTerms]
+	@PortalId	INT,
+	@UserId		INT
+AS
+	UPDATE {databaseOwner}{objectQualifier}UserPortals
+	SET HasAgreedToTerms = 1, HasAgreedToTermsOn = GETDATE()
+	WHERE PortalId = @PortalId AND UserId = @UserId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ResetTermsAgreement]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ResetTermsAgreement]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ResetTermsAgreement]
+	@PortalId	INT
+AS
+	UPDATE {databaseOwner}{objectQualifier}UserPortals
+	SET HasAgreedToTerms = 0
+	WHERE PortalId = @PortalId
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRequestsRemoval]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
+	@PortalId	INT,
+	@UserId		INT,
+	@Remove		BIT
+AS
+	UPDATE {databaseOwner}{objectQualifier}UserPortals
+	SET RequestsRemoval = @Remove
+	WHERE PortalId = @PortalId AND UserId = @UserId
+GO
+
+/*    Add scheduled task to delete soft deleted users       */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Services.Users.PurgeDeletedUsers, DOTNETNUKE')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Services.Users.PurgeDeletedUsers, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Purge Deleted Users')
+END
+GO
+
+
+/*  Increase Version column in DesktopModules table to support revision number  */
+/********************************************************************************/
+
+ALTER Table {databaseOwner}[{objectQualifier}DesktopModules] 
+	ALTER Column [Version] NVARCHAR(50) NOT NULL
+GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
+	@PackageID		int,
+	@ModuleName		nvarchar(128),
+	@FolderName		nvarchar(128),
+	@FriendlyName		nvarchar(128),
+	@Description		nvarchar(2000),
+	@Version		nvarchar(50),
+	@IsPremium		bit,
+	@IsAdmin		bit,
+	@BusinessController	nvarchar(200),
+	@SupportedFeatures	int,
+	@Shareable		int,
+	@CompatibleVersions	nvarchar(500),
+	@Dependencies		nvarchar(400),
+	@Permissions		nvarchar(400),
+	@ContentItemId		int,
+	@CreatedByUserID	int,
+	@AdminPage		nvarchar(128),
+	@HostPage		nvarchar(128)
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}DesktopModules (
+		PackageID,
+		ModuleName,
+		FolderName,
+		FriendlyName,
+		Description,
+		Version,
+		IsPremium,
+		IsAdmin,
+		BusinessControllerClass,
+		SupportedFeatures,
+		Shareable,
+		CompatibleVersions,
+		Dependencies,
+		Permissions,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		ContentItemId,
+		AdminPage,
+		HostPage
+	)
+	VALUES (
+		@PackageID,
+		@ModuleName,
+		@FolderName,
+		@FriendlyName,
+		@Description,
+		@Version,
+		@IsPremium,
+		@IsAdmin,
+		@BusinessController,
+		@SupportedFeatures,
+		@Shareable,
+		@CompatibleVersions,
+		@Dependencies,
+		@Permissions,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@ContentItemId,
+		@AdminPage,
+		@HostPage
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateDesktopModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
+	@DesktopModuleId		int,
+	@PackageID			int,
+	@ModuleName			nvarchar(128),
+	@FolderName			nvarchar(128),
+	@FriendlyName			nvarchar(128),
+	@Description			nvarchar(2000),
+	@Version			nvarchar(50),
+	@IsPremium			bit,
+	@IsAdmin			bit,
+	@BusinessController		nvarchar(200),
+	@SupportedFeatures		int,
+	@Shareable			int,
+	@CompatibleVersions		nvarchar(500),
+	@Dependencies			nvarchar(400),
+	@Permissions			nvarchar(400),
+	@ContentItemId			int,
+	@LastModifiedByUserID		int,
+	@AdminPage		nvarchar(128),
+	@HostPage		nvarchar(128)
+
+AS
+    UPDATE {databaseOwner}{objectQualifier}DesktopModules
+    SET	
+        PackageID = @PackageID,
+        ModuleName = @ModuleName,
+        FolderName = @FolderName,
+        FriendlyName = @FriendlyName,
+        Description = @Description,
+        Version = @Version,
+        IsPremium = @IsPremium,
+        IsAdmin = @IsAdmin,
+        BusinessControllerClass = @BusinessController,
+        SupportedFeatures = @SupportedFeatures,
+        Shareable = @Shareable,
+        CompatibleVersions = @CompatibleVersions,
+        Dependencies = @Dependencies,
+        Permissions = @Permissions,
+        ContentItemId = @ContentItemId,
+        LastModifiedByUserID = @LastModifiedByUserID,
+        LastModifiedOnDate = getdate(),
+        AdminPage=@AdminPage,
+        HostPage=@HostPage
+    WHERE  DesktopModuleId = @DesktopModuleId
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

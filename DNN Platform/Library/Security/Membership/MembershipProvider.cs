@@ -75,6 +75,9 @@ namespace DotNetNuke.Security.Membership
         public abstract void GetUserMembership(ref UserInfo user);
         public abstract string ResetPassword(UserInfo user, string passwordAnswer);
         public abstract bool UnLockUser(UserInfo user);
+        public abstract void UserAgreedToTerms(UserInfo user);
+        public abstract void ResetTermsAgreement(int portalId);
+        public abstract void UserRequestsRemoval(UserInfo user, bool remove);
         public abstract void UpdateUser(UserInfo user);
         public abstract UserInfo UserLogin(int portalId, string username, string password, string verificationCode, ref UserLoginStatus loginStatus);
         public abstract UserInfo UserLogin(int portalId, string username, string password, string authType, string verificationCode, ref UserLoginStatus loginStatus);

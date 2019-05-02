@@ -1154,6 +1154,12 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalAliasOnInstall]
 GO
 DROP TABLE {databaseOwner}[{objectQualifier}PortalAlias]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}UserAgreedToTerms]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}ResetTermsAgreement]
+GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
+GO
 
 /** Remove AspNet Data **/
 

@@ -200,5 +200,14 @@
   </data>
   <data name="plCustomDomain.Text" xml:space="preserve">
     <value>Custom Domain</value>
-  </data>  
+  </data>
+  <data name="tbSyncBatchSize.Error" xml:space="preserve">
+    <value>Syhchronization batch size must be a positive integer number</value>
+  </data>
+  <data name="plSyncBatchSize.Help" xml:space="preserve">
+    <value>Sets the maximum number of items that can be fetched from Azure storage on each request during folder synchronization. The lower the number, the more round trips will be necessary to fetch all items. Large numbers will lead to timeouts in case of large repositories.</value>
+  </data>
+  <data name="plSyncBatchSize.Text" xml:space="preserve">
+    <value>Synchronization Batch Size</value>
+  </data>
 </root>

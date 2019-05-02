@@ -7,17 +7,6 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
-		
--- Pointer used for text / image updates. This might not be needed, but is declared here just in case
-DECLARE @pv binary(16)
-
--- minimum date to set for all creted on last modified on columns
-DECLARE @CreateBy int = -1
-DECLARE @UpdateBy int = NULL
-DECLARE @UpdateByNotNull int = -1
-DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
-DECLARE @UpdateOn datetime = NULL
-DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}TabModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}TabModuleSettings_{objectQualifier}TabModules]
@@ -211,6 +200,15 @@ INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [Co
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [ContentType]) VALUES (5, N'DNNCorp_JournalGroup')
 INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID], [ContentType]) VALUES (6, N'File')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ContentTypes] OFF
+
+GO
+
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Add 146 rows to {databaseOwner}[{objectQualifier}EventLogTypes]')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'ADMIN_ALERT', N'Admin Alert', N'', N'DotNetNuke.Logging.EventLogType', N'AdminAlert')
@@ -408,6 +406,15 @@ INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [J
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (33, N'product', N'', -1, 1, 1, 1, 1, NULL, 1, 1)
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (34, N'challengeadded', N'', -1, 1, 1, 1, 1, NULL, 1, 0)
 INSERT INTO {databaseOwner}[{objectQualifier}Journal_Types] ([JournalTypeId], [JournalType], [icon], [PortalId], [IsEnabled], [AppliesToProfile], [AppliesToGroup], [AppliesToStream], [Options], [SupportsNotify], [EnableComments]) VALUES (35, N'challengecompleted', N'', -1, 1, 1, 1, 1, NULL, 1, 0)
+
+GO
+
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Add 1 row to {databaseOwner}[{objectQualifier}Languages]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Languages] ON
@@ -5544,6 +5551,15 @@ INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([EntryID], [ListName], [Val
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([EntryID], [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (5148, N'Currency', N'ZWL', N'Zimbabwe Dollar (ZWL)', 0, 0, 0, -1, NULL, -1, 1, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Lists] OFF
 
+GO
+
+DECLARE @CreateBy int = -1
+DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
+DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
+DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
+
 PRINT(N'Add 15 rows to {databaseOwner}[{objectQualifier}MetaData]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}MetaData] ON
 INSERT INTO {databaseOwner}[{objectQualifier}MetaData] ([MetaDataID], [MetaDataName], [MetaDataDescription]) VALUES (1, N'Title', NULL)
@@ -5641,6 +5657,7 @@ INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullN
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (11, 'DotNetNuke.Services.Social.Messaging.Scheduler.CoreMessagingScheduler, DotNetNuke', 1, 'm', 30, 's', 10, '', 0, 1, 'Messaging', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Messaging Dispatch', NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (12, 'DotNetNuke.Services.ClientDependency.PurgeClientDependencyFiles, DOTNETNUKE', 1, 'd', 6, 'h', 5, '', 0, 0, '', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Purge Client Dependency Files', NULL)
 INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (13, 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke', 1, 'm', 30, 's', 10, '', 0, 0, 'OutputCache', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Purge Output Cache', NULL)
+INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([ScheduleID], [TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName], [ScheduleStartDate]) VALUES (14, 'DotNetNuke.Services.Users.PurgeDeletedUsers, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, N'Purge Deleted Users', NULL)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Schedule] OFF
 
 PRINT(N'Add 369 rows to {databaseOwner}[{objectQualifier}SearchCommonWords]')
@@ -6016,7 +6033,6 @@ INSERT INTO {databaseOwner}[{objectQualifier}SearchCommonWords] ([CommonWordID],
 INSERT INTO {databaseOwner}[{objectQualifier}SearchCommonWords] ([CommonWordID], [CommonWord], [Locale]) VALUES (369, N'z', N'en-US')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchCommonWords] OFF
 
-
 PRINT(N'Add 3 rows to {databaseOwner}[{objectQualifier}SearchTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}SearchTypes] ON
 INSERT INTO {databaseOwner}[{objectQualifier}SearchTypes] ([SearchTypeId], [SearchTypeName], [SearchResultClass], [IsPrivate]) VALUES (1, N'module', N'DotNetNuke.Services.Search.Controllers.ModuleResultController', 0)
@@ -6201,6 +6217,8 @@ INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey]
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (117, N'PAGE_NOT_FOUND_404', NULL, 1, 100, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (118, N'IP_LOGIN_BANNED', NULL, 1, 100, 0, 1, 1, 1, N'', N'')
 INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (119, N'SCRIPT_COLLISION', NULL, 1, 100, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (120, N'DATA_CONSENT_SUCCESS', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([ID], [LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (121, N'DATA_CONSENT_FAILURE', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}EventLogConfig] OFF
 
 PRINT(N'Add 73 rows to {databaseOwner}[{objectQualifier}Packages]')
@@ -6626,45 +6644,58 @@ SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}TabModules] ON
 INSERT INTO {databaseOwner}[{objectQualifier}TabModules] ([TabModuleID], [TabID], [ModuleID], [PaneName], [ModuleOrder], [CacheTime], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsDeleted], [CacheMethod], [ModuleTitle], [Header], [Footer], [CultureCode], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid]) VALUES (41, 7, 352, N'ContentPane', 1, 0, NULL, NULL, NULL, NULL, 2, NULL, 1, 1, 0, 0, NULL, NULL, 0, @CreateBy, @CreateOn, @UpdateBy, @UpdateOn, 0, NULL, N'Basic Features', NULL, NULL, NULL, 'e44d7fb5-34ea-4af7-b715-ab995a6e93b5', '9a7917fb-0a63-4d56-b4a7-3cffb0e8076e', NULL, '47559492-e817-469d-8522-fd4bedc20822')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}TabModules] OFF
 
+GO
+
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}TabModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}TabModuleSettings_{objectQualifier}TabModules]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}TabModules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] CHECK CONSTRAINT [FK_{objectQualifier}TabModules_{objectQualifier}Modules]
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] CHECK CONSTRAINT [FK_{objectQualifier}TabModules_{objectQualifier}Tabs]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleSettings] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ModuleSettings_{objectQualifier}Modules]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Modules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Modules] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}Modules] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Modules_{objectQualifier}ModuleDefinitions]
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Subscriptions] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_Subscriptions_{objectQualifier}Modules]
 ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] CHECK CONSTRAINT [FK_{objectQualifier}ModulePermission_{objectQualifier}Modules]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ModuleControls]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleControls] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ModuleControls_{objectQualifier}ModuleDefinitions]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypeActions_{objectQualifier}CoreMessaging_NotificationTypes]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Skins]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Skins] CHECK CONSTRAINT [FK_{objectQualifier}Skins_{objectQualifier}SkinPackages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ModuleDefinitions]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ModuleDefinitions] CHECK CONSTRAINT [FK_{objectQualifier}ModuleDefinitions_{objectQualifier}DesktopModules]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]')
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_NotificationTypes_{objectQualifier}DesktopModules]
 ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_Messages] CHECK CONSTRAINT [FK_{objectQualifier}CoreMessaging_Messages_{objectQualifier}CoreMessaging_NotificationTypes]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ContentItems_Tags]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_Tags] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ContentItems_Tags_{objectQualifier}Taxonomy_Terms]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Taxonomy_Terms]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Terms]
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Terms] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Terms_{objectQualifier}Taxonomy_Vocabularies]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Tabs]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Tabs_{objectQualifier}ContentItems]
@@ -6674,36 +6705,45 @@ ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] CHECK CONSTRAINT [FK
 ALTER TABLE {databaseOwner}[{objectQualifier}TabSettings] CHECK CONSTRAINT [FK_{objectQualifier}TabSettings_{objectQualifier}Tabs]
 ALTER TABLE {databaseOwner}[{objectQualifier}TabUrls] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}TabUrls_Tabs]
 ALTER TABLE {databaseOwner}[{objectQualifier}TabVersions] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}TabVersions_{objectQualifier}TabId]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}SkinPackages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}SkinPackages] CHECK CONSTRAINT [FK_{objectQualifier}SkinPackages_{objectQualifier}Packages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}SkinControls]')
 ALTER TABLE {databaseOwner}[{objectQualifier}SkinControls] CHECK CONSTRAINT [FK_{objectQualifier}SkinControls_{objectQualifier}Packages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}DesktopModules]')
 ALTER TABLE {databaseOwner}[{objectQualifier}DesktopModules] CHECK CONSTRAINT [FK_{objectQualifier}DesktopModules_{objectQualifier}Packages]
 ALTER TABLE {databaseOwner}[{objectQualifier}PortalDesktopModules] CHECK CONSTRAINT [FK_{objectQualifier}PortalDesktopModules_{objectQualifier}DesktopModules]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Authentication]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Authentication] CHECK CONSTRAINT [FK_{objectQualifier}Authentication_{objectQualifier}Packages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Assemblies]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Assemblies] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}PackageAssemblies_PackageAssemblies]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_ScopeTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}Taxonomy_Vocabularies] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Taxonomy_Vocabularies_{objectQualifier}Taxonomy_VocabularyTypes]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Packages]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Packages] CHECK CONSTRAINT [FK_{objectQualifier}Packages_{objectQualifier}PackageTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}JavaScriptLibraries{objectQualifier}Packages]
 ALTER TABLE {databaseOwner}[{objectQualifier}LanguagePacks] CHECK CONSTRAINT [FK_{objectQualifier}LanguagePacks_{objectQualifier}Packages]
 ALTER TABLE {databaseOwner}[{objectQualifier}PackageDependencies] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}PackageDependencies_{objectQualifier}Packages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}EventLogConfig]')
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLogConfig] CHECK CONSTRAINT [FK_{objectQualifier}EventLogConfig_{objectQualifier}EventLogTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] CHECK CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogConfig]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ContentItems]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ContentItems_{objectQualifier}ContentTypes]
@@ -6712,6 +6752,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData] CHECK CONSTR
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowLogs] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ContentWorkflowLogs_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}Files] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Files_{objectQualifier}ContentItems]
 ALTER TABLE {databaseOwner}[{objectQualifier}ScheduleItemSettings] CHECK CONSTRAINT [FK_{objectQualifier}ScheduleItemSettings_{objectQualifier}Schedule]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}Roles]')
 ALTER TABLE {databaseOwner}[{objectQualifier}Roles] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Roles_{objectQualifier}Portals]
@@ -6722,6 +6763,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] WITH CHECK CHECK 
 ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Roles]
 ALTER TABLE {databaseOwner}[{objectQualifier}UserRoles] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}UserRoles_{objectQualifier}Roles]
 ALTER TABLE {databaseOwner}[{objectQualifier}Relationships] CHECK CONSTRAINT [FK_{objectQualifier}Relationships_{objectQualifier}RelationshipTypes]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}ProfilePropertyDefinition]')
 ALTER TABLE {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] CHECK CONSTRAINT [FK_{objectQualifier}ProfilePropertyDefinition_{objectQualifier}Portals]
@@ -6733,6 +6775,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}ModulePermission] CHECK CONSTRAINT 
 ALTER TABLE {databaseOwner}[{objectQualifier}TabPermission] CHECK CONSTRAINT [FK_{objectQualifier}TabPermission_{objectQualifier}Permission]
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentItems_MetaData] CHECK CONSTRAINT [FK_{objectQualifier}ContentItems_MetaData{objectQualifier}MetaData]
 ALTER TABLE {databaseOwner}[{objectQualifier}PortalLanguages] CHECK CONSTRAINT [FK_{objectQualifier}PortalLanguages_{objectQualifier}PortalLanguages]
+GO
 
 PRINT(N'Add constraints to {databaseOwner}[{objectQualifier}FolderMappings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}FolderMappings] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}FolderMappings_{objectQualifier}Portals]
@@ -6740,7 +6783,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}FolderMappingsSettings] CHECK CONST
 ALTER TABLE {databaseOwner}[{objectQualifier}Folders] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}Folders_{objectQualifier}FolderMappings]
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog] CHECK CONSTRAINT [FK_{objectQualifier}EventLog_{objectQualifier}EventLogTypes]
 ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions] WITH CHECK CHECK CONSTRAINT [FK_{objectQualifier}ContentWorkflowActions_{objectQualifier}ContentTypes]
-
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

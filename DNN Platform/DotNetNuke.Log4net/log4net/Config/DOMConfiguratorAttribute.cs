@@ -51,7 +51,7 @@ namespace log4net.Config
 	/// <author>Gert Driesen</author>
 	[AttributeUsage(AttributeTargets.Assembly)]
 	[Serializable]
-	[Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute. Scheduled removal in v11.0.0.")]
+	[Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute. Scheduled removal in v10.0.0.")]
 	public sealed class DOMConfiguratorAttribute : XmlConfiguratorAttribute
 	{
 	}

@@ -654,6 +654,22 @@ namespace DotNetNuke.Security.Roles
             return canDelete;
         }
 
+        /// <summary>
+        /// Completely remove all a user's roles for a specific portal. This method is used when 
+        /// anonymizing a user
+        /// </summary>
+        /// <param name="user">User for which all roles must be deleted. The PortalId property
+        /// is used to determine for which portal roles must be removed.</param>
+        internal static void DeleteUserRoles(UserInfo user)
+        {
+            var ctrl = new RoleController();
+            var userRoles = ctrl.GetUserRoles(user, true);
+            foreach (var ur in userRoles.Where(r => r.PortalID == user.PortalID))
+            {
+                provider.RemoveUserFromRole(user.PortalID, user, ur);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fetch a single RoleGroup

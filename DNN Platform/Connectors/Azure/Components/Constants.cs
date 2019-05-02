@@ -15,6 +15,8 @@ namespace Dnn.AzureConnector.Components
         public const string AzureContainerName = "Container";
         public const string DirectLink = "DirectLink";
         public const string UseHttps = "UseHttps";
+        public const string SyncBatchSize = "SyncBatchSize";
+        public const int DefaultSyncBatchSize = 2048;
 
         public const string LocalResourceFile =
             "~/DesktopModules/Connectors/Azure/App_LocalResources/SharedResources.resx";

@@ -32,6 +32,7 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.RazorHost
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
@@ -41,6 +42,7 @@ namespace DotNetNuke.Modules.RazorHost
             fileExtension.Text = "." + scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -50,6 +52,7 @@ namespace DotNetNuke.Modules.RazorHost
             scriptFileType.SelectedIndexChanged += scriptFileType_SelectedIndexChanged;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -57,6 +60,7 @@ namespace DotNetNuke.Modules.RazorHost
             DisplayExtension();
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
@@ -69,6 +73,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             try

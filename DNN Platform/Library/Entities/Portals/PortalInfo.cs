@@ -774,7 +774,7 @@ namespace DotNetNuke.Entities.Portals
         #endregion
 
         [XmlIgnore]
-        [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members
