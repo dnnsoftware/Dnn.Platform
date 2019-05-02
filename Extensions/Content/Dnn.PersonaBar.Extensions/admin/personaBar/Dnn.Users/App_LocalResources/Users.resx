@@ -1286,4 +1286,16 @@
   <data name="LastConsented.Text" xml:space="preserve">
     <value>Last consented on</value>
   </data>
+  <data name="RemoveDeleted.Btn" xml:space="preserve">
+    <value>Remove Deleted Users</value>
+  </data>
+  <data name="RemoveDeleted.Confirm" xml:space="preserve">
+    <value>Do you wish to permanently remove deleted users? You cannot undo this operation.</value>
+  </data>
+  <data name="RemoveDeleted.Done" xml:space="preserve">
+    <value>All deleted users have been removed</value>
+  </data>
+  <data name="CouldNotRemoveAll.Text" xml:space="preserve">
+    <value>Could not remove all users</value>
+  </data>
 </root>

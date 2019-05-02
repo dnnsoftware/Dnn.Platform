@@ -57,6 +57,10 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.post("HardDeleteUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
+    removeDeletedUsers(callback, errorCallback) {
+        const sf = this.getServiceFramework("Users");
+        sf.post("RemoveDeletedUsers", null, callback, errorCallback);
+    }
     restoreUser(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
         sf.post("RestoreDeletedUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
