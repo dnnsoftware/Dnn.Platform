@@ -1223,7 +1223,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to 1
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public static int SiteLogBuffer
         {
             get
@@ -1240,7 +1240,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to -1
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public static int SiteLogHistory
         {
             get
@@ -1257,7 +1257,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to "D"
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public static string SiteLogStorage
         {
             get
@@ -1522,7 +1522,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryDebug
         {
             get
@@ -1537,7 +1537,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryHosted
         {
             get
@@ -1553,7 +1553,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string jQueryUrl
         {
             get
@@ -1576,7 +1576,7 @@ namespace DotNetNuke.Entities.Host
 		///   Defaults to the DefaultHostedUrl constant in the jQuery class.
 		///   The framework will default to the latest released 1.x version hosted on Google.
 		/// </remarks>
-		[Obsolete("This is managed through the JavaScript Library package")]
+		[Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
 		public static string jQueryMigrateUrl
 		{
 			get
@@ -1599,7 +1599,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
-        [Obsolete("This is managed through the JavaScript Library package")]
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string jQueryUIUrl
         {
             get
@@ -1635,7 +1635,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
-		[Obsolete("Not used anymore")]
+		[Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1647,7 +1647,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Get Telerik CDN Basic Path.
         /// </summary>
-        [Obsolete("Not used anymore")]
+        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnBasicUrl
 	    {
 			get
@@ -1659,7 +1659,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// Get Telerik CDN Secure Path.
         /// </summary>
-        [Obsolete("Not used anymore")]
+        [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
         public static string TelerikCdnSecureUrl
 		{
 			get
@@ -1684,6 +1684,14 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
+
+        /// <summary>
+        /// Get a value indicating whether to put the entire instance into maintenance mode
+        /// </summary>
+        public static bool IsLocked
+        {
+            get { return HostController.Instance.GetBoolean("IsLocked", false); }
+        }
 
         #endregion
     }

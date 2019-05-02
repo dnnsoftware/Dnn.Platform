@@ -174,8 +174,8 @@ namespace DotNetNuke.Services.Personalization
         private static string GetDecryptionkey()
         {
             var machineKey = Config.GetDecryptionkey();
-            var hostGuid = Host.GUID.Replace("-", string.Empty);
-            return (machineKey ?? "") + hostGuid;
+            var key = $"{machineKey ?? ""}{Host.GUID.Replace("-", string.Empty)}";
+            return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
     }
 }

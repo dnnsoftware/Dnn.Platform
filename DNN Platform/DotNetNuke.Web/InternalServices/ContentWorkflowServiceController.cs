@@ -123,7 +123,7 @@ namespace DotNetNuke.Web.InternalServices
 
         }
 
-        [Obsolete("Obsolted in Platform 7.4.0")]
+        [Obsolete("Obsolted in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Review(NotificationDTO postData)

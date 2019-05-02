@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return PortalSettings.EnablePopUps 
                     && PortalSettings.LoginTabId == Null.NullInteger
-                    && !HasSocialAuthenticationEnabled();
+                    && !AuthenticationController.HasSocialAuthenticationEnabled(this);
             }
         }
 
@@ -253,19 +253,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
             //default to User Profile Page
             return PortalSettings.UserTabId;            
-        }
-
-        private bool HasSocialAuthenticationEnabled()
-        {
-            return (from a in AuthenticationController.GetEnabledAuthenticationServices()
-                    let enabled = (a.AuthenticationType == "Facebook"
-                                     || a.AuthenticationType == "Google"
-                                     || a.AuthenticationType == "Live"
-                                     || a.AuthenticationType == "Twitter")
-                                  ? PortalController.GetPortalSettingAsBoolean(a.AuthenticationType + "_Enabled", PortalSettings.PortalId, false)
-                                  : !string.IsNullOrEmpty(a.LoginControlSrc) && (LoadControl("~/" + a.LoginControlSrc) as AuthenticationLoginBase).Enabled
-                    where a.AuthenticationType != "DNN" && enabled
-                    select a).Any();
         }
 
         private bool AlwaysShowCount()

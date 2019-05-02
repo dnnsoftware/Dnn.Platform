@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.WebControls;
 using effority.Ealo.Specialized;
@@ -9,12 +10,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 {
     using DotNetNuke.Entities.Portals;
 
+    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
     public class Ealo : ILocalisation
 	{
 		private bool haveChecked;
 		private bool found;
 
-		public bool HaveApi()
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public bool HaveApi()
 		{
 			if (!haveChecked)
 			{
@@ -25,12 +28,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 			return found;
 		}
 
-		public TabInfo LocaliseTab(TabInfo tab, int portalId)
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public TabInfo LocaliseTab(TabInfo tab, int portalId)
 		{
 			return EaloWorker.LocaliseTab(tab, portalId);
 		}
 
-		public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
 		{
 			return null;
 		}

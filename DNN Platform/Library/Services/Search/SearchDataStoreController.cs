@@ -43,40 +43,40 @@ namespace DotNetNuke.Services.Search
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
+    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStoreController
     {
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to return a NullInteger value")]
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to return a NullInteger value. Scheduled removal in v10.0.0.")]
         public static int AddSearchItem(SearchItemInfo item)
         {
             return Null.NullInteger;
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItem(int SearchItemId)
         {            
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItemWords(int SearchItemId)
         {            
         }
 
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchItemInfo GetSearchItem(int ModuleId, string SearchKey)
         {
             var empty=new SearchItemInfo();
             return empty;
         }
 
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static Dictionary<string, SearchItemInfo> GetSearchItems(int ModuleId)
         {
             var empty = new Dictionary<string, SearchItemInfo>();
             return empty;
         }
 
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static ArrayList GetSearchItems(int PortalId, int TabId, int ModuleId)
         {
             var empty = new ArrayList();
@@ -92,14 +92,14 @@ namespace DotNetNuke.Services.Search
         /// <param name="PortalID">A Id of the Portal</param>
         /// <param name="Word">The word</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
         {
             var empty = new SearchResultsInfoCollection();
             return empty;
         }
 
-        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
+        [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalId, int TabId, int ModuleId)
         {
             var empty = new SearchResultsInfoCollection();
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Search
             return dicSearchSettings;
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void UpdateSearchItem(SearchItemInfo item)
         {            
         }

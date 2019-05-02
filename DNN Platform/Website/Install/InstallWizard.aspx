@@ -34,7 +34,6 @@
         </asp:placeholder>
 
     <br/>
-    <img src="../images/Branding/DNN_logo.png" alt="DotNetNuke" />
 
     <div id="languageFlags" runat="server" clientidmode="Static" style="float: right;">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
@@ -178,17 +177,6 @@
                                 <asp:RequiredFieldValidator ID="valDatabaseName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="DatabaseName.Required" Display="Dynamic" ControlToValidate="txtDatabaseName" />
                             </div>
 
-                            <div class="dnnFormItem">
-                                <dnn:Label ID="lblDatabaseObjectQualifier" runat="server" ControlName="txtDatabaseObjectQualifier" ResourceKey="DatabaseObjectQualifier"/>
-                                <asp:TextBox ID="txtDatabaseObjectQualifier" runat="Server" MaxLength="20" />
-                                <asp:RegularExpressionValidator ID="valQualifier" runat="server"
-                                  resourcekey="InvalidQualifier.Text"
-                                  CssClass="dnnFormMessage dnnFormError"
-                                  ControlToValidate="txtDatabaseObjectQualifier"
-                                  ValidationExpression="^[a-zA-Z][a-zA-Z0-9_]{0,19}$"
-                                  Display="Dynamic"
-                                ></asp:RegularExpressionValidator>
-                            </div>
                             <div id="dbSecurityTypeRow" class="dnnFormItem">
                                 <dnn:Label ID="lblDatabaseSecurity" runat="server" ControlName="rblDatabaseSecurity" ResourceKey="DatabaseSecurity"/>
                                 <asp:RadioButtonList ID="databaseSecurityType" runat="server" RepeatDirection="Horizontal">
@@ -226,7 +214,7 @@
                         <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                     </div>
                     <div class="dnnFormItem information-checkbox">
-                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
+                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
                         <asp:Label id="lblImprovementProgram" AssociatedControlID="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                     </div>
                 </div>
@@ -270,11 +258,6 @@
                             <p class="step-notstarted" id="WebsiteCreation"><span class="states-icons"></span><%= LocalizeString("WebsiteCreation") %></p>
                             <p class="step-notstarted" id="SuperUserCreation"><span class="states-icons"></span><%= LocalizeString("SuperUserCreation") %></p>
                             <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>
-                        </div>
-                        <div id="banners" runat="server" clientidmode="Static">
-                            <a id="bannerLink" runat="server" href="" target="">
-                                <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="DotNetNuke" onerror="installWizard.bannerError(this);" />
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -585,35 +568,6 @@
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
         }
 
-        <% if (DisplayBanners) { %>
-        // Banner Rotator
-        jQuery(document).ready(function ($) {
-            if (installWizard.online) {
-                installWizard.bannerTimer = setInterval(function () {
-                    if (installWizard.bannerIndex != -1) {
-                        if (installWizard.bannerIndex == installWizard.bannerMaxIndex) {
-                            installWizard.bannerIndex = 1;
-                            $("#bannerImage").attr("src", "../images/branding/DNN_logo.png");
-                            $("#bannerLink").attr("href", "");
-                            $("#bannerLink").attr("target", "");
-                            $("#bannerLink").click(function () { return false; });
-                        }
-                        else {
-                            $("#bannerLink").off('click');// click(function () { return false; });
-                            $("#bannerImage").attr("src", "http://cdn.dotnetnuke.com/installer/banners/banner_" + installWizard.bannerIndex + ".jpg");
-                            $("#bannerLink").attr("href", "http://www.dotnetnuke.com/installation/Banner" + installWizard.bannerIndex + ".aspx");
-                            $("#bannerLink").attr("target", "_blank");
-                            if (installWizard.bannerIndex != -1) {
-                                $("#bannerLink").hide();
-                                $("#bannerLink").show('slow');
-                                installWizard.bannerIndex += 1;
-                            }
-                        }
-                    }
-                }, 5000);
-            }
-        });
-        <% }  %>
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
             $(function () {
@@ -732,7 +686,6 @@
                             installWizard.installInfo.databaseFilename = $('#<%= txtDatabaseFilename.ClientID %>')[0].value;
                             installWizard.installInfo.databaseType = $('#<%= databaseType.ClientID %> input:checked').val();
                             installWizard.installInfo.databaseName = $('#<%= txtDatabaseName.ClientID %>')[0].value;
-                            installWizard.installInfo.databaseObjectQualifier = $('#<%= txtDatabaseObjectQualifier.ClientID %>')[0].value;
                             installWizard.installInfo.databaseSecurity = $('#<%= databaseSecurityType.ClientID %> input:checked').val();
                             installWizard.installInfo.databaseUsername = $('#<%= txtDatabaseUsername.ClientID %>')[0].value;
                             installWizard.installInfo.databasePassword = $('#<%= txtDatabasePassword.ClientID %>')[0].value;

@@ -95,7 +95,7 @@ namespace log4net.Core
         /// Prefer using the <see cref="TimeStampUtc"/> setter, since local time can be ambiguous.
 		/// </para>
 		/// </remarks>
-        [Obsolete("Prefer using TimeStampUtc, since local time can be ambiguous in time zones with daylight savings time.")]
+        [Obsolete("Prefer using TimeStampUtc, since local time can be ambiguous in time zones with daylight savings time.. Scheduled removal in v11.0.0.")]
         public DateTime TimeStamp;
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace log4net.Core
 		/// <summary>
 		/// Fix the MDC
 		/// </summary>
-		[Obsolete("Replaced by composite Properties")]
+		[Obsolete("Replaced by composite Properties. Scheduled removal in v10.0.0.")]
 		Mdc = 0x01,
 
 		/// <summary>
@@ -1173,7 +1173,7 @@ namespace log4net.Core
 		/// <b>Obsolete. Use <see cref="GetExceptionString"/> instead.</b>
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use GetExceptionString instead")]
+		[Obsolete("Use GetExceptionString instead. Scheduled removal in v10.0.0.")]
 		public string GetExceptionStrRep() 
 		{
 			return GetExceptionString();
@@ -1241,7 +1241,7 @@ namespace log4net.Core
 		/// information.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use Fix property")]
+		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
 		public void FixVolatileData()
 		{
 			Fix = FixFlags.All;
@@ -1275,7 +1275,7 @@ namespace log4net.Core
 		/// settings are fixed.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use Fix property")]
+		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
 		public void FixVolatileData(bool fastButLoose)
 		{
 			if (fastButLoose)

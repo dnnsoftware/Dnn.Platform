@@ -34,7 +34,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Entities.Users.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead. Scheduled removal in v10.0.0.")]
     public class TestableUserController : ServiceLocator<IUserController, TestableUserController>, IUserController
     {
         protected override Func<IUserController> GetFactory()

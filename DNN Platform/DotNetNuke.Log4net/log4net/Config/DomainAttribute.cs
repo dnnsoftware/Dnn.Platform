@@ -49,7 +49,7 @@ namespace log4net.Config
 	/// <author>Gert Driesen</author>
 	[AttributeUsage(AttributeTargets.Assembly)]
 	[Serializable]
-	[Obsolete("Use RepositoryAttribute instead of DomainAttribute")]
+	[Obsolete("Use RepositoryAttribute instead of DomainAttribute. Scheduled removal in v10.0.0.")]
 	public sealed class DomainAttribute : RepositoryAttribute
 	{
 		#region Public Instance Constructors

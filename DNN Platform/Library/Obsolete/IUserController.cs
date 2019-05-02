@@ -28,7 +28,7 @@ using System.ComponentModel;
 namespace DotNetNuke.Entities.Users.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Users instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Users instead. Scheduled removal in v10.0.0.")]
     public interface IUserController
     {
         UserInfo GetUserByDisplayname(int portalId, string displayName);

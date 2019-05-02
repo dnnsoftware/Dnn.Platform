@@ -811,7 +811,7 @@ namespace DotNetNuke.Common
                 }
                 if (string.IsNullOrEmpty(cultureCode))
                 {
-                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
+                    cultureCode = !string.IsNullOrEmpty(settings.DefaultLanguage) ? settings.DefaultLanguage : Thread.CurrentThread.CurrentCulture.Name;
                 }
             }
 
@@ -3374,7 +3374,7 @@ namespace DotNetNuke.Common
             else if (TrackClicks || ForceDownload || UrlType == TabType.File)
             {
                 //format LinkClick wrapper
-                if (Link.ToLowerInvariant().StartsWith("fileid="))
+                if (Link.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
                     if (PortalId == Null.NullInteger) //To track Host files
@@ -3765,7 +3765,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.")]
+        [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicFormattedUrl()
         {
             var avatarUrl = PortalController.Instance.GetCurrentPortalSettings().DefaultPortalAlias;
@@ -3791,7 +3791,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl")]
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicRelativeUrl()
         {
             return UserProfilePicRelativeUrl(true);
@@ -3806,7 +3806,7 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl")]
+        [Obsolete("Deprecated in Platform 8.0.0. Please use UserController.Instance.GetUserProfilePictureUrl. Scheduled removal in v11.0.0.")]
         public static string UserProfilePicRelativeUrl(bool includeCdv)
         {
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
@@ -3836,13 +3836,13 @@ namespace DotNetNuke.Common
 
         #region "Html functions moved to HtmlUtils.vb"
 
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail")]
+        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
         public static string FormatEmail(string Email)
         {
             return HtmlUtils.FormatEmail(Email);
         }
 
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatWebsite")]
+        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatWebsite. Scheduled removal in v11.0.0.")]
         public static string FormatWebsite(object Website)
         {
             return HtmlUtils.FormatWebsite(Website);
@@ -3852,7 +3852,7 @@ namespace DotNetNuke.Common
 
         #region "Xml functions moved to XmlUtils.vb"
 
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode")]
+        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode. Scheduled removal in v11.0.0.")]
         public static string XMLEncode(string HTML)
         {
             return XmlUtils.XMLEncode(HTML);
@@ -3860,13 +3860,13 @@ namespace DotNetNuke.Common
 
         #endregion
 
-        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString")]
+        [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString. Scheduled removal in v11.0.0.")]
         public static string GetDBConnectionString()
         {
             return Config.GetConnectionString();
         }
 
-        [Obsolete("This method has been deprecated. ")]
+        [Obsolete("This method has been deprecated. . Scheduled removal in v11.0.0.")]
         public static ArrayList GetFileList(DirectoryInfo CurrentDirectory, [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
                                                                                 string strExtensions, [Optional, DefaultParameterValue(true)] // ERROR: Optional parameters aren't supported in C#
                                                                                                           bool NoneSpecified)
@@ -3889,7 +3889,7 @@ namespace DotNetNuke.Common
                     strExtension = File.Substring(File.LastIndexOf(".") + 1);
                 }
                 string FileName = File.Substring(CurrentDirectory.FullName.Length);
-                if (strExtensions.ToUpper().IndexOf(strExtension.ToUpper()) != -1 || string.IsNullOrEmpty(strExtensions))
+                if (strExtensions.IndexOf(strExtension, StringComparison.InvariantCultureIgnoreCase) != -1 || string.IsNullOrEmpty(strExtensions))
                 {
                     arrFileList.Add(new FileItem(FileName, FileName));
                 }
@@ -3898,7 +3898,7 @@ namespace DotNetNuke.Common
             return arrFileList;
         }
 
-        [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer).")]
+        [Obsolete("This method has been deprecated. Replaced by GetSubFolderPath(ByVal strFileNamePath As String, ByVal portaId as Integer).. Scheduled removal in v11.0.0.")]
         public static string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
@@ -3917,14 +3917,14 @@ namespace DotNetNuke.Common
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");
         }
 
-        [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs")]
+        [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs. Scheduled removal in v11.0.0.")]
         public static string LinkClickURL(string Link)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return LinkClick(Link, _portalSettings.ActiveTab.TabID, -1, false);
         }
 
-        [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class")]
+        [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class. Scheduled removal in v11.0.0.")]
         public static string PreventSQLInjection(string strSQL)
         {
             return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);

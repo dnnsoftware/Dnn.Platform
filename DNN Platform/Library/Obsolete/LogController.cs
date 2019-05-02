@@ -48,21 +48,21 @@ namespace DotNetNuke.Services.Log.EventLog
     public partial class LogController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use GetLogTypeInfo and use the LoggingIsActive property.")]
+        [Obsolete("Deprecated in 7.3. Use GetLogTypeInfo and use the LoggingIsActive property.. Scheduled removal in v10.0.0.")]
         public bool LoggingIsEnabled(string logType, int portalID)
         {
             return LoggingProvider.Instance().LoggingIsEnabled(logType, portalID);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsEmailNotification().")]
+        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsEmailNotification().. Scheduled removal in v10.0.0.")]
         public virtual bool SupportsEmailNotification()
         {
             return LoggingProvider.Instance().SupportsEmailNotification();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsInternalViewer().")]
+        [Obsolete("Deprecated in 7.3. Use LoggingProvider.Instance().SupportsInternalViewer().. Scheduled removal in v10.0.0.")]
         public virtual bool SupportsInternalViewer()
         {
             return LoggingProvider.Instance().SupportsInternalViewer();

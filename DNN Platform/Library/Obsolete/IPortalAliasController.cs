@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     /// There is no guarantee that this interface will not change.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Portals instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Portals instead. Scheduled removal in v10.0.0.")]
     public interface IPortalAliasController
     {
         /// <summary>

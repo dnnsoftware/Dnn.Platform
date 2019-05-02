@@ -27,7 +27,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Entities.Modules.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead. Scheduled removal in v10.0.0.")]
     public class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>, IModuleController
     {
         protected override Func<IModuleController> GetFactory()

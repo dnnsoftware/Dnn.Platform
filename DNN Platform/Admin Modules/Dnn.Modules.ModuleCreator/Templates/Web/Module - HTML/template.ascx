@@ -33,13 +33,15 @@
     {
         base.OnLoad(e);
 
+        const string ModuleName = "_OWNER_._MODULE_";
+
         if (!Page.IsPostBack)
         {
             //Load the HTML file
-            var path = Server.MapPath(ModulePath) + "_CONTROL_.html";
+            var path = Path.Combine(Server.MapPath(ModuleName), "_CONTROL_.html");
             if (File.Exists(path))
             {
-                var content = Null.NullString;
+                var content = string.Empty;
                 using (TextReader tr = new StreamReader(path))
                 {
                     content = tr.ReadToEnd();

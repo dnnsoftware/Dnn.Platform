@@ -11,6 +11,7 @@
     <containersrc>[G]Containers/Xcillion/NoTitle.ascx</containersrc>
     <containersrcadmin>[G]Containers/Xcillion/Title_h2.ascx</containersrcadmin>
     <enableskinwidgets>True</enableskinwidgets>
+    <showcookieconsent>False</showcookieconsent>
     <portalaliasmapping>CANONICALURL</portalaliasmapping>
     <contentlocalizationenabled>False</contentlocalizationenabled>
     <timezone>Pacific Standard Time</timezone>
@@ -59,7 +60,7 @@
     <profiledefinition>
       <propertycategory>Basic</propertycategory>
       <propertyname>Biography</propertyname>
-      <datatype>RichText</datatype>
+      <datatype>Multi-line Text</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>
@@ -156,15 +157,15 @@
     </profiledefinition>
     <profiledefinition>
       <propertycategory>Location</propertycategory>
-      <propertyname>Region</propertyname>
-      <datatype>Region</datatype>
+      <propertyname>Country</propertyname>
+      <datatype>Country</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>
     <profiledefinition>
       <propertycategory>Location</propertycategory>
-      <propertyname>Country</propertyname>
-      <datatype>Country</datatype>
+      <propertyname>Region</propertyname>
+      <datatype>Region</datatype>
       <length>0</length>
       <defaultvisibility>2</defaultvisibility>
     </profiledefinition>

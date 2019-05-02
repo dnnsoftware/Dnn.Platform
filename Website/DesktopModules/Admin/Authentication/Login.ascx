@@ -5,6 +5,7 @@
 <%@ Register TagPrefix="dnn" TagName="Profile" Src="~/DesktopModules/Admin/Security/Profile.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Password" Src="~/DesktopModules/Admin/Security/Password.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="User" Src="~/DesktopModules/Admin/Security/User.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="DataConsent" Src="~/DesktopModules/Admin/Security/DataConsent.ascx" %>
 <div class="dnnForm dnnLogin dnnClear">
     <asp:panel id="pnlLogin" runat="server" Visible="false">
         <div class="loginContent">
@@ -76,5 +77,8 @@
     </asp:panel>
     <asp:panel id="pnlProfile" runat="server" visible="false">
         <dnn:profile id="ctlProfile" runat="server" />
+    </asp:panel>
+    <asp:panel id="pnlDataConsent" runat="server" visible="false">
+        <dnn:DataConsent id="ctlDataConsent" runat="server" />
     </asp:panel>
 </div>

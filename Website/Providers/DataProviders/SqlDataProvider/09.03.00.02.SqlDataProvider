@@ -1,0 +1,49 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}aspnet_Membership_UnlockUser'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}aspnet_Membership_UnlockUser
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}aspnet_Membership_UnlockUser
+	@ApplicationName                         nvarchar(256),
+    @UserName                                nvarchar(256)
+AS
+BEGIN
+    DECLARE @UserId uniqueidentifier
+    SELECT  @UserId = NULL
+    SELECT  @UserId = u.UserId
+    FROM    {databaseOwner}{objectQualifier}aspnet_Users u, {databaseOwner}{objectQualifier}aspnet_Applications a, {databaseOwner}{objectQualifier}aspnet_Membership m
+    WHERE   LoweredUserName = LOWER(@UserName) AND
+            u.ApplicationId = a.ApplicationId  AND
+            LOWER(@ApplicationName) = a.LoweredApplicationName AND
+            u.UserId = m.UserId
+
+    IF ( @UserId IS NULL )
+        RETURN 1
+
+    UPDATE {databaseOwner}{objectQualifier}aspnet_Membership
+    SET IsLockedOut = 0,
+        FailedPasswordAttemptCount = 0,
+        FailedPasswordAttemptWindowStart = CONVERT( datetime, '17540101', 112 ),
+        FailedPasswordAnswerAttemptCount = 0,
+        FailedPasswordAnswerAttemptWindowStart = CONVERT( datetime, '17540101', 112 )		
+		-- Removed to ensure lockout date is preserved
+		-- , LastLockoutDate = CONVERT( datetime, '17540101', 112 )
+    WHERE @UserId = UserId
+
+    RETURN 0
+
+	END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

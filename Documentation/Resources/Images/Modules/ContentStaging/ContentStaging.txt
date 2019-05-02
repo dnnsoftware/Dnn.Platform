@@ -1,7 +1,0 @@
-http://production.awesomecycles.biz
-
-http://staging.awesomecycles.biz
-
-Prod Pub Token: 2ce326c8-c66c-490b-f332-e800c433ad1
-
-Local Pub Token: 0f1326c8-c66c-4bbb-a332-e800c433ada8

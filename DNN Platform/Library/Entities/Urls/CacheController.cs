@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Urls
         private const string FriendlyUrlSettingsKey = "url_FriendlyUrlSettings";
         private const string RedirectActionsKey = "url_ParameterRedirectActions_{0}";
         private const string RewriteActionsKey = "url_ParameterRewriteActions_{0}";
-        private const string PortalAliasRegexesKey = "url_PortalAliasRegex";
+        private const string PortalAliasesKey = "url_PortalAliases";
         private const string UserProfileActionsKey = "url_UserProfileActions";
         private const string PortalModuleProvidersForTabKey = "url_ModuleProvidersForTab_{0}_{1}";
         private const string PortalModuleProvidersAllTabsKey = "url_ModuleProvidersAllTabs_{0}";
@@ -433,9 +433,9 @@ namespace DotNetNuke.Entities.Urls
             return rewriteActions;
         }
 
-        internal static OrderedDictionary GetPortalAliasesRegexesFromCache()
+        internal static OrderedDictionary GetPortalAliasesFromCache()
         {
-            object raw = DataCache.GetCache(PortalAliasRegexesKey);
+            object raw = DataCache.GetCache(PortalAliasesKey);
             return (raw != null) ? (OrderedDictionary)raw : null;
         }
 
@@ -760,9 +760,9 @@ namespace DotNetNuke.Entities.Urls
             SetPortalCache(PortalAliasListKey, aliases, settings);
         }
 
-        internal static void StorePortalAliasesRegexesInCache(OrderedDictionary regexList, FriendlyUrlSettings settings)
+        internal static void StorePortalAliasesInCache(OrderedDictionary aliasList, FriendlyUrlSettings settings)
         {
-            SetPortalCache(PortalAliasRegexesKey, regexList, settings);
+            SetPortalCache(PortalAliasesKey, aliasList, settings);
         }
 
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
@@ -791,7 +791,7 @@ namespace DotNetNuke.Entities.Urls
             DataCache.RemoveCache(UrlPortalsKey);
             DataCache.RemoveCache(UserProfileActionsKey);
             DataCache.RemoveCache(PortalAliasListKey);
-            DataCache.RemoveCache(PortalAliasRegexesKey);
+            DataCache.RemoveCache(PortalAliasesKey);
             DataCache.RemoveCache(TabPathsKey);
         }
 

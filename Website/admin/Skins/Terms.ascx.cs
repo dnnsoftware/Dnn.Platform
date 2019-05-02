@@ -20,11 +20,11 @@
 #endregion
 #region Usings
 
-using System;
-
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using System;
 
 #endregion
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypTerms.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms");
+                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : Globals.NavigateURL(PortalSettings.TermsTabId);
 
                 hypTerms.Attributes["rel"] = "nofollow";
             }

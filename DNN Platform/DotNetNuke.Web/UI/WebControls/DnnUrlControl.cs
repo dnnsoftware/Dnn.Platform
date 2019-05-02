@@ -458,7 +458,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         else
                         {
                             string mCustomUrl = txtUrl.Text;
-                            if (mCustomUrl.ToLowerInvariant() == "http://")
+                            if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 r = "";
                             }
@@ -589,7 +589,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ViewState["UrlType"] = _Urltype;
                 if (_Urltype == "F")
                 {
-                    if (_Url.ToLowerInvariant().StartsWith("fileid="))
+                    if (_Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                     {
                         TrackingUrl = _Url;
                         var objFile = FileManager.Instance.GetFile(int.Parse(_Url.Substring(7)));
@@ -618,7 +618,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 if (_Urltype == "M")
                 {
-                    if (_Url.ToLowerInvariant().StartsWith("userid="))
+                    if (_Url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
                         UserInfo objUser = UserController.GetUserById(_objPortal.PortalID, int.Parse(_Url.Substring(7)));
                         if (objUser != null)

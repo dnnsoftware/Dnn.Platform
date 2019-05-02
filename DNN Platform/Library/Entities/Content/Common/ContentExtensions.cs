@@ -35,7 +35,7 @@ using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Entities.Content
 {
-    [Obsolete("Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions")]
+    [Obsolete("Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions. Scheduled removal in v10.0.0.")]
     public static class ContentExtensions
     {
         //only forwarding public methods that existed as of 6.1.0

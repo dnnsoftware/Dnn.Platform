@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DotNetNuke.Common.Utilities
 {
@@ -40,6 +41,22 @@ namespace DotNetNuke.Common.Utilities
                 ? input
                 : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLowerInvariant();
 		}
+
+        /// <summary>
+        /// Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <returns></returns>
+        public static string ReplaceIgnoreCase(this string source, string oldValue, string newValue)
+        {
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(oldValue) || oldValue.Equals(newValue, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return source;
+            }
+            return Regex.Replace(source, Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
+        }
 
         private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
     }

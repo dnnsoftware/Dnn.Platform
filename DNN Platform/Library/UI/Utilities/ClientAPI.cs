@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Utilities
         /// <param name="strJSFunction">Javascript function name to execute</param>
         /// <remarks>
         /// </remarks>
-        [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release")]
+        [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
         public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
         {
             //legacy implementation replaced

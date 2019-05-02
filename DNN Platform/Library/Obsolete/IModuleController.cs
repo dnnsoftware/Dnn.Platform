@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Modules.Internal
     /// There is no guarantee that this interface will not change.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Modules instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Modules instead. Scheduled removal in v10.0.0.")]
     public interface IModuleController
     {
         /// <summary>

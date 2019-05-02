@@ -17,12 +17,18 @@
     <CESourceExclude Include="$(PlatformCheckout)\**\.github\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\**\.nuget\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\**\.vs\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Modules\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Projects\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\src\Providers\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\tools\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Artifacts\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\DeployPackage\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\Documentation\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\packages\**\*" />
     <CESourceExclude Include="$(PlatformCheckout)\Website\Documentation\*.doc" />
-    <CESourceExclude Include="$(PlatformCheckout)\Website\Install\Skin\Facebook*" />
+    <CESourceExclude Include="$(PlatformCheckout)\**\*.md" />
+    <CESourceExclude Include="$(PlatformCheckout)\DNN Platform\**\bin\**\*" />
+    <CESourceExclude Include="$(PlatformCheckout)\DNN Platform\**\obj\**\*" />
   </ItemGroup>
   <ItemGroup>
     <InstallExclude Include="$(PlatformCheckout)\**\*.cs" />
@@ -134,15 +140,6 @@
   </Target>
 
   <Target Name="CopyBrandedFiles" DependsOnTargets="VersionCheck">
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\iconbar_logo.png" ReadOnly="false" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\logo.gif" ReadOnly="false" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\DNN_logo.png" ReadOnly="false" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\iconbar_logo.png" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\logo.gif" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Copy SourceFiles="$(BuildCheckout)\Build\Branded\CE\Website\Images\Branding\Dnn_logo.png" DestinationFolder="$(PlatformCheckout)\Website\Images\Branding" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\iconbar_logo.png" ReadOnly="true" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\logo.gif" ReadOnly="true" />
-    <Attrib Files="$(PlatformCheckout)\Website\Images\Branding\DNN_logo.png" ReadOnly="true" />
     <!--Pacakge the Telerik zip-->
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
@@ -183,13 +180,6 @@
   </Target>
 
   <Target Name="CreateInstall" DependsOnTargets="VersionCheck">
-    <!-- Copy CKEditor Provider assembly into bin folder -->
-    <ItemGroup>
-      <CKEditorPackage Include="$(PlatformCheckout)\DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_*_Install.zip" />
-    </ItemGroup>
-    <Unzip ZipFileName="@(CKEditorPackage)" TargetDirectory="$(PlatformCheckout)\CKEditorPackage" />
-    <Copy SourceFiles="$(PlatformCheckout)\CKEditorPackage\bin\DNNConnect.CKEditorProvider.dll" DestinationFolder="$(PlatformCheckout)\Website\bin\" />
-    <RemoveDir Directories="$(PlatformCheckout)\CKEditorPackage" />
     <ItemGroup>
       <InstallPackage Include="$(PlatformCheckout)\Website\**\*.*" Exclude="@(InstallExclude)" />
       <InstallPackage Include="$(PlatformCheckout)\Website\Install\InstallWizard.aspx.cs" />

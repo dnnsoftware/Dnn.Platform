@@ -131,7 +131,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
 
                     _workflowEngine.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
-                    _tabController.ClearCache(portalId);
+                    _tabController.RefreshCache(portalId, tabId);
                 }
             }
             catch (Exception ex)

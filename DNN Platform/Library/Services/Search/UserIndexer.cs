@@ -430,7 +430,7 @@ namespace DotNetNuke.Services.Search
 
         #region Obsoleted Methods
 
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             return null;

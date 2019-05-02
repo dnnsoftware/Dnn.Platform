@@ -205,11 +205,6 @@ namespace DotNetNuke.Services.Install
             get { return _installConfig.SupportLocalization; }
         }
 
-        protected bool DisplayBanners
-        {
-            get { return _installConfig.DisplayBanners; }
-        }
-
         protected bool NeedAcceptTerms
         {
             get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
@@ -530,7 +525,6 @@ namespace DotNetNuke.Services.Install
             if (_connectionConfig != null)
             {
                 txtDatabaseServerName.Text = _connectionConfig.Server;
-                txtDatabaseObjectQualifier.Text = _connectionConfig.Qualifier;
 
                 //SQL Express Or SQL Server
                 if (!string.IsNullOrEmpty(_connectionConfig.File))
@@ -902,8 +896,6 @@ namespace DotNetNuke.Services.Install
                 languageFlags.Visible = false;
                 languagesRow.Attributes.Add("style", "display: none");
             }
-            banners.Visible = DisplayBanners;
-
 
             passwordContainer.CssClass = "password-strength-container";
             txtPassword.CssClass = "password-strength";

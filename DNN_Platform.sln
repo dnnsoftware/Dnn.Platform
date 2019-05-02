@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -94,6 +94,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{7E98CA08-903E-45F7-BD83-853763D5E15B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.AspNetCCP", "DNN Platform\Tests\DotNetNuke.Tests.AspNetCCP\DotNetNuke.Tests.AspNetCCP.csproj", "{64BA74E9-411E-4DC1-91CB-DEF7F22468AD}"
 EndProject
@@ -303,6 +306,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 		DNN Platform\Website\Install\Cleanup\09.01.00.txt = DNN Platform\Website\Install\Cleanup\09.01.00.txt
 		DNN Platform\Website\Install\Cleanup\09.01.01.txt = DNN Platform\Website\Install\Cleanup\09.01.01.txt
 		DNN Platform\Website\Install\Cleanup\09.02.00.txt = DNN Platform\Website\Install\Cleanup\09.02.00.txt
+		DNN Platform\Website\Install\Cleanup\09.04.00.txt = DNN Platform\Website\Install\Cleanup\09.04.00.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"
@@ -344,6 +348,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\09.01.00.config = DNN Platform\Website\Install\Config\09.01.00.config
 		DNN Platform\Website\Install\Config\09.01.01.config = DNN Platform\Website\Install\Config\09.01.01.config
 		DNN Platform\Website\Install\Config\09.02.00.config = DNN Platform\Website\Install\Config\09.02.00.config
+		DNN Platform\Website\Install\Config\09.03.00.config = DNN Platform\Website\Install\Config\09.03.00.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
 		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
 		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
@@ -441,6 +446,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Providers.AspNetCCP", "DNN Platform\Providers\ClientCapabilityProviders\Provider.AspNetCCP\DotNetNuke.Providers.AspNetCCP.csproj", "{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNN.Integration.Test.Framework", "DNN Platform\Tests\DNN.Integration.Test.Framework\DNN.Integration.Test.Framework.csproj", "{8F727796-7C6C-4F42-B385-67B06ECD358E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.GoogleAnalyticsConnector", "DNN Platform\Connectors\GoogleAnalytics\Dnn.GoogleAnalyticsConnector.csproj", "{ADB57FFD-677C-4C30-9723-6EE0A475315B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1544,6 +1551,30 @@ Global
 		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
 		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release-Net45|x86.ActiveCfg = Release|Any CPU
 		{8F727796-7C6C-4F42-B385-67B06ECD358E}.Release-Net45|x86.Build.0 = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|Any CPU.ActiveCfg = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|Any CPU.Build.0 = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|x86.ActiveCfg = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Debug|x86.Build.0 = Cloud_Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|Any CPU.ActiveCfg = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|Any CPU.Build.0 = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|x86.ActiveCfg = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Cloud_Release|x86.Build.0 = Cloud_Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug|x86.Build.0 = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug-Net45|Any CPU.Build.0 = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug-Net45|x86.ActiveCfg = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Debug-Net45|x86.Build.0 = Debug|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release|x86.Build.0 = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release-Net45|x86.ActiveCfg = Release|Any CPU
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B}.Release-Net45|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1632,6 +1663,7 @@ Global
 		{F4AAB2C9-8B8B-441B-8623-9347B62884A1} = {4248BC91-5EAC-489B-929F-6494F805B24E}
 		{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7} = {C3D4B15B-0AAA-494C-AAF5-5CC806B42A34}
 		{8F727796-7C6C-4F42-B385-67B06ECD358E} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
+		{ADB57FFD-677C-4C30-9723-6EE0A475315B} = {9A986091-4238-4804-8C86-6A9A005F72C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

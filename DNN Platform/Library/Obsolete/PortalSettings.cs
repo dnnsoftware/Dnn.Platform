@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals
 {
 	public partial class PortalSettings
 	{
-        [Obsolete("Deprecated in DNN 7.4. Replaced by PortalSettingsController.Instance().GetPortalAliasMappingMode")]
+        [Obsolete("Deprecated in DNN 7.4. Replaced by PortalSettingsController.Instance().GetPortalAliasMappingMode. Scheduled removal in v10.0.0.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {

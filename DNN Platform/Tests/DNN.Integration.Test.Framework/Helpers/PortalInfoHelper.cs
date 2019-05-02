@@ -47,6 +47,8 @@ namespace DNN.Integration.Test.Framework.Helpers
                                                  portal.SearchTabId,
                                                  portal.Custom404TabId,
                                                  portal.Custom500TabId,
+                                                 portal.TermsTabId,
+                                                 portal.PrivacyTabId,
                                                  portal.DefaultLanguage,
                                                  portal.HomeDirectory,
                                                  portal.LastModifiedByUserID,

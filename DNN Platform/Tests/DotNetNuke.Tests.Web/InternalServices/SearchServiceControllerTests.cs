@@ -93,6 +93,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
 
+        private const int DefaultSearchRetryTimes = 5;
+
         #endregion
 
         #region Private Properties
@@ -210,6 +212,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 Constants.DefaultMinLen);
             _mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(
                 Constants.DefaultMaxLen);
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(
+                DefaultSearchRetryTimes);
             HostController.RegisterInstance(_mockHostController.Object);
         }
         private void SetupDataProvider()
@@ -514,7 +518,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                                "ProcessorUserId",
                                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset",
                                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "SuperTabId",
+                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
                                "CultureCode"
                            };
@@ -529,7 +533,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                            "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
                            "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
                            null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null,
-                           homePage.ToString(), null, null, "57", "56", "-1", "-1", "7", "-1", "2011-08-25 07:34:11",
+                           homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
                            "-1", "2011-08-25 07:34:29", culture);
 
             return table.CreateDataReader();

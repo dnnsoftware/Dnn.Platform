@@ -69,7 +69,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
-            if (_app == null || _app.Context == null || _app.Response.ContentType.ToLowerInvariant() != "text/html" || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
+            if (_app == null || _app.Context == null || !_app.Response.ContentType.Equals("text/html", StringComparison.InvariantCultureIgnoreCase) || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
             {
                 return;
             }
@@ -79,7 +79,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 return;
             }
 
-            if (_app.Context.Request.RequestType == "POST" || ! (_app.Context.Request.Url.LocalPath.ToLowerInvariant().EndsWith(Globals.glbDefaultPage.ToLowerInvariant())))
+            if (_app.Context.Request.RequestType == "POST" || ! (_app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return;
             }

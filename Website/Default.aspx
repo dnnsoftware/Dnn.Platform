@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="True" Inherits="DotNetNuke.Framework.DefaultPage" CodeBehind="Default.aspx.cs" %>
+<%@ Page Language="C#" AutoEventWireup="True" Inherits="DotNetNuke.Framework.DefaultPage" CodeBehind="Default.aspx.cs" Async="true" %>
 <%@ Register TagPrefix="dnncrm" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Common.Controls" Assembly="DotNetNuke" %>
 <asp:literal id="skinDocType" runat="server" ViewStateMode="Disabled"/>

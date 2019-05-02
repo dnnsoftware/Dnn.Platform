@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Skins.Xcillion</RootNamespace>
     <AssemblyName>DotNetNuke.Skins.Xcillion</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <UseIISExpress>true</UseIISExpress>
@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
       <Private>False</Private>
     </ProjectReference>

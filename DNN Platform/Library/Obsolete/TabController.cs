@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Tabs
     public partial class TabController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload. Scheduled removal in v10.0.0.")]
         public void CreateLocalizedCopy(List<TabInfo> tabs, Locale locale)
         {
             foreach (TabInfo t in tabs)
@@ -66,21 +66,21 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. RUse alternate overload. Scheduled removal in v10.0.0.")]
         public void CreateLocalizedCopy(TabInfo originalTab, Locale locale)
         {
             CreateLocalizedCopy(originalTab, locale, true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not scalable. Use GetTabsByPortal. Scheduled removal in v10.0.0.")]
         public ArrayList GetAllTabs()
         {
             return CBO.FillCollection(_dataProvider.GetAllTabs(), typeof(TabInfo));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs()")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs(). Scheduled removal in v10.0.0.")]
         public List<TabInfo> GetCultureTabList(int portalid)
         {
             return (from kvp in GetTabsByPortal(portalid)
@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs()")]
+        [Obsolete("Deprecated in DNN 7.3. Method is not neccessary.  Use LINQ and GetPortalTabs(). Scheduled removal in v10.0.0.")]
         public List<TabInfo> GetDefaultCultureTabList(int portalid)
         {
             return (from kvp in GetTabsByPortal(portalid)
@@ -101,35 +101,35 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method is obsolete.  It has been replaced by GetTab(ByVal TabId As Integer, ByVal PortalId As Integer, ByVal ignoreCache As Boolean) ")]
+        [Obsolete("This method is obsolete.  It has been replaced by GetTab(ByVal TabId As Integer, ByVal PortalId As Integer, ByVal ignoreCache As Boolean) . Scheduled removal in v10.0.0.")]
         public TabInfo GetTab(int tabId)
         {
             return GetTab(tabId, GetPortalId(tabId, Null.NullInteger), false);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached")]
+        [Obsolete("Deprecated in DNN 7.3. Use LINQ queries on tab collections thata re cached. Scheduled removal in v10.0.0.")]
         public TabInfo GetTabByUniqueID(Guid uniqueID)
         {
             return CBO.FillObject<TabInfo>(_dataProvider.GetTabByUniqueID(uniqueID));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use GetTabsByPortal(portalId).Count")]
+        [Obsolete("Deprecated in DNN 7.3. Use GetTabsByPortal(portalId).Count. Scheduled removal in v10.0.0.")]
         public int GetTabCount(int portalId)
         {
             return GetTabsByPortal(portalId).Count;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("This method is obsolete.  It has been replaced by GetTabsByParent(ByVal ParentId As Integer, ByVal PortalId As Integer) ")]
+        [Obsolete("This method is obsolete.  It has been replaced by GetTabsByParent(ByVal ParentId As Integer, ByVal PortalId As Integer) . Scheduled removal in v10.0.0.")]
         public ArrayList GetTabsByParentId(int parentId)
         {
             return new ArrayList(GetTabsByParent(parentId, GetPortalId(parentId, Null.NullInteger)));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods)")]
+        [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods). Scheduled removal in v10.0.0.")]
         public void MoveTab(TabInfo tab, TabMoveType type)
         {
             //Get the List of tabs with the same parent

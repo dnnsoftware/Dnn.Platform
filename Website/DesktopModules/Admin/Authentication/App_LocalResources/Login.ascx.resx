@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AssociateHelp.Text" xml:space="preserve">
     <value>You can associate your login information with an existing user account by entering your user name and password.</value>
@@ -230,5 +230,11 @@
   </data>
   <data name="UserLockedOut_ContactAdmin.Text" xml:space="preserve">
     <value>This account has been locked out after too many unsuccessful login attempts.  Please contact the Site Administrator.</value>
+  </data>
+  <data name="MustConsent.Text" xml:space="preserve">
+    <value>You must agree to our terms to continue</value>
+  </data>
+  <data name="FailedToRemoveAccount.Text" xml:space="preserve">
+    <value>Could not remove the account. Please contact the site adminstrator and let him/her know that you wish to be removed.</value>
   </data>
 </root>

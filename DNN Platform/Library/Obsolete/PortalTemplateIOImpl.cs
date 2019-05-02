@@ -31,7 +31,7 @@ using DotNetNuke.Common;
 namespace DotNetNuke.Entities.Portals.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO")]
+    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO. Scheduled removal in v10.0.0.")]
     public class PortalTemplateIOImpl : IPortalTemplateIO
     {
         #region IPortalTemplateIO Members

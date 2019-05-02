@@ -178,16 +178,16 @@ namespace DotNetNuke.UI.Skins
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
             if (skinFolder.ToLowerInvariant().Contains("skins"))
             {
-                if (Host.DefaultAdminSkin.ToLowerInvariant().StartsWith(skin) || Host.DefaultPortalSkin.ToLowerInvariant().StartsWith(skin) ||
-                    portalSettings.DefaultAdminSkin.ToLowerInvariant().StartsWith(skin) || portalSettings.DefaultPortalSkin.ToLowerInvariant().StartsWith(skin))
+                if (Host.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                    portalSettings.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;
                 }
             }
             else
             {
-                if (Host.DefaultAdminContainer.ToLowerInvariant().StartsWith(skin) || Host.DefaultPortalContainer.ToLowerInvariant().StartsWith(skin) ||
-                    portalSettings.DefaultAdminContainer.ToLowerInvariant().StartsWith(skin) || portalSettings.DefaultPortalContainer.ToLowerInvariant().StartsWith(skin))
+                if (Host.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                    portalSettings.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;
                 }
@@ -330,7 +330,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="skinFile">The File Name without extension</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
-            if (skinFolder.ToLowerInvariant() == "_default")
+            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
             {
                 // host folder
                 return skinFile;
@@ -475,7 +475,7 @@ namespace DotNetNuke.UI.Skins
                     if(Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
                         //process embedded zip files
-						if (objZipEntry.Name.ToLowerInvariant() == RootSkin.ToLowerInvariant() + ".zip")
+						if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                         {
                             using (var objMemoryStream = new MemoryStream())
                             {
@@ -489,7 +489,7 @@ namespace DotNetNuke.UI.Skins
                                 strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                             }
                         }
-                        else if (objZipEntry.Name.ToLowerInvariant() == RootContainer.ToLowerInvariant() + ".zip")
+                        else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                         {
                             using(var objMemoryStream = new MemoryStream())
                             {

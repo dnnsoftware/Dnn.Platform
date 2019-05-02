@@ -1,0 +1,36 @@
+next-version: 9.4.0
+commit-date-format: 'yyyyMMdd'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+mode: ContinuousDeployment
+branches:
+  development:
+    regex: development
+    tag: 'alpha'
+    increment: Patch
+    is-mainline: true
+    source-branches: []
+  release:
+    regex: release?[/-]
+    mode: ContinuousDelivery
+    tag: 'rc'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
+    source-branches: []
+  pull-request:
+    regex: (pull|pull\-requests|pr)[/-]
+    tag: 'pr'
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    is-release-branch: false
+    source-branches: []
+  catch-all:
+    regex: (.*?)
+    tag: 'unstable'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    is-release-branch: false
+    source-branches: []

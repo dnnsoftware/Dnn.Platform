@@ -422,7 +422,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>
         /// This is a utility method that can be called to update the version of the composite files.
         /// </summary>
-        [Obsolete("This method is not required anymore. The CRM vesion is now managed in host settings and site settings.")]
+        [Obsolete("This method is not required anymore. The CRM vesion is now managed in host settings and site settings.. Scheduled removal in v11.0.0.")]
         public static void UpdateVersion()
         {
             

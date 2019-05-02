@@ -80,8 +80,23 @@ namespace DotNetNuke.Security
             new Regex("<form[^>]*>", RxOptions),
             new Regex("</form[^><]*>", RxOptions),
             new Regex("onerror", RxOptions),
-            new Regex("onmouseover", RxOptions),
             new Regex("onload", RxOptions),
+            new Regex("onfocus", RxOptions),
+            new Regex("onblur", RxOptions),
+            new Regex("onclick", RxOptions),
+            new Regex("ondblclick", RxOptions),
+            new Regex("onchange", RxOptions),
+            new Regex("onselect", RxOptions),
+            new Regex("onsubmit", RxOptions),
+            new Regex("onreset", RxOptions),
+            new Regex("onkeydown", RxOptions),
+            new Regex("onkeyup", RxOptions),
+            new Regex("onkeypress", RxOptions),
+            new Regex("onmousedown", RxOptions),
+            new Regex("onmousemove", RxOptions),
+            new Regex("onmouseout", RxOptions),
+            new Regex("onmouseover", RxOptions),
+            new Regex("onmouseup", RxOptions),
             new Regex("onreadystatechange", RxOptions),
             new Regex("onfinish", RxOptions),
             new Regex("javascript:", RxOptions),
@@ -243,15 +258,15 @@ namespace DotNetNuke.Security
 
         private static RoleType GetRoleType(string roleName)
         {
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFriendPrefix))
+            if (roleName.StartsWith(RoleFriendPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Friend;
             }
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFollowerPrefix))
+            if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Follower;
             }
-            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleOwnerPrefix))
+            if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Owner;
             }

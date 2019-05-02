@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.SystemDateTime
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseUtcTime, which includes caching")]
+        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseUtcTime, which includes caching. Scheduled removal in v10.0.0.")]
         public static DateTime GetCurrentTimeUtc()
         {
             return Provider.GetDatabaseTimeUtc();
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.SystemDateTime
         /// </summary>
         /// <returns>DateTime</returns>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by DateUtils.GetDatabaseLocalTime, which includes caching")]
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by DateUtils.GetDatabaseLocalTime, which includes caching. Scheduled removal in v11.0.0.")]
         public static DateTime GetCurrentTime()
         {
             return Provider.GetDatabaseTime();

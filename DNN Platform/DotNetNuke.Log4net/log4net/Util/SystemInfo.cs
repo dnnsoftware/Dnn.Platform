@@ -394,7 +394,7 @@ namespace log4net.Util
 		/// will be set per AppDomain.
 		/// </para>
 		/// </remarks>
-        [Obsolete("Use ProcessStartTimeUtc and convert to local time if needed.")]
+        [Obsolete("Use ProcessStartTimeUtc and convert to local time if needed.. Scheduled removal in v10.0.0.")]
 		public static DateTime ProcessStartTime
 		{
 			get { return s_processStartTimeUtc.ToLocalTime(); }

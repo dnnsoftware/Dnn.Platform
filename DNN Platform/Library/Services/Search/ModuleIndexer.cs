@@ -313,7 +313,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
             var searchItems = new SearchItemInfoCollection();
@@ -355,7 +355,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'GetSearchModules' instead.")]
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'GetSearchModules' instead.. Scheduled removal in v10.0.0.")]
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)
         {
             var results = new SearchContentModuleInfoCollection();

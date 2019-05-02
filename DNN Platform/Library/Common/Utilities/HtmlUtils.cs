@@ -309,7 +309,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="RetainSpace">Indicates whether to replace the Entity by a space (true) or nothing (false)</param>
         /// <returns>The cleaned up string</returns>
         /// -----------------------------------------------------------------------------
-        [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode")]
+        [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode. Scheduled removal in v11.0.0.")]
         public static string StripEntities(string HTML, bool RetainSpace)
         {
             var repString = RetainSpace ? " " : "";

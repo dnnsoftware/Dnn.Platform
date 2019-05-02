@@ -903,7 +903,7 @@ namespace log4net.Appender
 		/// Obsolete constructor.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout, File & AppendToFile properties")]
+		[Obsolete("Instead use the default constructor and set the Layout, File & AppendToFile properties. Scheduled removal in v10.0.0.")]
 		public FileAppender(ILayout layout, string filename, bool append)
 		{
 			Layout = layout;
@@ -923,7 +923,7 @@ namespace log4net.Appender
 		/// Obsolete constructor.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout & File properties")]
+		[Obsolete("Instead use the default constructor and set the Layout & File properties. Scheduled removal in v10.0.0.")]
 		public FileAppender(ILayout layout, string filename)
 			: this(layout, filename, true)
 		{

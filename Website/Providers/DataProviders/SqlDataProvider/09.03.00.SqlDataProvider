@@ -1,0 +1,405 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects
+	WHERE id = object_id(N'{databaseOwner}[{objectQualifier}HostSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'PurgeEventLogBatchCount')
+		INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+			([SettingName]
+			,[SettingValue]
+			,[SettingIsSecure]
+			,[CreatedByUserID]
+			,[CreatedOnDate]
+			,[LastModifiedByUserID]
+			,[LastModifiedOnDate])
+		VALUES (N'PurgeEventLogBatchCount', N'150000', 0, -1, GETDATE(), NULL, NULL)
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}PurgeEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeEventLog]
+AS
+	DECLARE @PurgeBatchCount INT = ISNULL(
+	(SELECT CAST(SettingValue AS INT) 
+		FROM {databaseOwner}[{objectQualifier}HostSettings]
+		WHERE SettingName = N'PurgeEventLogBatchCount' AND ISNUMERIC(SettingValue) > 0), 150000)
+
+	;WITH logcounts AS
+	(  
+	  SELECT TOP(@PurgeBatchCount)
+		LogConfigID, 
+		ROW_NUMBER() OVER(PARTITION BY LogConfigID ORDER BY LogCreateDate DESC) AS logEventSequence	
+	  FROM {databaseOwner}[{objectQualifier}EventLog]
+	)
+	DELETE lc
+	FROM logcounts lc
+		INNER JOIN {databaseOwner}[{objectQualifier}EventLogConfig] elc ON elc.ID = lc.LogConfigID
+	WHERE elc.KeepMostRecent <> -1
+		AND lc.logEventSequence > elc.KeepMostRecent
+
+GO
+
+/* Due to DNN-21554 we could have orphaned users in apsnet tables, below SP removes such users if there are some */
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteOrphanedAspNetUsers]
+    @ApplicationName NVARCHAR(256)
+AS
+
+IF (SELECT COUNT(*) FROM dbo.sysobjects
+	WHERE id = object_id(N'dbo.[aspnet_Users]') OR
+		  id = object_id(N'dbo.[aspnet_Membership]') OR
+		  id = object_id(N'{databaseOwner}[{objectQualifier}Users]') and OBJECTPROPERTY(id, N'IsUserTable') = 1) = 3
+BEGIN
+	BEGIN TRANSACTION
+		BEGIN TRY
+			-- remove orphaned aspnet memberships
+			;WITH
+			orphaned_aspnet_memberships(UserId)
+			AS
+			(SELECT asp_memberships.UserId FROM dbo.aspnet_Membership asp_memberships
+					INNER JOIN dbo.aspnet_Applications asp_apps ON asp_apps.ApplicationId = asp_memberships.ApplicationId
+					INNER JOIN dbo.aspnet_Users asp_users ON asp_memberships.UserId = asp_users.UserId
+					LEFT JOIN {databaseOwner}{objectQualifier}Users users ON asp_users.UserName = users.Username
+					WHERE asp_apps.LoweredApplicationName = LOWER(@ApplicationName) AND users.Username IS NULL)
+			DELETE m FROM dbo.aspnet_Membership m
+			INNER JOIN orphaned_aspnet_memberships o ON m.UserId = o.UserId
+
+			-- remove orphaned aspnet users
+			;WITH
+			orphaned_aspnet_users (UserId)
+			AS 
+			(SELECT asp_users.UserId FROM dbo.aspnet_Users asp_users
+					INNER JOIN dbo.aspnet_Applications asp_apps ON asp_apps.ApplicationId = asp_users.ApplicationId
+					LEFT JOIN {databaseOwner}{objectQualifier}Users users ON asp_users.UserName = users.Username		
+					WHERE asp_apps.LoweredApplicationName = LOWER(@ApplicationName) AND users.Username IS NULL)
+			DELETE u FROM dbo.aspnet_Users u
+			INNER JOIN orphaned_aspnet_users o ON u.UserId = o.UserId
+		END TRY
+		BEGIN CATCH
+			SELECT ERROR_MESSAGE() AS ErrorMessage
+			IF @@TRANCOUNT > 0  
+				ROLLBACK TRANSACTION
+		END CATCH
+	IF @@TRANCOUNT > 0 
+	    COMMIT TRANSACTION
+END
+
+GO
+
+/***** DNN-9651: Drop duplicate index and unused calculated column *****/
+IF Exists (SELECT * FROM sys.indexes WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LowerEmail')
+	DROP INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}[{objectQualifier}Users];
+GO
+
+IF Exists (SELECT * FROM sys.columns WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'LowerEmail')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users] DROP COLUMN LowerEmail;
+GO
+
+/***** DNN-24542: Journal_GET SP Performance: Timing out when 1k+ Friends. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    DECLARE @RegisteredRoleId INT
+    DECLARE @PermissionCheck INT
+    SELECT  @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+    SET @PermissionCheck = 1
+    IF (@SecurityCheck = 1 AND NOT EXISTS(SELECT js.JournalId FROM {databaseOwner}[{objectQualifier}Journal_Security] js
+		INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey
+		WHERE js.JournalId = @JournalId))
+    BEGIN
+		-- access denied when security check is required but the key was not found
+		SET @PermissionCheck = 0
+    END
+	
+    SELECT  	j.JournalId, 
+				j.JournalTypeId, 
+				j.Title, 
+				j.Summary, 
+				j.UserId, 
+				j.DateCreated, 
+				j.DateUpdated, 
+				j.PortalId,
+				j.ProfileId, 
+				j.GroupId, 
+				j.ObjectKey, 
+				j.AccessKey,
+				'JournalOwner' = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				'JournalAuthor' = CASE WHEN ISNULL(a.UserId, -1) > 0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				'JournalOwnerId' = ISNULL(j.ProfileId,j.UserId),
+				jt.Icon, 
+				jt.JournalType,
+				'Profile' = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				'SimilarCount' = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, 
+				ContentItemId, 
+				j.ItemData, 
+				j.IsDeleted, 
+				j.CommentsDisabled, 
+				j.CommentsHidden
+    FROM  	    {databaseOwner}[{objectQualifier}Journal] AS j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+				LEFT JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+				LEFT JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE		@PermissionCheck = 1 AND
+				((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) OR 
+				((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
+/***** DNN-22117: update sp GetFiles to get files from folder and all sub folders in one time. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderId INT,
+    @RetrieveUnpublishedFiles BIT = 0,
+    @Recursive BIT = 0
+AS
+    DECLARE @FolderPath NVARCHAR(300)
+    DECLARE @PortalId INT
+    SELECT @FolderPath = FolderPath, @PortalId = ISNULL(PortalId, -1) FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderId = @FolderId
+    IF @RetrieveUnpublishedFiles = 0 
+    BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        ORDER BY [Folder], [FileName]
+    END
+    ELSE BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        WHERE ((@Recursive = 1 AND ISNULL(F.PortalId, -1) = @PortalId AND F.Folder LIKE @FolderPath + '%') OR F.FolderID = @FolderID)
+        ORDER BY [Folder], [FileName]
+    END
+GO
+
+/* Fix GetMessageConversations Procedure */
+/*****************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetMessageConversations]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessageConversations]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessageConversations]
+	@UserID int,
+	@PortalID int,
+	@AfterMessageID int,
+	@NumberOfRecords int,
+	@SortField nvarchar(25) = 'CreatedOnDate',
+	@SortAscending bit = 0,
+	@Read bit = 0,
+	@Archived bit = 0,
+	@SentOnly bit = 0
+AS
+BEGIN
+	--Get the top message for each conversation
+	;WITH RollUpMessageIDs AS
+	(
+		SELECT MAX(m.MessageID) AS TopMessageID
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m ON mr.MessageID = m.MessageID
+		WHERE ((Archived = @Archived) or (@Archived is null AND [Archived] IS NOT null))
+		AND (([Read] = @Read) or (@Read is null AND [READ] IS NOT null))
+		AND ((@SentOnly = 1 AND SenderUserID = @UserID) or (@SentOnly is NULL AND UserID = @UserID) or (@SentOnly = 0 AND UserID = @UserID))
+		AND m.NotificationTypeID IS NULL AND m.PortalID=@PortalID
+		GROUP BY ConversationID
+	)
+	,Conversations  AS
+	(
+		SELECT  DISTINCT [MessageID], [ConversationID], [Subject], convert(nvarchar(50), [Body]) AS Body,
+				[To], [From], [ReplyAllAllowed], [SenderUserID],
+				[CreatedByUserID], [CreatedOnDate],
+				[LastModifiedByUserID], [LastModifiedOnDate],
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageAttachments WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID)) AS AttachmentCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID AND [READ] = 0) AS NewThreadCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID) AS ThreadCount,
+				ROW_NUMBER() OVER(ORDER BY
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 1 THEN [CreatedOnDate] END ASC,
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 0 THEN [CreatedOnDate] END DESC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 1 THEN [From] END ASC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 0 THEN [From] END DESC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 1 THEN [Subject] END ASC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 0 THEN [Subject] END DESC
+					) AS RowNumber
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages AS m
+		WHERE MessageID IN (SELECT TopMessageID FROM RollUpMessageIDs)
+	)
+	, ConversationsCount	AS
+	(SELECT *,
+          (SELECT RowNumber + 1 FROM Conversations WHERE [MessageID] = @AfterMessageID) afterMessageMin,
+          (SELECT RowNumber + @NumberOfRecords FROM Conversations WHERE [MessageID] = @AfterMessageID ) afterMessageMax
+	 FROM Conversations)
+	SELECT * FROM ConversationsCount
+	WHERE 	
+		(@AfterMessageID > 0 AND RowNumber BETWEEN afterMessageMin AND afterMessageMax	) 
+		 OR	(@AfterMessageID = -1 AND RowNumber BETWEEN 1 AND @NumberOfRecords)
+END
+GO
+
+/* Fix for Journal_ListForGroup */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_ListForGroup]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@GroupId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+		DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+					INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+		AND (((@IncludeAllItems = 0) AND (j.IsDeleted = @IsDeleted)) 
+		OR (@IncludeAllItems = 1))
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(r.RoleId as nvarchar(150)) + '</id><name><![CDATA[' + r.RoleName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+		{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId INNER JOIN
+		{databaseOwner}[{objectQualifier}Roles] as r ON j.GroupId = r.RoleId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow))
+	ORDER BY RowNumber ASC;
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE [SettingName] = N'UsernameUnallowedCharacters')
+	INSERT INTO {databaseOwner}[{objectQualifier}HostSettings] 
+		([SettingName]
+		,[SettingValue]
+		,[SettingIsSecure]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate])
+	VALUES (N'UsernameUnallowedCharacters', N'!"#$%&''()*+,/:;<=>?[\]^`{|}', 0, -1, GETDATE(), NULL, NULL)
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+/************************************************************/

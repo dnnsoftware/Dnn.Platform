@@ -200,5 +200,32 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator rgBlobEndpoint;
+        
+        /// <summary>
+        /// plSyncBatchSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl plSyncBatchSize;
+        
+        /// <summary>
+        /// tbSyncBatchSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbSyncBatchSize;
+        
+        /// <summary>
+        /// rgInteger control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rgInteger;
     }
 }

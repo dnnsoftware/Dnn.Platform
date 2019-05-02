@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
                                             //remove the tabid/xx from the path
                                             break; //that's it, we're finished
                                         }
-                                        if (parmPart.ToLowerInvariant() == "tabid")
+                                        if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                                         {
                                             tabIdNext = true;
                                         }

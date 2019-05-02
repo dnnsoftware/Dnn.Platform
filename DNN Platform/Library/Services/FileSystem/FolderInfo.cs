@@ -317,13 +317,13 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Obsolete Methods
 
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers")]
+        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
             : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
         {
         }
 
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers")]
+        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
         {
             FolderID = Null.NullInteger;

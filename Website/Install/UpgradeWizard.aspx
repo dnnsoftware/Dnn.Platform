@@ -25,9 +25,6 @@
             <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
         </asp:placeholder>
 
-        <br/>
-        <img src="../images/Branding/DNN_logo.png" alt="DotNetNuke" />
-
         <div id="languageFlags" style="float: right;">
             <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" OnClientClick="upgradeWizard.changePageLocale('lang_en_US','en-US');"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
             <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" OnClientClick="upgradeWizard.changePageLocale('lang_de_DE','de-DE');"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
@@ -93,7 +90,7 @@
                             <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                         </div>
                         <div class="dnnFormItem information-checkbox">
-                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
+                            <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="False" CssClass="dnnLabel"/>
                             <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                         </div>
                     </div>

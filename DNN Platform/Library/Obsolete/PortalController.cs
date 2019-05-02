@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Portals
     public partial class PortalController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email,
                         string description, string keyWords, string templatePath, string templateFile, string homeDirectory,
                         string portalAlias, string serverPath, string childPath, bool isChildPortal)
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath,
                         string templateFile, string homeDirectory, string portalAlias,
                         string serverPath, string childPath, bool isChildPortal)
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Scheduled removal in v10.0.0.")]
         public void DeletePortalInfo(int portalId)
         {
             UserController.DeleteUsers(portalId, false, true);
@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings. Scheduled removal in v10.0.0.")]
         public static PortalSettings GetCurrentPortalSettings()
         {
             return GetCurrentPortalSettingsInternal();
@@ -108,35 +108,35 @@ namespace DotNetNuke.Entities.Portals
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.4.0.  Replaced by PortalController.Instance.GetPortalSettings")]
+        [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v10.0.0.")]
         public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
         {
             return Instance.GetPortalSettings(portalId);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
             ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by UpdatePortalExpiry(int, string)")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by UpdatePortalExpiry(int, string). Scheduled removal in v10.0.0.")]
         public void UpdatePortalExpiry(int portalId)
         {
             UpdatePortalExpiry(portalId, GetActivePortalLanguage(portalId));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads.")]
+        [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void UpdatePortalInfo(PortalInfo portal, bool clearCache)
         {
             UpdatePortalInternal(portal, clearCache);

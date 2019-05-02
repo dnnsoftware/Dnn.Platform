@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using System;
 using System.IO;
 using System.Xml;
 
@@ -123,7 +124,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     filePath = filePath.Substring(1);
                 }
-                if (file.Extension.ToLowerInvariant() != ".dnn")
+                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(_SubFolder))
                     {

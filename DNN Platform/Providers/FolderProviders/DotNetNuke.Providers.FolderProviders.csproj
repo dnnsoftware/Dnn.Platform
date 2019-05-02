@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Providers.FolderProviders</RootNamespace>
     <AssemblyName>DotNetNuke.Providers.FolderProviders</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -83,6 +83,7 @@
     <Compile Include="AzureFolderProvider\AzureBlob.cs" />
     <Compile Include="AzureFolderProvider\AzureRemoteStorageItem.cs" />
     <Compile Include="AzureFolderProvider\BlobItemExtensions.cs" />
+    <Compile Include="AzureFolderProvider\Constants.cs" />
     <Compile Include="AzureFolderProvider\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

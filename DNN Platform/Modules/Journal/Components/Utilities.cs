@@ -111,16 +111,16 @@ namespace DotNetNuke.Modules.Journal.Components {
             foreach (Match match in matches) {
                 string sTempDesc = match.Groups[0].Value;
                 foreach (Match subM in MetaSubRegex.Matches(sTempDesc)) {
-                    if (subM.Groups[4].Value.ToUpperInvariant() == "OG:DESCRIPTION") {
+                    if (subM.Groups[4].Value.Equals("OG:DESCRIPTION", StringComparison.InvariantCultureIgnoreCase)) {
                         link.Description = subM.Groups[9].Value;
-                    } else if (subM.Groups[4].Value.ToUpperInvariant() == "DESCRIPTION".ToUpperInvariant()) {
+                    } else if (subM.Groups[4].Value.Equals("DESCRIPTION", StringComparison.InvariantCultureIgnoreCase)) {
                         link.Description = subM.Groups[9].Value;
                     }
-                    if (subM.Groups[4].Value.ToUpperInvariant() == "OG:TITLE") {
+                    if (subM.Groups[4].Value.Equals("OG:TITLE", StringComparison.InvariantCultureIgnoreCase)) {
                         link.Title = subM.Groups[9].Value;
                     }
                     
-                    if (subM.Groups[4].Value.ToUpperInvariant() == "OG:IMAGE") {
+                    if (subM.Groups[4].Value.Equals("OG:IMAGE", StringComparison.InvariantCultureIgnoreCase)) {
                         sImage = subM.Groups[9].Value;
                         ImageInfo img = new ImageInfo();
                         img.URL = sImage;

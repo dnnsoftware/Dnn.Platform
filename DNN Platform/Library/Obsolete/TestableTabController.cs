@@ -31,7 +31,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Entities.Tabs.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead. Scheduled removal in v10.0.0.")]
     public class TestableTabController : ServiceLocator<DotNetNuke.Entities.Tabs.Internal.ITabController, TestableTabController>, ITabController
     {
         protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()

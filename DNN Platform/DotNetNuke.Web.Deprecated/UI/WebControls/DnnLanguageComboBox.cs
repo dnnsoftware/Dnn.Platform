@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                string selectedValue = DisplayMode.ToUpperInvariant() == "NATIVE" ? _nativeCombo.SelectedValue : _englishCombo.SelectedValue;
+                string selectedValue = DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase) ? _nativeCombo.SelectedValue : _englishCombo.SelectedValue;
                 if (selectedValue == "None")
                 {
                     selectedValue = Null.NullString;
@@ -240,7 +240,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnPreRender(EventArgs e)
         {
-            if (DisplayMode.ToUpperInvariant() == "ENGLISH")
+            if (DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (_englishCombo.Items.FindItemByValue(_originalValue) != null)
                 {
@@ -268,11 +268,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             _englishCombo.AutoPostBack = AutoPostBack;
             _englishCombo.CausesValidation = CausesValidation;
-            _englishCombo.Visible = (DisplayMode.ToUpperInvariant() == "ENGLISH");
+            _englishCombo.Visible = (DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase));
 
             _nativeCombo.AutoPostBack = AutoPostBack;
             _nativeCombo.CausesValidation = CausesValidation;
-            _nativeCombo.Visible = (DisplayMode.ToUpperInvariant() == "NATIVE");
+            _nativeCombo.Visible = (DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase));
 
             _modeRadioButtonList.Visible = ShowModeButtons;
 

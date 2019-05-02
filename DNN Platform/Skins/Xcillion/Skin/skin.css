@@ -1548,3 +1548,58 @@ footer .links-list ul li a:before {
         max-width: 1138px;
     }
 }
+/*------------------- Language --------------------------*/
+.language {
+    float: left;
+    margin-top: 5px;
+}
+
+.language .language-object {
+    float: right;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.language .language-object span {
+    float: left;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    margin: 0;
+}
+
+.language .language-object span:first-child {
+    padding-left: 8px;
+}
+
+.language .language-object span img {
+    height: 12px;
+    width: 17px;
+    opacity: 0.3;
+}
+
+.language .language-object span:hover img {
+    opacity: 1;
+}
+
+.language .language-object .Language.selected img {
+    opacity: 1;
+    border-color: #222;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+}
+
+/*------------------- User Profile --------------------------*/
+#UserProfileImg
+{
+	margin-bottom: 15px;
+}
+.UserProfileControls ul {
+    margin-left: 0;
+}
+.UserProfileControls ul li {
+    display: inline-block;
+}

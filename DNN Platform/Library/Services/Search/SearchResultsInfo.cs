@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Search
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
+    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchResultsInfo
     {

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Tests.Data</RootNamespace>
     <AssemblyName>DotNetNuke.Tests.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <FileUpgradeFlags>
@@ -88,6 +88,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DataAssert.cs" />
+    <Compile Include="DatabaseConnectionProviderTests.cs" />
+    <Compile Include="Fakes\FakeDbConnectionProvider.cs" />
     <Compile Include="RepositoryBaseTests.cs" />
     <Compile Include="DataContextTests.cs" />
     <Compile Include="DataProviderTests.cs" />

@@ -12,7 +12,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -25,18 +24,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     public partial class Settings : FolderMappingSettingsControlBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Settings));
-        #region Constants
 
-        private const string AccountName = "AccountName";
-        private const string AccountKey = "AccountKey";
-        private const string Container = "Container";
-        private const string UseHttps = "UseHttps";
-		private const string DirectLink = "DirectLink";
-        private const string CustomDomain = "CustomDomain";
-        private const string FolderProviderType = "AzureFolderProvider";
-
-        #endregion
-        
         #region Overrided Methods
 
         /// <summary>
@@ -45,24 +33,24 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// <param name="folderMappingSettings">The Hashtable containing the folder mapping settings.</param>
         public override void LoadSettings(Hashtable folderMappingSettings)
         {
-            var folderProvider = FolderProvider.Instance(FolderProviderType);
-            if (folderMappingSettings.ContainsKey(AccountName))
+            var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
+            if (folderMappingSettings.ContainsKey(Constants.AccountName))
             {
-                tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, AccountName);                
+                tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);
             }
 
-            if (folderMappingSettings.ContainsKey(AccountKey))
+            if (folderMappingSettings.ContainsKey(Constants.AccountKey))
             {
-                tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, AccountKey);                
+                tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);                
             }
 
             if (tbAccountName.Text.Length > 0 && tbAccountKey.Text.Length > 0)
             {
                 var bucketName = "";
 
-                if (folderMappingSettings.ContainsKey(Container))
+                if (folderMappingSettings.ContainsKey(Constants.Container))
                 {
-                    bucketName = folderMappingSettings[Container].ToString();
+                    bucketName = folderMappingSettings[Constants.Container].ToString();
                 }
 
                 LoadContainers();
@@ -75,16 +63,25 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 }
             }
 
-            if (folderMappingSettings.ContainsKey(UseHttps))
+            if (folderMappingSettings.ContainsKey(Constants.UseHttps))
             {
-                chkUseHttps.Checked = bool.Parse(folderMappingSettings[UseHttps].ToString());
+                chkUseHttps.Checked = bool.Parse(folderMappingSettings[Constants.UseHttps].ToString());
             }
 
-			chkDirectLink.Checked = !folderMappingSettings.ContainsKey(DirectLink) || folderMappingSettings[DirectLink].ToString().ToLowerInvariant() == "true";
+            chkDirectLink.Checked = !folderMappingSettings.ContainsKey(Constants.DirectLink) || folderMappingSettings[Constants.DirectLink].ToString().ToLowerInvariant() == "true";
 
-            if (folderMappingSettings.ContainsKey(CustomDomain))
+            if (folderMappingSettings.ContainsKey(Constants.CustomDomain))
             {
-                tbCustomDomain.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, CustomDomain);
+                tbCustomDomain.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.CustomDomain);
+            }
+
+            if (folderMappingSettings.ContainsKey(Constants.SyncBatchSize) && folderMappingSettings[Constants.SyncBatchSize] != null)
+            {
+                tbSyncBatchSize.Text = folderMappingSettings[Constants.SyncBatchSize].ToString();
+            }
+            else
+            {
+                tbSyncBatchSize.Text = Constants.DefaultSyncBatchSize.ToString();
             }
         }
 
@@ -109,6 +106,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var container = GetContainer();
             var useHttps = GetUseHttps();
             var customDomain = GetCustomDomain();
+            var synchBatchSize = GetSynchBatchSize();
 
             if (AreThereFolderMappingsWithSameSettings(folderMapping, accountName, container))
             {
@@ -118,12 +116,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 throw new Exception();
             }
             
-            folderMapping.FolderMappingSettings[AccountName] = accountName;
-            folderMapping.FolderMappingSettings[AccountKey] = accountKey;
-            folderMapping.FolderMappingSettings[Container] = container;
-            folderMapping.FolderMappingSettings[UseHttps] = useHttps;
-			folderMapping.FolderMappingSettings[DirectLink] = chkDirectLink.Checked;
-            folderMapping.FolderMappingSettings[CustomDomain] = customDomain;
+            folderMapping.FolderMappingSettings[Constants.AccountName] = accountName;
+            folderMapping.FolderMappingSettings[Constants.AccountKey] = accountKey;
+            folderMapping.FolderMappingSettings[Constants.Container] = container;
+            folderMapping.FolderMappingSettings[Constants.UseHttps] = useHttps;
+			folderMapping.FolderMappingSettings[Constants.DirectLink] = chkDirectLink.Checked;
+            folderMapping.FolderMappingSettings[Constants.CustomDomain] = customDomain;
+            folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = synchBatchSize;
 
             folderMappingController.UpdateFolderMapping(folderMapping);
         }
@@ -139,8 +138,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             return folderMappings
                 .Where(fm => fm.FolderMappingID != folderMapping.FolderMappingID && fm.FolderProviderType == folderMapping.FolderProviderType)
-                .Any(fm => fm.FolderMappingSettings[AccountName].ToString().Equals(accountName, StringComparison.InvariantCulture) &&
-                           fm.FolderMappingSettings[Container].ToString().Equals(container, StringComparison.InvariantCultureIgnoreCase));
+                .Any(fm => fm.FolderMappingSettings[Constants.AccountName].ToString().Equals(accountName, StringComparison.InvariantCulture) &&
+                           fm.FolderMappingSettings[Constants.Container].ToString().Equals(container, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private string GetUseHttps()
@@ -246,17 +245,22 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         private string GetAccountKey()
         {
-            return FolderProvider.Instance(FolderProviderType).EncryptValue(tbAccountKey.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbAccountKey.Text);            
         }
 
         private string GetAccountName()
         {
-            return FolderProvider.Instance(FolderProviderType).EncryptValue(tbAccountName.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbAccountName.Text);            
         }
 
         private string GetCustomDomain()
         {
-            return FolderProvider.Instance(FolderProviderType).EncryptValue(tbCustomDomain.Text);
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbCustomDomain.Text);
+        }
+
+        private string GetSynchBatchSize()
+        {
+            return tbSyncBatchSize.Text;
         }
 
         private void LoadContainers()

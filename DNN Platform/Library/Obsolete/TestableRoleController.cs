@@ -28,7 +28,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Security.Roles.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use RoleController instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use RoleController instead. Scheduled removal in v10.0.0.")]
     public class TestableRoleController : ServiceLocator<IRoleController, TestableRoleController>, IRoleController
     {
         protected override Func<IRoleController> GetFactory()

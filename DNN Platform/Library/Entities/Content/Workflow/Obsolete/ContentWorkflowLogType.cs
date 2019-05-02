@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     /// <summary>
     /// This enum represents the possible list of WorkflowLogType
     /// </summary>
-    [Obsolete("Deprecated in Platform 7.4.0")]   
+    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]   
     public enum ContentWorkflowLogType
     {
         WorkflowStarted = 0,

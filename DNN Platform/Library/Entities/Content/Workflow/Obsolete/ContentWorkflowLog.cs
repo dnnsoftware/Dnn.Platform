@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     /// <summary>
     /// This entity represents a Workflow Log
     /// </summary>
-    [Obsolete("Deprecated in Platform 7.4.0")]   
+    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]   
     public class ContentWorkflowLog
     {
         /// <summary>

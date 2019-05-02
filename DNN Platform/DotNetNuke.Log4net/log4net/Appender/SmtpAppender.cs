@@ -223,7 +223,7 @@ namespace log4net.Appender
 		/// Obsolete property.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use the BufferingAppenderSkeleton Fix methods")]
+		[Obsolete("Use the BufferingAppenderSkeleton Fix methods. Scheduled removal in v10.0.0.")]
 		public bool LocationInfo
 		{
 			get { return false; }

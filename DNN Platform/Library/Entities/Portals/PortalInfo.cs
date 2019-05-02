@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -540,12 +540,32 @@ namespace DotNetNuke.Entities.Portals
         public int Custom500TabId { get; set; }
 
         /// <summary>
+        ///   Tabid of the Terms of Use page
+        /// </summary>
+        /// <value>Tabid of the Terms of Use page</value>
+        /// <returns>Tabid of the Terms of Use page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("termstabid")]
+        public int TermsTabId { get; set; }
+
+        /// <summary>
+        ///   Tabid of the Privacy Statement page
+        /// </summary>
+        /// <value>Tabid of the Privacy Statement page</value>
+        /// <returns>Tabid of the Privacy Statement page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("privacytabid")]
+        public int PrivacyTabId { get; set; }
+
+        /// <summary>
         /// # of days that Site log history should be kept. 0 means unlimited
         /// </summary>
         /// <value># of days sitelog history</value>
         /// <returns># of days sitelog history</returns>
         [XmlElement("siteloghistory")]
-        [Obsolete("Deprecated in 8.0.0")]
+        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public int SiteLogHistory { get; set; }
 
         /// <summary>
@@ -754,7 +774,7 @@ namespace DotNetNuke.Entities.Portals
         #endregion
 
         [XmlIgnore]
-        [Obsolete("Deprecated in DNN 6.0.")]
+        [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members
@@ -837,6 +857,8 @@ namespace DotNetNuke.Entities.Portals
                     Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
                 }
             }
+            TermsTabId = Null.SetNullInteger(dr["TermsTabId"]);
+            PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility

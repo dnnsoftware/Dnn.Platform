@@ -26,7 +26,7 @@ using System.ComponentModel;
 namespace DotNetNuke.Security.Roles.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Security.Roles instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Security.Roles instead. Scheduled removal in v10.0.0.")]
     public interface IRoleController
     {
         /// -----------------------------------------------------------------------------

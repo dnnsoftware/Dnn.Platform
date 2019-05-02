@@ -223,7 +223,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead")]
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
         /// <summary>

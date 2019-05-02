@@ -45,10 +45,22 @@ namespace DotNetNuke.Common.Utilities
         /// Gets the database time.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
-        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime")]
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime. Scheduled removal in v11.0.0.")]
         public static DateTime GetDatabaseTime()
         {
             return GetDatabaseUtcTime();
+        }
+
+        /// <summary>
+        /// Gets DateTime Offset of current DB 
+        /// </summary>
+        /// <returns>DateTimeOffset object</returns>
+        public static TimeZoneInfo GetDatabaseDateTimeOffset()
+        {
+            var dateTimeOffset = DataProvider.Instance().GetDatabaseTimeOffset();
+            var offset = dateTimeOffset.Offset;
+            var id = string.Format("UTC {0}", offset.ToString());
+            return TimeZoneInfo.CreateCustomTimeZone(id, offset, id, id);
         }
 
         /// <summary>

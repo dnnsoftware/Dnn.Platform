@@ -186,12 +186,6 @@
   <data name="DatabaseName.Text" xml:space="preserve">
     <value>Name der Datenbank</value>
   </data>
-  <data name="DatabaseObjectQualifier.Help" xml:space="preserve">
-    <value>Geben Sie hier den eindeutigen Objekt-Präfix für alle Objekte Ihrer Website innerhalb der Datenbank ein.</value>
-  </data>
-  <data name="DatabaseObjectQualifier.Text" xml:space="preserve">
-    <value>Objekt-Präfix</value>
-  </data>
   <data name="DatabaseOwner.Text" xml:space="preserve">
     <value>Datenbank-Eigentümer</value>
   </data>

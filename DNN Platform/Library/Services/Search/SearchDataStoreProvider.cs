@@ -32,7 +32,7 @@ using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Services.Search
 {
-    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
+    [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public abstract class SearchDataStoreProvider
     {
 		#region "Shared/Static Methods"

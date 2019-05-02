@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Portals
             HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
             IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
             var browserType = Null.SetNullString(dr["BrowserType"]);
-            BrowserType = String.IsNullOrEmpty(browserType) || browserType.ToLowerInvariant() == "normal"
+            BrowserType = String.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
                               ? BrowserTypes.Normal
                               : BrowserTypes.Mobile;
             CultureCode = Null.SetNullString(dr["CultureCode"]);
@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Portals
                         break;
                     case "browserType":
                         string type = reader.ReadElementContentAsString();
-                        BrowserType = type.ToLowerInvariant() == "mobile" ? BrowserTypes.Mobile : BrowserTypes.Normal;
+                        BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
                         break;
                     case "primary":
                         IsPrimary = reader.ReadElementContentAsBoolean();

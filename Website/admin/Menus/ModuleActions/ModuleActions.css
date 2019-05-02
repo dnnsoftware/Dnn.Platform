@@ -178,10 +178,11 @@ div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.secondarybtn 
   text-align: center;
   font-size: 13px;
 }
-div.actionMenu ul.dnn_mact li.dnn_shared {
+div.actionMenu ul.dnn_mact li.dnn_menu_label {
   display: inline-block;
+  pointer-events: none;
 }
-div.actionMenu ul.dnn_mact li.dnn_shared > div {
+div.actionMenu ul.dnn_mact li.dnn_menu_label > div {
   display: inline-block;
   padding: 0.5em 0;
   -webkit-writing-mode: vertical-rl;

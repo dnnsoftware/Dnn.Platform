@@ -58,7 +58,8 @@
                     supportsMove: <% = SupportsMove.ToString().ToLower() %>,
                     supportsQuickSettings: supportsQuickSettings,
                     displayQuickSettings: displayQuickSettings,
-                    isShared : <% = IsShared.ToString().ToLower() %>
+                    isShared : <% = IsShared.ToString().ToLower() %>,
+                    moduleTitle: '<% = Localization.GetSafeJSString(ModuleTitle) %>'
                 }
             );
         }
@@ -66,7 +67,7 @@
         // register window resize on ajaxComplete to reposition action menus - only in edit mode
         // after page fully load
         var resizeThrottle;
-        $(window).resize(function () {
+        $(window).on('resize scroll', function () {
             if (resizeThrottle) {
                 clearTimeout(resizeThrottle);
                 resizeThrottle = null;

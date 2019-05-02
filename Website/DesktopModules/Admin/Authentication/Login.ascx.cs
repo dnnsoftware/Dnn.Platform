@@ -20,17 +20,6 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -51,9 +40,21 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
 using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 #endregion
 
@@ -200,14 +201,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 var alias = PortalAlias.HTTPAlias;
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
+                // we need .TrimEnd('/') because a portlalias for a specific culture will not have a trailing /, while a returnurl will.
                 var isDefaultPage = redirectURL == "/"
-                    || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
-                
+                    || (alias.Contains("/") && redirectURL.TrimEnd('/').Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
+
                 if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
                 {
                     if (
-                        NeedRedirectAfterLogin 
-                        && (isDefaultPage || IsRedirectingFromLoginUrl()) 
+                        NeedRedirectAfterLogin
+                        && (isDefaultPage || IsRedirectingFromLoginUrl())
                         && Convert.ToInt32(setting) != Null.NullInteger
                         )
                     {
@@ -261,12 +263,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private bool IsRedirectingFromLoginUrl()
         {
-            return Request.UrlReferrer != null && 
+            return Request.UrlReferrer != null &&
                 Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
         }
 
-        private bool NeedRedirectAfterLogin => 
-               LoginStatus == UserLoginStatus.LOGIN_SUCCESS 
+        private bool NeedRedirectAfterLogin =>
+               LoginStatus == UserLoginStatus.LOGIN_SUCCESS
             || LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
             || LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
@@ -356,6 +358,26 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
+        /// <summary>
+        /// Gets and sets the current UserName
+        /// </summary>
+        protected string UserName
+        {
+            get
+            {
+                var userName = "";
+                if (ViewState["UserName"] != null)
+                {
+                    userName = Convert.ToString(ViewState["UserName"]);
+                }
+                return userName;
+            }
+            set
+            {
+                ViewState["UserName"] = value;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -387,10 +409,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     //Figure out if known Auth types are enabled (so we can improve perf and stop loading the control)
                     bool enabled = true;
-                    if (authSystem.AuthenticationType == "Facebook" || authSystem.AuthenticationType == "Google"
-                        || authSystem.AuthenticationType == "Live" || authSystem.AuthenticationType == "Twitter")
+                    if (authSystem.AuthenticationType.Equals("Facebook") || authSystem.AuthenticationType.Equals("Google")
+                        || authSystem.AuthenticationType.Equals("Live") || authSystem.AuthenticationType.Equals("Twitter"))
                     {
-                        enabled = PortalController.GetPortalSettingAsBoolean(authSystem.AuthenticationType + "_Enabled", PortalId, false);
+                        enabled = AuthenticationController.IsEnabledForPortal(authSystem, PortalSettings.PortalId);
                     }
 
                     if (enabled)
@@ -400,6 +422,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         if (authSystem.AuthenticationType == "DNN")
                         {
                             defaultLoginControl = authLoginControl;
+                            pnlLoginContainer.Visible = true;
                         }
 
                         //Check if AuthSystem is Enabled
@@ -448,8 +471,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         //if there are social authprovider only
                         if (_oAuthControls.Count == 0)
+                        {
                             //Portal has no login controls enabled so load default DNN control
                             DisplayLoginControl(defaultLoginControl, false, false);
+                        }
                     }
                     break;
                 case 1:
@@ -464,7 +489,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 default:
                     //make sure defaultAuth provider control is diplayed first
-                    if (_defaultauthLogin.Count > 0) DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
+                    if (_defaultauthLogin.Count > 0)
+                    {
+                        DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
+                    }
+
                     foreach (AuthenticationLoginBase authLoginControl in _loginControls)
                     {
                         DisplayTabbedLoginControl(authLoginControl, tsLogin.Tabs);
@@ -585,7 +614,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
-            pnlLoginContainer.Visible = true;
         }
 
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
@@ -633,8 +661,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private string GenerateUserName()
         {
-            //Try the best username. Default it to UserToken
-            var userName = UserToken.Replace("http://", "").TrimEnd('/');
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                return UserName;
+            }
 
             //Try Email prefix
             var emailPrefix = string.Empty;
@@ -707,7 +737,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            return userName;
+            return UserToken.Replace("http://", "").TrimEnd('/');
         }
 
         /// -----------------------------------------------------------------------------
@@ -721,11 +751,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
             bool showRegister = (PageNo == 1);
             bool showPassword = (PageNo == 2);
             bool showProfile = (PageNo == 3);
+            bool showDataConsent = (PageNo == 4);
             pnlProfile.Visible = showProfile;
             pnlPassword.Visible = showPassword;
             pnlLogin.Visible = showLogin;
             pnlRegister.Visible = showRegister;
             pnlAssociate.Visible = showRegister;
+            pnlDataConsent.Visible = showDataConsent;
             switch (PageNo)
             {
                 case 0:
@@ -741,6 +773,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 case 3:
                     ctlProfile.UserId = UserId;
                     ctlProfile.DataBind();
+                    break;
+                case 4:
+                    ctlDataConsent.UserId = UserId;
+                    ctlDataConsent.DataBind();
                     break;
             }
 
@@ -864,6 +900,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
                     UserController.UserLogin(PortalId, objUser, PortalSettings.PortalName, ipAddress, RememberMe);
 
+                    //check whether user request comes with IPv6 and log it to make sure admin is aware of that
+                    if (string.IsNullOrWhiteSpace(ipAddress))
+                    {
+                        var ipAddressV6 = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(Request), IPAddressFamily.IPv6);
+
+                        if (!string.IsNullOrWhiteSpace(ipAddressV6))
+                        {
+                            AddEventLog(objUser.UserID, objUser.Username, PortalId, "IPv6", ipAddressV6);
+                        }
+                    }
+
                     //redirect browser
                     var redirectUrl = RedirectURL;
 
@@ -909,8 +956,26 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     AddModuleMessage("ProfileUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
                     PageNo = 3;
                     break;
+                case UserValidStatus.MUSTAGREETOTERMS:
+                    if (PortalSettings.DataConsentConsentRedirect == -1)
+                    {
+                        UserId = objUser.UserID;
+                        AddModuleMessage("MustConsent", ModuleMessage.ModuleMessageType.YellowWarning, true);
+                        PageNo = 4;
+                    }
+                    else
+                    {
+                        // Use the reset password token to identify the user during the redirect
+                        UserController.ResetPasswordToken(objUser);
+                        objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                    }
+                    break;
             }
-            if (okToShowPanel) ShowPanel();
+            if (okToShowPanel)
+            {
+                ShowPanel();
+            }
         }
 
         private bool UserNeedsVerification()
@@ -943,15 +1008,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
             ctlPassword.PasswordUpdated += PasswordUpdated;
             ctlProfile.ProfileUpdated += ProfileUpdated;
             ctlUser.UserCreateCompleted += UserCreateCompleted;
+            ctlDataConsent.DataConsentCompleted += DataConsentCompleted;
 
             //Set the User Control Properties
             ctlUser.ID = "User";
 
-            //Set the Profile Control Properties
+            //Set the Password Control Properties
             ctlPassword.ID = "Password";
 
             //Set the Profile Control Properties
             ctlProfile.ID = "Profile";
+
+            //Set the Data Consent Control Properties
+            ctlDataConsent.ID = "DataConsent";
 
             //Override the redirected page title if page has loaded with ctl=Login
             if (Request.QueryString["ctl"] != null)
@@ -1157,6 +1226,28 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
+        /// DataConsentCompleted runs after the user has gone through the data consent screen
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
+        {
+            switch (e.Status)
+            {
+                case DataConsent.DataConsentStatus.Consented:
+                    ValidateUser(ctlDataConsent.User, true);
+                    break;
+                case DataConsent.DataConsentStatus.Cancelled:
+                case DataConsent.DataConsentStatus.RemovedAccount:
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId), true);
+                    break;
+                case DataConsent.DataConsentStatus.FailedToRemoveAccount:
+                    AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// ProfileUpdated runs when the profile is updated
         /// </summary>
         protected void ProfileUpdated(object sender, EventArgs e)
@@ -1236,6 +1327,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         AuthenticationType = e.AuthenticationType;
                         ProfileProperties = e.Profile;
                         UserToken = e.UserToken;
+                        UserName = e.UserName;
                         if (AutoRegister)
                         {
                             InitialiseUser();
@@ -1312,6 +1404,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void AddEventLog(int userId, string username, int portalId, string propertyName, string propertyValue)
+        {
+            var log = new LogInfo
+            {
+                LogUserID = userId,
+                LogUserName = username,
+                LogPortalID = portalId,
+                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+            };
+            log.AddProperty(propertyName, propertyValue);
+            LogController.Instance.AddLog(log);
         }
 
         #endregion

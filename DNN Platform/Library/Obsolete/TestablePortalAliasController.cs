@@ -28,7 +28,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Entities.Portals.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead")]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead. Scheduled removal in v10.0.0.")]
     public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
     {
         protected override Func<IPortalAliasController> GetFactory()

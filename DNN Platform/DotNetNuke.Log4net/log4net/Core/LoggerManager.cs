@@ -190,7 +190,7 @@ namespace log4net.Core
 		/// by the <paramref name="repository"/> argument.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use GetRepository instead of GetLoggerRepository")]
+		[Obsolete("Use GetRepository instead of GetLoggerRepository. Scheduled removal in v10.0.0.")]
 		public static ILoggerRepository GetLoggerRepository(string repository)
 		{
 			return GetRepository(repository);
@@ -201,7 +201,7 @@ namespace log4net.Core
 		/// </summary>
 		/// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
 		/// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
-		[Obsolete("Use GetRepository instead of GetLoggerRepository")]
+		[Obsolete("Use GetRepository instead of GetLoggerRepository. Scheduled removal in v10.0.0.")]
 		public static ILoggerRepository GetLoggerRepository(Assembly repositoryAssembly)
 		{
 			return GetRepository(repositoryAssembly);
@@ -608,7 +608,7 @@ namespace log4net.Core
 		/// </para>
 		/// </remarks>
 		/// <exception cref="LogException">The specified repository already exists.</exception>
-		[Obsolete("Use CreateRepository instead of CreateDomain")]
+		[Obsolete("Use CreateRepository instead of CreateDomain. Scheduled removal in v10.0.0.")]
 		public static ILoggerRepository CreateDomain(string repository)
 		{
 			return CreateRepository(repository);
@@ -657,7 +657,7 @@ namespace log4net.Core
 		/// </para>
 		/// </remarks>
 		/// <exception cref="LogException">The specified repository already exists.</exception>
-		[Obsolete("Use CreateRepository instead of CreateDomain")]
+		[Obsolete("Use CreateRepository instead of CreateDomain. Scheduled removal in v10.0.0.")]
 		public static ILoggerRepository CreateDomain(string repository, Type repositoryType)
 		{
 			return CreateRepository(repository, repositoryType);
@@ -709,7 +709,7 @@ namespace log4net.Core
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
-		[Obsolete("Use CreateRepository instead of CreateDomain")]
+		[Obsolete("Use CreateRepository instead of CreateDomain. Scheduled removal in v10.0.0.")]
 		public static ILoggerRepository CreateDomain(Assembly repositoryAssembly, Type repositoryType)
 		{
 			return CreateRepository(repositoryAssembly, repositoryType);

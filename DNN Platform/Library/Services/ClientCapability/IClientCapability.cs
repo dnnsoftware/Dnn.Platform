@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         /// A key-value collection containing all capabilities supported by requester
         /// </summary>    
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.")]    
+        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v10.0.0.")]    
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>

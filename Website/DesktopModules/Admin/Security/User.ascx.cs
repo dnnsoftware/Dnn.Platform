@@ -46,6 +46,7 @@ using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Web.Client;
 
 #endregion
@@ -576,8 +577,8 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (IsValid)
                 {
-                    CreateUser();
-                    DataCache.ClearPortalCache(PortalId, true);
+                    CreateUser();                    
+                    DataCache.ClearPortalUserCountCache(PortalId);
                 }
             }
             else
@@ -587,7 +588,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (User.UserID == PortalSettings.AdministratorId)
                     {
 						//Clear the Portal Cache
-                        DataCache.ClearPortalCache(UserPortalID, true);
+                        DataCache.ClearPortalUserCountCache(UserPortalID);
                     }
                     try
                     {

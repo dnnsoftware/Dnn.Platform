@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                               bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
         {
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning restore 618
 		}
 
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                           string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
