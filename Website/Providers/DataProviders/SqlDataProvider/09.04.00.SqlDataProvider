@@ -145,8 +145,8 @@ END
 GO
 
 
-/*  Increase Version column in DesktopModules table to support revision number  *
-/********************************************************************************
+/*  Increase Version column in DesktopModules table to support revision number  */
+/********************************************************************************/
 
 ALTER Table {databaseOwner}[{objectQualifier}DesktopModules] 
         ALTER Column [Version]  NVARCHAR(50) NOT NULL
