@@ -116,7 +116,12 @@ namespace DotNetNuke.Services.Journal
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
         {
-            var ji = GetJournalItem(portalId, currentUserId, journalId);
+            var ji = GetJournalItem(portalId, currentUserId, journalId, !softDelete);
+            if (ji == null)
+            {
+                return;
+            }
+
             var groupId = ji.SocialGroupId;
 
             if (softDelete)
@@ -763,13 +768,13 @@ namespace DotNetNuke.Services.Journal
 
         #region Obsolete Methods
 
-        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void SaveJournalItem(JournalItem journalItem, int tabId)
         {
             SaveJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
-        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {
             UpdateJournalItem(journalItem, tabId, Null.NullInteger);

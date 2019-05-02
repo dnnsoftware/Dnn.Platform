@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// List gets the List associated with the control
         /// </summary>
-        [Obsolete("Obsoleted in 6.0.1 use ListEntries instead"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use ListEntries instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
         protected ListEntryInfoCollection List
         {
             get

@@ -1,9 +1,0 @@
-devfactory:
-  version: 1
-  excludes:
-    - "**/DNN Platform/Components/ClientDependency/Source/**"
-    - "**/DNN Platform/DotNetNuke.Log4net/**"
-    - "**/DNN Platform/Controls/CountryListBox/**"
-    - "**/DNN Platform/DotNetNuke.Instrumentation/**"
-    - "**/DNN Platform/DotNetNuke.WebUtility/**"
-    - "**/DNN Platform/Tests/**"

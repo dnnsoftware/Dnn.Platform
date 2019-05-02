@@ -42,6 +42,7 @@ using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.RazorHost
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string ModuleControl
         {
             get
@@ -57,6 +59,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
         {
             get
@@ -267,6 +270,7 @@ namespace DotNetNuke.Modules.RazorHost
             lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", LocalResourceFile), ModuleControl);
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -276,6 +280,7 @@ namespace DotNetNuke.Modules.RazorHost
             scriptList.SelectedIndexChanged += scriptList_SelectedIndexChanged;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

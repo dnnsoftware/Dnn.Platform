@@ -204,14 +204,6 @@ div#installation-log {
     width: auto;
 }
 
-img#bannerImage {
-	width: 520px;
-	height: 120px;
-}
-div#banners{
-	margin-left: -20px;
-}
-
 .visitSiteLink {
 	float: right;
 	min-width: 150px;

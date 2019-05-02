@@ -23,11 +23,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
 
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Framework;
 
 #endregion
 
@@ -43,7 +45,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-		#region "Protected Properties"
+        private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
+
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -221,29 +225,70 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>If tyhe <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
+        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
         /// <param name="file">The assembly file.</param>
         /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly.</returns>
+        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
         private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
         {
-            var assemblyName = AssemblyName.GetAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
-            if (!assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            var publicKeyToken = ReadPublicKey(assemblyName);
+            if (string.IsNullOrEmpty(publicKeyToken))
             {
                 return false;
             }
 
             var name = assemblyName.Name;
-            var publicKeyToken = PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
-            var oldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
-            var newVersion = assemblyName.Version.ToString();
+            var assemblyVersion = assemblyName.Version;
+            var newVersion = assemblyVersion.ToString();
 
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
-            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, oldVersion, newVersion);
+            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
             var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
             xmlMerge.UpdateConfigs();
             
             return true;
+        }
+
+        /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
+        /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
+        /// <returns>An <see cref="AssemblyName"/> or <c>null</c></returns>
+        private static AssemblyName ReadAssemblyName(string assemblyFile)
+        {
+            try
+            {
+                return AssemblyName.GetAssemblyName(assemblyFile);
+            }
+            catch (BadImageFormatException)
+            {
+                // assemblyFile is not a valid assembly.
+                return null;
+            }
+            catch (ArgumentException)
+            {
+                // assemblyFile is invalid, such as an assembly with an invalid culture.
+                return null;
+            }
+            catch (SecurityException)
+            {
+                // The caller does not have path discovery permission.
+                return null;
+            }
+            catch (FileLoadException)
+            {
+                // An assembly or module was loaded twice with two different sets of evidence.
+                return null;
+            }
+        }
+        
+        private static string ReadPublicKey(AssemblyName assemblyName)
+        {
+            if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+            {
+                return null;
+            }
+
+            return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
         }
 
         /// <summary>Gets the XML merge document to create the binding redirect.</summary>

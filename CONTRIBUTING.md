@@ -10,10 +10,11 @@ If you are new to Dnn Development, you can start by watching this video playlist
 [How to make a pull requests playlist](https://www.youtube.com/playlist?list=PLIx1M8IdVvqZ0bnODGqJyxvONNPj5BzMP)
 
 * Make sure you have a [GitHub account](https://github.com/signup/free)
-* [Submit a ticket](https://github.com/dnnsoftware/Dnn.Platform/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
+* [Submit a ticket](https://github.com/dnnsoftware/Dnn.Platform/issues/new) for your issue, assuming one does not already exist.  After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.
   * We have included an issue template which helps make sure all of the relevant information is included with the issue report.
+* Add a comment to the ticket notifying the team of your intention to work on this item, including if known, an estimated time for Pull Request submission.  This helps to limit duplication of works and allows the reviewers to plan for potential items incoming for a release.
 
 ## Fork the repository on GitHub
 
@@ -56,6 +57,7 @@ If this is your first time working with Dnn:Platform. You will need to fork the 
 	* Make sure you have added the necessary tests for your changes.
 	* Run _all_ the tests to assure nothing else was accidentally broken.
 
+> NOTE: Changes to methods that have been marked as [Obsolete] will typically not be accepted due to inherit risks associated with code scheduled for removal.  If a critical bug/issue exists, please be sure to document & discuss using an RFC issue prior to submitting your contribution to ensure alignment with acceptance criteria.
 
 ## Making Trivial Changes
 

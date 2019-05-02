@@ -33,15 +33,18 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Razor
 {
+    [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorHostControl : ModuleControlBase, IActionable
     {
         private readonly string _razorScriptFile;
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorHostControl(string scriptFile)
         {
             _razorScriptFile = scriptFile;
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected virtual string RazorScriptFile
         {
             get { return _razorScriptFile; }
@@ -61,6 +64,7 @@ namespace DotNetNuke.Web.Razor
 		    }
 	    }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -73,7 +77,8 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
-		public ModuleActionCollection ModuleActions
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        public ModuleActionCollection ModuleActions
 		{
 			get
 			{

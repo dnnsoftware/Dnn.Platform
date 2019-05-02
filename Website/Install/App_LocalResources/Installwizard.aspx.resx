@@ -144,9 +144,6 @@
   <data name="DatabaseName.Text" xml:space="preserve">
     <value>Database Name</value>
   </data>
-  <data name="DatabaseObjectQualifier.Text" xml:space="preserve">
-    <value>Object Qualifier</value>
-  </data>
   <data name="DatabasePassword.Text" xml:space="preserve">
     <value>Database Password</value>
   </data>
@@ -296,9 +293,7 @@ for people using the product. All of the data is anonymous and for internal use 
   <data name="DatabaseName.Help" xml:space="preserve">
     <value>The name of your database.</value>
   </data>
-  <data name="DatabaseObjectQualifier.Help" xml:space="preserve">
-    <value>The object qualifier for your website.</value>
-  </data>
+
   <data name="DatabaseOwner.Text" xml:space="preserve">
     <value>Database Owner</value>
   </data>

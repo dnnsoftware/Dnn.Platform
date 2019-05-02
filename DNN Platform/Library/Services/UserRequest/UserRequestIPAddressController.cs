@@ -25,13 +25,19 @@ using System.Web;
 using System.Linq;
 using DotNetNuke.Framework;
 using System.Net;
+using System.Net.Sockets;
 
 namespace DotNetNuke.Services.UserRequest
 {
     public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController,UserRequestIPAddressController>, IUserRequestIPAddressController
     {
         public string GetUserRequestIPAddress(HttpRequestBase request)
-        {            
+        {
+            return GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
+        }
+
+        public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
+        {
             var userRequestIPHeader = HostController.Instance.GetString("UserRequestIPHeader", "X-Forwarded-For");
             var userIPAddress = string.Empty;
 
@@ -60,7 +66,7 @@ namespace DotNetNuke.Services.UserRequest
                 userIPAddress = string.Empty;
             }
             
-            if (!string.IsNullOrEmpty(userIPAddress) && !ValidateIPv4(userIPAddress))
+            if (!string.IsNullOrEmpty(userIPAddress) && !ValidateIP(userIPAddress, ipFamily))
             {
                 userIPAddress = string.Empty;
             }
@@ -68,11 +74,25 @@ namespace DotNetNuke.Services.UserRequest
             return userIPAddress;
         }
 
-        private bool ValidateIPv4(string ipString)
+        private bool ValidateIP(string ipString, IPAddressFamily ipFamily)
         {
-            if (ipString.Split('.').Length != 4) return false;
             IPAddress address;
-            return IPAddress.TryParse(ipString, out address);
+            if (IPAddress.TryParse(ipString, out address))
+            {
+                if (ipFamily == IPAddressFamily.IPv4 &&
+                    address.AddressFamily == AddressFamily.InterNetwork && 
+                    ipString.Split('.').Length == 4)
+                {
+                    return true;
+                }
+
+                if (ipFamily == IPAddressFamily.IPv6 && 
+                    address.AddressFamily == AddressFamily.InterNetworkV6)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
 

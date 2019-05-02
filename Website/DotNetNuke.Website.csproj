@@ -604,6 +604,21 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
+    <Content Include="Licenses\Dnn AdminExperience %28MIT%29.txt.resources" />
+    <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
+    <Content Include="Licenses\Moment.js %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Moq %28BSD3%29.txt.resources" />
+    <Content Include="Licenses\NBuilder %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Newtonsoft JSON %28MIT%29.txt.resources" />
+    <Content Include="Licenses\NSubstitute %28Custom%29.txt.resources" />
+    <Content Include="Licenses\NTestDataBuilder %28MIT%29.txt.resources" />
+    <Content Include="Licenses\NUnit %28MIT%29.txt.resources" />
+    <Content Include="Licenses\NUnitTestAdapter %28MIT%29.txt.resources" />
+    <Content Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
+    <Content Include="Licenses\Pikaday %28MIT%29.txt.resources" />
+    <Content Include="Licenses\QuickIO.NET %28Ms-PL%29.txt.resources" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -632,6 +647,13 @@
     </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.designer.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.cs">
+      <DependentUpon>DataConsent.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\DataConsent.ascx.designer.cs">
+      <DependentUpon>DataConsent.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
@@ -798,6 +820,7 @@
     <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
+    <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />
     <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
@@ -807,6 +830,10 @@
     <Content Include="Install\Web.config" />
     <Content Include="js\Debug\dnn.cookieconsent.js" />
     <Content Include="js\dnn.cookieconsent.js" />
+    <Content Include="Licenses\Cake %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
+    <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -2813,43 +2840,35 @@
     <Content Include="js\MicrosoftAjaxWebForms.js" />
     <Content Include="js\PopupCalendar.js" />
     <Content Include="KeepAlive.aspx" />
-    <Content Include="Licenses\Anthem %28Public Domain%29.txt" />
-    <Content Include="Licenses\Brettle NeatUpload %28LGPL%29.txt" />
-    <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
-    <Content Include="Licenses\CountryListBox %28Public Domain%29.txt" />
-    <Content Include="Licenses\DotNetOpenID %28New BSD%29.txt" />
-    <Content Include="Licenses\FCKEditor %28LGPL%29.txt" />
-    <Content Include="Licenses\GeoIP %28Custom%29.txt" />
-    <Content Include="Licenses\Highlighter %28Perl%29.txt" />
-    <Content Include="Licenses\hoverintent %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\HtmlDiff %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery Boxy Plugin %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery Cycle %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\jQuery FileUpload %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery Iframe Transport %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt" />
-    <Content Include="Licenses\jQuery Templates %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\jquery-history.license.txt" />
-    <Content Include="Licenses\json2 %28Public Domain%29.txt" />
-    <Content Include="Licenses\Licenses.txt" />
-    <Content Include="Licenses\log4net %28Apache%29.txt" />
-    <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
-    <Content Include="Licenses\Lucene.Net.Contrib %28Apache%29.txt" />
-    <Content Include="Licenses\MbUnit %28MIT%29.txt" />
-    <Content Include="Licenses\MooTools %28MIT%29.txt" />
-    <Content Include="Licenses\Moq %28BSD%29.txt" />
-    <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt" />
-    <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt" />
-    <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
-    <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
-    <Content Include="Licenses\SwfObject %28MIT%29.txt" />
-    <Content Include="Licenses\VideoBox %28MIT%29.txt" />
-    <Content Include="Licenses\WatiN %28Apache%29.txt" />
-    <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt" />
-    <Content Include="Licenses\YUI %28BSD%29.txt" />
-    <Content Include="Licenses\zClip %28MIT%29.txt" />
-    <Content Include="Licenses\ZeroClipboard %28MIT%29.txt" />
+    <Content Include="Licenses\CountryListBox %28Public Domain%29.txt.resources" />
+    <Content Include="Licenses\GeoIP %28Custom%29.txt.resources" />
+    <Content Include="Licenses\jQuery FileUpload %28MIT%29.txt.resources" />
+    <Content Include="Licenses\jQuery Iframe Transport %28MIT%29.txt.resources" />
+    <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt.resources" />
+    <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt.resources" />
+    <Content Include="Licenses\json2 %28Public Domain%29.txt.resources" />
+    <Content Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
+    <Content Include="Licenses\Dnn-Connect CkEditorProvider %28MIT%29.txt.resources" />
+    <Content Include="Licenses\DotNetZip %28Ms-PL%29.txt.resources" />
+    <Content Include="Licenses\GitVersion %28MIT%29.txt.resources" />
+    <Content Include="Licenses\history.js %28New BSD%29.txt.resources" />
+    <Content Include="Licenses\hoverIntent %28MIT%29.txt.resources" />
+    <Content Include="Licenses\jQuery %28MIT%29.txt.resources" />
+    <Content Include="Licenses\jQuery MouseWheel %28Custom%29.txt.resources" />
+    <Content Include="Licenses\jQuery TimePicker %28MIT%29.txt.resources" />
+    <Content Include="Licenses\jQuery ToastMessage %28Apache2%29.txt.resources" />
+    <Content Include="Licenses\jQuery UI %28Custom%29.txt.resources" />
+    <Content Include="Licenses\Knockout %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Knockout Mapping %28MIT%29.txt.resources" />
+    <Content Include="Licenses\log4net %28Apache%29.txt.resources" />
+    <Content Include="Licenses\Lucene.Net %28Apache%29.txt.resources" />
+    <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt.resources" />
+    <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt.resources" />
+    <Content Include="Licenses\Selectize %28Apache%29.txt.resources" />
+    <Content Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
+    <Content Include="Licenses\WatiN %28Apache%29.txt.resources" />
+    <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt.resources" />
+    <Content Include="Licenses\YUI %28BSD%29.txt.resources" />
     <Content Include="Portals\_default\admin.css" />
     <Content Include="Portals\_default\Cache\PlaceHolder.txt" />
     <Content Include="Portals\_default\Cache\ReadMe.txt" />
@@ -3128,7 +3147,9 @@
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
-    <None Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf" />
+    <Content Include="Licenses\SimpleMDE %28MIT%29.txt.resources" />
+    <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
+    <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
@@ -3295,6 +3316,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.00.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.04.00.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3362,6 +3384,9 @@
   <ItemGroup>
     <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\AuthenticationEditor.ascx.resx" />
     <Content Include="DesktopModules\Admin\EditExtension\App_LocalResources\EditExtension.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DesktopModules\Admin\Security\App_LocalResources\DataConsent.ascx.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
