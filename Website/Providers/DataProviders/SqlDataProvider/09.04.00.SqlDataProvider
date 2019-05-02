@@ -149,7 +149,7 @@ GO
 /********************************************************************************/
 
 ALTER Table {databaseOwner}[{objectQualifier}DesktopModules] 
-        ALTER Column [Version]  NVARCHAR(50) NOT NULL
+	ALTER Column [Version] NVARCHAR(50) NOT NULL
 GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModule]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModule]
@@ -231,7 +231,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
-	@DesktopModuleId		int,    
+	@DesktopModuleId		int,
 	@PackageID			int,
 	@ModuleName			nvarchar(128),
 	@FolderName			nvarchar(128),
@@ -252,32 +252,31 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModule]
 	@HostPage		nvarchar(128)
 
 AS
-		UPDATE {databaseOwner}{objectQualifier}DesktopModules
-		SET    	
-			PackageID = @PackageID,
-			ModuleName = @ModuleName,
-			FolderName = @FolderName,
-			FriendlyName = @FriendlyName,
-			Description = @Description,
-			Version = @Version,
-			IsPremium = @IsPremium,
-			IsAdmin = @IsAdmin,
-			BusinessControllerClass = @BusinessController,
-			SupportedFeatures = @SupportedFeatures,
-			Shareable = @Shareable,
-			CompatibleVersions = @CompatibleVersions,
-			Dependencies = @Dependencies,
-			Permissions = @Permissions,
-			ContentItemId = @ContentItemId,
-			LastModifiedByUserID = @LastModifiedByUserID,
-			LastModifiedOnDate = getdate(),
-			AdminPage=@AdminPage,
-			HostPage=@HostPage
-	WHERE  DesktopModuleId = @DesktopModuleId
+    UPDATE {databaseOwner}{objectQualifier}DesktopModules
+    SET	
+        PackageID = @PackageID,
+        ModuleName = @ModuleName,
+        FolderName = @FolderName,
+        FriendlyName = @FriendlyName,
+        Description = @Description,
+        Version = @Version,
+        IsPremium = @IsPremium,
+        IsAdmin = @IsAdmin,
+        BusinessControllerClass = @BusinessController,
+        SupportedFeatures = @SupportedFeatures,
+        Shareable = @Shareable,
+        CompatibleVersions = @CompatibleVersions,
+        Dependencies = @Dependencies,
+        Permissions = @Permissions,
+        ContentItemId = @ContentItemId,
+        LastModifiedByUserID = @LastModifiedByUserID,
+        LastModifiedOnDate = getdate(),
+        AdminPage=@AdminPage,
+        HostPage=@HostPage
+    WHERE  DesktopModuleId = @DesktopModuleId
 
 GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
-/************************************************************/
 /************************************************************/
