@@ -115,5 +115,6 @@ npm-debug.log
 .idea
 /**/yarn-error.log
 /**/*-bundle.js
-/Extensions/Manage/Dnn.PersonaBar.Users/admin/personaBar/scripts/exportables/Users/UsersCommon.js
+/Extensions/Content/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users/UsersCommon.js
+/Extensions/Content/Dnn.PersonaBar.Extensions/admin/personaBar/scripts/exportables/Sites/SitesListView.js
 Extensions/**/*.js.map
