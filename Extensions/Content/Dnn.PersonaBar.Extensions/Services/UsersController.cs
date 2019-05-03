@@ -374,6 +374,26 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveDeletedUsers()
+        {
+            if (!UserInfo.IsSuperUser)
+            {
+                if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
+                }
+            }
+            UserController.RemoveDeletedUsers(PortalSettings.PortalId);
+            var remaining = UserController.GetDeletedUsers(PortalSettings.PortalId);
+            if (remaining.Count > 0)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CouldNotRemoveAll", Components.Constants.LocalResourcesFile));
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
         public HttpResponseMessage RestoreDeletedUser([FromUri] int userId)
         {

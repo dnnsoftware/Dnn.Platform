@@ -124,6 +124,15 @@ const userActions = {
             }, errorCallback);
         };
     },
+    removeDeletedUsers(callback) {
+        return (dispatch) => {
+            UserService.removeDeletedUsers(data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
     restoreUser(payload, filter, callback) {
         return (dispatch) => {
             let restoredUser = Object.assign({}, payload.userDetails);
