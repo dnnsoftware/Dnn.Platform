@@ -522,7 +522,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
-    <Content Include="admin\personaBar\Dnn.AdminLogs\css\AdminLogs.css" />
     <Content Include="admin\personaBar\Dnn.AdminLogs\scripts\AdminLogs.js" />
     <Content Include="admin\personaBar\Dnn.ConfigConsole\ConfigConsole.html" />
     <Content Include="admin\personaBar\Dnn.ConfigConsole\css\ConfigConsole.css" />
@@ -536,15 +535,12 @@
     <Content Include="admin\personaBar\Dnn.CssEditor\CssEditor.html" />
     <Content Include="admin\personaBar\Dnn.CssEditor\css\CssEditor.css" />
     <Content Include="admin\personaBar\Dnn.CssEditor\scripts\CssEditor.js" />
-    <Content Include="admin\personaBar\Dnn.Extensions\css\extensions.css" />
     <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\extensions.js" />
-    <Content Include="admin\personaBar\Dnn.Licensing\css\Licensing.css" />
     <Content Include="admin\personaBar\Dnn.Licensing\Licensing.html" />
     <Content Include="admin\personaBar\Dnn.Licensing\scripts\bundles\licensing-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Licensing\scripts\Licensing.js" />
-    <Content Include="admin\personaBar\Dnn.Pages\css\Pages.css" />
     <Content Include="admin\personaBar\Dnn.Pages\Pages.html" />
     <Content Include="admin\personaBar\Dnn.Pages\scripts\Pages.js" />
     <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css" />
@@ -565,11 +561,9 @@
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\roles-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Roles\scripts\Roles.js" />
-    <Content Include="admin\personaBar\Dnn.Security\css\Security.css" />
     <Content Include="admin\personaBar\Dnn.Security\scripts\bundles\security-settings-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Security\scripts\Security.js" />
     <Content Include="admin\personaBar\Dnn.Security\Security.html" />
-    <Content Include="admin\personaBar\Dnn.Seo\css\Seo.css" />
     <Content Include="admin\personaBar\Dnn.Seo\scripts\bundles\seo-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Seo\scripts\Seo.js" />
     <Content Include="admin\personaBar\Dnn.Seo\Seo.html" />
@@ -577,15 +571,12 @@
     <Content Include="admin\personaBar\Dnn.Servers\scripts\bundles\servers-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Servers\scripts\Servers.js" />
     <Content Include="admin\personaBar\Dnn.Servers\Servers.html" />
-    <Content Include="admin\personaBar\Dnn.SiteImportExport\css\SiteImportExport.css" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\bundles\siteimportexport-bundle.js" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\SiteImportExport.js" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\SiteImportExport.html" />
-    <Content Include="admin\personaBar\Dnn.SiteSettings\css\SiteSettings.css" />
     <Content Include="admin\personaBar\Dnn.SiteSettings\scripts\bundles\site-settings-bundle.js" />
     <Content Include="admin\personaBar\Dnn.SiteSettings\scripts\SiteSettings.js" />
     <Content Include="admin\personaBar\Dnn.SiteSettings\SiteSettings.html" />
-    <Content Include="admin\personaBar\Dnn.Sites\css\Sites.css" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\bundles\sites-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\exportables\Sites\SitesListView.js" />
     <Content Include="admin\personaBar\Dnn.Sites\scripts\Sites.js" />
@@ -615,16 +606,13 @@
     <Content Include="admin\personaBar\Dnn.TaskScheduler\scripts\bundles\task-scheduler-bundle.js" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\scripts\TaskScheduler.js" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\TaskScheduler.html" />
-    <Content Include="admin\personaBar\Dnn.Themes\css\Themes.css" />
     <Content Include="admin\personaBar\Dnn.Themes\scripts\bundles\themes-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Themes\scripts\Themes.js" />
     <Content Include="admin\personaBar\Dnn.Themes\Themes.html" />
-    <Content Include="admin\personaBar\Dnn.Users\css\Users.css" />
     <Content Include="admin\personaBar\Dnn.Users\scripts\bundles\users-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js" />
     <Content Include="admin\personaBar\Dnn.Users\scripts\Users.js" />
     <Content Include="admin\personaBar\Dnn.Users\Users.html" />
-    <Content Include="admin\personaBar\Dnn.Vocabularies\css\vocabularies.css" />
     <Content Include="admin\personaBar\Dnn.Vocabularies\scripts\bundles\vocabulary-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Vocabularies\scripts\vocabularies.js" />
     <Content Include="admin\personaBar\Dnn.Vocabularies\vocabularies.html" />
@@ -713,6 +701,7 @@
   <ItemGroup>
     <Content Include="SqlDataProvider\03.00.00.SqlDataProvider" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

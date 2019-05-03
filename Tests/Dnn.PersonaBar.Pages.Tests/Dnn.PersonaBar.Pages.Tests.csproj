@@ -68,7 +68,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Extensions\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
       <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
-      <Name>Dnn.PersonaBar.Pages</Name>
+      <Name>Dnn.PersonaBar.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
