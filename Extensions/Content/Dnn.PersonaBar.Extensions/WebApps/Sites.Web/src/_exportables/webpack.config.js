@@ -5,7 +5,7 @@ module.exports = {
         minimize: true
     },
     output: {
-        path: path.resolve("../../../admin/personaBar/scripts/exportables/Sites"),
+        path: path.resolve("../../../../admin/personaBar/scripts/exportables/Sites"),
         filename: "SitesListView.js",
         publicPath: "http://localhost:8050/dist/"
     },
