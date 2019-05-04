@@ -20,6 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.AspNetClientCapabilityProvider.xml</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.AspNetClientCapabilityProvider.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1591,0618</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +40,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.AspNetClientCapabilityProvider.xml</DocumentationFile>
     <NoWarn>1591,0618</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +50,7 @@
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.AspNetClientCapabilityProvider.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1591,0618</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
