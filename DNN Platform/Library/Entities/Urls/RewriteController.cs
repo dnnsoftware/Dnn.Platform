@@ -527,6 +527,23 @@ namespace DotNetNuke.Entities.Urls
                                                                     ref List<string> messages,
                                                                     Guid parentTraceId)
         {
+            if (result.TabId < 0)
+            {
+                // Tab is unresolved.
+                // This happens when there are nested portal aliases, for example:
+                //   www.mysite.com
+                //   www.mysite.com/en-us
+                // In such (very typical) scenario, when resolving for example
+                //   http://www.mysite.com/en-us/Admin/ctl/UrlProviderSettings/Display/settings/ProviderId/1?popUp=true
+                // for the first alias, we get "en-us" and "Admin" included in urlParms.
+                // Also, since "Admin" was considered a parameter and not a tab, TabId = -1 (unresolved)
+                // Next, the second alias is resolved, and then we get correct urlParms and TabId.
+                // So, we skip calling downstream providers if TabId < 0
+                rewriteParms = false;
+                newAction = false;
+                return newUrl;
+            }
+
             string rewrittenUrl;
             rewriteParms = ExtensionUrlProviderController.TransformFriendlyUrlPath(newUrl, 
                                                                                     tabKeyVal, 
