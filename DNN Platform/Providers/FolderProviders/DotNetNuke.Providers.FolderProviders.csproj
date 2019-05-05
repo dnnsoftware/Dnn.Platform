@@ -25,7 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,7 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
@@ -59,6 +60,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Providers\DotNetNuke.Providers.FolderProviders.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

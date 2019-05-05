@@ -36,7 +36,7 @@
     <DocumentationFile>bin\DotNetNuke.Modules.RazorHost.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,6 +45,7 @@
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bin\DotNetNuke.Modules.RazorHost.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
   </PropertyGroup>

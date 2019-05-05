@@ -27,7 +27,7 @@
     <DocumentationFile>bin\DotNetNuke.Web.Razor.XML</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,6 +36,7 @@
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bin\DotNetNuke.Web.Razor.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
