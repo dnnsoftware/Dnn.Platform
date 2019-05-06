@@ -69,6 +69,21 @@ class Body extends Component {
             </GridCell>;
     }
 
+    onRemoveDeletedUsers() {
+        utilities.confirm(
+            Localization.get("RemoveDeleted.Confirm"),
+            Localization.get("Yes"),
+            Localization.get("No"),
+            () => {
+                this.props.dispatch(CommonUsersActions.removeDeletedUsers(() => {
+                    let {searchParameters} = this.state;
+                    this.props.dispatch(CommonUsersActions.getUsers(searchParameters));
+                    utilities.notify(Localization.get("RemoveDeleted.Done"));
+                }));
+            }
+        );
+    }
+
     toggleCreateBox() {
         this.userTable.wrappedInstance.onAddUser();
     }
@@ -86,6 +101,12 @@ class Body extends Component {
                         this.canAddUser() &&  
                     <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
                         {Localization.get("btnCreateUser") }
+                    </Button>
+                    }
+                    {
+                        appSettings.applicationSettings.settings.isAdmin &&  
+                    <Button type="secondary" size="large" onClick={() => {this.onRemoveDeletedUsers()}} title={Localization.get("RemoveDeleted.Btn")}>
+                        {Localization.get("RemoveDeleted.Btn") }
                     </Button>
                     }
                 </PersonaBarPageHeader>

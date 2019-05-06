@@ -62,14 +62,15 @@
     -->
 
     <ItemGroup>
-      <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\**\*.css" Exclude="$(MSBuildProjectDirectory)\Package\**\*;$(MSBuildProjectDirectory)\**\node_modules\**\*" />
+      <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\*\*.css;$(MSBuildProjectDirectory)\*\*\*.css;$(MSBuildProjectDirectory)\*\*\*\*.css;$(MSBuildProjectDirectory)\*\*\*\*\*.css;" Exclude="Package\**\*;**\node_modules\**;**\WebApps\**" />
     </ItemGroup>
-    <Message Text="Compressing CSS files" Importance="high" />
+    <Message Text="Compressing the following CSS files:" Importance="high" />
+    <Message Text="%(_CSSFilesToCompress.Identity)" Importance="high" />
 
     <CssCompressorTask
         SourceFiles="@(_CSSFilesToCompress)"
         DeleteSourceFiles="false"
-        OutputFile="$(MSBuildProjectDirectory)\Package\Resources\%(_CSSFilesToCompress.RecursiveDir)%(_CSSFilesToCompress.Filename)%(_CSSFilesToCompress.Extension)"
+        OutputFile="$(MSBuildProjectDirectory)\Package\Resources\%(RecursiveDir)%(Filename)%(Extension)"
         CompressionType="Standard"
         LoggingType="Info"
         PreserveComments="false"
