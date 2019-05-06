@@ -6,8 +6,7 @@
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
   </PropertyGroup>
 
-  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package">
-  </Target>
+  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>
   <Target Name="GetFiles">
     <ItemGroup>
       <PersonaBar-views Include="admin/**/*.html" />
@@ -21,9 +20,9 @@
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="@(PersonaBar-views)" DestinationFolder="$(ModuleFolderName)" />
@@ -36,29 +35,15 @@
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <ItemGroup>
       <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" Exclude="**/node_modules/**/*" />
-	  <_YarnWorkingDirectories Include="$(YarnWorkingDirectories)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
-	<PropertyGroup>
-	  <YarnWorkingDirectoriesCount>@(_YarnWorkingDirectories->Count())</YarnWorkingDirectoriesCount>
-	</PropertyGroup>
-	<Message Text="Count:   $(YarnWorkingDirectoriesCount)" />
 
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallOnly" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
-	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectories.RootDir)%(_YarnWorkingDirectories.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'> 0 "/>
-	<MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnInstallAndBuild" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" Condition="'$(YarnWorkingDirectoriesCount)'== 0"/>
-
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnWorkspace" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" />
   </Target>
 
-  <Target Name="RunYarnInstallOnly">
-	<Message Importance="high" Text="Running Yarn Install for $(WorkingDirectory)" />
+  <Target Name="RunYarnWorkspace">
+	  <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
 
-    <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" />
-  </Target>
-
-  <Target Name="RunYarnInstallAndBuild">
-	<Message Importance="high" Text="Running Yarn Install/Build for $(WorkingDirectory)" />
-
-	<Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
-    <Yarn Command="run build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+	  <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0 AND !Exists('$(WorkingDirectory)/node_modules')" />
+    <Yarn Command="workspaces run build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>
