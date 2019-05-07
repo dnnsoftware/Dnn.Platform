@@ -48,10 +48,6 @@ namespace DotNetNuke.Data
 
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-        private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)",
-                                                            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-        private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-
         #endregion
 
         #region Public Properties
@@ -110,30 +106,16 @@ namespace DotNetNuke.Data
                     // script dynamic substitution
                     sql = DataUtil.ReplaceTokens(sql);
 
-                    //Clean up some SQL Azure incompatabilities
-                    var query = GetAzureCompactScript(sql);
-
-                    if (query != sql)
-                    {
-                        var props = new LogProperties { new LogDetailInfo("SQL Script Modified", query) };
-
-                        EventLogController.Instance.AddLog(props,
-                                    PortalController.Instance.GetCurrentPortalSettings(),
-                                    UserController.Instance.GetCurrentUserInfo().UserID,
-                                    EventLogController.EventLogType.HOST_ALERT.ToString(),
-                                    true);
-                    }
-
                     try
                     {
-                        Logger.Trace("Executing SQL Script " + query);
+                        Logger.Trace("Executing SQL Script " + sql);
 
-                        _dbConnectionProvider.ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, query);
+                        _dbConnectionProvider.ExecuteNonQuery(connectionString, CommandType.Text, timeoutSec, sql);
                     }
                     catch (SqlException objException)
                     {
                         Logger.Error(objException);
-                        exceptions += objException + Environment.NewLine + Environment.NewLine + query + Environment.NewLine + Environment.NewLine;
+                        exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
                     }
                 }
             }
@@ -280,21 +262,6 @@ namespace DotNetNuke.Data
                 exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             }
             return exceptions;
-        }
-
-        private static string GetAzureCompactScript(string script)
-        {
-            if (ScriptWithRegex.IsMatch(script))
-            {
-                script = ScriptWithRegex.Replace(script, string.Empty);
-            }
-
-            if (ScriptOnPrimaryRegex.IsMatch(script))
-            {
-                script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
-            }
-
-            return script;
         }
 
         #endregion
