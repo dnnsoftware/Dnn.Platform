@@ -1533,6 +1533,7 @@
     <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
+    <Compile Include="UI\Modules\IModuleControlPipeline.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\ISettingsControl.cs" />
     <Compile Include="UI\Modules\ModuleCachingType.cs" />

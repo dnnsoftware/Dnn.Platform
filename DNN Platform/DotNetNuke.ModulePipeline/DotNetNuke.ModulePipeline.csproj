@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj" />
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>
 

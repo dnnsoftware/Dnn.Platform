@@ -6,6 +6,8 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Razor;
+using DotNetNuke.Web.Mvc;
 
 #if NET472
 using System.Web.UI;
@@ -13,12 +15,16 @@ using System.Web.UI;
 
 namespace DotNetNuke.ModulePipeline
 {
+    
     public class ModuleControlFactory
+#if NET472
+        : IModuleControlPipeline
+#endif
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
 #if NET472
-        private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
+        private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
 
@@ -35,18 +41,10 @@ namespace DotNetNuke.ModulePipeline
                     break;
                 case ".cshtml":
                 case ".vbhtml":
-                    factoryType = Reflection.CreateType("DotNetNuke.Web.Razor.RazorModuleControlFactory");
-                    if (factoryType != null)
-                    {
-                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
-                    }
+                    controlFactory = new RazorModuleControlFactory();
                     break;
                 case ".mvc":
-                    factoryType = Reflection.CreateType("DotNetNuke.Web.Mvc.MvcModuleControlFactory");
-                    if (factoryType != null)
-                    {
-                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
-                    }
+                    controlFactory = new MvcModuleControlFactory();
                     break;
                 default:
                     controlFactory = new ReflectedModuleControlFactory();
@@ -56,7 +54,7 @@ namespace DotNetNuke.ModulePipeline
             return controlFactory;
         }
 
-        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
+        public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
                 TracelLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
@@ -88,7 +86,7 @@ namespace DotNetNuke.ModulePipeline
             return control;
         }
 
-        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TracelLogger.IsDebugEnabled)
                 TracelLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
@@ -119,7 +117,7 @@ namespace DotNetNuke.ModulePipeline
             return control;
         }
 
-        public static Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        public Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
                 TracelLogger.Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
@@ -155,14 +153,14 @@ namespace DotNetNuke.ModulePipeline
             return control;
         }
 
-        public static Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
+        public Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
         {
             var moduleControl = new CachedModuleControl(cachedContent);
             moduleControl.ModuleContext.Configuration = moduleConfiguration;
             return moduleControl;
         }
 
-        public static Control CreateModuleControl(ModuleInfo moduleConfiguration)
+        public Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
             var moduleControl = new ModuleControlBase();
