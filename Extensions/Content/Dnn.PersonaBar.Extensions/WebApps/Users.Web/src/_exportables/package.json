@@ -28,7 +28,7 @@
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",
     "fs": "^0.0.1-security",
-    "less": "3.8.1",
+    "less": "3.9.0",
     "less-loader": "4.1.0",
     "localization": "^1.0.2",
     "moment": "^2.23.0",
