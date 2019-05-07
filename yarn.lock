@@ -11382,6 +11382,14 @@ react-tabs@2.3.0:
     classnames "^2.2.0"
     prop-types "^15.5.0"
 
+react-tabs@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-3.0.0.tgz#60311a17c755eb6aa9b3310123e67db421605127"
+  integrity sha512-z90cDIb+5V7MzjXFHq1VLxYiMH7dDQWan7mXSw6BWQtw+9pYAnq/fEDvsPaXNyevYitvLetdW87C61uu27JVMA==
+  dependencies:
+    classnames "^2.2.0"
+    prop-types "^15.5.0"
+
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.4.2, react-test-renderer@^16.6.2:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.8.6.tgz#188d8029b8c39c786f998aa3efd3ffe7642d5ba1"

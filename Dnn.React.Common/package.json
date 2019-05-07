@@ -38,7 +38,7 @@
     "react-motion": "^0.5.2",
     "react-scrollbar": "^0.5.4",
     "react-slider": "0.11.2",
-    "react-tabs": "2.3.0",
+    "react-tabs": "3.0.0",
     "react-test-utils": "0.0.1",
     "react-tooltip": "^3.8.4",
     "react-widgets": "^4.4.4",
