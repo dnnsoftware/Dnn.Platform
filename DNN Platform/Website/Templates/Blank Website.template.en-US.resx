@@ -150,12 +150,6 @@
   <data name="Tab.About.RightPane.OtherModule.Content.8.Text" xml:space="preserve">
     <value>Share your feedback</value>
   </data>
-  <data name="Tab.SearchAdmin.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Search Admin</value>
-  </data>
-  <data name="Tab.SearchAdmin.Description.Text" xml:space="preserve">
-    <value>Search Admin</value>
-  </data>
   <data name="Tab.404ErrorPage..Module.Content.Text" xml:space="preserve">
     <value>Sorry, the page you are looking for cannot be found and might have been removed, had its name changed, or is temporarily unavailable. It is recommended that you start again from the homepage. Feel free to contact us if the problem persists or if you definitely cannot find what you’re looking for.</value>
   </data>
@@ -171,9 +165,6 @@
   <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
     <value>My Profile</value>
   </data>
-  <data name="Tab.Extensions.Title.Text" xml:space="preserve">
-    <value>Extensions</value>
-  </data>
   <data name="Tab.PortalAdministration.Title.Text" xml:space="preserve">
     <value>Website Administration</value>
   </data>
@@ -183,21 +174,12 @@
   <data name="Tab.MyMessages.Title.Text" xml:space="preserve">
     <value>My Messages</value>
   </data>
-  <data name="Tab.SecurityRoles.Title.Text" xml:space="preserve">
-    <value>Security Roles</value>
-  </data>
-  <data name="Tab.SiteSettings.Title.Text" xml:space="preserve">
-    <value>Site Settings</value>
-  </data>
   <data name="Tab.UserAccounts.Title.Text" xml:space="preserve">
     <value>User Accounts</value>
   </data>
   <data name="Tab.SearchResultsCE.Title.Text" xml:space="preserve">
     <value>Search Results</value>
   </data>
-  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>  
   <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
     <value>File Management</value>
   </data>

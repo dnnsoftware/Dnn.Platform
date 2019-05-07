@@ -238,33 +238,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.ActivityFeed.Title.Text" xml:space="preserve">
     <value>Activity Feed</value>
   </data>
-  <data name="Tab.AdvUrlManagement.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Advanced URL Management</value>
-  </data>
-  <data name="Tab.AdvUrlManagement.Description.Text" xml:space="preserve">
-    <value>Manage advanced url settings.</value>
-  </data>
-  <data name="Tab.ContentStaging.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Content Staging</value>
-  </data>
-  <data name="Tab.ContentStaging.Description.Text" xml:space="preserve">
-    <value>Manage the Staging of Content for your Site</value>
-  </data>
-  <data name="Tab.ContentStaging.Name.Text" xml:space="preserve">
-    <value>Content Staging</value>
-  </data>
-  <data name="Tab.DevicePreview.Content.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
-  <data name="Tab.DevicePreview.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
-  <data name="Tab.DevicePreview.Description.Text" xml:space="preserve">
-    <value>Device Preview Management.</value>
-  </data>
-  <data name="Tab.DevicePreview.Name.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
   <data name="Tab.DigitalAssetsManagement.Content.Text" xml:space="preserve">
     <value>File Management</value>
   </data>
@@ -279,21 +252,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
     <value>File Management</value>
-  </data>
-  <data name="Tab.Extensions.Content.Text" xml:space="preserve">
-    <value>Extensions</value>
-  </data>
-  <data name="Tab.Extensions.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Extensions</value>
-  </data>
-  <data name="Tab.Extensions.Description.Text" xml:space="preserve">
-    <value>Install, add, modify and delete extensions, such as modules, themes and language packs.</value>
-  </data>
-  <data name="Tab.Extensions.Name.Text" xml:space="preserve">
-    <value>Extensions</value>
-  </data>
-  <data name="Tab.Extensions.Title.Text" xml:space="preserve">
-    <value>Extensions</value>
   </data>
   <data name="Tab.Home.CompanyIntro.Text" xml:space="preserve">
     <value>DNN (formerly DotNetNuke) provides a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees.  DNN products and technology are the foundation for 750,000+ websites worldwide. DNN Corp. (formerly "DotNetNuke Corporation") is the steward of the DNN open source project.</value>
@@ -426,51 +384,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.Home.SocialLinks.Youtube.Link" xml:space="preserve">
     <value>http://www.youtube.com/user/dotnetnuke</value>
-  </data>
-  <data name="Tab.Languages.Content.Text" xml:space="preserve">
-    <value>Languages</value>
-  </data>
-  <data name="Tab.Languages.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Language Management</value>
-  </data>
-  <data name="Tab.Languages.Description.Text" xml:space="preserve">
-    <value>Manage Language Resources.</value>
-  </data>
-  <data name="Tab.Languages.Name.Text" xml:space="preserve">
-    <value>Languages</value>
-  </data>
-  <data name="Tab.Languages.Title.Text" xml:space="preserve">
-    <value>Languages</value>
-  </data>
-  <data name="Tab.Lists.Content.Text" xml:space="preserve">
-    <value>Lists</value>
-  </data>
-  <data name="Tab.Lists.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Lists</value>
-  </data>
-  <data name="Tab.Lists.Description.Text" xml:space="preserve">
-    <value>Manage common lists</value>
-  </data>
-  <data name="Tab.Lists.Name.Text" xml:space="preserve">
-    <value>Lists</value>
-  </data>
-  <data name="Tab.Lists.Title.Text" xml:space="preserve">
-    <value>Lists</value>
-  </data>
-  <data name="Tab.LogViewer.Content.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.Description.Text" xml:space="preserve">
-    <value>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</value>
-  </data>
-  <data name="Tab.LogViewer.Name.Text" xml:space="preserve">
-    <value>Log Viewer</value>
-  </data>
-  <data name="Tab.LogViewer.Title.Text" xml:space="preserve">
-    <value>Log Viewer</value>
   </data>
   <data name="Tab.MyFriends.CenterPane.MemberDirectoryModule.Title.Text" xml:space="preserve">
     <value>Member Directory</value>
@@ -769,21 +682,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.MyProfile.Title.Text" xml:space="preserve">
     <value>My Profile</value>
   </data>
-  <data name="Tab.PageManagement.Content.Text" xml:space="preserve">
-    <value>Page Management</value>
-  </data>
-  <data name="Tab.PageManagement.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Page Management</value>
-  </data>
-  <data name="Tab.PageManagement.Description.Text" xml:space="preserve">
-    <value>Manage pages within the site.</value>
-  </data>
-  <data name="Tab.PageManagement.Name.Text" xml:space="preserve">
-    <value>Pages</value>
-  </data>
-  <data name="Tab.PageManagement.Title.Text" xml:space="preserve">
-    <value>Page Management</value>
-  </data>
   <data name="Tab.PortalAdministration.Content.Text" xml:space="preserve">
     <value>Website Administration</value>
   </data>
@@ -795,27 +693,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.PortalAdministration.Title.Text" xml:space="preserve">
     <value>Website Administration</value>
-  </data>
-  <data name="Tab.RecycleBin.Content.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
-  </data>
-  <data name="Tab.RecycleBin.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
-  </data>
-  <data name="Tab.RecycleBin.Description.Text" xml:space="preserve">
-    <value>View, restore or permanently recycle pages and modules that have been deleted from the portal.</value>
-  </data>
-  <data name="Tab.RecycleBin.Name.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
-  </data>
-  <data name="Tab.RecycleBin.Title.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
-  </data>
-  <data name="Tab.SearchAdmin.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Search Admin</value>
-  </data>
-  <data name="Tab.SearchAdmin.Description.Text" xml:space="preserve">
-    <value>Search Admin</value>
   </data>
   <data name="Tab.SearchResultsCE.Content.Text" xml:space="preserve">
     <value>Search Results</value>
@@ -844,120 +721,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.SearchResultsPro.Title.Text" xml:space="preserve">
     <value>Search Results</value>
   </data>
-  <data name="Tab.SecurityRoles.Content.Text" xml:space="preserve">
-    <value>Security Roles</value>
-  </data>
-  <data name="Tab.SecurityRoles.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Security Roles</value>
-  </data>
-  <data name="Tab.SecurityRoles.Description.Text" xml:space="preserve">
-    <value>Manage security roles for the portal.</value>
-  </data>
-  <data name="Tab.SecurityRoles.Name.Text" xml:space="preserve">
-    <value>Security Roles</value>
-  </data>
-  <data name="Tab.SecurityRoles.Title.Text" xml:space="preserve">
-    <value>Security Roles</value>
-  </data>
-  <data name="Tab.Sharepoint.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>SharePoint Connector</value>
-  </data>
-  <data name="Tab.Sharepoint.Description.Text" xml:space="preserve">
-    <value>The SharePoint Connector module allows users to connect and sync files between a SharePoint and DNN Server.</value>
-  </data>
-  <data name="Tab.Sharepoint.Name.Text" xml:space="preserve">
-    <value>SharePoint Connector</value>
-  </data>
-  <data name="Tab.SiteMapSettings.Content.Text" xml:space="preserve">
-    <value>Site Map Settings</value>
-  </data>
-  <data name="Tab.SiteMapSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Search Engine SiteMap</value>
-  </data>
-  <data name="Tab.SiteMapSettings.Description.Text" xml:space="preserve">
-    <value>Configure the sitemap for submission to common search engines.</value>
-  </data>
-  <data name="Tab.SiteMapSettings.Name.Text" xml:space="preserve">
-    <value>Search Engine SiteMap</value>
-  </data>
-  <data name="Tab.SiteMapSettings.Title.Text" xml:space="preserve">
-    <value>Site Map Settings</value>
-  </data>
-  <data name="Tab.SiteRedirection.Content.Text" xml:space="preserve">
-    <value>Site Redirection Management</value>
-  </data>
-  <data name="Tab.SiteRedirection.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Redirection Management</value>
-  </data>
-  <data name="Tab.SiteRedirection.Description.Text" xml:space="preserve">
-    <value>Site Redirection Management.</value>
-  </data>
-  <data name="Tab.SiteRedirection.Name.Text" xml:space="preserve">
-    <value>Site Redirection Management</value>
-  </data>
-  <data name="Tab.SiteSettings.Content.Text" xml:space="preserve">
-    <value>Site Settings</value>
-  </data>
-  <data name="Tab.SiteSettings.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Settings</value>
-  </data>
-  <data name="Tab.SiteSettings.Description.Text" xml:space="preserve">
-    <value>Manage configuration settings for the portal.</value>
-  </data>
-  <data name="Tab.SiteSettings.Name.Text" xml:space="preserve">
-    <value>Site Settings</value>
-  </data>
-  <data name="Tab.SiteSettings.Title.Text" xml:space="preserve">
-    <value>Site Settings</value>
-  </data>
-  <data name="Tab.SiteWizard.Content.Text" xml:space="preserve">
-    <value>Site Wizard</value>
-  </data>
-  <data name="Tab.SiteWizard.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Wizard</value>
-  </data>
-  <data name="Tab.SiteWizard.Description.Text" xml:space="preserve">
-    <value>Configure portal settings, page design and apply a site template using a step-by-step wizard.</value>
-  </data>
-  <data name="Tab.SiteWizard.Name.Text" xml:space="preserve">
-    <value>Site Wizard</value>
-  </data>
-  <data name="Tab.SiteWizard.Title.Text" xml:space="preserve">
-    <value>Site Wizard</value>
-  </data>
-  <data name="Tab.Skins.Content.Text" xml:space="preserve">
-    <value>Skins</value>
-  </data>
-  <data name="Tab.Skins.ContentPane.SkinDesignerModule.Title.Text" xml:space="preserve">
-    <value>Skin Designer</value>
-  </data>
-  <data name="Tab.Skins.ContentPane.SkinEditorModule.Title.Text" xml:space="preserve">
-    <value>Skin Editor</value>
-  </data>
-  <data name="Tab.Skins.Description.Text" xml:space="preserve">
-    <value>Manage Skin Resources.</value>
-  </data>
-  <data name="Tab.Skins.Name.Text" xml:space="preserve">
-    <value>Skins</value>
-  </data>
-  <data name="Tab.Skins.Title.Text" xml:space="preserve">
-    <value>Skins</value>
-  </data>
-  <data name="Tab.Taxonomy.Content.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
-  <data name="Tab.Taxonomy.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Taxonomy Manager</value>
-  </data>
-  <data name="Tab.Taxonomy.Description.Text" xml:space="preserve">
-    <value>Manage the Taxonomy for your Site.</value>
-  </data>
-  <data name="Tab.Taxonomy.Name.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
-  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
-    <value>Taxonomy</value>
-  </data>
   <data name="Tab.UserAccounts.Content.Text" xml:space="preserve">
     <value>User Accounts</value>
   </data>
@@ -972,21 +735,6 @@ Fax: (555) 555-4564</value>
   </data>
   <data name="Tab.UserAccounts.Title.Text" xml:space="preserve">
     <value>User Accounts</value>
-  </data>
-  <data name="Tab.Vendors.Content.Text" xml:space="preserve">
-    <value>Vendors</value>
-  </data>
-  <data name="Tab.Vendors.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Vendors</value>
-  </data>
-  <data name="Tab.Vendors.Description.Text" xml:space="preserve">
-    <value>Manage vendor accounts, banner advertising and affiliate referrals within the portal.</value>
-  </data>
-  <data name="Tab.Vendors.Name.Text" xml:space="preserve">
-    <value>Vendors</value>
-  </data>
-  <data name="Tab.Vendors.Title.Text" xml:space="preserve">
-    <value>Vendors</value>
   </data>
   <data name="Tab.Home.Main.Blog.SubLink.Text" xml:space="preserve">
     <value>Read the Community Blog</value>
