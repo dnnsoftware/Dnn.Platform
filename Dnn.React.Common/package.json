@@ -43,7 +43,7 @@
     "react-tooltip": "^3.8.4",
     "react-widgets": "^4.4.4",
     "redux-undo": "^1.0.0-beta9",
-    "scroll": "^2.0.3",
+    "scroll": "^3.0.1",
     "shortid": "^2.2.13",
     "throttle-debounce": "^2.0.1"
   },
