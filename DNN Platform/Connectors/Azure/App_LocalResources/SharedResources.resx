@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountName.Text" xml:space="preserve">
-    <value>Account Name:</value>
+    <value>Storage Account Name:</value>
   </data>
   <data name="AccountKey.Text" xml:space="preserve">
-    <value>Account Key:</value>
+    <value>Storage Account Key:</value>
   </data>
   <data name="Container.Text" xml:space="preserve">
     <value>Container Name:</value>
@@ -142,21 +142,21 @@
     <value>-Select a Container-</value>
   </data>
   <data name="ErrorRequiredFields.Text" xml:space="preserve">
-    <value>Access key and Account name are required.</value>
+    <value>Storage Access key and Storage Account name are required.</value>
   </data>
   <data name="ErrorMappingNameExists.Text" xml:space="preserve">
     <value>Connection name already exists.</value>
   </data>
   <data name="InvalidAccountKey.ErrorMessage" xml:space="preserve">
-    <value>Input is not a valid Account Key.</value>
+    <value>Input is not a valid Storage Account Key.</value>
   </data>
   <data name="InvalidAccountName.ErrorMessage" xml:space="preserve">
-    <value>Input is not a valid Account Name.</value>
+    <value>Input is not a valid Storage Account Name.</value>
   </data>
   <data name="AccountNameCannotBeEmpty.ErrorMessage" xml:space="preserve">
-    <value>Account Name cannot be empty.</value>
+    <value>Storage Account Name cannot be empty.</value>
   </data>
   <data name="AccountKeyCannotBeEmpty.ErrorMessage" xml:space="preserve">
-    <value>Account Key cannot be empty.</value>
+    <value>Storage Account Key cannot be empty.</value>
   </data>
 </root>
