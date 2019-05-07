@@ -28,10 +28,12 @@ using DotNetNuke.UI.Modules.Html5;
 
 namespace DotNetNuke.UI.Modules
 {
+    [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
     public class ModuleControlFactory
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
@@ -70,6 +72,7 @@ namespace DotNetNuke.UI.Modules
             return controlFactory;
         }
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -102,6 +105,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -133,6 +137,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -169,6 +174,7 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
         {
             var moduleControl = new CachedModuleControl(cachedContent);
@@ -176,6 +182,7 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
+        [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
         public static Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
