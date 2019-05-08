@@ -99,20 +99,6 @@ namespace DotNetNuke.UI.Skins
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
-        private IModuleControlPipeline _moduleControlPipeline;
-        private IModuleControlPipeline ModulePipeline
-        {
-            get
-            {
-                if (_moduleControlPipeline != null)
-                    return _moduleControlPipeline;
-
-                var pipelineType = Framework.Reflection.CreateType("DotNetNuke.ModulePipeline.ModuleControlFactory");
-                _moduleControlPipeline = Framework.Reflection.CreateObject(pipelineType) as IModuleControlPipeline;
-
-                return _moduleControlPipeline;
-            }
-        }
 
         #endregion
 
@@ -1013,7 +999,7 @@ namespace DotNetNuke.UI.Skins
             {
                 if(PortalSettings.ActiveTab.TabID == PortalSettings.UserTabId || PortalSettings.ActiveTab.ParentId == PortalSettings.UserTabId)
                 {
-                    var profileModule = ModulePipeline.LoadModuleControl(Page, module) as IProfileModule;
+                    var profileModule = ModuleControlPipeline.Instance.LoadModuleControl(Page, module) as IProfileModule;
                     if (profileModule == null || profileModule.DisplayModule)
                     {
                         pane.InjectModule(module);

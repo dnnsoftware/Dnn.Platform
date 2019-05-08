@@ -70,21 +70,6 @@ namespace DotNetNuke.UI.Modules
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
 
-        private IModuleControlPipeline _moduleControlPipeline;
-        private IModuleControlPipeline ModulePipeline
-        {
-            get
-            {
-                if (_moduleControlPipeline != null)
-                    return _moduleControlPipeline;
-
-                var pipelineType = Framework.Reflection.CreateType("DotNetNuke.ModulePipeline.ModuleControlFactory");
-                _moduleControlPipeline = Framework.Reflection.CreateObject(pipelineType) as IModuleControlPipeline;
-
-                return _moduleControlPipeline;
-            }
-        }
-
         #region Private Members
 
         private readonly ModuleInfo _moduleConfiguration;
@@ -294,12 +279,12 @@ namespace DotNetNuke.UI.Modules
                     if (!_isCached)
                     {
                     	// load the control dynamically
-                        _control = ModulePipeline.LoadModuleControl(Page, _moduleConfiguration);
+                        _control = ModuleControlPipeline.Instance.LoadModuleControl(Page, _moduleConfiguration);
                     }
                 }
                 else //content placeholder
                 {
-                    _control = ModulePipeline.CreateModuleControl(_moduleConfiguration);
+                    _control = ModuleControlPipeline.Instance.CreateModuleControl(_moduleConfiguration);
                 }
                 if (Skin != null)
                 {
@@ -322,7 +307,7 @@ namespace DotNetNuke.UI.Modules
                 Logger.Error(exc);
 				
 				//add module settings
-                _control = ModulePipeline.CreateModuleControl(_moduleConfiguration);
+                _control = ModuleControlPipeline.Instance.CreateModuleControl(_moduleConfiguration);
                 ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
                 if (TabPermissionController.CanAdminPage())
                 {
@@ -430,7 +415,7 @@ namespace DotNetNuke.UI.Modules
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
-                _control = ModulePipeline.CreateCachedControl(cachedContent, _moduleConfiguration);
+                _control = ModuleControlPipeline.Instance.CreateCachedControl(cachedContent, _moduleConfiguration);
                 Controls.Add(_control);
             }
             return success;

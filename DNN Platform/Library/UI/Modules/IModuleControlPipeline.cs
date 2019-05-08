@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Entities.Modules;
+using System;
 using System.Web.UI;
 
 namespace DotNetNuke.UI.Modules
