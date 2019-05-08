@@ -20,7 +20,7 @@
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.20",
     "babel-polyfill": "6.26.0",
-    "css-loader": "1.0.1",
+    "css-loader": "2.1.1",
     "es6-object-assign": "1.1.0",
     "eslint": "5.8.0",
     "eslint-loader": "2.1.1",
