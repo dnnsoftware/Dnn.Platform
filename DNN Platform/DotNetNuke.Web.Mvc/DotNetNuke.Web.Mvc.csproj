@@ -38,6 +38,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
     <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebHelpers.3.1.1\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -182,8 +183,10 @@
     <Compile Include="Routing\PortalAliasMvcRouteManager.cs" />
     <Compile Include="Routing\StandardModuleRoutingProvider.cs" />
     <Compile Include="StandardTabAndModuleInfoProvider.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
@@ -192,9 +195,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Contracts\DotNetNuke.Contracts.csproj">
+      <Project>{45CD3A2F-13D3-4579-9471-CDCFEF147080}</Project>
+      <Name>DotNetNuke.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Mvc.Contracts\DotNetNuke.Web.Mvc.Contracts.csproj">
+      <Project>{B12B8E10-7792-43DC-9763-70891E85A961}</Project>
+      <Name>DotNetNuke.Web.Mvc.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}</Project>

@@ -9,8 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Contracts\DotNetNuke.Contracts.csproj" />
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
-    <ProjectReference Include="..\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Web.Mvc.Contracts\DotNetNuke.Web.Mvc.Contracts.csproj" />
     <ProjectReference Include="..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj" />
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>

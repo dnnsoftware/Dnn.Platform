@@ -25,7 +25,8 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class Html5ModuleControlFactory : IModuleControlFactory
+    public interface IHtml5ModuleControlFactory : IModuleControlFactory { }
+    public class Html5ModuleControlFactory : IHtml5ModuleControlFactory
     {
         public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {

@@ -8,6 +8,10 @@ using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Razor;
 using DotNetNuke.Web.Mvc;
+using DotNetNuke.Common;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using DotNetNuke.Web.Mvc.Contracts;
 
 #if NET472
 using System.Web.UI;
@@ -22,36 +26,56 @@ namespace DotNetNuke.ModulePipeline
 #endif
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private Dictionary<string, IModuleControlFactory> _controlFactories;
+        public ModuleControlFactory(
+            IWebFormsModuleControlFactory webforms,
+            IHtml5ModuleControlFactory html5,
+            IRazorModuleControlFactory razor3,
+            IMvcModuleControlFactory mvc,
+            IReflectedModuleControlFactory fallthrough)
+        {
+            _controlFactories = new Dictionary<string, IModuleControlFactory>();
+            _controlFactories.Add(".ascx", webforms);
+            _controlFactories.Add(".htm", html5);
+            _controlFactories.Add(".html", html5);
+            _controlFactories.Add(".cshtml", razor3);
+            _controlFactories.Add(".vbhtml", razor3);
+            _controlFactories.Add(".mvc", mvc);
+            _controlFactories.Add("default", fallthrough);
+        }
 
 #if NET472
         private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
+            IModuleControlFactory factory = _controlFactories[extension];
 
-            IModuleControlFactory controlFactory = null;
-            Type factoryType;
-            switch (extension)
-            {
-                case ".ascx":
-                    controlFactory = new WebFormsModuleControlFactory();
-                    break;
-                case ".html":
-                case ".htm":
-                    controlFactory = new Html5ModuleControlFactory();
-                    break;
-                case ".cshtml":
-                case ".vbhtml":
-                    controlFactory = new RazorModuleControlFactory();
-                    break;
-                case ".mvc":
-                    controlFactory = new MvcModuleControlFactory();
-                    break;
-                default:
-                    controlFactory = new ReflectedModuleControlFactory();
-                    break;
-            }
+            return factory ?? _controlFactories["default"];
 
-            return controlFactory;
+            //IModuleControlFactory controlFactory = null;
+            //Type factoryType;
+            //switch (extension)
+            //{
+            //    case ".ascx":
+            //        controlFactory = Globals.DependencyService.GetRequiredService<WebFormsModuleControlFactory>();
+            //        break;
+            //    case ".html":
+            //    case ".htm":
+            //        controlFactory = new Html5ModuleControlFactory();
+            //        break;
+            //    case ".cshtml":
+            //    case ".vbhtml":
+            //        controlFactory = new RazorModuleControlFactory();
+            //        break;
+            //    case ".mvc":
+            //        controlFactory = new MvcModuleControlFactory();
+            //        break;
+            //    default:
+            //        controlFactory = new ReflectedModuleControlFactory();
+            //        break;
+            //}
+
+            //return controlFactory;
         }
 
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)

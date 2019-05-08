@@ -23,8 +23,9 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Razor
 {
+    public interface IRazorModuleControlFactory : IModuleControlFactory { }
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public class RazorModuleControlFactory : IModuleControlFactory
+    public class RazorModuleControlFactory : IRazorModuleControlFactory
     {
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)

@@ -23,7 +23,8 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.UI.Modules
 {
-    public class WebFormsModuleControlFactory : IModuleControlFactory
+    public interface IWebFormsModuleControlFactory : IModuleControlFactory { }
+    public class WebFormsModuleControlFactory : IWebFormsModuleControlFactory
     {
         public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {

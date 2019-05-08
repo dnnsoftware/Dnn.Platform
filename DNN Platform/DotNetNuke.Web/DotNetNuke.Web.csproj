@@ -95,6 +95,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -250,6 +256,7 @@
     <Compile Include="Common\SharedConstants.cs" />
     <Compile Include="Services\MobileHelperController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
     <Compile Include="UI\WebControls\DnnFileUpload.cs" />
@@ -402,12 +409,23 @@
     <Compile Include="UI\WebControls\TermsEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Contracts\DotNetNuke.Contracts.csproj">
+      <Project>{45CD3A2F-13D3-4579-9471-CDCFEF147080}</Project>
+      <Name>DotNetNuke.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.ModulePipeline\DotNetNuke.ModulePipeline.csproj">
+      <Project>{c4823821-cfb3-4394-851f-e39d0974efbd}</Project>
+      <Name>DotNetNuke.ModulePipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
