@@ -781,9 +781,6 @@ namespace DotNetNuke.Services.Installer
 
                     // Write the data to the local file
                     localStream.Write(buffer, 0, bytesRead);
-
-                    // Increment total bytes processed
-                    //TODO fix this line bytesProcessed += bytesRead;
                 } while (bytesRead > 0);
             }
             finally

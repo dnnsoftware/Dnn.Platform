@@ -398,7 +398,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         {
             var cacheKey = string.Format("MessageTab:{0}", sendingPortal.PortalId);
             
-            // TODO: Create Default Const cache timeout
             var cacheItemArgs = new CacheItemArgs(cacheKey, 30, CacheItemPriority.Default, sendingPortal);
 
             return CBO.GetCachedObject<int>(cacheItemArgs, GetMessageTabCallback);
@@ -668,7 +667,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <param name="messageRecipient">The message recipient.</param>
         private void SendMessage(MessageRecipient messageRecipient)
         {
-            // todo: check if host user can send to multiple portals...
             var message = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);            
 
             var toUser = UserController.Instance.GetUser(message.PortalID, messageRecipient.UserID);

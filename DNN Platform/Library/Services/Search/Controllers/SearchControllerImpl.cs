@@ -90,7 +90,6 @@ namespace DotNetNuke.Services.Search.Controllers
                 || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
 
-            //TODO - Explore Slop factor for Phrase query
 
             var query = new BooleanQuery();
             if (!string.IsNullOrEmpty(searchQuery.KeyWords))
@@ -310,8 +309,6 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     case Constants.TitleTag:
                         var title = field.StringValue;
-                        //TODO - Need better highlighting logic for Title
-                        //result.Title = string.IsNullOrEmpty(titleSnippet) ? title : string.Format("...{0}...", titleSnippet);
                         result.Title = title;
                         break;
                     case Constants.BodyTag:

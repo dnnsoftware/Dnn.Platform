@@ -11,7 +11,6 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         [SetUp]
         public void Setup()
         {
-            //TODO: implement environemnt set up
         }
 
         #endregion
@@ -20,7 +19,6 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         [TearDown]
         public void TearDown()
         {
-            //TODO:implement clean up
         }
         #endregion
 

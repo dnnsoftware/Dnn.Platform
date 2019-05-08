@@ -112,7 +112,6 @@ namespace DotNetNuke.Collections.Internal
             {
                 EnsureNotDisposed();
                 return Lock.IsReadLockHeld || Lock.IsWriteLockHeld;
-                //todo uncomment if upgradelock is used OrElse _lock.IsUpgradeableReadLockHeld
             }
         }
 

@@ -262,7 +262,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
         public static int GetPortalFromUrl(string url)
         {
-            //TODO
             return 0;
         }
 

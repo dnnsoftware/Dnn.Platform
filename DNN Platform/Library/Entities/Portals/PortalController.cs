@@ -991,17 +991,6 @@ namespace DotNetNuke.Entities.Portals
                         ExtensionUrlProviderController.SaveSetting(provider.ExtensionUrlProviderId, portalId, name, value);
                     }
                 }
-
-                ////var tabIdsNavigator = providerNavigator.SelectSingleNode("tabIds");
-                ////if (tabIdsNavigator != null)
-                ////{
-                ////    foreach (XPathNavigator tabIdNavigator in tabIdsNavigator.Select("tabId"))
-                ////    {
-                ////        // TODO: figure out how to save a tab ID for a provider
-                ////        var tabId = XmlUtils.GetNodeValueInt(tabIdNavigator, ".");
-                ////        provider.TabIds.Add(tabId);
-                ////    }
-                ////}
             }
         }
 

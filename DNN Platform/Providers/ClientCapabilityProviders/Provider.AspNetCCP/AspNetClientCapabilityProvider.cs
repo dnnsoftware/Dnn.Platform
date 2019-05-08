@@ -81,7 +81,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            //TODO
+                            //TODO :Implement
                             //foreach (var property in DataProvider.Properties)
                             //{
                             //    var values = property.Values.Select(value => value.Name).ToList();

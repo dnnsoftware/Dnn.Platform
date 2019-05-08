@@ -107,7 +107,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             //If already exists a started workflow
             if (workflow != null && !IsWorkflowCompleted(workflow, item))
             {
-                //TODO; Study if is need to throw an exception
                 return;
             }
             if (workflow == null || workflow.WorkflowID != workflowID)
@@ -349,7 +348,6 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         #region Default Workflows
         [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager. Scheduled removal in v10.0.0.")]
-        //TODO Mark what would be the replacement method
         public void CreateDefaultWorkflows(int portalId)
         {
             if (GetWorkflows(portalId).Any(w => w.WorkflowName == Localization.GetString("DefaultWorkflowName")))
@@ -533,7 +531,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             if (sendEmail)
             {
-                //TODO: remove this as Email notification is no longer supported
                 SendEmailNotifications(settings, roles, users, subject, body, comment);
             }
             if (sendMessage)
@@ -555,7 +552,6 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendMessageNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int actionUserID, string source, string[] parameters)
         {
-            //TODO: Confirm the final body and comment format
             var fullbody = GetFullBody(body, comment);
 
             if (!roles.Any() && !users.Any())
@@ -589,8 +585,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return body + "<br><br>" + comment;
         }
-
-        // TODO: Remove this as email notification is no longer sopported
+        
         private void SendEmailNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment)
         {
             var fullbody = GetFullBody(body, comment);
