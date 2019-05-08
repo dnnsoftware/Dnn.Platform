@@ -10,7 +10,7 @@ import { Pager } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../svg/history.svg`);
+const svgIcon = require(`!raw-loader!./../svg/history.svg`).default;
 
 let pageSizeOptions = [];
 let tableFields = [];

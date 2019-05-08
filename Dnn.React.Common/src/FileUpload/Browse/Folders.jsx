@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-const folderIcon = require("!raw-loader!./img/folder.svg");
+const folderIcon = require("!raw-loader!./img/folder.svg").default;
 
 export default class Folders extends Component {
 

@@ -11,7 +11,7 @@ import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const warningIcon = require(`!raw-loader!./../svg/error.svg`);
+const warningIcon = require(`!raw-loader!./../svg/error.svg`).default;
 
 let tableFields = [];
 

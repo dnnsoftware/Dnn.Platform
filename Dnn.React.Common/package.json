@@ -28,7 +28,7 @@
   "dependencies": {
     "interact.js": "^1.2.8",
     "moment": "^2.22.2",
-    "raw-loader": "0.5.1",
+    "raw-loader": "2.0.0",
     "react-accessible-tooltip": "^2.0.3",
     "react-collapse": "^4.0.3",
     "react-custom-scrollbars": "^4.2.1",
@@ -80,7 +80,7 @@
     "less": "3.9.0",
     "less-loader": "4.1.0",
     "prop-types": "^15.6.2",
-    "raw-loader": "0.5.1",
+    "raw-loader": "2.0.0",
     "react": "^16.4.2",
     "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.4.2",

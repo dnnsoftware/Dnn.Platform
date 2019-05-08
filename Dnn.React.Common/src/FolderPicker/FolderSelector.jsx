@@ -4,7 +4,7 @@ import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
 import "./style.less";
 
-const searchIconImage = require("!raw-loader!./img/search.svg");
+const searchIconImage = require("!raw-loader!./img/search.svg").default;
 
 export default class FolderSelector extends Component {
 

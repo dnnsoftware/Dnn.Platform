@@ -103,7 +103,7 @@ class AvailableExtensions extends Component {
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
-            <div dangerouslySetInnerHTML={{ __html: require("!raw-loader!./../../../img/fetching.svg") }} />
+            <div dangerouslySetInnerHTML={{ __html: require("!raw-loader!./../../../img/fetching.svg").default }} />
         </div>;
     }
 

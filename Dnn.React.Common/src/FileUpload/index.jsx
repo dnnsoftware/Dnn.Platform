@@ -342,7 +342,7 @@ export default class FileUpload extends Component {
         }
 
         buttons = buttons.map((button) => {
-            const svg = require(`!raw-loader!./img/${button.name}.svg`);
+            const svg = require(`!raw-loader!./img/${button.name}.svg`).default;
             const isUpload = button.name === "upload";
             /* eslint-disable react/no-danger */
             const accept = props.fileFormats.join(",");

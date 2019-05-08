@@ -52,7 +52,7 @@ class PageHierarchy extends Component {
     }
     
     render() {
-        const html = require("raw-loader!./pages.html");
+        const html = require("raw-loader!./pages.html").default;
         return <div ref={node => this.node = node} dangerouslySetInnerHTML={{__html: html}} />; // eslint-disable-line react/no-danger
     }
 } 

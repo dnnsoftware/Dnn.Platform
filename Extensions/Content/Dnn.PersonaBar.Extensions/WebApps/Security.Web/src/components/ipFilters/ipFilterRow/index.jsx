@@ -5,10 +5,10 @@ import "./style.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
-const allowIcon = require(`!raw-loader!./../../svg/checkbox.svg`);
-const denyIcon = require(`!raw-loader!./../../svg/cross_out.svg`);
-const editIcon = require(`!raw-loader!./../../svg/edit.svg`);
-const deleteIcon = require(`!raw-loader!./../../svg/trash.svg`);
+const allowIcon = require(`!raw-loader!./../../svg/checkbox.svg`).default;
+const denyIcon = require(`!raw-loader!./../../svg/cross_out.svg`).default;
+const editIcon = require(`!raw-loader!./../../svg/edit.svg`).default;
+const deleteIcon = require(`!raw-loader!./../../svg/trash.svg`).default;
 
 class IpFilterRow extends Component {
     constructor() {

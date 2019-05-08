@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
-const searchIcon = require("!raw-loader!./img/search.svg");
+const searchIcon = require("!raw-loader!./img/search.svg").default;
 
 export default class FolderPicker extends Component {
 

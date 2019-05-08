@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./svg/checkmark.svg`);
+const svgIcon = require(`!raw-loader!./svg/checkmark.svg`).default;
 
 class TaskHistoryItemRow extends Component {
     constructor() {

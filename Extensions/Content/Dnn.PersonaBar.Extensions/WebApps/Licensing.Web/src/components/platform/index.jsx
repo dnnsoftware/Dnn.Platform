@@ -4,9 +4,9 @@ import resx from "../../resources";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const starIcon = require(`!raw-loader!./../svg/star_circle.svg`);
-const evoqIcon = require(`!raw-loader!./../svg/evoq.svg`);
-const infoIcon = require(`!raw-loader!./../svg/info_circle.svg`);
+const starIcon = require(`!raw-loader!./../svg/star_circle.svg`).default;
+const evoqIcon = require(`!raw-loader!./../svg/evoq.svg`).default;
+const infoIcon = require(`!raw-loader!./../svg/info_circle.svg`).default;
 
 class Platform extends Component {
     constructor() {

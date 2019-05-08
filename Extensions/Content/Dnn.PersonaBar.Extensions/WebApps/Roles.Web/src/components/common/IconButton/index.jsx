@@ -45,7 +45,7 @@ class IconButton extends Component {
             case "lock-closed":
                 return SvgIcons.LockClosedIcon;
             default:
-                return require("!raw-loader!../../../img/common/" + props.type.toLowerCase() + ".svg");
+                return require("!raw-loader!../../../img/common/" + props.type.toLowerCase() + ".svg").default;
         }
     }
 

@@ -11,7 +11,7 @@ import util from "../../utils";
 import resx from "../../resources";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../svg/edit.svg`);
+const svgIcon = require(`!raw-loader!./../svg/edit.svg`).default;
 
 class TopPane extends Component {
     constructor() {

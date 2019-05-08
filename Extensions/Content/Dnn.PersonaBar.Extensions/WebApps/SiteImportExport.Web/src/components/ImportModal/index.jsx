@@ -16,7 +16,7 @@ import util from "utils";
 
 import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
 
-const noDataImg = require("!raw-loader!./img/nodata.svg");
+const noDataImg = require("!raw-loader!./img/nodata.svg").default;
 
 class ImportModal extends Component {
     constructor() {

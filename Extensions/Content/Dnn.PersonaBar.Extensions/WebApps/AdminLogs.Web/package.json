@@ -33,7 +33,7 @@
     "less-loader": "4.1.0",
     "moment": "^2.15.0",
     "prop-types": "15.6.2",
-    "raw-loader": "0.5.1",
+    "raw-loader": "2.0.0",
     "react": "^16.6.3",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.6.3",

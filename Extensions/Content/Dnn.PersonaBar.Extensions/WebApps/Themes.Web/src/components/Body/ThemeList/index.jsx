@@ -5,7 +5,7 @@ import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import Theme from "./Theme";
-const NoDataIcon = require("!raw-loader!./../SvgIcon/nodata.svg");
+const NoDataIcon = require("!raw-loader!./../SvgIcon/nodata.svg").default;
 import "./style.less";
 
 class ThemeList extends Component {

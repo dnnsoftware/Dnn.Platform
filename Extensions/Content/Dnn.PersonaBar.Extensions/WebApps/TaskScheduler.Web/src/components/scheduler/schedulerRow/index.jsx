@@ -10,8 +10,8 @@ import {
 import util from "../../../utils";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../../svg/checkmark.svg`);
-const svgIcon2 = require(`!raw-loader!./../../svg/history.svg`);
+const svgIcon = require(`!raw-loader!./../../svg/checkmark.svg`).default;
+const svgIcon2 = require(`!raw-loader!./../../svg/history.svg`).default;
 
 class SchedulerRow extends Component {
     constructor() {

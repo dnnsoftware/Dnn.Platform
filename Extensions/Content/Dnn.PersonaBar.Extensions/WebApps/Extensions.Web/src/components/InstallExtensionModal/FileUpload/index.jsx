@@ -146,7 +146,7 @@ export default class FileUpload extends Component {
     }
     render() {
         /* eslint-disable quotes */
-        const svg = require(`!raw-loader!./img/upload.svg`);
+        const svg = require(`!raw-loader!./img/upload.svg`).default;
 
         const buttonsStyle = { width: 67 };
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");

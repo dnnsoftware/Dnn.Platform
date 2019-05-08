@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-const searchIcon = require("!raw-loader!./img/search.svg");
-const fileIcon = require("!raw-loader!./img/pages.svg");
+const searchIcon = require("!raw-loader!./img/search.svg").default;
+const fileIcon = require("!raw-loader!./img/pages.svg").default;
 import { Scrollbars } from "react-custom-scrollbars";
 
 export default class FilePicker extends Component {

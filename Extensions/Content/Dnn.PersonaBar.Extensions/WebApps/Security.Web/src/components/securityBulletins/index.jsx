@@ -8,7 +8,7 @@ import resx from "../../resources";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const warningIcon = require(`!raw-loader!./../svg/error.svg`);
+const warningIcon = require(`!raw-loader!./../svg/error.svg`).default;
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {

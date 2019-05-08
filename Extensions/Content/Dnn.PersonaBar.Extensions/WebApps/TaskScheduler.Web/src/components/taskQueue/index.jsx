@@ -5,7 +5,7 @@ import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
 import resx from "../../resources";
 
-const noDataImage = require("!raw-loader!./../svg/nodata.svg");
+const noDataImage = require("!raw-loader!./../svg/nodata.svg").default;
 
 class TaskQueuePanelBody extends Component {
     constructor() {

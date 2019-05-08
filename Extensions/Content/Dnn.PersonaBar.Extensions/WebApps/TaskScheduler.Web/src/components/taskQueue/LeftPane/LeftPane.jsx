@@ -4,8 +4,8 @@ import styles from "./style.less";
 import resx from "../../../resources";
 
 /*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../taskStatusItemRow/svg/clock_stop.svg`);
-const svgIcon2 = require(`!raw-loader!./../taskStatusItemRow/svg/cycle.svg`);
+const svgIcon = require(`!raw-loader!./../taskStatusItemRow/svg/clock_stop.svg`).default;
+const svgIcon2 = require(`!raw-loader!./../taskStatusItemRow/svg/cycle.svg`).default;
 
 class LeftPane extends Component {
     constructor() {

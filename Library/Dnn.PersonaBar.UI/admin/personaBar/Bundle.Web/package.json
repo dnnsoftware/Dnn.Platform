@@ -36,7 +36,7 @@
     "moment": "^2.22.1",
     "pikaday": "1.8.0",
     "prop-types": "^15.6.2",
-    "raw-loader": "0.5.1",
+    "raw-loader": "2.0.0",
     "react": "^16.6.3",
     "react-collapse": "4.0.3",
     "react-custom-scrollbars": "4.2.1",

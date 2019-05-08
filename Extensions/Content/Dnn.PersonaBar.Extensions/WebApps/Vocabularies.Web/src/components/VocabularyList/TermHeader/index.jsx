@@ -6,8 +6,8 @@ import util from "utils";
 import LocalizedResources from "resources";
 
 /* eslint-disable quotes */
-const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`);
-const HierarchyType = require(`!raw-loader!./svg/vocabulary_hierarchy.svg`);
+const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`).default;
+const HierarchyType = require(`!raw-loader!./svg/vocabulary_hierarchy.svg`).default;
 
 
 class TermHeader extends Component {
