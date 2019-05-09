@@ -47,31 +47,6 @@ namespace DotNetNuke.ModulePipeline
             IModuleControlFactory factory = _controlFactories[extension];
 
             return factory ?? _controlFactories["default"];
-
-            //IModuleControlFactory controlFactory = null;
-            //Type factoryType;
-            //switch (extension)
-            //{
-            //    case ".ascx":
-            //        controlFactory = Globals.DependencyService.GetRequiredService<WebFormsModuleControlFactory>();
-            //        break;
-            //    case ".html":
-            //    case ".htm":
-            //        controlFactory = new Html5ModuleControlFactory();
-            //        break;
-            //    case ".cshtml":
-            //    case ".vbhtml":
-            //        controlFactory = new RazorModuleControlFactory();
-            //        break;
-            //    case ".mvc":
-            //        controlFactory = new MvcModuleControlFactory();
-            //        break;
-            //    default:
-            //        controlFactory = new ReflectedModuleControlFactory();
-            //        break;
-            //}
-
-            //return controlFactory;
         }
 
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
