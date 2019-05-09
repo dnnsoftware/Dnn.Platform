@@ -1,4 +1,4 @@
-﻿using DotNetNuke.Contracts;
+﻿using DotNetNuke.DependencyInjection;
 using DotNetNuke.Web.Mvc.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 

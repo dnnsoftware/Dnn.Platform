@@ -1,9 +1,9 @@
-﻿using DotNetNuke.Contracts;
+﻿using DotNetNuke.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Razor
 {
-    class Startup : IServiceRegistration
+    public class Startup : IServiceRegistration
     {
         public void ConfigureServices(IServiceCollection services)
         {

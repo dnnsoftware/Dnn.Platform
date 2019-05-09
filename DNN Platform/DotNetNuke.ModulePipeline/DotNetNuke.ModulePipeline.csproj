@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotNetNuke.Contracts\DotNetNuke.Contracts.csproj" />
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
     <ProjectReference Include="..\DotNetNuke.Web.Mvc.Contracts\DotNetNuke.Web.Mvc.Contracts.csproj" />
     <ProjectReference Include="..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj" />

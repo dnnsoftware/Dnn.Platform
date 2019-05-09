@@ -11,6 +11,7 @@ using System.Web;
 using System.Reflection;
 using DotNetNuke.Web.Mvc.Common;
 using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {

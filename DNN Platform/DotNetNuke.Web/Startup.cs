@@ -1,10 +1,7 @@
-﻿using DotNetNuke.Contracts;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Common;
+﻿using DotNetNuke.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 

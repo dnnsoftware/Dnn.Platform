@@ -1,15 +1,11 @@
 ﻿using System;
 using System.IO;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Razor;
-using DotNetNuke.Web.Mvc;
-using DotNetNuke.Common;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using DotNetNuke.Web.Mvc.Contracts;
 
@@ -19,7 +15,7 @@ using System.Web.UI;
 
 namespace DotNetNuke.ModulePipeline
 {
-    
+
     public class ModuleControlFactory
 #if NET472
         : IModuleControlPipeline

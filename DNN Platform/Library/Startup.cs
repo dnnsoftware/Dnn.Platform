@@ -1,4 +1,4 @@
-﻿using DotNetNuke.Contracts;
+﻿using DotNetNuke.DependencyInjection;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Modules.Html5;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace DotNetNuke
 {
-    public class Startup : /*IInternalServiceRegistration*/IServiceRegistration
+    public class Startup : IServiceRegistration
     {
         public void ConfigureServices(IServiceCollection services)
         {
