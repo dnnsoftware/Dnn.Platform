@@ -19,11 +19,10 @@
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Contracts;
 
 namespace DotNetNuke.Web.Mvc
 {
-    public class MvcModuleControlFactory : IMvcModuleControlFactory
+    public class MvcModuleControlFactory : IModuleControlFactory
     {
         public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {

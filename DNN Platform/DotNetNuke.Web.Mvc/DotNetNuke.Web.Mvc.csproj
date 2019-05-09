@@ -203,10 +203,6 @@
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.Mvc.Contracts\DotNetNuke.Web.Mvc.Contracts.csproj">
-      <Project>{B12B8E10-7792-43DC-9763-70891E85A961}</Project>
-      <Name>DotNetNuke.Web.Mvc.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}</Project>
       <Name>DotNetNuke.HttpModules</Name>

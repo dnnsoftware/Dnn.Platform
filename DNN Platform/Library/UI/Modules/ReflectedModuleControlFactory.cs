@@ -23,8 +23,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.UI.Modules
 {
-    public interface IReflectedModuleControlFactory : IModuleControlFactory { }
-    public class ReflectedModuleControlFactory : IReflectedModuleControlFactory
+    public class ReflectedModuleControlFactory : IModuleControlFactory
     {
         public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {

@@ -7,7 +7,7 @@ namespace DotNetNuke.Web.Razor
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRazorModuleControlFactory, RazorModuleControlFactory>();
+            services.AddSingleton<RazorModuleControlFactory>();
         }
     }
 }

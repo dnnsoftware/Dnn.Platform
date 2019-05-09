@@ -7,7 +7,7 @@ using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Razor;
 using System.Collections.Generic;
-using DotNetNuke.Web.Mvc.Contracts;
+using DotNetNuke.Web.Mvc;
 
 #if NET472
 using System.Web.UI;
@@ -24,11 +24,11 @@ namespace DotNetNuke.ModulePipeline
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private Dictionary<string, IModuleControlFactory> _controlFactories;
         public ModuleControlPipeline(
-            IWebFormsModuleControlFactory webforms,
-            IHtml5ModuleControlFactory html5,
-            IRazorModuleControlFactory razor3,
-            IMvcModuleControlFactory mvc,
-            IReflectedModuleControlFactory fallthrough)
+            WebFormsModuleControlFactory webforms,
+            Html5ModuleControlFactory html5,
+            RazorModuleControlFactory razor3,
+            MvcModuleControlFactory mvc,
+            ReflectedModuleControlFactory fallthrough)
         {
             _controlFactories = new Dictionary<string, IModuleControlFactory>();
             _controlFactories.Add(".ascx", webforms);

@@ -1,5 +1,4 @@
 ﻿using DotNetNuke.DependencyInjection;
-using DotNetNuke.Web.Mvc.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Mvc
@@ -8,7 +7,7 @@ namespace DotNetNuke.Web.Mvc
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMvcModuleControlFactory, MvcModuleControlFactory>();
+            services.AddSingleton<MvcModuleControlFactory>();
         }
     }
 }
