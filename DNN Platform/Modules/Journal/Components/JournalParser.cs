@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.Journal.Components
 							} else {
 								sb.Append(" {resx:other}");
 							}
-							break; // TODO: might not be correct. Was : Exit For
+							break; 
 						}
 						sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
 						xc += 1;

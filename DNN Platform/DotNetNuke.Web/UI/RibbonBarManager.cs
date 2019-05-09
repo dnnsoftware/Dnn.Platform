@@ -413,8 +413,7 @@ namespace DotNetNuke.Web.UI
                     throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
                 }
             }
-
-            //todo: reload tab from db or send back tabid instead?
+            
             return tab.TabID;
         }
 

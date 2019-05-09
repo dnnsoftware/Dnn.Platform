@@ -33,7 +33,6 @@ namespace DotNetNuke.Services.Search.Entities
     /// <summary>
     /// Search Result to be displayed to end user
     ///
-    /// TODO:
     /// Inherited "Body" property from SearchDocument may be purposefully left empty for performance purposes.
     /// </summary>
     [Serializable]

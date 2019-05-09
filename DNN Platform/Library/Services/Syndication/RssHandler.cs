@@ -131,8 +131,6 @@ namespace DotNetNuke.Services.Syndication
             item["pubDate"] = searchResult.ModifiedTimeUtc.ToUniversalTime().ToString("r");
             item["link"] = url;
             item["guid"] = url;
-            //TODO:  JMB: We need to figure out how to persist the dc prefix in the XML output.  See the Render method below.
-            //item("dc:creator") = SearchItem.AuthorName
 
             return item;
         }

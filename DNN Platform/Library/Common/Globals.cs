@@ -3828,8 +3828,7 @@ namespace DotNetNuke.Common
         }
         
         #region "Obsolete - retained for Binary Compatability"
-
-        // TODO:  These constants are deprecated but cannot be removed until the next batch of breaking change
+        
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.

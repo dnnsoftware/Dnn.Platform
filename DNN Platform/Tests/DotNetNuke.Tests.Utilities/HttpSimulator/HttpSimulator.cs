@@ -504,7 +504,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetFormVariable(string name, string value)
         {
-            //TODO: Change this ordering requirement.
             if (WorkerRequest != null)
                 throw new InvalidOperationException("Cannot set form variables after calling Simulate().");
 
@@ -521,7 +520,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetHeader(string name, string value)
         {
-            //TODO: Change this ordering requirement.
             if (WorkerRequest != null)
                 throw new InvalidOperationException("Cannot set headers after calling Simulate().");
 
