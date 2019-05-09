@@ -46,6 +46,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
@@ -179,7 +180,7 @@ namespace Dnn.ExportImport.Components.Services
             var modifiedBy = Util.GetUserIdByName(_exportImportJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t => otherTab.UniqueId.Equals(t.UniqueId)) ?? localTabs.FirstOrDefault(t =>
                   otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
-                  && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
+                  && IsSameCulture(t.CultureCode, otherTab.CultureCode));
 
             var isParentPresent = IsParentTabPresentInExport(otherTab, exportedTabs, localTabs);
 
@@ -1285,7 +1286,7 @@ namespace Dnn.ExportImport.Components.Services
                         var path = exportedTab.TabPath.Substring(0, index);
                         var localTab = localTabs.FirstOrDefault(t =>
                             path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
-                            && (t.CultureCode ?? "") == (exportedTab.CultureCode ?? ""));
+                            && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
                         if (localTab != null)
                             return localTab.TabID;
                     }
@@ -1293,6 +1294,14 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             return -1;
+        }
+
+        private static bool IsSameCulture(string sourceCultureCode, string targetCultureCode)
+        {
+            sourceCultureCode = !string.IsNullOrWhiteSpace(sourceCultureCode) ? sourceCultureCode : Localization.SystemLocale;
+            targetCultureCode = !string.IsNullOrWhiteSpace(targetCultureCode) ? targetCultureCode : Localization.SystemLocale;
+
+            return sourceCultureCode == targetCultureCode;
         }
 
         private static void SetTabData(TabInfo localTab, ExportTab otherTab)
