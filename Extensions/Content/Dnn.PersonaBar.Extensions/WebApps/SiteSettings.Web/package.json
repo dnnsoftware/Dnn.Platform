@@ -17,7 +17,7 @@
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
     "babel-loader": "^8.0.4",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.21",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-polyfill": "^6.26.0",
     "create-react-class": "^15.6.3",
     "css-loader": "2.1.1",
