@@ -9,7 +9,7 @@ namespace DotNetNuke.ModulePipeline
         public void ConfigureServices(IServiceCollection services)
         {
 #if NET472
-            services.AddSingleton<IModuleControlPipeline, ModuleControlFactory>();
+            services.AddSingleton<IModuleControlPipeline, ModuleControlPipeline>();
 #endif
         }
     }

@@ -1546,7 +1546,6 @@
     <Compile Include="UI\Modules\ModuleCachingType.cs" />
     <Compile Include="UI\Modules\ModuleControlBase.cs" />
     <Compile Include="UI\Modules\ModuleControlFactory.cs" />
-    <Compile Include="UI\Modules\ModuleControlPipeline.cs" />
     <Compile Include="UI\Modules\ModuleHost.cs" />
     <Compile Include="UI\Modules\ModuleInjectionManager.cs" />
     <Compile Include="UI\Modules\ModuleInstanceContext.cs" />

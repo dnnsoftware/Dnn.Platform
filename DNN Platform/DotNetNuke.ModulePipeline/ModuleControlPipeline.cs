@@ -16,14 +16,14 @@ using System.Web.UI;
 namespace DotNetNuke.ModulePipeline
 {
 
-    public class ModuleControlFactory
+    public class ModuleControlPipeline
 #if NET472
         : IModuleControlPipeline
 #endif
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private Dictionary<string, IModuleControlFactory> _controlFactories;
-        public ModuleControlFactory(
+        public ModuleControlPipeline(
             IWebFormsModuleControlFactory webforms,
             IHtml5ModuleControlFactory html5,
             IRazorModuleControlFactory razor3,
