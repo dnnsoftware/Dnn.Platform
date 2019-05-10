@@ -24,4 +24,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(TargetDir)DotNetNuke.ModulePipeline.*&quot; &quot;..\..\Website\bin&quot; /S /Y" />
+  </Target>
+
 </Project>
