@@ -25,57 +25,6 @@ namespace DotNetNuke.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //var path = System.Web.Hosting.HostingEnvironment.MapPath("~/bin");
-            //var dll = $"{path}\\DotNetNuke.dll";
-            //var assembly = Assembly.LoadFile(dll);
-            //var startup = assembly.GetTypes()
-            //var startup = AppDomain.CurrentDomain.GetAssemblies()
-            //    .SelectMany(x => x.GetTypes())
-            //    .Where(x => typeof(IServiceRegistration).IsAssignableFrom(x) && 
-            //                x.IsClass && 
-            //                !x.IsAbstract)
-            //    .Select(x => (IServiceRegistration)Activator.CreateInstance(x))
-            //    .FirstOrDefault();
-            //var registrations = startup.GetServiceRegistrations();
-            //foreach (var registration in registrations)
-            //{
-            //    services.AddSingleton(registration.Key, registration.Value);
-            //}
-
-            //var core = new DotNetNuke.Startup();
-            //core.ConfigureServices(services);
-
-            //var applicationEnvironment = PlatformServices.Default.Application;
-            //services.AddSingleton(applicationEnvironment);
-            //var appDirectory = Directory.GetCurrentDirectory();
-
-            //var environment = new HostingEnvironment
-            //{
-
-            //    WebRootFileProvider = new PhysicalFileProvider(appDirectory),
-            //    ApplicationName = "DotNetNuke"
-            //};
-            //services.AddSingleton<IHostingEnvironment>(environment);
-            //services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-
-
-            //var path = System.Web.Hosting.HostingEnvironment.MapPath("~/bin");
-
-            //var currentAssemblies = AppDomain.CurrentDomain
-            //    .GetAssemblies()
-            //    .Select(x => x.FullName);
-
-            //foreach (string dll in Directory.GetFiles(path, "*.dll"))
-            //{
-            //    if (dll == $"{path}\\DotNetNuke.Web.dll")
-            //        continue;
-
-            //    var assembly = Assembly.LoadFile(dll);
-            //    if (currentAssemblies.Any(x => x == assembly.FullName)) continue;
-
-            //    AppDomain.CurrentDomain.Load(assembly.FullName);
-            //}
-
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => x != Assembly.GetAssembly(typeof(Startup)))
                 .SelectMany(x => GetTypes(x))
@@ -90,9 +39,6 @@ namespace DotNetNuke.Web
             {
                 startup.ConfigureServices(services);
             }
-
-            //var razor = new DotNetNuke.ModulePipeline.Startup();
-            //razor.ConfigureServices(services);
         }
 
         private IEnumerable<Type> GetTypes(Assembly x)
