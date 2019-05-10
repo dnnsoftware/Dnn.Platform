@@ -409,7 +409,6 @@
     <Compile Include="UI\WebControls\TermsEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
