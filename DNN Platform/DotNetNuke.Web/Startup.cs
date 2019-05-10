@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.DependencyInjection;
+using DotNetNuke.Instrumentation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace DotNetNuke.Web
 {
     public class Startup : IServiceRegistration
     {
+        private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
         public Startup()
         {
             Configure();
@@ -50,7 +52,7 @@ namespace DotNetNuke.Web
             }
             catch (Exception ex)
             {
-                // log this
+                _logger.Debug($"Startup Warning: Unable to get type for assembly {x.FullName}", ex);
                 types = new Type[0];
             }
 
