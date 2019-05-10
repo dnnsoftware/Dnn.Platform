@@ -29,7 +29,7 @@ namespace DotNetNuke.Web
         {
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => x != Assembly.GetAssembly(typeof(Startup)))
-                .SelectMany(x => GetTypes(x))
+                .SelectMany(x => x.GetTypes())
                 .Where(x => typeof(IServiceRegistration).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);
@@ -41,22 +41,6 @@ namespace DotNetNuke.Web
             {
                 startup.ConfigureServices(services);
             }
-        }
-
-        private IEnumerable<Type> GetTypes(Assembly x)
-        {
-            Type[] types = null;
-            try
-            {
-                types = x.GetTypes();
-            }
-            catch (Exception ex)
-            {
-                _logger.Debug($"Startup Warning: Unable to get type for assembly {x.FullName}", ex);
-                types = new Type[0];
-            }
-
-            return types;
         }
     }
 }
