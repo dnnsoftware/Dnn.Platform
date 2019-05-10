@@ -21,7 +21,7 @@
     }
 
         .searchInputContainer a.dnnSearchBoxClearText.dnnShow {
-            background: url(../../../images/search/clearText.png) center center no-repeat;
+            background: url(../../images/search/clearText.png) center center no-repeat;
         }
 
 ul.searchSkinObjectPreview {
