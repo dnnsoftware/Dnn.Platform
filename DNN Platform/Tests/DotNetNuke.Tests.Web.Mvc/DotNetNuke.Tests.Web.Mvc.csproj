@@ -34,6 +34,12 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -111,8 +117,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj">
-      <Project>{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}</Project>
+      <Project>{64dc5798-9d37-4f8d-97dd-8403e6e70dd3}</Project>
       <Name>DotNetNuke.Web.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">

@@ -23,10 +23,12 @@
 
 using System.Linq;
 using System.Web.Mvc;
+using DotNetNuke.Common;
 using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
@@ -35,6 +37,14 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
     [TestFixture]
     public class ModuleDelegatingViewEngineTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
+            Globals.DependencyProvider = services.BuildServiceProvider();
+        }
+
         [Test]
         public void Should_Forward_FindPartialView_To_Current_ModuleApplication_ViewEngineCollection()
         {
