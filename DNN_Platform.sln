@@ -212,7 +212,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN Platform\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj", "{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9806C125-8CA9-48CC-940A-CCD0442C5993} = {9806C125-8CA9-48CC-940A-CCD0442C5993}
-		{EE1329FE-FD88-4E1A-968C-345E394EF080} = {EE1329FE-FD88-4E1A-968C-345E394EF080}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web.Mvc", "DNN Platform\Tests\DotNetNuke.Tests.Web.Mvc\DotNetNuke.Tests.Web.Mvc.csproj", "{AF3A5042-B67B-4F84-9E40-BE06B1105337}"
