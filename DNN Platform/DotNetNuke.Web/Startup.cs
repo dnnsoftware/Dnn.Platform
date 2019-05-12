@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.DependencyInjection;
+using DotNetNuke.DependencyInjection.Extensions;
 using DotNetNuke.Instrumentation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,7 +30,7 @@ namespace DotNetNuke.Web
         {
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => x != Assembly.GetAssembly(typeof(Startup)))
-                .SelectMany(x => x.GetTypes())
+                .SelectMany(x => x.SafeGetTypes())
                 .Where(x => typeof(IDnnStartup).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);

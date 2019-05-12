@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Web.Mvc.Framework.Controllers;
+using DotNetNuke.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
         public static void AddMvc(this IServiceCollection services)
         {
             var startuptypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
+                .SelectMany(x => x.SafeGetTypes())
                 .Where(x => typeof(IDnnController).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);
