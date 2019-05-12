@@ -5,8 +5,19 @@ using System.Linq;
 
 namespace DotNetNuke.Web.Mvc.Extensions
 {
+    /// <summary>
+    /// Adds DNN MVC Specific startup extensions to simplify the
+    /// <see cref="Startup"/> Class.
+    /// </summary>
     internal static class StartupExtensions
     {
+        /// <summary>
+        /// Configures all of the <see cref="IDnnController"/>'s to be used
+        /// with the Service Collection for Dependency Injection.
+        /// </summary>
+        /// <param name="services">
+        /// Service Collection used to registering services in the container.
+        /// </param>
         public static void AddMvc(this IServiceCollection services)
         {
             var startuptypes = AppDomain.CurrentDomain.GetAssemblies()
