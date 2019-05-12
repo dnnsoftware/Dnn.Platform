@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace DotNetNuke.Web.Mvc
 {
-    public class Startup : IServiceRegistration
+    public class Startup : IDnnStartup
     {
         public void ConfigureServices(IServiceCollection services)
         {

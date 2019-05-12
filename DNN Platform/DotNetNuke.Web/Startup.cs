@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace DotNetNuke.Web
 {
-    public class Startup : IServiceRegistration
+    public class Startup : IDnnStartup
     {
         private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
         public Startup()
@@ -30,14 +30,14 @@ namespace DotNetNuke.Web
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => x != Assembly.GetAssembly(typeof(Startup)))
                 .SelectMany(x => x.GetTypes())
-                .Where(x => typeof(IServiceRegistration).IsAssignableFrom(x) &&
+                .Where(x => typeof(IDnnStartup).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);
 
             var startupInstances = startupTypes
-                .Select(x => (IServiceRegistration)Activator.CreateInstance(x));
+                .Select(x => (IDnnStartup)Activator.CreateInstance(x));
 
-            foreach (IServiceRegistration startup in startupInstances)
+            foreach (IDnnStartup startup in startupInstances)
             {
                 startup.ConfigureServices(services);
             }

@@ -2,7 +2,7 @@
 
 namespace DotNetNuke.DependencyInjection
 {
-    public interface IServiceRegistration
+    public interface IDnnStartup
     {
         void ConfigureServices(IServiceCollection services);
     }

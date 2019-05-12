@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Razor
 {
-    public class Startup : IServiceRegistration
+    public class Startup : IDnnStartup
     {
         public void ConfigureServices(IServiceCollection services)
         {
