@@ -14,7 +14,7 @@
     "@dnnsoftware/dnn-react-common": "^2.1.2",
     "array.prototype.find": "^2.0.0",
     "array.prototype.findindex": "^2.0.0",
-    "babel-loader": "^8.0.4",
+    "babel-loader": "^8.0.6",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
