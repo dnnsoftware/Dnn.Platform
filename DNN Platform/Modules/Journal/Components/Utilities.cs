@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                         }
                     }
                     if (i == 10) {
-                        break; // TODO: might not be correct. Was : Exit For
+                        break; 
                     }
                 }
 

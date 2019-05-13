@@ -321,7 +321,6 @@ namespace DotNetNuke.Tests.Web.Api
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
             //Assert
-            //TODO: Assert.IsNotNull(response); //to get this to work a lot of mocking is required; not-practical
             Assert.IsNull(response);
         }
 

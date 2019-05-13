@@ -30,12 +30,12 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         }
         processData(koObject);
 
-    }
+    };
 
     var fieldsHaveValues = function (conn) {
-        return conn.configurations[0].value() != "" &&
-            conn.configurations[1].value() != "";
-    }
+        return conn.configurations[0].value() !== "" &&
+            conn.configurations[1].value() !== "";
+    };
 
     var onSave = function (conn) {
         if (typeof conn.container !== "undefined") {
@@ -44,16 +44,16 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                 value: ko.protectedObservable(conn.container())
             });
         }
-    }
+    };
 
     var processData = function (conn, id) {
         conn.id = id || conn.id;
         for (var i = conn.configurations.length - 1; i >= 0; i--) {
             var config = conn.configurations[i];
-            if (config.name != "AccountName" && config.name != "AccountKey" && config.name != "Id") {
+            if (config.name !== "AccountName" && config.name !== "AccountKey" && config.name != "Id") {
                 switch (config.name.toLowerCase()) {
                     case "connected":
-                        conn.connected(config.value() == "true");
+                        conn.connected(config.value() === "true");
                         conn.configurations.splice(i, 1);
                         break;
                     case "container":
@@ -61,16 +61,16 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                         conn.configurations.splice(i, 1);
                         break;
                 }
-            } else if (config.name == "AccountName") {
+            } else if (config.name === "AccountName") {
                 appId = config.value();
-            } else if (config.name == "AccountKey") {
+            } else if (config.name === "AccountKey") {
                 appSecret = config.value();
-            } else if (config.name == "Id") {
+            } else if (config.name === "Id") {
                 id = conn.id;
             }
         }
 
-        conn.connected(!(typeof conn.container() == "undefined" || conn.container() == ""));
+        conn.connected(!(typeof conn.container() === "undefined" || conn.container() === ""));
         if (conn.id && conn.foldersData().length === 0)
             loadFoldersData(conn);
     };
@@ -88,7 +88,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
             foldersData.push(data[i]);
         }
         conn.foldersData(foldersData);
-        if (typeof conn.container() == "undefined" || conn.container() == "") {
+        if (typeof conn.container() === "undefined" || conn.container() === "") {
             conn.container("/");
         }
 
@@ -98,7 +98,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
     var folderLoadFailed = function (conn, xhr) {
         conn.loadingFolders(false);
         var message = xhr.responseJSON.Message;
-        if (message.indexOf("{") == 0) {
+        if (message.indexOf("{") === 0) {
             message = JSON.parse(message)["error"];
         }
         utility.notifyError(message);
@@ -111,7 +111,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         }
         processData(conn, id);
         utility.notify((utility.resx.Connectors || utility.resx.PersonaBar).txt_Saved, true);
-    }
+    };
 
 
     var authenticate = function (conn, e) {
@@ -120,7 +120,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
             v.value.commit();
         });
         saveConnection(conn, onSaveComplete.bind(this, conn));
-    }
+    };
 
     //copy the save connection method to save sync.
     var onSaveConnection = false;
@@ -170,7 +170,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         utility.notifyError(message || "Failed...");
         onSaveConnection = false;
         conn.cancel();
-    }
+    };
 
     var getActionButtons = function () {
         return [
@@ -182,12 +182,12 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                 }
             }
         ];
-    }
+    };
 
     return {
         init: init,
         onSave: onSave,
         getActionButtons: getActionButtons
-    }
+    };
 
 });

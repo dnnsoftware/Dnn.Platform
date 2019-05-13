@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Data
 #pragma warning restore 168
 
             //Assert
-            Assert.AreSame(mockMapper.Object, Mappers.GetMapper(typeof(Dog)));
+            Assert.AreSame(mockMapper.Object, Mappers.GetMapper(typeof(Dog), mockMapper.Object));
         }
 
         #endregion

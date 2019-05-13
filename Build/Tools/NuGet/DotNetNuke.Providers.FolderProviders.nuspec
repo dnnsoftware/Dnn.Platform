@@ -8,6 +8,8 @@
     <owners>DNN Corp.</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides API references needed to develop custom folder providers, or to consume folder providers
     </description>

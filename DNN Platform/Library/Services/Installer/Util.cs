@@ -582,8 +582,8 @@ namespace DotNetNuke.Services.Installer
             if (file.Directory != null && !file.Directory.Exists)
                 file.Directory.Create();
 
-            TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 1000);
-
+            //HACK: Temporary fix, upping retry limit due to locking for existing filesystem access.  This "fixes" azure, but isn't the most elegant
+            TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 3500);
         }
 
         /// <summary>
@@ -595,18 +595,16 @@ namespace DotNetNuke.Services.Installer
         /// <returns>true if action occur and false otherwise</returns>
         public static bool TryToCreateAndExecute(string path, Action<FileStream> action, int milliSecondMax = Timeout.Infinite)
         {
-            bool result = false;
-            DateTime dateTimestart = DateTime.Now;
+            var result = false;
+            var dateTimeStart = DateTime.Now;
             Tuple < AutoResetEvent, FileSystemWatcher > tuple = null;
 
             while (true)
             {
                 try
                 {
-                    using (var file = File.Open(path,
-                        FileMode.Create,
-                        FileAccess.ReadWrite,
-                        FileShare.Write))
+                    //Open for create, requesting read/write access, allow others to read/write as well
+                    using (var file = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                     {
                         action(file);
                         result = true;
@@ -640,7 +638,7 @@ namespace DotNetNuke.Services.Installer
                     int milliSecond = Timeout.Infinite;
                     if (milliSecondMax != Timeout.Infinite)
                     {
-                        milliSecond = (int) (DateTime.Now - dateTimestart).TotalMilliseconds;
+                        milliSecond = (int) (DateTime.Now - dateTimeStart).TotalMilliseconds;
                         if (milliSecond >= milliSecondMax)
                         {
                             result = false;
@@ -781,9 +779,6 @@ namespace DotNetNuke.Services.Installer
 
                     // Write the data to the local file
                     localStream.Write(buffer, 0, bytesRead);
-
-                    // Increment total bytes processed
-                    //TODO fix this line bytesProcessed += bytesRead;
                 } while (bytesRead > 0);
             }
             finally

@@ -229,7 +229,6 @@ namespace Dnn.ExportImport.Components.Services
                                     RoleID = noRole,
                                     UserID = -1,
                                     AllowAccess = importPermission.AllowAccess,
-                                    //TODO: ModuleDefID = ??? what value to set here ?
                                 };
 
                                 if (importPermission.UserID != null && importPermission.UserID > 0 && !string.IsNullOrEmpty(importPermission.Username))

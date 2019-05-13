@@ -24,7 +24,7 @@ namespace Dnn.AzureConnector.Components
     {
         #region Properties
         private static readonly DataProvider dataProvider = DataProvider.Instance();
-        private const string DefaultDisplayName = "Azure";
+        private const string DefaultDisplayName = "Azure Storage";
 
         public string Name
         {

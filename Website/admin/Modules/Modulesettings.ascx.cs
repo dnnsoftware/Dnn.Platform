@@ -526,8 +526,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (Page.IsValid)
                 {
                     var allTabsChanged = false;
-                    //TODO: REMOVE IF UNUSED
-                    //var allowIndexChanged = false;
 
                     //only Portal Administrators can manage the visibility on all Tabs
                     var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);

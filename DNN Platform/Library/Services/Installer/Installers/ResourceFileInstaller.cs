@@ -1,23 +1,7 @@
-#region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-#endregion
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 #region Usings
 
 using System;
@@ -43,14 +27,14 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ResourceFileInstaller : FileInstaller
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ResourceFileInstaller));
-		#region "Public Contants"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
+        #region "Public Contants"
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         private string _Manifest;
-		
-		#endregion
-		
-		#region "Protected Properties"
+
+        #endregion
+
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -88,10 +72,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return _Manifest;
             }
         }
-		
-		#endregion
 
-		#region "Public Properties"
+        #endregion
+
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -106,10 +90,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "resources, zip";
             }
         }
-		
-		#endregion
 
-		#region "Protected Methods"
+        #endregion
+
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -138,95 +122,84 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name = "insFile">The InstallFile to install</param>
         protected override bool InstallFile(InstallFile insFile)
         {
-            FileStream fs = null;
-            ZipInputStream unzip = null;
-            XmlWriter writer = null;
             bool retValue = true;
             try
             {
                 Log.AddInfo(Util.FILES_Expanding);
-                unzip = new ZipInputStream(new FileStream(insFile.TempFileName, FileMode.Open));
-
-                //Create a writer to create the manifest for the resource file                
+                //Create the folder for destination            
                 _Manifest = insFile.Name + ".manifest";
                 if (!Directory.Exists(PhysicalBasePath))
                 {
                     Directory.CreateDirectory(PhysicalBasePath);
                 }
-                fs = new FileStream(Path.Combine(PhysicalBasePath, Manifest), FileMode.Create, FileAccess.Write);
-                var settings = new XmlWriterSettings();
-                settings.ConformanceLevel = ConformanceLevel.Fragment;
-                settings.OmitXmlDeclaration = true;
-                settings.Indent = true;
-
-                writer = XmlWriter.Create(fs, settings);
-
-                //Start the new Root Element
-                writer.WriteStartElement("dotnetnuke");
-                writer.WriteAttributeString("type", "ResourceFile");
-                writer.WriteAttributeString("version", "5.0");
-
-                //Start files Element
-                writer.WriteStartElement("files");
-
-                ZipEntry entry = unzip.GetNextEntry();
-                while (entry != null)
+                using (var unzip = new ZipInputStream(new FileStream(insFile.TempFileName, FileMode.Open)))
+                using (var manifestStream = new FileStream(Path.Combine(PhysicalBasePath, Manifest), FileMode.Create, FileAccess.Write))
                 {
-                    if (!entry.IsDirectory)
+                    var settings = new XmlWriterSettings();
+                    settings.ConformanceLevel = ConformanceLevel.Fragment;
+                    settings.OmitXmlDeclaration = true;
+                    settings.Indent = true;
+
+                    using (var writer = XmlWriter.Create(manifestStream, settings))
                     {
-                        string fileName = Path.GetFileName(entry.Name);
 
-                        //Start file Element
-                        writer.WriteStartElement("file");
+                        //Start the new Root Element
+                        writer.WriteStartElement("dotnetnuke");
+                        writer.WriteAttributeString("type", "ResourceFile");
+                        writer.WriteAttributeString("version", "5.0");
 
-                        //Write path
-                        writer.WriteElementString("path", entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
+                        //Start files Element
+                        writer.WriteStartElement("files");
 
-                        //Write name
-                        writer.WriteElementString("name", fileName);
-
-                        string physicalPath = Path.Combine(PhysicalBasePath, entry.Name);
-                        if (File.Exists(physicalPath))
+                        ZipEntry entry = unzip.GetNextEntry();
+                        while (entry != null)
                         {
-                            Util.BackupFile(new InstallFile(entry.Name, Package.InstallerInfo), PhysicalBasePath, Log);
+                            if (!entry.IsDirectory)
+                            {
+                                string fileName = Path.GetFileName(entry.Name);
+
+                                //Start file Element
+                                writer.WriteStartElement("file");
+
+                                //Write path
+                                writer.WriteElementString("path",
+                                    entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
+
+                                //Write name
+                                writer.WriteElementString("name", fileName);
+
+                                var physicalPath = Path.Combine(PhysicalBasePath, entry.Name);
+                                if (File.Exists(physicalPath))
+                                {
+                                    Util.BackupFile(new InstallFile(entry.Name, Package.InstallerInfo),
+                                        PhysicalBasePath,
+                                        Log);
+                                }
+
+                                Util.WriteStream(unzip, physicalPath);
+
+                                //Close files Element
+                                writer.WriteEndElement();
+
+                                Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
+                            }
+
+                            entry = unzip.GetNextEntry();
                         }
-                        Util.WriteStream(unzip, physicalPath);
 
                         //Close files Element
                         writer.WriteEndElement();
 
-                        Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
+                        Log.AddInfo(Util.FILES_CreatedResources);
                     }
-                    entry = unzip.GetNextEntry();
                 }
-				
-                //Close files Element
-                writer.WriteEndElement();
 
-                Log.AddInfo(Util.FILES_CreatedResources);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
 
                 retValue = false;
-            }
-            finally
-            {
-                if (writer != null)
-                {
-					//Close XmlWriter
-                    writer.Close();
-                }
-                if (fs != null)
-                {
-					//Close FileStreams
-                    fs.Close();
-                }
-                if (unzip != null)
-                {
-                    unzip.Close();
-                }
             }
             return retValue;
         }
@@ -259,7 +232,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 _Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
             }
-			
+
             //Call base method
             return base.ReadManifestItem(nav, checkFileExists);
         }
@@ -325,7 +298,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.DeleteFile(Manifest, PhysicalBasePath, Log);
             }
         }
-		
-		#endregion
+
+        #endregion
     }
 }

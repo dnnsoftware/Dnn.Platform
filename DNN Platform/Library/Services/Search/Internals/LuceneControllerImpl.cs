@@ -269,8 +269,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 return luceneResults;
             }
-
-            //TODO - Explore simple highlighter as it does not give partial words
+            
             var highlighter = FastHighlighter;
             var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);
 

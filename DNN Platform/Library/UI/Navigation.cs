@@ -521,7 +521,6 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         public static DNNNode GetNavigationNode(string strID, string strNamespace)
         {
-            //TODO:  FIX THIS MESS!
             DNNNodeCollection objNodes = GetNavigationNodes(strNamespace);
             DNNNode objNode = objNodes.FindNode(strID);
             var objReturnNodes = new DNNNodeCollection(strNamespace);
