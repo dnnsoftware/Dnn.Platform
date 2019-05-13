@@ -63,9 +63,7 @@ namespace DotNetNuke.Web.Razor
         public DotNetNukeWebPage()
         {
             var model = Globals.DependencyProvider.GetService<TModel>();
-            Model = model == null ?
-                Activator.CreateInstance<TModel>() :
-                model;
+            Model = model ?? Activator.CreateInstance<TModel>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
