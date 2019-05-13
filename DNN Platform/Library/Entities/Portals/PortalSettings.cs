@@ -306,6 +306,8 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
+        public string DefaultModuleActionMenu { get; internal set; }
+
         public string DefaultPortalContainer { get; internal set; }
 
         public string DefaultPortalSkin { get; internal set; }
