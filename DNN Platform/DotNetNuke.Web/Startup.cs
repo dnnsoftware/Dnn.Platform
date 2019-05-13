@@ -42,7 +42,14 @@ namespace DotNetNuke.Web
 
             foreach (IDnnStartup startup in startupInstances)
             {
-                startup.ConfigureServices(services);
+                try
+                {
+                    startup.ConfigureServices(services);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Unable to configure services for {typeof(Startup).FullName}, see exception for details", ex);
+                }
             }
 
             services.AddWebApi();
