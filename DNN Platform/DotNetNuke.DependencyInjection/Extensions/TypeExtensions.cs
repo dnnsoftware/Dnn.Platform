@@ -4,7 +4,7 @@ using System.Reflection;
 namespace DotNetNuke.DependencyInjection.Extensions
 {
     /// <summary>
-    /// <see cref="Type"/> specific extneions to be used
+    /// <see cref="Type"/> specific extensions to be used
     /// in Dependency Injection invocations.
     /// </summary>
     public static class TypeExtensions
