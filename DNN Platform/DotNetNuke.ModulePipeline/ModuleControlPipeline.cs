@@ -54,7 +54,7 @@ namespace DotNetNuke.ModulePipeline
         private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc);
-            IModuleControlFactory factory = _controlFactories[extension];
+            _controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
 
             return factory ?? _controlFactories["default"];
         }
