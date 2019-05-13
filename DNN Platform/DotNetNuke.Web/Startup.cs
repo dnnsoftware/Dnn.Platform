@@ -1,6 +1,7 @@
 ﻿using DotNetNuke.DependencyInjection;
 using DotNetNuke.DependencyInjection.Extensions;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Web.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace DotNetNuke.Web
             {
                 startup.ConfigureServices(services);
             }
+
+            services.AddWebApi();
         }
     }
 }

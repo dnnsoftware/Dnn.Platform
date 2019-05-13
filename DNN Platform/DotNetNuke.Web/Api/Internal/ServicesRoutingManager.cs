@@ -135,6 +135,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 //controller selector that respects namespaces
                 GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DnnHttpControllerSelector(GlobalConfiguration.Configuration));
+                GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new DnnHttpControllerActivator());
 
                 //tracwriter for dotnetnuke.instrumentation
                 GlobalConfiguration.Configuration.Services.Replace(typeof(ITraceWriter), new TraceWriter(IsTracingEnabled()));

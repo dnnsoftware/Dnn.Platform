@@ -168,8 +168,10 @@
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
     <Compile Include="Api\DnnAuthorizeAttribute.cs" />
     <Compile Include="Api\DnnExceptionAttribute.cs" />
+    <Compile Include="Api\DnnHttpControllerActivator.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\Extensions\StartupExtensions.cs" />
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
