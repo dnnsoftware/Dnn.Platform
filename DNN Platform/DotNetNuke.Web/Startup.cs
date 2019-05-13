@@ -37,7 +37,8 @@ namespace DotNetNuke.Web
                             !x.IsAbstract);
 
             var startupInstances = startupTypes
-                .Select(x => (IDnnStartup)Activator.CreateInstance(x));
+                .Select(x => CreateInstance(x))
+                .Where(x => x != null);
 
             foreach (IDnnStartup startup in startupInstances)
             {
@@ -45,6 +46,21 @@ namespace DotNetNuke.Web
             }
 
             services.AddWebApi();
+        }
+
+        private object CreateInstance(Type startupType)
+        {
+            IDnnStartup startup = null;
+            try
+            {
+                startup = (IDnnStartup)Activator.CreateInstance(startupType);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Unable to instantiate startup code for {startupType.FullName}", ex);
+            }
+
+            return startup;
         }
     }
 }
