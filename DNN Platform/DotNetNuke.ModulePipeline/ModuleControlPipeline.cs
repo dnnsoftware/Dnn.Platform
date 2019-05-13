@@ -40,7 +40,7 @@ namespace DotNetNuke.ModulePipeline
             MvcModuleControlFactory mvc,
             ReflectedModuleControlFactory fallthrough)
         {
-            _controlFactories = new Dictionary<string, IModuleControlFactory>();
+            _controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
             _controlFactories.Add(".ascx", webforms);
             _controlFactories.Add(".htm", html5);
             _controlFactories.Add(".html", html5);
@@ -53,7 +53,7 @@ namespace DotNetNuke.ModulePipeline
 #if NET472
         private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
-            string extension = Path.GetExtension(controlSrc.ToLowerInvariant());
+            string extension = Path.GetExtension(controlSrc);
             IModuleControlFactory factory = _controlFactories[extension];
 
             return factory ?? _controlFactories["default"];
