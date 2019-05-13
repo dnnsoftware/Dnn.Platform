@@ -40,7 +40,7 @@
     "fetch-mock": "^7.2.5",
     "file-loader": "2.0.0",
     "i18n-webpack-plugin": "1.0.0",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "jwt-decode": "2.2.0",
     "less": "3.9.0",
     "less-loader": "4.1.0",
