@@ -135,4 +135,10 @@
   <data name="UrlParameter.Text" xml:space="preserve">
     <value>Url Parameter:</value>
   </data>
+  <data name="AnonymizeIp.Text" xml:space="preserve">
+    <value>Anonymize IP:</value>
+  </data>
+  <data name="TrackUserId.Text" xml:space="preserve">
+    <value>Track UserID:</value>
+  </data>
 </root>
