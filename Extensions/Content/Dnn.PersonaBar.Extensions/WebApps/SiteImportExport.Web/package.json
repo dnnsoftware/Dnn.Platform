@@ -30,7 +30,7 @@
     "i18n-webpack-plugin": "1.0.0",
     "jwt-decode": "2.2.0",
     "less": "3.9.0",
-    "less-loader": "4.1.0",
+    "less-loader": "5.0.0",
     "localization": "^1.0.2",
     "moment": "^2.15.0",
     "prop-types": "^15.6.2",

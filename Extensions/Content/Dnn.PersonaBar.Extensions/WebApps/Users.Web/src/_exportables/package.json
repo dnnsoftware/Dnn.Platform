@@ -29,7 +29,7 @@
     "eslint-plugin-spellcheck": "0.0.11",
     "fs": "^0.0.1-security",
     "less": "3.9.0",
-    "less-loader": "4.1.0",
+    "less-loader": "5.0.0",
     "localization": "^1.0.2",
     "moment": "^2.23.0",
     "prop-types": "15.6.2",

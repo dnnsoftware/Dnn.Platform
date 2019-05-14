@@ -31,7 +31,7 @@
     "file-loader": "2.0.0",
     "jwt-decode": "2.2.0",
     "less": "3.9.0",
-    "less-loader": "4.1.0",
+    "less-loader": "5.0.0",
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
     "react": "^16.6.3",
