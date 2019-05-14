@@ -94,5 +94,52 @@ namespace DotNetNuke.Services.Analytics
             scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", RenderCustomScript(config));
             return scriptTemplate;
         }
+
+        public override string RenderCustomScript(AnalyticsConfiguration config)
+        {
+            try
+            {
+                bool anonymize = false;
+                bool trackingUserId = false;
+
+                foreach (AnalyticsSetting setting in config.Settings)
+                {
+                    switch (setting.SettingName.ToLowerInvariant())
+                    {
+                        case "anonymizeip":
+                        {
+                            bool.TryParse(setting.SettingValue, out anonymize);
+                            break;
+                        }
+                        case "trackinguser":
+                        {
+                            bool.TryParse(setting.SettingValue, out trackingUserId);
+                            break;
+                        }
+                    }
+                }
+
+
+                var sb = new System.Text.StringBuilder();
+                if (anonymize && !trackingUserId)
+                {
+                    sb.Append("ga('set', 'anonymizeIp', true);");
+                }
+
+                if (trackingUserId && !anonymize)
+                {
+                    sb.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
+                }
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
+
+                return string.Empty;
+            }
+        }
+
     }
 }

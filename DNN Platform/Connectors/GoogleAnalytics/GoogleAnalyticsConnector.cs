@@ -117,6 +117,8 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackingID", trackingId },
                 { "UrlParameter", urlParameter},
                 { "TrackAdministrators", trackForAdmin.ToString()},
+                { "AnonymizeIp", trackForAdmin.ToString()},
+                { "TrackUserId", trackForAdmin.ToString()},
                 { "isDeactivating", false.ToString()}
             };
 
@@ -158,7 +160,8 @@ namespace DNN.Connectors.GoogleAnalytics
 
                     trackingID = values["TrackingID"] != null ? values["TrackingID"].ToString().Trim() : String.Empty;
                     urlParameter = values["UrlParameter"] != null ? values["UrlParameter"].ToString().Trim() : String.Empty;
-                    trackForAdmin = bool.TryParse(values["TrackAdministrators"].ToLowerInvariant(), out trackForAdmin);
+
+                    bool.TryParse(values["TrackAdministrators"].ToLowerInvariant(), out trackForAdmin);
 
                     if (String.IsNullOrEmpty(trackingID))
                     {
