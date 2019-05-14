@@ -121,12 +121,12 @@ namespace DotNetNuke.Services.Analytics
 
 
                 var sb = new System.Text.StringBuilder();
-                if (anonymize && !trackingUserId)
+                if (anonymize)
                 {
                     sb.Append("ga('set', 'anonymizeIp', true);");
                 }
 
-                if (trackingUserId && !anonymize)
+                if (trackingUserId)
                 {
                     sb.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
                 }
