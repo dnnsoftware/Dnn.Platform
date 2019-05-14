@@ -44,6 +44,7 @@
     <EncryptionKey Secure="True"></EncryptionKey>
     <EventLogBuffer>N</EventLogBuffer>
     <FileExtensions>jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,xml,xsl,xsd,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv</FileExtensions>
+    <ForceLogoutAfterPasswordChanged>Y</ForceLogoutAfterPasswordChanged>
     <HelpURL>http://www.dnnsoftware.com/help</HelpURL>
     <HostCurrency>USD</HostCurrency>
     <HostEmail></HostEmail>

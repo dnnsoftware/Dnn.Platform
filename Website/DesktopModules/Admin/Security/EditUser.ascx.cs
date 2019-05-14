@@ -590,6 +590,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         //The User changed his own password
                         Mail.SendMail(User, MessageType.UserUpdatedOwnPassword, PortalSettings);
+                        PortalSecurity.Instance.SignIn(User, false);
                     }
                     AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 }
