@@ -47,6 +47,7 @@ using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Microsoft.Extensions.DependencyInjection;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -75,6 +76,7 @@ namespace DotNetNuke.UI.Modules
         private readonly ModuleInfo _moduleConfiguration;
         private Control _control;
         private bool _isCached;
+        private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
 
         #endregion
 
@@ -279,12 +281,12 @@ namespace DotNetNuke.UI.Modules
                     if (!_isCached)
                     {
                     	// load the control dynamically
-                        _control = ModuleControlFactory.LoadModuleControl(Page, _moduleConfiguration);
+                        _control = _moduleControlPipeline.LoadModuleControl(Page, _moduleConfiguration);
                     }
                 }
                 else //content placeholder
                 {
-                    _control = ModuleControlFactory.CreateModuleControl(_moduleConfiguration);
+                    _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
                 }
                 if (Skin != null)
                 {
@@ -307,7 +309,7 @@ namespace DotNetNuke.UI.Modules
                 Logger.Error(exc);
 				
 				//add module settings
-                _control = ModuleControlFactory.CreateModuleControl(_moduleConfiguration);
+                _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
                 ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
                 if (TabPermissionController.CanAdminPage())
                 {
@@ -415,7 +417,7 @@ namespace DotNetNuke.UI.Modules
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
-                _control = ModuleControlFactory.CreateCachedControl(cachedContent, _moduleConfiguration);
+                _control = _moduleControlPipeline.CreateCachedControl(cachedContent, _moduleConfiguration);
                 Controls.Add(_control);
             }
             return success;

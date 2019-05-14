@@ -51,6 +51,7 @@ using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Installer.Blocker;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -81,6 +82,9 @@ namespace DotNetNuke.Web.Common.Internal
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = String.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
+
+            var startup = new Startup();
+            Globals.DependencyProvider = startup.DependencyProvider;
 
             ComponentFactory.Container = new SimpleContainer();
 
@@ -243,6 +247,5 @@ namespace DotNetNuke.Web.Common.Internal
                    || url.Contains("installwizard.aspx")
                    || url.EndsWith("install.aspx");
         }
-
     }
 }

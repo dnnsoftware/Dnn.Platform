@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.DependencyInjection</id>
+    <version>$version$</version>
+    <title>DNN Platform (Dependency Injection)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
+    <description>
+      Provides API references needed to use Dependency Injection for the DNN Platform.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\..\Website\bin\DotNetNuke.DependencyInjection.dll" target="lib\netstandard2.0" />
+    <file src="..\..\..\Website\bin\DotNetNuke.DependencyInjection.pdb" target="lib\netstandard2.0" />
+  </files>
+</package>

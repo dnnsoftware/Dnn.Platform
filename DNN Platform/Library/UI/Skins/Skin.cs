@@ -57,7 +57,7 @@ using DotNetNuke.UI.Skins.EventListeners;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 
 using Globals = DotNetNuke.Common.Globals;
@@ -102,6 +102,11 @@ namespace DotNetNuke.UI.Skins
 
         #endregion
 
+        public Skin()
+        {
+            ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+        }
+
         #region Protected Properties
 
         /// -----------------------------------------------------------------------------
@@ -119,6 +124,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+        protected IModuleControlPipeline ModuleControlPipeline { get; }
         #endregion
 
         #region Friend Properties
@@ -999,7 +1005,7 @@ namespace DotNetNuke.UI.Skins
             {
                 if(PortalSettings.ActiveTab.TabID == PortalSettings.UserTabId || PortalSettings.ActiveTab.ParentId == PortalSettings.UserTabId)
                 {
-                    var profileModule = ModuleControlFactory.LoadModuleControl(Page, module) as IProfileModule;
+                    var profileModule = ModuleControlPipeline.LoadModuleControl(Page, module) as IProfileModule;
                     if (profileModule == null || profileModule.DisplayModule)
                     {
                         pane.InjectModule(module);

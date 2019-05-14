@@ -95,6 +95,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -162,8 +168,10 @@
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
     <Compile Include="Api\DnnAuthorizeAttribute.cs" />
     <Compile Include="Api\DnnExceptionAttribute.cs" />
+    <Compile Include="Api\DnnHttpControllerActivator.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\Extensions\StartupExtensions.cs" />
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
@@ -250,6 +258,7 @@
     <Compile Include="Common\SharedConstants.cs" />
     <Compile Include="Services\MobileHelperController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
     <Compile Include="UI\WebControls\DnnFileUpload.cs" />
@@ -408,6 +417,16 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.ModulePipeline\DotNetNuke.ModulePipeline.csproj">
+      <Project>{c4823821-cfb3-4394-851f-e39d0974efbd}</Project>
+      <Name>DotNetNuke.ModulePipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

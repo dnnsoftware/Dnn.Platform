@@ -69,7 +69,7 @@ using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
-
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.CompilerServices;
 
 using DataCache = DotNetNuke.UI.Utilities.DataCache;
@@ -548,6 +548,14 @@ namespace DotNetNuke.Common
         /// The database engine version.
         /// </value>
         public static Version DatabaseEngineVersion { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Dependency Service.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        public static IServiceProvider DependencyProvider { get; set; }
 
         /// <summary>
         /// Redirects the specified URL.

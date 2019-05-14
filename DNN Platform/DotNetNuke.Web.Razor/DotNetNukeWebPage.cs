@@ -18,8 +18,9 @@
 
 using System;
 using System.Web.WebPages;
-
+using DotNetNuke.Common;
 using DotNetNuke.Web.Razor.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Razor
 {
@@ -58,6 +59,12 @@ namespace DotNetNuke.Web.Razor
     public abstract class DotNetNukeWebPage<TModel> :DotNetNukeWebPage where TModel : class
     {
         private TModel _model;
+
+        public DotNetNukeWebPage()
+        {
+            var model = Globals.DependencyProvider.GetService<TModel>();
+            Model = model ?? Activator.CreateInstance<TModel>();
+        }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model

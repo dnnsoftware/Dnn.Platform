@@ -38,6 +38,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
     <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebHelpers.3.1.1\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -115,6 +116,8 @@
     <Compile Include="Common\ModuleControlControllerAdapter.cs" />
     <Compile Include="Common\PropertyHelper.cs" />
     <Compile Include="Common\TypeHelper.cs" />
+    <Compile Include="DnnMvcControllerFactory.cs" />
+    <Compile Include="Extensions\StartupExtensions.cs" />
     <Compile Include="Framework\ActionFilters\AuthFilterContext.cs" />
     <Compile Include="Framework\ActionFilters\AuthorizeAttributeBase.cs" />
     <Compile Include="Framework\ActionFilters\DnnAuthorizeAttribute.cs" />
@@ -182,8 +185,10 @@
     <Compile Include="Routing\PortalAliasMvcRouteManager.cs" />
     <Compile Include="Routing\StandardModuleRoutingProvider.cs" />
     <Compile Include="StandardTabAndModuleInfoProvider.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
@@ -192,6 +197,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
