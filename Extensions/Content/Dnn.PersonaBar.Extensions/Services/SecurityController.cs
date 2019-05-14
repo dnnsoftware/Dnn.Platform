@@ -384,7 +384,8 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.EnableStrengthMeter,
                             Host.EnableIPChecking,
                             Host.PasswordExpiry,
-                            Host.PasswordExpiryReminder
+                            Host.PasswordExpiryReminder,
+                            ForceLogoutAfterPasswordChanged = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged")
                         }
                     }
                 };
@@ -421,6 +422,7 @@ namespace Dnn.PersonaBar.Security.Services
                 HostController.Instance.Update("MembershipDaysBeforePasswordReuse", request.MembershipDaysBeforePasswordReuse.ToString(), false);
                 HostController.Instance.Update("PasswordExpiry", request.PasswordExpiry.ToString());
                 HostController.Instance.Update("PasswordExpiryReminder", request.PasswordExpiryReminder.ToString());
+                HostController.Instance.Update("ForceLogoutAfterPasswordChanged", request.ForceLogoutAfterPasswordChanged ? "Y" : "N", false);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

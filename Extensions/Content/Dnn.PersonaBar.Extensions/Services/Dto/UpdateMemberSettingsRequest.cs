@@ -54,5 +54,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         public int PasswordExpiry { get; set; }
 
         public int PasswordExpiryReminder { get; set; }
+
+        public bool ForceLogoutAfterPasswordChanged { get; set; }
     }
 }
