@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "workspaces": [
+    "Dnn.React.Common",
+    "Library/Dnn.PersonaBar.UI/admin/personaBar/Bundle.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/AdminLogs.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Extensions.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Licensing.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Pages.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Prompt.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Roles.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Security.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Seo.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Servers.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteImportExport.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Sites.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteSettings.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/TaskScheduler.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Themes.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web/src/_exportables",
+    "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Vocabularies.Web"
+  ]
+}

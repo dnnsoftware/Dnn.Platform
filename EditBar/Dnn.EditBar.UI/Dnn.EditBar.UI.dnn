@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.EditBar.UI" type="Library" version="02.00.01">
+        <package name="Dnn.EditBar.UI" type="Library" version="03.00.00">
             <friendlyName>Dnn.EditBar.UI</friendlyName>
             <description></description>
             <dependencies/>

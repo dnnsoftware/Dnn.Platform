@@ -1,29 +1,28 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.7.0\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
   </PropertyGroup>
 
-  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package">
-  </Target>
+  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>
   <Target Name="GetFiles">
     <ItemGroup>
-      <PersonaBar-views Include="admin/personaBar/*.html" />
-      <PersonaBar-images Include="admin/personaBar/images/**/*" />
-      <PersonaBar-data Include="admin/personaBar/data/*.resources" />
-      <PersonaBar-css Include="admin/personaBar/css/**/*" />
-      <PersonaBar-resources Include="admin/personaBar/App_LocalResources/*.resx" />
-      <PersonaBar-controls Include="admin/personaBar/UserControls/*.ascx" />
-      <PersonaBar-scripts Include="admin/personaBar/scripts/*;admin/personaBar/scripts/**/*" />
-      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" />
+      <PersonaBar-views Include="admin/**/*.html" />
+      <PersonaBar-images Include="admin/**/images/**/*" />
+      <PersonaBar-data Include="admin/**/data/*.resources" />
+      <PersonaBar-css Include="admin/**/css/**/*" />
+      <PersonaBar-resources Include="admin/**/App_LocalResources/*.resx" />
+      <PersonaBar-controls Include="admin/**/UserControls/*.ascx" />
+      <PersonaBar-scripts Include="admin/**/scripts/*;admin/**/scripts/**/*" />
+      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)"  Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="@(PersonaBar-views)" DestinationFolder="$(ModuleFolderName)" />
@@ -34,7 +33,17 @@
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\Css" />
   </Target>
   <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <Yarn Command="install" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
-    <Yarn Command="run build" WorkingDirectory="$(MSBuildProjectDirectory)\$(YarnWorkingDirectory)\" IgnoreExitCode="false"  />
+    <ItemGroup>
+      <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" Exclude="**/node_modules/**/*" />
+    </ItemGroup>
+
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnWorkspace" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" />
+  </Target>
+
+  <Target Name="RunYarnWorkspace">
+	  <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
+
+	  <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0 AND !Exists('$(WorkingDirectory)/node_modules')" />
+    <Yarn Command="workspaces run build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>

@@ -1,0 +1,85 @@
+@import "../../styles/index";
+.tags-field {
+    background: #fff;
+    float: left;
+    width: 300px;
+    border: 1px solid @mountainMist;
+    box-sizing: border-box;
+    position: relative;
+    &.error {
+        border-bottom: 2px solid red;
+    }
+    &.disabled {
+        &, * {
+            pointer-events: none;
+        }
+        background: @mercury;
+        border-color: @mercury;
+        .tag {
+            background: @alto;
+        }
+    }
+    &.active {
+        border: 1px solid @curiousBlue;
+    }
+    .dark-form-control {
+        padding: 0px !important;
+        height: auto;
+        float: left;
+        margin: 0 !important;
+    }
+    input {
+        padding: 0;
+        padding: 9px 12px;
+        background: transparent;
+        border: none;
+        color: @bulgarianRose;
+        float: left;
+        outline: none !important;
+    }
+    .tag {
+        float: left;
+        position: relative;
+        padding: 3px 18px 3px 7px !important;
+        margin-top: 7px;
+        margin-left: 9px;
+        background: @curiousBlue;
+        color: white;
+        font-size: 11px;
+        .close {
+            position: absolute;
+            padding: 0 5px;
+            font-size: 16px;
+            line-height: 15px;
+            cursor: pointer;
+        }
+    }
+    .tag-search-results {
+        position: absolute;
+        width: 100%;
+        border: 1px solid @mountainMist;
+        top: 100%;
+        margin-top: 1px;
+        border-top: none;
+        left: -1px;
+        padding: 6px 0px;
+        background: white;
+        .result-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            &.selected {
+                background: @gallery;
+                color: @curiousBlue;
+            }
+        }
+    }
+    .dnn-ui-common-tooltip {
+        position: absolute;
+        right: 0px;
+        .icon {
+            float: right;
+            margin-top: 6px;
+            margin-right: 4px;
+        }
+    }
+}

@@ -1,0 +1,312 @@
+/************************************************************/
+/***** Users SqlDataProvider                            *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** DNN-10073 Update to support keyword search **/
+/** DNN-10154 Added option to include super users in search result **/
+-- this is replaced by Personabar_GetUsersBySearchTerm
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers
+GO
+
+/* ************************************************************************************************
+   Optimizing Users Table and Queries for PB Users (DNN-10425)
+   ***********************************************************
+   
+   Users tab in PersonaBar currently uses a hybrid approach to access users:
+   - users need to get indexed in DNN search index (based on Lucene)
+   - the users function searches this index for matching users
+   - a final query retrieves the user data for these users from the database
+   
+   Issues: latency, performance
+   
+   My approach optimizes the indexes on users table and the queries on it, to retrieve all data
+   using a single database call. 
+   
+   Created by Sebastian Leupold, 2017   
+   ************************************************************************************************ */
+   
+/* Section A) add necessary indexes 
+
+   Note: there will be a minimal performance penalty, when adding or updating user records, but the number of queries are outperforming this by far.
+*/
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_FirstName')
+	DROP INDEX [IX_{objectQualifier}Users_FirstName] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_FirstName] ON {databaseOwner}[{objectQualifier}Users]
+	([FirstName] ASC, [IsSuperUser] ASC, [IsDeleted] ASC)
+	INCLUDE ([UserID]) 
+	WHERE ([FirstName] IS NOT NULL AND [FirstName] <> N'')
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LastName')
+	DROP INDEX [IX_{objectQualifier}Users_LastName] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_LastName] ON {databaseOwner}[{objectQualifier}Users]
+	([LastName] ASC, [IsSuperUser] ASC, [IsDeleted] ASC)
+	INCLUDE ([UserID]) 
+	WHERE ([LastName] IS NOT NULL AND [LastName] <> N'')
+GO 
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_DisplayName')
+	DROP INDEX [IX_{objectQualifier}Users_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_DisplayName] ON {databaseOwner}[{objectQualifier}Users]
+    ([DisplayName] ASC, [IsSuperUser] ASC, [IsDeleted] ASC)
+     INCLUDE ([UserId])
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_IsSuperuser')
+	DROP INDEX [IX_{objectQualifier}Users_IsSuperuser] ON {databaseOwner}[{objectQualifier}Users]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Users_IsSuperuser] ON {databaseOwner}[{objectQualifier}Users]
+	([IsSuperUser] DESC, [UserName] ASC)
+	INCLUDE  ([UserID], [DisplayName], [FirstName], [LastName], [Email], [LastModifiedOnDate], [isDeleted]) 
+	WHERE ([IsSuperUser] = (1))
+GO
+
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = N'IX_{objectQualifier}UserPortals_PortalId_IsDeleted')
+    DROP INDEX [IX_{objectQualifier}UserPortals_PortalId_IsDeleted] ON {databaseOwner}[{objectQualifier}UserPortals]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserPortals_PortalId_IsDeleted] ON {databaseOwner}[{objectQualifier}UserPortals]
+    ([PortalId] ASC, [isDeleted] ASC, [Authorised] DESC, [UserID])
+GO
+
+
+/*  Section B) Function to retrieve users to display (replacing all previous Personabar procedures for users) 
+
+	This function retrieves the records to display. There are several options included, while not all combinations will make sence.
+	@autorized = 0,    @isdeleted = 0,    @superusers = 0 display all unauthorized website users
+	@autorized = Null, @isdeleted = 1,    @superusers = 0 display all deleted website users
+	@autorized = Null, @isdeleted = Null, @superusers = 1 display all superusers (PortalID is ignored)
+	Pass an empty string (or Null) for @SearchTerm, in order to display all users. Append '%' to the search term, to perform a left search.
+	Note: please avoid preceding search term with '%' - this will result in bad performance and don't match user expectations
+	If the sort column is not provided, Priority (number of columns matching the search term) or UserName are used to sort.
+*/
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchTerm]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchTerm]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchTerm]
+	@PortalId      Int,           --  Null|-1: any Site
+	@SortColumn    nVarChar(32),  --  Field Name, supported values see below. Null|'': sort by search priority
+	@SortAscending Bit = 1,       --  Sort Direction
+	@PageIndex     Int = 0,
+	@PageSize      Int = 10,
+	@SearchTerm    nVarChar(99),  --  Null|'': all items, append "%" to perform a left search
+	@authorized    Bit,           --  Null: all, 0: unauthorized only, 1: authorized only
+	@isDeleted     Bit,           --  Null: all, 0: undeleted    only, 1: deleted    only
+	@Superusers    Bit            --  Null: all, 0: portal users only, 1: superusers only
+AS
+BEGIN
+	IF @SearchTerm = N''   SET @SearchTerm = Null; -- Normalize parameter
+	IF @SortColumn = N''   SET @SortColumn = N'Priority';
+	IF @SortColumn Is Null SET @SortColumn = N'Priority';
+	
+	IF (@Superusers = 1)
+	BEGIN
+	  IF (@SearchTerm Is Null) -- search superusers
+	  BEGIN
+		SELECT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, U.IsDeleted, Authorised, IsSuperUser, TotalCount
+		FROM (SELECT UserID, Username, DisplayName, Email, CreatedOnDate, IsDeleted, 1 AS Authorised, IsSuperUser, Count(*) OVER () AS TotalCount,
+				 ROW_NUMBER() OVER (ORDER BY CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 1 THEN UserID               END ASC, 
+											 CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 0 THEN UserID               END DESC,
+											 CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 1 THEN Email                END ASC, 
+											 CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 0 THEN Email                END DESC,
+											 CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 1 THEN DisplayName          END ASC, 
+											 CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 0 THEN DisplayName          END DESC,
+											 CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 1 THEN UserName			 END ASC,
+											 CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 0 THEN UserName			 END DESC,
+											 CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 1 THEN UserName			 END ASC, -- Priority not supported
+											 CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 0 THEN UserName			 END DESC,-- Priority not supported
+											 CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 1 THEN LastModifiedOnDate   END ASC, 
+											 CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 0 THEN LastModifiedOnDate   END DESC) AS RowNumber 
+		   FROM  {databaseOwner}[{objectQualifier}Users]
+		   WHERE (IsSuperUser = 1)
+		     AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) U
+		WHERE RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize)
+		ORDER BY RowNumber
+		OPTION (RECOMPILE);
+	  END
+	  ELSE -- search superusers using term
+	  BEGIN
+		SELECT UserID, Username, DisplayName, Email, CreatedOnDate, IsDeleted, 1 AS Authorised, IsSuperUser, TotalCount
+		 FROM  (SELECT UserID, 
+		               Username, 
+					   DisplayName,
+					   Email,
+					   CreatedOnDate,
+					   IsDeleted,
+					   IsSuperUser,
+		               Sum(1) N, 
+					   Count(*) OVER ()   AS TotalCount,
+		               ROW_NUMBER() OVER (ORDER BY CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 1 THEN UserID               END ASC, 
+												   CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 0 THEN UserID               END DESC,
+												   CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 1 THEN Email                END ASC, 
+												   CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 0 THEN Email                END DESC,
+												   CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 1 THEN DisplayName          END ASC, 
+												   CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 0 THEN DisplayName          END DESC,
+												   CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 1 THEN UserName			   END ASC,
+												   CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 0 THEN UserName			   END DESC,
+												   CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 1 THEN Sum(1)			   END ASC,
+												   CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 0 THEN Sum(1)			   END DESC,
+												   CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 1 THEN LastModifiedOnDate   END ASC, 
+												   CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 0 THEN LastModifiedOnDate   END DESC) AS RowNumber 
+				  FROM (SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  {databaseOwner}[{objectQualifier}Users] 
+						WHERE (UserName    Like @searchTerm)
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (DisplayName Like @searchTerm)
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (Email       Like @searchTerm)
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (FirstName   Like @searchTerm)
+						  AND FirstName Is Not Null AND FirstName != N'' 
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (LastName    Like @searchTerm)
+						  AND LastName  Is Not Null AND LastName  != N'' 
+						  AND (IsSuperUser = 1)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) S 
+					 GROUP BY UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperUser) AS Sel
+		WHERE Sel.RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize)
+		ORDER BY Sel.RowNumber
+		OPTION (RECOMPILE);
+	  END
+	END
+	ELSE IF (@SearchTerm Is Null)
+	BEGIN -- display all portal users:
+			DECLARE @TotalCount Int;
+			SELECT @TotalCount = Count(1) 
+			 FROM  {databaseOwner}[{objectQualifier}Users]       U
+			 JOIN  {databaseOwner}[{objectQualifier}UserPortals] P ON U.UserID = P.UserID
+			 WHERE P.PortalID = @PortalID
+			   AND (@Superusers Is Null OR IsSuperUser = 0)
+			   AND (@isDeleted  Is Null OR P.IsDeleted  = @isDeleted )
+			   AND (@authorized Is Null OR P.Authorised = @authorized);
+			   
+			SELECT UserID, Username, DisplayName, Email, CreatedOnDate, IsDeleted, Authorised, IsSuperUser, @TotalCount AS TotalCount
+			FROM
+		     (SELECT U.UserID, U.Username, U.DisplayName, U.Email, U.CreatedOnDate, P.IsDeleted, P.Authorised, U.IsSuperUser,
+			         ROW_NUMBER() OVER (ORDER BY CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 1 THEN U.UserID             END ASC, 
+												 CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 0 THEN U.UserID             END DESC,
+												 CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 1 THEN Email                END ASC, 
+												 CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 0 THEN Email                END DESC,
+												 CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 1 THEN DisplayName          END ASC, 
+												 CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 0 THEN DisplayName          END DESC,
+												 CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 1 THEN UserName			 END ASC,
+												 CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 0 THEN UserName			 END DESC,
+												 CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 1 THEN UserName			 END ASC, -- Priority not supported
+												 CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 0 THEN UserName			 END DESC,-- Priority not supported
+												 CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 1 THEN U.LastModifiedOnDate END ASC, 
+												 CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 0 THEN U.LastModifiedOnDate END DESC) AS RowNumber 
+			   FROM  {databaseOwner}[{objectQualifier}Users]       U
+			   JOIN  {databaseOwner}[{objectQualifier}UserPortals] P ON U.UserID = P.UserID
+			   WHERE P.PortalID = @PortalID
+			     AND (@Superusers Is Null OR U.IsSuperuser = 0)
+			     AND (@isDeleted  Is Null OR P.IsDeleted  = @isDeleted)
+			     AND (@authorized Is Null OR P.Authorised = @authorized)) Sel
+			 WHERE Sel.RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize)
+			 ORDER BY Sel.RowNumber
+			 OPTION (RECOMPILE);
+	END
+	ELSE -- search portal users:
+	BEGIN
+		SELECT UserID, Username, DisplayName, Email, CreatedOnDate, IsDeleted, Authorised, IsSuperUser, TotalCount
+		FROM  ( SELECT S.UserID, 
+		               Username, 
+					   DisplayName,
+					   Email,
+					   CreatedOnDate,
+					   IsDeleted,
+					   Authorised,
+					   IsSuperUser,
+		               Sum(1) N, 
+					   Count(*) OVER ()   AS TotalCount,
+		               ROW_NUMBER() OVER (ORDER BY CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 1 THEN S.UserID             END ASC, 
+												   CASE WHEN @SortColumn = N'Joined'      AND @SortAscending = 0 THEN S.UserID             END DESC,
+												   CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 1 THEN Email                END ASC, 
+												   CASE WHEN @SortColumn = N'Email'       AND @SortAscending = 0 THEN Email                END DESC,
+												   CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 1 THEN DisplayName          END ASC, 
+												   CASE WHEN @SortColumn = N'DisplayName' AND @SortAscending = 0 THEN DisplayName          END DESC,
+												   CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 1 THEN UserName			   END ASC,
+												   CASE WHEN @SortColumn = N'UserName'    AND @SortAscending = 0 THEN UserName			   END DESC,
+												   CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 1 THEN Sum(1)			   END ASC,
+												   CASE WHEN @SortColumn = N'Priority'    AND @SortAscending = 0 THEN Sum(1)			   END DESC,
+												   CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 1 THEN LastModifiedOnDate   END ASC, 
+												   CASE WHEN @SortColumn = N'Modified'    AND @SortAscending = 0 THEN LastModifiedOnDate   END DESC) AS RowNumber 
+				  FROM (SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  {databaseOwner}[{objectQualifier}Users] 
+						WHERE (UserName    Like @searchTerm)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (DisplayName Like @searchTerm)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (Email       Like @searchTerm)
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (FirstName   Like @searchTerm)
+						  AND FirstName Is Not Null AND FirstName != N'' 
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
+					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
+						FROM  {databaseOwner}[{objectQualifier}Users]
+						WHERE (LastName    Like @searchTerm)
+						  AND LastName  Is Not Null AND LastName  != N'' 
+						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) S
+                   JOIN	 {databaseOwner}[{objectQualifier}UserPortals] P ON S.UserID = P.UserID		
+                   WHERE P.PortalID = @PortalID
+					 AND (@Superusers Is Null OR S.IsSuperuser = 0)
+					 AND (@isDeleted  Is Null OR P.IsDeleted  = @isDeleted)
+			         AND (@authorized Is Null OR P.Authorised = @authorized)
+				   GROUP BY S.UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsDeleted, IsSuperuser, Authorised) AS Sel
+		WHERE Sel.RowNumber BETWEEN (@PageIndex * @PageSize + 1) AND ((@PageIndex + 1) * @PageSize)
+		ORDER BY Sel.RowNumber
+		OPTION (RECOMPILE);
+	END
+END; --Procedure
+GO
+
+/************************************************************/
+/***** Prompt SqlDataProvider                           *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'PROMPT_ALERT')
+	EXEC {databaseOwner}[{objectQualifier}AddEventLogType] 'PROMPT_ALERT','Prompt Alert','','DotNetNuke.Logging.EventLogType','GeneralAdminOperation'
+GO
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PROMPT_ALERT')
+	EXEC {databaseOwner}[{objectQualifier}AddEventLogConfig] 'PROMPT_ALERT',NULL,1,-1,0,1,1,1,'',''
+GO
+
+
+/************************************************************/
+/***** End SqlDataProvider                              *****/
+/************************************************************/

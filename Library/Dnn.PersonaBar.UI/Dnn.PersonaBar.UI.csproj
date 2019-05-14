@@ -12,7 +12,7 @@
     <AssemblyName>Dnn.PersonaBar.UI</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OptionInfer>On</OptionInfer>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -204,12 +204,12 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Providers\DataProviders\SqlDataProvider\01.05.00.SqlDataprovider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\01.04.00.SqlDataprovider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\01.03.00.SqlDataprovider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <None Include="SqlDataProvider\01.01.00.SqlDataprovider" />
+    <None Include="SqlDataProvider\01.03.00.SqlDataprovider" />
+    <None Include="SqlDataProvider\01.04.00.SqlDataprovider" />
+    <None Include="SqlDataProvider\01.05.00.SqlDataprovider" />
+    <None Include="SqlDataProvider\Install.SqlDataprovider" />
+    <None Include="SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\graph.css" />

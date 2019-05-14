@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dnn.PersonaBar.Extensions</RootNamespace>
+    <AssemblyName>Dnn.PersonaBar.Extensions</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.Extensions.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.Extensions.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="DotNetNuke, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.HttpModules, Version=8.0.5.46, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Common\ControllerBase.cs" />
+    <Compile Include="Common\PortalHelper.cs" />
+    <Compile Include="Components\AdminLogs\AdminLogsController.cs" />
+    <Compile Include="Components\AdminLogs\Constants.cs" />
+    <Compile Include="Components\BusinessController.cs" />
+    <Compile Include="Components\ConfigConsole\ConfigConsoleController.cs" />
+    <Compile Include="Components\Connectors\Constants.cs" />
+    <Compile Include="Components\Extensions\Constants.cs" />
+    <Compile Include="Components\Extensions\CreateModuleController.cs" />
+    <Compile Include="Components\Extensions\Dto\AvailablePackagesDto.cs" />
+    <Compile Include="Components\Extensions\Dto\CreateModuleDto.cs" />
+    <Compile Include="Components\Extensions\Dto\CreatePackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\DeletePackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\DownloadPackageDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\AuthSystemPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\CoreLanguagePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ExtensionLanguagePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\JsLibraryPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ListItemDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModuleControlDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModuleDefinitionDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModulePackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\ModulePackagePermissionsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\PermissionsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\SkinObjectPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\SkinPackageDetailDto.cs" />
+    <Compile Include="Components\Extensions\Dto\Editors\UsedByPackage.cs" />
+    <Compile Include="Components\Extensions\Dto\InstallerLogEntry.cs" />
+    <Compile Include="Components\Extensions\Dto\InstallResultDto.cs" />
+    <Compile Include="Components\Extensions\Dto\ModuleFolderDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageFilesQueryDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageInfoDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageInfoSlimDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageManifestDto.cs" />
+    <Compile Include="Components\Extensions\Dto\PackageSettingsDto.cs" />
+    <Compile Include="Components\Extensions\Dto\ParseResultDto.cs" />
+    <Compile Include="Components\Extensions\Editors\AuthSystemPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\CoreLanguagePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\ExtensionLanguagePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\IPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\JsLibraryPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\ModulePackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\PackageEditorFactory.cs" />
+    <Compile Include="Components\Extensions\Editors\SkinObjectPackageEditor.cs" />
+    <Compile Include="Components\Extensions\Editors\SkinPackageEditor.cs" />
+    <Compile Include="Components\Extensions\ExtensionsController.cs" />
+    <Compile Include="Components\Extensions\ICreateModuleController.cs" />
+    <Compile Include="Components\Extensions\IInstallController.cs" />
+    <Compile Include="Components\Extensions\InstallController.cs" />
+    <Compile Include="Components\Extensions\Utility.cs" />
+    <Compile Include="Components\Pages\BulkPagesController.cs" />
+    <Compile Include="Components\Pages\CloneModuleExecutionContext.cs" />
+    <Compile Include="Components\Pages\Constants.cs" />
+    <Compile Include="Components\Pages\Converters.cs" />
+    <Compile Include="Components\Pages\DefaultPortalThemeController.cs" />
+    <Compile Include="Components\Pages\Dto\PageUrlResult.cs" />
+    <Compile Include="Components\Pages\Dto\Template.cs" />
+    <Compile Include="Components\Pages\Dto\UrlIdDto.cs" />
+    <Compile Include="Components\Pages\Exceptions\BulkPagesException.cs" />
+    <Compile Include="Components\Pages\Exceptions\PageException.cs" />
+    <Compile Include="Components\Pages\Exceptions\PageModuleNotFoundException.cs" />
+    <Compile Include="Components\Pages\Exceptions\PageNotFoundException.cs" />
+    <Compile Include="Components\Pages\Exceptions\PageValidationException.cs" />
+    <Compile Include="Components\Pages\Exceptions\TemplateException.cs" />
+    <Compile Include="Components\Pages\FriendlyUrlWrapper.cs" />
+    <Compile Include="Components\Pages\IBulkPagesController.cs" />
+    <Compile Include="Components\Pages\ICloneModuleExecutionContext.cs" />
+    <Compile Include="Components\Pages\IDefaultPortalThemeController.cs" />
+    <Compile Include="Components\Pages\IFriendlyUrlWrapper.cs" />
+    <Compile Include="Components\Pages\IPageManagementController.cs" />
+    <Compile Include="Components\Pages\IPagesController.cs" />
+    <Compile Include="Components\Pages\IPageUrlsController.cs" />
+    <Compile Include="Components\Pages\ITemplateController.cs" />
+    <Compile Include="Components\Pages\IUrlRewriterUtilsWrapper.cs" />
+    <Compile Include="Components\Pages\Localization.cs" />
+    <Compile Include="Components\Pages\PageManagementController.cs" />
+    <Compile Include="Components\Pages\PagesController.cs" />
+    <Compile Include="Components\Pages\PagesControllerImpl.cs" />
+    <Compile Include="Components\Pages\PageUrlsController.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\DeletePage.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\GetPage.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\GotoPage.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\ListPages.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\NewPage.cs" />
+    <Compile Include="Components\Pages\Prompt\Commands\SetPage.cs" />
+    <Compile Include="Components\Pages\Prompt\Models\PageModel.cs" />
+    <Compile Include="Components\Pages\Prompt\Models\PageModelBase.cs" />
+    <Compile Include="Components\Pages\PublishStatus.cs" />
+    <Compile Include="Components\Pages\Security\ISecurityService.cs" />
+    <Compile Include="Components\Pages\Security\SecurityService.cs" />
+    <Compile Include="Components\Pages\TemplateController.cs" />
+    <Compile Include="Components\Pages\TermHelper.cs" />
+    <Compile Include="Components\Pages\UrlRewriterUtilsWrapper.cs" />
+    <Compile Include="Components\Pages\WorkflowHelper.cs" />
+    <Compile Include="Components\Pages\XssCleaner.cs" />
+    <Compile Include="Components\Prompt\Commands\Application\RestartApplication.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\ClearHistory.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\ClearScreen.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Clh.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Cls.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Exit.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\Reload.cs" />
+    <Compile Include="Components\Prompt\Commands\Client\SetMode.cs" />
+    <Compile Include="Components\Prompt\Commands\Commands\ListCommands.cs" />
+    <Compile Include="Components\Prompt\Commands\Host\ClearCache.cs" />
+    <Compile Include="Components\Prompt\Commands\Host\GetHost.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\AddModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\CopyModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\DeleteModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\GetModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\ListModules.cs" />
+    <Compile Include="Components\Prompt\Commands\Module\MoveModule.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ClearLog.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\GetPortal.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\GetSite.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ListPortals.cs" />
+    <Compile Include="Components\Prompt\Commands\Portal\ListSites.cs" />
+    <Compile Include="Components\Prompt\Commands\Utilities\Echo.cs" />
+    <Compile Include="Components\Prompt\Constants.cs" />
+    <Compile Include="Components\Prompt\IModulesController.cs" />
+    <Compile Include="Components\Prompt\Models\Command.cs" />
+    <Compile Include="Components\Prompt\Models\CommandHelp.cs" />
+    <Compile Include="Components\Prompt\Models\CommandInputModel.cs" />
+    <Compile Include="Components\Prompt\Models\CommandOption.cs" />
+    <Compile Include="Components\Prompt\Models\HostModel.cs" />
+    <Compile Include="Components\Prompt\Models\ModuleInfoModel.cs" />
+    <Compile Include="Components\Prompt\Models\ModuleInstanceModel.cs" />
+    <Compile Include="Components\Prompt\Models\PortalModel.cs" />
+    <Compile Include="Components\Prompt\Models\PortalModelBase.cs" />
+    <Compile Include="Components\Prompt\ModulesController.cs" />
+    <Compile Include="Components\Prompt\Repositories\CommandRepository.cs" />
+    <Compile Include="Components\Prompt\Repositories\ICommandRepository.cs" />
+    <Compile Include="Components\Prompt\Utilities.cs" />
+    <Compile Include="Components\Recyclebin\Constants.cs" />
+    <Compile Include="Components\Recyclebin\Dto\ModuleItem.cs" />
+    <Compile Include="Components\Recyclebin\Dto\PageItem.cs" />
+    <Compile Include="Components\Recyclebin\Dto\UserItem.cs" />
+    <Compile Include="Components\Recyclebin\IRecyclebinController.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgeModule.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgePage.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\PurgeUser.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreModule.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestorePage.cs" />
+    <Compile Include="Components\Recyclebin\Prompt\Commands\RestoreUser.cs" />
+    <Compile Include="Components\Recyclebin\RecyclebinController.cs" />
+    <Compile Include="Components\Roles\Constants.cs" />
+    <Compile Include="Components\Roles\IRolesController.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\DeleteRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\GetRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\ListRoles.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\NewRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Commands\SetRole.cs" />
+    <Compile Include="Components\Roles\Prompt\Exceptions\SetRoleException.cs" />
+    <Compile Include="Components\Roles\Prompt\Models\RoleModel.cs" />
+    <Compile Include="Components\Roles\Prompt\Models\RoleModelBase.cs" />
+    <Compile Include="Components\Roles\RolesController.cs" />
+    <Compile Include="Components\Security\Attributes\AuthProviderSupportedAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\CultureCodeExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\RegistrationFieldsAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\RegistrationFormTypeOptionAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\TabExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserEmailAsUsernameAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserExistAttribute.cs" />
+    <Compile Include="Components\Security\Attributes\UserRegistrationOptionAttribute.cs" />
+    <Compile Include="Components\Security\AuditChecks.cs" />
+    <Compile Include="Components\Security\CheckResult.cs" />
+    <Compile Include="Components\Security\Checks\CheckAllowableFileExtensions.cs" />
+    <Compile Include="Components\Security\Checks\CheckBiography.cs" />
+    <Compile Include="Components\Security\Checks\CheckDebug.cs" />
+    <Compile Include="Components\Security\Checks\CheckDefaultPage.cs" />
+    <Compile Include="Components\Security\Checks\CheckDiskAcccessPermissions.cs" />
+    <Compile Include="Components\Security\Checks\CheckHiddenSystemFiles.cs" />
+    <Compile Include="Components\Security\Checks\CheckModuleHeaderAndFooter.cs" />
+    <Compile Include="Components\Security\Checks\CheckPasswordFormat.cs" />
+    <Compile Include="Components\Security\Checks\CheckRarelyUsedSuperuser.cs" />
+    <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
+    <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
+    <Compile Include="Components\Security\Checks\CheckSuperuserOldPassword.cs" />
+    <Compile Include="Components\Security\Checks\CheckTelerikVulnerability.cs" />
+    <Compile Include="Components\Security\Checks\CheckTracing.cs" />
+    <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
+    <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
+    <Compile Include="Components\Security\Constants.cs" />
+    <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
+    <Compile Include="Components\Security\IAuditCheck.cs" />
+    <Compile Include="Components\Security\SecurityController.cs" />
+    <Compile Include="Components\Security\SeverityEnum.cs" />
+    <Compile Include="Components\Security\Utility.cs" />
+    <Compile Include="Components\Seo\ExtensionMenuController.cs" />
+    <Compile Include="Components\Seo\SeoController.cs" />
+    <Compile Include="Components\Seo\UrlRewritingResult.cs" />
+    <Compile Include="Components\Servers\Constants.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\BackupInfo.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DatabaseController.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DataService.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DbFileInfo.cs" />
+    <Compile Include="Components\Servers\DatabaseServer\DbInfo.cs" />
+    <Compile Include="Components\Servers\Log\LogController.cs" />
+    <Compile Include="Components\Servers\PerformanceSettings\PerformanceController.cs" />
+    <Compile Include="Components\Servers\WebServer\ServerInfo.cs" />
+    <Compile Include="Components\SiteImportExport\Constants.cs" />
+    <Compile Include="Components\SiteImportExport\SiteImportExportController.cs" />
+    <Compile Include="Components\SiteSettings\Constants\Constants.cs" />
+    <Compile Include="Components\SiteSettings\Constants\LanguageResourceEnums.cs" />
+    <Compile Include="Components\SiteSettings\LanguagesControllerTasks.cs" />
+    <Compile Include="Components\SiteSettings\SiteSettingsController.cs" />
+    <Compile Include="Components\Sites\Constants.cs" />
+    <Compile Include="Components\Sites\Dto\HttpAliasDto.cs" />
+    <Compile Include="Components\Sites\SitesController.cs" />
+    <Compile Include="Components\SqlConsole\AdHocSqlQuery.cs" />
+    <Compile Include="Components\SqlConsole\ISqlQueryController.cs" />
+    <Compile Include="Components\SqlConsole\SqlConsoleController.cs" />
+    <Compile Include="Components\SqlConsole\SqlConsoleQuery.cs" />
+    <Compile Include="Components\TaskScheduler\Constants.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Commands\GetTask.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Commands\ListTask.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Commands\SetTask.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Models\TaskModel.cs" />
+    <Compile Include="Components\TaskScheduler\Prompt\Models\TaskModelBase.cs" />
+    <Compile Include="Components\TaskScheduler\TaskSchedulerController.cs" />
+    <Compile Include="Components\Themes\ApplyThemeScope.cs" />
+    <Compile Include="Components\Themes\Constants.cs" />
+    <Compile Include="Components\Themes\DTO\ApplyDefaultThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ApplyThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ListItemInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ParseThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ThemeFileInfo.cs" />
+    <Compile Include="Components\Themes\DTO\ThemeInfo.cs" />
+    <Compile Include="Components\Themes\DTO\UpdateThemeInfo.cs" />
+    <Compile Include="Components\Themes\IThemesController.cs" />
+    <Compile Include="Components\Themes\ParseType.cs" />
+    <Compile Include="Components\Themes\ThemeLevel.cs" />
+    <Compile Include="Components\Themes\ThemesController.cs" />
+    <Compile Include="Components\Themes\ThemeType.cs" />
+    <Compile Include="Components\Users\Constants.cs" />
+    <Compile Include="Components\Users\Contracts\CreateUserContract.cs" />
+    <Compile Include="Components\Users\Contracts\GetUsersContract.cs" />
+    <Compile Include="Components\Users\Contracts\RegisterationDetails.cs" />
+    <Compile Include="Components\Users\Dto\ChangePasswordDto.cs" />
+    <Compile Include="Components\Users\Dto\PasswordSettingsDto.cs" />
+    <Compile Include="Components\Users\Dto\ProfileDefinitionDto.cs" />
+    <Compile Include="Components\Users\Dto\ProfileVisibilityDto.cs" />
+    <Compile Include="Components\Users\Dto\RelationshipDto.cs" />
+    <Compile Include="Components\Users\Dto\UserBasicDto.cs" />
+    <Compile Include="Components\Users\Dto\UserBasicDto2.cs" />
+    <Compile Include="Components\Users\Dto\UserDetailDto.cs" />
+    <Compile Include="Components\Users\Dto\UserFilters.cs" />
+    <Compile Include="Components\Users\Dto\UserRoleDto.cs" />
+    <Compile Include="Components\Users\Helpers\SearchTextFilter.cs" />
+    <Compile Include="Components\Users\IRegisterController.cs" />
+    <Compile Include="Components\Users\IUserControllerWrapper.cs" />
+    <Compile Include="Components\Users\IUsersController.cs" />
+    <Compile Include="Components\Users\IUserValidator.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\AddRoles.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\DeleteUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\GetUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\ListUsers.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\NewUser.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\ResetPassword.cs" />
+    <Compile Include="Components\Users\Prompt\Commands\SetUser.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserModel.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserModelBase.cs" />
+    <Compile Include="Components\Users\Prompt\Models\UserRoleModel.cs" />
+    <Compile Include="Components\Users\Prompt\Utilities.cs" />
+    <Compile Include="Components\Users\RegisterController.cs" />
+    <Compile Include="Components\Users\UserControllerWrapper.cs" />
+    <Compile Include="Components\Users\UsersController.cs" />
+    <Compile Include="Components\Users\UsersMenuController.cs" />
+    <Compile Include="Components\Users\UserValidator.cs" />
+    <Compile Include="Components\Vocabularies\Constants.cs" />
+    <Compile Include="Components\Vocabularies\Exceptions\TermValidationException.cs" />
+    <Compile Include="Components\Vocabularies\Exceptions\VocabulariesException.cs" />
+    <Compile Include="Components\Vocabularies\Exceptions\VocabularyNameAlreadyExistsException.cs" />
+    <Compile Include="Components\Vocabularies\Exceptions\VocabularyValidationException.cs" />
+    <Compile Include="Components\Vocabularies\Validators\VocabularyNameValidator.cs" />
+    <Compile Include="Components\Vocabularies\VocabulariesController.cs" />
+    <Compile Include="Data\IUsersDataService.cs" />
+    <Compile Include="Data\UsersDataService.cs" />
+    <Compile Include="MenuControllers\AdminMenuController.cs" />
+    <Compile Include="MenuControllers\ConfigConsoleMenuController.cs" />
+    <Compile Include="MenuControllers\CssEditorMenuController.cs" />
+    <Compile Include="MenuControllers\ExtensionMenuController.cs" />
+    <Compile Include="MenuControllers\LicensingMenuController.cs" />
+    <Compile Include="MenuControllers\PagesMenuController.cs" />
+    <Compile Include="MenuControllers\PromptMenuController.cs" />
+    <Compile Include="MenuControllers\SecurityMenuController.cs" />
+    <Compile Include="MenuControllers\ServersMenuController.cs" />
+    <Compile Include="MenuControllers\SiteImportExportMenuController.cs" />
+    <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
+    <Compile Include="MenuControllers\SitesMenuController.cs" />
+    <Compile Include="MenuControllers\SqlConsoleMenuController.cs" />
+    <Compile Include="MenuControllers\TaskSchedulerMenuController.cs" />
+    <Compile Include="MenuControllers\ThemeMenuController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AdminLogsController.cs" />
+    <Compile Include="Services\CommandController.cs" />
+    <Compile Include="Services\ConfigConsoleController.cs" />
+    <Compile Include="Services\ConnectorsController.cs" />
+    <Compile Include="Services\CssEditorController.cs" />
+    <Compile Include="Services\Dto\BulkPage.cs" />
+    <Compile Include="Services\Dto\BulkPageResponse.cs" />
+    <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
+    <Compile Include="Services\Dto\ConfigFileDto.cs" />
+    <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
+    <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\CreatePortalRequest.cs" />
+    <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
+    <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
+    <Compile Include="Services\Dto\DnnModuleDto.cs" />
+    <Compile Include="Services\Dto\DnnModulesRequest.cs" />
+    <Compile Include="Services\Dto\DnnModulesDto.cs" />
+    <Compile Include="Services\Dto\DnnPageDto.cs" />
+    <Compile Include="Services\Dto\DnnPagesRequest.cs" />
+    <Compile Include="Services\Dto\DnnPagesDto.cs" />
+    <Compile Include="Services\Dto\EmailLogItemsRequest.cs" />
+    <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
+    <Compile Include="Services\Dto\FileDto.cs" />
+    <Compile Include="Services\Dto\ModuleCopyType.cs" />
+    <Compile Include="Services\Dto\ModuleItem.cs" />
+    <Compile Include="Services\Dto\PageFolderTemplate.cs" />
+    <Compile Include="Services\Dto\PageItem.cs" />
+    <Compile Include="Services\Dto\PageModuleItem.cs" />
+    <Compile Include="Services\Dto\PageMoveRequest.cs" />
+    <Compile Include="Services\Dto\PagePermissions.cs" />
+    <Compile Include="Services\Dto\PageSettings.cs" />
+    <Compile Include="Services\Dto\PageTemplate.cs" />
+    <Compile Include="Services\Dto\ResetTermsAgreementRequest.cs" />
+    <Compile Include="Services\Dto\RestoreCssRequest.cs" />
+    <Compile Include="Services\Dto\RoleDto.cs" />
+    <Compile Include="Services\Dto\RoleGroupDto.cs" />
+    <Compile Include="Services\Dto\ScheduleDto.cs" />
+    <Compile Include="Services\Dto\SendTestEmailRequest.cs" />
+    <Compile Include="Services\Dto\SeoUrl.cs" />
+    <Compile Include="Services\Dto\SettingsDto.cs" />
+    <Compile Include="Services\Dto\SiteSettings\CreateLanguagePackRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\FileDto.cs" />
+    <Compile Include="Services\Dto\SiteSettings\LanguageTabDto.cs" />
+    <Compile Include="Services\Dto\SiteSettings\LocalizationEntry.cs" />
+    <Compile Include="Services\Dto\SiteSettings\LocalizationProgress.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateBasicSearchSettingsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateDefaultPagesSettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateIgnoreWordsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateLanguageRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateLanguageSettingsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateListEntryOrdersRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateListEntryRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateMessagingSettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateOtherSettingsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdatePrivacySettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyLocalizationRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyOrdersRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateProfilePropertyRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateProfileSettingsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateSiteAliasRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateSiteSettingsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateSynonymsGroupRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateTransaltionsRequest.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateUrlMappingSettingsRequest.cs" />
+    <Compile Include="Services\Dto\TabDto.cs" />
+    <Compile Include="Services\Dto\TermDto.cs" />
+    <Compile Include="Services\Dto\Theme.cs" />
+    <Compile Include="Services\Dto\TranslatorsComment.cs" />
+    <Compile Include="Services\Dto\UpdateBasicLoginSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateCachingSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateCssRequest.cs" />
+    <Compile Include="Services\Dto\UpdateExtensionUrlProviderStatusRequest.cs" />
+    <Compile Include="Services\Dto\UpdateGeneralSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateIpFilterRequest.cs" />
+    <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateMemberSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdatePerfSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateRegexSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateRegistrationSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSitemapProviderRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSitemapSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
+    <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
+    <Compile Include="Services\Dto\Url.cs" />
+    <Compile Include="Services\Dto\UserRoleDto.cs" />
+    <Compile Include="Services\Dto\VocabularyDto.cs" />
+    <Compile Include="Services\ExtensionsController.cs" />
+    <Compile Include="Services\LanguagesController.cs" />
+    <Compile Include="Services\LicensingController.cs" />
+    <Compile Include="Services\PagesController.cs" />
+    <Compile Include="Services\RecyclebinController.cs" />
+    <Compile Include="Services\RolesController.cs" />
+    <Compile Include="Services\SecurityController.cs" />
+    <Compile Include="Services\SeoController.cs" />
+    <Compile Include="Services\ServerController.cs" />
+    <Compile Include="Services\ServerSettingsLogsController.cs" />
+    <Compile Include="Services\ServerSettingsPerformanceController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpAdminController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpHostController.cs" />
+    <Compile Include="Services\SiteImportExportController.cs" />
+    <Compile Include="Services\SitesController.cs" />
+    <Compile Include="Services\SiteSettingsController.cs" />
+    <Compile Include="Services\SqlConsoleController.cs" />
+    <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
+    <Compile Include="Services\SystemInfoApplicationHostController.cs" />
+    <Compile Include="Services\SystemInfoDatabaseController.cs" />
+    <Compile Include="Services\SystemInfoWebController.cs" />
+    <Compile Include="Services\TaskSchedulerController.cs" />
+    <Compile Include="Services\ThemesController.cs" />
+    <Compile Include="Services\UsersController.cs" />
+    <Compile Include="Services\VocabulariesController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
+    <Content Include="admin\personaBar\Dnn.AdminLogs\scripts\AdminLogs.js" />
+    <Content Include="admin\personaBar\Dnn.ConfigConsole\ConfigConsole.html" />
+    <Content Include="admin\personaBar\Dnn.ConfigConsole\css\ConfigConsole.css" />
+    <Content Include="admin\personaBar\Dnn.ConfigConsole\scripts\ConfigConsole.js" />
+    <Content Include="admin\personaBar\Dnn.Connectors\Connectors.html" />
+    <Content Include="admin\personaBar\Dnn.Connectors\css\Connectors.css" />
+    <Content Include="admin\personaBar\Dnn.Connectors\images\edit.svg" />
+    <Content Include="admin\personaBar\Dnn.Connectors\images\icon-connector-verified.png" />
+    <Content Include="admin\personaBar\Dnn.Connectors\images\trash.svg" />
+    <Content Include="admin\personaBar\Dnn.Connectors\scripts\Connectors.js" />
+    <Content Include="admin\personaBar\Dnn.CssEditor\CssEditor.html" />
+    <Content Include="admin\personaBar\Dnn.CssEditor\css\CssEditor.css" />
+    <Content Include="admin\personaBar\Dnn.CssEditor\scripts\CssEditor.js" />
+    <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\extensions.js" />
+    <Content Include="admin\personaBar\Dnn.Licensing\Licensing.html" />
+    <Content Include="admin\personaBar\Dnn.Licensing\scripts\bundles\licensing-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Licensing\scripts\Licensing.js" />
+    <Content Include="admin\personaBar\Dnn.Pages\Pages.html" />
+    <Content Include="admin\personaBar\Dnn.Pages\scripts\Pages.js" />
+    <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css" />
+    <Content Include="admin\personaBar\Dnn.Prompt\Prompt.html" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\bundles\prompt-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\Prompt.js" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\css\RecycleBin.css" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\fallback-thumbnail.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icon-Empty-Modules-white.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icon-Empty-Pages-white.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\icon-empty-state-modules.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\icon-empty-state-pages.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\images\Icons-RecycleBin.png" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\Recyclebin.html" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\Recyclebin.js" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\scripts\RecycleBin.ViewModel.js" />
+    <Content Include="admin\personaBar\Dnn.Roles\Roles.html" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\roles-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\Roles.js" />
+    <Content Include="admin\personaBar\Dnn.Security\scripts\bundles\security-settings-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Security\scripts\Security.js" />
+    <Content Include="admin\personaBar\Dnn.Security\Security.html" />
+    <Content Include="admin\personaBar\Dnn.Seo\scripts\bundles\seo-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Seo\scripts\Seo.js" />
+    <Content Include="admin\personaBar\Dnn.Seo\Seo.html" />
+    <Content Include="admin\personaBar\Dnn.Servers\css\Servers.css" />
+    <Content Include="admin\personaBar\Dnn.Servers\scripts\bundles\servers-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Servers\scripts\Servers.js" />
+    <Content Include="admin\personaBar\Dnn.Servers\Servers.html" />
+    <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\bundles\siteimportexport-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\SiteImportExport.js" />
+    <Content Include="admin\personaBar\Dnn.SiteImportExport\SiteImportExport.html" />
+    <Content Include="admin\personaBar\Dnn.SiteSettings\scripts\bundles\site-settings-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.SiteSettings\scripts\SiteSettings.js" />
+    <Content Include="admin\personaBar\Dnn.SiteSettings\SiteSettings.html" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\bundles\sites-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\exportables\Sites\SitesListView.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\scripts\Sites.js" />
+    <Content Include="admin\personaBar\Dnn.Sites\Sites.html" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\css\SqlConsole.css" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\images\icon-search.png" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\images\query-cancel.png" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\images\query-save.png" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\images\query-trash.png" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\clipboard.min.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\exportData.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\FileSaver.min.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\html2canvas.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\jspdf.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\sort.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\SqlConsole.js" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\SqlConsole.html" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\css\TaskScheduler.css" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\active.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\btn-edit.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\btn-run.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\icon-add.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\icon-calendar.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\icon-enabled.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\icon-history.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\images\wait.png" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\scripts\bundles\task-scheduler-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\scripts\TaskScheduler.js" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\TaskScheduler.html" />
+    <Content Include="admin\personaBar\Dnn.Themes\scripts\bundles\themes-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Themes\scripts\Themes.js" />
+    <Content Include="admin\personaBar\Dnn.Themes\Themes.html" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\bundles\users-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\Users.js" />
+    <Content Include="admin\personaBar\Dnn.Users\Users.html" />
+    <Content Include="admin\personaBar\Dnn.Vocabularies\scripts\bundles\vocabulary-bundle.js" />
+    <Content Include="admin\personaBar\Dnn.Vocabularies\scripts\vocabularies.js" />
+    <Content Include="admin\personaBar\Dnn.Vocabularies\vocabularies.html" />
+    <Content Include="images\module_icon_32x32.png" />
+    <Content Include="License.txt" />
+    <Content Include="ReleaseNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Pages\App_LocalResources\Pages.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dnn.PersonaBar.Extensions.dnn" />
+    <Content Include="Dnn.PersonaBar.Extensions.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Extensions\App_LocalResources\Extensions.resx" />
+    <Content Include="admin\personaBar\Dnn.AdminLogs\App_LocalResources\AdminLogs.resx" />
+    <Content Include="admin\personaBar\Dnn.ConfigConsole\App_LocalResources\ConfigConsole.resx" />
+    <Content Include="admin\personaBar\Dnn.Connectors\App_LocalResources\Connectors.resx" />
+    <Content Include="admin\personaBar\Dnn.CssEditor\App_LocalResources\CssEditor.resx" />
+    <EmbeddedResource Include="admin\personaBar\Dnn.Extensions\data\ModuleControlTemplate.resources" />
+    <Content Include="admin\personaBar\Dnn.Recyclebin\App_LocalResources\Recyclebin.resx" />
+    <Content Include="App_LocalResources\EditLogTypes.ascx.resx" />
+    <Content Include="App_LocalResources\LogViewer.ascx.resx" />
+    <Content Include="admin\personaBar\Dnn.Roles\App_LocalResources\Roles.resx" />
+    <Content Include="admin\personaBar\Dnn.Sites\App_LocalResources\Sites.resx" />
+    <Content Include="admin\personaBar\Dnn.Themes\App_LocalResources\Themes.resx" />
+    <Content Include="admin\personaBar\Dnn.Users\App_LocalResources\Users.resx" />
+    <Content Include="admin\personaBar\Dnn.Licensing\App_LocalResources\Licensing.resx" />
+    <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
+    <Content Include="admin\personaBar\Dnn.Security\App_LocalResources\Security.resx" />
+    <Content Include="admin\personaBar\Dnn.Seo\App_LocalResources\Seo.resx" />
+    <Content Include="admin\personaBar\Dnn.Servers\App_LocalResources\Servers.resx" />
+    <Content Include="admin\personaBar\Dnn.SiteImportExport\App_LocalResources\SiteImportExport.resx" />
+    <Content Include="admin\personaBar\Dnn.SiteSettings\App_LocalResources\SiteSettings.resx" />
+    <Content Include="admin\personaBar\Dnn.SqlConsole\App_LocalResources\SqlConsole.resx" />
+    <Content Include="admin\personaBar\Dnn.TaskScheduler\App_LocalResources\TaskScheduler.resx" />
+    <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
+    <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\RegRead.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\sums.resources" />
+    <EmbeddedResource Include="Components\Security\Resources\SysAdmin.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.eot" />
+    <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.eot" />
+    <Content Include="admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Users\scripts\bundles\users-bundle.js.map" />
+    <Content Include="admin\personaBar\Dnn.Users\scripts\exportables\Users\UsersCommon.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.01.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\01.02.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\01.05.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\Uninstall.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.00.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\personaBar\Dnn.Prompt\css\Prompt.css.map" />
+    <Content Include="admin\personaBar\Dnn.Prompt\scripts\bundles\prompt-bundle.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\01.03.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlDataProvider\03.00.00.SqlDataProvider" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="Module.build" />
+</Project>

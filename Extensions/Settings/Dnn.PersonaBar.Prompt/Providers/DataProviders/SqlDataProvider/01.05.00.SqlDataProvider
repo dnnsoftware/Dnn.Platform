@@ -1,6 +1,0 @@
-﻿IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'PROMPT_ALERT')
-	EXEC {databaseOwner}[{objectQualifier}AddEventLogType] 'PROMPT_ALERT','Prompt Alert','','DotNetNuke.Logging.EventLogType','GeneralAdminOperation'
-GO
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PROMPT_ALERT')
-	EXEC {databaseOwner}[{objectQualifier}AddEventLogConfig] 'PROMPT_ALERT',NULL,1,-1,0,1,1,1,'',''
-GO

@@ -1,0 +1,431 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="03.00.00">
+            <friendlyName>Dnn.PersonaBar.Extensions</friendlyName>
+            <description></description>
+            <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="License.txt"></license>
+            <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+            <dependencies>
+                <dependency type="CoreVersion">09.03.00</dependency>
+                <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
+            </dependencies>
+            <azureCompatible>true</azureCompatible>
+            <eventMessage>
+              <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+              <processorCommand>UpgradeModule</processorCommand>
+              <attributes>
+                <businessControllerClass>Dnn.PersonaBar.Extensions.Components.BusinessController, Dnn.PersonaBar.Extensions</businessControllerClass>
+                <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                <upgradeVersionsList>01.04.00,01.05.00</upgradeVersionsList>
+              </attributes>
+            </eventMessage>
+            <components>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <name>Dnn.PersonaBar.Extensions.dll</name>
+                            <path>bin</path>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="Script">
+                  <scripts>
+                    <basePath>DesktopModules\admin\Dnn.PersonaBar\Modules\Sql</basePath>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>01.00.00.SqlDataProvider</name>
+                      <version>01.00.00</version>
+                    </script>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>01.01.00.SqlDataProvider</name>
+                      <version>01.01.00</version>
+                    </script>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>01.02.00.SqlDataProvider</name>
+                      <version>01.02.00</version>
+                    </script>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>01.03.00.SqlDataProvider</name>
+                      <version>01.03.00</version>
+                    </script>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>01.05.00.SqlDataProvider</name>
+                      <version>01.05.00</version>
+                    </script>
+                    <script type="Install">
+                      <path>SqlDataProvider</path>
+                      <name>03.00.00.SqlDataProvider</name>
+                      <version>03.00.00</version>
+                    </script>
+                    <script type="UnInstall">
+                      <path>SqlDataProvider</path>
+                      <name>Uninstall.SqlDataProvider</name>
+                      <version>03.00.00</version>
+                    </script>
+                  </scripts>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.AdminLogs</identifier>
+                    <moduleName>AdminLogs</moduleName>
+                    <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_AdminLogs</resourceKey>
+                    <path>AdminLogs</path>
+                    <parent>Manage</parent>
+                    <order>50</order>
+                    <defaultPermissions>Administrators|ADMIN_LOGS_VIEW</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>ADMIN_LOGS_VIEW</key>
+                    <name>Admin Logs View</name>
+                  </permission>
+                  <permission>
+                    <key>ADMIN_LOGS_EDIT</key>
+                    <name>Admin Logs Edit</name>
+                  </permission>
+                  <permission>
+                    <key>LOG_SETTINGS_VIEW</key>
+                    <name>Log Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>LOG_SETTINGS_EDIT</key>
+                    <name>Log Settings Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.ConfigConsole</identifier>
+                    <moduleName>ConfigConsole</moduleName>
+                    <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_ConfigConsole</resourceKey>
+                    <path>ConfigConsole</path>
+                    <parent>Settings</parent>
+                    <order>90</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Connectors</identifier>
+                    <moduleName>Connectors</moduleName>
+                    <resourceKey>nav_Connectors</resourceKey>
+                    <path>Connectors</path>
+                    <parent>Settings</parent>
+                    <order>43</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.CssEditor</identifier>
+                    <moduleName>CssEditor</moduleName>
+                    <controller>Dnn.PersonaBar.CssEditor.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_CssEditor</resourceKey>
+                    <path>CssEditor</path>
+                    <parent>Settings</parent>
+                    <order>70</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Licensing</identifier>
+                    <moduleName>Licensing</moduleName>
+                    <controller>Dnn.PersonaBar.Licensing.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Licensing</resourceKey>
+                    <path>Licensing</path>
+                    <parent>Settings</parent>
+                    <order>100</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Extensions</identifier>
+                    <moduleName>Extensions</moduleName>
+                    <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Extensions</resourceKey>
+                    <path>extensions</path>
+                    <parent>Settings</parent>
+                    <order>47</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Pages</identifier>
+                    <moduleName>Pages</moduleName>
+                    <controller>Dnn.PersonaBar.Pages.MenuControllers.PagesMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Pages</resourceKey>
+                    <path>Pages</path>
+                    <parent>Content</parent>
+                    <order>20</order>
+                    <defaultPermissions>Registered Users, Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>VIEW_PAGE_LIST</key>
+                    <name>View Page List</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Prompt</identifier>
+                    <moduleName>Prompt</moduleName>
+                    <resourceKey>nav_Prompt</resourceKey>
+                    <path>Prompt</path>
+                    <parent>Settings</parent>
+                    <order>95</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Recyclebin</identifier>
+                    <moduleName>Recyclebin</moduleName>
+                    <resourceKey>nav_Recyclebin</resourceKey>
+                    <path>Recyclebin</path>
+                    <parent>Content</parent>
+                    <order>30</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>RECYCLEBIN_PAGES_VIEW</key>
+                    <name>Pages View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_PAGES_EDIT</key>
+                    <name>Pages Edit</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_MODULES_VIEW</key>
+                    <name>Modules View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_MODULES_EDIT</key>
+                    <name>Modules Edit</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_USERS_VIEW</key>
+                    <name>Users View</name>
+                  </permission>
+                  <permission>
+                    <key>RECYCLEBIN_USERS_EDIT</key>
+                    <name>Users Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Roles</identifier>
+                    <moduleName>Roles</moduleName>
+                    <resourceKey>nav_Roles</resourceKey>
+                    <path>Roles</path>
+                    <parent>Manage</parent>
+                    <order>20</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Security</identifier>
+                    <moduleName>Security</moduleName>
+                    <controller>Dnn.PersonaBar.Security.MenuControllers.SecurityMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Security</resourceKey>
+                    <path>Security</path>
+                    <parent>Settings</parent>
+                    <order>20</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>BASIC_LOGIN_SETTINGS_VIEW</key>
+                    <name>Basic Login Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>BASIC_LOGIN_SETTINGS_EDIT</key>
+                    <name>Basic Login Settings Edit</name>
+                  </permission>
+                  <permission>
+                    <key>REGISTRATION_SETTINGS_VIEW</key>
+                    <name>Registration Settings View</name>
+                  </permission>
+                  <permission>
+                    <key>REGISTRATION_SETTINGS_EDIT</key>
+                    <name>Registration Settings Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Sites</identifier>
+                    <moduleName>Sites</moduleName>
+                    <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Sites</resourceKey>
+                    <path>Sites</path>
+                    <parent>Manage</parent>
+                    <order>40</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Seo</identifier>
+                    <moduleName>Seo</moduleName>
+                    <controller>Dnn.PersonaBar.Seo.Components.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Seo</resourceKey>
+                    <path>Seo</path>
+                    <parent>Settings</parent>
+                    <order>30</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Servers</identifier>
+                    <moduleName>Servers</moduleName>
+                    <controller>Dnn.PersonaBar.Servers.MenuControllers.ServersMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Servers</resourceKey>
+                    <path>Servers</path>
+                    <parent>Settings</parent>
+                    <order>50</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.SiteImportExport</identifier>
+                    <moduleName>SiteImportExport</moduleName>
+                    <controller>Dnn.PersonaBar.SiteImportExport.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SiteImportExport</resourceKey>
+                    <path>SiteImportExport</path>
+                    <parent>Settings</parent>
+                    <order>50</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.SiteSettings</identifier>
+                    <moduleName>SiteSettings</moduleName>
+                    <controller>Dnn.PersonaBar.SiteSettings.MenuControllers.SiteSettingsMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SiteSettings</resourceKey>
+                    <path>SiteSettings</path>
+                    <parent>Settings</parent>
+                    <order>10</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>SITE_INFO_VIEW</key>
+                    <name>Site Info View</name>
+                  </permission>
+                  <permission>
+                    <key>SITE_INFO_EDIT</key>
+                    <name>Site Info Edit</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.SqlConsole</identifier>
+                    <moduleName>SqlConsole</moduleName>
+                    <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_SqlConsole</resourceKey>
+                    <path>SqlConsole</path>
+                    <parent>Settings</parent>
+                    <order>80</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.TaskScheduler</identifier>
+                    <moduleName>TaskScheduler</moduleName>
+                    <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_TaskScheduler</resourceKey>
+                    <path>TaskScheduler</path>
+                    <parent>Settings</parent>
+                    <order>60</order>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Themes</identifier>
+                    <moduleName>Themes</moduleName>
+                    <controller>Dnn.PersonaBar.Themes.MenuControllers.ThemeMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Themes</resourceKey>
+                    <path>Themes</path>
+                    <parent>Manage</parent>
+                    <order>30</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Users</identifier>
+                    <moduleName>Users</moduleName>
+                    <controller>Dnn.PersonaBar.Users.Components.UsersMenuController, Dnn.PersonaBar.Extensions</controller>
+                    <resourceKey>nav_Users</resourceKey>
+                    <path>Users</path>
+                    <parent>Manage</parent>
+                    <order>10</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                  <permission>
+                    <key>ADD_USER</key>
+                    <name>Add User</name>
+                  </permission>
+                  <permission>
+                    <key>MANAGE_ROLES</key>
+                    <name>Manage Roles</name>
+                  </permission>
+                  <permission>
+                    <key>MANAGE_PROFILE</key>
+                    <name>Manage Profile</name>
+                  </permission>
+                  <permission>
+                    <key>VIEW_SETTINGS</key>
+                    <name>View Settings</name>
+                  </permission>
+                  <permission>
+                    <key>EDIT_SETTINGS</key>
+                    <name>Edit Settings</name>
+                  </permission>
+                  <permission>
+                    <key>DELETE_USER</key>
+                    <name>Delete User</name>
+                  </permission>
+                  <permission>
+                    <key>AUTHORIZE_UNAUTHORIZE_USER</key>
+                    <name>Authorize/Unauthorize User</name>
+                  </permission>
+                  <permission>
+                    <key>MANAGE_PASSWORD</key>
+                    <name>Manage Password</name>
+                  </permission>
+                </component>
+                <component type="PersonaBarMenu">
+                  <menu>
+                    <identifier>Dnn.Vocabularies</identifier>
+                    <moduleName>Vocabularies</moduleName>
+                    <controller></controller>
+                    <resourceKey>nav_Vocabularies</resourceKey>
+                    <path>vocabularies</path>
+                    <parent>Settings</parent>
+                    <order>40</order>
+                    <defaultPermissions>Administrators</defaultPermissions>
+                  </menu>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>
