@@ -23,21 +23,21 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.UI.Modules
 {
-    public class ReflectedModuleControlFactory : IModuleControlFactory
+    public class ReflectedModuleControlFactory : BaseModuleControlFactory
     {
-        public Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
+        public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             // load from a typename in an assembly ( ie. server control)
             var objType = Reflection.CreateType(controlSrc);
             return (containerControl.LoadControl(objType, null));
         }
 
-        public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
-        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return CreateControl(containerControl, String.Empty, controlSrc);
         }

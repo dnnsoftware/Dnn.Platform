@@ -1526,6 +1526,7 @@
     </Compile>
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
+    <Compile Include="UI\Modules\BaseModuleControlFactory.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
     <Compile Include="UI\Modules\Html5\Html5HostControl.cs">
       <SubType>Code</SubType>
