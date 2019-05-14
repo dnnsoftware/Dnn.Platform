@@ -32,7 +32,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1591</NoWarn>
-    <LangVersion>default</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +42,7 @@
     <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,7 +54,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1591</NoWarn>
-    <LangVersion>default</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Cloud_Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,6 +64,7 @@
     <DocumentationFile>bin\Dnn.EditBar.UI.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">

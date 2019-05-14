@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
