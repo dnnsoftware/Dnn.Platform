@@ -194,42 +194,35 @@ namespace DNN.Connectors.GoogleAnalytics
                         Settings = new AnalyticsSettingCollection()
                     };
 
-
-                    var setting = new AnalyticsSetting
+                    config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackingId",
                         SettingValue = trackingID
-                    };
+                    });
 
-                    config.Settings.Add(setting);
-
-                    setting = new AnalyticsSetting
+                    config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "UrlParameter",
                         SettingValue = urlParameter
-                    };
+                    });
 
-                    config.Settings.Add(setting);
-
-                    setting = new AnalyticsSetting
+                    config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackForAdmin",
                         SettingValue = trackForAdmin.ToString().ToLowerInvariant()
-                    };
+                    });
 
-                    setting = new AnalyticsSetting
+                    config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "AnonymizeIp",
                         SettingValue = anonymizeIp.ToString().ToLowerInvariant()
-                    };
+                    });
 
-                    setting = new AnalyticsSetting
+                    config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackUserId",
                         SettingValue = trackUserId.ToString().ToLowerInvariant()
-                    };
-
-                    config.Settings.Add(setting);
+                    });
 
                     AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
                 }
