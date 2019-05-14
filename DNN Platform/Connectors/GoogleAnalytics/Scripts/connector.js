@@ -25,7 +25,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
             window.String.format = !window.String.format ? window.top.String.format : window.String.format;
         }
 
-    }
+    };
 
     var onSave = function (conn) {
 
@@ -33,7 +33,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         conn.configurations[2].value(conn.configurations[2].value().toString());
         conn.configurations[3].value(conn.configurations[3].value().toString());
         conn.configurations[4].value(conn.configurations[4].value().toString());
-    }
+    };
 
     var onSaveComplete = function (conn, id) {
 
@@ -52,7 +52,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
             conn.connected("true");
 
-            if (bindViewModel.buttons().length == 1) {
+            if (bindViewModel.buttons().length === 1) {
 
                 activateDeleteButton(conn);
 
@@ -60,11 +60,11 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
         }
 
-    }
+    };
 
     var activateDeleteButton = function (conn) {
 
-        if (conn.buttons().length == 1) {
+        if (conn.buttons().length === 1) {
 
             conn.buttons.push({
                 className: "secondarybtn",
@@ -81,7 +81,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
         }
 
-    }
+    };
 
     var getActionButtons = function () {
 
@@ -94,9 +94,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                     text: utility.resx.Connectors.btn_Save,
                     action: function (conn, e) {
                         conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
-                    },
-
-
+                    }
                 },
 
                 {
@@ -111,7 +109,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                         conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
                     }
                 }
-            ]
+            ];
 
         } else {
 
@@ -121,16 +119,11 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
                     text: utility.resx.Connectors.btn_Save,
                     action: function (conn, e) {
                         conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
-                    },
-
-
+                    }
                 }
-            ]
-
-
+            ];
         }
-
-    }
+    };
 
     return {
 
@@ -138,6 +131,6 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
         onSave: onSave,
         getActionButtons: getActionButtons
 
-    }
+    };
 
 });
