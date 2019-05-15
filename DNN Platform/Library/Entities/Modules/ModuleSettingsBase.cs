@@ -32,20 +32,6 @@ namespace DotNetNuke.Entities.Modules
 {
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
-        /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered 
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
-
-        public ModuleSettingsBase()
-        {
-            DependencyProvider = Globals.DependencyProvider;
-        }
-
         public Hashtable ModuleSettings
         {
             get
