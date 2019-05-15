@@ -46,6 +46,8 @@ using DotNetNuke.Application;
 // used by Moq. Paste in a single line.
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: InternalsVisibleTo("DotNetNuke.Web")]
+[assembly: InternalsVisibleTo("DotNetNuke.Web.Mvc")]
+[assembly: InternalsVisibleTo("DotNetNuke.Web.Razor")]
 [assembly: InternalsVisibleTo("DotNetNuke.HttpModules")]
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.MemberDirectory")]
 [assembly: InternalsVisibleTo("DotNetNuke.Provider.AspNetProvider")]

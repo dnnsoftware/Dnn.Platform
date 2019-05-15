@@ -555,7 +555,7 @@ namespace DotNetNuke.Common
         /// <value>
         /// The Dependency Service.
         /// </value>
-        public static IServiceProvider DependencyProvider { get; set; }
+        internal static IServiceProvider DependencyProvider { get; set; }
 
         /// <summary>
         /// Redirects the specified URL.
