@@ -167,27 +167,8 @@ namespace DotNetNuke.ModulePipeline
 
         public Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
-            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
-            var moduleControl = new ModuleControlBase();
-            moduleControl.ModuleContext.Configuration = moduleConfiguration;
-
-            switch (extension)
-            {
-                case ".mvc":
-                    var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
-
-                    moduleControl.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                        moduleConfiguration.DesktopModule.FolderName,
-                                        Localization.LocalResourceDirectory,
-                                        segments[0]);
-                    break;
-                default:
-                    moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), "") +
-                                        Localization.LocalResourceDirectory + "/" +
-                                        Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc);
-                    break;
-            }
-            return moduleControl;
+            IModuleControlFactory factory = GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
+            return factory.CreateModuleControl(moduleConfiguration);
         }
 #endif
     }
