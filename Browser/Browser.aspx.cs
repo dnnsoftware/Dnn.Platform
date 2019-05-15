@@ -36,6 +36,7 @@ using Convert = System.Convert;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Globals = DotNetNuke.Common.Globals;
 using Image = System.Drawing.Image;
+using DNNConnect.CKEditorProvider.Helper;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
@@ -269,7 +270,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
             
             //Get the files
-            var files = (List<IFileInfo>)FolderManager.Instance.GetFiles(currentFolderInfo);
+            var files = FolderManager.Instance.GetFiles(currentFolderInfo).ToList();
 
             if (SortFilesDescending)
             {
@@ -950,13 +951,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                         var startFolder = StartingDir();
 
-                        if (!Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
-                        {
-                            // Hide physical file Path
-                            lblCurrentDir.Visible = false;
-                            lblCurrent.Visible = false;
-                        }
-
                         FillFolderTree(startFolder);
 
                         bool folderSelected = false;
@@ -1148,32 +1142,30 @@ namespace DNNConnect.CKEditorProvider.Browser
             panImageEditor.Visible = false;
             lblCropInfo.Visible = false;
 
-            ////
-            string sFilePath = Path.Combine(GetCurrentFolder().PhysicalPath, lblFileName.Text);
+            var fileInfo = FileManager.Instance.GetFile(GetCurrentFolder(), lblFileName.Text);
+            string sFilePath = FileManager.Instance.GetUrl(fileInfo);
 
-            string sFileNameNoExt = Path.GetFileNameWithoutExtension(sFilePath);
+            string sFileNameNoExt = Path.GetFileNameWithoutExtension(fileInfo.FileName);
 
             txtThumbName.Text = string.Format("{0}_resized", sFileNameNoExt);
 
-            string sExtension = Path.GetExtension(sFilePath);
-            sExtension = sExtension.TrimStart('.');
-
-            bool bEnable = allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension.ToLower()));
+            string sExtension = fileInfo.Extension;
+            bool bEnable = allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension, StringComparison.OrdinalIgnoreCase));
 
             if (!bEnable)
             {
                 return;
             }
 
-            FileStream fs = new FileStream(sFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var fs = FileManager.Instance.GetFileContent(fileInfo);
 
             Image image = Image.FromStream(fs);
 
             StringBuilder sbScript1 = new StringBuilder();
 
             // Show Preview Images
-            imgOriginal.ImageUrl = MapUrl(sFilePath);
-            imgResized.ImageUrl = MapUrl(sFilePath);
+            imgOriginal.ImageUrl = sFilePath;
+            imgResized.ImageUrl = sFilePath;
 
             int w = image.Width;
             int h = image.Height;
@@ -1442,11 +1434,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                                             {
                                                 FolderID = folderInfo.FolderID,
                                                 UserID = currentUserInfo.UserID,
-                                                RoleID = Null.NullInteger,
+                                                RoleID = Convert.ToInt32(Globals.glbRoleNothing),
                                                 AllowAccess = true
                                             })
             {
-                folderInfo.FolderPermissions.Add(folderPermission);
+                folderInfo.FolderPermissions.Add(folderPermission, true);
             }
 
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folderInfo);
@@ -1745,52 +1737,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return tnFolder;
         }
-
-        /// <summary>
-        /// Render all Tabs including Child Tabs
-        /// </summary>
-        /// <param name="nodeParent">
-        /// Parent Node(Tab)
-        /// </param>
-        /// <param name="iParentTabId">
-        /// Parent Tab ID
-        /// </param>
-        private void RenderTabLevels(TreeNode nodeParent, int iParentTabId)
-        {
-            foreach (TabInfo objTab in
-                TabController.GetPortalTabs(
-                    _portalSettings.PortalId, -1, false, null, true, false, true, true, false))
-            {
-                if (!objTab.ParentId.Equals(iParentTabId))
-                {
-                    continue;
-                }
-
-                TreeNode nodeTab = new TreeNode();
-
-                if (nodeParent != null)
-                {
-                    nodeParent.ChildNodes.Add(nodeTab);
-                }
-                else
-                {
-                    dnntreeTabs.Nodes.Add(nodeTab);
-                }
-
-                nodeTab.Text = objTab.TabName;
-                nodeTab.Value = objTab.TabID.ToString();
-                nodeTab.ImageUrl = "Images/Page.gif";
-
-                // nodeTab.ExpandedImageUrl = "Images/folderOpen.gif";
-                if (!string.IsNullOrEmpty(objTab.IconFile))
-                {
-                    nodeTab.ImageUrl = ResolveUrl(objTab.IconFile);
-                }
-
-                RenderTabLevels(nodeTab, objTab.TabID);
-            }
-        }
-
+        
         /// <summary>
         /// Gets the language list, and sets the default locale if Content Localization is Enabled
         /// </summary>
@@ -1846,7 +1793,21 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return;
             }
 
-            RenderTabLevels(null, -1);
+            var allPortalTabsList = TabController.GetPortalTabs(this._portalSettings.PortalId, -1, false, null, true, false, true, true, false);
+            var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
+
+            Func<TabInfo, int> getNodeId = x => x.TabID;
+            Func<TabInfo, int> getParentId = x => x.ParentId;
+            Func<TabInfo, string> getNodeText = x => x.TabName;
+            Func<TabInfo, string> getNodeValue = x => x.TabID.ToString();
+            Func<int, bool> getParentIdCheck = x => x != -1;
+            Func<TabInfo, string> getNodeImageURL = x =>
+                string.IsNullOrWhiteSpace(x.IconFile)
+                ? "Images/Page.gif"
+                : this.ResolveUrl(x.IconFile);
+
+            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
+            tvh.LoadNodes(allPortalTabs, dnntreeTabs.Nodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck);
         }
 
         /// <summary>
@@ -2172,27 +2133,17 @@ namespace DNNConnect.CKEditorProvider.Browser
                 CheckFolderAccess(fileInfo.FolderId, true);
 
                 var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
-                var isSecureFolder = folder.IsStorageSecure;
 
-                if (isSecureFolder)
-                {
-                    fileName += ".resources";
-                    cmdResizer.Enabled = false;
-                    cmdResizer.CssClass = "LinkDisabled";
-                }
-                else
-                {
-                    rblLinkType.Items[0].Selected = true;
+                rblLinkType.Items[0].Selected = true;
 
-                    var extension = Path.GetExtension(fileName);
-                    extension = extension.TrimStart('.');
+                var extension = Path.GetExtension(fileName);
+                extension = extension.TrimStart('.');
 
-                    var isAllowedExtension =
-                        allowedImageExt.Any(sAllowExt => sAllowExt.Equals(extension.ToLower()));
+                var isAllowedExtension =
+                    allowedImageExt.Any(sAllowExt => sAllowExt.Equals(extension, StringComparison.OrdinalIgnoreCase));
 
-                    cmdResizer.Enabled = isAllowedExtension;
-                    cmdResizer.CssClass = isAllowedExtension ? "LinkNormal" : "LinkDisabled";
-                }
+                cmdResizer.Enabled = cmdResizer.Enabled && isAllowedExtension;
+                cmdResizer.CssClass = cmdResizer.Enabled ? "LinkNormal" : "LinkDisabled";
 
                 FileId.Text = fileInfo.FileId.ToString();
                 lblFileName.Text = fileName;
@@ -2346,7 +2297,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                     break;
                 case "ImageUpload":
-                    if (allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension.ToLower())))
+                    if (allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension, StringComparison.OrdinalIgnoreCase)))
                     {
                         bAllowUpl = true;
                     }
@@ -2588,11 +2539,10 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void ResizeNow_Click(object sender, EventArgs e)
         {
-            var filePath = Path.Combine(GetCurrentFolder().PhysicalPath, lblFileName.Text);
-            var extension = Path.GetExtension(filePath);
-            string imageFullPath;
+            var file = FileManager.Instance.GetFile(GetCurrentFolder(), lblFileName.Text);
+            string resizedFileName;
 
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fileStream = FileManager.Instance.GetFileContent(file))
             {
                 var oldImage = Image.FromStream(fileStream);
                 int newWidth, newHeight;
@@ -2609,13 +2559,11 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 if (!string.IsNullOrEmpty(txtThumbName.Text))
                 {
-                    imageFullPath = Path.Combine(GetCurrentFolder().PhysicalPath, txtThumbName.Text + extension);
+                    resizedFileName = $"{txtThumbName.Text}.{file.Extension}";
                 }
                 else
                 {
-                    imageFullPath = Path.Combine(
-                        GetCurrentFolder().PhysicalPath,
-                        string.Format("{0}_resized{1}", Path.GetFileNameWithoutExtension(filePath), extension));
+                    resizedFileName = $"{Path.GetFileNameWithoutExtension(file.FileName)}_resized.{file.Extension}";
                 }
 
                 // Create an Resized Thumbnail
@@ -2634,27 +2582,22 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
 
                 var counter = 0;
-
-                while (File.Exists(imageFullPath))
+                while (FileManager.Instance.FileExists(GetCurrentFolder(), resizedFileName))
                 {
                     counter++;
-
-                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(imageFullPath);
-
-                    imageFullPath = Path.Combine(
-                        GetCurrentFolder().PhysicalPath,
-                        string.Format("{0}_{1}{2}", fileNameWithoutExtension, counter, Path.GetExtension(imageFullPath)));
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(resizedFileName);
+                    resizedFileName = $"{fileNameWithoutExtension}_{counter}.{file.Extension}";
                 }
 
                 // Add Compression to Jpeg Images
                 if (oldImage.RawFormat.Equals(ImageFormat.Jpeg))
                 {
-                    ImageCodecInfo jgpEncoder = GetEncoder(oldImage.RawFormat);
+                    ImageCodecInfo jpgEncoder = GetEncoder(oldImage.RawFormat);
 
                     Encoder myEncoder = Encoder.Quality;
-                    EncoderParameters encodParams = new EncoderParameters(1);
-                    EncoderParameter encodParam = new EncoderParameter(myEncoder, long.Parse(dDlQuality.SelectedValue));
-                    encodParams.Param[0] = encodParam;
+                    EncoderParameters encodeParams = new EncoderParameters(1);
+                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, long.Parse(dDlQuality.SelectedValue));
+                    encodeParams.Param[0] = encodeParam;
 
                     using (Bitmap dst = new Bitmap(newWidth, newHeight))
                     {
@@ -2665,17 +2608,26 @@ namespace DNNConnect.CKEditorProvider.Browser
                             g.DrawImage(oldImage, 0, 0, dst.Width, dst.Height);
                         }
 
-                        dst.Save(imageFullPath, jgpEncoder, encodParams);
+                        using (var stream = new MemoryStream())
+                        {
+                            dst.Save(stream, jpgEncoder, encodeParams);
+                            FileManager.Instance.AddFile(GetCurrentFolder(), resizedFileName, stream);
+                        }
                     }
                 }
                 else
                 {
                     // Finally Create a new Resized Image
-                    Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
-                    oldImage.Dispose();
-
-                    newImage.Save(imageFullPath);
-                    newImage.Dispose();
+                    using (Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                    {
+                        var imageFormat = oldImage.RawFormat;
+                        oldImage.Dispose();
+                        using (var stream = new MemoryStream())
+                        {
+                            newImage.Save(stream, imageFormat);
+                            FileManager.Instance.AddFile(GetCurrentFolder(), resizedFileName, stream);
+                        }
+                    }
                 }
             }
 
@@ -2703,7 +2655,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             ShowFilesIn(GetCurrentFolder());
 
-            GoToSelectedFile(Path.GetFileName(imageFullPath));
+            GoToSelectedFile(resizedFileName);
         }
 
         /// <summary>
@@ -2732,15 +2684,11 @@ namespace DNNConnect.CKEditorProvider.Browser
             lblResizeHeader.Text = Localization.GetString("lblResizeHeader2.Text", ResXFile, LanguageCode);
             title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", lblResizeHeader.Text);
 
-            string sFilePath = Path.Combine(GetCurrentFolder().PhysicalPath, lblFileName.Text);
+            var file = FileManager.Instance.GetFile(GetCurrentFolder(), lblFileName.Text);
+            string sFilePath = FileManager.Instance.GetUrl(file);
 
-            string sFileNameNoExt = Path.GetFileNameWithoutExtension(sFilePath);
-
+            string sFileNameNoExt = Path.GetFileNameWithoutExtension(file.FileName);
             txtCropImageName.Text = string.Format("{0}_Crop", sFileNameNoExt);
-
-            FileStream fs = new FileStream(sFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-            Image image = Image.FromStream(fs);
 
             StringBuilder sbCropZoom = new StringBuilder();
 
@@ -2775,9 +2723,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             sbCropZoom.Append("},");
 
             sbCropZoom.Append("image: {");
-            sbCropZoom.AppendFormat("source: '{0}',", MapUrl(sFilePath));
-            sbCropZoom.AppendFormat("width: {0},", image.Width);
-            sbCropZoom.AppendFormat("height: {0},", image.Height);
+            sbCropZoom.AppendFormat("source: '{0}',", sFilePath);
+            sbCropZoom.AppendFormat("width: {0},", file.Width);
+            sbCropZoom.AppendFormat("height: {0},", file.Height);
             sbCropZoom.Append("minZoom: 10,");
             sbCropZoom.Append("maxZoom: 150");
             sbCropZoom.Append("}");
@@ -2788,7 +2736,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             sbCropZoom.Append("jQuery('#lblCropInfo').hide();");
             sbCropZoom.Append(
-                "jQuery('#imgResized').attr('src', 'ProcessImage.ashx?' + cropzoom.PreviewParams()).show();");
+                "jQuery('#imgResized').attr('src', 'ProcessImage.ashx?fileId=" + file.FileId + "&' + cropzoom.PreviewParams()).show();");
 
             sbCropZoom.Append("ResizeMe('#imgResized', 360, 300);");
 
@@ -2805,7 +2753,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             sbCropZoom.Append("jQuery('#CropNow').click(function(e) {");
             sbCropZoom.Append("e.preventDefault();");
             sbCropZoom.Append(
-                "cropzoom.send('ProcessImage.ashx', 'POST', { newFileName:  jQuery('#txtCropImageName').val(), saveFile: true }, function(){ javascript: __doPostBack('cmdCropNow', ''); });");
+                "cropzoom.send('ProcessImage.ashx', 'POST', { newFileName:  jQuery('#txtCropImageName').val(), saveFile: true, fileId: " + file.FileId + " }, function(){ javascript: __doPostBack('cmdCropNow', ''); });");
             sbCropZoom.Append("});");
 
             sbCropZoom.Append("});");

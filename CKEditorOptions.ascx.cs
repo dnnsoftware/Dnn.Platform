@@ -49,6 +49,14 @@ namespace DNNConnect.CKEditorProvider
         ///   The provider type.
         /// </summary>
         private const string ProviderType = "htmlEditor";
+        private const string UNAUTHENTICATED_USERS = "Unauthenticated Users";
+        private const int NoPortal = -1;
+        private const string KeyCurrentTabId = "CurrentTabId";
+        private const string KeyCurrentPortalId = "CurrentPortalId";
+        private const string KeyDefaultHostLoadMode = "DefaultHostLoadMode";
+        private const string KeyIsHostMode = "IsHostMode";
+        private const string KeyCurrentPortalOnly = "CurrentPortalOnly";
+        private const string KeyCurrentSettingsMode = "CurrentSettingsMode";
 
         /// <summary>
         ///   The provider config.
@@ -107,12 +115,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return ViewState["IsHostMode"] != null && (bool)ViewState["IsHostMode"];
+                return ViewState[KeyIsHostMode] != null && (bool)ViewState[KeyIsHostMode];
             }
 
             set
             {
-                ViewState["IsHostMode"] = value;
+                ViewState[KeyIsHostMode] = value;
             }
         }
 
@@ -122,12 +130,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return ViewState["CurrentPortalOnly"] != null && (bool)ViewState["CurrentPortalOnly"];
+                return ViewState[KeyCurrentPortalOnly] != null && (bool)ViewState[KeyCurrentPortalOnly];
             }
 
             set
             {
-                ViewState["CurrentPortalOnly"] = value;
+                ViewState[KeyCurrentPortalOnly] = value;
             }
         }
 
@@ -136,18 +144,18 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                var o = ViewState["CurrentTabId"];
-                if (o != null)
+                var currentTabId = ViewState[KeyCurrentTabId];
+                if (currentTabId != null)
                 {
-                    return (int)o;
+                    return (int)currentTabId;
                 }
 
-                return 1;
+                return NoPortal;
             }
 
             set
             {
-                ViewState["CurrentTabId"] = value;
+                ViewState[KeyCurrentTabId] = value;
             }
         }
 
@@ -156,12 +164,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return (int?)ViewState["CurrentPortalId"] ?? 0;
+                return (int?)ViewState[KeyCurrentPortalId] ?? 0;
             }
 
             set
             {
-                ViewState["CurrentPortalId"] = value;
+                ViewState[KeyCurrentPortalId] = value;
             }
         }
 
@@ -171,12 +179,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return (int?)ViewState["DefaultHostLoadMode"] ?? 0;
+                return (int?)ViewState[KeyDefaultHostLoadMode] ?? 0;
             }
 
             set
             {
-                ViewState["DefaultHostLoadMode"] = value;
+                ViewState[KeyDefaultHostLoadMode] = value;
             }
         }
 
@@ -193,12 +201,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return (SettingsMode)ViewState["CurrentSettingsMode"];
+                return (SettingsMode)ViewState[KeyCurrentSettingsMode];
             }
 
             set
             {
-                ViewState["CurrentSettingsMode"] = value;
+                ViewState[KeyCurrentSettingsMode] = value;
             }
         }
 
@@ -248,7 +256,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets a value indicating whether this instance is all instances.</summary>
         /// <value><c>true</c> if this instance is all instances; otherwise, <c>false</c>.</value>
-        private bool IsAllInstances => _portalSettings == null;
+        private bool IsAllInstances => IsHostMode && !CurrentPortalOnly;
 
         /// <summary>Gets the home directory.</summary>
         /// <value>The home directory.</value>
@@ -274,7 +282,7 @@ namespace DNNConnect.CKEditorProvider
 
                 _portalSettings = GetPortalSettings();
 
-                FillFolders();
+                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
 
                 RenderUrlControls(true);
 
@@ -290,13 +298,24 @@ namespace DNNConnect.CKEditorProvider
 
                 if (DefaultHostLoadMode.Equals(0))
                 {
-                    lblSettings.Text =
-                        $"{Localization.GetString("lblSettings.Text", ResXFile, LangCode)} - <em>{Localization.GetString("lblPortal.Text", ResXFile, LangCode)} {_portalSettings?.PortalName ?? "Host"} - Portal ID: {CurrentOrSelectedPortalId}</em>";
+                    var currentPortalLabel = string.Empty;
+                    if(CurrentOrSelectedPortalId > NoPortal)
+                    {
+                        currentPortalLabel = string.Format("- <em>{0} {1} : - Portal ID: {2}</em>", 
+                            Localization.GetString("lblPortal.Text", ResXFile, LangCode), 
+                            _portalSettings?.PortalName ?? "Host", 
+                            CurrentOrSelectedPortalId);
+                    }
+
+                    lblSettings.Text = $"{Localization.GetString("lblSettings.Text", ResXFile, LangCode)} {currentPortalLabel}";
                 }
                 else if (DefaultHostLoadMode.Equals(1))
                 {
-                    lblSettings.Text =
-                        $"{Localization.GetString("lblSettings.Text", ResXFile, LangCode)} - <em>{Localization.GetString("lblPage.Text", ResXFile, LangCode)} {new TabController().GetTab(CurrentOrSelectedTabId, _portalSettings?.PortalId ?? Host.HostPortalID, false).TabName} - TabID: {CurrentOrSelectedTabId}</em>";
+                    var currentTabName = new TabController().GetTab(CurrentOrSelectedTabId, _portalSettings?.PortalId ?? Host.HostPortalID, false).TabName;
+                    var pageLabel = Localization.GetString("lblPage.Text", ResXFile, LangCode);
+                    var settingsLabel = Localization.GetString("lblSettings.Text", ResXFile, LangCode);
+
+                    lblSettings.Text = $"{settingsLabel} - <em>{pageLabel} {currentTabName} - TabID: {CurrentOrSelectedTabId}</em>";
                 }
                 else
                 {
@@ -349,16 +368,23 @@ namespace DNNConnect.CKEditorProvider
         {
             AddJavaScripts();
             LocalResourceFile = ResXFile;
+            _portalSettings = GetPortalSettings();
 
             if (IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
             {
-                _portalSettings = GetPortalSettings();
+                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
 
                 if (Page.IsPostBack)
                 {
                     return;
                 }
+
+                BindUserGroupsGridView();
+
+                FillFolders();
                 
+                BindOptionsData();
+
                 SetLanguage();
 
                 FillInformations();
@@ -366,15 +392,9 @@ namespace DNNConnect.CKEditorProvider
                 // Load Skin List
                 FillSkinList();
 
-                FillFolders();
-
                 RenderUrlControls();
 
                 FillRoles();
-
-                BindUserGroupsGridView();
-
-                BindOptionsData();
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
@@ -392,7 +412,7 @@ namespace DNNConnect.CKEditorProvider
                     "errorcloseScript",
                     $"javascript:alert('{Localization.GetString("Error1.Text", ResXFile, LangCode)}');self.close();",
                     true);
-            }         
+            }
         }
 
         /// <summary>
@@ -540,6 +560,61 @@ namespace DNNConnect.CKEditorProvider
             textReader.Close();
 
             FillSettings(importedSettings, changeMode);
+        }
+        /// <summary>
+        /// Fill file upload size limit controls
+        /// </summary>
+        /// <param name="imporUploadSizeRoles"></param>
+        private void FillFileUploadSettings(List<UploadSizeRoles> imporUploadSizeRoles)
+        {
+            UploadFileLimits.DataSource = imporUploadSizeRoles;
+            UploadFileLimits.DataBind();
+
+            // Load Upload Size Setting for Each Portal Role
+            foreach (var uploadSizeRole in imporUploadSizeRoles)
+            {
+                if (uploadSizeRole.RoleId.Equals(-1))
+                {
+                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    {
+                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+
+                        if (label == null || !label.Text.Equals(UNAUTHENTICATED_USERS))
+                        {
+                            continue;
+                        }
+
+                        var sizeLimit =
+                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+
+                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
+                    }
+                }
+                else
+                {
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
+
+                    if (objRole == null)
+                    {
+                        continue;
+                    }
+
+                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    {
+                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+
+                        if (label == null || !label.Text.Equals(objRole.RoleName))
+                        {
+                            continue;
+                        }
+
+                        var sizeLimit =
+                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+
+                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -795,58 +870,9 @@ namespace DNNConnect.CKEditorProvider
                 txtHeight.Text = importedSettings.Config.Height;
             }
 
-            if (!string.IsNullOrEmpty(importedSettings.BlankText))
-            {
-                txtBlanktext.Text = importedSettings.BlankText;
-            }
+            txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
 
-            var imporUploadSizeRoles = importedSettings.UploadSizeRoles;
-
-            // Load Upload Size Setting for Each Portal Role
-            foreach (var uploadSizeRole in imporUploadSizeRoles)
-            {
-                if (uploadSizeRole.RoleId.Equals(-1))
-                {
-                    for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
-                    {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals("Unauthenticated Users"))
-                        {
-                            continue;
-                        }
-
-                        var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
-
-                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
-                    }
-                }
-                else
-                {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
-
-                    if (objRole == null)
-                    {
-                        continue;
-                    }
-
-                    for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
-                    {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
-
-                        if (label == null || !label.Text.Equals(objRole.RoleName))
-                        {
-                            continue;
-                        }
-
-                        var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
-
-                        sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
-                    }
-                }
-            }
+            FillFileUploadSettings(importedSettings.UploadSizeRoles);
 
             if (!string.IsNullOrEmpty(importedSettings.Config.ContentsCss))
             {
@@ -930,7 +956,7 @@ namespace DNNConnect.CKEditorProvider
                 lic.Add(roleItem);
             }
 
-            lic.Add(new ListItem { Text = "Unauthenticated Users", Value = "-1" });
+            lic.Add(new ListItem { Text = UNAUTHENTICATED_USERS, Value = "-1" });
 
             gvToolbars.DataSource = lic;
             gvToolbars.DataBind();
@@ -942,16 +968,6 @@ namespace DNNConnect.CKEditorProvider
 
             lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
             lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
-
-            // Bind User Groups to UploadFileLimits GridView
-            UploadFileLimits.DataSource = lic;
-            UploadFileLimits.DataBind();
-
-            lblRole = (Label)UploadFileLimits.HeaderRow.FindControl("lblRole");
-            lblSelToolb = (Label)UploadFileLimits.HeaderRow.FindControl("SizeLimitLabel");
-
-            lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
-            lblSelToolb.Text = Localization.GetString("SizeLimitLabel.Text", ResXFile, LangCode);
         }
 
         /// <summary>
@@ -1092,18 +1108,43 @@ namespace DNNConnect.CKEditorProvider
         {
             chblBrowsGr.Items.Clear();
 
-            var portalId =  _portalSettings?.PortalId ?? Host.HostPortalID;
+            var portalId = _portalSettings?.PortalId ?? Host.HostPortalID;
+
             foreach (var objRole in GetRoles(portalId))
             {
+                var isAdmin = objRole.RoleName.Equals(PortalSettings.AdministratorRoleName);
                 var roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
-
-                if (objRole.RoleName.Equals(PortalSettings.AdministratorRoleName))
-                {
-                    roleItem.Selected = true;
-                    roleItem.Enabled = false;
-                }
+                roleItem.Selected = isAdmin || GetActiveRolesIds().Contains(objRole.RoleID);
+                roleItem.Enabled = !isAdmin;
 
                 chblBrowsGr.Items.Add(roleItem);
+            }
+        }
+
+        /// <summary>
+        /// Gets list of currently active file browser roles
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<int> GetActiveRolesIds()
+        {
+            if (currentSettings?.BrowserRoles != null)
+            {
+                var rolesIds = currentSettings.BrowserRoles.Split(';');
+                foreach (string roleId in rolesIds)
+                {
+                    int actualRoleId;
+
+                    if (!int.TryParse(roleId, out actualRoleId))
+                    {
+                        var role = RoleController.Instance.GetRoleByName(PortalId, roleId);
+                        actualRoleId = role != null ? role.RoleID : -1;
+                    }
+                    yield return actualRoleId;
+                }
+            }
+            else
+            {
+                yield break;
             }
         }
 
@@ -1124,7 +1165,8 @@ namespace DNNConnect.CKEditorProvider
 
             return (from role in roles
                     let isCommon = PortalController.Instance.GetPortals().Cast<PortalInfo>().All(portal => RoleController.Instance.GetRoles(portal.PortalID).Any(r => r.RoleName == role.RoleName))
-                    where isCommon select role).ToList();
+                    where isCommon
+                    select role).ToList();
         }
 
         // Reload Settings based on the Selected Mode
@@ -1144,6 +1186,8 @@ namespace DNNConnect.CKEditorProvider
             {
                 ddlSkin.Items.Add(skinItem);
             }
+
+            ddlSkin.SelectedValue = currentSettings?.Config?.Skin?? "";
 
             // CodeMirror Themes
             CodeMirrorTheme.Items.Clear();
@@ -1224,7 +1268,7 @@ namespace DNNConnect.CKEditorProvider
                     return PortalSettings;
                 }
 
-                if(IsHostMode)
+                if (IsHostMode)
                 {
                     return new PortalSettings(CurrentOrSelectedPortalId);
                 }
@@ -1311,9 +1355,9 @@ namespace DNNConnect.CKEditorProvider
             {
                 // Add New Toolbar Set
                 var newToolbar = new ToolbarSet(dnnTxtToolBName.Text, int.Parse(dDlToolbarPrio.SelectedValue))
-                    {
-                        ToolbarGroups = modifiedSet.ToolbarGroups
-                    };
+                {
+                    ToolbarGroups = modifiedSet.ToolbarGroups
+                };
 
                 listToolbars.Add(newToolbar);
                 ToolbarUtil.SaveToolbarSets(
@@ -1423,7 +1467,7 @@ namespace DNNConnect.CKEditorProvider
             dDlToolbarPrio.Items.FindByText(priority).Enabled = true;
 
             listToolbars.RemoveAll(toolbarSel => toolbarSel.Name.Equals(dDlCustomToolbars.SelectedValue));
-            
+
             ToolbarUtil.SaveToolbarSets(
                 listToolbars,
                 !string.IsNullOrEmpty(configFolder)
@@ -1521,7 +1565,7 @@ namespace DNNConnect.CKEditorProvider
                 {
                     configFolder = objProvider.Attributes["ck_configFolder"];
                 }
-                
+
                 listToolbars = ToolbarUtil.GetToolbars(
                     HomeDirectory, configFolder);
 
@@ -1542,7 +1586,7 @@ namespace DNNConnect.CKEditorProvider
         {
             var licToolbars = new ListItemCollection();
 
-            foreach (var toolbarItem in listToolbars.Select(toolbarSet => new ListItem {Text = toolbarSet.Name, Value = toolbarSet.Name}))
+            foreach (var toolbarItem in listToolbars.Select(toolbarSet => new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name }))
             {
                 licToolbars.Add(toolbarItem);
             }
@@ -1564,11 +1608,11 @@ namespace DNNConnect.CKEditorProvider
             {
                 return;
             }
-            
-            var portalId = _portalSettings?.PortalId != Null.NullInteger? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
+
+            var portalId = _portalSettings?.PortalId != Null.NullInteger ? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
             var objRole = RoleController.Instance.GetRoleByName(portalId, label.Text);
 
-            if (objRole == null)
+            if (objRole == null && label.Text != UNAUTHENTICATED_USERS)
             {
                 return;
             }
@@ -1579,8 +1623,9 @@ namespace DNNConnect.CKEditorProvider
                 var pageKey = $"DNNCKT#{CurrentOrSelectedTabId}#";
                 LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
             }
-            
-            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRole.RoleID);
+
+            var objRoleId = label.Text != UNAUTHENTICATED_USERS ? objRole.RoleID : -1;
+            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRoleId);
 
             if (currentToolbarSettings != null)
             {
@@ -1802,16 +1847,6 @@ namespace DNNConnect.CKEditorProvider
             {
                 ConfigUrl.Url = ckeditorProvider.Attributes["ck_customConfig"];
             }
-
-            /*var configPathComplete = !string.IsNullOrEmpty(this.configFolder)
-                                         ? Path.Combine(this._portalSettings.HomeDirectoryMapPath, this.configFolder)
-                                         : this._portalSettings.HomeDirectoryMapPath;
-
-            // Load Default Settings from XML
-            if (File.Exists(Path.Combine(configPathComplete, "CKEditorDefaultSettings.xml")))
-            {
-                this.ImportXmlFile(Path.Combine(configPathComplete, "CKEditorDefaultSettings.xml"), changeMode);
-            }*/
         }
 
         /// <summary>
@@ -1865,6 +1900,8 @@ namespace DNNConnect.CKEditorProvider
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
 
+            currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+
             switch (CurrentSettingsMode)
             {
                 case SettingsMode.Host:
@@ -1901,6 +1938,12 @@ namespace DNNConnect.CKEditorProvider
 
                             currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                                 _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
+
+                            // check if UploadSizeLimits have been set
+                            if (currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
+                            {
+                                currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+                            }
 
                             // Set Current Mode to Portal
                             currentSettings.SettingMode = SettingsMode.Portal;
@@ -2458,7 +2501,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     moduleController.UpdateModuleSetting(
                         ModuleId,
@@ -2488,7 +2531,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     moduleController.UpdateModuleSetting(
                         ModuleId,
@@ -2501,7 +2544,7 @@ namespace DNNConnect.CKEditorProvider
 
                     moduleController.UpdateModuleSetting(
                         ModuleId,
-                        string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
+                        string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
                 }
             }
@@ -2712,7 +2755,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}toolb#{"-1"}", ddLToolB.SelectedValue);
                 }
@@ -2725,7 +2768,7 @@ namespace DNNConnect.CKEditorProvider
             }
 
             // Save Upload File Limit Setting for every Role
-            for (int i = 0; i < UploadFileLimits.Rows.Count; i++)
+            for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
             {
                 var label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
@@ -2736,7 +2779,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}-1{SettingConstants.UPLOADFILELIMITS}", sizeLimit.Text);
                 }
@@ -3366,7 +3409,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = ddLToolB.SelectedValue });
                 }
@@ -3384,6 +3427,7 @@ namespace DNNConnect.CKEditorProvider
         private void SetUploadSizeRoles(EditorProviderSettings exportSettings)
         {
             var listUploadSizeRoles = new List<UploadSizeRoles>();
+            UploadFileLimits.DataSource = exportSettings.UploadSizeRoles;
 
             // Save Upload File Limit Setting for every Role
             for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
@@ -3397,7 +3441,7 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                if (label.Text.Equals("Unauthenticated Users"))
+                if (label.Text.Equals(UNAUTHENTICATED_USERS))
                 {
                     listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(sizeLimit.Text) });
                 }
@@ -3432,7 +3476,7 @@ namespace DNNConnect.CKEditorProvider
                 listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(sizeLimit) });
             }
         }
-        
+
         /// <summary>
         /// Adds the other toolbar roles.
         /// </summary>
@@ -3445,7 +3489,7 @@ namespace DNNConnect.CKEditorProvider
             {
                 listToolbarRoles.AddRange(
                     from PortalInfo portal in PortalController.Instance.GetPortals()
-                    select RoleController.Instance.GetRoleByName(portal.PortalID, roleName) 
+                    select RoleController.Instance.GetRoleByName(portal.PortalID, roleName)
                     into objRole
                     select new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = value });
             }
@@ -3456,6 +3500,20 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
+        /// <summary>
+        /// Gets default upload size limits for each existent role
+        /// </summary>
+        /// <param name="portalRoles"></param>
+        /// <returns></returns>
+        private List<UploadSizeRoles> GetDefaultUploadFileSettings(IList<RoleInfo> portalRoles)
+        {
+            return portalRoles.Select(role => new UploadSizeRoles()
+            {
+                RoleId = role.RoleID,
+                RoleName = role.RoleName,
+                UploadFileLimit = -1
+            }).ToList();
+        }
         #endregion
     }
 }

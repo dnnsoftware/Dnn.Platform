@@ -16,7 +16,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public EditorConfig()
         {
-            this.AllowedContent = "true";
+            this.AllowedContent = "false";
             this.AutoGrow_BottomSpace = 0;
             this.AutoGrow_MaxHeight = 0;
             this.AutoGrow_MinHeight = 200;
@@ -53,7 +53,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.Entities_Greek = false;
             this.Entities_Latin = false;
             this.Entities_ProcessNumerical = false;
-            this.ExtraPlugins = "dnnpages";
+            this.ExtraPlugins = "dnnpages,wordcount,notification";
             this.FileBrowserWindowFeatures = "location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes";
             this.FileBrowserWindowHeight = "70%";
             this.FileBrowserWindowWidth = "80%";

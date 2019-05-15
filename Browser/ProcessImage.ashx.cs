@@ -7,6 +7,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
@@ -61,7 +62,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             float imageH = float.Parse(context.Request["imageH"]);
             float imageW = float.Parse(context.Request["imageW"]);
             float angle = float.Parse(context.Request["imageRotate"]);
-            string imgSource = context.Request["imageSource"];
+            int sourceImageId = int.Parse(context.Request["fileId"]);
             float imageX = float.Parse(context.Request["imageX"]);
             float imageY = float.Parse(context.Request["imageY"]);
             float selectorH = float.Parse(context.Request["selectorH"]);
@@ -92,7 +93,14 @@ namespace DNNConnect.CKEditorProvider.Browser
             float pWidth = imageW;
             float pHeight = imageH;
 
-            Bitmap img = (Bitmap)Image.FromFile(context.Server.MapPath(imgSource));
+            var file = FileManager.Instance.GetFile(sourceImageId);
+            if (file == null)
+            {
+                return;
+                
+            }
+
+            Bitmap img = (Bitmap)Image.FromStream(FileManager.Instance.GetFileContent(file));
 
             // Resize
             Bitmap imageP = ResizeImage(img, Convert.ToInt32(pWidth), Convert.ToInt32(pHeight));
@@ -143,15 +151,19 @@ namespace DNNConnect.CKEditorProvider.Browser
             {
                 context.Response.ContentType = "text/plain";
 
-                var sourceFilePath = context.Server.MapPath(imgSource);
-                var sourceFolder = sourceFilePath.Remove(sourceFilePath.LastIndexOf("\\"));
+                var sourceFolder = FolderManager.Instance.GetFolder(file.FolderId);
                 if (PortalSettings.Current != null 
-                        && !HasWritePermission(PathUtils.Instance.GetRelativePath(PortalSettings.Current.PortalId, sourceFolder)))
+                        && !HasWritePermission(sourceFolder.FolderPath))
                 {
                     throw new SecurityException("You don't have write permission to save files under this folder.");
                 }
 
-                imageP.Save(GenerateName(sNewFileName, sourceFilePath));
+                using (var stream = new MemoryStream())
+                {
+                    var fileName = GenerateName(file, sNewFileName);
+                    imageP.Save(stream, img.RawFormat);
+                    FileManager.Instance.AddFile(sourceFolder, fileName, stream);
+                }
             }
             else
             {
@@ -187,29 +199,21 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <returns>
         /// The generate name.
         /// </returns>
-        private static string GenerateName(string sNewFileName, string sSourceFullPath)
+        private static string GenerateName(IFileInfo file, string sNewFileName)
         {
-            string sSourcePath = sSourceFullPath.Remove(sSourceFullPath.LastIndexOf("\\"));
-
-            string sExtension = Path.GetExtension(sSourceFullPath);
-
             string sNewFilePath = !string.IsNullOrEmpty(sNewFileName)
-                                      ? Path.Combine(sSourcePath, CleanName(sNewFileName) + sExtension)
-                                      : Path.Combine(
-                                          sSourcePath,
-                                          string.Format(
-                                              "{0}_crop{1}", Path.GetFileNameWithoutExtension(sSourceFullPath), sExtension));
+                                      ? $"{CleanName(sNewFileName)}.{file.Extension}"
+                                      : $"{Path.GetFileNameWithoutExtension(sNewFileName)}_crop.{file.Extension}";
 
             int iCounter = 0;
 
-            while (File.Exists(sNewFilePath))
+            var folder = FolderManager.Instance.GetFolder(file.FolderId);
+            while (FileManager.Instance.FileExists(folder, sNewFilePath))
             {
                 iCounter++;
 
                 string sFileNameNoExt = Path.GetFileNameWithoutExtension(sNewFilePath);
-
-                sNewFilePath = Path.Combine(
-                    sSourcePath, string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, sExtension));
+                sNewFilePath = $"{sFileNameNoExt}_{iCounter}.{file.Extension}";
             }
 
             return sNewFilePath;
