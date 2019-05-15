@@ -575,9 +575,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="destFileName">The Destination file</param>
         public static void WriteStream(Stream sourceStream, string destFileName)
         {
-            //Delete the file
-            FileSystemUtils.DeleteFile(destFileName);
-
             var file = new FileInfo(destFileName);
             if (file.Directory != null && !file.Directory.Exists)
                 file.Directory.Create();
