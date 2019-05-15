@@ -64,7 +64,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>
         ///   The allowed image ext.
         /// </summary>
-        private readonly string[] allowedImageExt = { "bmp", "gif", "jpeg", "jpg", "png" };
+        private readonly string[] allowedImageExt = { "bmp", "gif", "jpeg", "jpg", "png", "svg" };
 
         /// <summary>
         ///   The request.
