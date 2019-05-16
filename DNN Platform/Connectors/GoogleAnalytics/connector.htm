@@ -17,7 +17,9 @@
 
     <div>
         <label for="chkAnonymizeIp" data-bind="html: configurations[3].localizedName"></label>
-        <input id="chkAnonymizeIp" type="checkbox" data-bind="checked: configurations[3].value, checkedValue: configurations[3].value" />
+        <input id="chkAnonymizeIp" type="checkbox" data-bind="checked: configurations[3].value, checkedValue: configurations[3].value, disable: configurations[5].value" />
+
+        <span data-bind="visible: configurations[5].value, html: configurations[5].localizedName"></span>
     </div>
 
     <div>
