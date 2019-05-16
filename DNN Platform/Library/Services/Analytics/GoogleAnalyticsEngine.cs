@@ -42,13 +42,16 @@ namespace DotNetNuke.Services.Analytics
         public override string RenderScript(string scriptTemplate)
         {
             AnalyticsConfiguration config = GetConfig();
+
             if (config == null)
             {
                 return "";
             }
+
             var trackingId = "";
             var urlParameter = "";
             var trackForAdmin = true;
+
             foreach (AnalyticsSetting setting in config.Settings)
             {
                 switch (setting.SettingName.ToLowerInvariant())
@@ -67,6 +70,7 @@ namespace DotNetNuke.Services.Analytics
                         break;
                 }
             }
+
             if (String.IsNullOrEmpty(trackingId))
             {
                 return "";
@@ -91,7 +95,9 @@ namespace DotNetNuke.Services.Analytics
             {
                 scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", "");
             }
+
             scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", RenderCustomScript(config));
+
             return scriptTemplate;
         }
 
@@ -99,8 +105,8 @@ namespace DotNetNuke.Services.Analytics
         {
             try
             {
-                bool anonymize = false;
-                bool trackingUserId = false;
+                var anonymize = false;
+                var trackingUserId = false;
 
                 foreach (AnalyticsSetting setting in config.Settings)
                 {
@@ -120,18 +126,19 @@ namespace DotNetNuke.Services.Analytics
                 }
 
 
-                var sb = new System.Text.StringBuilder();
-                if (anonymize)
+                var customScripts = new System.Text.StringBuilder();
+
+                if (anonymize || PortalSettings.Current.DataConsentActive)
                 {
-                    sb.Append("ga('set', 'anonymizeIp', true);");
+                    customScripts.Append("ga('set', 'anonymizeIp', true);");
                 }
 
                 if (trackingUserId)
                 {
-                    sb.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
+                    customScripts.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
                 }
 
-                return sb.ToString();
+                return customScripts.ToString();
             }
             catch (Exception ex)
             {
