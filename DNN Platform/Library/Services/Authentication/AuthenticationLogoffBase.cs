@@ -21,7 +21,7 @@
 #region Usings
 
 using System;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
@@ -39,6 +39,20 @@ namespace DotNetNuke.Services.Authentication
     {
         private string _AuthenticationType = Null.NullString;
         private string _RedirectURL = Null.NullString;
+
+        /// <summary>
+        /// Gets or sets the Dependency Provider to resolve registered 
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider { get; }
+
+        public AuthenticationLogoffBase()
+        {
+            DependencyProvider = Globals.DependencyProvider;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

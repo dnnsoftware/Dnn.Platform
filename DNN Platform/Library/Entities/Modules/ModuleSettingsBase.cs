@@ -20,9 +20,10 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections;
 using System.ComponentModel;
-
+using DotNetNuke.Common;
 using DotNetNuke.UI.Modules;
 
 #endregion

@@ -66,6 +66,20 @@ namespace DotNetNuke.Entities.Modules
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
+        /// <summary>
+        /// Gets or sets the Dependency Provider to resolve registered 
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider { get; }
+        
+        public PortalModuleBase()
+        {
+            DependencyProvider = Globals.DependencyProvider;
+        }
+
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleActionCollection Actions
         {
