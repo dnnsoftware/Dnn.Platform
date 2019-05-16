@@ -29,7 +29,6 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      PurgeUsersOnline
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AnonymousUserInfo class provides an Entity for an anonymous user
