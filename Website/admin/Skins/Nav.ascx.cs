@@ -31,6 +31,7 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
+    [Obsolete("Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.  Scheduled removal in v10.0.0.")]
     public partial class Nav : NavObjectBase
     {
         private void InitializeComponent()
