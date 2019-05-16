@@ -108,7 +108,6 @@
     <Compile Include="SimulatedHttpRequest.cs" />
     <Compile Include="UnitTestHelper.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="ZipManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
