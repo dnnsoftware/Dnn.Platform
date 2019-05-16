@@ -1780,10 +1780,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/knockout@^3.4.60":
-  version "3.4.65"
-  resolved "https://registry.yarnpkg.com/@types/knockout/-/knockout-3.4.65.tgz#670f5a458c9e8727de75c43c184dd301b487c624"
-  integrity sha512-aCVdUIIQSa4fCmiApr2u1eTnzriVy6KOHtAKB0NIgLe7/AyuwXpeLA1oTBwMf5l2G/7+WY+hffrZBQNKrVqoEQ==
+"@types/knockout@^3.4.66":
+  version "3.4.66"
+  resolved "https://registry.yarnpkg.com/@types/knockout/-/knockout-3.4.66.tgz#9dcede87f6f1da3f0128ee495023af2521271572"
+  integrity sha512-UNmyr4mM/y/AvQ6eQmd9v+9/QDZUxiudFb6U/sqIvKlQtAiUO5RM52YRP88CQzYOztxWw0t1feeFIKN3R4Q2Ow==
 
 "@types/minimatch@*":
   version "3.0.3"
