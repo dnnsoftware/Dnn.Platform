@@ -51,7 +51,7 @@
     "raw-loader": "2.0.0",
     "react-custom-scrollbars": "4.2.1",
     "react-dom": "^16.6.3",
-    "react-hot-loader": "4.3.12",
+    "react-hot-loader": "4.8.5",
     "react-test-renderer": "^16.6.2",
     "react-widgets": "4.4.7",
     "string.prototype.startswith": "0.2.0",

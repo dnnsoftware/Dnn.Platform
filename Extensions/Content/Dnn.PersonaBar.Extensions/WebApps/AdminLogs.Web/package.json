@@ -37,7 +37,7 @@
     "react": "^16.6.3",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.6.3",
-    "react-hot-loader": "4.3.12",
+    "react-hot-loader": "4.8.5",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-devtools": "3.5.0",

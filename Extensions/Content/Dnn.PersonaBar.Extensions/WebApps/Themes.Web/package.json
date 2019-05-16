@@ -31,7 +31,7 @@
     "raw-loader": "2.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-hot-loader": "4.3.12",
+    "react-hot-loader": "4.8.5",
     "style-loader": "^0.23.1",
     "url-loader": "1.1.2",
     "webpack": "4.31.0",

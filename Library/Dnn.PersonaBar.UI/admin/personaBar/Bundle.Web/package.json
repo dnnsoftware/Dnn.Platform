@@ -42,7 +42,7 @@
     "react-custom-scrollbars": "4.2.1",
     "react-dom": "^16.6.3",
     "react-height": "3.0.0",
-    "react-hot-loader": "4.3.12",
+    "react-hot-loader": "4.8.5",
     "react-modal": "3.6.1",
     "react-motion": "0.5.2",
     "react-redux": "5.1.1",
