@@ -141,4 +141,7 @@
   <data name="TrackUserId.Text" xml:space="preserve">
     <value>Track UserID:</value>
   </data>
+  <data name="DataConsent.Text" xml:space="preserve">
+    <value>Note: Data Consent is enabled, automatically enforcing this setting.</value>
+  </data>
 </root>

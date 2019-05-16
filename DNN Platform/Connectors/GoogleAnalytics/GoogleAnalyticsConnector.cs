@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Analytics.Config;
 using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.Exceptions;
@@ -85,6 +86,8 @@ namespace DNN.Connectors.GoogleAnalytics
         {
 
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
+            var portalSettings = new PortalSettings(portalId);
+
             var trackingId = String.Empty;
             var urlParameter = String.Empty;
             var trackForAdmin = false;
@@ -126,6 +129,11 @@ namespace DNN.Connectors.GoogleAnalytics
                 }
             }
 
+            if (portalSettings.DataConsentActive)
+            {
+                anonymizeIp = true;
+            }
+
             var configItems = new Dictionary<string, string>
             {
                 { "TrackingID", trackingId },
@@ -133,6 +141,7 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackAdministrators", trackForAdmin.ToString()},
                 { "AnonymizeIp", anonymizeIp.ToString()},
                 { "TrackUserId", trackUserId.ToString()},
+                { "DataConsent", portalSettings.DataConsentActive.ToString()},
                 { "isDeactivating", false.ToString()}
             };
 
@@ -150,7 +159,8 @@ namespace DNN.Connectors.GoogleAnalytics
             try
             {
 
-                bool isDeactivating = false;
+                var isDeactivating = false;
+
                 bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
                 string trackingID;
