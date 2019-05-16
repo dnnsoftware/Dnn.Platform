@@ -129,6 +129,11 @@ namespace DNN.Connectors.GoogleAnalytics
                 }
             }
 
+            if (portalSettings.DataConsentActive)
+            {
+                anonymizeIp = true;
+            }
+
             var configItems = new Dictionary<string, string>
             {
                 { "TrackingID", trackingId },
