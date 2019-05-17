@@ -37,6 +37,7 @@ namespace DotNetNuke.Entities.Users
     /// </remarks>
     /// -----------------------------------------------------------------------------
     [Serializable]
+    [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public class AnonymousUserInfo : BaseUserInfo
     {
         private string _UserID;
@@ -46,6 +47,7 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the User Id for this online user
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public string UserID
         {
             get
