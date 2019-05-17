@@ -15,8 +15,8 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyDescription("CKEditor HTML Editor Provider for DNN")]
 [assembly: AssemblyTitle("CKEditor HTML Editor Provider for DNN")]
-[assembly: AssemblyVersion("1.0.5.*")]
-[assembly: AssemblyFileVersion("1.0.5")]
+[assembly: AssemblyVersion("1.0.6.*")]
+[assembly: AssemblyFileVersion("1.0.6")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("DNN-Connect")]
 [assembly: AssemblyCopyright("2019 DNN-Connect")]
