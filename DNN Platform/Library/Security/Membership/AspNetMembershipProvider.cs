@@ -1026,6 +1026,7 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="timeWindow">Time Window in Minutes</param>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DeleteUsersOnline(int timeWindow)
         {
             _dataProvider.DeleteUsersOnline(timeWindow);
@@ -1066,6 +1067,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="portalId">The Id of the Portal</param>
         /// <returns>An ArrayList of UserInfo objects</returns>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override ArrayList GetOnlineUsers(int portalId)
         {
             int totalRecords = 0;
@@ -1533,6 +1535,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="user">The user.</param>
         /// <returns>A Boolean indicating whether the user is online.</returns>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override bool IsUserOnline(UserInfo user)
         {
             bool isOnline = false;
@@ -1798,6 +1801,7 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <param name="userList">List of users to update</param>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void UpdateUsersOnline(Hashtable userList)
         {
             _dataProvider.UpdateUsersOnline(userList);

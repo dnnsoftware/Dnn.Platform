@@ -1203,6 +1203,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="portalId">The Id of the Portal</param>
         /// <returns>An ArrayList of UserInfo objects</returns>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public static ArrayList GetOnlineUsers(int portalId)
         {
             return MembershipProvider.Instance().GetOnlineUsers(GetEffectivePortalId(portalId));

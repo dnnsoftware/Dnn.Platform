@@ -2480,21 +2480,25 @@ namespace DotNetNuke.Data
 
         #region Users Online Methods
 
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public virtual void DeleteUsersOnline(int timeWindow)
         {
             ExecuteNonQuery("DeleteUsersOnline", timeWindow);
         }
 
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetOnlineUser(int userId)
         {
             return ExecuteReader("GetOnlineUser", userId);
         }
 
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public virtual IDataReader GetOnlineUsers(int portalId)
         {
             return ExecuteReader("GetOnlineUsers", portalId);
         }
 
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public virtual void UpdateUsersOnline(Hashtable userList)
         {
             if ((userList.Count == 0))
