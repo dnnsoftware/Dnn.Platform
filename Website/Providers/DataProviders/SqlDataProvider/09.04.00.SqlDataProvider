@@ -278,11 +278,11 @@ AS
 GO
 
 /* Issue #2762  - Make Default Module Action Menu Configurable */
-/************************************************************* */
+/***************************************************************/
 
 BEGIN
 
-	INSERT INTO {databaseOwner}{objectQualifier}PortalSettings (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+	INSERT INTO PortalSettings (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
 		SELECT     
 			PortalID,
 			'DefaultModuleActionMenu' AS SettingName,
@@ -291,11 +291,14 @@ BEGIN
 			 GetDate(),
 			 -1,
 			 GetDate()
-		FROM {databaseOwner}{objectQualifier}Portals 
+		FROM Portals p
 		WHERE PortalID IS NOT NULL 
-		AND NOT EXISTS( SELECT PortalID, SettingName FROM {databaseOwner}{objectQualifier}PortalSettings WHERE {databaseOwner}{objectQualifier}PortalSettings.PortalID = {databaseOwner}{objectQualifier}Portals.PortalID AND {databaseOwner}{objectQualifier}PortalSettings.SettingName = 'DefaultModuleActionMenu')
-
+		AND NOT EXISTS( SELECT PortalID, SettingName FROM PortalSettings WHERE PortalSettings.PortalID = p.PortalID AND PortalSettings.SettingName = 'DefaultModuleActionMenu')
+		
 END
+		
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
