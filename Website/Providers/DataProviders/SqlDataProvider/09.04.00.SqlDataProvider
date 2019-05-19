@@ -282,7 +282,7 @@ GO
 
 BEGIN
 
-	INSERT INTO PortalSettings (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+	INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings] (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
 		SELECT     
 			PortalID,
 			'DefaultModuleActionMenu' AS SettingName,
@@ -291,13 +291,14 @@ BEGIN
 			 GetDate(),
 			 -1,
 			 GetDate()
-		FROM Portals p
+		FROM {databaseOwner}[{objectQualifier}Portals] p
 		WHERE PortalID IS NOT NULL 
-		AND NOT EXISTS( SELECT PortalID, SettingName FROM PortalSettings WHERE PortalSettings.PortalID = p.PortalID AND PortalSettings.SettingName = 'DefaultModuleActionMenu')
+		AND NOT EXISTS( SELECT PortalID, SettingName FROM {databaseOwner}[{objectQualifier}PortalSettings] ps WHERE ps.PortalID = p.PortalID AND ps.SettingName = 'DefaultModuleActionMenu')
 		
 END
 		
 GO
+
 
 
 /************************************************************/
