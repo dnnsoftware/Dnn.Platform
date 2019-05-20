@@ -277,30 +277,6 @@ AS
 
 GO
 
-/* Issue #2762  - Make Default Module Action Menu Configurable */
-/***************************************************************/
-
-BEGIN
-
-	INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings] (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
-		SELECT     
-			PortalID,
-			'DefaultModuleActionMenu' AS SettingName,
-			'~/admin/Menus/ModuleActions/ModuleActions.ascx',
-			 -1,
-			 GetDate(),
-			 -1,
-			 GetDate()
-		FROM {databaseOwner}[{objectQualifier}Portals] p
-		WHERE PortalID IS NOT NULL 
-		AND NOT EXISTS( SELECT PortalID, SettingName FROM {databaseOwner}[{objectQualifier}PortalSettings] ps WHERE ps.PortalID = p.PortalID AND ps.SettingName = 'DefaultModuleActionMenu')
-		
-END
-		
-GO
-
-
-
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
