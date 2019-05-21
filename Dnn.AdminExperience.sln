@@ -5,6 +5,7 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 15.0.28307.421
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Library\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {9CCA271F-CFAA-42A3-B577-7D5CBB38C646}
 		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
 	EndProjectSection
 EndProject
