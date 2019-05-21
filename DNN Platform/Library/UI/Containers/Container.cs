@@ -342,7 +342,7 @@ namespace DotNetNuke.UI.Containers
                 if (InjectActionMenu && !ModuleHost.IsViewMode(ModuleConfiguration, PortalSettings) && Request.QueryString["dnnprintmode"] != "true")
                 {
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                    ContentPane.Controls.Add(LoadControl("~/admin/Menus/ModuleActions/ModuleActions.ascx"));
+                    ContentPane.Controls.Add(LoadControl(PortalSettings.DefaultModuleActionMenu));
 
                     //register admin.css
                     ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
