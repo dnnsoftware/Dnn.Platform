@@ -3,7 +3,7 @@ import ThemeService from "../services/themeService";
 
 const themeActions = {
     retrieveThemes() {
-        return (dispatch) => new Promise(function(callback) {
+        return (dispatch) => new Promise(function (callback) {
             dispatch({
                 type: ActionTypes.RETRIEVING_THEMES
             });    

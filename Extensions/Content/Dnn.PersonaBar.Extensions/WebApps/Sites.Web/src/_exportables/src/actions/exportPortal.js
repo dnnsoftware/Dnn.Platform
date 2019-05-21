@@ -2,8 +2,8 @@ import {
     portal as ActionTypes
 } from "../actionTypes";
 import 
-    {CommonPortalService as PortalService}
- from "../services";
+{CommonPortalService as PortalService}
+    from "../services";
 import utilities from "utils";
 
 function errorCallback(message) {

@@ -57,7 +57,7 @@ const portalActions = {
                 }
             }, (message) => {
                 errorCallback(message);
-                if(fail){
+                if (fail) {
                     fail(message);
                 }
             });

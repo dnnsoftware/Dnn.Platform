@@ -22,7 +22,7 @@ export default function extensionsReducer(state = {
         return newPageInContextComponents;
     }
 
-    function addPageSettingsComponent(component){
+    function addPageSettingsComponent(component) {
         let newPageSettingsComponents = [...state.pageSettingsComponents];
         newPageSettingsComponents = newPageSettingsComponents.concat(component);
         return newPageSettingsComponents;

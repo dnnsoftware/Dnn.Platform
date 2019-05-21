@@ -20,7 +20,7 @@ module.exports = {
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader", 
                 options: { 
-                    presets: ['@babel/preset-env', '@babel/preset-react'], 
+                    presets: ["@babel/preset-env", "@babel/preset-react"], 
                     "plugins": [
                         "@babel/plugin-transform-react-jsx",
                         "@babel/plugin-proposal-object-rest-spread"

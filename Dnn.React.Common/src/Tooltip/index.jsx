@@ -48,7 +48,7 @@ class Tooltip extends Component {
                     label={props => {  
                         const {customIcon, type, onClick} = this.props;
                         const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
-                        return(
+                        return (
                             <div className="icon" onClick={onClick} {...props.labelAttributes} >
                                 <TooltipIcon icon={customIcon ? customIcon : null} />
                             </div>
@@ -59,11 +59,11 @@ class Tooltip extends Component {
                         
                         const classNames = [];
                         classNames.push("tooltip-overlay");
-                        if (props.isHidden){
+                        if (props.isHidden) {
                             classNames.push("tooltip-overlay--hidden");
                         }
                         classNames.push(tooltipPlace);
-                        return(
+                        return (
                             <div
                                 {...props.overlayAttributes}
                                 className={classNames.join(" ")}

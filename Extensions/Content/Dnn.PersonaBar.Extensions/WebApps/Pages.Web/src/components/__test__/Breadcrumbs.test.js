@@ -8,7 +8,7 @@ describe("Breadcrumbs",()=>{
     //Callback on click Breadcrumbs
     const onSelectedItem = (item) => {
         onSelectedItemReturn = item;
-    }
+    };
 
     const item = {
         id:1,
@@ -46,8 +46,6 @@ describe("Breadcrumbs",()=>{
             name:"Item6",
             tabId:6
         }];
-
-        
        
 
     it("Breadcrumbs renders",()=>{

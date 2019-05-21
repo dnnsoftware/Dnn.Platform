@@ -13,7 +13,6 @@ export default function pagesReducer(state = {
 }, action) {
 
 
-
     const changeField = function changeField(field, value) {
         const newSelectedPage = {
             ...state.selectedPage

@@ -4,8 +4,8 @@ export default function errorsReducer(state = {
     if (action.type.startsWith("ERROR_")) {
         
         return { ...state,
-                error: action.data.error
-            };
+            error: action.data.error
+        };
     }
     return state;
 }

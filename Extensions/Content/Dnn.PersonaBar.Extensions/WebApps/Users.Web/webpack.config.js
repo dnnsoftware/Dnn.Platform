@@ -28,9 +28,9 @@ module.exports = {
                 test: /\.(js|jsx)$/ ,
                 exclude: [/node_modules/],
                 use: {
-                    loader:'babel-loader',
+                    loader:"babel-loader",
                     options: { 
-                        presets: ['@babel/preset-env', '@babel/preset-react'], 
+                        presets: ["@babel/preset-env", "@babel/preset-react"], 
                         "plugins": [
                             "@babel/plugin-transform-react-jsx",
                             "@babel/plugin-proposal-object-rest-spread"
@@ -52,7 +52,7 @@ module.exports = {
             path.resolve(__dirname, "./node_modules"),  // Try local node_modules
             path.resolve(__dirname, "./src/_exportables/src"),
             path.resolve(__dirname, "./src/_exportables/node_modules"), 
-            path.resolve('../../../../../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve("../../../../../node_modules")   // Last fallback to workspaces node_modules
         ]
     },
     externals: Object.assign(webpackExternals, 

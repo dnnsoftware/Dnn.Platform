@@ -32,7 +32,7 @@ module.exports = {
         extensions: [".js", ".json", ".jsx"],
         modules: [
             "node_modules",
-            path.resolve('../../../../../node_modules'),
+            path.resolve("../../../../../node_modules"),
             path.resolve(__dirname, "src")
         ]
     },

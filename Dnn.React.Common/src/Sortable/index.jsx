@@ -23,7 +23,7 @@ export default class Sortable extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.items !== this.props.items){
+        if (prevProps.items !== this.props.items) {
             const items = this.props.items.map((item, index) => {
                 return { index, item, id: index };
             });
@@ -182,7 +182,7 @@ export default class Sortable extends Component {
             return;
         }
         let id = event.draggable._element.getAttribute("data-dnn-sortable-id");
-        if (this.dnnSortableRef.current){
+        if (this.dnnSortableRef.current) {
             const itemElement = this.dnnSortableRef.current.querySelectorAll(`[data-dnn-sortable-id="${id}"]`)[0];
             itemElement.classList.remove("sortable-selected");
             this.removePlaceholder();
@@ -206,7 +206,6 @@ export default class Sortable extends Component {
         const items = this.state.items.map(item => item.item);
         this.props.onSort(items);
     }
-
 
 
     resetIndexes(items = this.state.items) {
@@ -240,7 +239,7 @@ export default class Sortable extends Component {
                 onDragLeave={this.onDragLeave.bind(this) }
                 isDragging={this.state.dragging.isDragging}
                 isDraggingOver={this.state.isDraggingOver}
-                >
+            >
                 {listItems}
             </SortableContainer>
         </div>;

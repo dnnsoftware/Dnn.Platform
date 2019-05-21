@@ -43,7 +43,7 @@ describe("UI snapshots for state change", () => {
         const props = reducer(undefined, {});
 
         const out = render(<Output {...props} IsPaging={jest.fn()} busy={jest.fn()} scrollToBottom={jest.fn()}
-                                   className="test"/>);
+            className="test"/>);
 
         expect(out).toMatchSnapshot();
     });
@@ -55,7 +55,7 @@ describe("UI snapshots for state change", () => {
                 Key: "CLS",
                 Name: "cls",
                 Category: "General Commands",
-                Description: `Clears the Prompt console. <code>cls</code> is a shortcut for <a href="#clear-screen"><code>clear-screen</code></a>`,
+                Description: "Clears the Prompt console. <code>cls</code> is a shortcut for <a href=\"#clear-screen\"><code>clear-screen</code></a>",
                 Version: "1.5.0.0"
             },
             {
@@ -74,7 +74,7 @@ describe("UI snapshots for state change", () => {
         });
 
         const out = render(<Output {...props} IsPaging={jest.fn()} busy={jest.fn()} scrollToBottom={jest.fn()}
-                                   className="test"/>);
+            className="test"/>);
 
         expect(out).toMatchSnapshot();
     });
@@ -116,12 +116,12 @@ describe("UI snapshots for state change", () => {
         });
 
         const out = render(<Output {...props} IsPaging={jest.fn()} busy={jest.fn()} scrollToBottom={jest.fn()}
-                                   className="test"/>);
+            className="test"/>);
 
         expect(out).toMatchSnapshot();
     });
 
-    it(`Should render DataTable according to mocked rows and columns`, () => {
+    it("Should render DataTable according to mocked rows and columns", () => {
 
         const rows = [
             {

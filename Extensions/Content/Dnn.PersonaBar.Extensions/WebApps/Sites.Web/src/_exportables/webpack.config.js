@@ -14,7 +14,7 @@ module.exports = {
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader",
                 options: {
-                    presets: ['@babel/preset-env', '@babel/preset-react'],
+                    presets: ["@babel/preset-env", "@babel/preset-react"],
                     "plugins": [
                         "@babel/plugin-transform-react-jsx",
                         "@babel/plugin-proposal-object-rest-spread"
@@ -28,10 +28,10 @@ module.exports = {
     resolve: {
         extensions: [".js", ".json", ".jsx"],
         modules: [
-            path.resolve('./src'),
-            path.resolve('./src'),
-            path.resolve('./node_modules'),  // Last fallback to node_modules
-            path.resolve('../') // Look in src first
+            path.resolve("./src"),
+            path.resolve("./src"),
+            path.resolve("./node_modules"),  // Last fallback to node_modules
+            path.resolve("../") // Look in src first
         ]
     }
 };

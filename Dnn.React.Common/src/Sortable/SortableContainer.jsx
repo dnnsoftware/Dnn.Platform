@@ -12,7 +12,7 @@ class SortableContainer extends Component {
                 onDragMove={this.props.onDragMove}
                 onDragStart={this.props.onDragStart}
                 onDragEnd={this.props.onDragEnd }
-                >
+            >
                 {child}
             </SortableItem>;
         });

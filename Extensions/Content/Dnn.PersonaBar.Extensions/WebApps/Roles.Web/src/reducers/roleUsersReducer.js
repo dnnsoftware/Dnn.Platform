@@ -20,19 +20,19 @@ export default function roleUsersReducer(state = {
                 totalRecords: action.data.totalRecords
             };
         case ActionTypes.ADD_USER_INTO_ROLE:
-            {
-                let roleUsers = Object.assign([], JSON.parse(JSON.stringify(state.roleUsers)));
-                return { ...state,
-                    roleUsers: updateRoleUserList(roleUsers, action.data.roleUserDetails)
-                };
-            }
+        {
+            let roleUsers = Object.assign([], JSON.parse(JSON.stringify(state.roleUsers)));
+            return { ...state,
+                roleUsers: updateRoleUserList(roleUsers, action.data.roleUserDetails)
+            };
+        }
         case ActionTypes.REMOVE_USER:
-            {
-                let roleUsers = Object.assign([], JSON.parse(JSON.stringify(state.roleUsers)));
-                return { ...state,
-                    roleUsers: removeRoleUserFromList(roleUsers, action.data.UserId)
-                };
-            }
+        {
+            let roleUsers = Object.assign([], JSON.parse(JSON.stringify(state.roleUsers)));
+            return { ...state,
+                roleUsers: removeRoleUserFromList(roleUsers, action.data.UserId)
+            };
+        }
         default:
             return { ...state };
     }

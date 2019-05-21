@@ -10,7 +10,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve(__dirname, '../../admin/personaBar/Dnn.SiteSettings/scripts/bundles/'),
+        path: path.resolve(__dirname, "../../admin/personaBar/Dnn.SiteSettings/scripts/bundles/"),
         publicPath: isProduction ? "" : "http://localhost:8085/dist/",
         filename: "site-settings-bundle.js"
     },
@@ -20,9 +20,9 @@ module.exports = {
     resolve: {
         extensions: ["*", ".js", ".json", ".jsx"],
         modules: [
-            path.resolve('./src'),           // Look in src first
-            path.resolve('./node_modules'),  // Try local node_modules
-            path.resolve('../../../../../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve("./src"),           // Look in src first
+            path.resolve("./node_modules"),  // Try local node_modules
+            path.resolve("../../../../../node_modules")   // Last fallback to workspaces node_modules
         ]
     },
     module: {
@@ -31,7 +31,7 @@ module.exports = {
                 test: /\.(js|jsx)$/, 
                 exclude: /node_modules/, 
                 enforce: "pre",
-                loader: 'eslint-loader',
+                loader: "eslint-loader",
                 options: {
                     fix: true
                 }                
@@ -40,26 +40,26 @@ module.exports = {
                 test: /\.js$/, 
                 enforce: "pre",
                 use: [
-                    'source-map-loader'
+                    "source-map-loader"
                 ] 
             },
             { 
                 test: /\.less$/, 
                 use: [{
-                    loader: 'style-loader'  // creates style nodes from JS strings
+                    loader: "style-loader"  // creates style nodes from JS strings
                 }, {
-                    loader: 'css-loader'    // translates CSS into CommonJS
+                    loader: "css-loader"    // translates CSS into CommonJS
                 }, {
-                    loader: 'less-loader'   // compiles Less to CSS
+                    loader: "less-loader"   // compiles Less to CSS
                 }]
             },
             { 
                 test: /\.(js|jsx)$/, 
                 exclude: /node_modules/,
                 use: {
-                    loader:'babel-loader',
+                    loader:"babel-loader",
                     options: { 
-                        presets: ['@babel/preset-env', '@babel/preset-react'], 
+                        presets: ["@babel/preset-env", "@babel/preset-react"], 
                         "plugins": [
                             "@babel/plugin-transform-react-jsx",
                             "@babel/plugin-proposal-object-rest-spread"
@@ -70,14 +70,14 @@ module.exports = {
             {
                 test: /\.(ttf|woff)$/, 
                 use: {
-                    loader: 'url-loader?limit=8192'
+                    loader: "url-loader?limit=8192"
                 }
             },
             { 
                 test: /\.(svg)$/, 
                 exclude: /node_modules/, 
                 use: [
-                    'raw-loader'
+                    "raw-loader"
                 ] 
             }
         ]
@@ -91,9 +91,9 @@ module.exports = {
             }
         })
     ] : [
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(packageJson.version)
-            })
-        ],
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version)
+        })
+    ],
     devtool: "source-map"
 };

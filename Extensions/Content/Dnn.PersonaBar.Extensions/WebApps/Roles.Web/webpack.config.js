@@ -32,7 +32,7 @@ module.exports = {
         modules: [
             path.resolve("./src"),          // Look in src first
             path.resolve("./node_modules"),  // Try local node_modules
-            path.resolve('../../../../../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve("../../../../../node_modules")   // Last fallback to workspaces node_modules
         ]        
     },
 

@@ -21,14 +21,14 @@ export default function logSettings(state = {
                 keepMostRecentOptions: createKeepMostRecentOptions(action.data.keepMostRecent)
             };
         case ActionTypes.RETRIEVED_OCCURRENCE_OPTIONS:
-            {
-                let occurrenceOptions = createOccurrenceOptions(action.data);
-                return { ...state,
-                    thresholdsOptions: occurrenceOptions.thresholdsOptions,
-                    notificationTimesOptions: occurrenceOptions.notificationTimesOptions,
-                    notificationTimeTypesOptions: occurrenceOptions.notificationTimeTypesOptions
-                };
-            }
+        {
+            let occurrenceOptions = createOccurrenceOptions(action.data);
+            return { ...state,
+                thresholdsOptions: occurrenceOptions.thresholdsOptions,
+                notificationTimesOptions: occurrenceOptions.notificationTimesOptions,
+                notificationTimeTypesOptions: occurrenceOptions.notificationTimeTypesOptions
+            };
+        }
         case ActionTypes.RETRIEVED_LOGSETTING_LIST:
             return { ...state,
                 logSettingList: action.data.logSettingList
@@ -38,26 +38,26 @@ export default function logSettings(state = {
                 logSettingDetail: action.data.logSettingDetail
             };
         case ActionTypes.UPDATED_LOGSETTING:
-            {
-                let logSettingList = Object.assign([], state.logSettingList);
-                return { ...state,
-                    logSettingList: updateLogSettingList(logSettingList, action.data.logSettingDetail)
-                };
-            }
+        {
+            let logSettingList = Object.assign([], state.logSettingList);
+            return { ...state,
+                logSettingList: updateLogSettingList(logSettingList, action.data.logSettingDetail)
+            };
+        }
         case ActionTypes.DELETED_LOGSETTING:
-            {
-                let logSettingList = Object.assign([], state.logSettingList);
-                return { ...state,
-                    logSettingList: removeLogSetting(logSettingList, action.data.LogSettingId)
-                };
-            }
+        {
+            let logSettingList = Object.assign([], state.logSettingList);
+            return { ...state,
+                logSettingList: removeLogSetting(logSettingList, action.data.LogSettingId)
+            };
+        }
         case ActionTypes.ADDED_LOGSETTING:
-            {
-                let logSettingList = Object.assign([], state.logSettingList);
-                return { ...state,
-                    logSettingList: updateLogSettingList(logSettingList, action.data.logSettingDetail)
-                };
-            }
+        {
+            let logSettingList = Object.assign([], state.logSettingList);
+            return { ...state,
+                logSettingList: updateLogSettingList(logSettingList, action.data.logSettingDetail)
+            };
+        }
         default:
             return { ...state
             };

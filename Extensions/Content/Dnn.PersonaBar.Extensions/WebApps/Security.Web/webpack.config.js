@@ -20,7 +20,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: path.resolve(__dirname, '../../admin/personaBar/Dnn.Security/scripts/bundles/'),
+        path: path.resolve(__dirname, "../../admin/personaBar/Dnn.Security/scripts/bundles/"),
         publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: "security-settings-bundle.js"
     },
@@ -30,9 +30,9 @@ module.exports = {
     resolve: {
         extensions: ["*", ".js", ".json", ".jsx"],
         modules: [
-            path.resolve('./src'),           // Look in src first
-            path.resolve('./node_modules'),  // Try local node_modules
-            path.resolve('../../../../../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve("./src"),           // Look in src first
+            path.resolve("./node_modules"),  // Try local node_modules
+            path.resolve("../../../../../node_modules")   // Last fallback to workspaces node_modules
         ]
     },
     module: {
@@ -41,7 +41,7 @@ module.exports = {
                 test: /\.(js|jsx)$/, 
                 exclude: /node_modules/, 
                 enforce: "pre",
-                loader: 'eslint-loader',
+                loader: "eslint-loader",
                 options: {
                     fix: true
                 }
@@ -49,32 +49,32 @@ module.exports = {
             { 
                 test: /\.less$/, 
                 use: [{
-                    loader: 'style-loader'  // creates style nodes from JS strings
+                    loader: "style-loader"  // creates style nodes from JS strings
                 }, {
-                    loader: 'css-loader'    // translates CSS into CommonJS
+                    loader: "css-loader"    // translates CSS into CommonJS
                 }, {
-                    loader: 'less-loader'   // compiles Less to CSS
+                    loader: "less-loader"   // compiles Less to CSS
                 }]
             },
             { 
                 test: /\.(js|jsx)$/, 
                 exclude: /node_modules/, 
                 use: {
-                    loader: 'babel-loader',
+                    loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-env','@babel/preset-react']
+                        presets: ["@babel/preset-env","@babel/preset-react"]
                     }
                 } 
             },
             { 
                 test: /\.(ttf|woff)$/, 
                 use: {
-                    loader: 'url-loader?limit=8192'
+                    loader: "url-loader?limit=8192"
                 }
             }
         ]
     },
-	externals: webpackExternals,
+    externals: webpackExternals,
 
     plugins: isProduction ? [
         new webpack.DefinePlugin({
@@ -84,9 +84,9 @@ module.exports = {
             }
         })
     ] : [
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(packageJson.version)
-            })
-        ],
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version)
+        })
+    ],
     devtool: "source-map"
 };

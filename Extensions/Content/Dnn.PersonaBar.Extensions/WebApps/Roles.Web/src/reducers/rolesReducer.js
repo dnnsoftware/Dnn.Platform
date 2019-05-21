@@ -31,57 +31,57 @@ export default function rolesReducer(state = {
                 rsvpLink: action.rsvpLink
             };
         case ActionTypes.UPDATE_ROLEGROUP:
-            {
-                let roleGroups = Object.assign([], JSON.parse(JSON.stringify(state.roleGroups)));
-                return { ...state,
-                    roleGroups: updateRoleGroupList(roleGroups, action.data.roleGroup)
-                };
-            }
+        {
+            let roleGroups = Object.assign([], JSON.parse(JSON.stringify(state.roleGroups)));
+            return { ...state,
+                roleGroups: updateRoleGroupList(roleGroups, action.data.roleGroup)
+            };
+        }
         case ActionTypes.UPDATE_ROLE:
-            {
-                let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
-                if (action.data.currentGroupId === action.data.roleDetails.groupId || action.data.currentGroupId === -2) {
+        {
+            let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
+            if (action.data.currentGroupId === action.data.roleDetails.groupId || action.data.currentGroupId === -2) {
 
-                    return { ...state,
-                        rolesList: updateRolesList(rolesList, action.data.roleDetails)
-                    };
-                }
                 return { ...state,
-                    rolesList: removeFromRolesList(rolesList, action.data.roleDetails.id)
+                    rolesList: updateRolesList(rolesList, action.data.roleDetails)
                 };
             }
+            return { ...state,
+                rolesList: removeFromRolesList(rolesList, action.data.roleDetails.id)
+            };
+        }
         case ActionTypes.DELETE_ROLE:
-            {
-                let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
-                return { ...state,
-                    rolesList: removeFromRolesList(rolesList, action.data.roleId)
-                };
-            }
+        {
+            let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
+            return { ...state,
+                rolesList: removeFromRolesList(rolesList, action.data.roleId)
+            };
+        }
         case ActionTypes.DELETE_ROLEGROUP:
-            {
-                let roleGroups = Object.assign([], JSON.parse(JSON.stringify(state.roleGroups)));
-                return { ...state,
-                    roleGroups: removeFromRoleGroupList(roleGroups, action.data.groupId)
-                };
-            }
+        {
+            let roleGroups = Object.assign([], JSON.parse(JSON.stringify(state.roleGroups)));
+            return { ...state,
+                roleGroups: removeFromRoleGroupList(roleGroups, action.data.groupId)
+            };
+        }
         case RoleUserActionTypes.ADD_USER_INTO_ROLE:
-            {
-                if (action.data.isAdd) {
-                    let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
-                    return { ...state,
-                        rolesList: incrementUsersCountFromRoleList(rolesList, action.data.roleUserDetails.roleId)
-                    };
-                }
-                return { ...state };
-            }
-        case RoleUserActionTypes.REMOVE_USER:
-            {
+        {
+            if (action.data.isAdd) {
                 let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
-
                 return { ...state,
-                    rolesList: decrementUsersCountFromRoleList(rolesList, action.data.RoleId)
+                    rolesList: incrementUsersCountFromRoleList(rolesList, action.data.roleUserDetails.roleId)
                 };
             }
+            return { ...state };
+        }
+        case RoleUserActionTypes.REMOVE_USER:
+        {
+            let rolesList = Object.assign([], JSON.parse(JSON.stringify(state.rolesList)));
+
+            return { ...state,
+                rolesList: decrementUsersCountFromRoleList(rolesList, action.data.RoleId)
+            };
+        }
         default:
             return { ...state };
     }

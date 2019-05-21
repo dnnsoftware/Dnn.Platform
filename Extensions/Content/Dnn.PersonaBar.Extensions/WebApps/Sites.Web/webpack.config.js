@@ -31,7 +31,7 @@ module.exports = {
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: "babel-loader",
                 options: {
-                    presets: ['@babel/preset-env', '@babel/preset-react'],
+                    presets: ["@babel/preset-env", "@babel/preset-react"],
                     "plugins": [
                         "@babel/plugin-transform-react-jsx",
                         "@babel/plugin-proposal-object-rest-spread"
@@ -45,10 +45,10 @@ module.exports = {
     resolve: {
         extensions: [".js", ".json", ".jsx"],
         modules: [
-            path.resolve('./src'),          // Look in src first
-            path.resolve('./exportables'),  // Look in exportables after
-            path.resolve('./node_modules'),  // Try local node_modules
-            path.resolve('../../../../../node_modules')   // Last fallback to workspaces node_modules
+            path.resolve("./src"),          // Look in src first
+            path.resolve("./exportables"),  // Look in exportables after
+            path.resolve("./node_modules"),  // Try local node_modules
+            path.resolve("../../../../../node_modules")   // Last fallback to workspaces node_modules
         ]        
     },
     externals: Object.assign(webpackExternals, {
@@ -65,9 +65,9 @@ module.exports = {
             }
         })
     ] : [
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(packageJson.version)
-            })
-        ],
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version)
+        })
+    ],
     devtool: "source-map"
 };

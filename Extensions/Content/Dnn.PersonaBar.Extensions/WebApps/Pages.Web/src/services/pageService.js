@@ -135,11 +135,11 @@ const PageService = function () {
         const api = getPagesApi();
         return api.post("EditModeForPage?id=" + id, {})
             .then(() => {
-                if(url){
+                if (url) {
                     utils.getUtilities().closePersonaBar(function () {
                         window.top.location.href = url;
                     });
-                } else if( typeof callback === "function"){
+                } else if ( typeof callback === "function") {
                     callback();
                 }
             });
@@ -207,10 +207,6 @@ const PageService = function () {
         getPageHierarchy
     };
 };
-
-
-
-
 
 
 const pageService = PageService();
