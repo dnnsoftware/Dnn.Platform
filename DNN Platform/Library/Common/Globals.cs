@@ -819,7 +819,7 @@ namespace DotNetNuke.Common
                 }
                 if (string.IsNullOrEmpty(cultureCode))
                 {
-                    cultureCode = !string.IsNullOrEmpty(settings.DefaultLanguage) ? settings.DefaultLanguage : Thread.CurrentThread.CurrentCulture.Name;
+                    cultureCode = Thread.CurrentThread.CurrentCulture.Name;
                 }
             }
 
