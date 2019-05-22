@@ -1,4 +1,4 @@
-next-version: 9.4.0
+next-version: 10.0.0
 commit-date-format: 'yyyyMMdd'
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
 mode: ContinuousDeployment
