@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         //if there are social authprovider only
                         if (_oAuthControls.Count == 0)
                         {
-                            //Portal has no login controls enabled so load default DNN control, don't show the panel
+                            //Portal has no login controls enabled so load default DNN control
                             DisplayLoginControl(defaultLoginControl, false, false);
                         }
                     }
