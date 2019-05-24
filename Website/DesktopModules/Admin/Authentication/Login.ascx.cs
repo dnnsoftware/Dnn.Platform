@@ -422,7 +422,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         if (authSystem.AuthenticationType == "DNN")
                         {
                             defaultLoginControl = authLoginControl;
-                            pnlLoginContainer.Visible = true;
                         }
 
                         //Check if AuthSystem is Enabled
@@ -472,7 +471,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         //if there are social authprovider only
                         if (_oAuthControls.Count == 0)
                         {
-                            //Portal has no login controls enabled so load default DNN control
+                            //Portal has no login controls enabled so load default DNN control, don't show the panel
                             DisplayLoginControl(defaultLoginControl, false, false);
                         }
                     }
@@ -614,6 +613,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
+
+            //Display the container
+            pnlLoginContainer.Visible = true;
         }
 
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
