@@ -136,9 +136,8 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PetaPoco">
-      <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="PetaPoco, Version=6.0.415.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PetaPoco.Compiled.6.0.415\lib\net45\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="SchwabenCode.QuickIO">
       <HintPath>..\..\packages\QuickIO.NET.2.6.2.0\lib\net40\SchwabenCode.QuickIO.dll</HintPath>
