@@ -29,7 +29,11 @@ module.exports = {
         rules: [
             { test: /\.(js|jsx)$/, enforce: "pre", exclude: /node_modules/, loader: "eslint-loader", options: { fix: true } },
             { test: /\.(js|jsx)$/ , exclude: /node_modules/, loader: "babel-loader" },
-            { test: /\.(less|css)$/, loader: "style-loader!css-loader!less-loader" },
+            { test: /\.(less|css)$/, use: [
+                { loader: "style-loader" },
+                { loader: "css-loader", options: { modules: "global" } },
+                { loader: "less-loader" }
+            ] },
             { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
         ]
     },
