@@ -61,8 +61,8 @@ namespace DotNetNuke.Data.PetaPoco
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
-            _database = new Database(connectionStringName);
             _mapper = new PetaPocoMapper(tablePrefix);
+            _database = new Database(connectionStringName, _mapper);
             TablePrefix = tablePrefix;
             FluentMappers = mappers;
         }
