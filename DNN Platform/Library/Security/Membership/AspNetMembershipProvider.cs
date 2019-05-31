@@ -512,10 +512,7 @@ namespace DotNetNuke.Security.Membership
                         IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                         UserID = Null.SetNullInteger(dr["UserID"]),
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
-                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
-                        HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]),
-                        HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]),
-                        RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"])
+                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                     };
 
                     var schema = dr.GetSchemaTable();
@@ -529,16 +526,22 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
-                    }
-
-                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
-                    user.Username = Null.SetNullString(dr["Username"]);
-                    UserController.GetUserMembership(user);
-                    user.Email = Null.SetNullString(dr["Email"]);
-                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-
-                    if (schema != null)
-                    {
+                        if (schema.Select("ColumnName = 'HasAgreedToTerms'").Length > 0)
+                        {
+                            user.HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]);
+                        }
+                        if (schema.Select("ColumnName = 'HasAgreedToTermsOn'").Length > 0)
+                        {
+                            user.HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]);
+                        }
+                        else
+                        {
+                            user.HasAgreedToTermsOn = Null.NullDate;
+                        }
+                        if (schema.Select("ColumnName = 'RequestsRemoval'").Length > 0)
+                        {
+                            user.RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"]);
+                        }
                         if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
                         {
                             user.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
@@ -548,6 +551,13 @@ namespace DotNetNuke.Security.Membership
                             user.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
                         }
                     }
+
+                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
+                    user.Username = Null.SetNullString(dr["Username"]);
+                    UserController.GetUserMembership(user);
+                    user.Email = Null.SetNullString(dr["Email"]);
+                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+
                     if (!user.IsSuperUser)
                     {
                         user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
