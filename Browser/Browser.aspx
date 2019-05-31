@@ -375,24 +375,33 @@
     </form>
     <script type="text/javascript">
         $(function() {
-            var overrideFile = $('#<%= this.OverrideFile.ClientID %>').is(':checked');
-            var maxFileSize = <%= this.MaxUploadSize %>;
-            var fileUploaderURL = "FileUploader.ashx?portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>";
-
-            $('#fileupload').fileupload({
-                url: fileUploaderURL,
-                acceptFileTypes: new RegExp('(\.|\/)(' + '<%= this.AcceptFileTypes %>' + ')', 'i'),
-                maxFileSize: maxFileSize,
-                done: function() {
-                    __doPostBack('cmdUploadNow', '');
-                },
-                formData: {
-                    storageFolderID: '<%= CurrentFolderId %>',
-                    portalID: '<%= HttpContext.Current.Request.QueryString["PortalID"] %>',
-                    overrideFiles: overrideFile
-                },
-                dropZone: $('#dropzone')
+            $(document).on('change', '#<%= this.OverrideFile.ClientID %>', function () {                                 
+                setupFileUpload(this.checked);                
             });
+
+            function setupFileUpload(overrideFile) {
+                var overrideFile = overrideFile;
+                var maxFileSize = <%= this.MaxUploadSize %>;
+                var fileUploaderURL = "FileUploader.ashx?portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>";
+
+                $('#fileupload').fileupload({
+                    url: fileUploaderURL,
+                    acceptFileTypes: new RegExp('(\.|\/)(' + '<%= this.AcceptFileTypes %>' + ')', 'i'),
+                    maxFileSize: maxFileSize,
+                    done: function () {
+                        __doPostBack('cmdUploadNow', '');
+                    },
+                    formData: {
+                        storageFolderID: '<%= CurrentFolderId %>',
+                        portalID: '<%= HttpContext.Current.Request.QueryString["PortalID"] %>',
+                        overrideFiles: overrideFile
+                    },
+                    dropZone: $('#dropzone')
+                });
+            }
+
+            setupFileUpload($('#<%= this.OverrideFile.ClientID %>').is(':checked'));
+
             $(document).bind('dragover', function (e) {
                 var dropZone = $('#dropzone'),
                     timeout = window.dropZoneTimeout;
