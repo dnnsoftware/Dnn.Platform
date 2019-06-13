@@ -9,7 +9,7 @@ namespace DotNetNuke.Entities.Users
 {
     public class UserRegistrationEmailNotifier
     {
-        private static Lazy<UserInfo> CurrentUser => new Lazy<UserInfo>(() => UserController.Instance.GetCurrentUserInfo());
+        private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();
 
         public UserRegistrationEmailNotifier()
         {
@@ -18,8 +18,8 @@ namespace DotNetNuke.Entities.Users
         public static void NotifyAdministrator(UserInfo user)
         {
             // avoid self-notification (i.e. on site installation/super user creation)
-            if (CurrentUser.Value != null && 
-                (CurrentUser.Value.UserID == Null.NullInteger || CurrentUser.Value.UserID == user.UserID))
+            if (CurrentUser != null && 
+                (CurrentUser.UserID == Null.NullInteger || CurrentUser.UserID == user.UserID))
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Users
             switch (PortalSettings.Current.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
-                    NotifyUser(user, CurrentUser.Value != null && CurrentUser.Value.IsSuperUser ?
+                    NotifyUser(user, CurrentUser != null ?
                         MessageType.UserRegistrationPrivateNoApprovalRequired :
                         MessageType.UserRegistrationPrivate);
                     break;
