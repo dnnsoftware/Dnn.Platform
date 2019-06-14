@@ -1,4 +1,5 @@
-﻿using DotNetNuke.Common;
+﻿using System;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Mail;
@@ -8,6 +9,8 @@ namespace DotNetNuke.Entities.Users
 {
     public class UserRegistrationEmailNotifier
     {
+        private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();
+
         public UserRegistrationEmailNotifier()
         {
         }
@@ -15,8 +18,8 @@ namespace DotNetNuke.Entities.Users
         public static void NotifyAdministrator(UserInfo user)
         {
             // avoid self-notification (i.e. on site installation/super user creation)
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
-            if (currentUser != null && (currentUser.UserID == Null.NullInteger || currentUser.UserID == user.UserID))
+            if (CurrentUser != null && 
+                (CurrentUser.UserID == Null.NullInteger || CurrentUser.UserID == user.UserID))
             {
                 return;
             }
@@ -35,7 +38,9 @@ namespace DotNetNuke.Entities.Users
             switch (PortalSettings.Current.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
-                    NotifyUser(user, MessageType.UserRegistrationPrivate);
+                    NotifyUser(user, CurrentUser != null && CurrentUser.UserID != Null.NullInteger ?
+                        MessageType.UserRegistrationPrivateNoApprovalRequired :
+                        MessageType.UserRegistrationPrivate);
                     break;
                 case (int)PortalRegistrationType.PublicRegistration:
                     NotifyUser(user, MessageType.UserRegistrationPublic);
