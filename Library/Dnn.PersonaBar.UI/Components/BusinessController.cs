@@ -29,12 +29,14 @@ using Dnn.PersonaBar.UI.Components.Controllers;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Services.Installer.Installers;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 
@@ -43,6 +45,7 @@ namespace Dnn.PersonaBar.UI.Components
     public class BusinessController : IUpgradeable
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
+        private static readonly DotNetNuke.Services.Installer.Log.Logger InstallLogger = new DotNetNuke.Services.Installer.Log.Logger();
 
         public string UpgradeModule(string version)
         {
@@ -56,7 +59,7 @@ namespace Dnn.PersonaBar.UI.Components
                     UpdateEditPermissions();
                     break;
                 case "03.00.00":
-                    UninstallPersonaBarExtensions();
+                    RemovePersonaBarOldAssemblies();
                     break;
             }
 
@@ -139,43 +142,61 @@ namespace Dnn.PersonaBar.UI.Components
             });
         }
 
-        private void UninstallPersonaBarExtensions()
+        private void RemovePersonaBarOldAssemblies()
         {
-            UninstallPackage("Dnn.PersonaBar.AdminLogs", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.ConfigConsole", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Connectors", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.CssEditor", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Licensing", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Pages", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Prompt", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Recyclebin", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Roles", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Security", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Seo", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Servers", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.SiteImportExport", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Sites", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.SiteSettings", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.SqlConsole", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.TaskScheduler", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Themes", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Users", "PersonaBar");
-            UninstallPackage("Dnn.PersonaBar.Vocabularies", "PersonaBar");
-        }
-
-        private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
-        {
-            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Uninstallation of Package:", packageName, " Type:", packageType, " Version:", version));
-
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
-                p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)
-                && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase)
-                && (string.IsNullOrEmpty(version) || p.Version.ToString() == version));
-            if (searchInput != null)
+            string[] assemblies =
             {
-                var searchInputInstaller = new Installer(searchInput, Globals.ApplicationMapPath);
-                searchInputInstaller.UnInstall(deleteFiles);
+                "Dnn.PersonaBar.AdminLogs",
+                "Dnn.PersonaBar.ConfigConsole",
+                "Dnn.PersonaBar.Connectors",
+                "Dnn.PersonaBar.CssEditor",
+                "Dnn.PersonaBar.Licensing",
+                "Dnn.PersonaBar.Pages",
+                "Dnn.PersonaBar.Prompt",
+                "Dnn.PersonaBar.Recyclebin",
+                "Dnn.PersonaBar.Roles",
+                "Dnn.PersonaBar.Security",
+                "Dnn.PersonaBar.Seo",
+                "Dnn.PersonaBar.Servers",
+                "Dnn.PersonaBar.SiteImportExport",
+                "Dnn.PersonaBar.Sites",
+                "Dnn.PersonaBar.SiteSettings",
+                "Dnn.PersonaBar.SqlConsole",
+                "Dnn.PersonaBar.TaskScheduler",
+                "Dnn.PersonaBar.Themes",
+                "Dnn.PersonaBar.Users",
+                "Dnn.PersonaBar.Vocabularies"
+            };
+
+            foreach (string assemblyName in assemblies)
+            {
+                RemoveAssembly(assemblyName);
+            }
+        }
+        
+        private static void RemoveAssembly(string assemblyName)
+        {
+            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
+
+            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
+                p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
+                && p.PackageType.Equals("PersonaBar", StringComparison.OrdinalIgnoreCase));
+            if (packageInfo != null)
+            {
+                var fileName = assemblyName + ".dll";
+                var fileInstaller = new FileInstaller();
+                if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
+                {
+                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
+                    FileSystemUtils.DeleteFile("\\bin\\" + fileName);
+                }
+            }
+            else
+            {
+                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
             }
         }
     }
+
+    
 }
