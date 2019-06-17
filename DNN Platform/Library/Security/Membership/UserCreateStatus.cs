@@ -42,6 +42,8 @@ namespace DotNetNuke.Security.Membership
         AddUserToPortal = 17,
         InvalidDisplayName = 18,
         DuplicateDisplayName = 19,
-        BannedPasswordUsed = 20
+        BannedPasswordUsed = 20,
+        InvalidFirstName = 21,
+        InvalidLastName = 22
     }
 }
