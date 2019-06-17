@@ -166,7 +166,11 @@ define('css',{
             path = config.baseUrl + path;
         }
 
-		inject(path + '?' + config.urlArgs);
+        if (typeof config.urlArgs === 'string') {
+            path = path + '?' + config.urlArgs;
+        }
+        inject(path);
+
 		load(true);
 	},
 	pluginBuilder: './css-build'
