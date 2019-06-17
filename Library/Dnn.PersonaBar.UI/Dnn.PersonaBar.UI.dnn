@@ -150,7 +150,7 @@
                         </file>
                     </files>
                 </component>
-                <component type="Cleanup" version="03.00.00" fileName ="03.00.00.txt" />
+                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
               <component type="File">
                 <files>
                   <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
