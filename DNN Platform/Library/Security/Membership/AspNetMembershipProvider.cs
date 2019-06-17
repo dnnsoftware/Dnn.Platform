@@ -215,44 +215,30 @@ namespace DotNetNuke.Security.Membership
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
-            string userName = objSecurity.InputFilter(user.Username,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-            string email = objSecurity.InputFilter(user.Email,
-                                                   PortalSecurity.FilterFlag.NoScripting |
-                                                   PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                   PortalSecurity.FilterFlag.NoMarkup);
-            string lastName = objSecurity.InputFilter(user.LastName,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-            string firstName = objSecurity.InputFilter(user.FirstName,
-                                                       PortalSecurity.FilterFlag.NoScripting |
-                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                       PortalSecurity.FilterFlag.NoMarkup);
-            var createStatus = UserCreateStatus.Success;
-            string displayName = objSecurity.InputFilter(user.DisplayName,
-                                                         PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
-            if (displayName.Contains("<") || displayName.Contains(">"))
+            var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+            user.Username = objSecurity.InputFilter(user.Username, filterFlags);
+            user.Email = objSecurity.InputFilter(user.Email, filterFlags);
+            user.LastName = objSecurity.InputFilter(user.LastName, filterFlags);
+            user.FirstName = objSecurity.InputFilter(user.FirstName, filterFlags);
+            user.DisplayName = objSecurity.InputFilter(user.DisplayName, filterFlags);
+            if (user.DisplayName.Contains("<") || user.DisplayName.Contains(">"))
             {
-                displayName = HttpUtility.HtmlEncode(displayName);
+                user.DisplayName = HttpUtility.HtmlEncode(user.DisplayName);
             }
-            bool updatePassword = user.Membership.UpdatePassword;
-            bool isApproved = user.Membership.Approved;
+            var updatePassword = user.Membership.UpdatePassword;
+            var isApproved = user.Membership.Approved;
+            var createStatus = UserCreateStatus.Success;
             try
             {
                 user.UserID =
                     Convert.ToInt32(_dataProvider.AddUser(user.PortalID,
-                                                          userName,
-                                                          firstName,
-                                                          lastName,
+                                                          user.Username,
+                                                          user.FirstName,
+                                                          user.LastName,
                                                           user.AffiliateID,
                                                           user.IsSuperUser,
-                                                          email,
-                                                          displayName,
+                                                          user.Email,
+                                                          user.DisplayName,
                                                           updatePassword,
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));

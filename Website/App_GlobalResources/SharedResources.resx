@@ -306,6 +306,12 @@
   <data name="InvalidUserName.Text" xml:space="preserve">
     <value>The username specified is invalid.  Please specify a valid username.</value>
   </data>
+  <data name="InvalidFirstName.Text" xml:space="preserve">
+    <value>The first name specified is invalid.</value>
+  </data>
+  <data name="InvalidLastName.Text" xml:space="preserve">
+    <value>The last name specified is invalid.</value>
+  </data>
   <data name="UserRejected.Text" xml:space="preserve">
     <value>This user registration has been rejected.  Please contact an Administrator for more information.</value>
   </data>
