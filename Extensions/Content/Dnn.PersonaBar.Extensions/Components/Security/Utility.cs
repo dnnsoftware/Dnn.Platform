@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Security.Components
             using (
                 var stream =
                     Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream("Dnn.PersonaBar.Security.Components.Resources.sums.resources"))
+                        .GetManifestResourceStream("Dnn.PersonaBar.Extensions.Components.Security.Resources.sums.resources"))
             {
                 if (stream != null)
                 {
