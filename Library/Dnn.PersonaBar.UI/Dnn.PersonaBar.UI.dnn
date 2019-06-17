@@ -150,7 +150,17 @@
                         </file>
                     </files>
                 </component>
-                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
+                <component type="Cleanup" version="03.00.00" fileName ="03.00.00.txt" />
+              <component type="File">
+                <files>
+                  <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                  <file>
+                    <name>03.00.00.txt</name>
+                    <sourceFileName>03.00.00.txt</sourceFileName>
+                  </file>
+                </files>
+              </component>
+              <component type="Cleanup" version="03.00.00" fileName ="03.00.00.txt" />
             </components>
             <eventMessage>
                 <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>

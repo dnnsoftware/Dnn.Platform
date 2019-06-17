@@ -184,11 +184,9 @@ namespace Dnn.PersonaBar.UI.Components
             if (packageInfo != null)
             {
                 var fileName = assemblyName + ".dll";
-                var fileInstaller = new FileInstaller();
                 if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
                 {
                     Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
-                    FileSystemUtils.DeleteFile("\\bin\\" + fileName);
                 }
             }
             else

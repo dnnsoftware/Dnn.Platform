@@ -147,6 +147,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="03.00.00.txt" />
     <Content Include="admin\personaBar\css\personaBarContainer.css" />
     <EmbeddedResource Include="admin\personaBar\App_LocalResources\Tabs.resx">
       <SubType>Designer</SubType>
