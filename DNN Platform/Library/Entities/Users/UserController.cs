@@ -1398,6 +1398,10 @@ namespace DotNetNuke.Entities.Users
                 case UserCreateStatus.DuplicateProviderUserKey:
                 case UserCreateStatus.InvalidProviderUserKey:
                     return Localization.GetString("RegError");
+                case UserCreateStatus.InvalidFirstName:
+                    return Localization.GetString("InvalidFirstName");
+                case UserCreateStatus.InvalidLastName:
+                    return Localization.GetString("InvalidLastName");
                 default:
                     throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
             }
