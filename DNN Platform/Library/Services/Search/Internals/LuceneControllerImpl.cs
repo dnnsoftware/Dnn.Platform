@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Search.Internals
 #pragma warning disable 0618
                                     throw new SearchException(
                                         Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter","Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
-                                        e, new SearchItemInfo());
+                                        e);
 #pragma warning restore 0618
                                 }
                             }

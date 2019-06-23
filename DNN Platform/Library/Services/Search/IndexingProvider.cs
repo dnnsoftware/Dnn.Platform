@@ -46,15 +46,6 @@ namespace DotNetNuke.Services.Search
             throw new NotImplementedException();
         }
 
-        [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.. Scheduled removal in v10.0.0.")]
-        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
-        {
-            return Enumerable.Empty<SearchDocument>();
-        }
-
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
-
         private const string TimePostfix = "UtcTime";
         private const string DataPostfix = "Data";
 

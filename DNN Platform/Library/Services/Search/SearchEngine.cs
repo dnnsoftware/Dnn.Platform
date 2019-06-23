@@ -88,16 +88,9 @@ namespace DotNetNuke.Services.Search
             //Index MODULE CONTENT from modules that inherit from ModuleSearchBase
             searchDocsCount = GetAndStoreSearchDocuments(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
-
-            //Index all Defunct ISearchable module content
-#pragma warning disable 0618
-            var searchItems = GetContent(moduleIndexer);
-            SearchDataStoreProvider.Instance().StoreSearchItems(searchItems);
-#pragma warning restore 0618
-            indexedSearchDocumentCount += searchItems.Count;
-
+            
             //Both ModuleSearchBase and ISearchable module content count
-            AddIdexingResults("Modules (Content) Indexed", searchDocsCount + searchItems.Count);
+            AddIdexingResults("Modules (Content) Indexed", searchDocsCount);
 
             if (!HostController.Instance.GetBoolean("DisableUserCrawling", false))
             {
@@ -190,7 +183,6 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         private int GetAndStoreSearchDocuments(IndexingProvider indexer)
         {
-            IList<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
             var indexedCount = 0;
@@ -205,11 +197,7 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException)
                 {
-#pragma warning disable 618
-                    searchDocs = indexer.GetSearchDocuments(portal.PortalID, indexSince).ToList();
-#pragma warning restore 618
-                    StoreSearchDocuments(searchDocs);
-                    indexedCount += searchDocs.Count();
+                    //Nothing to do, no fallback
                 }
             }
 
@@ -222,11 +210,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException)
             {
-#pragma warning disable 618
-                searchDocs = indexer.GetSearchDocuments(-1, indexSince).ToList();
-#pragma warning restore 618
-                StoreSearchDocuments(searchDocs);
-                indexedCount += searchDocs.Count();
+                //Again no fallback
             }
             return indexedCount;
         }
@@ -297,54 +281,6 @@ namespace DotNetNuke.Services.Search
         }
 
         #endregion
-
-        #region Obsoleted Methods
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable) 
-        /// 
-        /// GetContent gets all the content and passes it to the Indexer
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="indexer">The Index Provider that will index the content of the portal</param>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(IndexingProvider indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            var portals = PortalController.Instance.GetPortals();
-            for (var index = 0; index <= portals.Count - 1; index++)
-            {
-                var portal = (PortalInfo)portals[index];
-                searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
-            }
-            return searchItems;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable) 
-        /// 
-        /// GetContent gets the Portal's content and passes it to the Indexer
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="indexer">The Index Provider that will index the content of the portal</param>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            searchItems.AddRange(indexer.GetSearchIndexItems(portalId));
-            return searchItems;
-        }
-
-        #endregion
-
+        
     }
 }

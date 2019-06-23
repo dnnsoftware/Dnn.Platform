@@ -32,7 +32,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
 
 #endregion
