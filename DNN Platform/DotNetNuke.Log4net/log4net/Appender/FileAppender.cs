@@ -892,44 +892,7 @@ namespace log4net.Appender
 		{
 		}
 
-		/// <summary>
-		/// Construct a new appender using the layout, file and append mode.
-		/// </summary>
-		/// <param name="layout">the layout to use with this appender</param>
-		/// <param name="filename">the full path to the file to write to</param>
-		/// <param name="append">flag to indicate if the file should be appended to</param>
-		/// <remarks>
-		/// <para>
-		/// Obsolete constructor.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout, File & AppendToFile properties. Scheduled removal in v10.0.0.")]
-		public FileAppender(ILayout layout, string filename, bool append)
-		{
-			Layout = layout;
-			File = filename;
-			AppendToFile = append;
-			ActivateOptions();
-		}
-
-		/// <summary>
-		/// Construct a new appender using the layout and file specified.
-		/// The file will be appended to.
-		/// </summary>
-		/// <param name="layout">the layout to use with this appender</param>
-		/// <param name="filename">the full path to the file to write to</param>
-		/// <remarks>
-		/// <para>
-		/// Obsolete constructor.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout & File properties. Scheduled removal in v10.0.0.")]
-		public FileAppender(ILayout layout, string filename)
-			: this(layout, filename, true)
-		{
-		}
-
-		#endregion Public Instance Constructors
+        #endregion Public Instance Constructors
 
 		#region Public Instance Properties
 

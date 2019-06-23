@@ -203,39 +203,6 @@ namespace log4net.Appender
 			set	{ m_lossyEvaluator = value; }
 		}
 
-		/// <summary>
-		/// Gets or sets a value indicating if only part of the logging event data
-		/// should be fixed.
-		/// </summary>
-		/// <value>
-		/// <c>true</c> if the appender should only fix part of the logging event 
-		/// data, otherwise <c>false</c>. The default is <c>false</c>.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// Setting this property to <c>true</c> will cause only part of the
-		/// event data to be fixed and serialized. This will improve performance.
-		/// </para>
-		/// <para>
-		/// See <see cref="M:LoggingEvent.FixVolatileData(FixFlags)"/> for more information.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
-		virtual public bool OnlyFixPartialEventData
-		{
-			get { return (Fix == FixFlags.Partial); }
-			set 
-			{ 
-				if (value)
-				{
-					Fix = FixFlags.Partial;
-				}
-				else
-				{
-					Fix = FixFlags.All;
-				}
-			}
-		}
 
 		/// <summary>
 		/// Gets or sets a the fields that will be fixed in the event

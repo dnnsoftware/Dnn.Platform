@@ -65,39 +65,7 @@ namespace log4net.Appender
 		{
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConsoleAppender" /> class
-		/// with the specified layout.
-		/// </summary>
-		/// <param name="layout">the layout to use for this appender</param>
-		/// <remarks>
-		/// The instance of the <see cref="ConsoleAppender" /> class is set up to write 
-		/// to the standard output stream.
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
-		public ConsoleAppender(ILayout layout) : this(layout, false)
-		{
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConsoleAppender" /> class
-		/// with the specified layout.
-		/// </summary>
-		/// <param name="layout">the layout to use for this appender</param>
-		/// <param name="writeToErrorStream">flag set to <c>true</c> to write to the console error stream</param>
-		/// <remarks>
-		/// When <paramref name="writeToErrorStream" /> is set to <c>true</c>, output is written to
-		/// the standard error output stream.  Otherwise, output is written to the standard
-		/// output stream.
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
-		public ConsoleAppender(ILayout layout, bool writeToErrorStream) 
-		{
-			Layout = layout;
-			m_writeToErrorStream = writeToErrorStream;
-		}
-
-		#endregion Public Instance Constructors
+        #endregion Public Instance Constructors
 
 		#region Public Instance Properties
 
