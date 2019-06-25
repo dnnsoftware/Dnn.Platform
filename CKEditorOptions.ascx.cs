@@ -386,10 +386,10 @@ namespace DNNConnect.CKEditorProvider
                 BindUserGroupsGridView();
 
                 FillFolders();
-                
-                BindOptionsData();
 
                 SetLanguage();
+
+                BindOptionsData();                
 
                 FillInformations();
 
