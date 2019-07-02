@@ -134,7 +134,7 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackAdministrators", trackForAdmin},
                 { "AnonymizeIp", anonymizeIp},
                 { "TrackUserId", trackUserId},
-                { "DataConsent", portalSettings.DataConsentActive ? "true" : ""},
+                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive) },
                 { "isDeactivating", ""}
             };
 
