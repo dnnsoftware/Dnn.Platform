@@ -87,7 +87,7 @@ namespace DNN.Connectors.GoogleAnalytics
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
             var portalSettings = new PortalSettings(portalId);
 
-            // Important, knockout handles emptry strings as false and any other string as true
+            // Important, knockout handles empty strings as false and any other string as true
             // so we need to pass empty strings when we mean false, however it passes us back the string "false"
             // when saving the settings in the SaveConfig method, so we need to handle that case too
             var trackingId = string.Empty;
