@@ -120,6 +120,9 @@
   <data name="AddFileExtensionNotAllowed.Text" xml:space="preserve">
     <value>The extension '{0}' is not allowed.  The file has not been added.</value>
   </data>
+  <data name="AddFilenameNotAllowed.Text" xml:space="preserve">
+    <value>The file name '{0}' is not allowed.  The file has not been added.</value>
+  </data>
   <data name="AddFileInvalidContent.Text" xml:space="preserve">
     <value>The content of '{0}' is not valid.  The file has not been added.</value>
   </data>
