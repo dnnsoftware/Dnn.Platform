@@ -89,7 +89,7 @@ namespace DNN.Connectors.GoogleAnalytics
 
             // Important, knockout handles emptry strings as false and any other string as true
             // so we need to pass empty strings when we mean false, however it passes us back the string "false"
-            // when saving the settins in the SaveConfig method, so we need to handle that case too
+            // when saving the settings in the SaveConfig method, so we need to handle that case too
             var trackingId = string.Empty;
             var urlParameter = string.Empty;
             var trackForAdmin = string.Empty;
