@@ -61,6 +61,8 @@
         $('#ExportDialog').dialog({
             autoOpen: false,
             width: 350,
+            dialogClass: 'dnnFormPopup',
+            resizable: false,
             buttons: {
                 "Cancel": function () {
                     $(this).dialog("close");
@@ -77,6 +79,8 @@
         $('#ImportDialog').dialog({
             autoOpen: false,
             width: 350,
+            dialogClass: 'dnnFormPopup',
+            resizable: false,
             buttons: {
                  "Cancel": function() {
                      $(this).dialog("close");
