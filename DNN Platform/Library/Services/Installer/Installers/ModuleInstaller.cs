@@ -296,8 +296,14 @@ namespace DotNetNuke.Services.Installer.Installers
             //Load the Desktop Module from the manifest
             _desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
 
-            _desktopModule.FriendlyName = Package.FriendlyName;
-            _desktopModule.Description = Package.Description;
+            // If this desktop module has its own friendly name and description use that instead of the package friendly name / description. This allows multiple 
+            // DesktopModules to share the same assembly.
+            if( _desktopModule.FriendlyName == null || _desktopModule.FriendlyName.Trim().Length == 0 )
+                _desktopModule.FriendlyName = Package.FriendlyName;
+
+            if (_desktopModule.Description == null || _desktopModule.Description.Trim().Length == 0)
+                _desktopModule.Description = Package.Description;
+
             _desktopModule.Version = Globals.FormatVersion(Package.Version);
             _desktopModule.CompatibleVersions = Null.NullString;
             _desktopModule.Dependencies = Null.NullString;
