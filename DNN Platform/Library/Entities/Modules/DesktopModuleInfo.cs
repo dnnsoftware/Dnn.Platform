@@ -540,6 +540,12 @@ namespace DotNetNuke.Entities.Modules
                         case "moduleName":
                             ModuleName = reader.ReadElementContentAsString();
                             break;
+                        case "friendlyName":
+                            FriendlyName = reader.ReadElementContentAsString();
+                            break;
+                        case "description":
+                            Description = reader.ReadElementContentAsString();
+                            break;
                         case "foldername":
                             FolderName = reader.ReadElementContentAsString();
                             break;
