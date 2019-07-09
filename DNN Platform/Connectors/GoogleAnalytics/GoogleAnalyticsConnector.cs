@@ -190,7 +190,7 @@ namespace DNN.Connectors.GoogleAnalytics
                 else
                 {
                     trackingID = values["TrackingID"] != null ? values["TrackingID"].ToLowerInvariant().Trim() : string.Empty;
-                    urlParameter = values["UrlParameter"] != null ? values["UrlParameter"].ToLowerInvariant().Trim() : string.Empty;
+                    urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
                     trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
