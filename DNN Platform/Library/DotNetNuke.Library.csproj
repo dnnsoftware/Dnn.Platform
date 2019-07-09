@@ -714,6 +714,7 @@
     <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidFileContentException.cs" />
+    <Compile Include="Services\FileSystem\Exceptions\InvalidFilenameException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
     </Compile>
