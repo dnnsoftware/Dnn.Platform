@@ -421,8 +421,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         BindLoginControl(authLoginControl, authSystem);
                         if (authSystem.AuthenticationType == "DNN")
                         {
-                            defaultLoginControl = authLoginControl;
-                            pnlLoginContainer.Visible = true;
+                            defaultLoginControl = authLoginControl;                            
                         }
 
                         //Check if AuthSystem is Enabled
@@ -502,6 +501,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
             }
             BindOAuthControls();
+            pnlLoginContainer.Visible = true;
         }
 
         private void BindOAuthControls()
