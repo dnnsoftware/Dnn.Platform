@@ -141,6 +141,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
             template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
             template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));
+            template = template.Replace("[YEAR]", DateTime.Today.Year.ToString(CultureInfo.InvariantCulture));
             template = ResolveUrl(portalSettings, template);
 
             return template;
