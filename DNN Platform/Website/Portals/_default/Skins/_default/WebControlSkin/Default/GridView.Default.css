@@ -46,3 +46,18 @@
     color: #000;
     text-decoration: none;
 }
+
+.dnn-grid-pager tr td {
+    padding:0;
+    border:none;
+}
+.dnn-grid-pager tr td a, .dnn-grid-pager tr td span {
+    padding: 6px;
+}
+.dnn-grid-pager tr td span {
+    color:#1e88c3
+}
+.dnn-grid-pager tr:hover {
+    background-color:transparent;
+
+}
