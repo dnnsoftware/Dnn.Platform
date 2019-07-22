@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            var portalSettings = file.PortalId == PortalSettings.Current.PortalId ?
+            var portalSettings = file.PortalId == PortalSettings.Current?.PortalId ?
                 PortalSettings.Current : 
                 GetPortalSettings(file.PortalId);
 
