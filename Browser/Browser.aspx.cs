@@ -1479,18 +1479,18 @@ namespace DNNConnect.CKEditorProvider.Browser
             //      Key = parrent folder id 
             //      Value = list of child folders
             // this will let us possible to create folders tree much faster on a recursion below
-            var readOnlyFolders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
+            var readableFolders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
                 .GroupBy(folder => folder.ParentID)
                 .ToDictionary(key => key.Key, value => value?.Select(folder => folder) ?? Enumerable.Empty<IFolderInfo>());
 
             // get all folders where parrent folder is current one
-            if (!readOnlyFolders.TryGetValue(currentFolderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            if (!readableFolders.TryGetValue(currentFolderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
             {
                 return;
             }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readOnlyFolders)).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 folderNode.ChildNodes.Add(node);
             }
@@ -1718,11 +1718,11 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Render all Directories and sub directories recursive
         /// </summary>
         /// <param name="folderInfo">The folder Info.</param>
-        /// <param name="readOnlyFolders"></param>
+        /// <param name="readableFolders">The list of folders that the current user has READ access</param>
         /// <returns>
         /// TreeNode List
         /// </returns>
-        private TreeNode RenderFolder(FolderInfo folderInfo, IDictionary<int, IEnumerable<IFolderInfo>> readOnlyFolders)
+        private TreeNode RenderFolder(FolderInfo folderInfo, IDictionary<int, IEnumerable<IFolderInfo>> readableFolders)
         {
             TreeNode tnFolder = new TreeNode
             {
@@ -1731,13 +1731,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                 ImageUrl = GetFolderIcon(folderInfo)
             };
 
-            if (!readOnlyFolders.TryGetValue(folderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            if (!readableFolders.TryGetValue(folderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
             {
                 return tnFolder;
             }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readOnlyFolders)).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 tnFolder.ChildNodes.Add(node);
             }
