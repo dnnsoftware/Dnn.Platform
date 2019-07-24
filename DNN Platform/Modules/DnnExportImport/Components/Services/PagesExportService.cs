@@ -897,7 +897,7 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DisplayTitle = other.DisplayTitle;
                                 local.DisplayPrint = other.DisplayPrint;
                                 local.DisplaySyndicate = other.DisplaySyndicate;
-                                local.IsDeleted = other.IsDeleted;
+                                //local.IsDeleted = other.IsDeleted;
                                 local.IsShareable = otherModule.IsShareable;
                                 local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                                 local.IsWebSlice = other.IsWebSlice;
@@ -915,7 +915,7 @@ namespace Dnn.ExportImport.Components.Services
                                 }
 
                                 // updates both module and tab module db records
-                                _moduleController.UpdateModule(local);
+                                UpdateModuleWithIsDeletedHandling(other, otherModule, local);
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
@@ -978,6 +978,18 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             return count;
+        }
+        /*
+            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted. 
+            ExportTabModule.IsDeleted may different from ExportModule.IsDeleted when Module is deleted.
+            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
+            updating Modules.
+        */
+        private void UpdateModuleWithIsDeletedHandling(ExportTabModule other, ExportModule otherModule, ModuleInfo local)
+        {
+            local.IsDeleted = otherModule.IsDeleted;
+            _moduleController.UpdateModule(local);
+            local.IsDeleted = other.IsDeleted;
         }
 
         private int ImportModuleSettings(ModuleInfo localModule, ExportModule otherModule, bool isNew)
