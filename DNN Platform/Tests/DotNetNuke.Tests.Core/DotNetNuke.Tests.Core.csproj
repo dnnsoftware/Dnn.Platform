@@ -190,6 +190,7 @@
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
     <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
+    <Compile Include="Services\Mail\MailTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
     <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
