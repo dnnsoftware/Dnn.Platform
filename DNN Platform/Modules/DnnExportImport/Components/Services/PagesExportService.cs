@@ -897,7 +897,6 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DisplayTitle = other.DisplayTitle;
                                 local.DisplayPrint = other.DisplayPrint;
                                 local.DisplaySyndicate = other.DisplaySyndicate;
-                                //local.IsDeleted = other.IsDeleted;
                                 local.IsShareable = otherModule.IsShareable;
                                 local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                                 local.IsWebSlice = other.IsWebSlice;
@@ -985,11 +984,11 @@ namespace Dnn.ExportImport.Components.Services
             Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
             updating Modules.
         */
-        private void UpdateModuleWithIsDeletedHandling(ExportTabModule other, ExportModule otherModule, ModuleInfo local)
+        private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)
         {
-            local.IsDeleted = otherModule.IsDeleted;
-            _moduleController.UpdateModule(local);
-            local.IsDeleted = other.IsDeleted;
+            importModule.IsDeleted = exportModule.IsDeleted;
+            _moduleController.UpdateModule(importModule);
+            importModule.IsDeleted = exportTabModule.IsDeleted;
         }
 
         private int ImportModuleSettings(ModuleInfo localModule, ExportModule otherModule, bool isNew)
