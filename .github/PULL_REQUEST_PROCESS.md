@@ -5,6 +5,7 @@ The goal of this document is to set standards for the review, processing, and ap
 ## Prerequisites
 The following items must all be true prior to a pull request being submitted to the DNN_Platform, if any of the following items are not true the pull request will be returned for edits referencing the specific missing item(s).
 
+* Changes should target the branch where they should be merged, bug fixes that have no breaking changes should usually target the release/x.x.x latest branch; breaking changes, new features and major behaviour changes should usually target the development branch. If you are not sure which to target, please ask in the issue comments before starting your changes.
 * Change should represent an entire solution for the issue at hand.  Partial requests will NOT be processed.
 * Change should have a supporting issue logged on the DNN_Platform GitHub account, documenting the issue resolved, following the procedures outlined on the [Contribute Page](CONTRIBUTING.md)
 * If your change was to an area that already was covered by tests those tests must be updated.  New tests for areas currently un-tested are appreciated
