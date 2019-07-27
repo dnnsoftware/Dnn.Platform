@@ -32,14 +32,6 @@
         </component>
         <component type="File">
           <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>Selectize (Apache).txt</name>
-            </file>
-          </files>
-        </component>
-        <component type="File">
-          <files>
             <basePath>Resources\Libraries\Selectize\00_12_04</basePath>
             <file>
               <name>selectize.css</name>
