@@ -31,15 +31,7 @@
               <name>jquery-migrate.js</name>
             </jsfile>
           </jsfiles>
-        </component>
-        <component type="File">
-          <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>jQuery (MIT).txt</name>
-            </file>
-          </files>
-        </component>
+        </component>       
         <component type="Cleanup" version="01.02.01" fileName="01.02.01.txt" />
       </components>
     </package>
