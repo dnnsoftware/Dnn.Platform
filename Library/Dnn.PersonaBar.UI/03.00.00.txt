@@ -3,7 +3,7 @@ bin\Dnn.PersonaBar.ConfigConsole.dll
 bin\Dnn.PersonaBar.Connectors.dll
 bin\Dnn.PersonaBar.CssEditor.dll
 bin\Dnn.PersonaBar.Licensing.dll
-bin\Dnn.PersonaBar.Pages.dl
+bin\Dnn.PersonaBar.Pages.dll
 bin\Dnn.PersonaBar.Prompt.dll
 bin\Dnn.PersonaBar.Recyclebin.dll
 bin\Dnn.PersonaBar.Roles.dll
