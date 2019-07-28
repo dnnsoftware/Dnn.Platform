@@ -30,14 +30,6 @@
             </jsfile>
           </jsfiles>
         </component>
-        <component type="File">
-          <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>Knockout (MIT).txt</name>
-            </file>
-          </files>
-        </component>
         <component type="Cleanup" version="02.02.01" fileName="02.02.01.txt" />
       </components>
     </package>
