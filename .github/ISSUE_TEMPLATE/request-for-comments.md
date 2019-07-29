@@ -21,12 +21,11 @@ Another proposed solution to the problem
 Documentation of any other items researched for resolution.
 
 ## Affected version
-<!-- Check all that apply and add more if necessary -->
-* [x] 9.3.2
-* [x] 9.3.1
-* [x] 9.2.2
-* [x] 9.2.1
-* [x] 9.2
-* [x] 9.1.1
-* [ ] 9.1
-* [ ] 9.0
+<!-- 
+Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
+-->
+
+* [ ] 10.0.0 nightly build
+* [ ] 9.4.1 nightly build
+* [ ] 9.4.0 release candidate
+* [ ] 9.3.2 latest supported release
