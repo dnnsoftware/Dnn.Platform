@@ -38,8 +38,9 @@ namespace DotNetNuke.Modules.Groups
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(ModuleContext.NavigateUrl(TabId, string.Empty, false, null));
+            Response.Redirect(ModuleContext.NavigateUrl(TabId, string.Empty, false, Array.Empty<string>()));
         }
+
         private void Create_Click(object sender, EventArgs e)
         {
             var ps = Security.PortalSecurity.Instance;
