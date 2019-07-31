@@ -768,11 +768,15 @@ namespace DotNetNuke.UI.Modules
 
         public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            var parameters = new string[] { };
-            return EditUrl(keyName, keyValue, controlKey, parameters);
+            return EditUrl(keyName, keyValue, controlKey, Array.Empty<string>());
         }
 
         public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
+        {
+            return EditUrl(keyName, keyValue, controlKey, string.Empty, additionalParameters);
+        }
+
+        public string EditUrl(string keyName, string keyValue, string controlKey, string closingUrl, params string[] additionalParameters)
         {
             string key = controlKey;
             if (string.IsNullOrEmpty(key))
@@ -800,15 +804,25 @@ namespace DotNetNuke.UI.Modules
                 Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
             }
 
-            return NavigateUrl(PortalSettings.ActiveTab.TabID, key, false, parameters);
+            return NavigateUrl(PortalSettings.ActiveTab.TabID, key, false, closingUrl, parameters);
         }
 
         public string NavigateUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
         {
-            return NavigateUrl(tabID, controlKey, Globals.glbDefaultPage, pageRedirect, additionalParameters);
+            return NavigateUrl(tabID, controlKey, pageRedirect, string.Empty, additionalParameters);
+        }
+        
+        public string NavigateUrl(int tabID, string controlKey, bool pageRedirect, string closingUrl, params string[] additionalParameters)
+        {
+            return NavigateUrl(tabID, controlKey, Globals.glbDefaultPage, pageRedirect, closingUrl, additionalParameters);
         }
 
         public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
+        {
+            return NavigateUrl(tabID, controlKey, pageName, pageRedirect, string.Empty, additionalParameters);
+        }
+
+        public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, string closingUrl, params string[] additionalParameters)
         {
             var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
             var settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -820,7 +834,7 @@ namespace DotNetNuke.UI.Modules
             {
                 if (!UIUtilities.IsLegacyUI(ModuleId, controlKey, PortalId) && (url.Contains("ctl")))
                 {
-                    url = UrlUtils.PopUpUrl(url, null, PortalSettings, false, pageRedirect);
+                    url = UrlUtils.PopUpUrl(url, null, PortalSettings, false, pageRedirect, closingUrl);
                 }
             }
             return url;
