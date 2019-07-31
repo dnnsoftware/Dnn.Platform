@@ -287,7 +287,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     localTab.UniqueId = Guid.NewGuid();
                     SetPartialImportSettings(otherTab, localTab);
-                    otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
+                    otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab, false);
                     DotNetNuke.Data.DataProvider.Instance().UpdateTabOrder(localTab.TabID, localTab.TabOrder, localTab.ParentId, Null.NullInteger);
                     localTabs.Add(localTab);
 
@@ -670,7 +670,7 @@ namespace Dnn.ExportImport.Components.Services
             var exportOrders = BuildModuleOrders(exportedTabModules);
             foreach (var other in exportedTabModules)
             {
-                var locals = new List<ModuleInfo>(localTabModules.Where(m => m.UniqueId == other.UniqueId));
+                var locals = new List<ModuleInfo>(localTabModules.Where(m => m.UniqueId == other.UniqueId && m.IsDeleted == other.IsDeleted));
                 if (locals.Count == 0)
                 {
                     locals = new List<ModuleInfo>(localTabModules.Where(m => m.ModuleDefinition.FriendlyName == other.FriendlyName
