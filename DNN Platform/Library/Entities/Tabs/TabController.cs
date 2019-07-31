@@ -2580,6 +2580,13 @@ namespace DotNetNuke.Entities.Tabs
                             listTabs.Add(tab);
                         }
                     }
+
+                    // HasChildren should be true in case there is at least one not deleted child
+                    tab.HasChildren &=
+                        includeDeleted || (
+                            !includeDeleted &&
+                            GetTabsByParent(tab.TabID, tab.PortalID)
+                                .Any(a => !a.IsDeleted));
                 }
             }
             return listTabs;
