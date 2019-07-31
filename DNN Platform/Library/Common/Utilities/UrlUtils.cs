@@ -219,8 +219,13 @@ namespace DotNetNuke.Common.Utilities
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect)
         {
-            return PopUpUrl(url, control, portalSettings, onClickEvent, responseRedirect, 550, 950);
-        }       
+            return PopUpUrl(url, control, portalSettings, onClickEvent, responseRedirect, string.Empty);
+        }
+
+        public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, String closingUrl)
+        {
+            return PopUpUrl(url, control, portalSettings, onClickEvent, responseRedirect, 550, 950, true, closingUrl);
+        }
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, int windowHeight, int windowWidth)
         {
