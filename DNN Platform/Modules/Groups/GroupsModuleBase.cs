@@ -260,9 +260,9 @@ namespace DotNetNuke.Modules.Groups
         #endregion
 
         #region Public Methods
-        public string GetCreateUrl()
+        public string GetCreateUrl(string closingUrl)
         {
-            return ModuleContext.EditUrl("Create"); //.NavigateUrl(GroupCreateTabId,"",true,null);
+            return ModuleContext.EditUrl(string.Empty, string.Empty, "Create", closingUrl, Array.Empty<string>());
         }
 
         public string GetClearFilterUrl()

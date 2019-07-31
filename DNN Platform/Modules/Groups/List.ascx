@@ -13,7 +13,7 @@
         </asp:Panel>
 
         <% if (CanCreate) { %>
-        <a href="<%=GetCreateUrl() %>" class="dnnPrimaryAction createGroup"><%=LocalizeString("CreateNewGroup")%></a>
+        <a href="<%=GetCreateUrl(Request.Url.AbsoluteUri.ToString()) %>" class="dnnPrimaryAction createGroup"><%=LocalizeString("CreateNewGroup")%></a>
         <%} %>
 
 
