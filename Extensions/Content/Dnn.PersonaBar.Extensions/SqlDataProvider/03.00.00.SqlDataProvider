@@ -183,25 +183,20 @@ BEGIN
 				  FROM (SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users] 
 						WHERE (UserName    Like @searchTerm)
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
 					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users]
 						WHERE (DisplayName Like @searchTerm)
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
 					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users]
 						WHERE (Email       Like @searchTerm)
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
 					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users]
 						WHERE (FirstName   Like @searchTerm)
 						  AND FirstName Is Not Null AND FirstName != N'' 
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted) 
 					   UNION SELECT UserID, Username, DisplayName, Email, CreatedOnDate, LastModifiedOnDate, IsSuperuser 
 						FROM  {databaseOwner}[{objectQualifier}Users]
 						WHERE (LastName    Like @searchTerm)
-						  AND LastName  Is Not Null AND LastName  != N'' 
-						  AND (@isDeleted  Is Null OR IsDeleted = @isDeleted)) S
+						  AND LastName  Is Not Null AND LastName  != N'') S
                    JOIN	 {databaseOwner}[{objectQualifier}UserPortals] P ON S.UserID = P.UserID		
                    WHERE P.PortalID = @PortalID
 					 AND (@Superusers Is Null OR S.IsSuperuser = 0)
