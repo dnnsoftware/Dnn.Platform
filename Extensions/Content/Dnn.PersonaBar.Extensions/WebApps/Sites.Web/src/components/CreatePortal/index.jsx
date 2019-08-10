@@ -167,7 +167,6 @@ class CreatePortal extends Component {
             default:
                 newPortal[key] = value;
                 break;
-
         }
         this.setState({
             newPortal,
@@ -325,7 +324,7 @@ class CreatePortal extends Component {
                                 value={state.newPortal.UseCurrentUserAsAdmin}
                                 onChange={this.onChange.bind(this, "UseCurrentUserAsAdmin")}
                                 />
-                            <Collapse style={{ float: "left" }} isOpened={!state.newPortal.UseCurrentUserAsAdmin}>
+                            <Collapse style={{clear:"both"}} isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>                            
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError
@@ -382,6 +381,7 @@ class CreatePortal extends Component {
                                             />
                                     </GridCell>
                                 </GridSystem>
+                                <div style={{clear:"both"}}></div>
                             </Collapse>
                         </GridCell>
                         <GridCell className="site-action-buttons">
