@@ -32,8 +32,11 @@ var targetBranchCp = Argument("CpBranch", "development");
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
 var tempDir = Directory("./Temp/");
-
 var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
+
+// Define versioned files (manifests) to backup and revert on build
+var manifestFiles = GetFiles("./**/*.dnn");
+manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -94,6 +97,7 @@ Task("BuildInstallUpgradeOnly")
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
+	.IsDependentOn("BackupManifests")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
@@ -102,9 +106,22 @@ Task("BuildAll")
 	.IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
     .IsDependentOn("CreateSource")
+	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
 
+	});
+
+Task("BackupManifests")
+	.Does( () => {		
+		Zip("./", "manifestsBackup.zip", manifestFiles);
+	});
+
+Task("RestoreManifests")	
+	.Does( () => {
+		DeleteFiles(manifestFiles);
+		Unzip("./manifestsBackup.zip", "./");
+		DeleteFiles("./manifestsBackup.zip");
 	});
 
 Task("CompileSource")
