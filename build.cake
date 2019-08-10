@@ -73,7 +73,6 @@ Task("Build")
     
 Task("BuildWithDatabase")
     .IsDependentOn("CleanArtifacts")
-    .IsDependentOn("CreateSource")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
@@ -105,7 +104,6 @@ Task("BuildAll")
     .IsDependentOn("CreateDeploy")
 	.IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
-    .IsDependentOn("CreateSource")
 	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
@@ -176,25 +174,6 @@ Task("CreateSymbols")
 			c.Configuration = configuration;
 			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateSymbols");
-		});
-	});   
-    
-    
-
-Task("CreateSource")
-    .IsDependentOn("UpdateDnnManifests")
-	.Does(() =>
-	{
-		
-		CleanDirectory("./src/Projects/");
-
-        CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateSource");
 		});
 	});
 
@@ -333,13 +312,11 @@ Task("ExternalExtensions")
 		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-		var files = GetFiles("./" + tempDir.ToString() + "/Website/Install/Module/*_Install.zip");
+		var files = GetFiles("./" + tempDir.ToString() + "/*/Website/Install/Module/*_Install.zip");
 		Information("Copying {1} Artifacts from {0}", "AdminExperience", files.Count);
 		CopyFiles(files, "./Website/Install/Module/");
-	
 	});
-    
-    
+
 Task("Run-Unit-Tests")
     .IsDependentOn("CompileSource")
     .Does(() =>
