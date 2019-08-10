@@ -34,9 +34,14 @@ function extractDomain(url) {
     [domain, port] = domain.split(":");
     return port !== undefined && port !== 80 && port !== 443 ? `${domain}:${port}` : domain;
 }
+
 function validateEmail(email) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+function getUniqueId() {
+    return Math.random() * Date.now();
 }
 
 class CreatePortal extends Component {
@@ -324,7 +329,7 @@ class CreatePortal extends Component {
                                 value={state.newPortal.UseCurrentUserAsAdmin}
                                 onChange={this.onChange.bind(this, "UseCurrentUserAsAdmin")}
                                 />
-                            <Collapse style={{clear:"both"}} isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>                            
+                            <Collapse style={{clear:"both"}} isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError
@@ -334,6 +339,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "Username")}
                                             errorMessage={Localization.get("UsernameRequired.Error")}
                                             error={state.error.Username && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminFirstName.Label")}
@@ -342,6 +348,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "Firstname")}
                                             errorMessage={Localization.get("FirstNameRequired.Error")}
                                             error={state.error.Firstname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminLastName.Label")}
@@ -350,6 +357,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "Lastname")}
                                             errorMessage={Localization.get("LastNameRequired.Error")}
                                             error={state.error.Lastname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                     </GridCell>
                                     <GridCell>
@@ -360,6 +368,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "Email")}
                                             errorMessage={Localization.get("EmailRequired.Error")}
                                             error={state.error.Email && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminPassword.Label")}
@@ -369,6 +378,7 @@ class CreatePortal extends Component {
                                             onChange={this.onChange.bind(this, "Password")}
                                             errorMessage={Localization.get("PasswordRequired.Error")}
                                             error={state.error.Password && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                         <SingleLineInputWithError
                                             label={Localization.get("CreateSite_AdminPasswordConfirm.Label")}
@@ -378,6 +388,7 @@ class CreatePortal extends Component {
                                             errorMessage={Localization.get("PasswordConfirmRequired.Error")}
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
                                             error={state.error.PasswordConfirm && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            autoComplete={getUniqueId()}
                                             />
                                     </GridCell>
                                 </GridSystem>
