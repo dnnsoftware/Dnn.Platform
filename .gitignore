@@ -42,6 +42,10 @@
 *.dotCover
 *.ldf
 Artifacts/
+[Ss]rc
+[Tt]emp
+[Bb]uild/**/*.zip
+
 
 # git merge artifacts
 *.orig
