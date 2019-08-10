@@ -300,8 +300,8 @@ Task("ExternalExtensions")
 		}
 
 
-		externalSolutions = GetFiles(tempDir.ToString() + "**\\*.sln");
-	
+		externalSolutions = GetFiles("./" + tempDir.ToString() + "/**/*.sln");
+
 		Information("Found {0} solutions.", externalSolutions.Count);
 	
 		foreach (var solution in externalSolutions){
@@ -333,9 +333,9 @@ Task("ExternalExtensions")
 		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-		fileCounter = GetFiles(tempDir.ToString() + "*\\Website\\Install\\Module\\*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "AdminExperience", fileCounter);
-		CopyFiles(tempDir.ToString() + "*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
+		var files = GetFiles("./" + tempDir.ToString() + "/Website/Install/Module/*_Install.zip");
+		Information("Copying {1} Artifacts from {0}", "AdminExperience", files.Count);
+		CopyFiles(files, "./Website/Install/Module/");
 	
 	});
     
