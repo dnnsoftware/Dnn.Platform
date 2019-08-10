@@ -333,9 +333,9 @@ Task("ExternalExtensions")
 		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-		fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
+		fileCounter = GetFiles(tempDir.ToString() + "*\\Website\\Install\\Module\\*_Install.zip").Count;
 		Information("Copying {1} Artifacts from {0}", "AdminExperience", fileCounter);
-		CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
+		CopyFiles(tempDir.ToString() + "*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
 	
 	});
     
