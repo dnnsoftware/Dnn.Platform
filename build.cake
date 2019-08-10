@@ -31,7 +31,7 @@ var targetBranchCp = Argument("CpBranch", "development");
 // Define directories.
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
-var tempDir = "C:\\temp\\x\\";
+var tempDir = Directory("./Temp/");
 
 var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
 
@@ -283,7 +283,7 @@ Task("ExternalExtensions")
 		}
 
 
-		externalSolutions = GetFiles("c:\\temp\\x\\**\\*.sln");
+		externalSolutions = GetFiles(tempDir.ToString() + "**\\*.sln");
 	
 		Information("Found {0} solutions.", externalSolutions.Count);
 	
