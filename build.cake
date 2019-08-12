@@ -6,9 +6,9 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-#load "local:?path=Build/cake/version.cake"
-#load "local:?path=Build/cake/create-database.cake"
-#load "local:?path=Build/cake/unit-tests.cake"
+#load "local:?path=Build/Cake/version.cake"
+#load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/unit-tests.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
