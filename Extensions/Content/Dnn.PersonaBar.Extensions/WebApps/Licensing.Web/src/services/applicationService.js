@@ -13,6 +13,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("Licensing");
         sf.get("GetProduct", {}, callback);
     }
+
+    getServerInfo(callback) {
+        const sf = this.getServiceFramework("ServerSummary");
+        sf.get("GetServerInfo", {}, callback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

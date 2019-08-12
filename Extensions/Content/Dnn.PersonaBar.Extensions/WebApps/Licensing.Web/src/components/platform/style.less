@@ -1,54 +1,35 @@
 @import "~@dnnsoftware/dnn-react-common/styles/index";
 :local(.licensingPlatform) {
     border-bottom: none;
-    .licenses-header-row {
-        border-bottom: 1px solid @alto;
-        padding: 10px 0 10px 0;
-        width: 100%;
-        float: left;
+    .intro-header-row {
+        padding: 10px;
+        float: right;
         overflow: hidden;
-        margin-top: 5px;
         color: @mountainMist;
-        .header-LicenseType {
-            width: 15%;
-            float: left;
-            font-weight: bolder;
-            padding-left: 20px;
-        }
-        .header-InvoiceNumber {
-            width: 27%;
-            float: left;
-            font-weight: bolder;
-        }
-        .header-WebServer {
-            width: 15%;
-            float: left;
-            font-weight: bolder;
-        }
-        .header-Activated {
-            width: 15%;
-            float: left;
-            font-weight: bolder;
-        }
-        .header-Expires {
-            width: 25%;
-            float: left;
-            font-weight: bolder;
-        }
+        border-left: 1px solid @alto;
+        border-bottom: 1px solid @alto;
     }
-    .nolicense {
+    .intro {
         text-align: center;
-        padding: 100px 0 20px 0;
+        padding: 50px 0;
         border: 1px solid @alto;
-        .nolicense-header {
+        .intro-header {
             margin: 0 0 15px 0;
             font-size: 25px;
             color: @thunder;
         }
-        .nolicense-body {
+        .intro-body {
             font-size: 15px;
             color: @mountainMist;
-            margin: 0 0 100px 0;
+            margin: 0 50px;
+        }
+        .dnn-technology-editorial-icon {
+            width: 250px;
+            float: right;
+            margin: 0 20px;
+            /*> svg {
+                width: 250px;
+            }*/
         }
     }
     .links-wrapper {
@@ -57,12 +38,11 @@
         border: 1.5px solid @alto;
         font-weight: bolder;
         display: flex;
-        .link-evoq-wrapper {
-            border-right: 1px solid @alto;
+        .link-github-wrapper {
             float: left;
             width: 265px;
             margin: 25px 0;
-            .link-evoq {
+            .link-github {
                 height: 100%;
                 cursor: pointer;
                 float: left;
@@ -74,29 +54,28 @@
                     border: 1px solid @cerulean;
                     background-color: @alabaster;
                 }
-                .link-evoq-header {
+                .link-github-header {
                     margin: 10px 0 20px 0;
                     color: @thunder;
                 }
-                .link-evoq-desc {
+                .link-github-desc {
                     margin: 0 25px 20px 25px;
                 }
-                .star-icon {
+                .github-icon {
                     margin-top: 10px;
                     > svg {
                         width: 80px;
                         height: 80px;
-                        fill: @seagull;
                     }
                 }
             }
         }
-        .link-upgrade-wrapper {
+        .link-community-wrapper {
             border-right: 1px solid @alto;
             float: left;
             width: 264px;
             margin: 25px 0;
-            .link-upgrade {
+            .link-community {
                 height: 100%;
                 cursor: pointer;
                 float: left;
@@ -108,14 +87,14 @@
                     border: 1px solid @cerulean;
                     background-color: @alabaster;
                 }
-                .link-upgrade-header {
+                .link-community-header {
                     margin: -10px 0 20px 0;
                     color: @thunder;
                 }
-                .link-upgrade-desc {
+                .link-community-desc {
                     margin: 0 25px 20px 25px;
                 }
-                .evoq-icon {
+                .dnn-icon {
                     > svg {
                         width: 110px;
                         height: 110px;
@@ -123,11 +102,12 @@
                 }
             }
         }
-        .link-doc-wrapper {
+        .link-docs-wrapper {
+            border-right: 1px solid @alto;
             float: left;
             width: 265px;
             margin: 25px 0;
-            .link-doc {
+            .link-docs {
                 height: 100%;
                 cursor: pointer;
                 float: left;
@@ -139,19 +119,17 @@
                     border: 1px solid @cerulean;
                     background-color: @alabaster;
                 }
-                .link-doc-header {
+                .link-docs-header {
                     margin: 10px 0 20px 0;
                     color: @thunder;
                 }
-                .link-doc-desc {
+                .link-docs-desc {
                     margin: 0 25px 20px 25px;
                 }
-                .info-icon {
-                    margin-top: 10px;
+                .docs-icon {
+                    margin-top: 20px;
                     > svg {
-                        width: 80px;
-                        height: 80px;
-                        fill: @seagull;
+                        height: 69px;
                     }
                 }
             }

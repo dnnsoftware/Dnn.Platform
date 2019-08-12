@@ -16,6 +16,22 @@ const licensingActions = {
                 }
             });
         };
+    },
+
+    getServerInfo(callback) {
+        return (dispatch) => {
+            ApplicationService.getServerInfo(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SERVER_INFO,
+                    data: {
+                        productVersion: data.ProductVersion
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

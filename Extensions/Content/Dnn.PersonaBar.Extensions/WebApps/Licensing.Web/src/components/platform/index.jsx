@@ -1,74 +1,72 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+    licensing as LicensingActions
+} from "../../actions";
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";
 
 /*eslint-disable quotes*/
-const starIcon = require(`!raw-loader!./../svg/star_circle.svg`).default;
-const evoqIcon = require(`!raw-loader!./../svg/evoq.svg`).default;
-const infoIcon = require(`!raw-loader!./../svg/info_circle.svg`).default;
+const dnnTechnologyEditorialIcon = require(`!raw-loader!./../svg/dnn_technology_editorial.svg`).default;
+const githubIcon = require(`!raw-loader!./../svg/github.svg`).default;
+const dnnIcon = require(`!raw-loader!./../svg/dnn_logo_primary.svg`).default;
+const docsIcon = require(`!raw-loader!./../svg/dnn_docs_logo.svg`).default;
 
 class Platform extends Component {
     constructor() {
         super();
     }
 
-    renderHeader() {
-        let tableFields = [];
-        tableFields.push({ "name": resx.get("LicenseType.Header"), "id": "LicenseType" });
-        tableFields.push({ "name": resx.get("InvoiceNumber.Header"), "id": "InvoiceNumber" });
-        tableFields.push({ "name": resx.get("WebServer.Header"), "id": "WebServer" });
-        tableFields.push({ "name": resx.get("Activated.Header"), "id": "Activated" });
-        tableFields.push({ "name": resx.get("Expires.Header"), "id": "Expires" });
-
-        let tableHeaders = tableFields.map((field) => {
-            let className = "header-" + field.id;
-            return <div className={className} key={"header-" + field.id}>
-                <span>{field.name}</span>
-            </div>;
-        });
-        return <div className="licenses-header-row">{tableHeaders}</div>;
+    renderVersion() {
+        return <div className="intro-header-row">{this.props.productVersion}</div>;
     }
 
-    onEvoqClick() {
-        window.open("http://www.dnnsoftware.com/cms-features", "_blank");
+    onGitHubClick() {
+        window.open("https://github.com/dnnsoftware/Dnn.Platform", "_blank");
     }
 
-    onUpgradeClick() {
-        window.open("http://www.dnnsoftware.com/about/contact-dnn", "_blank");
+    onCommunityClick() {
+        window.open("https://dnncommunity.org", "_blank");
     }
 
-    onDocCenterClick() {
-        window.open("http://www.dnnsoftware.com/docs/", "_blank");
+    onDocsClick() {
+        window.open("https://dnndocs.com", "_blank");
     }
 
     /* eslint-disable react/no-danger */
     renderLinks() {
         return (
             <div className="links-wrapper">
-                <div className="link-evoq-wrapper">
-                    <div className="link-evoq" onClick={this.onEvoqClick.bind(this) }>
-                        <div className="star-icon" dangerouslySetInnerHTML={{ __html: starIcon }} />
-                        <div className="link-evoq-header">{resx.get("CheckOutEvoq.Header") }</div>
-                        <div className="link-evoq-desc">{resx.get("CheckOutEvoq") }</div>
+                <div className="link-docs-wrapper" title={resx.get("Docs.Header")} onClick={this.onDocsClick.bind(this) }>
+                    <div className="link-docs">
+                        <div className="docs-icon" dangerouslySetInnerHTML={{ __html: docsIcon }} />
+                        <div className="link-docs-header">{resx.get("Docs.Header") }</div>
+                        <div className="link-docs-desc">{resx.get("Docs") }</div>
                     </div>
                 </div>
-                <div className="link-upgrade-wrapper">
-                    <div className="link-upgrade" onClick={this.onUpgradeClick.bind(this) }>
-                        <div className="evoq-icon" dangerouslySetInnerHTML={{ __html: evoqIcon }} />
-                        <div className="link-upgrade-header">{resx.get("UpgradeToEvoq.Header") }</div>
-                        <div className="link-upgrade-desc">{resx.get("UpgradeToEvoq") }</div>
+                <div className="link-community-wrapper">
+                    <div className="link-community" title={resx.get("Community.Header")} onClick={this.onCommunityClick.bind(this) }>
+                        <div className="dnn-icon" dangerouslySetInnerHTML={{ __html: dnnIcon }} />
+                        <div className="link-community-header">{resx.get("Community.Header") }</div>
+                        <div className="link-community-desc">{resx.get("Community") }</div>
                     </div>
                 </div>
-                <div className="link-doc-wrapper" onClick={this.onDocCenterClick.bind(this) }>
-                    <div className="link-doc">
-                        <div className="info-icon" dangerouslySetInnerHTML={{ __html: infoIcon }} />
-                        <div className="link-doc-header">{resx.get("DocumentCenter.Header") }</div>
-                        <div className="link-doc-desc">{resx.get("DocumentCenter") }</div>
+                <div className="link-github-wrapper">
+                    <div className="link-github" title={resx.get("GitHub.Header")} onClick={this.onGitHubClick.bind(this)}>
+                        <div className="github-icon" dangerouslySetInnerHTML={{ __html: githubIcon }} />
+                        <div className="link-github-header">{resx.get("GitHub.Header")}</div>
+                        <div className="link-github-desc">{resx.get("GitHub")}</div>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    componentDidMount() {
+        const {props} = this;
+        props.dispatch(LicensingActions.getServerInfo());
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
@@ -76,11 +74,12 @@ class Platform extends Component {
         return (
             <div className={styles.licensingPlatform}>
                 <div>
-                    {this.renderHeader() }
-                    <div className="nolicense">
-                        <div className="nolicense-header">{resx.get("NoLicense.Header") }</div>
-                        <div className="nolicense-body">{resx.get("NoLicense") }</div>
-                    </div>                
+                    {this.renderVersion()}
+                    <div className="intro">
+                        <div className="dnn-technology-editorial-icon" dangerouslySetInnerHTML={{ __html: dnnTechnologyEditorialIcon }} />
+                        <div className="intro-header">{resx.get("Intro.Header") }</div>
+                        <div className="intro-body">{resx.get("Intro") }</div>
+                    </div>
                 </div>
                 {this.renderLinks() }
             </div>
@@ -88,4 +87,15 @@ class Platform extends Component {
     }
 }
 
-export default Platform;
+Platform.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    productVersion: PropTypes.string
+};
+
+function mapStateToProps(state) {
+    return {
+        productVersion: state.licensing.productVersion
+    };
+}
+
+export default connect(mapStateToProps)(Platform);

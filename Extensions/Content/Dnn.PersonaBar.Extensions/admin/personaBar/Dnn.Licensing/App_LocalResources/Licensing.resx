@@ -141,24 +141,6 @@
   <data name="Expires.Header" xml:space="preserve">
     <value>EXPIRES</value>
   </data>
-  <data name="CheckOutEvoq.Header" xml:space="preserve">
-    <value>CHECK OUT EVOQ</value>
-  </data>
-  <data name="CheckOutEvoq" xml:space="preserve">
-    <value>Evoq provides a comprehensive set of features your entire team will use and love. Organizations across the globe rely on Evoq to deliver powerful web experiences.</value>
-  </data>
-  <data name="UpgradeToEvoq.Header" xml:space="preserve">
-    <value>UPGRADE</value>
-  </data>
-  <data name="UpgradeToEvoq" xml:space="preserve">
-    <value>Ready to take your web presence to the next level? Start a free trial or schedule a custom demo for your team.</value>
-  </data>
-  <data name="DocumentCenter.Header" xml:space="preserve">
-    <value>DOCUMENTATION CENTER</value>
-  </data>
-  <data name="DocumentCenter" xml:space="preserve">
-    <value>No matter your questions, DNN's new "Doc Center" is the go-to for answers, tutorials, and product help.</value>
-  </data>
   <data name="LicenseType.Development" xml:space="preserve">
     <value>Development</value>
   </data>
@@ -253,5 +235,29 @@ Unable to add activation back to your invoice as Connection to license server fa
   </data>
   <data name="Success.TrialExtensionRequest" xml:space="preserve">
     <value>Your trial license extension request has been submitted. You should receive an email within 1 business day, with instructions for extending your license. If you have any questions about trial license extensions, please call DNN Corp. Sales Dept. at 650-288-3150.</value>
+  </data>
+  <data name="Intro.Header" xml:space="preserve">
+    <value>DNN Platform</value>
+  </data>
+  <data name="Intro" xml:space="preserve">
+    <value>DNN® ( formerly DotNetNuke® ) is the leading open source web content management platform (CMS) in the Microsoft ecosystem. The product is used to build professional looking and easy-to-use commercial websites, social intranets, community portals, or partner extranets. Containing dynamic content of all types, DNN sites are easy to deploy and update. The DNN Platform has been downloaded more than 8 million times and powers more than 750,000 websites globally. A community of more than 1 million members forms a powerful support network.</value>
+  </data>
+  <data name="GitHub.Header" xml:space="preserve">
+    <value>THE CODE</value>
+  </data>
+  <data name="GitHub" xml:space="preserve">
+    <value>The open source DNN Platform project is managed on GitHub. Visit us there and get involved. Report issues, provide valuable feedback, and contribute.</value>
+  </data>
+  <data name="Community.Header" xml:space="preserve">
+    <value>THE COMMUNITY</value>
+  </data>
+  <data name="Community" xml:space="preserve">
+    <value>The DNN Community is active and vibrant. Visit us and join in on the activities. Get help, discuss projects, and keep up with all the great things others are doing.</value>
+  </data>
+  <data name="Docs.Header" xml:space="preserve">
+    <value>THE DOCS</value>
+  </data>
+  <data name="Docs" xml:space="preserve">
+    <value>DNN Docs is open source too! Learn how to get started with DNN, follow step-by-step tutorials, and even dig through the API documentation.</value>
   </data>
 </root>
