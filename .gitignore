@@ -20,7 +20,8 @@
 *.idea/
 
 # Build results
-[Tt]ools
+[Tt]ools/*
+!tools/packages.config
 [Rr]elease
 *_i.c
 *_p.c
