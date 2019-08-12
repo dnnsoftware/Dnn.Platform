@@ -1,6 +1,6 @@
-#addin nuget:?package=Cake.XdtTransform&version=0.16.0
-#addin nuget:?package=Cake.FileHelpers&version=3.1.0
-#addin nuget:?package=Cake.Powershell&version=0.4.7
+#addin nuget:?package=Cake.XdtTransform&version=0.18.1&loaddependencies=true
+#addin nuget:?package=Cake.FileHelpers&version=3.2.0
+#addin nuget:?package=Cake.Powershell&version=0.4.8
 
 #tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
