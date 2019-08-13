@@ -2624,11 +2624,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
 
                     // HasChildren should be true in case there is at least one not deleted child
-                    tab.HasChildren &=
-                        includeDeletedChildren || (
-                            !includeDeletedChildren &&
-                            GetTabsByParent(tab.TabID, tab.PortalID)
-                                .Any(a => !a.IsDeleted));
+                    tab.HasChildren = tab.HasChildren && (includeDeletedChildren || GetTabsByParent(tab.TabID, tab.PortalID).Any(a => !a.IsDeleted));
                 }
             }
             return listTabs;
