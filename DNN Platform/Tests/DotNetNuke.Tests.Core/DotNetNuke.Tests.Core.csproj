@@ -167,6 +167,7 @@
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
     <Compile Include="Entities\Tabs\TabControllerTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
+    <Compile Include="Framework\DiskPageStatePersisterTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
     <Compile Include="Providers\Builders\FolderInfoBuilder.cs" />
