@@ -83,6 +83,9 @@
       <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -167,6 +170,7 @@
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
     <Compile Include="Entities\Tabs\TabControllerTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
+    <Compile Include="Framework\jQueryTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
     <Compile Include="Providers\Builders\FolderInfoBuilder.cs" />
