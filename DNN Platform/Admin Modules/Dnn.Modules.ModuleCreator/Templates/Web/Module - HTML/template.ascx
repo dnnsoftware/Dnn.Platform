@@ -1,6 +1,6 @@
-// 
-// *NOTE: Please manage your content in the  associated _CONTROL_.html file in this folder
-// 
+<!--
+    *NOTE: Please manage your content in the  associated _CONTROL_.html file in this folder
+--> 
 
 <%@ Control Language="C#" ClassName="_OWNER_._MODULE_._CONTROL_" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
 
@@ -33,12 +33,12 @@
     {
         base.OnLoad(e);
 
-        const string ModuleName = "_OWNER_._MODULE_";
+        const string ModulePath = @"DesktopModules\_OWNER_\_MODULE_";
 
         if (!Page.IsPostBack)
         {
             //Load the HTML file
-            var path = Path.Combine(Server.MapPath(ModuleName), "_CONTROL_.html");
+            var path = Path.Combine(Server.MapPath(ModulePath), "_CONTROL_.html");
             if (File.Exists(path))
             {
                 var content = string.Empty;

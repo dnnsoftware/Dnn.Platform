@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Selectize" type="JavaScript_Library" version="00.12.04" isSystem="true">
+    <package name="Selectize" type="JavaScript_Library" version="00.12.06" isSystem="true">
       <friendlyName>Selectize JavaScript Library</friendlyName>
       <description>Selectize is the hybrid of a textbox and select box. It's jQuery-based and it's useful for tagging, contact lists, country selectors, and so on.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
@@ -19,7 +19,7 @@
             <libraryName>Selectize</libraryName>
             <fileName>selectize.min.js</fileName>
             <objectName>Selectize</objectName>
-            <CDNPath>//cdnjs.com/libraries/selectize.js</CDNPath>
+            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/selectize.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
@@ -29,18 +29,10 @@
               <name>selectize.min.js</name>
             </jsfile>
           </jsfiles>
-        </component>
+        </component>        
         <component type="File">
           <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>Selectize (Apache).txt</name>
-            </file>
-          </files>
-        </component>
-        <component type="File">
-          <files>
-            <basePath>Resources\Libraries\Selectize\00_12_04</basePath>
+            <basePath>Resources\Libraries\Selectize\00_12_06</basePath>
             <file>
               <name>selectize.css</name>
             </file>

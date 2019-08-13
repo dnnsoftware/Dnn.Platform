@@ -557,6 +557,14 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                         Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
+
+            if (!IsValidFilename(fileName))
+            {
+                throw new InvalidFilenameException(
+                    string.Format(
+                        Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed",
+                            "The file name '{0}' is not allowed. The file has not been added."), fileName));
+            }
         }
 
         private void NotifyFileAddingEvents(IFolderInfo folder, int createdByUserID, bool fileExists, Workflow folderWorkflow, IFileInfo file)
@@ -1195,6 +1203,11 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
+            if (!IsValidFilename(newFileName))
+            {
+                throw new InvalidFilenameException(string.Format(Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
+            }
+
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (FileExists(folder, newFileName))
@@ -1790,6 +1803,13 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
+        }
+
+        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        internal virtual bool IsValidFilename(string fileName)
+        {
+            //regex ensures the file is a valid filename and doesn't include illegal characters
+            return Globals.FileValidNameRegex.IsMatch(fileName);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

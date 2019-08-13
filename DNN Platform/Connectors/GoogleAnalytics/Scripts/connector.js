@@ -55,11 +55,9 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
             if (bindViewModel.buttons().length === 1) {
 
                 activateDeleteButton(conn);
-
             }
-
+            utility.notify((utility.resx.Connectors || utility.resx.PersonaBar).txt_Saved, true);
         }
-
     };
 
     var activateDeleteButton = function (conn) {
@@ -126,11 +124,9 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
     };
 
     return {
-
         init: init,
         onSave: onSave,
         getActionButtons: getActionButtons
-
     };
 
 });

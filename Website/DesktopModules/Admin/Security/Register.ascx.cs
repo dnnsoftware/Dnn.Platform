@@ -575,23 +575,45 @@ namespace DotNetNuke.Modules.Admin.Users
             bool _IsValid = userForm.IsValid;
 
 		    if (_IsValid)
-		    {
+            {
+                var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
                 var name = User.Username ?? User.Email;
-                var cleanUsername = PortalSecurity.Instance.InputFilter(name,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-
+                var cleanUsername = PortalSecurity.Instance.InputFilter(name, filterFlags);
                 if (!cleanUsername.Equals(name))
                 {
                     CreateStatus = UserCreateStatus.InvalidUserName;
                 }
-                
-		        var valid = UserController.Instance.IsValidUserName(name); 
+		        var valid = UserController.Instance.IsValidUserName(name);
 
-		        if (!valid)
-		            CreateStatus = UserCreateStatus.InvalidUserName;
-		    }
+                if (!valid)
+                {
+                    CreateStatus = UserCreateStatus.InvalidUserName;
+                }
+
+                var cleanEmail = PortalSecurity.Instance.InputFilter(User.Email, filterFlags);
+                if (!cleanEmail.Equals(User.Email))
+                {
+                    CreateStatus = UserCreateStatus.InvalidEmail;
+                }
+
+                var cleanFirstName = PortalSecurity.Instance.InputFilter(User.FirstName, filterFlags);
+                if (!cleanFirstName.Equals(User.FirstName))
+                {
+                    CreateStatus = UserCreateStatus.InvalidFirstName;
+                }
+
+                var cleanLastName = PortalSecurity.Instance.InputFilter(User.LastName, filterFlags);
+                if (!cleanLastName.Equals(User.LastName))
+                {
+                    CreateStatus = UserCreateStatus.InvalidLastName;
+                }
+
+                var cleanDisplayName = PortalSecurity.Instance.InputFilter(User.DisplayName, filterFlags);
+                if (!cleanDisplayName.Equals(User.DisplayName))
+                {
+                    CreateStatus = UserCreateStatus.InvalidDisplayName;
+                }
+            }
 
             if (PortalSettings.Registration.RegistrationFormType == 0)
 			{

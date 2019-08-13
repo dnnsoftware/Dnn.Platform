@@ -296,6 +296,10 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_USER_REGISTRATION_PRIVATE_SUBJECT";
                     body = "EMAIL_USER_REGISTRATION_PRIVATE_BODY";
                     break;
+                case MessageType.UserRegistrationPrivateNoApprovalRequired:
+                    subject = "EMAIL_USER_REGISTRATION_PUBLIC_SUBJECT";
+                    body = "EMAIL_USER_REGISTRATION_PUBLIC_BODY";
+                    break;
                 case MessageType.UserRegistrationPublic:
                     subject = "EMAIL_USER_REGISTRATION_PUBLIC_SUBJECT";
                     body = "EMAIL_USER_REGISTRATION_PUBLIC_BODY";

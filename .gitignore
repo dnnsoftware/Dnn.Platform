@@ -20,7 +20,8 @@
 *.idea/
 
 # Build results
-[Tt]ools
+[Tt]ools/*
+!tools/packages.config
 [Rr]elease
 *_i.c
 *_p.c
@@ -42,6 +43,10 @@
 *.dotCover
 *.ldf
 Artifacts/
+[Ss]rc
+[Tt]emp
+[Bb]uild/**/*.zip
+
 
 # git merge artifacts
 *.orig
@@ -205,6 +210,8 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 [Ww]ebsite/[Rr]esources/[Ll]ibraries
 
 [Ww]ebsite/[Ss]ignatures
+
+[Ww]ebsite/[Tt]emplates
 
 [Ww]ebsite/51[Dd]egrees.mobi.config
 [Ww]ebsite/[Dd]ot[Nn]et[Nn]uke.log4net.config

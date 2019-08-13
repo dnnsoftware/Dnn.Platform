@@ -422,7 +422,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         if (authSystem.AuthenticationType == "DNN")
                         {
                             defaultLoginControl = authLoginControl;
-                            pnlLoginContainer.Visible = true;
                         }
 
                         //Check if AuthSystem is Enabled
@@ -614,6 +613,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
+
+            //Display the container
+            pnlLoginContainer.Visible = true;
         }
 
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)

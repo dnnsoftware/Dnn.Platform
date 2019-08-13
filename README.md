@@ -25,6 +25,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 ## Quick Links
 
 * [Contribute](CONTRIBUTING.md)
+* [Build](.github/BUILD.md)
 * [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
 * [Versioning Policy](.github/VERSIONING_POLICY.md)
 * [Release Schedule](.github/RELEASE_SCHEDULE.md)

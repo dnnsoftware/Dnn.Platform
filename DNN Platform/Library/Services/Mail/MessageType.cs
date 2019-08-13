@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Mail
         ProfileUpdated,
         UserRegistrationAdmin,
         UserRegistrationPrivate,
+        UserRegistrationPrivateNoApprovalRequired,
         UserRegistrationPublic,
         UserRegistrationVerified,
         UserUpdatedOwnPassword,
