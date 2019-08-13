@@ -253,6 +253,9 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         public DataTable GetFiles(IFolderInfo currentFolderInfo)
         {
+            var sizeResx = Localization.GetString("Size.Text", ResXFile, LanguageCode);
+            var createdResx = Localization.GetString("Created.Text", ResXFile, LanguageCode);
+
             var filesTable = new DataTable();
 
             filesTable.Columns.Add(new DataColumn("FileName", typeof(string)));
@@ -294,19 +297,18 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     case "Image":
                         {
-                            foreach (DataRow dr in
-                                from sAllowExt in allowedImageExt
-                                where name.ToLower().EndsWith(sAllowExt)
-                                select filesTable.NewRow())
+                            if (Array.IndexOf(allowedImageExt, extension) >= 0)
                             {
+                                var dr = filesTable.NewRow();
+
                                 dr["PictureURL"] = FileManager.Instance.GetUrl(fileItem);
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
 
                                 dr["Info"] =
                                     string.Format(fileItemDisplayFormat,
-                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            sizeResx,
+                                            createdResx,
                                             name,
                                             fileItem.Size,
                                             fileItem.LastModificationTime);
@@ -318,17 +320,16 @@ namespace DNNConnect.CKEditorProvider.Browser
                         break;
                     case "Flash":
                         {
-                            foreach (DataRow dr in
-                                from sAllowExt in allowedFlashExt
-                                where name.ToLower().EndsWith(sAllowExt)
-                                select filesTable.NewRow())
+                            if (Array.IndexOf(allowedFlashExt, extension) >= 0)
                             {
+                                var dr = filesTable.NewRow();
+
                                 dr["PictureURL"] = "images/types/swf.png";
 
                                 dr["Info"] =
                                     string.Format(fileItemDisplayFormat,
-                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            sizeResx,
+                                            createdResx,
                                             name,
                                             fileItem.Size,
                                             fileItem.LastModificationTime);
@@ -377,8 +378,8 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                             dr["Info"] =
                                 string.Format(fileItemDisplayFormat,
-                                        Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                        Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                        sizeResx,
+                                        createdResx,
                                         name,
                                         fileItem.Size,
                                         fileItem.LastModificationTime);
@@ -1474,10 +1475,22 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             FoldersTree.Nodes.Add(folderNode);
 
-            var folders = FolderManager.Instance.GetFolders(currentFolderInfo);
+            // gets the list of folders the specified user has read permissions and transfrom into dictionary:
+            //      Key = parrent folder id 
+            //      Value = list of child folders
+            // this will let us possible to create folders tree much faster on a recursion below
+            var readableFolders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
+                .GroupBy(folder => folder.ParentID)
+                .ToDictionary(key => key.Key, value => value?.Select(folder => folder) ?? Enumerable.Empty<IFolderInfo>());
+
+            // get all folders where parrent folder is current one
+            if (!readableFolders.TryGetValue(currentFolderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            {
+                return;
+            }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(RenderFolder).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 folderNode.ChildNodes.Add(node);
             }
@@ -1705,16 +1718,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Render all Directories and sub directories recursive
         /// </summary>
         /// <param name="folderInfo">The folder Info.</param>
+        /// <param name="readableFolders">The list of folders that the current user has READ access</param>
         /// <returns>
         /// TreeNode List
         /// </returns>
-        private TreeNode RenderFolder(FolderInfo folderInfo)
+        private TreeNode RenderFolder(FolderInfo folderInfo, IDictionary<int, IEnumerable<IFolderInfo>> readableFolders)
         {
-            if (!FolderPermissionController.CanViewFolder(folderInfo))
-            {
-                return null;
-            }
-
             TreeNode tnFolder = new TreeNode
             {
                 Text = folderInfo.FolderName,
@@ -1722,15 +1731,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                 ImageUrl = GetFolderIcon(folderInfo)
             };
 
-            var folders = FolderManager.Instance.GetFolders(folderInfo).ToList();
-
-            if (!folders.Any())
+            if (!readableFolders.TryGetValue(folderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
             {
                 return tnFolder;
             }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(RenderFolder).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 tnFolder.ChildNodes.Add(node);
             }
