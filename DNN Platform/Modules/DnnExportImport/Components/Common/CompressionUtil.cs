@@ -158,7 +158,7 @@ namespace Dnn.ExportImport.Components.Common
 
         #region Private Methods
 
-        private static bool AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
+        public static bool AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
             ZipArchiveEntry existingEntry;
