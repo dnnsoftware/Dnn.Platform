@@ -732,7 +732,8 @@ PagePicker.defaultProps = {
         excludeAdminTabs: false,
         disabledNotSelectable: false,
         roles: "1;-1",
-        sortOrder: 0
+        sortOrder: 0,
+        includeDeletedChildren: true
     },
     selectedTabId: -1
 };

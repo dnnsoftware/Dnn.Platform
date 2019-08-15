@@ -50,7 +50,10 @@ class PageDetails extends Component {
             includeDisabled: true
         };
 
-        let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false });
+        let TabParameters_1 = Object.assign(Object.assign({}, TabParameters), { 
+            disabledNotSelectable: false,
+            includeDeletedChildren: false
+        });
         const sf = Utils.getServiceFramework();
 
         const defaultLabel = page.hierarchy || Localization.get("NoneSpecified");
