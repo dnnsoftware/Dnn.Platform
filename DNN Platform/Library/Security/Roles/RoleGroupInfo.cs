@@ -30,7 +30,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Roles.Internal;
 
 #endregion
 

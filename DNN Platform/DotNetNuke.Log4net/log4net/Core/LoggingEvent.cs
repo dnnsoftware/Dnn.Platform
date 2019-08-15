@@ -208,12 +208,6 @@ namespace log4net.Core
 	[Flags] public enum FixFlags
 	{
 		/// <summary>
-		/// Fix the MDC
-		/// </summary>
-		[Obsolete("Replaced by composite Properties. Scheduled removal in v10.0.0.")]
-		Mdc = 0x01,
-
-		/// <summary>
 		/// Fix the NDC
 		/// </summary>
 		Ndc = 0x02,
@@ -1161,23 +1155,6 @@ namespace log4net.Core
 			return m_data;
 		}
 
-		/// <summary>
-		/// Returns this event's exception's rendered using the 
-		/// <see cref="ILoggerRepository.RendererMap" />.
-		/// </summary>
-		/// <returns>
-		/// This event's exception's rendered using the <see cref="ILoggerRepository.RendererMap" />.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <b>Obsolete. Use <see cref="GetExceptionString"/> instead.</b>
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use GetExceptionString instead. Scheduled removal in v10.0.0.")]
-		public string GetExceptionStrRep() 
-		{
-			return GetExceptionString();
-		}
 
 		/// <summary>
 		/// Returns this event's exception's rendered using the 
@@ -1217,76 +1194,7 @@ namespace log4net.Core
 			return m_data.ExceptionString;
 		}
 
-		/// <summary>
-		/// Fix instance fields that hold volatile data.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Some of the values in instances of <see cref="LoggingEvent"/>
-		/// are considered volatile, that is the values are correct at the
-		/// time the event is delivered to appenders, but will not be consistent
-		/// at any time afterwards. If an event is to be stored and then processed
-		/// at a later time these volatile values must be fixed by calling
-		/// <see cref="M:FixVolatileData()"/>. There is a performance penalty
-		/// incurred by calling <see cref="M:FixVolatileData()"/> but it
-		/// is essential to maintaining data consistency.
-		/// </para>
-		/// <para>
-		/// Calling <see cref="M:FixVolatileData()"/> is equivalent to
-		/// calling <see cref="M:FixVolatileData(bool)"/> passing the parameter
-		/// <c>false</c>.
-		/// </para>
-		/// <para>
-		/// See <see cref="M:FixVolatileData(bool)"/> for more
-		/// information.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
-		public void FixVolatileData()
-		{
-			Fix = FixFlags.All;
-		}
 
-		/// <summary>
-		/// Fixes instance fields that hold volatile data.
-		/// </summary>
-		/// <param name="fastButLoose">Set to <c>true</c> to not fix data that takes a long time to fix.</param>
-		/// <remarks>
-		/// <para>
-		/// Some of the values in instances of <see cref="LoggingEvent"/>
-		/// are considered volatile, that is the values are correct at the
-		/// time the event is delivered to appenders, but will not be consistent
-		/// at any time afterwards. If an event is to be stored and then processed
-		/// at a later time these volatile values must be fixed by calling
-		/// <see cref="M:FixVolatileData()"/>. There is a performance penalty
-		/// for incurred by calling <see cref="M:FixVolatileData()"/> but it
-		/// is essential to maintaining data consistency.
-		/// </para>
-		/// <para>
-		/// The <paramref name="fastButLoose"/> param controls the data that
-		/// is fixed. Some of the data that can be fixed takes a long time to 
-		/// generate, therefore if you do not require those settings to be fixed
-		/// they can be ignored by setting the <paramref name="fastButLoose"/> param
-		/// to <c>true</c>. This setting will ignore the <see cref="LocationInformation"/>
-		/// and <see cref="UserName"/> settings.
-		/// </para>
-		/// <para>
-		/// Set <paramref name="fastButLoose"/> to <c>false</c> to ensure that all 
-		/// settings are fixed.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
-		public void FixVolatileData(bool fastButLoose)
-		{
-			if (fastButLoose)
-			{
-				Fix = FixFlags.Partial;
-			}
-			else
-			{
-				Fix = FixFlags.All;
-			}
-		}
 
 		/// <summary>
 		/// Fix the fields specified by the <see cref="FixFlags"/> parameter

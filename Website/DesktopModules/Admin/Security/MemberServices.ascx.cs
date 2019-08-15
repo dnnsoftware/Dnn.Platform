@@ -21,8 +21,6 @@
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
@@ -30,7 +28,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 

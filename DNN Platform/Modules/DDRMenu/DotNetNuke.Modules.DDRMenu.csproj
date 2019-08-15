@@ -13,6 +13,7 @@
     <SccProvider>
     </SccProvider>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -115,8 +116,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="INodeManipulator.cs" />
-    <Compile Include="Localisation\Apollo.cs" />
-    <Compile Include="Localisation\Ealo.cs" />
     <Compile Include="Localisation\Generic.cs" />
     <Compile Include="Localisation\ILocalisation.cs" />
     <Compile Include="Localisation\Localiser.cs" />

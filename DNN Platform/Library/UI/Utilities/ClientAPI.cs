@@ -72,20 +72,6 @@ namespace DotNetNuke.UI.Utilities
 
         private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds client side body.onload event handler
-        /// </summary>
-        /// <param name="objPage">Current page rendering content</param>
-        /// <param name="strJSFunction">Javascript function name to execute</param>
-        /// <remarks>
-        /// </remarks>
-        [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
-        public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
-        {
-            //legacy implementation replaced
-            AddBodyOnLoad(objPage, strJSFunction, strJSFunction);
-        }
 
         public static void SetInitialFocus(Page objPage, Control control)
         {

@@ -457,13 +457,6 @@
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -819,7 +812,6 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />

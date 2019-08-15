@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 			{
 				if (!apiChecked)
 				{
-                    foreach (var api in new ILocalisation[] { new Generic(), new Ealo(), new Apollo() }) //new Adequation() 
+                    foreach (var api in new ILocalisation[] { new Generic() })
                     {
                         if (api.HaveApi())
                         {

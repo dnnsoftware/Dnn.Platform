@@ -27,7 +27,6 @@ using System.Text;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 
 namespace DotNetNuke.Entities.Profile
 {
