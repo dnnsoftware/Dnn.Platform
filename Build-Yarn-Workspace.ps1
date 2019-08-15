@@ -1,3 +1,3 @@
 
 yarn install
-yarn workspaces run build
+yarn lerna run build --parallel

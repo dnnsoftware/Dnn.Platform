@@ -20,5 +20,9 @@
     "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web",
     "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web/src/_exportables",
     "Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Vocabularies.Web"
-  ]
+  ],
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "name": "admin-experience"
 }
