@@ -109,6 +109,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
+		GlobalAspects.cs = GlobalAspects.cs
 		Packages\repositories.config = Packages\repositories.config
 		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection

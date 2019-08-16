@@ -52,6 +52,11 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Installer.Blocker;
 using Microsoft.Extensions.DependencyInjection;
+using NLog.Config;
+using NLog.Targets;
+using NLog;
+using PostSharp.Patterns.Diagnostics.Backends.NLog;
+using PostSharp.Patterns.Diagnostics;
 
 #endregion
 
@@ -78,6 +83,30 @@ namespace DotNetNuke.Web.Common.Internal
 
         private void Application_Start(object sender, EventArgs eventArgs)
         {
+            // Configure NLog.
+            var nlogConfig = new LoggingConfiguration();
+
+            var fileTarget = new FileTarget("file")
+            {
+                ArchiveAboveSize = 250000000,
+                FileName = "nlog.log",
+                KeepFileOpen = true,
+                ConcurrentWrites = false,
+            };
+
+            nlogConfig.AddTarget(fileTarget);
+            nlogConfig.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, fileTarget));
+
+            var consoleTarget = new ConsoleTarget("console");
+            nlogConfig.AddTarget(consoleTarget);
+            nlogConfig.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, consoleTarget));
+
+            LogManager.EnableLogging();
+
+
+            // Configure PostSharp Logging to use NLog.
+            LoggingServices.DefaultBackend = new NLogLoggingBackend(new LogFactory(nlogConfig));
+
             Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
