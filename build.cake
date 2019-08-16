@@ -1,14 +1,14 @@
-#addin nuget:?package=Cake.XdtTransform&version=0.16.0
-#addin nuget:?package=Cake.FileHelpers&version=3.1.0
-#addin nuget:?package=Cake.Powershell&version=0.4.7
+#addin nuget:?package=Cake.XdtTransform&version=0.18.1&loaddependencies=true
+#addin nuget:?package=Cake.FileHelpers&version=3.2.0
+#addin nuget:?package=Cake.Powershell&version=0.4.8
 
 #tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-#load "local:?path=Build/cake/version.cake"
-#load "local:?path=Build/cake/create-database.cake"
-#load "local:?path=Build/cake/unit-tests.cake"
+#load "local:?path=Build/Cake/version.cake"
+#load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/unit-tests.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -31,9 +31,12 @@ var targetBranchCp = Argument("CpBranch", "development");
 // Define directories.
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
-var tempDir = "C:\\temp\\x\\";
-
+var tempDir = Directory("./Temp/");
 var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
+
+// Define versioned files (manifests) to backup and revert on build
+var manifestFiles = GetFiles("./**/*.dnn");
+manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -70,7 +73,6 @@ Task("Build")
     
 Task("BuildWithDatabase")
     .IsDependentOn("CleanArtifacts")
-    .IsDependentOn("CreateSource")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
@@ -94,6 +96,7 @@ Task("BuildInstallUpgradeOnly")
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
+	.IsDependentOn("BackupManifests")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
@@ -101,10 +104,22 @@ Task("BuildAll")
     .IsDependentOn("CreateDeploy")
 	.IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
-    .IsDependentOn("CreateSource")
+	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
 
+	});
+
+Task("BackupManifests")
+	.Does( () => {		
+		Zip("./", "manifestsBackup.zip", manifestFiles);
+	});
+
+Task("RestoreManifests")	
+	.Does( () => {
+		DeleteFiles(manifestFiles);
+		Unzip("./manifestsBackup.zip", "./");
+		DeleteFiles("./manifestsBackup.zip");
 	});
 
 Task("CompileSource")
@@ -159,25 +174,6 @@ Task("CreateSymbols")
 			c.Configuration = configuration;
 			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateSymbols");
-		});
-	});   
-    
-    
-
-Task("CreateSource")
-    .IsDependentOn("UpdateDnnManifests")
-	.Does(() =>
-	{
-		
-		CleanDirectory("./src/Projects/");
-
-        CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateSource");
 		});
 	});
 
@@ -283,8 +279,8 @@ Task("ExternalExtensions")
 		}
 
 
-		externalSolutions = GetFiles("c:\\temp\\x\\**\\*.sln");
-	
+		externalSolutions = GetFiles("./" + tempDir.ToString() + "/**/*.sln");
+
 		Information("Found {0} solutions.", externalSolutions.Count);
 	
 		foreach (var solution in externalSolutions){
@@ -316,13 +312,11 @@ Task("ExternalExtensions")
 		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-		fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "AdminExperience", fileCounter);
-		CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
-	
+		var files = GetFiles("./" + tempDir.ToString() + "/*/Website/Install/Module/*_Install.zip");
+		Information("Copying {1} Artifacts from {0}", "AdminExperience", files.Count);
+		CopyFiles(files, "./Website/Install/Module/");
 	});
-    
-    
+
 Task("Run-Unit-Tests")
     .IsDependentOn("CompileSource")
     .Does(() =>

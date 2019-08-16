@@ -119,6 +119,50 @@ namespace DotNetNuke.Tests.Core
             }
         }
 
+        [Test]
+        public void DeleteFile_Should_Delete_File()
+        {
+            //Action
+            var testPath = Globals.ApplicationMapPath + $"/Test{Guid.NewGuid().ToString().Substring(0, 8)}.txt";
+            using (StreamWriter sw = File.CreateText(testPath))
+            {
+                sw.WriteLine("48");
+            }
+            
+            FileSystemUtils.DeleteFile(testPath);
+
+            //Assert
+            bool res = File.Exists(testPath.Replace("/", "\\"));
+            Assert.IsFalse(res);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("/")]
+        [TestCase("Test/Test ")]
+        public void FixPath_Should_Change_Slashes_And_Trim(string input)
+        {
+            //Action
+            var result = FileSystemUtils.FixPath(input);
+
+            //Assert
+            if (string.IsNullOrEmpty(input))
+            {
+                Assert.IsTrue(input == result);
+            }
+            else if(string.IsNullOrWhiteSpace(input))
+            {
+                Assert.IsTrue(result == string.Empty);
+            }
+            else
+            {
+                Assert.IsFalse(result.Contains(" "));
+                Assert.IsFalse(result.Contains("/"));
+            }
+
+        }
+
         private void PrepareRootPath(string rootPath)
         {
             if (!Directory.Exists(rootPath))
