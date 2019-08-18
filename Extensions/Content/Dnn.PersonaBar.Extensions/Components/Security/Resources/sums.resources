@@ -154,6 +154,7 @@
   <sum name="Default.aspx" version="9.2.2" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.3.0" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
   <sum name="Default.aspx" version="9.3.2" type="Platform" sum="596e44557b4034d334dfed0bb7717d58f9b5de7d322eb26d734967b78d358b68" />
+  <sum name="Default.aspx" version="9.4.0" type="Platform" sum="573105C7F2A91977B8BF0C731E00207CF4A9AEE50AA8ED018F8817313046C379" />
   <sum name="Default.aspx" version="1.0.0" type="Social" sum="9536635227c3846393b448a280119dec7f3d8782b57a053ed1941383e8694ff1" />
   <sum name="Default.aspx.cs" version="1.0.0" type="Social" sum="d273408eb73ee09674a5f80303d903805358c9eb8f38633706fc3c793e6bbe19" />
   <sum name="Default.aspx" version="1.1.1" type="Social" sum="9536635227c3846393b448a280119dec7f3d8782b57a053ed1941383e8694ff1" />
