@@ -40,8 +40,7 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 
 * [ ] 10.0.0 nightly build
 * [ ] 9.4.1 nightly build
-* [ ] 9.4.0 release candidate
-* [ ] 9.3.2 latest supported release
+* [ ] 9.4.0 latest supported release
 
 ## Affected browser
 <!-- 
