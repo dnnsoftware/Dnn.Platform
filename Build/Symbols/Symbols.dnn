@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.PersonaBar.UI_Symbols" type="Library" version="03.00.00">
+    <package name="Dnn.PersonaBar.UI_Symbols" type="Library" version="09.04.01">
       <friendlyName>DotNetNuke Dnn.PersonaBar.UI Symbols</friendlyName>
       <description>This package contains Debug Symbols and Intellisense files for DotNetNuke Dnn.PersonaBar.UI Edition.</description>
       <owner>
