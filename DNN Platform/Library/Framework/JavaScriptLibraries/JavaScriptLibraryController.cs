@@ -61,7 +61,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns>instance of JavaScriptLibrary</returns>
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
-            return GetLibraries().SingleOrDefault(predicate);
+            return GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
         }
 
         /// <summary>
