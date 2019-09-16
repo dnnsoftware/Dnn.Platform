@@ -44,40 +44,38 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         #region IJavaScriptController Implementation
 
-        /// <summary>
-        /// delete the library reference from the database
-        /// </summary>
-        /// <param name="library">library to be deleted</param>
+        /// <summary>Delete the library reference from the database</summary>
+        /// <param name="library">Library to be deleted</param>
         public void DeleteLibrary(JavaScriptLibrary library)
         {
             DataProvider.Instance().ExecuteNonQuery("DeleteJavaScriptLibrary", library.JavaScriptLibraryID);
             ClearCache();
         }
 
-        /// <summary>
-        /// return a library reference
-        /// </summary>
-        /// <param name="predicate">predicate to match to return the library e.g. libraryname=</param>
-        /// <returns>instance of JavaScriptLibrary</returns>
+        /// <summary>Get information about the latest version of a <see cref="JavaScriptLibrary"/> that matches the given <paramref name="predicate"/></summary>
+        /// <param name="predicate">A function used to filter the library</param>
+        /// <example>
+        /// JavaScriptLibraryController.Instance.GetLibrary(l => string.Equals(l.LibraryName, "Knockout", StringComparison.OrdinalIgnoreCase))
+        /// </example>
+        /// <returns>The highest version <see cref="JavaScriptLibrary"/> instance that matches the <paramref name="predicate"/>, or <c>null</c> if no library matches</returns>
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
             return GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
         }
 
-        /// <summary>
-        /// return collection of library references
-        /// </summary>
-        /// <param name="predicate">predicate to match to return the library collection e.g. libraryname=</param>
-        /// <returns>collection of library references</returns>
+        /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances matching the given <paramref name="predicate"/></summary>
+        /// <param name="predicate">A function used to filter the library</param>
+        /// <example>
+        /// JavaScriptLibraryController.Instance.GetLibraries(l => string.Equals(l.LibraryName, "Knockout", StringComparison.OrdinalIgnoreCase))
+        /// </example>
+        /// <returns>A sequence of <see cref="JavaScriptLibrary"/> instances</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries(Func<JavaScriptLibrary, bool> predicate)
         {
             return GetLibraries().Where(predicate);
         }
 
-        /// <summary>
-        /// return all registered libraries
-        /// </summary>
-        /// <returns>collection of library references</returns>
+        /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances</summary>
+        /// <returns>A sequence of <see cref="JavaScriptLibrary"/> instances</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries()
         {
 	    return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(new CacheItemArgs(DataCache.JavaScriptLibrariesCacheKey,
@@ -86,10 +84,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                  c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
         }
 
-        /// <summary>
-        /// save a library to the database
-        /// </summary>
-        /// <param name="library">library to be saved</param>
+        /// <summary>Save a library to the database</summary>
+        /// <param name="library">Library to be saved</param>
         public void SaveLibrary(JavaScriptLibrary library)
         {
             library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>("SaveJavaScriptLibrary", 
