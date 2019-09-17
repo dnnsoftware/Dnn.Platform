@@ -41,6 +41,13 @@ class ListView extends Component {
         };
 
         event = Object.assign(event, settings);
+        
+        let portalsettings = {
+            portalId: portal.PortalID,
+            cultureCode: this.props.culture
+        }
+        
+        event2 = Object.assign(event2, portalsettings);
 
         utilities.loadPanel(this.props.siteSettingModule, {
             settings

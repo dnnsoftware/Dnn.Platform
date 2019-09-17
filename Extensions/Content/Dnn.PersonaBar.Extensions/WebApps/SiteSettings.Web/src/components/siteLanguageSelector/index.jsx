@@ -39,8 +39,8 @@ class SiteLanguageSelector extends Component {
             }
         });
 
-        document.addEventListener("reloadPortalList", () => {
-            props.dispatch(SiteInfoActions.getPortals());
+        document.addEventListener("reloadPortalList", (event) => {
+            props.dispatch(SiteInfoActions.getPortalSettings(event.portalId, event.cultureCode));
         }, false);
     }
 
