@@ -5384,8 +5384,8 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.3.0":
                             UpgradeToVersion930();
                             break;
-                        case "9.4.0":
-                            UpgradeToVersion940();
+                        case "9.4.1":
+                            UpgradeToVersion941();
                             break;
                     }
                 }
@@ -5648,7 +5648,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static void UpgradeToVersion940()
+        private static void UpgradeToVersion941()
         {
             // It's possible previous versions of DNN created invalid binding redirects with <dependentAssembly xmlns="">, which are ignored
             // This finds these and removes them, adding a correct binding redirect if one doesn't exist
