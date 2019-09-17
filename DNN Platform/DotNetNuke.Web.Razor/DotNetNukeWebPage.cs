@@ -63,13 +63,13 @@ namespace DotNetNuke.Web.Razor
         public DotNetNukeWebPage()
         {
             var model = Globals.DependencyProvider.GetService<TModel>();
-            Model = model;
+            Model = model ?? Activator.CreateInstance<TModel>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
-            get { return _model ?? (_model = PageContext.Model as TModel); }
+            get { return PageContext?.Model as TModel ?? _model; }
             set { _model = value; }
         }
     }
