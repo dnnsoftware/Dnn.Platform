@@ -203,7 +203,14 @@ namespace DotNetNuke.Services.FileSystem
             //check if a filename has a character that is not valid for urls
             if (fullPath.IndexOfAny(InvalidFileUrlChars) >= 0)
             {
-                return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
+                return Globals.LinkClick($"fileid={file.FileId}", 
+                    Null.NullInteger, 
+                    Null.NullInteger, 
+                    true, 
+                    false, 
+                    portalSettings.PortalId, 
+                    portalSettings.EnableUrlLanguage, 
+                    portalSettings.GUID.ToString());
             }
 
             // Does site management want the cachebuster parameter?
