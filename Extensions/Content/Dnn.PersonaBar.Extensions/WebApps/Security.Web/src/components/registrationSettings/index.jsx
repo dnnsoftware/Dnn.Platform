@@ -10,7 +10,8 @@ import {
     RadioButtons,
     Label,
     Button,
-    PagePicker
+    PagePicker,
+    Tooltip
 } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
@@ -26,7 +27,8 @@ class RegistrationSettingsPanelBody extends Component {
             registrationSettings: undefined,
             triedToSubmit: false,
             error: {
-                registrationFields: ""
+                registrationFields: "",
+                validationFields:""
             }
         };
         canEdit = util.settings.isHost || util.settings.isAdmin || util.settings.permissions.REGISTRATION_SETTINGS_EDIT;
@@ -85,6 +87,7 @@ class RegistrationSettingsPanelBody extends Component {
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
+        state.error["validationFields"] = "";
         this.setState({
             triedToSubmit: true
         });
@@ -95,6 +98,7 @@ class RegistrationSettingsPanelBody extends Component {
             util.utilities.notifyError(resx.get("RegistrationSettingsError"));
             const errorMessage = JSON.parse(error.responseText);
             state.error["registrationFields"] = errorMessage.Message;
+            state.error["validationFields"] = errorMessage.ModelState;
             this.setState({
                 error: state.error
             });
@@ -165,6 +169,10 @@ class RegistrationSettingsPanelBody extends Component {
             disabledNotSelectable: false,
             roles: "1;-1",
             sortOrder: 0
+        };
+        const ToolTipStyle = {
+            padding: "5px 0",
+            float: "left"
         };
         if (state.registrationSettings) {
             return (
@@ -336,6 +344,13 @@ class RegistrationSettingsPanelBody extends Component {
                                     value={state.registrationSettings.UseEmailAsUsername}
                                     onChange={this.onSettingChange.bind(this, "UseEmailAsUsername") }
                                     readOnly={!canEdit} />
+                                {this.state.error.validationFields["request.UseEmailAsUsername"] !== ""
+                                && <Tooltip
+                                    messages={[this.state.error.validationFields["request.UseEmailAsUsername"]]}
+                                    type="error"
+                                    tooltipPlace={"top"}
+                                    style = {ToolTipStyle}
+                                    rendered={this.state.error.validationFields["request.UseEmailAsUsername"] !== ""}/>}
                             </div>
                         </InputGroup>
                     }
