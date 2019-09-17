@@ -1093,7 +1093,7 @@ namespace Dnn.PersonaBar.Sites.Components
         private void SerializeTabs(XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<TabDto> pages, bool chkContent)
         {
             pages = pages.ToList();
-            foreach (var tab in tabCollection.Values.OrderBy(x=>x.TabID))
+            foreach (var tab in tabCollection.Values.OrderBy(x=>x.Level))
             {
                 //if not deleted
                 if (!tab.IsDeleted)
