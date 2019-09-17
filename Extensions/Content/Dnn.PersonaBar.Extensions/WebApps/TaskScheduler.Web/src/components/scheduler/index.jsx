@@ -25,7 +25,7 @@ class SchedulerPanel extends Component {
         };
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { props } = this;
         props.dispatch(TaskActions.getSchedulerItemList());
         if (props.serverList === null || props.serverList === [] || props.serverList === undefined) {
@@ -82,10 +82,10 @@ class SchedulerPanel extends Component {
     onSelectServer(event) {
         const { props } = this;
         let { state } = this;
-        let index = event.target.selectedIndex;
-        let server = event.target[index].text;
-        let serverId = event.target.value;
-        if (serverId !== state.currentServerId) {
+        let { value, label } = event || {};
+        let server = label;
+        let serverId = value;
+        if (server && serverId !== state.currentServerId) {
             state.currentServerId = serverId;
             this.setState({
                 currentServerId: state.currentServerId
