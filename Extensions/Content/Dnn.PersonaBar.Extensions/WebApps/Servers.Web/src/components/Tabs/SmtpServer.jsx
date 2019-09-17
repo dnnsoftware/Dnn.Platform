@@ -198,35 +198,36 @@ class SmtpServer extends Component {
                                 isGlobal={areGlobalSettings} />
                         </div>
                     }
-                    <div className="tooltipAdjustment border-bottom">
-                        {smtpSettingsVisible && credentialVisible && 
-                            <div>
-                                <EditBlock label={localization.get("plSMTPUsername")}
-                                    tooltip={localization.get("plSMTPUsername.Help")}
-                                    value={selectedSmtpSettings.smtpUserName} 
-                                    isGlobal={areGlobalSettings}
-                                    onChange={this.onChangeField.bind(this, "smtpUserName")} 
-                                    error={props.errors["smtpUserName"]} />                   
-                            
-                                <EditBlock label={localization.get("plSMTPPassword")}
-                                    tooltip={localization.get("plSMTPPassword.Help")}
-                                    value={selectedSmtpSettings.smtpPassword} 
-                                    isGlobal={areGlobalSettings} 
-                                    type="password"
-                                    onChange={this.onChangeField.bind(this, "smtpPassword")}
-                                    error={props.errors["smtpPassword"]}  />
-                            </div>     
-                        }
-                        {smtpSettingsVisible &&
-                        <SwitchBlock label={localization.get("plSMTPEnableSSL")}
-                            onText={localization.get("SwitchOn")}
-                            offText={localization.get("SwitchOff")}
-                            tooltip={localization.get("plSMTPEnableSSL.Help")}
-                            value={selectedSmtpSettings.enableSmtpSsl}
-                            onChange={this.onChangeSmtpEnableSsl.bind(this)}
-                            isGlobal={areGlobalSettings} />
-                        }              
-                    </div>
+                    {smtpSettingsVisible && credentialVisible && 
+                        <div className="tooltipAdjustment border-bottom">
+                            <EditBlock label={localization.get("plSMTPUsername")}
+                                tooltip={localization.get("plSMTPUsername.Help")}
+                                value={selectedSmtpSettings.smtpUserName} 
+                                isGlobal={areGlobalSettings}
+                                onChange={this.onChangeField.bind(this, "smtpUserName")} 
+                                error={props.errors["smtpUserName"]} />                   
+                        
+                            <EditBlock label={localization.get("plSMTPPassword")}
+                                tooltip={localization.get("plSMTPPassword.Help")}
+                                value={selectedSmtpSettings.smtpPassword} 
+                                isGlobal={areGlobalSettings} 
+                                type="password"
+                                onChange={this.onChangeField.bind(this, "smtpPassword")}
+                                error={props.errors["smtpPassword"]}  />
+                        </div>     
+                    }
+                    {smtpSettingsVisible &&
+                        <div className="tooltipAdjustment border-bottom">
+                            <SwitchBlock label={localization.get("plSMTPEnableSSL")}
+                                onText={localization.get("SwitchOn")}
+                                offText={localization.get("SwitchOff")}
+                                tooltip={localization.get("plSMTPEnableSSL.Help")}
+                                value={selectedSmtpSettings.enableSmtpSsl}
+                                onChange={this.onChangeSmtpEnableSsl.bind(this)}
+                                isGlobal={areGlobalSettings} />
+                        </div>
+                    }              
+                    
                     {smtpSettingsVisible && areGlobalSettings &&
                         <EditBlock label={localization.get("plHostEmail")}
                             tooltip={localization.get("plHostEmail.Help")}
