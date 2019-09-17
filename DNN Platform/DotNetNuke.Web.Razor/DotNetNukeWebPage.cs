@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
-            get { return _model ?? (_model = PageContext.Model as TModel); }
+            get { return PageContext?.Model as TModel ?? _model; }
             set { _model = value; }
         }
     }
