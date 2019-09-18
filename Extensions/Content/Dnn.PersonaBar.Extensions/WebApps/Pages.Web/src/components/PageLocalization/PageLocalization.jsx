@@ -136,12 +136,14 @@ class PageLocalization extends Component {
     }
 
     onUpdateLocalization() {
-        const {props, state} = this;
-        const {Locales, Modules, Pages} = state;
-        const params = { Locales, Modules, Pages };
-        props.dispatch(LanguagesActions.updateTabLocalization(params, () => {
-            this.getLanguages();
-        }));
+        utils.confirm(Localization.get("UpdateLocalizationWarning"), Localization.get("Continue"), Localization.get("Cancel"), () => {
+            const {props, state} = this;
+            const {Locales, Modules, Pages} = state;
+            const params = { Locales, Modules, Pages };
+            props.dispatch(LanguagesActions.updateTabLocalization(params, () => {
+                this.getLanguages();
+            }));
+        });
     }
 
     renderPageLanguage(local, modules, page, isDefault=false) {

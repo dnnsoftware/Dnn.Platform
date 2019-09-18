@@ -153,6 +153,12 @@
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Continue.Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="UpdateLocalizationWarning.Text" xml:space="preserve">
+    <value>Updating localization might take a few minutes depending on the number of modules. Please wait until the process finishes completely.</value>
+  </data>
   <data name="DragPageTooltip.Text" xml:space="preserve">
     <value>Drag Page into Location</value>
   </data>
