@@ -156,7 +156,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     self.panelViewData(null, null);
                 }
 
-                parentBody.style.overflow = "auto";
+                parentBody.style.removeProperty('overflow');
                 body.style.overflow = "hidden";
 
                 inAnimation = true;
