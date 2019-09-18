@@ -346,6 +346,7 @@
             var message;
 
             // Empty file upload does not be supported in IE10
+            this._enableBrowserDetection();
             if (data.files[0].size == 0 && $.browser.msie && $.browser.version == "10.0") {
                 message = this.options.resources.emptyFileUpload;
             }
@@ -363,6 +364,48 @@
             }
 
             setTimeout(function () { data.submit(); }, 25);
+        },
+
+        _enableBrowserDetection: function () {
+            (function ($) {
+                if (typeof $.uaMatch === "undefined") {
+                    $.uaMatch = function (ua) {
+                        ua = ua.toLowerCase();
+
+                        var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+                            /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                            /(msie) ([\w.]+)/.exec(ua) ||
+                            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                            [];
+
+                        return {
+                            browser: match[1] || "",
+                            version: match[2] || "0"
+                        };
+                    };
+                }
+                
+                // Don't clobber any existing jQuery.browser in case it's different
+                if (typeof $.browser === "undefined") {
+                    var matched = jQuery.uaMatch(navigator.userAgent);
+                    var browser = {};
+
+                    if (matched.browser) {
+                        browser[matched.browser] = true;
+                        browser.version = matched.version;
+                    }
+
+                    // Chrome is Webkit, but Webkit is also Safari.
+                    if (browser.chrome) {
+                        browser.webkit = true;
+                    } else if (browser.webkit) {
+                        browser.safari = true;
+                    }
+
+                    $.browser = browser;
+                }
+            })(jQuery);
         },
 
         _getInitializedStatusElement: function(data) {
