@@ -87,7 +87,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static string Version(String jsname)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
+            JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
             return library != null ? Convert.ToString(library.Version) : String.Empty;
         }
 
