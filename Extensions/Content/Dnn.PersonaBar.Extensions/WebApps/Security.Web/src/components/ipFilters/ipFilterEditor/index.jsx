@@ -9,65 +9,60 @@ import resx from "../../../resources";
 let specificityOptions = [];
 let typeOptions = [];
 const re = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+const SINGLE_IP = "SingleIP";
+const IP_RANGE = "IPRange";
 
 class IpFilterEditor extends Component {
     constructor() {
         super();
         this.state = {
-            ipFilter: {},
+            ipFilter: {RuleType: 1},
             error: {
                 ip: true,
                 mask: true
             },
             triedToSubmit: false,
-            isIpRange: false,
-            formModified: false
+            formModified: false,
+            ruleSpecificity: SINGLE_IP
         };
-    }
-
-    componentDidMount() {
-        const {props} = this;
-        if (props.ipFilterId) {
-            props.dispatch(SecurityActions.getIpFilter({
-                filterId: props.ipFilterId
-            }));
-        }
-
+        
         specificityOptions = [];
-        specificityOptions.push({ label: resx.get("SingleIP"), value: 1 });
-        specificityOptions.push({ label: resx.get("IPRange"), value: 2 });
+        specificityOptions.push({ label: resx.get(SINGLE_IP), value: SINGLE_IP });
+        specificityOptions.push({ label: resx.get(IP_RANGE), value: IP_RANGE });
 
         typeOptions = [];
         typeOptions.push({ label: resx.get("AllowIP"), value: 1 });
         typeOptions.push({ label: resx.get("DenyIP"), value: 2 });
     }
 
-    toggle(event) {
-        if (this.state.isIpRange && parseInt(event) === 2) {
-            return;
-        }
-        else if (!this.state.isIpRange && parseInt(event) === 1) {
-            return;
-        }
-        let {ipFilter} = this.state;
-        if (this.state.isIpRange) {
-            ipFilter["SubnetMask"] = "";
-            this.setState({
-                isIpRange: !this.state.isIpRange,
-                ipFilter: ipFilter,
-                formModified: true
-            });
-        }
-        else {
-            this.setState({
-                isIpRange: !this.state.isIpRange,
-                formModified: true
-            });
+    componentDidMount() {
+        const {props} = this;
+        if (props.ipFilterId) {
+            props.dispatch(SecurityActions.getIpFilter({
+                    filterId: props.ipFilterId
+                }, (data) => {
+                    let ipFilter = Object.assign({}, data.Results);
+                    this.setState({
+                        error: {
+                            ip: false,
+                            mask: false
+                        },
+                        ruleSpecificity: ipFilter.SubnetMask === "" ? SINGLE_IP : IP_RANGE,
+                        ipFilter
+                    });
+                }));
         }
     }
 
+    onRuleSpecificityChange(event) {
+        this.setState({
+            ruleSpecificity: event,
+            formModified: true,
+            triedToSubmit: false
+        });
+    }
+
     onSettingChange(key, event) {
-        let {state} = this;
         let {ipFilter} = this.state;
 
         if (key === "RuleType") {
@@ -76,23 +71,10 @@ class IpFilterEditor extends Component {
         else {
             ipFilter[key] = typeof (event) === "object" ? event.target.value : event;
         }
-        if (!re.test(ipFilter[key]) && key === "IPAddress") {
-            state.error["ip"] = true;
-        }
-        else if (re.test(ipFilter[key]) && key === "IPAddress") {
-            state.error["ip"] = false;
-        }
-        if (!re.test(ipFilter[key]) && key === "SubnetMask") {
-            state.error["mask"] = true;
-        }
-        else if (re.test(ipFilter[key]) && key === "SubnetMask") {
-            state.error["mask"] = false;
-        }
-
+        
         this.setState({
             ipFilter: ipFilter,
             triedToSubmit: false,
-            error: state.error,
             formModified: true
         });
     }
@@ -100,33 +82,42 @@ class IpFilterEditor extends Component {
     onUpdateItem(event) {
         event.preventDefault();
         const {state} = this;
-        let {ipFilter} = this.state;
-
-        /*eslint-disable eqeqeq*/
-        if (this.state.ipFilter.RuleType == undefined) {
-            ipFilter["RuleType"] = 1;
-            this.setState({
-                ipFilter: ipFilter,
-                triedToSubmit: true
-            });
+        
+        this.setState({
+            triedToSubmit: true
+        });
+        
+        if(this.validateIPAddressContainsError()) {
+            return;
         }
-        else {
-            this.setState({
-                triedToSubmit: true
-            });
-        }
-        if (state.isIpRange) {
-            if (state.error.ip || state.error.mask) {
-                return;
-            }
-        }
-        else {
-            if (state.error.ip) {
-                return;
-            }
+        
+        if (state.ruleSpecificity === SINGLE_IP) {
+            state.ipFilter["SubnetMask"] = "";
         }
 
         this.props.onUpdate(this.state.ipFilter);
+    }
+    
+    validateIPAddressContainsError() {
+        const {state} = this;
+        
+        state.error["ip"] = !this.isValidIpAddress(state.ipFilter["IPAddress"]);
+        
+        if (state.ruleSpecificity === IP_RANGE) {
+            state.error["mask"] = !this.isValidIpAddress(state.ipFilter["SubnetMask"]);
+        } else {
+            state.error["mask"] = false;
+        }
+        
+        this.setState({
+            error: state.error
+        });
+        
+        return (state.error.ip || state.error.mask);
+    }
+     
+    isValidIpAddress(ipAddress) {
+        return re.test(ipAddress);
     }
 
     /* eslint-disable react/no-danger */
@@ -137,20 +128,11 @@ class IpFilterEditor extends Component {
                     labelType="inline"
                     tooltipMessage={resx.get("plRuleSpecifity.Help") }
                     label={resx.get("plRuleSpecifity") } />
-                {this.state.isIpRange &&
                     <RadioButtons
-                        onChange={this.toggle.bind(this) }
+                        onChange={this.onRuleSpecificityChange.bind(this) }
                         options={specificityOptions}
                         buttonGroup="specificity"
-                        value={2}/>
-                }
-                {!this.state.isIpRange &&
-                    <RadioButtons
-                        onChange={this.toggle.bind(this) }
-                        options={specificityOptions}
-                        buttonGroup="specificity"
-                        value={1}/>
-                }
+                        value={this.state.ruleSpecificity}/>
             </InputGroup>
             <InputGroup>
                 <Label
@@ -158,7 +140,7 @@ class IpFilterEditor extends Component {
                     label={resx.get("plRuleType") } />
                 <Dropdown
                     options={typeOptions }
-                    value={this.state.ipFilter.RuleType != undefined ? this.state.ipFilter.RuleType : 1}
+                    value={this.state.ipFilter.RuleType}
                     onSelect={this.onSettingChange.bind(this, "RuleType") } />
             </InputGroup>
             <InputGroup>
@@ -173,7 +155,7 @@ class IpFilterEditor extends Component {
                     value={this.state.ipFilter.IPAddress}
                     onChange={this.onSettingChange.bind(this, "IPAddress") } />
             </InputGroup>
-            {this.state.isIpRange &&
+            {this.state.ruleSpecificity === IP_RANGE &&
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSubnet.Help") }
