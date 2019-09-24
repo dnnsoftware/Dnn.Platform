@@ -987,9 +987,9 @@ namespace Dnn.ExportImport.Components.Services
         private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)
         {
             importModule.IsDeleted = exportModule.IsDeleted;
-            ActionInWorkflowlessContext(local.TabID, () =>
+            ActionInWorkflowlessContext(importModule.TabID, () =>
             {
-                _moduleController.UpdateModule(local);
+                _moduleController.UpdateModule(importModule);
             });
             importModule.IsDeleted = exportTabModule.IsDeleted;
         }
