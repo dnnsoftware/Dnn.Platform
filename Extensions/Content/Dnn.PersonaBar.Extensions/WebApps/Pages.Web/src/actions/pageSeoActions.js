@@ -60,6 +60,18 @@ const pageSeoActions = {
                         data: { error: response.ErrorMessage }
                     });
                     utils.notifyError(response.ErrorMessage);
+
+                    // DNN-30998: Adding SuggestedUrl returned by the server in case of validation errors
+                    if(response.SuggestedUrlPath)
+                    {
+                        dispatch({
+                            type: ActionTypes.SEO_CHANGE_URL,
+                            payload: {
+                                key: "path",
+                                value: response.SuggestedUrlPath
+                            }
+                        });
+                    }
                     return;
                 }
 
