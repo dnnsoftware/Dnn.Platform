@@ -48,77 +48,60 @@
     <Reference Include="ClientDependency.Core, Version=1.9.2.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DNN.Integration.Test.Framework, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0-rc0001\lib\net45\DNN.Integration.Test.Framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DNN.Integration.Test.Framework, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0\lib\net45\DNN.Integration.Test.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Core.9.4.0-rc0001\lib\net45\DotNetNuke.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Core.9.4.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.HttpModules, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0-rc0001\lib\net45\DotNetNuke.HttpModules.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.HttpModules, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0\lib\net45\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.4.0-rc0001\lib\net45\DotNetNuke.Instrumentation.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Instrumentation, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.4.0\lib\net45\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.log4net, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Instrumentation.9.4.0-rc0001\lib\net45\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Log4Net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Instrumentation.9.4.0\lib\net45\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0-rc0001\lib\net45\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Modules.DigitalAssets, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0\lib\net45\DotNetNuke.Modules.DigitalAssets.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Providers.FolderProviders, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Providers.FolderProviders.9.4.0-rc0001\lib\net45\DotNetNuke.Providers.FolderProviders.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Providers.FolderProviders, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Providers.FolderProviders.9.4.0\lib\net45\DotNetNuke.Providers.FolderProviders.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.SiteExportImport, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.SiteExportImport.9.4.0-rc0001\lib\net45\DotNetNuke.SiteExportImport.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.SiteExportImport, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.SiteExportImport.9.4.0\lib\net45\DotNetNuke.SiteExportImport.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.SiteExportImport.Library, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.SiteExportImport.9.4.0-rc0001\lib\net45\DotNetNuke.SiteExportImport.Library.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.SiteExportImport.Library, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.SiteExportImport.9.4.0\lib\net45\DotNetNuke.SiteExportImport.Library.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0-rc0001\lib\net45\DotNetNuke.Tests.Utilities.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Tests.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0\lib\net45\DotNetNuke.Tests.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.9.4.0-rc0001\lib\net45\DotNetNuke.Web.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Client.9.4.0-rc0001\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Client.9.4.0\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.4.0-rc0001\lib\net45\DotNetNuke.Web.Deprecated.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Deprecated, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.4.0\lib\net45\DotNetNuke.Web.Deprecated.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Mvc, Version=9.4.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.Mvc.9.4.0-rc0001\lib\net45\DotNetNuke.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Mvc, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Mvc.9.4.0\lib\net45\DotNetNuke.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0-rc0001\lib\net45\DotNetNuke.WebControls.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.WebControls, Version=2.4.0.598, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Bundle.9.4.0\lib\net45\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Web.9.4.0-rc0001lib\net45\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\DotNetNuke.Core.9.4.0-rc0001\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -203,9 +186,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4">
-      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.4.0-rc0001\lib\net45\Telerik.Web.UI.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Telerik.Web.UI, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetNuke.Web.Deprecated.9.4.0\lib\net45\Telerik.Web.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
