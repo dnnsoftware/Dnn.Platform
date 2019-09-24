@@ -532,4 +532,7 @@
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
+  <data name="DotNetVersion472Required.Text" xml:space="preserve">
+    <value>.Net Framework 4.7.2 est requis. Vérifiez les mises à jour Windows avant de continuer.</value>
+  </data>
 </root>
