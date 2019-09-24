@@ -340,16 +340,6 @@ namespace DotNetNuke.Modules.Admin.Security
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
                     liSend.Visible = false;
                     liCancel.Visible = true;
-
-                    // don't hide panel when e-mail only in use and error occured. We must provide negative feedback to the user, in case he doesn't rember what e-mail address he has used
-                    if (!canSend && _user == null && MembershipProviderConfig.RequiresUniqueEmail && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
-                    {
-                        message = Localization.GetString("EmailNotFound", LocalResourceFile);
-                        pnlRecover.Visible = true;
-                        UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
-                        liSend.Visible = true;
-                        liCancel.Visible = true;
-                    }
                 }
                 else
                 {
