@@ -85,7 +85,6 @@
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="OutputContent" />
     </CreateItem>
-    <Message importance="High" text="@(OutputContent)"></Message>
     <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(PackagePath)" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
