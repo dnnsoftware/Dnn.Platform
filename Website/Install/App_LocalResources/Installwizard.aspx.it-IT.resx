@@ -532,4 +532,7 @@ L'opzione per impostare il Database Standard  non è disponibile</value>
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
+  <data name="DotNetVersion472Required.Text" xml:space="preserve">
+    <value>È richiesto .Net Framework 4.7.2. Controlla gli aggiornamenti di Windows prima di procedere.</value>
+  </data>
 </root>

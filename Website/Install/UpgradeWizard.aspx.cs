@@ -411,15 +411,17 @@ namespace DotNetNuke.Services.Install
         //steps shown in UI
         static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
         static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
+        static IInstallationStep iisVerification = new IISVerificationStep();
 
         //Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
-                                {
-                                    //{new AddFcnModeStep(), 1},
-                                    {upgradeDatabase, 50}, 
-                                    {upgradeExtensions, 49}, 
-                                    {new InstallVersionStep(), 1}
-                                };
+            {
+            //{new AddFcnModeStep(), 1},
+                {iisVerification, 1 },
+                {upgradeDatabase, 49}, 
+                {upgradeExtensions, 49}, 
+                {new InstallVersionStep(), 1}
+            };
 
         static UpgradeWizard()
         {
