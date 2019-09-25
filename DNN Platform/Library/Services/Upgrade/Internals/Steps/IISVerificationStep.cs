@@ -38,18 +38,20 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             Details = Localization.Localization.GetString("CheckingIIS", LocalInstallResourceFile);
 
-            // Checks for integrate pipiline mode.
+            // Checks for integrated pipeline mode.
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
                 Errors.Add(Localization.Localization.GetString("IISVerificationFail", LocalInstallResourceFile));
                 Status = StepStatus.Abort;
+                return;
             }
 
             // Check for .Net Framework 4.7.2
-            if (!IsDotNetVersionAtLeast(999999)) // 461808
+            if (!IsDotNetVersionAtLeast(461808))
             {
                 Errors.Add(Localization.Localization.GetString("DotNetVersion472Required", LocalInstallResourceFile));
                 Status = StepStatus.Abort;
+                return;
             }
 
             Status = StepStatus.Done;
