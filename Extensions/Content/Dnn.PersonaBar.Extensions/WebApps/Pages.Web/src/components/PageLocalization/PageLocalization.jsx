@@ -142,6 +142,9 @@ class PageLocalization extends Component {
             const params = { Locales, Modules, Pages };
             props.dispatch(LanguagesActions.updateTabLocalization(params, () => {
                 this.getLanguages();
+                utils.notify(Localization.get("UpdateLocalizationSuccess"));
+            }, () => {
+                utils.notifyError(Localization.get("AnErrorOccurred"));
             }));
         });
     }

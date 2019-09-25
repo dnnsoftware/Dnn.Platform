@@ -159,6 +159,9 @@
   <data name="UpdateLocalizationWarning.Text" xml:space="preserve">
     <value>Updating localization might take a few minutes depending on the number of modules. Please wait until the process finishes completely.</value>
   </data>
+  <data name="UpdateLocalizationSuccess.Text" xml:space="preserve">
+    <value>Done!</value>
+  </data>
   <data name="DragPageTooltip.Text" xml:space="preserve">
     <value>Drag Page into Location</value>
   </data>
