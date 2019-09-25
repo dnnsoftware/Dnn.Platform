@@ -23,6 +23,7 @@ namespace DotNetNuke.Web
             var services = new ServiceCollection();
             ConfigureServices(services);
             DependencyProvider = services.BuildServiceProvider();
+            services.AddSingleton(DependencyProvider);
         }
 
         public IServiceProvider DependencyProvider { get; private set; }
