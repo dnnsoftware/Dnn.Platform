@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -220,6 +220,9 @@
     <Content Include="Browser\js\jquery.ImageResizer.js" />
     <Content Include="Browser\js\jquery.ImageSlider.js" />
     <Content Include="Browser\js\jquery.pagemethod.js" />
+    <Content Include="BuildScripts\DotNetNuke.MSBuild.Tasks.dll" />
+    <Content Include="BuildScripts\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="BuildScripts\MSBuild.Community.Tasks.dll" />
     <Content Include="CKEditorConfig.png" />
     <Content Include="css\CKEditorOverride.css" />
     <Content Include="css\CkEditorContents.css" />
@@ -280,6 +283,8 @@
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
     <Content Include="Install\01.00.00.SqlDataProvider" />
+    <Content Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
+    <Content Include="BuildScripts\Package.targets" />
     <None Include="Install\Uninstall.SqlDataProvider" />
     <None Include="DNNConnect.CKEditorProvider.dnn">
       <SubType>Designer</SubType>
