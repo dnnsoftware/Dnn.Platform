@@ -885,7 +885,6 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DisplayTitle = other.DisplayTitle;
                                 local.DisplayPrint = other.DisplayPrint;
                                 local.DisplaySyndicate = other.DisplaySyndicate;
-                                local.IsDeleted = other.IsDeleted;
                                 local.IsShareable = otherModule.IsShareable;
                                 local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                                 local.IsWebSlice = other.IsWebSlice;
@@ -903,10 +902,7 @@ namespace Dnn.ExportImport.Components.Services
                                 }
 
                                 // updates both module and tab module db records
-                                ActionInWorkflowlessContext(local.TabID, () =>
-                                {
-                                    _moduleController.UpdateModule(local);
-                                });
+                                UpdateModuleWithIsDeletedHandling(other, otherModule, local);
 
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
@@ -980,6 +976,22 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             return count;
+        }
+        
+        /*
+            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted. 
+            ExportTabModule.IsDeleted may different from ExportModule.IsDeleted when Module is deleted.
+            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
+            updating Modules.
+        */
+        private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)
+        {
+            importModule.IsDeleted = exportModule.IsDeleted;
+            ActionInWorkflowlessContext(importModule.TabID, () =>
+            {
+                _moduleController.UpdateModule(importModule);
+            });
+            importModule.IsDeleted = exportTabModule.IsDeleted;
         }
 
         private bool ModuleOrderMatched(ModuleInfo module, ExportTabModule exportTabModule, IDictionary<int, int> localOrders, IDictionary<int, int> exportOrders)
