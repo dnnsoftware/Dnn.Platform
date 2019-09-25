@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -62,34 +62,7 @@ namespace DotNetNuke.UI.Containers
             {
                 foreach (ModuleAction action in Actions)
                 {
-                    if (action.CommandName == ModuleActionType.PrintModule)
-                    {
-                        if (action.Visible)
-                        {
-                            if ((PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
-                            {
-                                if (ModuleContext.Configuration.DisplayPrint)
-                                {
-                                    var ModuleActionIcon = new ImageButton();
-                                    if (!String.IsNullOrEmpty(PrintIcon))
-                                    {
-                                        ModuleActionIcon.ImageUrl = ModuleContext.Configuration.ContainerPath.Substring(0, ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + PrintIcon;
-                                    }
-                                    else
-                                    {
-                                        ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
-                                    }
-                                    ModuleActionIcon.ToolTip = action.Title;
-                                    ModuleActionIcon.ID = "ico" + action.ID;
-                                    ModuleActionIcon.CausesValidation = false;
-
-                                    ModuleActionIcon.Click += IconAction_Click;
-
-                                    Controls.Add(ModuleActionIcon);
-                                }
-                            }
-                        }
-                    }
+                    DisplayAction(action);
                 }
 				
                 //set visibility
@@ -107,6 +80,43 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+	
+	private void DisplayAction(ModuleAction action)
+	{
+	    if (action.CommandName == ModuleActionType.PrintModule)
+	    {
+		if (action.Visible)
+		{
+		    if ((PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+		    {
+			if (ModuleContext.Configuration.DisplayPrint)
+			{
+			    var ModuleActionIcon = new ImageButton();
+			    if (!String.IsNullOrEmpty(PrintIcon))
+			    {
+				ModuleActionIcon.ImageUrl = ModuleContext.Configuration.ContainerPath.Substring(0, ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + PrintIcon;
+			    }
+			    else
+			    {
+				ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
+			    }
+			    ModuleActionIcon.ToolTip = action.Title;
+			    ModuleActionIcon.ID = "ico" + action.ID;
+			    ModuleActionIcon.CausesValidation = false;
+
+			    ModuleActionIcon.Click += IconAction_Click;
+
+			    Controls.Add(ModuleActionIcon);
+			}
+		    }
+		}
+	    }
+	    
+	    foreach (ModuleAction subAction in action.Actions) 
+	    {
+	    	DisplayAction(subAction);
+	    }
+	}
 
         private void IconAction_Click(object sender, ImageClickEventArgs e)
         {
