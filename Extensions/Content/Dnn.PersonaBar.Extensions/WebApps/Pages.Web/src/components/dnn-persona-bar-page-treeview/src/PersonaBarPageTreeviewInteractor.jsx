@@ -40,7 +40,7 @@ class PersonaBarPageTreeviewInteractor extends Component {
         this.init();
     }
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, state) {
         let setTreeViewExpanded = null;
         let pageList = null;   
         const {
@@ -72,12 +72,21 @@ class PersonaBarPageTreeviewInteractor extends Component {
             }
         }, pageListCopy);
 
-        return {
+        const newState = {
             rootLoaded: true,
             isTreeviewExpanded: setTreeViewExpanded,
             initialCollapse: !setTreeViewExpanded,
             pageList: pageList || pageListCopy
+        };
+
+        const prevPageListCount = (state.pageList || []).length;
+        const newPageListCount = (newState.pageList || []).length;
+
+        if (prevPageListCount !== newPageListCount) {
+            return { ...newState, isChildLoaded: false };
         }
+
+        return newState;
     }
 
     componentDidUpdate() {
