@@ -692,7 +692,7 @@ namespace DotNetNuke.Entities.Portals
             set
             {
                 _dataConsentTermsLastChange = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentTermsLastChange", value.ToString("u"), true);
+                PortalController.UpdatePortalSetting(PortalId, "DataConsentTermsLastChange", value.ToString("O", CultureInfo.InvariantCulture), true);
             }
         }
 
