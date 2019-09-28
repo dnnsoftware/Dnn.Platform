@@ -92,8 +92,6 @@ namespace DotNetNuke.Entities.Portals
         }
         #endregion
 
-        private TimeZoneInfo _timeZone = TimeZoneInfo.Local;
-
         #region Constructors
 
         public PortalSettings()
@@ -585,16 +583,7 @@ namespace DotNetNuke.Entities.Portals
             get { return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false); }
         }
 
-        public TimeZoneInfo TimeZone
-        {
-            get { return _timeZone; }
-            set
-            {
-                _timeZone = value;
-                PortalController.UpdatePortalSetting(PortalId, "TimeZone", value.Id, true);
-            }
-        }
-
+        public TimeZoneInfo TimeZone { get; set; }
 
         public string PageHeadText
         {
