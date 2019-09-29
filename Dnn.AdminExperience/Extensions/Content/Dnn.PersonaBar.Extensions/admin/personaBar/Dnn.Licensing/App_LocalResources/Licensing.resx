@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="nav_Licensing.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="NoLicense.Header" xml:space="preserve">
+    <value>You have no EVOQ licenses ... yet</value>
+  </data>
+  <data name="NoLicense.Text" xml:space="preserve">
+    <value>Upgrade to EVOQ below to gain access to professional features on your sites.</value>
+  </data>
+  <data name="LicenseType.Header" xml:space="preserve">
+    <value>LICENSE TYPE</value>
+  </data>
+  <data name="InvoiceNumber.Header" xml:space="preserve">
+    <value>INVOICE NUMBER</value>
+  </data>
+  <data name="WebServer.Header" xml:space="preserve">
+    <value>WEB SERVER</value>
+  </data>
+  <data name="Activated.Header" xml:space="preserve">
+    <value>ACTIVATED</value>
+  </data>
+  <data name="Expires.Header" xml:space="preserve">
+    <value>EXPIRES</value>
+  </data>
+  <data name="LicenseType.Development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="LicenseType.Production" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="LicenseType.Failover" xml:space="preserve">
+    <value>Failover</value>
+  </data>
+  <data name="LicenseType.Staging" xml:space="preserve">
+    <value>Staging</value>
+  </data>
+  <data name="LicenseType.Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="Error.Unknown.Activation" xml:space="preserve">
+    <value>Unable to process request, please try again later or use manual activation.</value>
+  </data>
+  <data name="Error.LicenseAlreadyExists" xml:space="preserve">
+    <value>License Activation failed. The host server {0} already has a {1} license.</value>
+  </data>
+  <data name="Error.ContactServer.activate" xml:space="preserve">
+    <value>Unable to activate license. Connection to license server failed. Please try again later or use manual activation. If you continue to have difficulties, please contact Technical Support.</value>
+  </data>
+  <data name="Error.ContactServer.canrenew" xml:space="preserve">
+    <value>Connection to license server failed. You will not be able to automatically activate or renew licenses. You can use manual activation to activate a license.&lt;br /&gt;&lt;br /&gt;
+For license renewal contact &lt;a href="mailto:customercare@dnnsoftware.com"&gt;customercare@dnnsoftware.com&lt;/a&gt;.</value>
+  </data>
+  <data name="Error.ContactServer.deactivate" xml:space="preserve">
+    <value>Your license was deleted.&lt;br /&gt;&lt;br /&gt;
+Unable to add activation back to your invoice as Connection to license server failed. Please contact Technical Support for license activation.</value>
+  </data>
+  <data name="Error.ContactServer.renew" xml:space="preserve">
+    <value>Unable to Renew License. Connection to license server failed. Please try again later or contact &lt;a href="mailto:customercare@dnnsoftware.com"&gt;customercare@dnnsoftware.com&lt;/a&gt;</value>
+  </data>
+  <data name="Error.ACT1.Text" xml:space="preserve">
+    <value>License Activation failed. The license details provided do not match a valid license.&lt;br /&gt;&lt;br /&gt;Verify your license details on &lt;a href="{0}" target="_blank"&gt;your licenses page on dnnsoftware.com&lt;/a&gt; and try again. If you continue to have difficulties, please contact Technical Support.</value>
+  </data>
+  <data name="Error.ACT2.Text" xml:space="preserve">
+    <value>License activation failed. Production activation for {0} is in use.</value>
+  </data>
+  <data name="Error.ACT3.Text" xml:space="preserve">
+    <value>You have exceeded the limit of activations from this client address</value>
+  </data>
+  <data name="Error.ACT4.Text" xml:space="preserve">
+    <value>License activation failed. Production activation for {0} is in use.</value>
+  </data>
+  <data name="Error.ACT6.Text" xml:space="preserve">
+    <value>License activation failed. Your service period for this license expired on {0:d}. Please contact &lt;a href="mailto:customercare@dnnsoftware.com"&gt;customercare@dnnsoftware.com&lt;/a&gt;.</value>
+  </data>
+  <data name="Error.DEA1.Text" xml:space="preserve">
+    <value>Delete License failed. The license was not found.</value>
+  </data>
+  <data name="WebLicenseList.url" xml:space="preserve">
+    <value>http://www.dnnsoftware.com/Support/Success-Network/License-Management</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Unable to process request, please try again later.</value>
+  </data>
+  <data name="Error.ExpiredLicense" xml:space="preserve">
+    <value>License activation failed. Your license expired on {0:d}. Check your licenses on &lt;a href="{1}" target="_blank"&gt;your licenses page on dnnsoftware.com&lt;/a&gt;. Log in using the account you received when you first bought the product.</value>
+  </data>
+  <data name="Success.DevLicenseActivated" xml:space="preserve">
+    <value>Development License has been activated successfully.</value>
+  </data>
+  <data name="Success.FailoverLicenseActivated" xml:space="preserve">
+    <value>Failover License has been activated successfully</value>
+  </data>
+  <data name="Success.LicenseActivated" xml:space="preserve">
+    <value>Production License has been activated successfully</value>
+  </data>
+  <data name="Success.LicenseDeactivated" xml:space="preserve">
+    <value>Your license has been deleted successfully.</value>
+  </data>
+  <data name="Success.LicenseDeactivatedContactServerErr" xml:space="preserve">
+    <value>Your license was deleted.&lt;br /&gt;&lt;br /&gt;Unable to add activation back to your invoice as Connection to license server failed. If you need to activate as a production license, please contact Technical Support.</value>
+  </data>
+  <data name="Success.LicenseDeactivatedNoActivationIncrease" xml:space="preserve">
+    <value>Your license was deleted.&lt;br /&gt;&lt;br /&gt;Unable to add activation back to the invoice. If you need to activate as a production license, please contact Technical Support.</value>
+  </data>
+  <data name="Success.LicenseRenewed" xml:space="preserve">
+    <value>Your license has been renewed successfully.</value>
+  </data>
+  <data name="Success.StagingLicenseActivated" xml:space="preserve">
+    <value>Staging License has been activated successfully</value>
+  </data>
+  <data name="Success.TestLicenseActivated" xml:space="preserve">
+    <value>Test License has been activated successfully</value>
+  </data>
+  <data name="Success.TrialActivation" xml:space="preserve">
+    <value>Your extended trial license has been successfully installed.</value>
+  </data>
+  <data name="Success.TrialExtensionRequest" xml:space="preserve">
+    <value>Your trial license extension request has been submitted. You should receive an email within 1 business day, with instructions for extending your license. If you have any questions about trial license extensions, please call DNN Corp. Sales Dept. at 650-288-3150.</value>
+  </data>
+  <data name="Intro.Header" xml:space="preserve">
+    <value>DNN Platform</value>
+  </data>
+  <data name="Intro" xml:space="preserve">
+    <value>DNN® ( formerly DotNetNuke® ) is the leading open source web content management platform (CMS) in the Microsoft ecosystem. The product is used to build professional looking and easy-to-use commercial websites, social intranets, community portals, or partner extranets. Containing dynamic content of all types, DNN sites are easy to deploy and update. The DNN Platform has been downloaded more than 8 million times and powers more than 750,000 websites globally. A community of more than 1 million members forms a powerful support network.</value>
+  </data>
+  <data name="GitHub.Header" xml:space="preserve">
+    <value>THE CODE</value>
+  </data>
+  <data name="GitHub" xml:space="preserve">
+    <value>The open source DNN Platform project is managed on GitHub. Visit us there and get involved. Report issues, provide valuable feedback, and contribute.</value>
+  </data>
+  <data name="Community.Header" xml:space="preserve">
+    <value>THE COMMUNITY</value>
+  </data>
+  <data name="Community" xml:space="preserve">
+    <value>The DNN Community is active and vibrant. Visit us and join in on the activities. Get help, discuss projects, and keep up with all the great things others are doing.</value>
+  </data>
+  <data name="Docs.Header" xml:space="preserve">
+    <value>THE DOCS</value>
+  </data>
+  <data name="Docs" xml:space="preserve">
+    <value>DNN Docs is open source too! Learn how to get started with DNN, follow step-by-step tutorials, and even dig through the API documentation.</value>
+  </data>
+</root>

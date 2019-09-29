@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DotNetNukeMSBuildTasksLib>$(BuildScriptsPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
+    <YuiLib>$(BuildScriptsPath)\Yahoo.Yui.Compressor.MsBuild.dll</YuiLib>
+  </PropertyGroup>
+
+  <Import Project="MSBuild.Community.Tasks.Targets" />
+  <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
+  <UsingTask AssemblyFile="$(YuiLib)" TaskName="CssCompressorTask" />
+  <!--<UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />-->
+
+  <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <XmlRead Prefix="n"
+                   Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                   XPath="dotnetnuke/packages/package/@version"
+                   XmlFileName="$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    <ExtensionPackager Manifest="$(DNNFileName).dnn" WorkingFolder="$(MSBuildProjectDirectory)\">
+      <Output TaskParameter="PackageFiles" PropertyName="PackageFiles">
+      </Output>
+    </ExtensionPackager>
+
+    <CallTarget Targets="Minification"/>
+
+    <Copy SourceFiles="$(DNNFileName).dnn" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <ItemGroup>
+      <LicenseFiles Include="license.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <ItemGroup>
+      <ReleaseNotesFiles Include="releaseNotes.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <CreateItem Include="$(PackageFiles)">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Copy SourceFiles="$(OutputContent)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(OutputContent.RecursiveDir)" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsiteInstallPath)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
+  </Target>
+
+  <Target Name="Minification">
+
+    <MakeDir Directories="$(MSBuildProjectDirectory)\Package"/>
+    <Zip Files="@(Resources)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+    <Unzip ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" TargetDirectory="$(MSBuildProjectDirectory)\Package\Resources" />
+    <Delete Files="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+    <ItemGroup>
+      <!--<_JSFilesToMinify Include="$(MSBuildProjectDirectory)\Package\Resources\**\*.js" Exclude="$(MSBuildProjectDirectory)\Package\Resources\**\*.min.js" />-->
+      <_Step2FilesToZip Include="$(MSBuildProjectDirectory)\Package\Resources\**\*" />
+    </ItemGroup>
+    <!--
+    <Message Text="Compressing Javascript files" Importance="high" />
+    <JavaScriptCompressorTask Files="@(_JSFilesToMinify)" ContinueOnError="WarnAndContinue" />
+    -->
+
+    <ItemGroup>
+      <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\*\*.css;$(MSBuildProjectDirectory)\*\*\*.css;$(MSBuildProjectDirectory)\*\*\*\*.css;$(MSBuildProjectDirectory)\*\*\*\*\*.css;" Exclude="Package\**\*;**\node_modules\**;**\WebApps\**" />
+    </ItemGroup>
+    <Message Text="Compressing the following CSS files:" Importance="high" />
+    <Message Text="%(_CSSFilesToCompress.Identity)" Importance="high" />
+
+    <CssCompressorTask
+        SourceFiles="@(_CSSFilesToCompress)"
+        DeleteSourceFiles="false"
+        OutputFile="$(MSBuildProjectDirectory)\Package\Resources\%(RecursiveDir)%(Filename)%(Extension)"
+        CompressionType="Standard"
+        LoggingType="Info"
+        PreserveComments="false"
+        LineBreakPosition="-1"
+        Condition="@(_CSSFilesToCompress->Count())!=0"
+     />
+
+    <Zip Files="@(_Step2FilesToZip)" WorkingDirectory="$(ResourceZipWorkingDirectory)"
+         ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package\Resources" ContinueOnError="WarnAndContinue" />
+  </Target>
+</Project>

@@ -1,0 +1,51 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+
+.dnn-language-resource-full-editor{
+    .fulleditor-controls{
+        .btn-group{
+            border: 1px solid @alto;
+            display: inline-block;
+            margin-right: 10px;
+            .btn{
+                width: 24px;
+                height: 24px;
+                display: inline-block;
+                text-align: center;
+                vertical-align: top;
+
+                &:hover{
+                    background-color: @alto;
+
+                    svg{
+                        fill: @rollingStone;
+                    }
+                }
+
+                svg{
+                    margin: 4px 0;
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+
+    .fulleditor-editor{
+        overflow: auto;
+        border: 1px solid @alto;
+        padding: 1em 2em;
+        background: white;
+        margin: 4px 0 0 0;
+        height: 240px;
+        outline: none;
+    }
+
+    .dnn-ui-common-button {
+        float: right;
+        margin: 4px 0 0 0;
+
+        &[role="primary"]{
+            margin-right: 10px;
+        }
+    }
+}

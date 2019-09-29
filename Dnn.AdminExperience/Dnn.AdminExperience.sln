@@ -1,0 +1,118 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 15.0.28307.421
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Library\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {9CCA271F-CFAA-42A3-B577-7D5CBB38C646}
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{424CCB69-AD4D-4CBC-83D3-E7588343A2E4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{59367CA7-B502-4216-A810-C940A82FA526}"
+	ProjectSection(SolutionItems) = preProject
+		Build\BuildScripts\CreateSourcePackage.build = Build\BuildScripts\CreateSourcePackage.build
+		LICENSE.txt = LICENSE.txt
+		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
+		Solution.build = Solution.build
+		SolutionInfo.cs = SolutionInfo.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "NuGetPackages\NuGetPackages.csproj", "{5313F690-D9A3-40B1-908C-1F5A3F3EA683}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Library", "Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj", "{8B50BA8B-0A08-41B8-81B8-EA70707C7379}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.Library", "EditBar\Dnn.EditBar.Library\Dnn.EditBar.Library.csproj", "{D6AE2D97-CCAA-4655-BE6F-6A9267431712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.UI", "EditBar\Dnn.EditBar.UI\Dnn.EditBar.UI.csproj", "{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Extensions\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{B4BE0735-4220-4FD1-BCE1-42AB9CE9D89F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{95F8E626-373F-427F-BD5B-7173AED7998F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EditBar", "EditBar", "{CA017058-6866-4429-AE3B-E509F3B2B594}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{2D7C4965-755D-4F82-97FF-CBA77E9852DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E5A15B7F-768F-419C-8FFB-430B6367D742}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Pages.Tests", "Tests\Dnn.PersonaBar.Pages.Tests\Dnn.PersonaBar.Pages.Tests.csproj", "{05515510-9979-4424-8D0A-647F32A25FE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security.Tests", "Tests\Dnn.PersonaBar.Security.Tests\Dnn.PersonaBar.Security.Tests.csproj", "{A64708EF-4972-48A3-B7B9-6B65E47EFE27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests", "Tests\Dnn.PersonaBar.Users.Tests\Dnn.PersonaBar.Users.Tests.csproj", "{15506C01-A730-46B9-8571-99C20226AAE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D92D57E-EB66-4816-A0FA-B39213452539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D92D57E-EB66-4816-A0FA-B39213452539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D92D57E-EB66-4816-A0FA-B39213452539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D92D57E-EB66-4816-A0FA-B39213452539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5313F690-D9A3-40B1-908C-1F5A3F3EA683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B50BA8B-0A08-41B8-81B8-EA70707C7379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B50BA8B-0A08-41B8-81B8-EA70707C7379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B50BA8B-0A08-41B8-81B8-EA70707C7379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B50BA8B-0A08-41B8-81B8-EA70707C7379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6AE2D97-CCAA-4655-BE6F-6A9267431712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6AE2D97-CCAA-4655-BE6F-6A9267431712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6AE2D97-CCAA-4655-BE6F-6A9267431712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6AE2D97-CCAA-4655-BE6F-6A9267431712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05515510-9979-4424-8D0A-647F32A25FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64708EF-4972-48A3-B7B9-6B65E47EFE27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15506C01-A730-46B9-8571-99C20226AAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15506C01-A730-46B9-8571-99C20226AAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15506C01-A730-46B9-8571-99C20226AAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15506C01-A730-46B9-8571-99C20226AAE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7D92D57E-EB66-4816-A0FA-B39213452539} = {2D7C4965-755D-4F82-97FF-CBA77E9852DB}
+		{8B50BA8B-0A08-41B8-81B8-EA70707C7379} = {2D7C4965-755D-4F82-97FF-CBA77E9852DB}
+		{D6AE2D97-CCAA-4655-BE6F-6A9267431712} = {CA017058-6866-4429-AE3B-E509F3B2B594}
+		{9D9B15DD-E7CE-476C-BD3B-FF44E64EFB67} = {CA017058-6866-4429-AE3B-E509F3B2B594}
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {95F8E626-373F-427F-BD5B-7173AED7998F}
+		{95F8E626-373F-427F-BD5B-7173AED7998F} = {B4BE0735-4220-4FD1-BCE1-42AB9CE9D89F}
+		{05515510-9979-4424-8D0A-647F32A25FE7} = {E5A15B7F-768F-419C-8FFB-430B6367D742}
+		{A64708EF-4972-48A3-B7B9-6B65E47EFE27} = {E5A15B7F-768F-419C-8FFB-430B6367D742}
+		{15506C01-A730-46B9-8571-99C20226AAE6} = {E5A15B7F-768F-419C-8FFB-430B6367D742}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3AF33584-3D4E-4F06-B256-DDCC352664C4}
+	EndGlobalSection
+EndGlobal
