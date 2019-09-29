@@ -1434,4 +1434,10 @@
   <data name="Off.Text" xml:space="preserve">
     <value>Off</value>
   </data>
+  <data name="DataConsentResetTerms.Completed" xml:space="preserve">
+    <value>All consent has been reset and all users will need to (re)consent to the terms and conditions again.</value>
+  </data>
+  <data name="DataConsentResetTerms.Confirm" xml:space="preserve">
+    <value>Do you wish to reset the consent all users signed and ask them again?</value>
+  </data>
 </root>
