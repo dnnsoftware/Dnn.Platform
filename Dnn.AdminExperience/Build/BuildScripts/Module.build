@@ -43,7 +43,7 @@
   <Target Name="RunYarnWorkspace">
 	  <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
 
-	  <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0 AND !Exists('$(WorkingDirectory)/node_modules')" />
-    <Yarn Command="lerna run build --parallel" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+	  <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+	<Yarn Command="lerna run build --parallel" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>
