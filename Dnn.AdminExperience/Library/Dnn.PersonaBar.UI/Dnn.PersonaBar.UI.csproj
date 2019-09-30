@@ -142,7 +142,7 @@
     <Compile Include="Services\TabsController.cs" />
     <Compile Include="Services\UserSettingsController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
-    <Compile Include="..\..\SolutionInfo.cs">
+    <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
   </ItemGroup>
