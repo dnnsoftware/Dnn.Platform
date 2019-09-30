@@ -176,7 +176,6 @@
     <Content Include="admin\personaBar\scripts\gateway.js" />
     <None Include="admin\personaBar\css\open-sans.semibold.ttf" />
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
-    <None Include="app.config" />
     <None Include="Dnn.PersonaBar.UI.dnn" />
     <None Include="Licenses\Admin Persona Bar Referenced Licences.zip" />
     <None Include="Module.build">
