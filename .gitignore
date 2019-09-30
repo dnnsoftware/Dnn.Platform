@@ -259,3 +259,4 @@ Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
 Website/DesktopModules/Admin/SiteExportImport/App_LocalResources/ExportImport.resx
 /TestResult.xml
 /Website/DesktopModules/Admin/Dnn.EditBar
+/Website/DesktopModules/Admin/Dnn.PersonaBar

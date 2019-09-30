@@ -108,8 +108,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		CONTRIBUTING.md = CONTRIBUTING.md
 		DNN_Platform.build = DNN_Platform.build
+		dnnplatform.png = dnnplatform.png
+		gitversion.yml = gitversion.yml
+		LICENSE = LICENSE
+		NOTICE.md = NOTICE.md
+		README.md = README.md
 		Packages\repositories.config = Packages\repositories.config
 		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
