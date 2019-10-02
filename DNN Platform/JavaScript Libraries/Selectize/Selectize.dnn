@@ -19,7 +19,7 @@
             <libraryName>Selectize</libraryName>
             <fileName>selectize.min.js</fileName>
             <objectName>Selectize</objectName>
-            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/selectize.min.js</CDNPath>
+            <CDNPath>https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
@@ -29,7 +29,7 @@
               <name>selectize.min.js</name>
             </jsfile>
           </jsfiles>
-        </component>        
+        </component>
         <component type="File">
           <files>
             <basePath>Resources\Libraries\Selectize\00_12_06</basePath>

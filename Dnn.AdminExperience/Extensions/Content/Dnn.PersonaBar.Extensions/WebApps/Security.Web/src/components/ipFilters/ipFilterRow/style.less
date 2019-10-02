@@ -1,0 +1,95 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-component-ipfilters {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    .ip-filter-wrapper > div {
+        float: left;
+        width: 100%;
+    }
+    div.collapsible-ipfilters {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        &.false {}
+        .row {
+            .item-row-ruleType {
+                width: 20%;
+                float: left;
+                padding-left: 15px;
+                .item-row-ruleType-display {
+                    color: @mountainMist;
+                    margin: 0 0 0 -15px;
+                    .allow-icon, .deny-icon {
+                        padding-left: 15px;
+                        > svg {
+                            width: 20px;
+                            float: left;
+                            height: 20px;
+                            fill: @mountainMist;
+                        }
+                    }
+                }
+            }
+            .item-row-ipAddress {
+                width: 65%;
+                float: left;
+                padding-top: 3px;
+            }
+            .item-row-editButton {
+                width: 13%;
+                float: left;
+                .edit-icon {
+                    cursor: pointer;
+                    float: right;
+                    margin-right: 5px;
+                    > svg {
+                        width: 20px;
+                        float: right;
+                        height: 20px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .edit-icon-active {
+                    float: right;
+                    cursor: pointer;
+                    > svg {
+                        width: 20px;
+                        float: right;
+                        height: 20px;
+                        fill: @curiousBlue;
+                    }
+                }
+                .delete-icon-hidden{
+                    display: none;
+                }
+                .delete-icon {
+                    cursor: pointer;
+                    float: right;
+                    > svg {
+                        width: 20px;
+                        float: right;
+                        height: 20px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

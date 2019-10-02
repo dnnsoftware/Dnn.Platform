@@ -1,0 +1,23 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] WHERE PermissionKey = 'EDIT' AND MenuId IS NULL)
+BEGIN
+    EXEC {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission 
+        @MenuId = NULL,
+        @PermissionKey = 'EDIT',
+        @PermissionName = 'Edit Menu',
+        @CurrentUserId = -1
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

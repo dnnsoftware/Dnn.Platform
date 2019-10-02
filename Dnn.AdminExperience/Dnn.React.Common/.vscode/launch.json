@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+        "request": "launch",
+        "name": "Storybook Debug",
+        "url": "http://localhost:9001",
+        "sourceMaps": true,
+        "webRoot": "${workspaceFolder}",
+        "sourceMapPathOverrides": {
+            "webpack:///*": "${webRoot}/*",
+            "webpack:///./*": "${webRoot}/*",
+            "webpack:///src/*": "${webRoot}/*",
+            "webpack:///./~/*": "${webRoot}/node_modules/*"
+            }
+        }
+    ]
+}

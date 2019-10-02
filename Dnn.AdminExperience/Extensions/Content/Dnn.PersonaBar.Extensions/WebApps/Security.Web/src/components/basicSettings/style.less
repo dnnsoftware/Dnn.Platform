@@ -1,0 +1,47 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.loginSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .dnn-ui-common-input-group {
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-dropdown {
+            width: 100%;
+            margin-bottom: 32px;
+        }
+        .dnn-switch-container {
+            float: right;
+        }
+        .dnn-page-picker {
+            margin-bottom: 32px;
+        }
+        .loginSettings-row_switch {
+            border-bottom: 1px solid @alto;
+            margin: 20px 0 0 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 20px 0;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .globalIcon {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin: 5px 0 0 -10px;
+        > svg {
+            fill: @thunder;
+        }
+    }
+}

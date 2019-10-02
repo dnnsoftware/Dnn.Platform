@@ -1,0 +1,65 @@
+    @import "~@dnnsoftware/dnn-react-common/styles/index";
+    .dnn-in-context-menu {
+        &.menu-item {
+            float: left;
+            cursor: pointer;
+            color: black;
+            width: 100%;
+            padding: 10px 20px;
+            .icon {
+                //transition: padding-left .20s ease-in;
+                float: left;
+                width: 15%;
+                height: 28px;
+                svg {
+                    width: 23.7px;
+                    fill: @alto;
+                }
+                svg:hover {
+                    width: 23.7;
+                    fill: @curiousBlue;
+                }
+            }
+            .label {
+                //transition: padding-left .20s ease-in;
+                float: left;
+                width: 85%;
+                line-height: 28px;
+                padding-left:20px;
+            }
+            &:hover {
+                background-color: @gallery;
+                color: @curiousBlue;
+                svg {
+                    width: 23.7;
+                    fill: @curiousBlue;
+                }
+                svg:hover {
+                    width: 23.7;
+                    fill: @curiousBlue;
+                }
+            }
+        }
+        &.menu {
+            position: absolute;
+            right: -18px;
+            margin-top: 10px;
+            text-align: left;
+            z-index: 9999;
+            min-width: 200px;
+            border: 1px solid @alto;
+            border-radius: 3px;
+            background-color: @white;
+            list-style: none;
+            padding: 10px 0px;
+            box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+            &:before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                bottom: -10px;
+                left: -10px;
+            }
+        }
+    }

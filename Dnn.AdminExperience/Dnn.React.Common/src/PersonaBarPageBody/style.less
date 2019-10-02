@@ -1,0 +1,41 @@
+@import "../../styles/index";
+
+.dnn-persona-bar-page-body {
+    margin-top: 103px;
+    padding: 25px 30px;
+    &.with-back-to-link {
+        padding-top: 0;
+        a.dnn-back-to-link {
+            height: 36px;
+            display: block;
+            > span {
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                float: left;
+            }
+            .dnn-back-to-arrow {
+                margin-top: 2px;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+    }
+    .dnn-workspace-tray {
+        height: 44px;
+        border-bottom: 1px solid @alto;
+        margin-bottom: 15px;
+    }
+
+    .persona-bar-page-body {
+        background: @white;
+        border: 1px solid @alto;
+
+        .dnn-workspace-tray {
+            padding: 14px 0;
+            border-bottom: 1px solid @alto;
+            margin-bottom: 15px;
+        }
+    }
+}

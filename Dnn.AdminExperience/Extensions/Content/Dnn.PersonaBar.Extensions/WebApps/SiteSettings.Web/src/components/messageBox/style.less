@@ -1,0 +1,49 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.dnn-message-box {
+    width: 100%;
+    box-sizing: border-box;
+    float: left;
+    background-color: #0A2937;
+    .top-bar {
+        width: 100%;
+        float: left;
+        .close-button {
+            width: 16px;
+            height: 16px;
+            float: right;
+            cursor: pointer;
+            padding: 10px;
+            > svg {
+                fill: #FFFFFF;
+            }
+        }
+    }
+    .content {
+        width: 100%;
+        float: left;
+        text-align: center;
+        padding: 0 50px 50px 50px;
+        box-sizing: border-box;
+        .message-icon {
+            width: 35px;
+            height: 30px;
+            margin: 5px auto 20px auto;
+            > svg {
+                fill: #78C16B;
+            }
+        }
+        .message-text {
+            font-size: 15px;
+            color: #FFFFFF;
+        }
+        .message-link {            
+            margin-top: 20px;            
+            word-break: break-all;
+            > a {
+                color: #21A3DA;
+                font-size: 15px;
+                text-decoration: none;
+            }
+        }
+    }
+}

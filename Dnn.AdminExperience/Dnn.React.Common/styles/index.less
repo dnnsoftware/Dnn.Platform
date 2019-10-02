@@ -1,0 +1,63 @@
+/* START EVOQ COLOR PALETTE */
+
+@blackPearl: #0B1C24;
+@firefly: #0E2936;
+@astronautBlue: #1E485E;
+@matisse: #226F9B;
+@curiousBlue: #1E88C3;
+@curiousBlueSolid: rgba(30, 136, 195, 0.6);
+@curiousBlueWithOpacity: rgba(30, 136, 195, 0.6);
+@cerulean: #21A3DA;
+@seagull: #79BFDB;
+@nonPhotoBlue: #9FDBF0;
+@solitude: #EAF1FA;
+
+@gondola: #261516;
+@bulgarianRose: #46292B;
+
+@astral: #3C7A9A;
+@regentGray: #8191A4;
+
+@thunder: #4B4E4F;
+@rollingStone: #6F7273;
+@mountainMist: #959695;
+@alto: #C8C8C8;
+@mercury: #E5E7E6;
+@gallery: #EFF0F0;
+@alabaster: #FBFCFC;
+@white: #FFFFFF;
+
+/* END EVOQ COLOR PALETTE */
+
+
+/* START ATTENTION COLORS */
+
+@alizarinCrimson: #EA2134;
+@cranberry: #D9577A;
+
+@amazon: #368254;
+@mantis: #78C16B;
+
+/* END ATTENTION COLORS */
+
+/* SVG HOVER STATES */
+
+svg {
+    fill: @alto;
+    &:hover {
+        fill: @rollingStone;
+    }
+    &:active {
+        fill: @curiousBlue;
+    }
+}
+
+/* END SVG HOVER STATES */
+
+.prefixes(@property, @value) {
+    -webkit-@{property}: @value;
+     -khtml-@{property}: @value;
+       -moz-@{property}: @value;
+        -ms-@{property}: @value;
+            @{property}: @value;
+}
