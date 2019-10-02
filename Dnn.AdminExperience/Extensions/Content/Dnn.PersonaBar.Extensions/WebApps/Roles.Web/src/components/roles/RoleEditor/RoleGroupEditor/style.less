@@ -1,0 +1,183 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.role-group-editor {
+    float: left;
+    width: 235px;
+    //position: absolute;
+    background-color: @white;
+    border-radius: 3px;
+    border: 1px sol @alto;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 1px 0px @alto;
+    -moz-box-shadow: 0px 0px 10px 0px @alto;
+    box-shadow: 0px 0px 10px 0px @alto;
+    z-index: 9999;
+    cursor: default;
+    //top: 143px;
+    //left: 71px;
+    h2 {
+        color: @rollingStone;
+        margin-bottom: 20px;
+    }
+    textarea {
+        height: 75px;
+    }
+    .dnn-ui-common-multi-line-input {
+        padding: 10px 10px;
+        border-radius: 0px;
+        height: 88px;
+    }
+    .edit-form {
+        .form-items:after {
+            display: none;
+        }
+        color: @thunder;
+        clear: both;
+        text-align: left;
+        &.short-left {
+            width: 45%;
+            float: left;
+            clear: left;
+        }
+        &.short-right {
+            width: 45%;
+            float: right;
+            clear: right;
+            padding-left: 5%;
+            //border-left: 1px solid @alto;
+        }
+        &.short-right::before {
+            content: ".";
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: -5%;
+        }
+        .form-item {
+            line-height: 24px;
+            width: 100%;
+            clear: both;
+        }
+        .form-item.last {
+            margin-bottom: 0;
+        }
+        .form-item.short-left {
+            width: 45%;
+            float: left;
+            clear: left;
+        }
+        .form-item.short-right {
+            width: 45%;
+            float: right;
+            clear: right;
+        }
+        .form-item label {
+            display: block;
+            font-weight: bold;
+            color: @bulgarianRose;
+        }
+        .form-item label.inline {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .form-item > label.middle {
+            margin-bottom: 10px;
+        }
+        .form-item label.required:after {
+            content: "*";
+            color: @alizarinCrimson;
+            margin-left: 4px;
+        }
+        .form-item label + input[type="text"], .form-item label + textarea, .form-item label + select {
+            width: 100%;
+            background-color: @white;
+            border: 1px solid @mountainMist;
+            -ms-border-radius: 0;
+            border-radius: 0;
+            outline: none;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin-bottom: 0;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            padding: 8px;
+            vertical-align: top;
+        }
+        .form-item label + input[type="text"]:focus, .form-item label + textarea:focus {
+            color: @curiousBlue;
+            text-shadow: 0px 0px 0px @bulgarianRose;
+            -webkit-text-fill-color: transparent;
+            border: 1px solid @curiousBlue;
+        }
+        label.inline + * {
+            width: 50%;
+            float: right;
+        }
+        select {
+            height: 34px;
+            vertical-align: bottom;
+        }
+        .form-item.half-input {
+            position: relative;
+        }
+        .form-item.half-input > * {
+            width: 48%;
+        }
+        .form-item.half-input > input + * {
+            position: absolute;
+            right: 0;
+        }
+        .form-item .dnn-switch-container {
+            text-align: right;
+            width: 80px;
+            label {
+                margin-top: 0px;
+            }
+        }
+        .form-item.calendar input {
+            width: 90%;
+        }
+        .form-item.calendar:after {
+            display: block;
+            content: "";
+            float: right;
+            background: none;
+            width: 22px;
+            height: 24px;
+            margin-top: 5px;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 15px;
+            button[role="secondary"] {
+                margin-right: 11px;
+            }
+        }
+        .form-items {
+            position: relative;
+        }
+        .form-items:after {
+            display: block;
+            content: "";
+            height: 100%;
+            position: absolute;
+            //border-left: 1px solid @alto;
+            left: 50%;
+            top: 0;
+        }
+        .form-item[readonly] label {
+            color: @mountainMist;
+        }
+        .dnn-label .dnn-ui-common-tooltip .icon {
+            margin-top: 1px;
+        }
+        .dnn-label label {
+            float: left;
+        }
+        .dnn-ui-common-single-line-input {
+            border-radius: 0px;
+            width: 100%;
+        }
+    }
+}

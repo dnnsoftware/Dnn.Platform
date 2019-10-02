@@ -1,0 +1,53 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.language-roles-list-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: table;
+    float: left;
+    .translator-sectionTitle {
+        font-weight: bolder;
+        float: left;
+        text-transform: uppercase;
+        width: auto;
+        margin-top: 8px;
+        .dnn-label {
+            float: left;
+            label {
+                color: #000;
+                float: left;
+            }
+        }
+    }
+    .group-filter {
+        border-left: 1px solid @alto;
+        border-right: 1px solid @alto;
+        float: right;
+    }
+    .container {
+        float: left;
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border-left: 1px solid @alto;
+        border-right: 1px solid @alto;
+        box-sizing: border-box;
+        .header-row {
+            display: table;
+            width: 100%;
+            border-bottom: 1px solid @alto;
+            border-top: 1px solid @alto;
+            width: 100%;
+            float: left;
+            position: relative;
+            padding: 15px 20px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            .dnn-grid-cell {
+                padding-left: 20px;
+                &:last-child {
+                    margin-left: -35px;
+                }
+            }
+        }
+    }
+}

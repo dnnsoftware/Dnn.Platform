@@ -1,0 +1,262 @@
+@import "../../styles/index";
+@transition: .18s;
+.dnn-file-upload {
+    float: left;
+    width: 304px;
+    height: 162px;
+    background: @alabaster;
+    border: 12px solid white;
+    outline: 1px solid @mountainMist;
+    position: relative;
+    .overlay {        
+        position: absolute;
+        background: rgba(30, 136, 195, .0);
+        top: -12px;
+        bottom: -12px;
+        left: -12px;
+        right: -12px;
+        text-align: center;
+        transition: @transition;
+        z-index: 1;
+        &.hover {
+            background: rgba(30, 136, 195, .6);
+            * {
+                pointer-events: none;
+            }
+            span {
+                color: white;
+            }
+            .buttons {
+                .button.upload {
+                    color: white;
+                }
+            }
+        }
+        &.has-image {
+            opacity: 0;
+            &:hover, &.hover {
+                opacity: 1;
+            }
+        }
+        &:hover {
+            background: rgba(30, 136, 195, .6);
+            span {
+                color: white;
+            }
+            .buttons {
+                &:hover {
+                    .button {
+                        color: @alto;
+                        &:hover {
+                            color: white;
+                        }
+                    }
+                }
+                .button {
+                    color: white;
+                }
+            }
+        }
+        span {
+            margin: 25px 100px;
+            float: left;
+            width: 128px;
+            box-sizing: border-box;
+            color: @rollingStone;
+            transition: @transition;
+        }
+        .buttons {
+            margin: auto;
+            height: 32px;
+            margin-top: 50px;
+            width: 201px;
+            transition: @transition;
+            .button {
+                box-sizing: content-box;
+                float: left;
+                width: 32px;
+                height: 32px;
+                padding: 0 17.5px;
+                color: @alto;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                background: transparent !important;
+                input[type="file"] {
+                    position: absolute;
+                    top: -100px;
+                    bottom: -100px;
+                    left: -100px;
+                    right: -100px;
+                    opacity: 0;
+                    cursor: pointer;
+                    width: auto;
+                    height: 162px;
+                }
+                svg {
+                    width: 32px;
+                    height: 32px;
+                }
+                &:first-of-type {
+                    margin-left: 0px;
+                }
+            }
+        }
+    }
+    .file-upload-container {
+        position: absolute;
+        top: -12px;
+        bottom: -12px;
+        left: -12px;
+        right: -12px;
+        background: white;
+        padding: 14px 22px;
+        z-index: 2;
+        h4 {
+            margin-bottom: 8px;
+            color: @bulgarianRose;
+        }
+        .textarea-container {
+            float: left;
+            width: 100%;
+            height: 90px;
+            border: 1px solid @mountainMist;
+            position: relative;
+            textarea {
+                resize: none;
+                width: 100%;
+                height: 64px;
+                border: none;
+                outline: none !important;
+                padding: 10px;
+                box-sizing: border-box;
+                color: @bulgarianRose;
+            }
+        }
+        span {
+            float: right;
+            margin-right: 10px;
+            color: @curiousBlue;
+        }
+        .drop-down {
+            width: 100%;
+            float: left;
+            height: 30px;
+            border: 1px solid @mountainMist;
+            margin-bottom: 16px;
+            position: relative;
+            &:after {
+                content: "";
+                position: absolute;
+                right: 8px;
+                top: 12px;
+                width: 0;
+                height: 0;
+                pointer-events: none;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid @rollingStone;
+            }
+        }
+    }
+    .image-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        overflow: hidden;
+        z-index: 0;
+        img {
+            position: absolute;
+            width: auto;
+            height: 100%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            z-index: 0;
+        }
+    }
+}
+
+.dnn-file-upload .dnn-file-upload-file-name {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+
+    & > span {
+        background-color: @alabaster;
+        padding: 3px 10px;
+        border-radius: 3px;
+        border: solid 1px lightgray;
+        opacity: 0.8;
+    }
+}
+
+.dnn-file-upload .file-upload-container {
+    
+    &.dnn-upload-bar {
+        padding: 12px;
+        transition: opacity .4s .6s;
+        &.complete {
+            opacity: 0;
+        }
+        .upload-bar-container {
+            color: @curiousBlue;
+            float: left;
+            width: 100%;
+            height: 100%;
+            border: 1px solid @curiousBlue;
+            background: #f4f6f7;
+            padding: 5px 20px;
+            box-sizing: border-box;
+            .upload-file-name {
+                margin-bottom: 10px;
+                word-wrap: break-word;
+                max-height: 16px;
+            }
+            .upload-icon {
+                width: 42px;
+                height: 42px;
+                margin: auto;
+            }
+            h4 {
+                color: @curiousBlue;
+                margin: auto;
+                text-align: center;
+                font-size: 14px;
+                margin: 10px;
+            }
+            .upload-bar-box {
+                position: relative;
+                float: left;
+                width: 100%;
+                height: 4px;
+                background: @alto;
+                margin-top: 5px;
+                .upload-bar {
+                    width: 0;
+                    float: left;
+                    background: @curiousBlue;
+                    height: 100%;
+                    left: 0px;
+                    transition: .1s;
+                }
+            }
+        }
+    }
+    &.upload-error {
+        .upload-bar-container {
+            border: 1px solid @alizarinCrimson;
+            color: @alizarinCrimson;
+            h4 {
+                color: @alizarinCrimson;
+            }
+            .upload-bar-box {
+                background: @alizarinCrimson;
+            }
+        }
+    }
+}

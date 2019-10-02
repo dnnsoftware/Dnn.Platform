@@ -1,0 +1,51 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.collapsible-component-verifier {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-header-verifier {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {
+            float: left;
+            width: 100%;
+            color: @thunder;
+            .item-row-name {
+                width: 45%;
+                float: left;
+                padding-left: 15px;
+                text-transform: uppercase;
+                color: #000;
+                .language-flag {
+                    float: left;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+            .arrow-icon {
+                margin-right: 15px;
+                float: right;
+                cursor: pointer;
+                svg {
+                    width: 16px;
+                    float: left;
+                    height: 16px;
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+}

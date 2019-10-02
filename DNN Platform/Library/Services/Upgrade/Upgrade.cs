@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Upgrade
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
 
         #endregion
-
+        
         #region Public Properties
 
         public static string DefaultProvider
@@ -5255,6 +5255,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "9.3.0":
                             UpgradeToVersion930();
                             break;
+                        case "9.4.1":
+                            UpgradeToVersion941();
+                            break;
                     }
                 }
                 else
@@ -5513,6 +5516,76 @@ namespace DotNetNuke.Services.Upgrade
                             errorMsg.ToString());
                     }
                 }
+            }
+        }
+
+        private static void UpgradeToVersion941()
+        {
+            // It's possible previous versions of DNN created invalid binding redirects with <dependentAssembly xmlns="">, which are ignored
+            // This finds these and removes them, adding a correct binding redirect if one doesn't exist
+            var webConfig = Config.Load();
+            
+            var ns = new XmlNamespaceManager(webConfig.NameTable);
+            ns.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+
+            var invalidDependentAssemblies = webConfig.SelectNodes("/configuration/runtime/ab:assemblyBinding/dependentAssembly", ns);
+            foreach (XmlNode dependentAssembly in invalidDependentAssemblies)
+            {
+                var assemblyBindingElement = dependentAssembly.ParentNode;
+                var assemblyIdentity = dependentAssembly.ChildNodes.Cast<XmlNode>().SingleOrDefault(n => n.LocalName.Equals("assemblyIdentity", StringComparison.Ordinal));
+                if (assemblyIdentity == null)
+                {
+                    assemblyBindingElement.RemoveChild(dependentAssembly);
+                    continue;
+                }
+
+                var name = assemblyIdentity.Attributes["name"]?.Value;
+                var publicKeyToken = assemblyIdentity.Attributes["publicKeyToken"]?.Value;
+                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(publicKeyToken))
+                {
+                    assemblyBindingElement.RemoveChild(dependentAssembly);
+                    continue;
+                }
+
+                var dependentAssemblyXPath = $"/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='{name}'][ab:assemblyIdentity/@publicKeyToken='{publicKeyToken}']";
+                var validDependentAssembly = webConfig.SelectSingleNode(dependentAssemblyXPath, ns);
+                if (validDependentAssembly != null)
+                {
+                    // a valid dependentAssembly exists for this assembly, just remove the invalid element
+                    assemblyBindingElement.RemoveChild(dependentAssembly);
+                    continue;
+                }
+
+                // otherwise, replace the invalid dependentAssembly with a valid version of it
+                AssemblyName assemblyName;
+                try
+                {
+                    assemblyName = AssemblyName.GetAssemblyName(Path.Combine(Globals.ApplicationMapPath, "bin", name + ".dll"));
+                }
+                catch
+                {
+                    assemblyBindingElement.RemoveChild(dependentAssembly);
+                    continue;
+                }
+
+                var validAssemblyIdentity = webConfig.CreateElement("assemblyIdentity", "urn:schemas-microsoft-com:asm.v1");
+                validAssemblyIdentity.AddAttribute("name", name);
+                validAssemblyIdentity.AddAttribute("publicKeyToken", publicKeyToken);
+
+                var validBindingRedirect = webConfig.CreateElement("bindingRedirect", "urn:schemas-microsoft-com:asm.v1");
+                validBindingRedirect.AddAttribute("oldVersion", "0.0.0.0-32767.32767.32767.32767");
+                validBindingRedirect.AddAttribute("newVersion", assemblyName.Version.ToString());
+
+                validDependentAssembly = webConfig.CreateElement("dependentAssembly", "urn:schemas-microsoft-com:asm.v1");
+                validDependentAssembly.AppendChild(validAssemblyIdentity);
+                validDependentAssembly.AppendChild(validBindingRedirect);
+
+                assemblyBindingElement.ReplaceChild(validDependentAssembly, dependentAssembly);
+            }
+
+            if (invalidDependentAssemblies.Count > 0)
+            {
+                Config.Save(webConfig);
             }
         }
 

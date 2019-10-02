@@ -1,0 +1,29 @@
+@import "../../../../less/globals.less";
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.pageUrlCommons) {
+    label {
+        font-weight: bold;
+    }
+
+    .page-url-commons-grid{
+        &.horizontal{
+            width: 100%;
+            .left-column,
+            .right-column {
+                width: 50%;
+                float: left;
+            }
+        }
+
+        &.vertical{
+            .left-column,
+            .right-column {
+                margin: 20px 10px;
+                clear: both;
+                .dnn-switch-container{
+                    float: right;
+                }
+            }
+        }
+    }
+}
