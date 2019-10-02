@@ -439,6 +439,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4248BC91
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9-8B8B-441B-8623-9347B62884A1}"
 	ProjectSection(SolutionItems) = preProject
+		Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec = Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec
 		Build\Tools\NuGet\DotNetNuke.Bundle.nuspec = Build\Tools\NuGet\DotNetNuke.Bundle.nuspec
 		Build\Tools\NuGet\DotNetNuke.Core.nuspec = Build\Tools\NuGet\DotNetNuke.Core.nuspec
 		Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec = Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec

@@ -610,7 +610,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Extensions.dnn" />
-    <Content Include="Dnn.PersonaBar.Extensions.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.Extensions\App_LocalResources\Extensions.resx" />
