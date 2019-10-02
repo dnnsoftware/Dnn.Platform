@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke� https://www.dnnsoftware.comom
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
