@@ -1,0 +1,264 @@
+    @import "~@dnnsoftware/dnn-react-common/styles/index";
+    :local(.importModal) {
+        border: 1px solid @alto;
+        background: #fff;
+        float: left;
+        width: 100%;
+        * {
+            box-sizing: border-box;
+        }
+        .pageTitle {
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 40px 0 30px 40px;
+        }
+        .pageDescription {
+            font-weight: 700;
+            color: @thunder;
+            padding: 0 40px 15px 40px;
+        }
+        .packages-wrapper {
+            width: 100%;
+            padding: 0 40px 70px 40px;
+            .packages {
+                .package-analyzing {
+                    float: left;
+                    width: 100%;
+                    padding-bottom: 40px;
+                    .noDataText {
+                        font-size: x-large;
+                        color: @thunder;
+                        padding: 40px 0 0 0;
+                    }
+                    .noDataImage {
+                        width: 100%;
+                        text-align: center;
+                        > svg {
+                            width: 648px;
+                            height: 400px;
+                        }
+                    }
+                }
+                .package-card-wrapper {
+                    float: left;
+                    position: relative;
+                    &:not(:last-child) {
+                        margin-bottom: 15px;
+                    }
+                    .package-card-tooltip{
+                        background-color: #fff;
+                        position:absolute;
+                        padding: 10px 20px;
+                        background: rgb(255, 255, 255);
+                        box-shadow: rgb(200, 200, 200) 0px 0px 10px 1px;
+                        border-radius: 3px;
+                        transition: opacity 0.2s ease-in-out 0s, visibility 0.2s ease-in-out 0s;                        
+                        color: white;
+                        max-width: 500px;
+                        left: 50%;
+                        margin-left: -25%;
+                        opacity: 0;
+                        visibility: hidden;
+                        ::after{
+                            content: " ";
+                            position: absolute;
+                            bottom: 100%;
+                            left: 50%;
+                            margin-left: -10px;
+                            border-width: 10px;
+                            border-style: solid;
+                            border-color: transparent transparent white transparent;
+                        }
+                    }
+                    &:hover{
+                        .package-card-tooltip{
+                            opacity: 1;
+                            visibility: visible;
+                            z-index: 9999;
+                            cursor: pointer;
+                        }
+                    }
+                    .package-card {
+                        text-align: left;
+                        border: 1px solid @alto;
+                        width: 100%;
+                        display: inline-block;
+                        position: relative;
+                        &:hover {
+                            .package-card-overlay {
+                                opacity: 0.75;
+                            }
+                        }
+                        &.selected {
+                            border: 2px solid @curiousBlue;
+                            .checkmark {
+                                position: absolute;
+                                top: 5px;
+                                right: 5px;
+                                background-color: @curiousBlue;
+                                display: block;
+                                width: 15px;
+                                height: 15px;
+                                svg {
+                                    width: 100%;
+                                    fill: @white;
+                                }
+                            }
+                        }
+                        .card-grid {
+                            padding: 20px 0 10px 0;
+                            width: 100%;
+                            float: left;
+                            .card-column1 {
+                                border-right: 1px solid @alto;
+                                padding: 0 20px;
+                                .package-name {
+                                    font-weight: bold;
+                                    padding-bottom: 10px;
+                                }
+                                .package-field {
+                                    padding-bottom: 10px;
+                                    color: @thunder;
+                                }
+                            }
+                            .card-column2, .card-column4 {
+                                .package-field {
+                                    float: left;
+                                    width: 100%;
+                                    padding: 0 0 13px 20px;
+                                    .dnn-label {
+                                        padding-top: 0;
+                                        font-weight: 700;
+                                    }
+                                    span {
+                                        float: right;
+                                        color: @thunder;
+                                    }
+                                }
+                            }
+                            .card-column3 {
+                                color: @thunder;
+                                .package-field {
+                                    float: right;
+                                    padding: 0 10px 10px 0;
+                                }
+                            }
+                            .card-column5 {
+                                color: @thunder;
+                                .package-field {
+                                    padding: 0 20px 10px 0;
+                                }
+                            }
+                        }
+                        .template-icon {
+                            background-color: @gallery;
+                            height: 120px;
+                            text-align: center;
+                            svg {
+                                width: 60px;
+                                height: 60px;
+                                margin-top: 30px;
+                            }
+                        }
+                        .package-card-overlay {
+                            position: absolute;
+                            top: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: @curiousBlue;
+                            transition: .3s;
+                            opacity: 0;
+                            cursor: pointer;
+                            .icon-container {
+                                color: #fff;
+                                text-align: center;
+                                width: 100%;
+                                position: absolute;
+                                top: 50%;
+                                -webkit-transform: translateY(-50%);
+                                -ms-transform: translateY(-50%);
+                                transform: translateY(-50%);
+                                >div {
+                                    display: inline;
+                                    margin-right: 10px;
+                                    svg {
+                                        width: 40px;
+                                        fill: white;
+                                    }
+                                    font-size: 15px;
+                                }
+                            }
+                            .dnn-text-overflow-wrapper {
+                                position: absolute;
+                                bottom: 92px;
+                                font-size: 15px;
+                                margin-left: 16px;
+                                opacity: 0;
+                            }
+                        }
+                    }
+                }
+            }
+            .import-summary {
+                float: left;
+                width: 100%;
+                .sectionTitle {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    padding: 40px 0 0;
+                }
+                .import-site-container {
+                    font-weight: 700;
+                    .left-column {
+                        width: 50%;
+                        float: left;
+                        border-right: 1px solid @alto;
+                        padding: 10px 30px 10px 0;
+                    }
+                    .right-column {
+                        width: 50%;
+                        float: left;
+                        padding: 10px 0 10px 30px;
+                        .seperator {
+                            float: left;
+                            width: 100%;
+                            padding: 10px 0;
+                        }
+                        .dnn-switch-container {
+                            float: right;
+                        }
+                    }
+                    .import-summary-item {
+                        padding-top: 7px;
+                        float: right;
+                        color: @thunder;
+                        font-weight: 100;
+                    }
+                    .dnn-grid-cell {
+                        padding-bottom: 10px;
+                    }
+                }
+                .finish-importing {
+                    float: left;
+                    font-weight: 700;
+                    color: @curiousBlue;
+                    padding: 30px 0 20px 0;
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+        }
+        .packagePager {
+            padding: 15px 0 20px 0;
+            float: left;
+            width: 100%;
+            border-bottom: 1px solid @alto;
+        }
+        .action-buttons {
+            text-align: center;
+            padding: 20px 0 50px 0;
+            button {
+                margin: 5px;
+            }
+        }
+    }

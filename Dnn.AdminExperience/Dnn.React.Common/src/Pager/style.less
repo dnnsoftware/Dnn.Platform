@@ -1,0 +1,120 @@
+@import "../../styles/index";
+.dnn-pager {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0px;
+    .dnn-pager-summary-box {
+        float: left;
+        width: 35%;
+        margin-top: 9px;
+    }
+    .dnn-pager-control {
+        float: left;
+        width: 65%;
+        .dnn-pager-options-info-box {
+            float: right;
+            width: auto;
+            max-width: 40%;
+            margin-right: 20px;
+            margin-top: 9px;
+        }
+        .dnn-pager-pageSize-box {
+            float: right;
+            width: auto;
+            max-width: 40%;
+            margin-right: 20px;
+            .collapsible-label{
+                box-sizing: border-box;
+            }
+            .collapsible-content {
+                &.open {
+                    margin-bottom: 20px;
+                }
+            }
+        }
+        .dnn-pager-paging-box {
+            width: auto;
+            max-width: 60%;
+            float: right;
+            //top: -8px;
+            //position: relative;
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                line-height: 32px;
+                li.pages {
+                    min-width: 32px;
+                    width: auto;
+                    padding: 0px 5px;
+                    height: 32px;
+                    border: 1px solid @alto;
+                    float: left;
+                    margin-left: -1px;
+                    cursor: pointer;
+                    position: relative;
+                    text-align: center;
+                }
+                li.pages:not(.disabled):hover {
+                    color: @thunder;
+                    svg {
+                        fill: @thunder;
+                    }
+                }
+                li.prev, li.next {
+                    text-align: center;
+                    span {
+                        vertical-align: middle;
+                        width: 16px;
+                        padding-top: 8px;
+                    }
+                }
+                li.current {
+                    color: @curiousBlue;
+                    cursor: auto;
+                    font-weight: bold;
+                }
+                li.disabled span {
+                    opacity: 0.5;
+                }
+                .text {
+                    color: @alto;
+                    &:hover {
+                        color: @thunder
+                    }
+                    &:active {
+                        color: @curiousBlue;
+                    }
+                }
+                .icon-button {
+                    display: inline-block;
+                    svg {
+                        vertical-align: top;
+                        fill: @alto;
+                        width: 16px;
+                        height: 16px;
+                    }
+                    &:hover {
+                        svg {
+                            fill: @thunder;
+                        }
+                    }
+                    &:active, &.activated {
+                        svg {
+                            fill: @curiousBlue;
+                        }
+                    }
+                }
+                .icon-flat {
+                    display: inline-block;
+                    svg {
+                        vertical-align: top;
+                        fill: @alto;
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

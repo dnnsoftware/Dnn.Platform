@@ -1,0 +1,74 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.collapsible-component-entry {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-entry {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {
+            float: left;
+            width: 100%;
+            .item-row-text {
+                width: 44%;
+                float: left;
+                padding-left: 15px;
+                word-break: break-all;
+            }
+            .item-row-value {
+                width: 43%;
+                float: left;
+            }            
+            .item-row-actionButtons {
+                width: 10%;
+                margin-right: 15px;
+                float: right;
+                &:not(:last-child) {
+                    float: left;
+                    margin-right: 0px;
+                }
+                .delete-icon, 
+                .edit-icon,
+                .order-icon {
+                    margin-left: 5px;
+                    float: right;
+                    display: block;
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .order-icon-hidden,
+                .delete-icon-hidden {
+                    display: none;
+                }
+                .order-icon-active,
+                .edit-icon-active {
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

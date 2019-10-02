@@ -1,0 +1,145 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+@big: 168px;
+@small: 100px;
+@selectedBig: 186px;
+@selectedSmall: 118px;
+:local(.moduleContainer) {
+    padding: 15px 15px;
+    display: inline-block;
+    &.selected {
+        padding: 15px 6px;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    &.big {
+        span.card-image {
+            width: @big;
+            height: @big;
+            &.no-image {
+                &:before {
+                    width: @big;
+                    height: @big;
+                }
+            }
+        }
+    }
+    &.big.selected {
+        span.card-image {
+            width: @selectedBig;
+            height: @selectedBig;
+        }
+    }
+    &.small {
+        span.card-image {
+            width: @small;
+            height: @small;
+            &.no-image {
+                &:before {
+                    width: @small;
+                    height: @small;
+                }
+            }
+        }
+    }
+    &.small.selected {
+        span.card-image {
+            width: @selectedSmall;
+            height: @selectedSmall;
+        }
+    }
+    span.card-image {
+        display: inline-block;
+        margin: 9px 0;
+        position: relative;
+        vertical-align: top;
+        cursor: pointer;
+        &.no-image {
+            &:before {
+                content: "";
+                display: block;
+                background-color: @mercury;
+            }
+        }
+        & > svg {
+            fill: @alto;
+            width: 90%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        span.hoverLayer {
+            position: absolute;
+            display: inline-block;
+            line-height: 18px;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(30, 136, 195, 0.6);
+            color: white;
+            padding: 15px 10px;
+            transition: opacity 100ms linear;
+            text-align: center;
+            vertical-align: middle;
+            &.site-default {
+                background-color: @regentGray;
+            }
+        }
+        &:hover span.hoverLayer {
+            opacity: 1;
+        }
+    }
+    div.card-title {
+        display: block;
+        text-align: center;
+        font-family: inherit;
+        font-weight: 600;
+        line-height: 36px;
+        width: 100%;
+        &.site-default {
+            line-height: 24px;
+        }
+    }
+    div.card-title-site-default {
+        display: block;
+        text-align: center;
+        font-family: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: @regentGray;
+        width: 100%;
+    }
+    &.selected {
+        span.card-image {
+            border: 4px solid @curiousBlue;
+            margin: 0;
+            padding: 5px;
+            &:hover span.hoverLayer {
+                opacity: 0;
+            }
+            &.site-default {
+                border: 4px solid @regentGray;
+            }
+        }
+        span.checkmark {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: @curiousBlue;
+            display: block;
+            width: 20px;
+            height: 20px;
+            svg {
+                width: 100%;
+                fill: @white;
+            }
+            &.site-default {
+                background-color: @regentGray;
+            }
+        }
+    }
+}

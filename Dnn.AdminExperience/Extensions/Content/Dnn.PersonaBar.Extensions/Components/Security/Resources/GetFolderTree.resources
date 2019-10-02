@@ -1,0 +1,3 @@
+﻿DECLARE @Output TABLE(Data NVARCHAR(255), Depth INT)
+INSERT INTO @Output EXEC sys.xp_dirtree '%SiteRoot%'
+SELECT @@ROWCOUNT

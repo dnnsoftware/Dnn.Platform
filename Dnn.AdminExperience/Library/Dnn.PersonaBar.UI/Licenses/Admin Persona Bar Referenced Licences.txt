@@ -1,0 +1,2513 @@
+Admin Persona Bar Referenced Licences
+--------------------------------------------------------------------------------------
+
+accepts (Higher-level content negotiation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\accepts\LICENSE
+--------------------------------------------------------------------------------------
+
+acorn (ECMAScript parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\acorn\LICENSE
+--------------------------------------------------------------------------------------
+
+acorn-jsx (Alternative, faster React.js JSX parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\acorn-jsx\LICENSE
+--------------------------------------------------------------------------------------
+
+add-px-to-style (Will add px to the end of style values which are Numbers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\add-px-to-style\LICENSE.md
+--------------------------------------------------------------------------------------
+
+ajv (Another JSON Schema Validator)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ajv\LICENSE
+--------------------------------------------------------------------------------------
+
+ajv-keywords (Custom JSON-Schema keywords for ajv validator)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ajv-keywords\LICENSE
+--------------------------------------------------------------------------------------
+
+align-text (Align the text in a string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\align-text\LICENSE
+--------------------------------------------------------------------------------------
+
+alphanum-sort (Alphanumeric sorting algorithm)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\alphanum-sort\LICENSE
+--------------------------------------------------------------------------------------
+
+amdefine (Provide AMD's define() API for declaring modules in the AMD format)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\amdefine\LICENSE
+--------------------------------------------------------------------------------------
+
+ansi-escapes (ANSI escape codes for manipulating the terminal)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ansi-escapes\license
+--------------------------------------------------------------------------------------
+
+ansi-regex (Regular expression for matching ANSI escape codes)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ansi-regex\license
+--------------------------------------------------------------------------------------
+
+ansi-styles (ANSI escape codes for styling strings in the terminal)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ansi-styles\license
+--------------------------------------------------------------------------------------
+
+anymatch (Matches strings against configurable strings, globs, regular expressions, and/or functions)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\anymatch\LICENSE
+--------------------------------------------------------------------------------------
+
+argparse (Very powerful CLI arguments parser. Native port of argparse - python's options parsing library)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\argparse\LICENSE
+--------------------------------------------------------------------------------------
+
+arr-diff (Returns an array with only the unique values from the first array, by excluding all values from additional arrays using strict equality for comparisons.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\arr-diff\LICENSE
+--------------------------------------------------------------------------------------
+
+arr-flatten (Recursively flatten an array or arrays. This is the fastest implementation of array flatten.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\arr-flatten\LICENSE
+--------------------------------------------------------------------------------------
+
+array-flatten (Flatten an array of nested arrays into a single flat array)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\array-flatten\LICENSE
+--------------------------------------------------------------------------------------
+
+array-union (Create an array of unique values, in order, from the input arrays)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\array-union\license
+--------------------------------------------------------------------------------------
+
+array-uniq (Create an array without duplicates)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\array-uniq\license
+--------------------------------------------------------------------------------------
+
+array-unique (Return an array free of duplicate values. Fastest ES5 implementation.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\array-unique\LICENSE
+--------------------------------------------------------------------------------------
+
+arrify (Convert a value to an array)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\arrify\license
+--------------------------------------------------------------------------------------
+
+asap (High-priority task queue for Node.js and browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\asap\LICENSE.md
+--------------------------------------------------------------------------------------
+
+assert (commonjs assert - node.js api compatible)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\assert\LICENSE
+--------------------------------------------------------------------------------------
+
+async (Higher-order functions and common patterns for asynchronous code)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\async\LICENSE
+--------------------------------------------------------------------------------------
+
+autoprefixer (Parse CSS and add vendor prefixes to CSS rules using values from the Can I Use website)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\autoprefixer\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash (Lodash modular utilities.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash\LICENSE
+--------------------------------------------------------------------------------------
+
+babel-loader (babel module loader for webpack)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babel-loader\LICENSE
+--------------------------------------------------------------------------------------
+
+babel-plugin-transform-object-assign (Replace Object.assign with an inline helper)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-object-assign\LICENSE
+--------------------------------------------------------------------------------------
+
+babel-plugin-transform-react-remove-prop-types (Remove unnecessary React propTypes from the production build)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-react-remove-prop-types\LICENSE
+--------------------------------------------------------------------------------------
+
+babel-regenerator-runtime ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babel-regenerator-runtime\LICENSE
+--------------------------------------------------------------------------------------
+
+json5 (JSON for the ES5 era.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\json5\LICENSE.md
+--------------------------------------------------------------------------------------
+
+minimatch (a glob matcher in javascript)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\minimatch\LICENSE
+--------------------------------------------------------------------------------------
+
+babylon (A JavaScript parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babylon\LICENSE
+--------------------------------------------------------------------------------------
+
+balanced-match (Match balanced character pairs, like "{" and "}")
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\balanced-match\LICENSE.md
+--------------------------------------------------------------------------------------
+
+base16 (Base16 themes as JS objects)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\base16\LICENSE.md
+--------------------------------------------------------------------------------------
+
+Base64 (Base64 encoding and decoding)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\Base64\LICENSE
+--------------------------------------------------------------------------------------
+
+base64-js (Base64 encoding/decoding in pure JS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\base64-js\LICENSE
+--------------------------------------------------------------------------------------
+
+binary-extensions (List of binary file extensions)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\binary-extensions\license
+--------------------------------------------------------------------------------------
+
+braces (Fastest brace expansion for node.js, with the most complete support for the Bash 4.3 braces specification.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\braces\LICENSE
+--------------------------------------------------------------------------------------
+
+browserslist (Share browsers list between different front-end tools, like Autoprefixer, Stylelint and babel-env-preset)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\browserslist\LICENSE
+--------------------------------------------------------------------------------------
+
+buffer (Node.js Buffer API, for the browser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\buffer\LICENSE
+--------------------------------------------------------------------------------------
+
+buffer-shims (some shims for node buffers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\buffer-shims\license.md
+--------------------------------------------------------------------------------------
+
+bytes (Utility to parse a string bytes to bytes and vice-versa)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\bytes\LICENSE
+--------------------------------------------------------------------------------------
+
+camelcase (Convert a dash/dot/underscore/space separated string to camelCase: foo-bar → fooBar)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\camelcase\license
+--------------------------------------------------------------------------------------
+
+caniuse-api (request the caniuse data to check browsers compatibilities)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\caniuse-api\LICENSE
+--------------------------------------------------------------------------------------
+
+caniuse-db (Raw browser/feature support data from caniuse.com)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\caniuse-db\LICENSE
+--------------------------------------------------------------------------------------
+
+center-align (Center-align the text in a string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\center-align\LICENSE
+--------------------------------------------------------------------------------------
+
+chalk (Terminal string styling done right. Much color.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\chalk\license
+--------------------------------------------------------------------------------------
+
+circular-json (JSON does not handle circular references. This version does)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\circular-json\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+clap (Command line argument parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\clap\LICENSE
+--------------------------------------------------------------------------------------
+
+classnames (A simple utility for conditionally joining classNames together)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\classnames\LICENSE
+--------------------------------------------------------------------------------------
+
+cli-cursor (Toggle the CLI cursor)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cli-cursor\license
+--------------------------------------------------------------------------------------
+
+cli-width (Get stdout window width, with two fallbacks, tty and then a default.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cli-width\LICENSE
+--------------------------------------------------------------------------------------
+
+cliui (easily create complex multi-column command-line-interfaces)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cliui\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+clone (deep cloning of objects and arrays)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\clone\LICENSE
+--------------------------------------------------------------------------------------
+
+co (generator async control flow goodness)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\co\LICENSE
+--------------------------------------------------------------------------------------
+
+code-point-at (ES2015 `String#codePointAt()` ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\code-point-at\license
+--------------------------------------------------------------------------------------
+
+color (Color conversion and manipulation with CSS string support)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\color\LICENSE
+--------------------------------------------------------------------------------------
+
+color-convert (Plain color conversion functions)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\color-convert\LICENSE
+--------------------------------------------------------------------------------------
+
+color-name (A list of color names and it’s values)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\color-name\LICENSE
+--------------------------------------------------------------------------------------
+
+color-string (Parser and generator for CSS color strings)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\color-string\LICENSE
+--------------------------------------------------------------------------------------
+
+colormin (Turn a CSS color into its smallest representation.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\colormin\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+colors (get colors in your node.js console)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\colors\LICENSE
+--------------------------------------------------------------------------------------
+
+commander (the complete solution for node.js command-line programs)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\commander\LICENSE
+--------------------------------------------------------------------------------------
+
+compressible (Compressible Content-Type / mime checking)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\compressible\LICENSE
+--------------------------------------------------------------------------------------
+
+compression (Node.js compression middleware)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\compression\LICENSE
+--------------------------------------------------------------------------------------
+
+ms (Tiny ms conversion utility)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ms\LICENSE
+--------------------------------------------------------------------------------------
+
+concat-map (concatenative mapdashery)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\concat-map\LICENSE
+--------------------------------------------------------------------------------------
+
+concat-stream (writable stream that concatenates strings or binary data and calls a callback with the result)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\concat-stream\LICENSE
+--------------------------------------------------------------------------------------
+
+connect-history-api-fallback (Provides a fallback for non-existing directories so that the HTML 5 history API can be used.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\connect-history-api-fallback\LICENSE
+--------------------------------------------------------------------------------------
+
+content-disposition (Create and parse Content-Disposition header)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\content-disposition\LICENSE
+--------------------------------------------------------------------------------------
+
+content-type (Create and parse HTTP Content-Type header)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\content-type\LICENSE
+--------------------------------------------------------------------------------------
+
+convert-source-map (Converts a source-map from/to  different formats and allows adding/changing properties.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\convert-source-map\LICENSE
+--------------------------------------------------------------------------------------
+
+cookie (HTTP server cookie parsing and serialization)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cookie\LICENSE
+--------------------------------------------------------------------------------------
+
+core-js (Standard library)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\core-js\LICENSE
+--------------------------------------------------------------------------------------
+
+core-util-is (The `util.is*` functions introduced in Node v0.12.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\core-util-is\LICENSE
+--------------------------------------------------------------------------------------
+
+crypto-browserify (partial implementation of crypto for the browser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\crypto-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+cssesc (A JavaScript library for escaping CSS strings and identifiers while generating the shortest possible ASCII-only output.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cssesc\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+cssnano (A modular minifier, built on top of the PostCSS ecosystem.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\cssnano\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+csso (CSSO (CSS Optimizer) is a CSS minifier with structural optimisations)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\csso\LICENSE
+--------------------------------------------------------------------------------------
+
+date-arithmetic (simple date math util)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\date-arithmetic\License.txt
+--------------------------------------------------------------------------------------
+
+debug (small debugging utility)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\debug\LICENSE
+--------------------------------------------------------------------------------------
+
+decamelize (Convert a camelized string into a lowercased one with a custom separator: unicornRainbow → unicorn_rainbow)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\decamelize\license
+--------------------------------------------------------------------------------------
+
+deconstruct-number-format (deconstruct a number format eg '-£#,##0.##0' and return a set of parameters to describe the format)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\deconstruct-number-format\LICENSE
+--------------------------------------------------------------------------------------
+
+deep-is (node's assert.deepEqual algorithm except for NaN being equal to NaN)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\deep-is\LICENSE
+--------------------------------------------------------------------------------------
+
+define-properties (Define multiple non-enumerable properties at once. Uses `Object.defineProperty` when available; falls back to standard assignment in older engines.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\define-properties\LICENSE
+--------------------------------------------------------------------------------------
+
+defined (return the first argument that is `!== undefined`)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\defined\LICENSE
+--------------------------------------------------------------------------------------
+
+del (Delete files and folders)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\del\license
+--------------------------------------------------------------------------------------
+
+depd (Deprecate all the things)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\depd\LICENSE
+--------------------------------------------------------------------------------------
+
+destroy (destroy a stream if possible)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\destroy\LICENSE
+--------------------------------------------------------------------------------------
+
+detect-indent (Detect the indentation of code)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\detect-indent\license
+--------------------------------------------------------------------------------------
+
+dnn-back-to-link (Back To Link)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\dnn-back-to-link\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+doctrine (JSDoc parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\doctrine\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+dom-css (fast dom CSS styling)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\dom-css\LICENSE.md
+--------------------------------------------------------------------------------------
+
+domain-browser (Node's domain module for the web browser. This is merely an evented try...catch with the same API as node, nothing more.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\domain-browser\LICENSE.md
+--------------------------------------------------------------------------------------
+
+ee-first (return the first event in a set of ee/event pairs)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ee-first\LICENSE
+--------------------------------------------------------------------------------------
+
+emojis-list (Complete list of standard emojis.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\emojis-list\LICENSE.md
+--------------------------------------------------------------------------------------
+
+encodeurl (Encode a URL to a percent-encoded form, excluding already-encoded sequences)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\encodeurl\LICENSE
+--------------------------------------------------------------------------------------
+
+encoding (Convert encodings, uses iconv by default and fallbacks to iconv-lite if needed)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\encoding\LICENSE
+--------------------------------------------------------------------------------------
+
+es-abstract (ECMAScript spec abstract operations.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es-abstract\LICENSE
+--------------------------------------------------------------------------------------
+
+es-to-primitive (ECMAScript “ToPrimitive” algorithm. Provides ES5 and ES6 versions.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es-to-primitive\LICENSE
+--------------------------------------------------------------------------------------
+
+es5-ext (ECMAScript extensions and shims)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es5-ext\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-iterator (Iterator abstraction based on ES6 specification)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-iterator\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-map (ECMAScript6 Map polyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-map\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-object-assign (ECMAScript 2015 (ES6) Object.assign polyfill and ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-object-assign\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-promise (A lightweight library that provides tools for organizing asynchronous code)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-promise\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-set (ECMAScript6 Set polyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-set\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-symbol (ECMAScript 6 Symbol polyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-symbol\LICENSE
+--------------------------------------------------------------------------------------
+
+es6-weak-map (ECMAScript6 WeakMap polyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\es6-weak-map\LICENSE
+--------------------------------------------------------------------------------------
+
+escape-html (Escape string for use in HTML)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\escape-html\LICENSE
+--------------------------------------------------------------------------------------
+
+escape-string-regexp (Escape RegExp special characters)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\escape-string-regexp\license
+--------------------------------------------------------------------------------------
+
+escope (ECMAScript scope analyzer)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\escope\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+eslint (An AST-based pattern checker for JavaScript.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eslint\LICENSE
+--------------------------------------------------------------------------------------
+
+eslint-loader (eslint loader (for webpack))
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eslint-loader\LICENSE
+--------------------------------------------------------------------------------------
+
+eslint-plugin-react (React specific linting rules for ESLint)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eslint-plugin-react\LICENSE
+--------------------------------------------------------------------------------------
+
+eslint-plugin-spellcheck (ESLint rules to spell check js files)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eslint-plugin-spellcheck\LICENSE
+--------------------------------------------------------------------------------------
+
+globals (Global identifiers from different JavaScript environments)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\globals\license
+--------------------------------------------------------------------------------------
+
+espree (An Esprima-compatible JavaScript parser built on Acorn)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\espree\LICENSE
+--------------------------------------------------------------------------------------
+
+esprima (ECMAScript parsing infrastructure for multipurpose analysis)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\esprima\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+estraverse (ECMAScript JS AST traversal functions)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\estraverse\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+esutils (utility box for ECMAScript language tools)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\esutils\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+etag (Create simple ETags)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\etag\LICENSE
+--------------------------------------------------------------------------------------
+
+event-emitter (Environment agnostic event emitter)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\event-emitter\LICENSE
+--------------------------------------------------------------------------------------
+
+eventemitter3 (EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eventemitter3\LICENSE
+--------------------------------------------------------------------------------------
+
+events (Node's event emitter for all engines.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\events\LICENSE
+--------------------------------------------------------------------------------------
+
+eventsource (W3C compliant EventSource client for Node.js)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eventsource\LICENSE
+--------------------------------------------------------------------------------------
+
+exenv (React's ExecutionEnvironment module extracted for use in other packages & components)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\exenv\LICENSE
+--------------------------------------------------------------------------------------
+
+expand-brackets (Expand POSIX bracket expressions (character classes) in glob patterns.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\expand-brackets\LICENSE
+--------------------------------------------------------------------------------------
+
+expand-range (Fast, bash-like range expansion. Expand a range of numbers or letters, uppercase or lowercase. See the benchmarks. Used by micromatch.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\expand-range\LICENSE
+--------------------------------------------------------------------------------------
+
+express (Fast, unopinionated, minimalist web framework)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\express\LICENSE
+--------------------------------------------------------------------------------------
+
+extglob (Convert extended globs to regex-compatible strings. Add (almost) the expressive power of regular expressions to glob patterns.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\extglob\LICENSE
+--------------------------------------------------------------------------------------
+
+fast-levenshtein (Efficient implementation of Levenshtein algorithm  with locale-specific collator support.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\fast-levenshtein\LICENSE.md
+--------------------------------------------------------------------------------------
+
+fbjs (A collection of utility libraries used by other Facebook JS projects)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\fbjs\LICENSE
+--------------------------------------------------------------------------------------
+
+figures (Unicode symbols with Windows CMD fallbacks)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\figures\license
+--------------------------------------------------------------------------------------
+
+file-entry-cache (Super simple cache for file metadata, useful for process that work o a given series of files and that only need to repeat the job on the changed ones since the previous run of the process)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\file-entry-cache\LICENSE
+--------------------------------------------------------------------------------------
+
+filesize (JavaScript library to generate a human readable String describing the file size)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\filesize\LICENSE
+--------------------------------------------------------------------------------------
+
+fill-range (Fill in a range of numbers or letters, optionally passing an increment or multiplier to use.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\fill-range\LICENSE
+--------------------------------------------------------------------------------------
+
+finalhandler (Node.js final http responder)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\finalhandler\LICENSE
+--------------------------------------------------------------------------------------
+
+flat-cache (A stupidly simple key/value storage using files to persist some data)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\flat-cache\LICENSE
+--------------------------------------------------------------------------------------
+
+flatten (Flatten arbitrarily nested arrays into a non-nested list of non-array items)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\flatten\LICENSE
+--------------------------------------------------------------------------------------
+
+for-in (Iterate over the own and inherited enumerable properties of an object, and return an object with properties that evaluate to true from the callback. Exit early by returning `false`. JavaScript/Node.js)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\for-in\LICENSE
+--------------------------------------------------------------------------------------
+
+for-own (Iterate over the own enumerable properties of an object, and return an object with properties that evaluate to true from the callback. Exit early by returning `false`. JavaScript/Node.js.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\for-own\LICENSE
+--------------------------------------------------------------------------------------
+
+foreach (foreach component + npm package)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\foreach\LICENSE
+--------------------------------------------------------------------------------------
+
+format-number-with-string (Format a number based on a format string '-£#,##0.##0')
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\format-number-with-string\license
+--------------------------------------------------------------------------------------
+
+forwarded (Parse HTTP X-Forwarded-For header)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\forwarded\LICENSE
+--------------------------------------------------------------------------------------
+
+fresh (HTTP response freshness testing)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\fresh\LICENSE
+--------------------------------------------------------------------------------------
+
+fs.realpath (Use node's fs.realpath, but fall back to the JS implementation if the native one fails)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\fs.realpath\LICENSE
+--------------------------------------------------------------------------------------
+
+function-bind (Implementation of Function.prototype.bind)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\function-bind\LICENSE
+--------------------------------------------------------------------------------------
+
+generate-object-property (Generate safe JS code that can used to reference a object property)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\generate-object-property\LICENSE
+--------------------------------------------------------------------------------------
+
+glob (a little globber)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\glob\LICENSE
+--------------------------------------------------------------------------------------
+
+glob-base (Returns an object with the (non-glob) base path and the actual pattern.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\glob-base\LICENSE
+--------------------------------------------------------------------------------------
+
+glob-parent (Strips glob magic from a string to provide the parent path)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\glob-parent\LICENSE
+--------------------------------------------------------------------------------------
+
+globby (Extends `glob` with support for multiple patterns and exposes a Promise API)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\globby\license
+--------------------------------------------------------------------------------------
+
+graceful-fs (A drop-in replacement for fs, making various improvements.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\graceful-fs\LICENSE
+--------------------------------------------------------------------------------------
+
+graceful-readlink (graceful fs.readlink)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\graceful-readlink\LICENSE
+--------------------------------------------------------------------------------------
+
+has (Object.prototype.hasOwnProperty.call shortcut)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\has\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+has-ansi (Check if a string has ANSI escape codes)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\has-ansi\license
+--------------------------------------------------------------------------------------
+
+has-flag (Check if argv has a specific flag)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\has-flag\license
+--------------------------------------------------------------------------------------
+
+hoist-non-react-statics (Copies non-react specific statics from a child component to a parent component)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\hoist-non-react-statics\LICENSE.md
+--------------------------------------------------------------------------------------
+
+home-or-tmp (Get the user home directory with fallback to the system temp directory)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\home-or-tmp\license
+--------------------------------------------------------------------------------------
+
+http-browserify (http module compatability for browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\http-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+http-errors (Create HTTP error objects)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\http-errors\LICENSE
+--------------------------------------------------------------------------------------
+
+http-proxy (HTTP proxying for the masses)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\http-proxy\LICENSE
+--------------------------------------------------------------------------------------
+
+https-browserify (https module compatability for browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\https-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+humanize (Javascript string formatter for human readability)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\humanize\LICENSE
+--------------------------------------------------------------------------------------
+
+iconv-lite (Convert character encodings in pure javascript.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\iconv-lite\LICENSE
+--------------------------------------------------------------------------------------
+
+ieee754 (Read/write IEEE754 floating point numbers from/to a Buffer or array-like object)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ieee754\LICENSE
+--------------------------------------------------------------------------------------
+
+ignore (Ignore is a manager and filter for .gitignore rules.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ignore\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+image-size (get dimensions of any image file)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\image-size\LICENSE
+--------------------------------------------------------------------------------------
+
+indexes-of (line String/Array#indexOf but return all the indexes in an array)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\indexes-of\LICENSE
+--------------------------------------------------------------------------------------
+
+inflight (Add callbacks to requests in flight to avoid async duplication)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\inflight\LICENSE
+--------------------------------------------------------------------------------------
+
+inherits (Browser-friendly inheritance fully compatible with standard node.js inherits())
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\inherits\LICENSE
+--------------------------------------------------------------------------------------
+
+interpret (A dictionary of file extensions and associated module loaders.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\interpret\LICENSE
+--------------------------------------------------------------------------------------
+
+invariant (invariant)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\invariant\LICENSE
+--------------------------------------------------------------------------------------
+
+ipaddr.js (A library for manipulating IPv4 and IPv6 addresses in JavaScript.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\ipaddr.js\LICENSE
+--------------------------------------------------------------------------------------
+
+is-absolute-url (Check if an URL is absolute)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-absolute-url\license
+--------------------------------------------------------------------------------------
+
+is-binary-path (Check if a filepath is a binary file)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-binary-path\license
+--------------------------------------------------------------------------------------
+
+is-buffer (Determine if an object is a Buffer)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-buffer\LICENSE
+--------------------------------------------------------------------------------------
+
+is-callable (Is this JS value callable? Works with Functions and GeneratorFunctions, despite ES6 @@toStringTag.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-callable\LICENSE
+--------------------------------------------------------------------------------------
+
+is-date-object (Is this value a JS Date object? This module works cross-realm/iframe, and despite ES6 @@toStringTag.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-date-object\LICENSE
+--------------------------------------------------------------------------------------
+
+is-dotfile (Return true if a file path is (or has) a dotfile. Returns false if the path is a dot directory.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-dotfile\LICENSE
+--------------------------------------------------------------------------------------
+
+is-equal-shallow (Does a shallow comparison of two objects, returning false if the keys or values differ.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-equal-shallow\LICENSE
+--------------------------------------------------------------------------------------
+
+is-extendable (Returns true if a value is any of the object types: array, regexp, plain object, function or date. This is useful for determining if a value can be extended, e.g. "can the value have keys?")
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-extendable\LICENSE
+--------------------------------------------------------------------------------------
+
+is-extglob (Returns true if a string has an extglob.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-extglob\LICENSE
+--------------------------------------------------------------------------------------
+
+is-finite (ES2015 Number.isFinite() ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-finite\license
+--------------------------------------------------------------------------------------
+
+is-fullwidth-code-point (Check if the character represented by a given Unicode code point is fullwidth)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-fullwidth-code-point\license
+--------------------------------------------------------------------------------------
+
+is-glob (Returns `true` if the given string looks like a glob pattern or an extglob pattern. This makes it easy to create code that only uses external modules like node-glob when necessary, resulting in much faster code execution and initialization time, and a better user experience.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-glob\LICENSE
+--------------------------------------------------------------------------------------
+
+is-my-json-valid (A JSONSchema validator that uses code generation to be extremely fast)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-my-json-valid\LICENSE
+--------------------------------------------------------------------------------------
+
+is-number (Returns true if the value is a number. comprehensive tests.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-number\LICENSE
+--------------------------------------------------------------------------------------
+
+is-plain-obj (Check if a value is a plain object)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-plain-obj\license
+--------------------------------------------------------------------------------------
+
+is-posix-bracket (Returns true if the given string is a POSIX bracket expression (POSIX character class).)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-posix-bracket\LICENSE
+--------------------------------------------------------------------------------------
+
+is-primitive (Returns `true` if the value is a primitive. )
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-primitive\LICENSE
+--------------------------------------------------------------------------------------
+
+is-property (Tests if a JSON property can be accessed using . syntax)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-property\LICENSE
+--------------------------------------------------------------------------------------
+
+is-regex (Is this value a JS regex? Works cross-realm/iframe, and despite ES6 @@toStringTag)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-regex\LICENSE
+--------------------------------------------------------------------------------------
+
+is-resolvable (Check if a module ID is resolvable with require())
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-resolvable\LICENSE
+--------------------------------------------------------------------------------------
+
+is-stream (Check if something is a Node.js stream)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-stream\license
+--------------------------------------------------------------------------------------
+
+is-svg (Check if a string or buffer is SVG)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-svg\license
+--------------------------------------------------------------------------------------
+
+is-symbol (Determine if a value is an ES6 Symbol or not.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-symbol\LICENSE
+--------------------------------------------------------------------------------------
+
+isobject (Returns true if the value is an object and not an array or null.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\isobject\LICENSE
+--------------------------------------------------------------------------------------
+
+isomorphic-fetch (Isomorphic WHATWG Fetch API, for Node & Browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\isomorphic-fetch\LICENSE
+--------------------------------------------------------------------------------------
+
+js-base64 (Yet another Base64 transcoder in pure-JS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\js-base64\LICENSE.md
+--------------------------------------------------------------------------------------
+
+js-tokens (A regex that tokenizes JavaScript.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\js-tokens\LICENSE
+--------------------------------------------------------------------------------------
+
+js-yaml (YAML 1.2 parser and serializer)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\js-yaml\LICENSE
+--------------------------------------------------------------------------------------
+
+jsesc (A JavaScript library for escaping JavaScript strings while generating the shortest possible valid output.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\jsesc\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+json-stable-stringify (deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\json-stable-stringify\LICENSE
+--------------------------------------------------------------------------------------
+
+json-stringify-safe (Like JSON.stringify, but doesn't blow up on circular refs.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\json-stringify-safe\LICENSE
+--------------------------------------------------------------------------------------
+
+json3 (A modern JSON implementation compatible with nearly all JavaScript platforms.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\json3\LICENSE
+--------------------------------------------------------------------------------------
+
+jsonpointer (Simple JSON Addressing.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\jsonpointer\LICENSE.md
+--------------------------------------------------------------------------------------
+
+jwt-decode (Decode JWT tokens, mostly useful for browser applications.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\jwt-decode\LICENSE
+--------------------------------------------------------------------------------------
+
+kind-of (Get the native type of a value.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\kind-of\LICENSE
+--------------------------------------------------------------------------------------
+
+lazy-cache (Cache requires to be lazy-loaded when needed.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lazy-cache\LICENSE
+--------------------------------------------------------------------------------------
+
+less (Leaner CSS)
+Apache License
+License File: Admin Persona Bar Referenced Licences.zip\less\LICENSE
+--------------------------------------------------------------------------------------
+
+less-loader (less loader module for webpack)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\less-loader\LICENSE
+--------------------------------------------------------------------------------------
+
+levn (Light ECMAScript (JavaScript) Value Notation - human written, concise, typed, flexible)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\levn\LICENSE
+--------------------------------------------------------------------------------------
+
+loader-utils (utils for webpack loaders)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\loader-utils\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash-es (Lodash exported as ES modules.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash-es\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.assign (The modern build of lodash’s `_.assign` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.assign\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash.camelcase (The modern build of lodash’s `_.camelCase` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.camelcase\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash.debounce (The modern build of lodash’s `_.debounce` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.debounce\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.deburr (The lodash method `_.deburr` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.deburr\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.isarguments (The lodash method `_.isArguments` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.isarguments\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.isarray (The modern build of lodash’s `_.isArray` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.isarray\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.keys (The modern build of lodash’s `_.keys` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.keys\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.memoize (The lodash method `_.memoize` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.memoize\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.restparam (The modern build of lodash’s `_.restParam` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.restparam\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash.uniq (The lodash method `_.uniq` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.uniq\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.words (The lodash method `_.words` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.words\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash._baseassign (The modern build of lodash’s internal `baseAssign` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._baseassign\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._basecopy (The modern build of lodash’s internal `baseCopy` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._basecopy\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._bindcallback (The modern build of lodash’s internal `bindCallback` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._bindcallback\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._createassigner (The modern build of lodash’s internal `createAssigner` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._createassigner\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._createcompounder (The modern build of lodash’s internal `createCompounder` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._createcompounder\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._getnative (The modern build of lodash’s internal `getNative` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._getnative\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash._isiterateecall (The modern build of lodash’s internal `isIterateeCall` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._isiterateecall\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._root (The internal lodash function `root` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._root\LICENSE
+--------------------------------------------------------------------------------------
+
+longest (Get the longest item in an array.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\longest\LICENSE
+--------------------------------------------------------------------------------------
+
+loose-envify (Fast (and loose) selective `process.env` replacer using js-tokens instead of an AST)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\loose-envify\LICENSE
+--------------------------------------------------------------------------------------
+
+math-expression-evaluator (A flexible math expression evaluator)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\math-expression-evaluator\LICENSE
+--------------------------------------------------------------------------------------
+
+media-typer (Simple RFC 6838 media type parser and formatter)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\media-typer\LICENSE
+--------------------------------------------------------------------------------------
+
+merge-descriptors (Merge objects using descriptors)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\merge-descriptors\LICENSE
+--------------------------------------------------------------------------------------
+
+methods (HTTP methods that node supports)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\methods\LICENSE
+--------------------------------------------------------------------------------------
+
+micromatch (Glob matching for javascript/node.js. A drop-in replacement and faster alternative to minimatch and multimatch.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\micromatch\LICENSE
+--------------------------------------------------------------------------------------
+
+mime (A comprehensive library for mime-type mapping)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\mime\LICENSE
+--------------------------------------------------------------------------------------
+
+mime-db (Media Type Database)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\mime-db\LICENSE
+--------------------------------------------------------------------------------------
+
+mime-types (The ultimate javascript content-type utility.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\mime-types\LICENSE
+--------------------------------------------------------------------------------------
+
+minimist (parse argument options)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\minimist\LICENSE
+--------------------------------------------------------------------------------------
+
+mkdirp (Recursively mkdir, like `mkdir -p`)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\mkdirp\LICENSE
+--------------------------------------------------------------------------------------
+
+moment (Parse, validate, manipulate, and display dates)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\moment\LICENSE
+--------------------------------------------------------------------------------------
+
+mute-stream (Bytes go in, but they don't come out (when muted).)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\mute-stream\LICENSE
+--------------------------------------------------------------------------------------
+
+negotiator (HTTP content negotiation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\negotiator\LICENSE
+--------------------------------------------------------------------------------------
+
+node-fetch (A light-weight module that brings window.fetch to node.js and io.js)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\node-fetch\LICENSE.md
+--------------------------------------------------------------------------------------
+
+readable-stream (Streams3, a user-land copy of the stream library from Node.js v0.11.x)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\readable-stream\LICENSE
+--------------------------------------------------------------------------------------
+
+normalize-path (Normalize file path slashes to be unix-like forward slashes. Also condenses repeat slashes to a single slash and removes and trailing slashes.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\normalize-path\LICENSE
+--------------------------------------------------------------------------------------
+
+normalize-range (Utility for normalizing a numeric range, with a wrapping function useful for polar coordinates)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\normalize-range\license
+--------------------------------------------------------------------------------------
+
+normalize-url (Normalize a URL)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\normalize-url\license
+--------------------------------------------------------------------------------------
+
+num2fraction (Convert number to fraction)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\num2fraction\LICENSE
+--------------------------------------------------------------------------------------
+
+number-is-nan (ES2015 Number.isNaN() ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\number-is-nan\license
+--------------------------------------------------------------------------------------
+
+object-assign (ES2015 `Object.assign()` ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\object-assign\license
+--------------------------------------------------------------------------------------
+
+object-keys (An Object.keys replacement, in case Object.keys is not available. From https://github.com/es-shims/es5-shim)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\object-keys\LICENSE
+--------------------------------------------------------------------------------------
+
+object.omit (Return a copy of an object excluding the given key, or array of keys. Also accepts an optional filter function as the last argument.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\object.omit\LICENSE
+--------------------------------------------------------------------------------------
+
+on-finished (Execute a callback when a request closes, finishes, or errors)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\on-finished\LICENSE
+--------------------------------------------------------------------------------------
+
+on-headers (Execute a listener when a response is about to write headers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\on-headers\LICENSE
+--------------------------------------------------------------------------------------
+
+once (Run a function exactly one time)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\once\LICENSE
+--------------------------------------------------------------------------------------
+
+onetime (Only call a function once)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\onetime\license
+--------------------------------------------------------------------------------------
+
+optimist (Light-weight option parsing with an argv hash. No optstrings attached.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\optimist\LICENSE
+--------------------------------------------------------------------------------------
+
+wordwrap (Wrap those words. Show them at what columns to start and stop.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\wordwrap\LICENSE
+--------------------------------------------------------------------------------------
+
+optionator (option parsing and help generation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\optionator\LICENSE
+--------------------------------------------------------------------------------------
+
+original (Generate the origin from an URL or check if two URL/Origins are the same)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\original\LICENSE
+--------------------------------------------------------------------------------------
+
+url-parse (Small footprint URL parser that works seamlessly across Node.js and browser environments)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\url-parse\LICENSE
+--------------------------------------------------------------------------------------
+
+os-browserify ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\os-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+os-homedir (Node.js 4 `os.homedir()` ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\os-homedir\license
+--------------------------------------------------------------------------------------
+
+os-tmpdir (Node.js os.tmpdir() ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\os-tmpdir\license
+--------------------------------------------------------------------------------------
+
+pako (zlib port to javascript - fast, modularized, with browser support)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pako\LICENSE
+--------------------------------------------------------------------------------------
+
+parse-glob (Parse a glob pattern into an object of tokens.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\parse-glob\LICENSE
+--------------------------------------------------------------------------------------
+
+parse-key (Parses strings into key objects of the same format as the ones emitted by nodejs readline.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\parse-key\LICENSE
+--------------------------------------------------------------------------------------
+
+parseurl (parse a url with memoization)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\parseurl\LICENSE
+--------------------------------------------------------------------------------------
+
+path-browserify (the path module from node core for browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\path-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+path-exists (Check if a path exists)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\path-exists\license
+--------------------------------------------------------------------------------------
+
+path-is-absolute (Node.js 0.12 path.isAbsolute() ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\path-is-absolute\license
+--------------------------------------------------------------------------------------
+
+path-is-inside (Tests whether one path is inside another path)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\path-is-inside\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+path-to-regexp (Express style path to RegExp utility)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\path-to-regexp\LICENSE
+--------------------------------------------------------------------------------------
+
+pbkdf2-compat (Provides the functionality of PBKDF2 with the ability to use any natively supported Node crypto hashing algorithm.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pbkdf2-compat\LICENSE
+--------------------------------------------------------------------------------------
+
+performance-now (Implements performance.now (based on process.hrtime).)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\performance-now\license.txt
+--------------------------------------------------------------------------------------
+
+pify (Promisify a callback-style function)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pify\license
+--------------------------------------------------------------------------------------
+
+pikaday (A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pikaday\LICENSE
+--------------------------------------------------------------------------------------
+
+pinkie (Itty bitty little widdle twinkie pinkie ES2015 Promise implementation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pinkie\license
+--------------------------------------------------------------------------------------
+
+pinkie-promise (ES2015 Promise ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pinkie-promise\license
+--------------------------------------------------------------------------------------
+
+pluralize (Pluralize and singularize any word)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pluralize\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss (Tool for transforming styles with JS plugins)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss\LICENSE
+--------------------------------------------------------------------------------------
+
+supports-color (Detect whether a terminal supports color)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\supports-color\license
+--------------------------------------------------------------------------------------
+
+postcss-calc (PostCSS plugin to reduce calc())
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-calc\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-colormin (Minify colors in your CSS files with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-colormin\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-convert-values (Convert values with PostCSS (e.g. ms -> s))
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-convert-values\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-discard-comments (Discard comments in your CSS files with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-discard-comments\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-discard-duplicates (Discard duplicate rules in your CSS files with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-discard-duplicates\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-discard-empty (Discard empty rules and values with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-discard-empty\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-discard-overridden (PostCSS plugin to discard overridden @keyframes or @counter-style.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-discard-overridden\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-discard-unused (Discard unused counter styles, keyframes and fonts.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-discard-unused\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-filter-plugins (Exclude/warn on duplicated PostCSS plugins.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-filter-plugins\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-merge-idents (Merge keyframe and counter style identifiers.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-merge-idents\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-merge-longhand (Merge longhand properties into shorthand with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-merge-longhand\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-merge-rules (Merge CSS rules with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-merge-rules\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-message-helpers (PostCSS helpers to throw or output GNU style messages)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-message-helpers\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-minify-font-values (Minify font declarations with PostCSS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-minify-font-values\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-minify-gradients (Minify gradient parameters with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-minify-gradients\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-minify-params (Minify at-rule params with PostCSS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-minify-params\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-minify-selectors (Minify selectors with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-minify-selectors\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-modules-local-by-default (A CSS Modules transform to make local scope the default)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-modules-local-by-default\LICENSE
+--------------------------------------------------------------------------------------
+
+regexpu-core (regexpu’s core functionality (i.e. `rewritePattern(pattern, flag)`), capable of translating ES6 Unicode regular expressions to ES5.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\regexpu-core\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+postcss-normalize-charset (Add necessary or remove extra charset with PostCSS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-normalize-charset\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-normalize-url (Normalize URLs with PostCSS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-normalize-url\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-ordered-values (Ensure values are ordered consistently in your CSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-ordered-values\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-reduce-idents (Reduce custom identifiers with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-reduce-idents\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-reduce-initial (Reduce initial definitions to the actual initial value, where possible.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-reduce-initial\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-reduce-transforms (Reduce transform functions with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-reduce-transforms\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-selector-parser ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-selector-parser\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-svgo (Optimise inline SVG with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-svgo\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-unique-selectors (Ensure CSS selectors are unique.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-unique-selectors\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+postcss-value-parser (Transforms css values and at-rule params into the tree)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-value-parser\LICENSE
+--------------------------------------------------------------------------------------
+
+postcss-zindex (Reduce z-index values with PostCSS.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\postcss-zindex\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+prefix-style (gets a prefixed name for a css style)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\prefix-style\LICENSE.md
+--------------------------------------------------------------------------------------
+
+prelude-ls (prelude.ls is a functionally oriented utility library. It is powerful and flexible. Almost all of its functions are curried. It is written in, and is the recommended base library for, LiveScript.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\prelude-ls\LICENSE
+--------------------------------------------------------------------------------------
+
+prepend-http (Prepend `http://` to humanized URLs like todomvc.com and localhost)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\prepend-http\license
+--------------------------------------------------------------------------------------
+
+preserve (Temporarily substitute tokens in the given `string` with placeholders, then put them back after transforming the string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\preserve\LICENSE
+--------------------------------------------------------------------------------------
+
+private (Utility for associating truly private state with any JavaScript object)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\private\LICENSE
+--------------------------------------------------------------------------------------
+
+process (process information for node.js and browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\process\LICENSE
+--------------------------------------------------------------------------------------
+
+process-nextick-args (process.nextTick but always with args)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\process-nextick-args\license.md
+--------------------------------------------------------------------------------------
+
+progress (Flexible ascii progress bar)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\progress\LICENSE
+--------------------------------------------------------------------------------------
+
+promise (Bare bones Promises/A+ implementation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\promise\LICENSE
+--------------------------------------------------------------------------------------
+
+proxy-addr (Determine address of proxied request)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\proxy-addr\LICENSE
+--------------------------------------------------------------------------------------
+
+prr (A better Object.defineProperty())
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\prr\LICENSE
+--------------------------------------------------------------------------------------
+
+punycode (A robust Punycode converter that fully complies to RFC 3492 and RFC 5891, and works on nearly all JavaScript platforms.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\punycode\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+q (A library for promises (CommonJS/Promises/A,B,D))
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\q\LICENSE
+--------------------------------------------------------------------------------------
+
+qs (A querystring parser that supports nesting and arrays, with a depth limit)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\qs\LICENSE
+--------------------------------------------------------------------------------------
+
+query-string (Parse and stringify URL query strings)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\query-string\license
+--------------------------------------------------------------------------------------
+
+querystring (Node's querystring module for all engines.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\querystring\License.md
+--------------------------------------------------------------------------------------
+
+querystring-es3 (Node's querystring module for all engines. (ES3 compat fork))
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\querystring-es3\License.md
+--------------------------------------------------------------------------------------
+
+querystringify (Querystringify - Small, simple but powerful query string parser.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\querystringify\LICENSE
+--------------------------------------------------------------------------------------
+
+randomatic (Generate randomized strings of a specified length, fast. Only the length is necessary, but you can optionally generate patterns using any combination of numeric, alpha-numeric, alphabetical, special or custom characters.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\randomatic\LICENSE
+--------------------------------------------------------------------------------------
+
+range-parser (Range header field string parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\range-parser\LICENSE
+--------------------------------------------------------------------------------------
+
+react (React is a JavaScript library for building user interfaces.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react\LICENSE
+--------------------------------------------------------------------------------------
+
+react-collapse (Component-wrapper for collapse animation with react-motion for elements with variable (and dynamic) height)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-collapse\LICENSE
+--------------------------------------------------------------------------------------
+
+react-custom-scrollbars (React scrollbars component)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-custom-scrollbars\LICENSE.md
+--------------------------------------------------------------------------------------
+
+react-dock (Resizable dockable react component)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-dock\LICENSE
+--------------------------------------------------------------------------------------
+
+react-dom (React package for working with the DOM.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-dom\LICENSE
+--------------------------------------------------------------------------------------
+
+react-height (Component-wrapper to determine and report children elements height)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-height\LICENSE
+--------------------------------------------------------------------------------------
+
+react-json-tree (React JSON Viewer Component, Extracted from redux-devtools)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-json-tree\LICENSE.md
+--------------------------------------------------------------------------------------
+
+react-modal (Accessible modal dialog component for React.JS)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-modal\LICENSE
+--------------------------------------------------------------------------------------
+
+react-motion (A spring that solves your animation problems.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-motion\LICENSE
+--------------------------------------------------------------------------------------
+
+react-pure-render (A function, a component and a mixin for React pure rendering)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-pure-render\LICENSE
+--------------------------------------------------------------------------------------
+
+react-redux (Official React bindings for Redux)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-redux\LICENSE.md
+--------------------------------------------------------------------------------------
+
+react-tabs (React tabs component)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-tabs\LICENSE
+--------------------------------------------------------------------------------------
+
+react-tooltip (react tooltip component)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-tooltip\LICENSE
+--------------------------------------------------------------------------------------
+
+react-widgets (An à la carte set of polished, extensible, and accessible inputs built for React)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-widgets\License.txt
+--------------------------------------------------------------------------------------
+
+readdirp (Recursive version of fs.readdir with streaming api.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\readdirp\LICENSE
+--------------------------------------------------------------------------------------
+
+reduce-css-calc (Reduce CSS calc() function to the maximum)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\reduce-css-calc\LICENSE
+--------------------------------------------------------------------------------------
+
+reduce-function-call (Reduce function calls in a string, using a callback)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\reduce-function-call\LICENSE
+--------------------------------------------------------------------------------------
+
+redux (Predictable state container for JavaScript apps)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-devtools (Redux DevTools with hot reloading and time travel)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-devtools\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-devtools-dock-monitor (A resizable and movable dock for Redux DevTools monitors)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-devtools-dock-monitor\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-devtools-log-monitor (The default tree view monitor for Redux DevTools)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-devtools-log-monitor\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-devtools-themes (Color themes for Redux DevTools monitors)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-devtools-themes\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-immutable-state-invariant (Redux middleware that detects mutations between and outside redux dispatches. For development use only.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-immutable-state-invariant\LICENSE.md
+--------------------------------------------------------------------------------------
+
+redux-thunk (Thunk middleware for Redux.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-thunk\LICENSE.md
+--------------------------------------------------------------------------------------
+
+regenerate (Generate JavaScript-compatible regular expressions based on a given set of Unicode symbols or code points.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\regenerate\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+regex-cache (Memoize the results of a call to the RegExp constructor, avoiding repetitious runtime compilation of the same string and options, resulting in suprising performance improvements.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\regex-cache\LICENSE
+--------------------------------------------------------------------------------------
+
+regjsgen (Generate `RegExp`s from RegJSParser’s AST)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\regjsgen\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+regjsparser ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\regjsparser\LICENSE.BSD
+--------------------------------------------------------------------------------------
+
+repeat-element (Create an array by repeating the given value n times.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\repeat-element\LICENSE
+--------------------------------------------------------------------------------------
+
+repeat-string (Repeat the given string n times. Fastest implementation for repeating a string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\repeat-string\LICENSE
+--------------------------------------------------------------------------------------
+
+repeating (Repeat a string - fast)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\repeating\license
+--------------------------------------------------------------------------------------
+
+require-uncached (Require a module bypassing the cache)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\require-uncached\license
+--------------------------------------------------------------------------------------
+
+requires-port (Check if a protocol requires a certain port number to be added to an URL.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\requires-port\LICENSE
+--------------------------------------------------------------------------------------
+
+resolve-from (Resolve the path of a module like require.resolve() but from a given path)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\resolve-from\license
+--------------------------------------------------------------------------------------
+
+restore-cursor (Gracefully restore the CLI cursor on exit)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\restore-cursor\license
+--------------------------------------------------------------------------------------
+
+right-align (Right-align the text in a string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\right-align\LICENSE
+--------------------------------------------------------------------------------------
+
+rimraf (A deep deletion module for node (like `rm -rf`))
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\rimraf\LICENSE
+--------------------------------------------------------------------------------------
+
+run-async (Utility method to run function either synchronously or asynchronously using the common `this.async()` style.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\run-async\LICENSE
+--------------------------------------------------------------------------------------
+
+sax (An evented streaming XML parser in JavaScript)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sax\LICENSE
+--------------------------------------------------------------------------------------
+
+send (Better streaming static file server with Range and conditional-GET support)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\send\LICENSE
+--------------------------------------------------------------------------------------
+
+serve-index (Serve directory listings)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\serve-index\LICENSE
+--------------------------------------------------------------------------------------
+
+serve-static (Serve static files)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\serve-static\LICENSE
+--------------------------------------------------------------------------------------
+
+setimmediate (A shim for the setImmediate efficient script yielding API)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\setimmediate\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+setprototypeof (A small polyfill for Object.setprototypeof)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\setprototypeof\LICENSE
+--------------------------------------------------------------------------------------
+
+sha.js (streaming sha1 hash in pure javascript)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sha.js\LICENSE
+--------------------------------------------------------------------------------------
+
+shebang-regex (Regular expression for matching a shebang)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\shebang-regex\license
+--------------------------------------------------------------------------------------
+
+shelljs (Portable Unix shell commands for Node.js)
+BSD License
+License File: Admin Persona Bar Referenced Licences.zip\shelljs\LICENSE
+--------------------------------------------------------------------------------------
+
+slice-ansi (Slice a string with ANSI escape codes)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\slice-ansi\license
+--------------------------------------------------------------------------------------
+
+sockjs (SockJS-node is a server counterpart of SockJS-client a JavaScript library that provides a WebSocket-like object in the browser. SockJS gives you a coherent, cross-browser, Javascript API which creates a low latency, full duplex, cross-domain communication channel between the browser and the web server.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sockjs\LICENSE
+--------------------------------------------------------------------------------------
+
+sockjs-client (SockJS-client is a browser JavaScript library that provides a WebSocket-like object. SockJS gives you a coherent, cross-browser, Javascript API which creates a low latency, full duplex, cross-domain communication channel between the browser and the web server.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sockjs-client\LICENSE
+--------------------------------------------------------------------------------------
+
+sort-keys (Sort the keys of an object)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sort-keys\license
+--------------------------------------------------------------------------------------
+
+source-map (Generates and consumes source maps)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\source-map\LICENSE
+--------------------------------------------------------------------------------------
+
+source-map-support (Fixes stack traces for files with source maps)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\source-map-support\LICENSE.md
+--------------------------------------------------------------------------------------
+
+sprintf-js (JavaScript sprintf implementation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sprintf-js\LICENSE
+--------------------------------------------------------------------------------------
+
+statuses (HTTP status utility)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\statuses\LICENSE
+--------------------------------------------------------------------------------------
+
+stream-browserify (the stream module from node core for browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\stream-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+stream-cache (A simple way to cache and replay readable streams.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\stream-cache\License
+--------------------------------------------------------------------------------------
+
+strict-uri-encode (A stricter URI encode adhering to RFC 3986)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\strict-uri-encode\license
+--------------------------------------------------------------------------------------
+
+string-width (Get the visual width of a string - the number of columns required to display it)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\string-width\license
+--------------------------------------------------------------------------------------
+
+string_decoder (The string_decoder module from Node core)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\string_decoder\LICENSE
+--------------------------------------------------------------------------------------
+
+strip-ansi (Strip ANSI escape codes)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\strip-ansi\license
+--------------------------------------------------------------------------------------
+
+strip-json-comments (Strip comments from JSON. Lets you use comments in your JSON files!)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\strip-json-comments\license
+--------------------------------------------------------------------------------------
+
+svgo (Nodejs-based tool for optimizing SVG vector graphics files)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\svgo\LICENSE
+--------------------------------------------------------------------------------------
+
+symbol-observable (Symbol.observable ponyfill)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\symbol-observable\license
+--------------------------------------------------------------------------------------
+
+table (Formats data into a string table.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\table\LICENSE
+--------------------------------------------------------------------------------------
+
+text-table (borderless text tables with alignment)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\text-table\LICENSE
+--------------------------------------------------------------------------------------
+
+throttle-debounce (Throttle/debounce your functions.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\throttle-debounce\LICENSE.md
+--------------------------------------------------------------------------------------
+
+through (simplified stream construction)
+Apache License
+License File: Admin Persona Bar Referenced Licences.zip\through\LICENSE.APACHE2
+--------------------------------------------------------------------------------------
+
+timers-browserify (timers module for browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\timers-browserify\LICENSE.md
+--------------------------------------------------------------------------------------
+
+to-fast-properties (Force V8 to use fast properties for an object)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\to-fast-properties\license
+--------------------------------------------------------------------------------------
+
+trim-right (Similar to String#trim() but removes only whitespace on the right)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\trim-right\license
+--------------------------------------------------------------------------------------
+
+tty-browserify (the tty module from node core for browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\tty-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+type-check (type-check allows you to check the types of JavaScript values at runtime with a Haskell like type syntax.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\type-check\LICENSE
+--------------------------------------------------------------------------------------
+
+type-is (Infer the content-type of a request.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\type-is\LICENSE
+--------------------------------------------------------------------------------------
+
+typedarray (TypedArray polyfill for old browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\typedarray\LICENSE
+--------------------------------------------------------------------------------------
+
+uglify-js (JavaScript parser, mangler/compressor and beautifier toolkit)
+BSD License
+License File: Admin Persona Bar Referenced Licences.zip\uglify-js\LICENSE
+--------------------------------------------------------------------------------------
+
+uglify-to-browserify (A transform to make UglifyJS work in browserify.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\uglify-to-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+uniq (Removes duplicates from a sorted array in place)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\uniq\LICENSE
+--------------------------------------------------------------------------------------
+
+unpipe (Unpipe a stream from all destinations)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\unpipe\LICENSE
+--------------------------------------------------------------------------------------
+
+url (The core `url` packaged standalone for use with Browserify.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\url\LICENSE
+--------------------------------------------------------------------------------------
+
+user-home (Get the path to the user home directory)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\user-home\license
+--------------------------------------------------------------------------------------
+
+util (Node.JS util module)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\util\LICENSE
+--------------------------------------------------------------------------------------
+
+util-deprecate (The Node.js `util.deprecate()` function with browser support)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\util-deprecate\LICENSE
+--------------------------------------------------------------------------------------
+
+utils-merge (merge() utility function)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\utils-merge\LICENSE
+--------------------------------------------------------------------------------------
+
+uuid (Rigorous implementation of RFC4122 (v1 and v4) UUIDs.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\uuid\LICENSE.md
+--------------------------------------------------------------------------------------
+
+vary (Manipulate the HTTP Vary header)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\vary\LICENSE
+--------------------------------------------------------------------------------------
+
+vendors (List of vendor prefixes known to the web platform)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\vendors\LICENSE
+--------------------------------------------------------------------------------------
+
+vm-browserify (vm module for the browser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\vm-browserify\LICENSE
+--------------------------------------------------------------------------------------
+
+warning (A mirror of Facebook's Warning)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\warning\LICENSE.md
+--------------------------------------------------------------------------------------
+
+webpack (Packs CommonJs/AMD modules for the browser. Allows to split your codebase into multiple bundles, which can be loaded on demand. Support loaders to preprocess files, i.e. json, jade, coffee, css, less, ... and your custom stuff.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\webpack\LICENSE
+--------------------------------------------------------------------------------------
+
+webpack-dev-middleware (Offers a dev middleware for webpack, which arguments a live bundle to a directory)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\webpack-dev-middleware\LICENSE
+--------------------------------------------------------------------------------------
+
+whatwg-fetch (A window.fetch polyfill.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\whatwg-fetch\LICENSE
+--------------------------------------------------------------------------------------
+
+whet.extend (A sharped version of port of jQuery.extend that actually works on node.js)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\whet.extend\LICENSE
+--------------------------------------------------------------------------------------
+
+window-size (Reliable way to to get the height and width of the terminal/console in a node.js environment.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\window-size\LICENSE-MIT
+--------------------------------------------------------------------------------------
+
+wrappy (Callback wrapping utility)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\wrappy\LICENSE
+--------------------------------------------------------------------------------------
+
+write (Write files to disk, creating intermediate directories if they don't exist.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\write\LICENSE
+--------------------------------------------------------------------------------------
+
+yargs (Light-weight option parsing with an argv hash. No optstrings attached.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\yargs\LICENSE
+--------------------------------------------------------------------------------------
+
+string.prototype.startswith (A robust & optimized `String.prototype.startsWith` polyfill, based on the ECMAScript 6 specification.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\string.prototype.startswith\LICENSE-MIT.txt
+--------------------------------------------------------------------------------------
+
+almost-equal (Test if two floats are almost equal)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\almost-equal\LICENSE
+--------------------------------------------------------------------------------------
+
+color-space (Color space conversions and data)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\color-space\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.curry (The lodash method `_.curry` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.curry\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.flow (The lodash method `_.flow` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.flow\LICENSE
+--------------------------------------------------------------------------------------
+
+pure-color (Pure functions for color conversion and parsing)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pure-color\LICENSE
+--------------------------------------------------------------------------------------
+
+react-base16-styling (React styling with base16 color scheme support)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-base16-styling\LICENSE
+--------------------------------------------------------------------------------------
+
+react-click-outside (A component wrapper that provides click outside detection.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-click-outside\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+redux-devtools-instrument (Redux DevTools instrumentation)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\redux-devtools-instrument\LICENSE.md
+--------------------------------------------------------------------------------------
+
+array-find (ES6 Array.find ponyfill. Return the first array element which satisfies a testing function.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\array-find\LICENSE
+--------------------------------------------------------------------------------------
+
+babel-plugin-transform-regenerator (Explode async and generator functions into a state machine.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-regenerator\LICENSE
+--------------------------------------------------------------------------------------
+
+browserify-aes (aes, for browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\browserify-aes\LICENSE
+--------------------------------------------------------------------------------------
+
+browserify-rsa (RSA for browserify)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\browserify-rsa\LICENSE
+--------------------------------------------------------------------------------------
+
+browserify-sign (adds node crypto signing for browsers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\browserify-sign\LICENSE
+--------------------------------------------------------------------------------------
+
+buffer-xor (A simple module for bitwise-xor on buffers)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\buffer-xor\LICENSE
+--------------------------------------------------------------------------------------
+
+builtin-modules (List of the Node.js builtin modules)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\builtin-modules\license
+--------------------------------------------------------------------------------------
+
+contains-path (Return true if a file path contains the given path.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\contains-path\LICENSE
+--------------------------------------------------------------------------------------
+
+eslint-plugin-import (Import with sanity.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\eslint-plugin-import\LICENSE
+--------------------------------------------------------------------------------------
+
+find-root (find the closest package.json)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\find-root\LICENSE.md
+--------------------------------------------------------------------------------------
+
+find-up (Find a file by walking up parent directories)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\find-up\license
+--------------------------------------------------------------------------------------
+
+http-proxy-middleware (The one-liner node.js proxy middleware for connect, express and browser-sync)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\http-proxy-middleware\LICENSE
+--------------------------------------------------------------------------------------
+
+is-absolute (Polyfill for node.js `path.isAbolute`. Returns true if a file path is absolute.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-absolute\LICENSE
+--------------------------------------------------------------------------------------
+
+is-relative (Returns `true` if the path appears to be relative.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-relative\LICENSE
+--------------------------------------------------------------------------------------
+
+is-unc-path (Returns true if a filepath is a windows UNC file path.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-unc-path\LICENSE
+--------------------------------------------------------------------------------------
+
+is-windows (Returns true if the platform is windwows.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\is-windows\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.capitalize (The lodash method `_.capitalize` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.capitalize\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.cond (The lodash method `_.cond` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.cond\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.endswith (The lodash method `_.endsWith` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.endswith\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.find (The lodash method `_.find` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.find\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.findindex (The lodash method `_.findIndex` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.findindex\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.get (The modern build of lodash’s `_.get` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.get\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash.indexof (The lodash method `_.indexOf` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.indexof\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.kebabcase (The lodash method `_.kebabCase` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.kebabcase\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash.snakecase (The lodash method `_.snakeCase` exported as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash.snakecase\LICENSE
+--------------------------------------------------------------------------------------
+
+lodash._baseget (The modern build of lodash’s internal `baseGet` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._baseget\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+lodash._topath (The modern build of lodash’s internal `toPath` as a module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\lodash._topath\LICENSE
+--------------------------------------------------------------------------------------
+
+open (open a file or url in the user's preferred application)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\open\LICENSE
+--------------------------------------------------------------------------------------
+
+pbkdf2 (This library provides the functionality of PBKDF2 with the ability to use any supported hashing algorithm returned from crypto.getHashes())
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pbkdf2\LICENSE
+--------------------------------------------------------------------------------------
+
+pkg-dir (Find the root directory of a npm package)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pkg-dir\license
+--------------------------------------------------------------------------------------
+
+pkg-up (Find the closest package.json file)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\pkg-up\license
+--------------------------------------------------------------------------------------
+
+resolve (resolve like require.resolve() on behalf of files asynchronously and synchronously)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\resolve\LICENSE
+--------------------------------------------------------------------------------------
+
+unc-path-regex (Regular expression for testing if a file path is a windows UNC file path. Can also be used as a component of another regexp via the `.source` property.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\unc-path-regex\LICENSE
+--------------------------------------------------------------------------------------
+
+rechoir (Require any supported file as a node module.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\rechoir\LICENSE
+--------------------------------------------------------------------------------------
+
+d (Property descriptor factory)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\d\LICENSE
+--------------------------------------------------------------------------------------
+
+dnn-webpack-externals (Webpack externals for build)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\dnn-webpack-externals\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+rc-progress (progress ui component for react)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\rc-progress\LICENSE.md
+--------------------------------------------------------------------------------------
+
+remove-trailing-separator (Removes separators from the end of the string.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\remove-trailing-separator\license
+--------------------------------------------------------------------------------------
+
+kw-react-tween-state (React animation.)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\kw-react-tween-state\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+nuka-carousel (Pure React Carousel)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\nuka-carousel\LICENSE
+--------------------------------------------------------------------------------------
+
+object-path (Access deep properties using a path)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\object-path\LICENSE
+--------------------------------------------------------------------------------------
+
+tween-functions (Robert Penner's easing functions, slightly modified)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\tween-functions\LICENSE.txt
+--------------------------------------------------------------------------------------
+
+css-select (a CSS selector compiler/engine)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\css-select\LICENSE
+--------------------------------------------------------------------------------------
+
+css-what (a CSS selector parser)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\css-what\LICENSE
+--------------------------------------------------------------------------------------
+
+dom-serializer (render dom nodes to string)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\dom-serializer\LICENSE
+--------------------------------------------------------------------------------------
+
+domelementtype (all the types of nodes in htmlparser2's dom)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\domelementtype\LICENSE
+--------------------------------------------------------------------------------------
+
+domhandler (handler for htmlparser2 that turns pages into a dom)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\domhandler\LICENSE
+--------------------------------------------------------------------------------------
+
+domutils (utilities for working with htmlparser2's dom)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\domutils\LICENSE
+--------------------------------------------------------------------------------------
+
+entities (Encode & decode XML/HTML entities with ease)
+Custom License
+License File: Admin Persona Bar Referenced Licences.zip\entities\LICENSE
+--------------------------------------------------------------------------------------
+
+extend (Port of jQuery.extend for node.js and the browser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\extend\LICENSE
+--------------------------------------------------------------------------------------
+
+htmlparser2 (Fast & forgiving HTML/XML/RSS parser)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\htmlparser2\LICENSE
+--------------------------------------------------------------------------------------
+
+react-addons-css-transition-group ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-addons-css-transition-group\LICENSE
+--------------------------------------------------------------------------------------
+
+react-addons-transition-group ()
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\react-addons-transition-group\LICENSE
+--------------------------------------------------------------------------------------
+
+sniffr (Browser, os and device detection)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\sniffr\LICENSE
+--------------------------------------------------------------------------------------
+
+svg-sprite-loader (SVG sprite webpack loader)
+MIT License
+License File: Admin Persona Bar Referenced Licences.zip\svg-sprite-loader\LICENSE
+--------------------------------------------------------------------------------------
+
+EASYDROPDOWN - A Drop-down Builder for Styleable Inputs and Menus
+Creative Commons Attribution 3.0 Unported - CC BY 3.0
+License File: Admin Persona Bar Referenced Licences.zip\easydropdown\License.txt
+--------------------------------------------------------------------------------------
+

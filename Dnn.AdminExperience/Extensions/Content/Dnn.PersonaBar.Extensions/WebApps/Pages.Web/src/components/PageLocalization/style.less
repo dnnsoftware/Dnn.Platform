@@ -1,0 +1,66 @@
+@import "../../less/globals.less";
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.page-localization {
+    padding-bottom: 40px;
+    float: left;
+    width: 100%;
+    .page-localization-container {
+        float: left;
+        width: 100%;
+        border: 1px solid @alto;
+        .default-language-container {
+            float: left;
+            width: 250px;
+        }
+        .languages-container {
+            float: left;
+            border-left: 1px solid @mountainMist;
+            width: 444px;
+        }
+    }
+    .button-container {
+        margin-top: 20px;
+        float: left;
+        width: 100%;
+        .float-right {
+            margin-left: 5px;
+        }
+        .float-left {
+            margin-right: 5px;
+        }
+    }
+    .modal-content {
+        width: 500px;
+        height: 320px;
+    }
+    .transition-modal .modal-content .close:hover {
+        color: black;
+    }
+}
+
+.float-right {
+    float: right;
+}
+
+.neutral-page {
+    background: @alabaster;
+    float: left;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 60px;
+    margin-top: 10px;
+    p {
+        margin-bottom: 10px;
+    }
+    .left-panel {
+        width: 60%;
+        float: left;
+        padding-right: 20px;
+        border-right: 1px solid @alto;
+    }
+    .right-panel {
+        padding-left: 20px;
+        float: left;
+        width: 40%;
+    }
+}

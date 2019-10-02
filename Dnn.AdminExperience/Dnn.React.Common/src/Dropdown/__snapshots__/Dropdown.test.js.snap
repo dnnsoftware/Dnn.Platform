@@ -1,0 +1,5766 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dnn Dropdown component Calculates correct Dropdown height 1`] = `
+<Dropdown
+  autoHide={true}
+  className=""
+  closeOnClick={true}
+  enabled={true}
+  fixedHeight={600}
+  getLabelText={[Function]}
+  isDropDownOpen={true}
+  label="My new label"
+  onSelect={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First Label",
+        "searchableValue": "first",
+        "value": "first",
+      },
+      Object {
+        "label": "Second Label",
+        "searchableValue": "second",
+        "value": "second",
+      },
+      Object {
+        "label": "Third Label",
+        "searchableValue": "third",
+        "value": "third",
+      },
+    ]
+  }
+  prependWith="Prepend text:"
+  selectedIndex={-1}
+  size="small"
+  value="second"
+  withBorder={true}
+  withIcon={false}
+>
+  <div
+    className="dnn-dropdown with-border small  open"
+  >
+    <div
+      className="collapsible-label no-wrap"
+      onClick={[Function]}
+    >
+      <span
+        className="dropdown-prepend"
+      >
+        <strong>
+          Prepend text:
+        </strong>
+         
+        Second Label
+      </span>
+    </div>
+    <input
+      aria-label="Search"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "height": 0,
+          "margin": 0,
+          "opacity": 0,
+          "padding": 0,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "width": 0,
+        }
+      }
+      type="text"
+    />
+    <div
+      className="collapsible-content open"
+    >
+      <UnmountClosed
+        isOpened={true}
+      >
+        <Collapse
+          fixedHeight={-1}
+          forceInitialAnimation={true}
+          hasNestedCollapse={false}
+          isOpened={true}
+          onMeasure={[Function]}
+          onRender={[Function]}
+          onRest={[Function]}
+          style={Object {}}
+          theme={
+            Object {
+              "collapse": "ReactCollapse--collapse",
+              "content": "ReactCollapse--content",
+            }
+          }
+        >
+          <Motion
+            defaultStyle={
+              Object {
+                "height": 0,
+              }
+            }
+            onRest={[Function]}
+            style={
+              Object {
+                "height": Object {
+                  "damping": 26,
+                  "precision": 1,
+                  "stiffness": 170,
+                  "val": 0,
+                },
+              }
+            }
+          >
+            <div
+              className="ReactCollapse--collapse"
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <div
+                className="ReactCollapse--content"
+              >
+                <div>
+                  <Scrollbars
+                    autoHeight={true}
+                    autoHeightMax={200}
+                    autoHeightMin={100}
+                    autoHide={true}
+                    autoHideDuration={200}
+                    autoHideTimeout={1000}
+                    hideTracksWhenNotNeeded={false}
+                    renderThumbHorizontal={[Function]}
+                    renderThumbVertical={[Function]}
+                    renderTrackHorizontal={[Function]}
+                    renderTrackVertical={[Function]}
+                    renderView={[Function]}
+                    tagName="div"
+                    thumbMinSize={30}
+                    universal={false}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "height": "auto",
+                          "maxHeight": 200,
+                          "minHeight": 100,
+                          "overflow": "hidden",
+                          "position": "relative",
+                          "width": "100%",
+                        }
+                      }
+                    >
+                      <div
+                        key="view"
+                        style={
+                          Object {
+                            "WebkitOverflowScrolling": "touch",
+                            "bottom": undefined,
+                            "left": undefined,
+                            "marginBottom": 0,
+                            "marginRight": 0,
+                            "maxHeight": 200,
+                            "minHeight": 100,
+                            "overflow": "scroll",
+                            "position": "relative",
+                            "right": undefined,
+                            "top": undefined,
+                          }
+                        }
+                      >
+                        <ul
+                          className="dnn-dropdown-options"
+                        >
+                          <li
+                            className="dnn-dropdown-option"
+                            key="0"
+                            onClick={[Function]}
+                          >
+                            First Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option selected"
+                            key="1"
+                            onClick={[Function]}
+                          >
+                            Second Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option"
+                            key="2"
+                            onClick={[Function]}
+                          >
+                            Third Label
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        key="trackHorizontal"
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "height": "100%",
+                              "position": "relative",
+                            }
+                          }
+                        />
+                      </div>
+                      <div
+                        key="trackVertical"
+                        style={
+                          Object {
+                            "borderRadius": 3,
+                            "bottom": 2,
+                            "display": "none",
+                            "opacity": 0,
+                            "position": "absolute",
+                            "right": 2,
+                            "top": 2,
+                            "transition": "opacity 200ms",
+                            "width": 6,
+                          }
+                        }
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "position": "relative",
+                              "width": "100%",
+                            }
+                          }
+                        />
+                      </div>
+                    </div>
+                  </Scrollbars>
+                </div>
+              </div>
+            </div>
+          </Motion>
+        </Collapse>
+      </UnmountClosed>
+    </div>
+  </div>
+</Dropdown>
+`;
+
+exports[`Dnn Dropdown component Displays a dropdown list onClick 1`] = `
+<Dropdown
+  autoHide={true}
+  className=""
+  closeOnClick={true}
+  enabled={true}
+  getLabelText={[Function]}
+  isDropDownOpen={false}
+  label="My new label"
+  onSelect={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First Label",
+        "searchableValue": "first",
+        "value": "first",
+      },
+      Object {
+        "label": "Second Label",
+        "searchableValue": "second",
+        "value": "second",
+      },
+      Object {
+        "label": "Third Label",
+        "searchableValue": "third",
+        "value": "third",
+      },
+    ]
+  }
+  prependWith="Prepend text:"
+  selectedIndex={-1}
+  size="small"
+  value="second"
+  withBorder={true}
+  withIcon={true}
+>
+  <div
+    className="dnn-dropdown with-border small "
+  >
+    <div
+      className="collapsible-label no-wrap"
+      onClick={[Function]}
+    >
+      <span
+        className="dropdown-prepend"
+      >
+        <strong>
+          Prepend text:
+        </strong>
+         
+        Second Label
+      </span>
+    </div>
+    <input
+      aria-label="Search"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "height": 0,
+          "margin": 0,
+          "opacity": 0,
+          "padding": 0,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "width": 0,
+        }
+      }
+      type="text"
+    />
+    <div
+      className="dropdown-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+        }
+      }
+      onClick={[Function]}
+    />
+    <div
+      className="collapsible-content"
+    >
+      <UnmountClosed
+        isOpened={false}
+      />
+    </div>
+  </div>
+</Dropdown>
+`;
+
+exports[`Dnn Dropdown component Displays a dropdown list onClick 2`] = `
+<Dropdown
+  autoHide={true}
+  className=""
+  closeOnClick={true}
+  enabled={true}
+  getLabelText={[Function]}
+  isDropDownOpen={false}
+  label="My new label"
+  onSelect={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First Label",
+        "searchableValue": "first",
+        "value": "first",
+      },
+      Object {
+        "label": "Second Label",
+        "searchableValue": "second",
+        "value": "second",
+      },
+      Object {
+        "label": "Third Label",
+        "searchableValue": "third",
+        "value": "third",
+      },
+    ]
+  }
+  prependWith="Prepend text:"
+  selectedIndex={-1}
+  size="small"
+  value="second"
+  withBorder={true}
+  withIcon={true}
+>
+  <div
+    className="dnn-dropdown with-border small  open"
+  >
+    <div
+      className="collapsible-label no-wrap"
+      onClick={[Function]}
+    >
+      <span
+        className="dropdown-prepend"
+      >
+        <strong>
+          Prepend text:
+        </strong>
+         
+        Second Label
+      </span>
+    </div>
+    <input
+      aria-label="Search"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "height": 0,
+          "margin": 0,
+          "opacity": 0,
+          "padding": 0,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "width": 0,
+        }
+      }
+      type="text"
+    />
+    <div
+      className="dropdown-icon"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+        }
+      }
+      onClick={[Function]}
+    />
+    <div
+      className="collapsible-content open"
+    >
+      <UnmountClosed
+        isOpened={true}
+      >
+        <Collapse
+          fixedHeight={-1}
+          forceInitialAnimation={true}
+          hasNestedCollapse={false}
+          isOpened={true}
+          onMeasure={[Function]}
+          onRender={[Function]}
+          onRest={[Function]}
+          style={Object {}}
+          theme={
+            Object {
+              "collapse": "ReactCollapse--collapse",
+              "content": "ReactCollapse--content",
+            }
+          }
+        >
+          <Motion
+            defaultStyle={
+              Object {
+                "height": 0,
+              }
+            }
+            onRest={[Function]}
+            style={
+              Object {
+                "height": Object {
+                  "damping": 26,
+                  "precision": 1,
+                  "stiffness": 170,
+                  "val": 0,
+                },
+              }
+            }
+          >
+            <div
+              className="ReactCollapse--collapse"
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <div
+                className="ReactCollapse--content"
+              >
+                <div>
+                  <Scrollbars
+                    autoHeight={true}
+                    autoHeightMax={200}
+                    autoHeightMin={100}
+                    autoHide={true}
+                    autoHideDuration={200}
+                    autoHideTimeout={1000}
+                    hideTracksWhenNotNeeded={false}
+                    renderThumbHorizontal={[Function]}
+                    renderThumbVertical={[Function]}
+                    renderTrackHorizontal={[Function]}
+                    renderTrackVertical={[Function]}
+                    renderView={[Function]}
+                    tagName="div"
+                    thumbMinSize={30}
+                    universal={false}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "height": "auto",
+                          "maxHeight": 200,
+                          "minHeight": 100,
+                          "overflow": "hidden",
+                          "position": "relative",
+                          "width": "100%",
+                        }
+                      }
+                    >
+                      <div
+                        key="view"
+                        style={
+                          Object {
+                            "WebkitOverflowScrolling": "touch",
+                            "bottom": undefined,
+                            "left": undefined,
+                            "marginBottom": 0,
+                            "marginRight": 0,
+                            "maxHeight": 200,
+                            "minHeight": 100,
+                            "overflow": "scroll",
+                            "position": "relative",
+                            "right": undefined,
+                            "top": undefined,
+                          }
+                        }
+                      >
+                        <ul
+                          className="dnn-dropdown-options"
+                        >
+                          <li
+                            className="dnn-dropdown-option"
+                            key="0"
+                            onClick={[Function]}
+                          >
+                            First Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option selected"
+                            key="1"
+                            onClick={[Function]}
+                          >
+                            Second Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option"
+                            key="2"
+                            onClick={[Function]}
+                          >
+                            Third Label
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        key="trackHorizontal"
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "height": "100%",
+                              "position": "relative",
+                            }
+                          }
+                        />
+                      </div>
+                      <div
+                        key="trackVertical"
+                        style={
+                          Object {
+                            "borderRadius": 3,
+                            "bottom": 2,
+                            "display": "none",
+                            "opacity": 0,
+                            "position": "absolute",
+                            "right": 2,
+                            "top": 2,
+                            "transition": "opacity 200ms",
+                            "width": 6,
+                          }
+                        }
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "position": "relative",
+                              "width": "100%",
+                            }
+                          }
+                        />
+                      </div>
+                    </div>
+                  </Scrollbars>
+                </div>
+              </div>
+            </div>
+          </Motion>
+        </Collapse>
+      </UnmountClosed>
+    </div>
+  </div>
+</Dropdown>
+`;
+
+exports[`Dnn Dropdown component Displays/Hides icon when withIcon is true 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="My new label"
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "First Label",
+          "searchableValue": "first",
+          "value": "first",
+        },
+        Object {
+          "label": "Second Label",
+          "searchableValue": "second",
+          "value": "second",
+        },
+        Object {
+          "label": "Third Label",
+          "searchableValue": "third",
+          "value": "third",
+        },
+      ]
+    }
+    prependWith="Prepend text:"
+    selectedIndex={-1}
+    size="small"
+    value="second"
+    withBorder={true}
+    withIcon={false}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        false,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>,
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <strong>
+                Prepend text:
+              </strong>,
+              " ",
+              "Second Label",
+            ],
+            "className": "dropdown-prepend",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Prepend text:",
+              },
+              "ref": null,
+              "rendered": "Prepend text:",
+              "type": "strong",
+            },
+            " ",
+            "Second Label",
+          ],
+          "type": "span",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      false,
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>,
+                  ],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "First Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "First Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Second Label",
+                      "className": "dnn-dropdown-option selected",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Second Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "2",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Third Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Third Label",
+                    "type": "li",
+                  },
+                ],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          false,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>,
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <strong>
+                  Prepend text:
+                </strong>,
+                " ",
+                "Second Label",
+              ],
+              "className": "dropdown-prepend",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Prepend text:",
+                },
+                "ref": null,
+                "rendered": "Prepend text:",
+                "type": "strong",
+              },
+              " ",
+              "Second Label",
+            ],
+            "type": "span",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        false,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        First Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option selected"
+                        onClick={[Function]}
+                      >
+                        Second Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        Third Label
+                      </li>,
+                    ],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "First Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "First Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Second Label",
+                        "className": "dnn-dropdown-option selected",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Second Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "2",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Third Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Third Label",
+                      "type": "li",
+                    },
+                  ],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`Dnn Dropdown component Displays/Hides icon when withIcon is true 2`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="My new label"
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "First Label",
+          "searchableValue": "first",
+          "value": "first",
+        },
+        Object {
+          "label": "Second Label",
+          "searchableValue": "second",
+          "value": "second",
+        },
+        Object {
+          "label": "Third Label",
+          "searchableValue": "third",
+          "value": "third",
+        },
+      ]
+    }
+    prependWith="Prepend text:"
+    selectedIndex={-1}
+    size="small"
+    value="second"
+    withBorder={true}
+    withIcon={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        <div
+          className="dropdown-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            }
+          }
+          onClick={[Function]}
+        />,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>,
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <strong>
+                Prepend text:
+              </strong>,
+              " ",
+              "Second Label",
+            ],
+            "className": "dropdown-prepend",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Prepend text:",
+              },
+              "ref": null,
+              "rendered": "Prepend text:",
+              "type": "strong",
+            },
+            " ",
+            "Second Label",
+          ],
+          "type": "span",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "dropdown-icon",
+          "dangerouslySetInnerHTML": Object {
+            "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+          },
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>,
+                  ],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "First Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "First Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Second Label",
+                      "className": "dnn-dropdown-option selected",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Second Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "2",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Third Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Third Label",
+                    "type": "li",
+                  },
+                ],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          <div
+            className="dropdown-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+              }
+            }
+            onClick={[Function]}
+          />,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>,
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <strong>
+                  Prepend text:
+                </strong>,
+                " ",
+                "Second Label",
+              ],
+              "className": "dropdown-prepend",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Prepend text:",
+                },
+                "ref": null,
+                "rendered": "Prepend text:",
+                "type": "strong",
+              },
+              " ",
+              "Second Label",
+            ],
+            "type": "span",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "dropdown-icon",
+            "dangerouslySetInnerHTML": Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            },
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        First Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option selected"
+                        onClick={[Function]}
+                      >
+                        Second Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        Third Label
+                      </li>,
+                    ],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "First Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "First Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Second Label",
+                        "className": "dnn-dropdown-option selected",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Second Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "2",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Third Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Third Label",
+                      "type": "li",
+                    },
+                  ],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`Dnn Dropdown component Renders <Collapse /> 1`] = `
+<Dropdown
+  autoHide={true}
+  className=""
+  closeOnClick={true}
+  enabled={true}
+  getLabelText={[Function]}
+  isDropDownOpen={true}
+  label="My new label"
+  onSelect={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "First Label",
+        "searchableValue": "first",
+        "value": "first",
+      },
+      Object {
+        "label": "Second Label",
+        "searchableValue": "second",
+        "value": "second",
+      },
+      Object {
+        "label": "Third Label",
+        "searchableValue": "third",
+        "value": "third",
+      },
+    ]
+  }
+  prependWith="Prepend text:"
+  selectedIndex={-1}
+  size="small"
+  value="second"
+  withBorder={true}
+  withIcon={false}
+>
+  <div
+    className="dnn-dropdown with-border small  open"
+  >
+    <div
+      className="collapsible-label no-wrap"
+      onClick={[Function]}
+    >
+      <span
+        className="dropdown-prepend"
+      >
+        <strong>
+          Prepend text:
+        </strong>
+         
+        Second Label
+      </span>
+    </div>
+    <input
+      aria-label="Search"
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "height": 0,
+          "margin": 0,
+          "opacity": 0,
+          "padding": 0,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "width": 0,
+        }
+      }
+      type="text"
+    />
+    <div
+      className="collapsible-content open"
+    >
+      <UnmountClosed
+        isOpened={true}
+      >
+        <Collapse
+          fixedHeight={-1}
+          forceInitialAnimation={true}
+          hasNestedCollapse={false}
+          isOpened={true}
+          onMeasure={[Function]}
+          onRender={[Function]}
+          onRest={[Function]}
+          style={Object {}}
+          theme={
+            Object {
+              "collapse": "ReactCollapse--collapse",
+              "content": "ReactCollapse--content",
+            }
+          }
+        >
+          <Motion
+            defaultStyle={
+              Object {
+                "height": 0,
+              }
+            }
+            onRest={[Function]}
+            style={
+              Object {
+                "height": Object {
+                  "damping": 26,
+                  "precision": 1,
+                  "stiffness": 170,
+                  "val": 0,
+                },
+              }
+            }
+          >
+            <div
+              className="ReactCollapse--collapse"
+              style={
+                Object {
+                  "height": 0,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <div
+                className="ReactCollapse--content"
+              >
+                <div>
+                  <Scrollbars
+                    autoHeight={true}
+                    autoHeightMax={200}
+                    autoHeightMin={100}
+                    autoHide={true}
+                    autoHideDuration={200}
+                    autoHideTimeout={1000}
+                    hideTracksWhenNotNeeded={false}
+                    renderThumbHorizontal={[Function]}
+                    renderThumbVertical={[Function]}
+                    renderTrackHorizontal={[Function]}
+                    renderTrackVertical={[Function]}
+                    renderView={[Function]}
+                    tagName="div"
+                    thumbMinSize={30}
+                    universal={false}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "height": "auto",
+                          "maxHeight": 200,
+                          "minHeight": 100,
+                          "overflow": "hidden",
+                          "position": "relative",
+                          "width": "100%",
+                        }
+                      }
+                    >
+                      <div
+                        key="view"
+                        style={
+                          Object {
+                            "WebkitOverflowScrolling": "touch",
+                            "bottom": undefined,
+                            "left": undefined,
+                            "marginBottom": 0,
+                            "marginRight": 0,
+                            "maxHeight": 200,
+                            "minHeight": 100,
+                            "overflow": "scroll",
+                            "position": "relative",
+                            "right": undefined,
+                            "top": undefined,
+                          }
+                        }
+                      >
+                        <ul
+                          className="dnn-dropdown-options"
+                        >
+                          <li
+                            className="dnn-dropdown-option"
+                            key="0"
+                            onClick={[Function]}
+                          >
+                            First Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option selected"
+                            key="1"
+                            onClick={[Function]}
+                          >
+                            Second Label
+                          </li>
+                          <li
+                            className="dnn-dropdown-option"
+                            key="2"
+                            onClick={[Function]}
+                          >
+                            Third Label
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        key="trackHorizontal"
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "height": "100%",
+                              "position": "relative",
+                            }
+                          }
+                        />
+                      </div>
+                      <div
+                        key="trackVertical"
+                        style={
+                          Object {
+                            "borderRadius": 3,
+                            "bottom": 2,
+                            "display": "none",
+                            "opacity": 0,
+                            "position": "absolute",
+                            "right": 2,
+                            "top": 2,
+                            "transition": "opacity 200ms",
+                            "width": 6,
+                          }
+                        }
+                      >
+                        <div
+                          style={
+                            Object {
+                              "backgroundColor": "rgba(0,0,0,.2)",
+                              "borderRadius": "inherit",
+                              "cursor": "pointer",
+                              "display": "block",
+                              "position": "relative",
+                              "width": "100%",
+                            }
+                          }
+                        />
+                      </div>
+                    </div>
+                  </Scrollbars>
+                </div>
+              </div>
+            </div>
+          </Motion>
+        </Collapse>
+      </UnmountClosed>
+    </div>
+  </div>
+</Dropdown>
+`;
+
+exports[`Dnn Dropdown component Renders labels properly according to props 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="-- Select --"
+    onSelect={[Function]}
+    options={Array []}
+    selectedIndex={-1}
+    size="small"
+    value={null}
+    withBorder={true}
+    withIcon={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          -- Select --
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        <div
+          className="dropdown-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            }
+          }
+          onClick={[Function]}
+        />,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "-- Select --",
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": "-- Select --",
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "dropdown-icon",
+          "dangerouslySetInnerHTML": Object {
+            "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+          },
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                />,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            -- Select --
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          <div
+            className="dropdown-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+              }
+            }
+            onClick={[Function]}
+          />,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "-- Select --",
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": "-- Select --",
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "dropdown-icon",
+            "dangerouslySetInnerHTML": Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            },
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  />,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`Dnn Dropdown component Renders labels properly according to props 2`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="My new label"
+    onSelect={[Function]}
+    options={Array []}
+    selectedIndex={-1}
+    size="small"
+    value={null}
+    withBorder={true}
+    withIcon={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          My new label
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        <div
+          className="dropdown-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            }
+          }
+          onClick={[Function]}
+        />,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "My new label",
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": "My new label",
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "dropdown-icon",
+          "dangerouslySetInnerHTML": Object {
+            "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+          },
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                />,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            My new label
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          <div
+            className="dropdown-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+              }
+            }
+            onClick={[Function]}
+          />,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "My new label",
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": "My new label",
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "dropdown-icon",
+            "dangerouslySetInnerHTML": Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            },
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  />,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`Dnn Dropdown component Renders labels properly according to props 3`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="My new label"
+    onSelect={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "First Label",
+          "searchableValue": "first",
+          "value": "first",
+        },
+        Object {
+          "label": "Second Label",
+          "searchableValue": "second",
+          "value": "second",
+        },
+        Object {
+          "label": "Third Label",
+          "searchableValue": "third",
+          "value": "third",
+        },
+      ]
+    }
+    prependWith="Prepend text:"
+    selectedIndex={-1}
+    size="small"
+    value="second"
+    withBorder={true}
+    withIcon={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        <div
+          className="dropdown-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            }
+          }
+          onClick={[Function]}
+        />,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <span
+            className="dropdown-prepend"
+          >
+            <strong>
+              Prepend text:
+            </strong>
+             
+            Second Label
+          </span>,
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <strong>
+                Prepend text:
+              </strong>,
+              " ",
+              "Second Label",
+            ],
+            "className": "dropdown-prepend",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Prepend text:",
+              },
+              "ref": null,
+              "rendered": "Prepend text:",
+              "type": "strong",
+            },
+            " ",
+            "Second Label",
+          ],
+          "type": "span",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "dropdown-icon",
+          "dangerouslySetInnerHTML": Object {
+            "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+          },
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                >
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    First Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option selected"
+                    onClick={[Function]}
+                  >
+                    Second Label
+                  </li>
+                  <li
+                    className="dnn-dropdown-option"
+                    onClick={[Function]}
+                  >
+                    Third Label
+                  </li>
+                </ul>,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>,
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>,
+                  ],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "First Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "First Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Second Label",
+                      "className": "dnn-dropdown-option selected",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Second Label",
+                    "type": "li",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "2",
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Third Label",
+                      "className": "dnn-dropdown-option",
+                      "onClick": [Function],
+                    },
+                    "ref": [Function],
+                    "rendered": "Third Label",
+                    "type": "li",
+                  },
+                ],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          <div
+            className="dropdown-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+              }
+            }
+            onClick={[Function]}
+          />,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <span
+              className="dropdown-prepend"
+            >
+              <strong>
+                Prepend text:
+              </strong>
+               
+              Second Label
+            </span>,
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <strong>
+                  Prepend text:
+                </strong>,
+                " ",
+                "Second Label",
+              ],
+              "className": "dropdown-prepend",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Prepend text:",
+                },
+                "ref": null,
+                "rendered": "Prepend text:",
+                "type": "strong",
+              },
+              " ",
+              "Second Label",
+            ],
+            "type": "span",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "dropdown-icon",
+            "dangerouslySetInnerHTML": Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            },
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  >
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      First Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option selected"
+                      onClick={[Function]}
+                    >
+                      Second Label
+                    </li>
+                    <li
+                      className="dnn-dropdown-option"
+                      onClick={[Function]}
+                    >
+                      Third Label
+                    </li>
+                  </ul>,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        First Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option selected"
+                        onClick={[Function]}
+                      >
+                        Second Label
+                      </li>,
+                      <li
+                        className="dnn-dropdown-option"
+                        onClick={[Function]}
+                      >
+                        Third Label
+                      </li>,
+                    ],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "First Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "First Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Second Label",
+                        "className": "dnn-dropdown-option selected",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Second Label",
+                      "type": "li",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "2",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Third Label",
+                        "className": "dnn-dropdown-option",
+                        "onClick": [Function],
+                      },
+                      "ref": [Function],
+                      "rendered": "Third Label",
+                      "type": "li",
+                    },
+                  ],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`Dnn Dropdown component Renders with minimal setup 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Dropdown
+    autoHide={true}
+    className=""
+    closeOnClick={true}
+    enabled={true}
+    getLabelText={[Function]}
+    isDropDownOpen={false}
+    label="-- Select --"
+    onSelect={[Function]}
+    options={Array []}
+    selectedIndex={-1}
+    size="small"
+    value={null}
+    withBorder={true}
+    withIcon={true}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="collapsible-label no-wrap"
+          onClick={[Function]}
+        >
+          -- Select --
+        </div>,
+        <input
+          aria-label="Search"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            }
+          }
+          type="text"
+        />,
+        <div
+          className="dropdown-icon"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            }
+          }
+          onClick={[Function]}
+        />,
+        <div
+          className="collapsible-content"
+        >
+          <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>
+        </div>,
+      ],
+      "className": "dnn-dropdown with-border small ",
+      "style": undefined,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "-- Select --",
+          "className": "collapsible-label no-wrap",
+          "onClick": [Function],
+          "title": undefined,
+        },
+        "ref": null,
+        "rendered": "-- Select --",
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "aria-label": "Search",
+          "onChange": [Function],
+          "onKeyDown": [Function],
+          "style": Object {
+            "height": 0,
+            "margin": 0,
+            "opacity": 0,
+            "padding": 0,
+            "pointerEvents": "none",
+            "position": "absolute",
+            "width": 0,
+          },
+          "type": "text",
+        },
+        "ref": [Function],
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "className": "dropdown-icon",
+          "dangerouslySetInnerHTML": Object {
+            "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+          },
+          "onClick": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <UnmountClosed
+            isOpened={false}
+          >
+            <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>
+          </UnmountClosed>,
+          "className": "collapsible-content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <div>
+              <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>
+            </div>,
+            "isOpened": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Scrollbars
+                autoHeight={true}
+                autoHeightMax={200}
+                autoHeightMin={100}
+                autoHide={true}
+                autoHideDuration={200}
+                autoHideTimeout={1000}
+                hideTracksWhenNotNeeded={false}
+                renderThumbHorizontal={[Function]}
+                renderThumbVertical={[Function]}
+                renderTrackHorizontal={[Function]}
+                renderTrackVertical={[Function]}
+                renderView={[Function]}
+                tagName="div"
+                thumbMinSize={30}
+                universal={false}
+              >
+                <ul
+                  className="dnn-dropdown-options"
+                />
+              </Scrollbars>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "autoHeight": true,
+                "autoHeightMax": 200,
+                "autoHeightMin": 100,
+                "autoHide": true,
+                "autoHideDuration": 200,
+                "autoHideTimeout": 1000,
+                "children": <ul
+                  className="dnn-dropdown-options"
+                />,
+                "hideTracksWhenNotNeeded": false,
+                "onUpdate": undefined,
+                "renderThumbHorizontal": [Function],
+                "renderThumbVertical": [Function],
+                "renderTrackHorizontal": [Function],
+                "renderTrackVertical": [Function],
+                "renderView": [Function],
+                "style": undefined,
+                "tagName": "div",
+                "thumbMinSize": 30,
+                "universal": false,
+              },
+              "ref": [Function],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [],
+                  "className": "dnn-dropdown-options",
+                },
+                "ref": [Function],
+                "rendered": Array [],
+                "type": "ul",
+              },
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="collapsible-label no-wrap"
+            onClick={[Function]}
+          >
+            -- Select --
+          </div>,
+          <input
+            aria-label="Search"
+            onChange={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "height": 0,
+                "margin": 0,
+                "opacity": 0,
+                "padding": 0,
+                "pointerEvents": "none",
+                "position": "absolute",
+                "width": 0,
+              }
+            }
+            type="text"
+          />,
+          <div
+            className="dropdown-icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+              }
+            }
+            onClick={[Function]}
+          />,
+          <div
+            className="collapsible-content"
+          >
+            <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>
+          </div>,
+        ],
+        "className": "dnn-dropdown with-border small ",
+        "style": undefined,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "-- Select --",
+            "className": "collapsible-label no-wrap",
+            "onClick": [Function],
+            "title": undefined,
+          },
+          "ref": null,
+          "rendered": "-- Select --",
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "aria-label": "Search",
+            "onChange": [Function],
+            "onKeyDown": [Function],
+            "style": Object {
+              "height": 0,
+              "margin": 0,
+              "opacity": 0,
+              "padding": 0,
+              "pointerEvents": "none",
+              "position": "absolute",
+              "width": 0,
+            },
+            "type": "text",
+          },
+          "ref": [Function],
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "className": "dropdown-icon",
+            "dangerouslySetInnerHTML": Object {
+              "__html": "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version=\\"1.1\\" id=\\"Layer_1\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\" x=\\"0px\\" y=\\"0px\\"
+	 viewBox=\\"0 0 2048 2048\\" style=\\"enable-background:new 0 0 2048 2048;\\" xml:space=\\"preserve\\">
+<path d=\\"M1028.6,1367L259.3,683.5h1538L1028.6,1367z\\"/>
+</svg>
+",
+            },
+            "onClick": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <UnmountClosed
+              isOpened={false}
+            >
+              <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>
+            </UnmountClosed>,
+            "className": "collapsible-content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div>
+                <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>
+              </div>,
+              "isOpened": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Scrollbars
+                  autoHeight={true}
+                  autoHeightMax={200}
+                  autoHeightMin={100}
+                  autoHide={true}
+                  autoHideDuration={200}
+                  autoHideTimeout={1000}
+                  hideTracksWhenNotNeeded={false}
+                  renderThumbHorizontal={[Function]}
+                  renderThumbVertical={[Function]}
+                  renderTrackHorizontal={[Function]}
+                  renderTrackVertical={[Function]}
+                  renderView={[Function]}
+                  tagName="div"
+                  thumbMinSize={30}
+                  universal={false}
+                >
+                  <ul
+                    className="dnn-dropdown-options"
+                  />
+                </Scrollbars>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "autoHeight": true,
+                  "autoHeightMax": 200,
+                  "autoHeightMin": 100,
+                  "autoHide": true,
+                  "autoHideDuration": 200,
+                  "autoHideTimeout": 1000,
+                  "children": <ul
+                    className="dnn-dropdown-options"
+                  />,
+                  "hideTracksWhenNotNeeded": false,
+                  "onUpdate": undefined,
+                  "renderThumbHorizontal": [Function],
+                  "renderThumbVertical": [Function],
+                  "renderTrackHorizontal": [Function],
+                  "renderTrackVertical": [Function],
+                  "renderView": [Function],
+                  "style": undefined,
+                  "tagName": "div",
+                  "thumbMinSize": 30,
+                  "universal": false,
+                },
+                "ref": [Function],
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [],
+                    "className": "dnn-dropdown-options",
+                  },
+                  "ref": [Function],
+                  "rendered": Array [],
+                  "type": "ul",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

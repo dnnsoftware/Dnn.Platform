@@ -1,0 +1,83 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.regexSettings) {
+    margin: 30px 30px;
+    .columnTitle {
+        font-weight: bolder;
+        padding: 0 0 10px 0;
+        border-bottom: 1px solid @alto;        
+    }
+    .groupWrapper {
+        border: 1px solid @alto;
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+        .dnn-ui-common-input-group {
+            padding: 15px 15px;
+            width: 708px;
+            background-color: @gallery;
+            label {
+                font-weight: bolder;
+                float: left;
+            }
+            .generalSettings-row_switch {
+                margin: 10px 0 0 0;
+                display: table;
+                width: 100%;
+                padding: 0 0 10px 0;
+                .dnn-switch-container {
+                    float: right;
+                }
+            }
+            .generalSettings-row-options {
+                .dnn-label {
+                    padding-top: 0;
+                }
+                .dnn-radio-buttons {
+                    margin-left: -15px;
+                    padding: 7px 0 0 0;
+                    label {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+            .sectionLabel {
+                border-top: 1px solid @alto;
+                padding-top: 20px;
+                margin-top: 20px;
+                label {
+                    color: #000;
+                }
+            }
+            .dnn-dropdown {
+                width: 681px;
+            }
+            .dnn-file-upload {
+                width: 313px;
+            }
+            .dnn-single-line-input-with-error {
+                width: 100%;
+            }
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 30px 0;
+        float: left;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            border-right: 1px solid @alto;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+        }
+    }
+}

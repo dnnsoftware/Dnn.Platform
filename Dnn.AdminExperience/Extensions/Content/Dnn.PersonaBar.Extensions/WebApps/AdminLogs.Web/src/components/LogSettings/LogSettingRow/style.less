@@ -1,0 +1,46 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-component-log {
+    display: block;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid @alto;
+    cursor: auto;
+    // &:not(:last-child) {
+    //     div.collapsible-header1 {
+    //         // border-bottom: 1px solid @alto;
+    //     }
+    // }
+    > div > div {
+        float: left;
+    }
+    div.collapsible-header-log {
+        color: @rollingStone;
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 20px;
+        box-sizing: border-box;
+        cursor: auto;
+        &.false {
+            background-color: @alabaster;
+        }
+        .edit-icon {
+            margin-left: 20px;
+            float: right;
+            cursor: pointer;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+            &.false {
+                svg {
+                    fill: @curiousBlue;
+                }
+                svg:hover {
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+}

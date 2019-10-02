@@ -1,0 +1,30 @@
+﻿<div id="editBarContainer" style="display: none;">
+    <div id="editBarPanelsExtensionPoint"></div>
+
+    <div id="edit-bar" class="editbar">
+        <div class="left-section">
+            <ul id="leftMenu"class="menuEditBar" data-bind="foreach: leftMenus">
+                <li data-bind="html: $root.renderMenu($data), attr: {'id': 'menu-' + name, 'class': cssClass}, click: $root.menuItemClick, clickBubble: false"></li>
+            </ul>
+        </div>
+
+        <div class="right-section">
+            <ul id="rightMenu" class="menuEditBar" data-bind="foreach: rightMenus">
+                <li data-bind="html: $root.renderMenu($data), attr: {'id': 'menu-' + name, 'class': cssClass}, click: $root.menuItemClick, clickBubble: false"></li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function injectboostrap() {
+            var debugMode = window.parent['editBarSettings']['debugMode'] === true;
+            var cdv = window.parent['editBarSettings']['buildNumber'];
+            var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random() : '');
+            var body = document.getElementsByTagName('body')[0];
+            var boostrapScript = document.createElement('script');
+            boostrapScript.setAttribute('src', 'scripts/bootstrap.js' + version);
+            body.appendChild(boostrapScript);
+        })();
+    </script>
+</div>
+
