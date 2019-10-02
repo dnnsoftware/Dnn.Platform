@@ -21,6 +21,8 @@ The following items must all be true prior to a pull request being submitted to 
 ## Code Review Process
 Community review of submitted pull requests is encouraged, and all pull requests must be reviewed by at least **two (2)** designated approvers before the change can be approved.  Once approved by two unique designated approvers, the change can be merged. An approver should NEVER merge their own change, even with two supporting approvals.  
 
+Then DNN Platform project strives to review and comment on incoming pull requests in a timely fashion, however, it may be necessary at times to hold incoming pull requests for a period of time during releases or other administrative processes.  
+
 ### Designated Approvers
 At the current time the following community members are designated approvers.
 
@@ -30,8 +32,6 @@ At the current time the following community members are designated approvers.
 * Peter Donker ([donker](https://github.com/donker)) - Community Developer Advisory Group Lead
 * Daniel Valadas ([valadas](https://github.com/valadas))
 * Matt Rutledge ([mtrutledge](https://github.com/mtrutledge))
-* Vicenç Masanas ([vmasanas](https://github.com/vmasanas))
-* Erik van Ballegoij ([erikvb](https://github.com/erikvb))
 
 Additionally, the following individuals from ESW/DNN Corp are approved reviewers.
 
@@ -56,7 +56,7 @@ Once a pull request has been reviewed by two designated approvers it may be merg
 > This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
 
 ### Execption for Build Process Pull Requests
-A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, or reconfiguration of the environment for the next version. 
+A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, adjustments of build processes, or reconfiguration of the environment for the next version. 
 
 Additionally a special exception has been granted to merge pull requests created by the Designated Approvers for the purposes of keeping release branches in sync when the pull request ONLY moves previously approved changes.  Such as moving bug fixes from a minor release into the next major release, or otherwise.
 
