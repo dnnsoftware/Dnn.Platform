@@ -1,0 +1,24 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Fix faulty 9.4.0 upgrades of the PersonaBar */
+
+DELETE
+FROM {databaseOwner}{objectQualifier}Packages
+WHERE PackageType='PersonaBar'
+AND	[Name] <> 'Dnn.PersonaBar.Extensions'
+AND Organization='DNN Corp.'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}PersonaBarMenu
+SET Controller = LEFT(Controller, CHARINDEX(',',Controller)-1) + ', Dnn.PersonaBar.Extensions'
+WHERE Identifier IN ('Dnn.AdminLogs','Dnn.ConfigConsole','Dnn.CssEditor','Dnn.Extensions','Dnn.Licensing','Dnn.Security','Dnn.Seo','Dnn.Servers','Dnn.Sites','Dnn.SiteSettings','Dnn.SqlConsole','Dnn.TaskScheduler','Dnn.Themes','Dnn.Users','Dnn.Pages','Dnn.SiteImportExport')
+GO
+

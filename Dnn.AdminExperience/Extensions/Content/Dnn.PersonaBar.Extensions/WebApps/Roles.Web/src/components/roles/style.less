@@ -1,0 +1,112 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.roles-list-container {
+    margin-top: 100px;
+    float: left;
+    & > div {
+        padding: 0;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    display: table;
+    float: left;
+    .container {
+        .no-users-row {
+            width: 100%;
+            float: left;
+            text-align: center;
+            font-weight: bold;
+            padding: 13px 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid @alto;
+        }
+        float: left;
+        width: 100%;
+        margin-bottom: 20px;
+        border-left: 1px solid @alto;
+        border-right: 1px solid @alto;
+        background-color: white;
+        .users-header-row {
+            display: table;
+            width: 100%;
+            border-bottom: 1px solid @alto;
+            border-top: 1px solid @alto;
+            width: 100%;
+            float: left;
+            position: relative;
+            padding: 15px 20px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+        }
+        .add-setting-editor {
+            float: left;
+            .collapsible-component1.false {
+                border-bottom: 0;
+            }
+        }
+    }
+    .add-setting-row {
+        text-align: right;
+        width: 100%;
+        font-weight: bolder;
+        overflow: hidden;
+        cursor: pointer;
+        box-sizing: border-box;
+        border-bottom: 1px solid @alto;
+        padding: 0 0 15px 20px;
+        margin-bottom: 15px;
+        .add-setting-box {
+            width: auto;
+            float: right;
+            .add-icon {
+                margin-left: 20px;
+                margin-right: 5px;
+                float: left;
+                cursor: pointer;
+                svg {
+                    fill: @rollingStone;
+                    width: 16px;
+                    float: left;
+                    height: 16px;
+                }
+            }
+            &.false {
+                color: @curiousBlue;
+                svg {
+                    fill: @curiousBlue;
+                }
+            }
+        }
+        .add-setting-box {
+            &.false:hover {
+                color: @thunder;
+                svg {
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+    .loadMore {
+        text-align: center;
+        a {
+            display: inline-block;
+            height: 36px;
+            line-height: 36px;
+            min-width: 130px;
+            border: 1px solid @alto;
+            color: @curiousBlue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    }
+    // label {
+    //     clear: both;
+    //     float: left;
+    //     text-align: left;
+    //     margin-bottom: 5px;
+    //     margin-right: 5px;
+    // }
+}

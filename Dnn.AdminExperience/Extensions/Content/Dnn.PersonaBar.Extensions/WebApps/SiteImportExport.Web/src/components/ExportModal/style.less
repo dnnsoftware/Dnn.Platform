@@ -1,0 +1,130 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.exportModal) {
+    border: 1px solid @alto;
+    background: #fff;
+    float: left;
+    * {
+        box-sizing: border-box;
+    }
+    .sectionTitle {
+        font-weight: bold;
+        margin: 20px 0;
+    }
+    .export-site-container {
+        .left-column {
+            width: 50%;
+            float: left;            
+            padding: 10px 30px 10px 30px;
+            .dnn-dropdown-with-error {
+                width: 100%;
+            }
+            .dnn-single-line-input-with-error {
+                padding-top: 15px;
+            }
+            .dnn-label {
+                margin-bottom: 5px;
+                font-weight: 700;
+            }
+        }
+        .right-column {
+            width: 50%;
+            float: left;
+            padding: 10px 30px 10px 30px;
+        }
+        .export-switches {
+            padding: 0 30px 0 30px;
+            .dnn-ui-common-input-group {
+                padding: 5px 0;
+                float: left;
+                .dnn-label {
+                    font-weight: bolder;
+                    float: left;
+                }
+                .dnn-switch-container {
+                    float: right;
+                }
+            }
+        }
+        .export-pages {
+            padding: 0 30px 20px 30px;
+            border-left: 1px solid @alto;
+            .export-page-picker {
+                width: 100% !important;
+                .page-picker-content > div {
+                    height: 395px !important;
+                }
+            }
+            .language-box {
+                float: left;
+                width: 100%;
+                height: 70px;
+                .dnn-dropdown-with-error {
+                    width: 100%;
+                }
+            }
+            .dnn-checkbox-container {
+                float: left;
+            }
+            .dnn-checkbox-container {
+                .checkbox {
+                    margin-bottom: 2px;
+                }
+            }
+            .dnn-label {
+                float: left;
+                label {
+                    float: left;
+                }
+                font-weight: 700;
+            }
+            .dnn-dropdown {
+                .collapsible-content {
+                    ul {
+                        li {
+                            display: -webkit-box;
+                            .dnn-ui-common-tooltip {
+                                float: left;
+                            }
+                        }
+                    }
+                }
+            }
+            div.tooltip-text {
+                max-width: 250px;
+            }
+            .dnn-radio-buttons {
+                float: right;
+                width: auto;
+                margin-top: 6px;
+            }
+            .lastExport {
+                margin-top: 6px;
+                font-weight: 500;
+                color: @thunder;
+                float: right;
+            }
+        }
+    }
+    .seperator {
+        padding: 0 20px;
+    }
+    .seperator2 {
+        padding: 30px 0 20px 0;
+    }
+    .pageTitle {
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 20px 0 10px 30px;
+    }
+    .sectionTitle {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .action-buttons {
+        text-align: center;
+        padding: 30px 0;
+        button {
+            margin: 5px;
+        }
+    }
+}

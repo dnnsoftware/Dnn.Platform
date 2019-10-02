@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Dnn.EditBar.Library</id>
+    <version>1.6.1</version>
+    <title>DNN EditBar Library</title>
+    <authors>DNN Corporation</authors>
+    <owners>DNN Corporation</owners>
+    <licenseUrl>http://www.dnnsoftware.com</licenseUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.EditBar</projectUrl>
+    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DNN EditBar Common Library</description>
+    <releaseNotes>
+      Version 1.6.1:
+      - Stabilization Release for Dnn v9.2.2
+    </releaseNotes>
+    <copyright>Copyright (c) 2016, DNN Corporation</copyright>
+    <tags>DNN EditBar</tags>
+    <!--
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="8.0.5.46" />
+      <dependency id="DotNetNuke.Web" version="8.0.5.46" />
+    </dependencies>
+    -->
+  </metadata>
+  <files>
+    <file src="bin\Dnn.EditBar.Library.dll" target="lib\net45"/>
+    <file src="bin\Dnn.EditBar.Library.pdb" target="lib\net45"/>
+    <file src="bin\Dnn.EditBar.Library.xml" target="lib\net45"/>
+  </files>
+</package>

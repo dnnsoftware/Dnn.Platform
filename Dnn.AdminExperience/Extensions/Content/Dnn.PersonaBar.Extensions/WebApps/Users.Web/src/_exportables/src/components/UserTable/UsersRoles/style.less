@@ -1,0 +1,197 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+#users-container {
+    .userroles-form-form {
+        width: 80%;
+        margin: 20px 10%;
+        float: left;
+        box-sizing: border-box;
+        .user-roles-list {
+            float: left;
+            width: 100%;
+            margin: 15px 0;
+            display: table;
+            cursor: auto;
+            box-sizing: border-box;
+            border: 1px solid @alto;
+            text-align: left;
+            .user-role-body {
+                color: @rollingStone;
+                .no-roles-row {
+                    width: 100%;
+                    float: left;
+                    text-align: center;
+                    font-weight: bold;
+                    padding: 13px 20px;
+                    box-sizing: border-box;
+                }
+            }
+            .user-role-header-row {
+                display: table;
+                width: 100%;
+                border-bottom: 1px solid @alto;
+                width: 100%;
+                float: left;
+                position: relative;
+                padding: 15px 20px;
+                box-sizing: border-box;
+                text-transform: uppercase;
+            }
+        }
+        .user-roles-list-paging {
+            text-align: left;
+        }
+        .header {
+            width: 100%;
+            float: left;
+            box-sizing: border-box;
+            .header-title {
+                text-align: left;
+                width: 100%;
+                font-weight: bold;
+                display: inline-block;
+                text-transform: uppercase;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            .add-box {
+                width: 100%;
+                float: left;
+                box-sizing: border-box;
+                border-bottom: 1px solid @alto;
+                .dnn-grid-cell {
+                    padding: 0px;
+                }
+                .send-email-box {
+                    width: 100%;
+                    float: left;
+                    .dnn-checkbox-container {
+                        .checkbox {
+                            margin-bottom: 0px;
+                        }
+                        float: left;
+                        margin-top: 10px;
+                        margin-right: 10px;
+                    }
+                    label {
+                        color: @alto;
+                    }
+                }
+                span {
+                    float: left;
+                    width: 100%;
+                    display: inline-block;
+                    border-left: 1px solid @alto;
+                    .rw-combobox {
+                        float: left;
+                        width: 250px;
+                        height: 34px;
+                        line-height: 34px;
+                        vertical-align: middle;
+                        padding: 0;
+                        border: none;
+                        color: @bulgarianRose;
+                        border-radius: 0;
+                        display: inline-block;
+                        box-shadow: none;
+                        background: transparent;
+                        .rw-widget-picker.rw-widget-container {
+                            height: 32px;
+                            line-height: 32px;
+                            border: none;
+                            input {
+                                height: inherit;
+                                line-height: inherit;
+                                border: inherit;
+                            }
+                        }
+                        button {
+                            display: none;
+                        }
+                        ::-webkit-input-placeholder {
+                            /* WebKit, Blink, Edge */
+                            color: @alto;
+                        }
+                        :-moz-placeholder {
+                            /* Mozilla Firefox 4 to 18 */
+                            color: @alto;
+                            opacity: 1;
+                        }
+                        ::-moz-placeholder {
+                            /* Mozilla Firefox 19+ */
+                            color: @alto;
+                            opacity: 1;
+                        }
+                        :-ms-input-placeholder {
+                            /* Internet Explorer 10-11 */
+                            color: @alto;
+                        }
+                        input {
+                            -webkit-box-shadow: none;
+                            padding: 0 0 0 12px;
+                            height: 100%;
+                            vertical-align: top;
+                            background-color: transparent;
+                            &::-ms-clear {
+                                display: none;
+                            }
+                        }
+                        .rw-popup-container {
+                            box-shadow: none;
+                            .rw-popup {
+                                border-radius: 0px;
+                                border: 1px solid @alto;
+                                box-shadow: none;
+                                ul.rw-list {
+                                    margin: 0;
+                                    padding: 0;
+                                    li {
+                                        padding-left: 15px;
+                                        height: 30px;
+                                        line-height: 26px;
+                                        color: @rollingStone;
+                                        border: none;
+                                        outline: none;
+                                        white-space: nowrap;
+                                        overflow-x: hidden;
+                                        text-overflow: ellipsis;
+                                    }
+                                    li:hover {
+                                        background-color: @gallery;
+                                        color: @curiousBlue;
+                                    }
+                                    li.rw-state-selected {
+                                        background-color: transparent;
+                                        color: @curiousBlue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .add-role-button {
+                        float: right;
+                        text-align: right;
+                        width: auto;
+                        font-weight: bolder;
+                        overflow: hidden;
+                        cursor: pointer;
+                        box-sizing: border-box;
+                        padding-top: 10px;
+                        svg {
+                            fill: @rollingStone;
+                        }
+                        span {
+                            border: none;
+                        }
+                        .extension-action {
+                            float: left;
+                        }
+                    }
+                    button[role="secondary"] {
+                        vertical-align: middle;
+                        margin: 0 0 0 10px;
+                    }
+                }
+            }
+        }
+    }
+}

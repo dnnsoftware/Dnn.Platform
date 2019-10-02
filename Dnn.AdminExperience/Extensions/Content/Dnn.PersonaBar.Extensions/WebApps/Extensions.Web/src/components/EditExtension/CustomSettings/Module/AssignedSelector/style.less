@@ -1,0 +1,41 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.extensions-app {
+    .extension-form {
+        :local(.assignedSelector) {
+            padding: 0;
+            margin-top: 32px;
+            .selector-box {
+                padding: 0;
+                height: 225px;
+                h6 {
+                    margin-bottom: 5px;
+                }
+                ul {
+                    li {
+                        padding: 15px 20px;
+                        &:hover {
+                            background-color: @gallery;
+                            cursor: pointer;
+                        }
+                        &.selected {
+                            color: @cerulean;
+                        }
+                    }
+                }
+            }
+            .selector-controls {
+                padding: 0 15px;
+                margin-top: 21px;
+                .move-item {
+                    width: 30px;
+                    height: 30px;
+                    padding: 7px;
+                    border: 1px solid #c8c8c8;
+                    &.double-right {
+                        margin-top: 105px;
+                    }
+                }
+            }
+        }
+    }
+}
