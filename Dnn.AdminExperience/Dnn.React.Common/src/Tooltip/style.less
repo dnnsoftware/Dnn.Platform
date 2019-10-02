@@ -1,0 +1,124 @@
+@import "../../styles/index";
+.dnn-ui-common-tooltip {   
+    >div{
+        position: relative;
+    }    
+    .tooltip-overlay{
+        display: block;
+        font-family: Open Sans,sans-serif;
+        font-weight: 400;
+        font-size: 1rem;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 300ms ease-in-out;
+        display:flex;
+        justify-content: center;
+        min-width:200px;
+        z-index:50;
+        visibility: visible;
+        .tooltip-inner{
+            background-color: rgb(75, 78, 79);
+            color: #fff;
+            padding:5px 10px;
+            border-radius: 5px;
+            position: relative;
+            font-family: proxima_nova, HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            &::before{
+                position: absolute;
+                display: block;
+                content: "";
+                left: 50%;
+                right: 0;
+                border: 16px solid transparent;
+                margin-left: -16px;
+                width: 0;
+                height: 0;
+            }
+        }
+        &.top{
+            bottom: 100%;
+            padding-bottom: 16px;
+            ::before{
+                top:100%
+            }
+        }
+        &.bottom{
+            top: 100%;
+            padding-top:16px;
+            ::before{
+                bottom:100%;
+            }
+        }        
+        
+        &.tooltip-overlay--hidden{
+            opacity:0;
+            pointer-events: none;
+            visibility: hidden;     
+        }
+    } 
+    &.error {
+        .icon svg {
+            color: @alizarinCrimson;
+            fill: @alizarinCrimson;
+        }
+        .tooltip-inner{
+            background-color: @alizarinCrimson;
+        }  
+        .top .tooltip-inner::before{
+            border-top-color: @alizarinCrimson;
+        }
+        .bottom .tooltip-inner::before{
+            border-bottom-color: @alizarinCrimson;
+        }
+    }
+    &.warning {
+        .icon svg {
+            color: #EA9C00;
+            fill: #EA9C00;
+        }
+        .tooltip-inner{
+            background-color: #EA9C00;
+        }  
+        .top .tooltip-inner::before{
+            border-top-color: #EA9C00;
+        }
+        .bottom .tooltip-inner::before{
+            border-bottom-color: #EA9C00;
+        }
+    }
+    &.info {
+        .icon svg {
+            color: @alto;
+            fill: @alto;
+        }
+        .tooltip-inner{
+            background-color: @thunder;
+        }  
+        .top .tooltip-inner::before{
+            border-top-color: @thunder;
+        }
+        .bottom .tooltip-inner::before{
+            border-bottom-color: @thunder;
+        }
+    }
+    &.global {
+        .icon svg {
+            color: @cerulean;
+            fill: @cerulean;
+        }
+        .tooltip-inner{
+            background-color: @cerulean;
+        }  
+        .top .tooltip-inner::before{
+            border-top-color: @cerulean;
+        }
+        .bottom .tooltip-inner::before{
+            border-bottom-color: @cerulean;
+        }   
+    }
+    .icon svg {
+        width: 20px;
+        height: 20px;
+    }    
+}

@@ -497,7 +497,7 @@ namespace DotNetNuke.Common.Utilities
                 DeleteFolderRecursive(strFolder);
             }
 
-            foreach (string strFile in Directory.EnumerateFilePaths(new DirectoryInfo(strRoot)))
+            foreach (string strFile in Directory.EnumerateFilePaths(strRoot))
             {
                 try
                 {

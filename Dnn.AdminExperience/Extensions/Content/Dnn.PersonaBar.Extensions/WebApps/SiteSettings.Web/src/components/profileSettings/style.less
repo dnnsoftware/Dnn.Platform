@@ -1,0 +1,65 @@
+
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.profileSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-single-line-input-with-error {
+            width: 55%;
+            float: left;
+        }
+        .VanityUrlPrefix {
+            float: left;
+            width: 40%;
+            margin: 8px 0 0 8px;
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-switch-container{
+            float: right;
+        }
+        input {
+            width: auto;
+        }
+    }
+    .sectionTitleNoBorder {
+        font-weight: bolder;
+        float: left;
+        width: 100%;
+        padding: 0 0 20px 0;
+    }
+    .buttons-box {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 30px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 100%;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}

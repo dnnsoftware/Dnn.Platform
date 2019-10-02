@@ -1,0 +1,83 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.create-portal {
+    float: left;
+    .create-site-container {
+        padding: 50px 35px;
+        .dnn-single-line-input-with-error, .dnn-multi-line-input-with-error {
+            width: 100%;
+        }
+        .portal-description .dnn-ui-common-multi-line-input {
+            height: 75px;
+            overflow: auto;
+        }
+        .site-template-box {
+            margin-top: 25px;
+            .dnn-label {
+                display: block;
+                width: 100%;
+            }
+        }
+        .site-thumbnails-container {
+            width: 100%;
+            .dnn-dropdown-with-error {
+                width: 100%;
+                margin-top: 25px;
+                margin-bottom: 35px;
+            }
+        }
+        .site-type-container {
+            margin-top: 25px;
+            .dnn-radio-buttons {
+                padding-top: 6px;
+                > ul {
+                    display: table;
+                }
+            }
+            .dnn-radio-buttons ul li label {
+                float: left;
+            }
+            .home-directory {
+                .dnn-label {
+                    width: 40%;
+                    margin-right: 0;
+                    >label {
+                        font-size: 13px;
+                        float: right;
+                        margin-right: 25px;
+                    }
+                }
+                .input-tooltip-container {
+                    width: 60%;
+                }
+            }
+            #home-directory {
+                width: 100%;
+            }
+        }
+        .user-as-admin {
+            .dnn-switch-container {
+                width: 100%;
+                .dnn-switch {
+                    float: right;
+                }
+            }
+        }
+        .site-action-buttons {
+            text-align: center;
+            margin-top: 25px;
+            .dnn-ui-common-button {
+                margin-right: 10px;
+            }
+        }
+        .dnn-grid-system.with-right-border {
+            padding: 25px 0;
+            > .dnn-grid-cell:last-child {
+                padding-left: 15px;
+            }
+            > .dnn-grid-cell:first-child {
+                padding-right: 15px;
+                border-right: 1px solid @alto;
+            }
+        }
+    }
+}

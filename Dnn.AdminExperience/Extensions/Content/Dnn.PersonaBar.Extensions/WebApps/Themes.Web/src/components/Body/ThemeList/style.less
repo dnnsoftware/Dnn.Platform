@@ -1,0 +1,65 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.theme-list-wrapper {
+    border: 1px solid @alto;
+    border-radius: 3px;
+    background-color: @white;
+    float: left;
+    width: 100%;
+    .theme-list {
+        & > div > .dnn-grid-cell {
+            padding: 15px;
+        }
+        & > div:first-child + div {
+            display: none;
+        }
+        .dnn-grid-cell {
+            text-align: center;
+        }
+    }
+    .theme-list-title {
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 30px;
+        color: @bulgarianRose;
+        padding: 20px 0 0 20px;
+    }
+    .theme-list-separator {
+        color: @alto;
+        background: @alto;
+        height: 1px;
+        border: none;
+        margin: 0 20px;
+    }
+    .empty-state {
+        display: block;
+        text-align: center;
+        float: left;
+        width: 100%;
+        .noThemes {
+            font-size: x-large;
+            color: @thunder;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-top: 50px;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+        .noThemesMessage {
+            font-size: small;
+            color: @alto;
+            margin-left: 40px;
+            margin-right: 40px;
+            margin-top: 100px;
+            left: 0;
+            right: 0;
+            position: absolute;
+        }
+        .noThemesIcon {
+            padding-top: 80px;
+            width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

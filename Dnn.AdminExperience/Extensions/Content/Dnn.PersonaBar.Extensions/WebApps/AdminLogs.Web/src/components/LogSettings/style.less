@@ -1,0 +1,88 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+#adminlogs-container {
+        & > div {
+            padding: 0;
+        }
+        .dnn-persona-bar-page-body {
+            * {
+                box-sizing: border-box;
+            }
+            .react-tabs {
+                .log-settings {
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 20px 20px 55px;
+                    display: table;
+                    .container {
+                        float: left;
+                        border-left: 1px solid @alto;
+                        border-right: 1px solid @alto;
+                        width: 100%;
+                        .header-row {
+                            display: table;
+                            width: 100%;
+                            border-bottom: 1px solid @alto;
+                            border-top: 1px solid @alto;
+                            width: 100%;
+                            float: left;
+                            position: relative;
+                            padding: 15px 20px;
+                            box-sizing: border-box;
+                            text-transform: uppercase;
+                        }
+                        .add-setting-editor {
+                            //border-bottom: 1px solid @alto;
+                            float: left;
+                        }
+                        .row-opened {
+                            margin-top: -3px;
+                            margin-bottom: -1px;
+                            border-top: 2px solid @curiousBlue;
+                            border-bottom: 2px solid @curiousBlue !important;
+                        }
+                    }
+                    .add-setting-row {
+                        text-align: right;
+                        width: 100%;
+                        font-weight: bolder;
+                        overflow: hidden;
+                        cursor: pointer;
+                        box-sizing: border-box;
+                        border-bottom: 1px solid @alto;
+                        padding: 0 0 15px 20px;
+                        margin-bottom: 15px;
+                        .add-setting-box {
+                            width: auto;
+                            float: right;
+                            .add-icon {
+                                margin-left: 20px;
+                                margin-right: 5px;
+                                float: left;
+                                cursor: pointer;
+                                svg {
+                                    fill: @rollingStone;
+                                    width: 16px;
+                                    float: left;
+                                    height: 16px;
+                                }
+                            }
+                            &.false {
+                                color: @curiousBlue;
+                                svg {
+                                    fill: @curiousBlue;
+                                }
+                            }
+                        }
+                        .add-setting-box {
+                            &.false:hover {
+                                color: @thunder;
+                                svg {
+                                    fill: @thunder;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }

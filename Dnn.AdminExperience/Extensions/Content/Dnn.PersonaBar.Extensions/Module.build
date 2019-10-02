@@ -1,0 +1,18 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+	<BuildScriptsPath>$(SolutionDir)\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(SolutionDir)\Website</WebsitePath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <Extension>zip</Extension>
+    <DNNFileName>Dnn.PersonaBar.Extensions</DNNFileName>
+    <PackageName>Dnn.PersonaBar.Extensions</PackageName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\</ModuleFolderName>
+	<YarnWorkingDirectory>..\..\..\package.json</YarnWorkingDirectory>
+  </PropertyGroup>
+  
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Import Project="$(BuildScriptsPath)\Module.Build"/>
+</Project>

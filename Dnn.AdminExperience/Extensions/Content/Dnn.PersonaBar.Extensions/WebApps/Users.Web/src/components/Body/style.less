@@ -1,0 +1,60 @@
+#users-container {
+    * {
+        box-sizing: border-box;
+    }
+    .create-user-box-collapse {
+        float: left;
+        > div {
+            float: left;
+        }
+    }
+    .header-row {
+        padding: 10px 15px 10px;
+    }
+    .user-names{
+        padding-left: 17px !important;
+    }
+    .user-emails, .user-joined{
+        padding-left: 15px !important;
+    }
+    .dnn-persona-bar-page-header {
+        button.dnn-ui-common-button {
+            margin-left: 10px;
+        }
+    }
+    .dnn-persona-bar-page-body {
+        &.without-margin {
+            margin-top: 0;
+        }
+        .users-workspace-tray {
+            height: 37px;
+            .dnn-grid-cell {
+                height: 100%;
+                padding-top: 7px;
+                .users-filter-container {
+                    .user-filters-filter {
+                        height: 30px;
+                        .dnn-dropdown {
+                            .collapsible-label {
+                                padding-top: 4px;
+                            }
+                            .dropdown-icon {
+                                top: 5px;
+                            }
+                        }
+                    }
+                }
+                .dnn-search-box {
+                    width: 100%;
+                    height: 30px;
+                }
+            }
+        }
+        .users-paging {
+            float: left;
+            width: 100%;
+            margin: 0 2px;
+            padding: 18px;
+        }
+    }
+}

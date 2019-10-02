@@ -1,0 +1,76 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.generalSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .columnTitle {
+        font-weight: bolder;
+        padding: 0 0 25px 0;
+    }
+    .dnn-ui-common-input-group {
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-label.block {
+            label{
+                max-width: 90%;
+            }
+        }
+        .generalSettings-row_switch {
+            border-bottom: 1px solid @alto;
+            margin: 20px 0 0 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 20px 0;
+            .dnn-switch-container{
+                float: right;
+            }
+        }
+        .generalSettings-row-options {
+            .dnn-label {
+                padding-top: 0;
+            }
+            .dnn-radio-buttons {
+                margin-left: -15px;
+                padding: 7px 0 0 0;
+                label {
+                    margin-bottom: 8px;
+                }
+            }
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-dropdown {
+            width: 100%;
+        }        
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 30px 0;
+        float: left;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            border-right: 1px solid @alto;
+            .dnn-dropdown {
+                width: 100%;
+            }
+        }
+        .right-column {
+            padding-left: 30px;            
+        }
+    }
+}

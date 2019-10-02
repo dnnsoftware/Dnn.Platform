@@ -1,0 +1,114 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+#siteSettings-container {
+    .dnn-persona-bar-page-body {
+        .react-tabs {
+            .list-items {
+                width: 100%;
+                float: left;
+                box-sizing: border-box;
+                .list-items-grid {
+                    border: solid 1px @alto;
+                    float: left;
+                    width: 100%;
+                    .no-data {
+                        padding: 10px 15px;
+                        width: 100%;
+                        float: left;
+                    }
+                }
+                .list-header-row {
+                    border-bottom: 1px solid @alto;
+                    padding: 10px 0 10px 0;
+                    width: 100%;
+                    float: left;
+                    overflow: hidden;
+                }
+                .header-Text {
+                    width: 44%;
+                    float: left;
+                    font-weight: bolder;
+                    padding-left: 15px;
+                }
+                .header-Value {
+                    width: 43%;
+                    float: left;
+                    font-weight: bolder;
+                }
+                .collapsible-component {
+                    .collapsible-header {
+                        text-align: right;
+                        text-transform: none;
+                        padding-right: 40px;
+                        .collapse-icon {
+                            display: none;
+                            &.collapsed {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                .AddItemRow {
+                    text-align: right;
+                    width: 100%;
+                    float: right;
+                    margin: 0 0 15px 0;
+                    font-weight: bolder;
+                    border-bottom: 1px solid @alto;
+                    overflow: hidden;
+                    height: 25px;
+                    .sectionTitle {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    .AddItemBox {
+                        width: auto;
+                        float: right;
+                        color: @thunder;
+                        cursor: pointer;
+                        .add-icon {
+                            margin-left: 20px;
+                            margin-right: 5px;
+                            float: left;
+                            cursor: pointer;
+                            svg {
+                                width: 16px;
+                                float: left;
+                                height: 16px;
+                                fill: @thunder;
+                            }
+                        }
+                    }
+                    .AddItemBox-active {
+                        width: auto;
+                        float: right;
+                        color: @curiousBlue;
+                        .add-icon {
+                            margin-left: 20px;
+                            margin-right: 5px;
+                            float: left;
+                            svg {
+                                width: 16px;
+                                float: left;
+                                height: 16px;
+                                fill: @curiousBlue;
+                            }
+                        }
+                    }
+                }
+            }
+            .sortable-item {
+                float: left;
+                width: 100%;
+                &:not(:last-child) {
+                    border-bottom: 1px solid @alto;
+                }
+            }
+            .dnn-sortable {
+                & > div {
+                    float: left;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
