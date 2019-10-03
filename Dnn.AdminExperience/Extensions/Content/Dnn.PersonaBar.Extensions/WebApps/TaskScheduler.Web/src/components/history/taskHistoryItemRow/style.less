@@ -1,0 +1,46 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.taskHistoryItemRow) {
+    float: left;
+    width: 100%;
+    color: @thunder;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    padding: 10px 0 10px 0;
+    .term-label-logNotes {
+        margin: 0 5px 0 15px;
+        float: left;
+        width: 30%;
+    }
+    .term-label-server {
+        margin: 0 5px 0 5px;
+        float: left;
+        width: 15%;
+        word-wrap: break-word;
+    }
+    .term-label-elapsedTime {
+        text-align: center;
+        margin: 0 5px 0 5px;
+        width: 15%;
+        float: left;
+    }
+    .term-label-succeeded {
+        text-align: center;
+        margin: 0 5px 0 5px;
+        width: 12%;
+        float: left;
+    }
+    .term-label-startEnd {
+        margin: 0 0 0 5px;
+        float: left;
+    }
+    .checkMarkIcon {
+        width: 16px;
+        height: 16px;
+        margin-left: auto;
+        margin-right: auto;
+        > svg {
+            fill: @thunder;
+        }
+    }
+}

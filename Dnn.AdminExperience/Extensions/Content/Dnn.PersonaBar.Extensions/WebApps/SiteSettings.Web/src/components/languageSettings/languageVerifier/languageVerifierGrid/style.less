@@ -1,0 +1,50 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.verifierItems) {
+    width: 100%;
+    float: left;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    .verifier-items-grid {
+        float: left;
+        width: 100%;
+        .verifier-grid {
+            float: left;
+            width: 100%;
+            border-bottom: 1px solid @alto;
+            padding: 0 0 10px 0;
+            margin: 0 0 20px 0;
+            color: @rollingStone;
+            .language-flag {
+                float: left;
+            }
+            .language-name {
+                float: left;
+                margin-left: 10px;
+                font-size: 13px;
+            }
+            .default-language {
+                float: right;
+                font-size: 13px;
+            }
+        }
+        .verifier-grid-body {
+            border: 1px solid @alto;
+            float: left;
+            width: 100%;
+            .resx-files {
+                padding: 20px 30px;
+                .resx-file {
+                    padding: 0 0 10px 0;
+                    word-break: break-all;
+                    color: @thunder;
+                }
+            }
+            .row-opened {
+                margin-top: -1px;
+                margin-bottom: -1px;
+                border-top: 2px solid @curiousBlue;
+                border-bottom: 2px solid @curiousBlue !important;
+            }
+        }
+    }
+}

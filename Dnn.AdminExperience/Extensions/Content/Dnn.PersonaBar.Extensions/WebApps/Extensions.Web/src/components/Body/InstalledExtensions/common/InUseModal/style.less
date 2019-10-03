@@ -1,0 +1,49 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.modepanel-content-wrapper {
+    padding: 0 0 20px 0;
+    * {
+        box-sizing: border-box;
+    }
+    .modepanel-content-title {
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        width: 100%;
+    }
+    .modepanel-content-filter {
+        border-bottom: 1px solid @alto;
+        float: left;
+        width: 100%;
+        margin: 20px 0;
+    }
+    .modepanel-content-detail-wrapper {
+        .usage-detail {
+            height: 200px;
+            border: 1px solid @alto;
+            float: left;
+            width: 100%;
+            overflow-y: auto;
+            margin: 10px 0;
+            padding: 15px 20px;
+            box-sizing: border-box;    
+            .usage-detail-taburl {
+                margin-bottom: 10px;
+                a {
+                    text-decoration: none;
+                    color: @cerulean;
+                }
+            }       
+        }
+    }
+    .button-box {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+    }
+    label {
+        float: left;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+}

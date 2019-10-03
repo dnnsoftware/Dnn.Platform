@@ -1,0 +1,40 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.otherSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .dnn-ui-common-input-group {
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-switch-container {
+            float: right;
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+        .dnn-multi-line-input-with-error {
+            width: 100%;
+            .dnn-ui-common-multi-line-input  {
+                margin-bottom: 0 !important;
+            }
+        }
+        .otherSettings-row_switch {
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid @alto;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+}

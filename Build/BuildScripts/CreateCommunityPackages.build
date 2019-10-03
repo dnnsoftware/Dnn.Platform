@@ -80,7 +80,9 @@
                              $(PlatformCheckout)\Website\bin\DotNetNuke.Modules.HtmlEditorManager.dll;
                              $(PlatformCheckout)\Website\bin\DotNetNuke.Modules.Journal.dll;
                              $(PlatformCheckout)\Website\bin\DotNetNuke.Modules.MemberDirectory.dll;
-                             $(PlatformCheckout)\Website\bin\DotNetNuke.Modules.RazorHost.dll" />
+                             $(PlatformCheckout)\Website\bin\DotNetNuke.Modules.RazorHost.dll;
+                             $(PlatformCheckout)\Website\bin\Dnn.EditBar.*;
+                             $(PlatformCheckout)\Website\bin\Dnn.PersonaBar.* "/>
 
     <InstallExclude Include="@(CESourceExclude)" />
   </ItemGroup>

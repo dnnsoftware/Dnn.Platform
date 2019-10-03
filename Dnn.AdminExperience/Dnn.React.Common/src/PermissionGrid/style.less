@@ -1,0 +1,107 @@
+@import "../../styles/index";
+.permissions-grid {
+    .grid-caption {
+        border-bottom: 1px solid @alto;
+        padding: 0;
+        & > .dnn-label {
+            line-height: 38px;
+            margin-top: 35px;
+            font-weight: bold;
+            color: @bulgarianRose;
+        }
+        .title {
+            text-transform: uppercase;
+            label {
+                font-size: 12px;
+            }
+        }
+    }
+    .grid-header {
+        margin-top: 20px;
+        min-height: 40px;
+        height: auto;
+        border: 1px solid @alto;
+        font-weight: 600;
+        text-transform: uppercase;
+        .dnn-grid-cell {
+            border-left: 1px solid @alto;
+            min-height: 40px;
+            position: relative;
+            text-align: center;
+            &:first-child {
+                border-left: none;
+                padding-left: 5px;
+                text-align: center;
+            }
+            & > span {
+                display: block;
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+        }
+    }
+    .grid-row {
+        min-height: 40px;
+        border: 1px solid @alto;
+        border-top: none;
+        .dnn-grid-cell {
+            border-left: 1px solid @alto;
+            min-height: 40px;
+            text-align: center;
+            padding-top: 5px;
+            &:first-child {
+                border-left: none;
+                padding-left: 5px;
+                text-align: left;
+                text-overflow: ellipsis;
+                overflow:hidden;
+                span {
+                    display : block;
+                    text-overflow: ellipsis;
+                    overflow:hidden;
+                    white-space: nowrap;
+                }
+            }
+            & > span, & > a {
+                display: inline-block;
+                width: 100%;
+            }
+            .icon-flat, .icon-button {
+                width: 16px;
+                height: 16px;
+                svg {
+                    fill: @rollingStone;
+                    width: 16px;
+                }
+            }
+            .icon-flat.locked, .icon-button.locked {
+                svg {
+                    fill: @alto;
+                    background-color: @mercury;
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+            &.col-actions {
+                text-align: right;
+                padding-right: 20px;
+            }
+        }
+    }
+    .empty-row {
+        height: 70px;
+        line-height: 70px;
+        text-transform: uppercase;
+        border: 1px solid @alto;
+        border-top: none;
+        color: @alto;
+        font-weight: bold;
+        text-align: center;
+    }
+}

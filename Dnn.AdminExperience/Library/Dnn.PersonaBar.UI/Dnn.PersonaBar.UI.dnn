@@ -1,0 +1,181 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Dnn.PersonaBar.UI" type="Library">
+            <friendlyName>Dnn.PersonaBar.UI</friendlyName>
+            <description></description>
+            <dependencies/>
+            <owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
+            <license src="license.txt" />
+            <releaseNotes src="releaseNotes.txt" />
+            <azureCompatible>true</azureCompatible>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.PersonaBar.UI.dll</name>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>Dnn.PersonaBar.Library.dll</name>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>Images</basePath>
+                        <file>
+                            <name>icon-personabarapp-16px.png</name>
+                            <sourceFileName>Images/icon-personabarapp-16px.png</sourceFileName>
+                        </file>
+                        <file>
+                            <name>icon-personabarapp-32px.png</name>
+                            <sourceFileName>Images/icon-personabarapp-32px.png</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>Licenses</basePath>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.txt</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.txt</sourceFileName>
+                        </file>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.zip</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.zip</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer" action="update" targetpath="/configuration/system.webServer/staticContent" collision="ignore">
+                                        <staticContent>
+                                            <remove fileExtension=".svg" />
+                                            <remove fileExtension=".woff" />
+                                            <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                            <mimeMap fileExtension=".woff" mimeType="font/x-woff" />
+                                        </staticContent>
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/remove[@fileExtension='.svg']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="remove" collision="overwrite">
+                                        <remove fileExtension=".svg" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/mimeMap[@fileExtension='.svg']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
+                                        <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/remove[@fileExtension='.woff']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="remove" collision="overwrite">
+                                        <remove fileExtension=".woff" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/mimeMap[@fileExtension='.woff']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
+                                        <mimeMap fileExtension=".woff" mimeType="font/x-woff" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/modules/add[@name='PersonaBarModule']" action="remove" />
+                                    <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+                                        <add name="PersonaBarModule" type="Dnn.PersonaBar.UI.HttpModules.PersonaBarModule, Dnn.PersonaBar.UI" preCondition="managedHandler" />
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer/modules/add[@name='PersonaBarModule']" action="remove" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                        <script type="Install">
+                            <path>SqlDataProvider</path>
+                            <name>Install.SqlDataProvider</name>
+                            <version>01.00.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>SqlDataProvider</path>
+                            <name>01.01.00.SqlDataProvider</name>
+                            <version>01.01.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>SqlDataProvider</path>
+                            <name>01.03.00.SqlDataProvider</name>
+                            <version>01.03.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>SqlDataProvider</path>
+                            <name>01.04.00.SqlDataProvider</name>
+                            <version>01.04.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>SqlDataProvider</path>
+                            <name>01.05.00.SqlDataProvider</name>
+                            <version>01.05.00</version>
+                        </script>
+                      <script type="Install">
+                        <path>SqlDataProvider</path>
+                        <name>09.04.01.SqlDataProvider</name>
+                        <version>09.04.01</version>
+                      </script>
+                        <script type="UnInstall">
+                            <path>SqlDataProvider</path>
+                            <name>Uninstall.SqlDataProvider</name>
+                            <version>09.04.01</version>
+                        </script>
+                    </scripts>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                        <file>
+                            <name>01.03.00.txt</name>
+                            <sourceFileName>01.03.00.txt</sourceFileName>
+                        </file>
+                    </files>
+                </component>
+                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
+              <component type="File">
+                <files>
+                  <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
+                  <file>
+                    <name>03.00.00.txt</name>
+                    <sourceFileName>03.00.00.txt</sourceFileName>
+                  </file>
+                </files>
+              </component>
+              <component type="Cleanup" version="03.00.00" fileName ="03.00.00.txt" />
+            </components>
+            <eventMessage>
+                <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                <processorCommand>UpgradeModule</processorCommand>
+                <attributes>
+                    <businessControllerClass>Dnn.PersonaBar.UI.Components.BusinessController, Dnn.PersonaBar.UI</businessControllerClass>
+                    <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                    <upgradeVersionsList>01.00.00,01.04.00,03.00.00</upgradeVersionsList>
+                </attributes>
+            </eventMessage>
+        </package>
+    </packages>
+</dotnetnuke>
