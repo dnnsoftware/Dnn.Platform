@@ -340,7 +340,7 @@
     <value>Ajout de la version lors de l'installation</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Voir le tutoriel vidéo dédié à l’installation&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Voir le tutoriel vidéo dédié à l’installation&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>"Object Qualifier" doit commencer par une lettre et ne pas dépasser les 20 caractères.</value>
