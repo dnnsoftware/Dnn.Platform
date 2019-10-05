@@ -22,7 +22,7 @@ The version you are building is the current version on the branch you are. Howev
 [Dnn.ClientDependency](https://github.com/dnnsoftware/ClientDependency), the default branch is dnn
 Under normal situations they are the branches used for the next release, however if you have a need to specify a different branch to pull during the build you can specify them as such:
 ```
-.\build.ps1-ScriptArgs '--CkBranch="branch-name"','--CdfBranch="branch-name"'
+.\build.ps1 -ScriptArgs '--CkBranch="branch-name"','--CdfBranch="branch-name"'
 ```
 
 If you encounter any build issues, please re-run the build with more verbosity as such:
