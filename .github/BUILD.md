@@ -18,7 +18,7 @@ To build the whole project and create the install/upgrade packages simply open p
 ```
 
 The version you are building is the current version on the branch you are. However there are 2 external repositories that get bundled into Dnn build:
-[Dnn.Connect CKEditor provider](https://github.com/DNN-Connect/CKEditorProvider) is the default html editor provider and it's default branch is development.
+[Dnn.Connect CKEditor provider](https://github.com/DNN-Connect/CKEditorProvider) is the default HTML editor provider and its default branch is development.
 [Dnn.ClientDependency](https://github.com/dnnsoftware/ClientDependency), the default branch is dnn
 Under normal situations they are the branches used for the next release, however if you have a need to specify a different branch to pull during the build you can specify them as such:
 ```
