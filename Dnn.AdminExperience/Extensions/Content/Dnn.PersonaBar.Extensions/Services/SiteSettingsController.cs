@@ -247,9 +247,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.PortalName = request.PortalName;
 
-                if (request.LogoFile != null && request.LogoFile.fileId != Null.NullInteger)
+                if (request.LogoFile != null && request.LogoFile.fileId != Null.NullInteger && !String.IsNullOrEmpty(request.LogoFile.fileName))
                 {
                     portalInfo.LogoFile = FileManager.Instance.GetFile(request.LogoFile.fileId).RelativePath;
+                }
+                else // Set LogoFile to blank when no file is specified.
+                {
+                    portalInfo.LogoFile = string.Empty;
                 }
 
                 portalInfo.FooterText = request.FooterText;
