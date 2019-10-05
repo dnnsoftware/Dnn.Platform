@@ -370,7 +370,7 @@ Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
     <value>Añadiendo versión de instalación</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Ver el vídeo de instalación&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Ver el vídeo de instalación&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>El prefijo de objetos tiene que empezar con una letra y no puede tener más de 20 caracteres.</value>

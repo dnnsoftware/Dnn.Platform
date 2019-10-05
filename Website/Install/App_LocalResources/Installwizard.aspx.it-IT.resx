@@ -340,7 +340,7 @@
     <value>Aggiungi InstallVersion</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Vedi Video Installazione&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Vedi Video Installazione&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>Qualificatore di oggetto (ObjectQualifier) deve iniziare con una lettera e non essere più lungo di 20 caratteri.</value>

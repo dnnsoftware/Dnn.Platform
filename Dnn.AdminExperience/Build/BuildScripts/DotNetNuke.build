@@ -85,22 +85,22 @@
     <!--Update Default Template with Version-->
     <Attrib Files="$(PlatformCheckout)\DNN Platform\Library\Templates\Default Website.template" ReadOnly="false"/>
     <FileUpdate Files="$(PlatformCheckout)\DNN Platform\Library\Templates\Default Website.template"
-                Regex="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx\?V=........"
-                ReplacementText="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
+                Regex="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx\?V=........"
+                ReplacementText="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
     <Attrib Files="$(PlatformCheckout)\DNN Platform\Library\Templates\Default Website.template" ReadOnly="true"/>
 
     <!--Update Default Template with Version-->
     <!--<Attrib Files="$(checkoutDirectory)\Evoq Platform\Library\Templates\Default Website.template" ReadOnly="false"/>
     <FileUpdate Files="$(checkoutDirectory)\Evoq Platform\Library\Templates\Default Website.template"
-                Regex="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx\?V=........"
-                ReplacementText="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
+                Regex="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx\?V=........"
+                ReplacementText="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
     <Attrib Files="$(checkoutDirectory)\Evoq Platform\Library\Templates\Default Website.template" ReadOnly="true"/>-->
 
     <!--Update Default Template with Version-->
     <!--<Attrib Files="$(checkoutDirectory)\Evoq Enterprise\Library\Templates\Default Website.template" ReadOnly="false"/>
     <FileUpdate Files="$(checkoutDirectory)\Evoq Enterprise\Library\Templates\Default Website.template"
-                Regex="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx\?V=........"
-                ReplacementText="http://www.dotnetnuke.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
+                Regex="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx\?V=........"
+                ReplacementText="https://www.dnnsoftware.com/Resources/Video-Library/Introduction.aspx?V=$(FormattedBuildVersion)" />
     <Attrib Files="$(checkoutDirectory)\Evoq Enterprise\Library\Templates\Default Website.template" ReadOnly="true"/>-->
 
     <Copy SourceFiles="$(PlatformCheckout)\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFiles="$(PlatformCheckout)\Website\bin\Telerik.Web.UI.dll" />
