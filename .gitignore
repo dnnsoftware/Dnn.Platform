@@ -85,6 +85,7 @@ UpgradeLog*.XML
 
 # Ignore temporary artifacts
 [Tt]emp/
+/[Ww]ebsite/
 DNN_*.zip
 !DNN [Pp]latform/[Cc]omponents
 !DNN [Pp]latform/[Cc]ontrols
