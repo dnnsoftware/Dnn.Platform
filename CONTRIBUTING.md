@@ -28,7 +28,7 @@ If this is your first time working with Dnn:Platform. You will need to fork the 
 ## Making Changes
 
 * Create a topic branch from where you want to base your work.
-  * This is usually the 'development' branch.
+  * This is usually the 'development' branch. 
   * Release branches should only be targeted in special cases and with approval from the approver group.
   * To quickly create a topic branch based on development; `git checkout -b my_contribution development`
 * Make commits of logical units.
@@ -74,7 +74,8 @@ a ticket number.
     The first line is a real-life imperative statement with '(doc)' in place of what would have been the ticket number in a non-documentation related commit. The body describes the nature of the new documentation or comments added.
 ````
 
-## Submitting Changes
+# Submitting & Process of Pull Requests
+
 Once your change is completed you will want to follow the [Pull Request Process](https://github.com/dnnsoftware/Dnn.Platform/blob/development/.github/PULL_REQUEST_PROCESS.md) to submit your changes for review & inclusion in the next release.
 
 # Additional Resources
