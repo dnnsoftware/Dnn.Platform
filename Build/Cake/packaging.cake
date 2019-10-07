@@ -9,9 +9,17 @@ public class PackagingPatterns {
 PackagingPatterns packagingPatterns;
 
 Task("PreparePackaging")
+	.IsDependentOn("CopyWebsite")
     .Does(() =>
 	{
         packagingPatterns = Newtonsoft.Json.JsonConvert.DeserializeObject<PackagingPatterns>(Utilities.ReadFile("./Build/Cake/packaging.json"));
+	});
+
+Task("CopyWebsite")
+	.IsDependentOn("CleanWebsite")
+    .Does(() =>
+	{
+		CopyFiles(GetFiles("./DNN Platform/Website/**/*"), websiteFolder, true);
 	});
 
 Task("CreateInstall")
