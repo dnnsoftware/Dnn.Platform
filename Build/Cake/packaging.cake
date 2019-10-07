@@ -14,9 +14,14 @@ Task("PreparePackaging")
 	.IsDependentOn("CopyWebsite")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("CopyWebConfig")
+	.IsDependentOn("CopyWebsiteBinFolder")
     .Does(() =>
 	{
         packagingPatterns = Newtonsoft.Json.JsonConvert.DeserializeObject<PackagingPatterns>(Utilities.ReadFile("./Build/Cake/packaging.json"));
+		// Various fixes
+		CopyFile("./DNN Platform/Components/DataAccessBlock/bin/Microsoft.ApplicationBlocks.Data.dll", websiteFolder + "bin/Microsoft.ApplicationBlocks.Data.dll");
+		CopyFiles("./DNN Platform/Components/Lucene.Net.Contrib/bin/Lucene.Net.Contrib.Analyzers.*", websiteFolder + "bin/");
+		CopyFile("./DNN Platform/Library/bin/PetaPoco.dll", websiteFolder + "bin/PetaPoco.dll");
 	});
 
 Task("CopyWebsite")
@@ -24,6 +29,12 @@ Task("CopyWebsite")
     .Does(() =>
 	{
 		CopyFiles(GetFiles("./DNN Platform/Website/**/*"), websiteFolder, true);
+	});
+
+Task("CopyWebsiteBinFolder")
+    .Does(() =>
+	{
+		CopyFiles(GetFiles("./DNN Platform/Website/bin/**/*"), websiteFolder + "bin/", true);
 	});
 
 Task("CopyWebConfig")

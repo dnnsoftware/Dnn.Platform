@@ -1,5 +1,5 @@
 Task("CreateNugetPackages")
-	.IsDependentOn("CompileSource")
+	.IsDependentOn("PreparePackaging")
 	.Does(() =>
 	{
 		//look for solutions and start building them
