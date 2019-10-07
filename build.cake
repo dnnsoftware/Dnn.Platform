@@ -12,6 +12,7 @@
 #load "local:?path=Build/Cake/create-database.cake"
 #load "local:?path=Build/Cake/unit-tests.cake"
 #load "local:?path=Build/Cake/packaging.cake"
+#load "local:?path=Build/Cake/other.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -104,6 +105,8 @@ Task("Test")
     .IsDependentOn("CleanArtifacts")
 	.IsDependentOn("BackupManifests")
 	.IsDependentOn("CompileSource")
+	.IsDependentOn("ExternalExtensions")
+	.IsDependentOn("CreateInstall")
 	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{

@@ -1,3 +1,5 @@
+// Packaging of 3rd party stuff that is not in our repository
+
 Task("ExternalExtensions")
 .IsDependentOn("CleanTemp")
 .IsDependentOn("CKEP")

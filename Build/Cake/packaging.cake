@@ -25,6 +25,7 @@ Task("CopyWebsite")
 Task("CreateInstall")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("PreparePackaging")
+	.IsDependentOn("OtherPackages")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
