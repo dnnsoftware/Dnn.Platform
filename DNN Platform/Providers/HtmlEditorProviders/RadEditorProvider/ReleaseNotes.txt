@@ -1,7 +1,7 @@
 <h3>RadEditor Provider 6.0.0</h3>
 <p class="Contributor">
 	Philipp Becker (dnnWerk) <br />
-	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+	<a href=https://www.dnnsoftware.com>https://www.dnnsoftware.com</a><br />
 </p>
 <hr/>
 <div class="License">
