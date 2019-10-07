@@ -1,0 +1,120 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.languageSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+        .languageSettings-row_switch {
+            .dnn-label.inline {
+                label {
+                    max-width: 220px;
+                }
+            }
+            .dnn-switch-container {
+                float: right;
+            }
+        }
+        .dnn-radio-buttons {
+            li {
+                width: 40% !important;
+                margin: 15px 0 0 0 !important;
+            }
+        }
+        .dnn-dropdown {
+            .collapsible-label {
+                .language-name {
+                    width: 240px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+            li {
+                float: left;
+                width: 100%;
+            }
+        }
+        .default-language {
+            cursor: not-allowed;
+            float: left;
+            width: 100%;
+            background: @mercury;
+            border: @mercury;
+            .language-container {
+                float: left;
+                padding: 8px 15px;
+                box-sizing: border-box;
+            }
+        }
+        .language-flag {
+            float: left;
+            height: 18px;
+        }
+        .language-name {
+            float: left;
+            margin-left: 10px;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 0 0 30px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .buttons-box-alter {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 0 0 30px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .sectionTitle {
+        font-weight: bolder;
+        float: left;
+        width: 100%;
+        padding: 30px 0 15px 0;
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 100%;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+    .collapsible-button {
+        text-align: center;
+        background: @gallery;
+        transition: .18s;
+        max-height: 0px;
+        margin-bottom: 30px;
+        overflow: hidden;
+        clear: both;
+        &.open {
+            max-height: 80px;
+            float: left;
+            width: 100%;
+        }
+        button {
+            margin: 20px;
+        }
+    }
+}

@@ -1,0 +1,94 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.create-language-pack-panel {
+    &.dnn-persona-bar-page-body {
+        .persona-bar-page-body {
+            background-color: #fff;
+            .languagePack-wrapper {
+                padding: 30px;
+                .seperator {
+                    border-bottom: 1px solid @alto;
+                    float: left;
+                    width: 100%;
+                    padding: 10px 0 20px 0;
+                    padding: 0 0 10px 0;
+                    margin: 0 0 20px 0;
+                }
+                .dnn-ui-common-input-group {
+                    padding: 0 0 15px 0;
+                    label {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    .dnn-label {
+                        width: auto;
+                    }
+                    .dnn-single-line-input-with-error {
+                        width: 150px;
+                        margin-top: 10px;
+                        float: left;
+                    }
+                    .dnn-switch-container {
+                        float: right;
+                    }
+                    .dnn-dropdown {
+                        width: 100%;
+                        box-sizing: border-box;
+                        .language-flag {
+                            float: left;
+                            height: 16px;
+                        }
+                        .language-name {
+                            float: left;
+                            margin-left: 10px;
+                        }
+                    }
+                    .dnn-radio-buttons {
+                        float: right;
+                        width: auto;
+                        li {
+                            width: auto !important;
+                            margin: 0 20px 0 0 !important;
+                        }
+                    }
+                    .name-prefix {
+                        float: left;
+                        margin: 20px 10px 20px 0;
+                    }
+                    .name-suffix {
+                        float: left;
+                        margin: 20px 10px;
+                    }
+                    .moduleSelection {
+                        height: 400px;
+                        border: 1px solid @alto;
+                        float: left;
+                        width: 100%;
+                        overflow-y: auto;
+                        margin: 10px 0;
+                        padding: 15px 30px;
+                        box-sizing: border-box;
+                        .languagePack-module {
+                            float: left;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+                .buttons-box {
+                    width: 100%;
+                    float: left;
+                    text-align: center;
+                    margin: 0 0 30px 0;
+                    .dnn-ui-common-button {
+                        margin: 5px;
+                    }
+                }
+            }
+        }
+    }
+    .dnn-workspace-tray {
+        border: none;
+        margin-bottom: 0;
+        height: 34px;
+    }
+}

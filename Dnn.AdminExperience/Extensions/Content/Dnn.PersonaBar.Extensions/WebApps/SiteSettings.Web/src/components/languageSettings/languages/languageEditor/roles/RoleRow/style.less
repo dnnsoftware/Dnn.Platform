@@ -1,0 +1,48 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.language-roles-list-container {
+    .collapsible-component-language-roles {
+        display: table;
+        width: 100%;
+        border-bottom: 1px solid @alto;
+        cursor: auto;
+        div.collapsible-header-language-roles {
+            color: @rollingStone;
+            width: 100%;
+            float: left;
+            position: relative;
+            padding: 15px 20px;
+            box-sizing: border-box;
+            cursor: auto;
+            &.false {
+                background-color: @alabaster;
+            }
+            .edit-icon {
+                margin-left: 5px;
+                float: right;
+                cursor: pointer;
+                svg {
+                    width: 16px;
+                    float: left;
+                    height: 16px;
+                }
+                &.false {
+                    svg {
+                        fill: @curiousBlue;
+                    }
+                    svg:hover {
+                        fill: @thunder;
+                    }
+                }
+            }
+            .icon-flat {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                vertical-align: middle;
+                svg {
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+}

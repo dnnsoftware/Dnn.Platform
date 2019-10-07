@@ -2,7 +2,7 @@
 #addin nuget:?package=Cake.FileHelpers&version=3.2.0
 #addin nuget:?package=Cake.Powershell&version=0.4.8
 
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
@@ -21,7 +21,6 @@ var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.buil
 
 var targetBranchCk = Argument("CkBranch", "development");
 var targetBranchCdf = Argument("CdfBranch", "dnn");
-var targetBranchCp = Argument("CpBranch", "development");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -65,10 +64,8 @@ Task("Restore-NuGet-Packages")
 Task("Build")
     .IsDependentOn("CleanArtifacts")
 	.IsDependentOn("CompileSource")
-    
     .Does(() =>
 	{
-
 	});
     
 Task("BuildWithDatabase")
@@ -81,7 +78,6 @@ Task("BuildWithDatabase")
     .IsDependentOn("CreateDatabase")
     .Does(() =>
 	{
-
 	});
     
 Task("BuildInstallUpgradeOnly")
@@ -91,7 +87,6 @@ Task("BuildInstallUpgradeOnly")
 	.IsDependentOn("CreateUpgrade")
     .Does(() =>
 	{
-
 	});
 
 Task("BuildAll")
@@ -107,7 +102,6 @@ Task("BuildAll")
 	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
-
 	});
 
 Task("BackupManifests")
@@ -227,32 +221,20 @@ Task("ExternalExtensions")
 .IsDependentOn("Clean")
     .Does(() =>
 	{
-        Information("CK:'{0}', CDF:'{1}', CP:'{2}'", targetBranchCk, targetBranchCdf, targetBranchCp);
-
-    
+        Information("CK:'{0}', CDF:'{1}'", targetBranchCk, targetBranchCdf);
 		Information("Downloading External Extensions to {0}", buildDirFullPath);
 
-        
-        
 		//ck
 		DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/" + targetBranchCk + ".zip", buildDirFullPath + "ckeditor.zip");
 	
 		//cdf
 		DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/" + targetBranchCdf + ".zip", buildDirFullPath + "clientdependency.zip");
 
-		//pb
-        Information("Downloading: {0}", "https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip");
-		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.zip");
-
 		Information("Decompressing: {0}", "CK Editor");
 		Unzip(buildDirFullPath + "ckeditor.zip", buildDirFullPath + "Providers/");
 
 		Information("Decompressing: {0}", "CDF");
 		Unzip(buildDirFullPath + "clientdependency.zip", buildDirFullPath + "Modules");
-	
-		Information("Decompressing: {0}", "Admin Experience");
-		Unzip(buildDirFullPath + "Dnn.AdminExperience.zip", tempDir);
-
 
 		//look for solutions and start building them
 		var externalSolutions = GetFiles("./src/**/*.sln");
@@ -277,7 +259,6 @@ Task("ExternalExtensions")
 			Information("Starting to Build: {0}", solutionPath);
 			MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 		}
-
 
 		externalSolutions = GetFiles("./" + tempDir.ToString() + "/**/*.sln");
 
@@ -331,7 +312,7 @@ Task("Run-Unit-Tests")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("BuildAll");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

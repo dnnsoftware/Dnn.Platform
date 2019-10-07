@@ -1,0 +1,23 @@
+@import "../../styles/index";
+.dnn-ui-common-single-line-input {
+    background-color: @white;
+    border: 1px solid @mountainMist;
+    padding: 8px;
+    box-sizing: border-box;
+    color: @bulgarianRose;
+    &.large {
+        padding: 13px 8px;
+    }
+    &:focus {
+        border: 1px solid @curiousBlue;
+        outline: none;
+    }
+    &:disabled {
+        background: @mercury;
+        border-color: @mercury;
+    }
+}
+
+::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder {
+    color: @alto;
+}

@@ -1,0 +1,74 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.newExtensionModal) {
+    box-sizing: border-box;
+    margin-top: 10px;
+    .new-user-box {
+        width: 100%;
+        background-color: white;
+        padding: 10px 0;
+        .box-title {
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .dnn-grid-system.with-right-border {
+            &.bottom-half {
+                padding-top: 25px;
+            }
+            &.top-half {
+                //padding-bottom: 25px;
+            }
+            .dnn-grid-cell:first-child {
+                //border-right: 1px solid @alto;
+            }
+            .dnn-switch-container {
+                //margin-top: 25px;
+            }
+        }
+        .dnn-switch-container {
+            width: 100%;
+            .dnn-switch {
+                float: right;
+            }
+        }
+        .dnn-single-line-input-with-error {
+            .__react_component_tooltip {
+                max-width: 200px;
+            }
+        }
+        .dnn-grid-cell {
+            padding: 10px 15px;
+            box-sizing: border-box;
+            > hr {
+                border: none;
+                height: 1px;
+                color: @alto;
+                background-color: @alto;
+            }
+            .version-dropdown {
+                width: 31.1%;
+                box-sizing: border-box;
+                margin-right: 10px;
+                vertical-align: bottom;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            &.modal-footer {
+                text-align: center;
+                button {
+                    min-width: 100px;
+                    margin-right: 10px;
+                }
+            }
+        }
+        //border: 1px solid @alto;
+        .email-notification-line {
+            .dnn-checkbox-container {
+                &.right {
+                    float: none;
+                }
+            }
+            text-align: center;
+        }
+    }
+}

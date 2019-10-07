@@ -13,7 +13,11 @@ Task("GitVersion")
     version = GitVersion(new GitVersionSettings {
         UpdateAssemblyInfo = true,
         UpdateAssemblyInfoFilePath = @"SolutionInfo.cs"
-    });        
+    });
+    Information("AssemblySemFileVer : " + version.AssemblySemFileVer);
+    Information("Manifests Version String : " + $"{version.Major.ToString("00")}.{version.Minor.ToString("00")}.{version.Patch.ToString("00")}");
+    Information("The full sevVer is : " + version.FullSemVer);
+    Information("The build Id is : " + buildId);
 });
 
 Task("UpdateDnnManifests")

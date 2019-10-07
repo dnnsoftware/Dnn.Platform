@@ -1,0 +1,89 @@
+@import "../../less/style.less";
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.translate-page-content {
+    .persona-bar-page-body {
+        background-color: transparent;
+        border: none;
+    }
+    .top-block {
+        border: 1px solid @curiousBlue;
+        margin-bottom: 20px;
+        background: white;
+        padding: 20px;
+        .button-block {
+            button.dnn-ui-common-button {
+                padding: 0 14px;
+            }
+        }
+    }
+    img {
+        margin-right: 10px;
+    }
+    .language-block {
+        padding-bottom: 20px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid @alto;
+    }
+    .activate-pages-switch {
+        label {
+            float: left;
+        }
+    }
+    button {
+        margin-right: 5px;
+    }
+    .list-header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid @alto;
+        span {
+            font-weight: 600;
+            text-transform: uppercase;
+            & > span {
+                color: @curiousBlue;
+            }
+            em {
+                font-style: normal;
+                font-size: 20px;
+                line-height: 10px;
+                line-height: 17px;
+                float: left;
+                margin-right: 6px;
+            }
+        }
+        .float-right {
+            cursor: pointer;
+        }
+    }
+    .button-block {
+        margin-top: 6px;
+    }
+    .float-right {
+        float: right;
+    }
+    .float-left {
+        float: left;
+    }
+}
+
+.language-settings-page-list {
+    .page-list {
+        border: 1px solid @alto;
+        background: white;
+        .page-list-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid @alto;
+            &:last-of-type {
+                border-bottom: none;
+            }
+            a, a:visited, a:active, a:hover {
+                color: @curiousBlue !important;
+                font-weight: 600;
+                margin-left: 10px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+ @import "~@dnnsoftware/dnn-react-common/styles/index";
+ :local(.pageListBody) {
+    padding: 0;
+    margin-top: 103px;
+
+    .normalPanel {
+        background-color: initial;
+        border: none;
+        .searchpanel {
+            background-color: initial;
+            border: none;
+        }
+    }
+
+    .search-container {
+        float: left;    
+        margin: 0 30px 15px 30px;
+        width: ~"calc(100% - 60px)";
+        border-bottom: 1px solid #c8c8c8;        
+        padding: 15px 0;
+    }
+
+    .search-filter {
+        float: left;
+        width: 100%;
+        > div {
+            display: block !important;
+            border-left: 1px solid @alto;
+            input {
+                display: block;
+                width: 100%;
+                position: inherit !important;
+                border: none;
+                border-radius: none;
+                background-color: transparent;
+                outline: none;
+                padding-right: 45px;
+            }
+        }
+    }
+}
