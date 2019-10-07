@@ -2,13 +2,16 @@
 #addin nuget:?package=Cake.FileHelpers&version=3.2.0
 #addin nuget:?package=Cake.Powershell&version=0.4.8
 
+#addin nuget:?package=Dnn.CakeUtils
 #tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
+#load "local:?path=Build/Cake/external.cake"
 #load "local:?path=Build/Cake/version.cake"
 #load "local:?path=Build/Cake/create-database.cake"
 #load "local:?path=Build/Cake/unit-tests.cake"
+#load "local:?path=Build/Cake/packaging.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
