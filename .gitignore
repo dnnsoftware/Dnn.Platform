@@ -63,7 +63,6 @@ Artifacts/
 _ReSharper*
 
 # Others
-
 [Oo]bj
 TestResults
 *.Cache
@@ -72,6 +71,10 @@ stylecop.*
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
+
+# OS artifacts
+Thumbs.db
+Desktop.ini
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
@@ -84,7 +87,7 @@ UpgradeLog*.XML
 ############
 
 # Ignore temporary artifacts
-[Tt]emp/
+/[Tt]emp/
 /[Ww]ebsite/
 DNN_*.zip
 !DNN [Pp]latform/[Cc]omponents
@@ -118,14 +121,7 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 !DNN Platform/[Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.it-IT.resx
 !DNN Platform/[Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.nl-NL.resx
 
+# Add fips back
+!DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
+
 *.zip.manifest
-
-############
-## Windows
-############
-
-# Windows image file caches
-Thumbs.db
-
-# Folder config file
-Desktop.ini
