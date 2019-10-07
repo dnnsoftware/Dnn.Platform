@@ -24,7 +24,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Api;
 using Moq;
