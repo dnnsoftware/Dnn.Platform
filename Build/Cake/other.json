@@ -3,7 +3,8 @@
     "name": "Telerik",
     "folder": "DNN Platform/Components/Telerik/",
     "destination": "Install/Module",
-    "version": "auto"
+    "version": "auto",
+    "excludes": ["**/*.xml"]
   },
   {
     "name": "jQuery",

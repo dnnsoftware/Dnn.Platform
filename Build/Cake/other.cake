@@ -13,12 +13,21 @@ public class OtherPackage {
 
 Task("OtherPackages")
     .IsDependentOn("UpdateDnnManifests")
+    .IsDependentOn("Newtonsoft")
     .Does(() =>
 	{
         List<OtherPackage> otherPackages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<OtherPackage>>(Utilities.ReadFile("./Build/Cake/other.json"));
         foreach (var op in otherPackages) {
             PackageOtherPackage(op);
         }
+	});
+
+Task("Newtonsoft")
+    .Does(() =>
+	{
+    	var packageZip = string.Format("{0}Install/Module/Newtonsoft.Json_10.00.03_Install.zip", websiteFolder);
+    	Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "DNN Platform/Components/Newtonsoft", GetFiles("DNN Platform/Components/Newtonsoft/*"), false);
+    	Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "Website", GetFiles("Website/bin/Newtonsoft.Json.dll"), true);
 	});
 
 private void PackageOtherPackage(OtherPackage package) {
