@@ -10,6 +10,8 @@ PackagingPatterns packagingPatterns;
 
 Task("PreparePackaging")
 	.IsDependentOn("CopyWebsite")
+	.IsDependentOn("CompileSource")
+	.IsDependentOn("CopyWebConfig")
     .Does(() =>
 	{
         packagingPatterns = Newtonsoft.Json.JsonConvert.DeserializeObject<PackagingPatterns>(Utilities.ReadFile("./Build/Cake/packaging.json"));
@@ -22,10 +24,16 @@ Task("CopyWebsite")
 		CopyFiles(GetFiles("./DNN Platform/Website/**/*"), websiteFolder, true);
 	});
 
+Task("CopyWebConfig")
+    .Does(() =>
+	{
+		CopyFile(websiteFolder + "release.config", websiteFolder + "web.config");
+	});
+
 Task("CreateInstall")
-	.IsDependentOn("CompileSource")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
+	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
@@ -37,19 +45,22 @@ Task("CreateInstall")
 	});
 
 Task("CreateUpgrade")
-	.IsDependentOn("CompileSource")
+	.IsDependentOn("PreparePackaging")
+	.IsDependentOn("OtherPackages")
 	.Does(() =>
 	{
 	});
     
 Task("CreateSymbols")
-	.IsDependentOn("CompileSource")
+	.IsDependentOn("PreparePackaging")
+	.IsDependentOn("OtherPackages")
 	.Does(() =>
 	{
 	});
 
 Task("CreateDeploy")
-	.IsDependentOn("CompileSource")
+	.IsDependentOn("PreparePackaging")
+	.IsDependentOn("OtherPackages")
 	.Does(() =>
 	{
 	});

@@ -7,12 +7,15 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-#load "local:?path=Build/Cake/external.cake"
-#load "local:?path=Build/Cake/version.cake"
+#load "local:?path=Build/Cake/compiling.cake"
 #load "local:?path=Build/Cake/create-database.cake"
-#load "local:?path=Build/Cake/unit-tests.cake"
-#load "local:?path=Build/Cake/packaging.cake"
+#load "local:?path=Build/Cake/external.cake"
+#load "local:?path=Build/Cake/nuget.cake"
 #load "local:?path=Build/Cake/other.cake"
+#load "local:?path=Build/Cake/packaging.cake"
+#load "local:?path=Build/Cake/testing.cake"
+#load "local:?path=Build/Cake/unit-tests.cake"
+#load "local:?path=Build/Cake/version.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -101,17 +104,6 @@ Task("BuildInstallUpgradeOnly")
 	{
 	});
 
-Task("Test")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("BackupManifests")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("ExternalExtensions")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("RestoreManifests")
-    .Does(() =>
-	{
-	});
-
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
 	.IsDependentOn("BackupManifests")
@@ -137,129 +129,6 @@ Task("RestoreManifests")
 		DeleteFiles(manifestFiles);
 		Unzip("./manifestsBackup.zip", "./");
 		DeleteFiles("./manifestsBackup.zip");
-	});
-
-Task("CompileSource")
-    .IsDependentOn("CleanWebsite")
-    .IsDependentOn("UpdateDnnManifests")
-	.IsDependentOn("Restore-NuGet-Packages")
-	.Does(() =>
-	{
-		MSBuild(dnnSolutionPath, settings => settings.WithTarget("Clean"));
-		MSBuild(dnnSolutionPath, buildSettings);
-	});
-
-/*
-Task("CompileSource")
-    .IsDependentOn("CleanWebsite")
-    .IsDependentOn("UpdateDnnManifests")
-	.IsDependentOn("Restore-NuGet-Packages")
-	.Does(() =>
-	{
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CompileSource");
-		});
-	});
-
-Task("CreateInstall")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateInstall");
-		});
-	});
-
-Task("CreateUpgrade")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateUpgrade");
-		});
-	});
-    
-Task("CreateSymbols")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateSymbols");
-		});
-	});
-
-Task("CreateDeploy")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-		
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateDeploy");
-		});
-	});
-*/
-
-Task("CreateNugetPackages")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		//look for solutions and start building them
-		var nuspecFiles = GetFiles("./Build/Tools/NuGet/DotNetNuke.*.nuspec");
-	
-		Information("Found {0} nuspec files.", nuspecFiles.Count);
-
-		//basic nuget package configuration
-		var nuGetPackSettings = new NuGetPackSettings
-		{
-			Version = GetBuildNumber(),
-			OutputDirectory = @"./Artifacts/",
-			IncludeReferencedProjects = true,
-			Properties = new Dictionary<string, string>
-			{
-				{ "Configuration", "Release" }
-			}
-		};
-	
-		//loop through each nuspec file and create the package
-		foreach (var spec in nuspecFiles){
-			var specPath = spec.ToString();
-
-			Information("Starting to pack: {0}", specPath);
-			NuGetPack(specPath, nuGetPackSettings);
-		}
-
-
-	});
-
-Task("Run-Unit-Tests")
-    .IsDependentOn("CompileSource")
-    .Does(() =>
-	{
-		NUnit3("./src/**/bin/" + configuration + "/*.Test*.dll", new NUnit3Settings {
-			NoResults = false
-			});
 	});
 
 //////////////////////////////////////////////////////////////////////
