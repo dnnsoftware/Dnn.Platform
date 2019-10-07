@@ -4,6 +4,8 @@ public class PackagingPatterns {
     public string[] installExclude {get; set;}
     public string[] installInclude {get; set;}
     public string[] upgradeExclude {get; set;}
+    public string[] symbolsInclude {get; set;}
+    public string[] symbolsExclude {get; set;}
 }
 
 PackagingPatterns packagingPatterns;
@@ -82,6 +84,15 @@ Task("CreateDeploy")
 Task("CreateSymbols")
 	.IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
+	.IsDependentOn("ExternalExtensions")
 	.Does(() =>
 	{
+        CreateDirectory(artifactsFolder);
+        var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Symbols.zip", GetProductVersion());
+        Zip("./Build/Symbols/", packageZip, GetFiles("./Build/Symbols/*"));
+		// Fix for WebUtility symbols missing from bin folder
+		CopyFiles(GetFiles("./DNN Platform/DotNetNuke.WebUtility/bin/DotNetNuke.WebUtility.*"), websiteFolder + "bin/");
+        var files = GetFilesByPatterns(websiteFolder, packagingPatterns.symbolsInclude, packagingPatterns.symbolsExclude);
+		var resFile = Dnn.CakeUtils.Compression.ZipToBytes(websiteFolder.TrimEnd('/'), files);
+		Dnn.CakeUtils.Compression.AddBinaryFileToZip(packageZip, resFile, "Resources.zip", true);
 	});

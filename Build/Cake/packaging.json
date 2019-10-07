@@ -36,5 +36,20 @@
     "/bin/Newtonsoft.Json.dll",
     "/Config/DotNetNuke.config",
     "/Install/InstallWizard.aspx"
+  ],
+  "symbolsInclude": [
+    "/bin/*.pdb",
+    "/bin/*.xml",
+    "/bin/Providers/*.pdb",
+    "/bin/Providers/*.xml"
+  ],
+  "symbolsExclude": [
+    "/bin/DotNetNuke.log4net*",
+    "/bin/HtmlAgilityPack*",
+    "/bin/Lucene*",
+    "/bin/Newtonsoft*",
+    "/bin/SchwabenCode*",
+    "/bin/System*",
+    "/bin/WebFormsMvp*"
   ]
 }
