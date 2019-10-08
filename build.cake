@@ -37,14 +37,6 @@ var artifactsDir = Directory(artifactsFolder);
 var websiteFolder = "./Website/";
 var websiteDir = Directory(websiteFolder);
 
-// Main solution
-var dnnSolutionPath = "./DNN_Platform.sln";
-var buildSettings = new MSBuildSettings()
-.SetConfiguration(configuration)
-.UseToolVersion(MSBuildToolVersion.VS2017)
-.SetPlatformTarget(PlatformTarget.MSIL)
-.WithTarget("Build");
-
 // Define versioned files (manifests) to backup and revert on build
 var manifestFiles = GetFiles("./**/*.dnn");
 manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
@@ -69,12 +61,6 @@ Task("CleanArtifacts")
     .Does(() =>
 	{
 		CleanDirectory(artifactsDir);
-	});
-
-Task("Restore-NuGet-Packages")
-    .Does(() =>
-	{
-		NuGetRestore("./DNN_Platform.sln");
 	});
 
 Task("Build")
