@@ -24,9 +24,13 @@ Task("OtherPackages")
 Task("Newtonsoft")
     .Does(() =>
 	{
-    	var packageZip = string.Format("{0}Install/Module/Newtonsoft.Json_10.00.03_Install.zip", websiteFolder);
-    	Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "DNN Platform/Components/Newtonsoft", GetFiles("DNN Platform/Components/Newtonsoft/*"), false);
-    	Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "Website", GetFiles("Website/bin/Newtonsoft.Json.dll"), true);
+        var version = "00.00.00";
+        foreach (var assy in GetFiles(websiteFolder + "bin/Newtonsoft.Json.dll")) {
+            version = System.Diagnostics.FileVersionInfo.GetVersionInfo(assy.FullPath).FileVersion;
+        }
+    	var packageZip = string.Format("{0}Install/Module/Newtonsoft.Json_{1}_Install.zip", websiteFolder, version);
+        Zip("./DNN Platform/Components/Newtonsoft", packageZip, GetFiles("./DNN Platform/Components/Newtonsoft/*"));
+    	Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "Website", GetFiles(websiteFolder + "bin/Newtonsoft.Json.dll"), true);
 	});
 
 private void PackageOtherPackage(OtherPackage package) {
