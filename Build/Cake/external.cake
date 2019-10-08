@@ -11,9 +11,11 @@ Task("CKEP")
     .Does(() =>
 	{
 		var ckepFolder = tempFolder + "CKEP/";
+		var ckepPackageFolder = "./Website/Install/Provider/";
 		var buildDir = Directory(ckepFolder);
 		var buildDirFullPath = System.IO.Path.GetFullPath(ckepFolder) + "\\";
 		CreateDirectory(buildDir);
+		CreateDirectory(ckepPackageFolder);
         Information("CK:'{0}'", targetBranchCk);
 		Information("Downloading External Extensions to {0}", buildDirFullPath);
 
@@ -38,5 +40,5 @@ Task("CKEP")
 		var fileCounter = 0;
 		fileCounter = GetFiles(ckepFolder + "**/*_Install.zip").Count;
 		Information("Copying {1} Artifacts from {0}", "CK Editor Provider", fileCounter);
-		CopyFiles(ckepFolder + "**/*_Install.zip", "./Website/Install/Provider/");
+		CopyFiles(ckepFolder + "**/*_Install.zip", ckepPackageFolder);
 	});
