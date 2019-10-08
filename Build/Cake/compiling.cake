@@ -11,7 +11,8 @@ Task("CompileSource")
 			.SetConfiguration(configuration)
 			.UseToolVersion(MSBuildToolVersion.VS2017)
 			.SetPlatformTarget(PlatformTarget.MSIL)
-			.WithTarget("Rebuild");
+			.WithTarget("Rebuild")
+			.SetMaxCpuCount(4);
 		MSBuild(dnnSolutionPath, settings => settings.WithTarget("Clean"));
 		MSBuild(dnnSolutionPath, buildSettings);
 	});
