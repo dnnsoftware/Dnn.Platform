@@ -11,9 +11,9 @@
 #load "local:?path=Build/Cake/create-database.cake"
 #load "local:?path=Build/Cake/external.cake"
 #load "local:?path=Build/Cake/nuget.cake"
-#load "local:?path=Build/Cake/other.cake"
 #load "local:?path=Build/Cake/packaging.cake"
 #load "local:?path=Build/Cake/testing.cake"
+#load "local:?path=Build/Cake/thirdparty.cake"
 #load "local:?path=Build/Cake/unit-tests.cake"
 #load "local:?path=Build/Cake/version.cake"
 

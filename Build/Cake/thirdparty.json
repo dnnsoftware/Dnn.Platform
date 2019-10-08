@@ -3,57 +3,48 @@
     "name": "Telerik",
     "folder": "DNN Platform/Components/Telerik/",
     "destination": "Install/Module",
-    "version": "auto",
     "excludes": ["**/*.xml"]
   },
   {
     "name": "jQuery",
     "folder": "DNN Platform/JavaScript Libraries/jQuery/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "03.02.01"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "jQueryMigrate",
     "folder": "DNN Platform/JavaScript Libraries/jQueryMigrate/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "03.00.00"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "jQueryUI",
     "folder": "DNN Platform/JavaScript Libraries/jQueryUI/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "01.12.01"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "Knockout",
     "folder": "DNN Platform/JavaScript Libraries/Knockout/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "03.03.00"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "KnockoutMapping",
     "folder": "DNN Platform/JavaScript Libraries/KnockoutMapping/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "02.04.01"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "Selectize",
     "folder": "DNN Platform/JavaScript Libraries/Selectize/",
-    "destination": "Install/JavaScriptLibrary",
-    "version": "00.12.06"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
     "destination": "Install/Library",
-    "version": "02.00.01",
-    "extension": "resources"
+    "version": "02.00.01"
   },
   {
     "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform_net64",
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46/",
     "destination": "Install/Library",
-    "version": "02.00.01",
     "extension": "resources"
   }
 ]
