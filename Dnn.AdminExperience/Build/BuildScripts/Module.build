@@ -1,9 +1,11 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.props')" />
   <Import Project="..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.13.0\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
+    <WorkingDirectory>D:\DNN\Dnn.AdminExperience</WorkingDirectory>
   </PropertyGroup>
 
   <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>
@@ -16,7 +18,7 @@
       <PersonaBar-resources Include="admin/**/App_LocalResources/*.resx" />
       <PersonaBar-controls Include="admin/**/UserControls/*.ascx" />
       <PersonaBar-scripts Include="admin/**/scripts/*;admin/**/scripts/**/*" />
-      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)"  Exclude="**/node_modules/**/*" />
+      <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -41,9 +43,9 @@
   </Target>
 
   <Target Name="RunYarnWorkspace">
-	  <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
+    <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
 
-	  <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
-	<Yarn Command="lerna run build --parallel" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+    <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+    <Yarn Command="lerna run build --parallel" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>

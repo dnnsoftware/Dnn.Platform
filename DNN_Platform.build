@@ -1,6 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <AEBuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Dnn.AdminExperience\Build\BuildScripts</AEBuildScriptsPath>
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
