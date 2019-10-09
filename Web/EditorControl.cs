@@ -1136,7 +1136,9 @@ namespace DNNConnect.CKEditorProvider.Web
                 {
                     if (key.IndexOf("ck_", StringComparison.OrdinalIgnoreCase) == 0)
                     {
-                        string sAdjustedKey = key.Substring(3, key.Length - 3).ToLower();
+                        string sAdjustedKey = key.Substring(3, key.Length - 3);
+                        //.ToLower();
+                        //Do not ToLower settingKey, because CKConfig is case-Sensitive, exp: image2_prefillDimension
 
                         if (!string.IsNullOrEmpty(sAdjustedKey))
                         {
