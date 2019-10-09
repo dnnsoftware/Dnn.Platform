@@ -296,9 +296,9 @@ namespace DotNetNuke.Entities.Modules
                 HostController.Instance.GetString(translatorSettingKey, null);
 
             var translatorRoles =
-                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries) ?? Enumerable.Empty<string>();
+                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            return translatorRoles.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase));
+            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
         }
 
         /// <summary>
