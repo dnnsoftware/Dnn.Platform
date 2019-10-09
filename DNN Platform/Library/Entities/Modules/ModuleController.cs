@@ -270,10 +270,8 @@ namespace DotNetNuke.Entities.Modules
             }
 
             var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
-
-            return tabPermissions
-                .ToList()
-                .Find(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey) != null;
+            
+            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
         }
 
         /// <summary>
@@ -300,8 +298,7 @@ namespace DotNetNuke.Entities.Modules
             var translatorRoles =
                 translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries) ?? Enumerable.Empty<string>();
 
-            return translatorRoles.Any() &&
-                    translatorRoles.Select(x => x.ToLower()).Contains(permission.RoleName.ToLower());
+            return translatorRoles.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
