@@ -42,7 +42,7 @@
     "version": "02.00.01"
   },
   {
-    "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform_net64",
+    "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform_net46",
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46/",
     "destination": "Install/Library",
     "extension": "resources"
