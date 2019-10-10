@@ -124,4 +124,3 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 # Add fips back
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
 
-*.zip.manifest
