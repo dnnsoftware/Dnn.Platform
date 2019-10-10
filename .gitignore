@@ -123,5 +123,3 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
 # Add fips back
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
-
-D:\DNN\Dnn.AdminExperience\Extensions\Content\Dnn.PersonaBar.Extensions\admin\personaBar\Dnn.Roles\scripts\bundles\rw-widgets.svg
