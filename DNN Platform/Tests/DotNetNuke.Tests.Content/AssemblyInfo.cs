@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 
 [assembly: AssemblyCompany("DotNetNuke Corporation")]
-[assembly: AssemblyProduct("http://www.dotnetnuke.com")]
+[assembly: AssemblyProduct("https://www.dnnsoftware.com")]
 [assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DotNetNuke Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DotNetNuke")]
 

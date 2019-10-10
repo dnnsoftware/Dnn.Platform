@@ -349,7 +349,7 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value>Installatieversie toevoegen</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Bekijk Installatie Video&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Bekijk Installatie Video&lt;/a&gt;</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>De objectqualifier moet met een letter beginnen en mag niet langer zijn dan 20 tekens</value>
@@ -542,6 +542,6 @@ Standaard database installatie opties niet beschikbaar</value>
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
   <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 is vereist. Controleer op Windows-updates voordat u doorgaat.</value>
+    <value>.Net Framework 4.7.2 is vereist, u dient deze via Windows Update te installeren voordat u verder gaat.</value>
   </data>
 </root>
