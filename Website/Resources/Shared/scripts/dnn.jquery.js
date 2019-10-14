@@ -4286,9 +4286,38 @@
             }
         });
     };
+
+    var handlerSendVerificationMailLink = function() {
+        $(document.body).on('click', 'a.send-verification-mail', function(e) {
+            e.preventDefault();
+
+            var service = $.dnnSF();
+            var url = service.getServiceRoot('InternalServices') + 'NewUserNotificationService/SendVerificationMail';
+            var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+            url += '?__RequestVerificationToken=' + antiForgeryToken;
+
+            $.ajax({
+                url: url,
+                beforeSend: service ? service.setModuleHeaders : null,
+                success: function(data) {
+                    $.dnnAlert({ text: data.Result });
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    if (xhr && xhr.responseText) {
+                        $.dnnAlert({ text: eval('(' + xhr.responseText + ')').Message });
+                    }
+                },
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json"
+            });
+        });
+    };
+
     window.__rgDataDivScrollTopPersistArray = [];
     $(document).ajaxComplete(dnnInitCustomisedCtrls);
     Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(saveRgDataDivScrollTop);
     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(dnnInitCustomisedCtrls);
     $(dnnInitCustomisedCtrls);
+    handlerSendVerificationMailLink();
 })(jQuery);
