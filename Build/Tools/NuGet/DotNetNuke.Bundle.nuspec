@@ -28,19 +28,19 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\net472\"/>
 
-    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\net472\"/>
 
-    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\Tests\DNN.Integration.Test.Framework\bin\DNN.Integration.Test.Framework.pdb" target="lib\net472\"/>
 
-    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\net472\"/>
 
-    <file src="..\..\..\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\net472\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

@@ -26,8 +26,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net45\"/>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.pdb" target="lib\net45\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net472\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.pdb" target="lib\net472\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

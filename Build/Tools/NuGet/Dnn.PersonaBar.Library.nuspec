@@ -20,9 +20,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.dll" target="lib\net45\"/>
-    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.pdb" target="lib\net45\"/>
-    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.xml" target="lib\net45\"/>
+    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.dll" target="lib\net472\"/>
+    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.pdb" target="lib\net472\"/>
+    <file src="..\..\..\Website\bin\Dnn.PersonaBar.Library.xml" target="lib\net472\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

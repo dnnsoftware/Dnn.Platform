@@ -22,11 +22,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.pdb" target="lib\net472\"/>
 
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\net45\"/>
-    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\net45\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.dll" target="lib\net472\"/>
+    <file src="..\..\..\DNN Platform\Modules\DnnExportImport\bin\DotNetNuke.SiteExportImport.Library.pdb" target="lib\net472\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

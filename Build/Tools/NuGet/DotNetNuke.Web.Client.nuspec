@@ -20,8 +20,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.dll" target="lib\net472\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\net472\" />
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

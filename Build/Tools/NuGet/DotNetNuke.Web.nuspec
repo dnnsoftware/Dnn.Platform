@@ -20,10 +20,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.pdb" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net45\" />
-    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\net45\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.dll" target="lib\net472\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.pdb" target="lib\net472\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net472\" />
+    <file src="..\..\..\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\net472\" />
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>
