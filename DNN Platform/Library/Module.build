@@ -50,7 +50,7 @@
     <Copy SourceFiles="..\Controls\CountryListBox\bin\CountryListBox.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Syndication\bin\DotNetNuke.Services.Syndication.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />

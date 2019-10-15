@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DotNetNuke.Entities.Portals;
+﻿using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Analytics.Config;
 using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using System;
+using System.Collections.Generic;
 
 namespace DNN.Connectors.GoogleAnalytics
 {
@@ -88,11 +87,14 @@ namespace DNN.Connectors.GoogleAnalytics
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
             var portalSettings = new PortalSettings(portalId);
 
-            var trackingId = String.Empty;
-            var urlParameter = String.Empty;
-            var trackForAdmin = false;
-            var anonymizeIp = false;
-            var trackUserId = false;
+            // Important, knockout handles empty strings as false and any other string as true
+            // so we need to pass empty strings when we mean false, however it passes us back the string "false"
+            // when saving the settings in the SaveConfig method, so we need to handle that case too
+            var trackingId = string.Empty;
+            var urlParameter = string.Empty;
+            var trackForAdmin = string.Empty;
+            var anonymizeIp = string.Empty;
+            var trackUserId = string.Empty;
 
             if (analyticsConfig != null)
             {
@@ -108,22 +110,13 @@ namespace DNN.Connectors.GoogleAnalytics
                             urlParameter = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            if (!bool.TryParse(setting.SettingValue, out trackForAdmin))
-                            {
-                                trackForAdmin = true;
-                            }
+                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "anonymizeip":
-                            if (!bool.TryParse(setting.SettingValue, out anonymizeIp))
-                            {
-                                anonymizeIp = false;
-                            }
+                            anonymizeIp = HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "trackuserid":
-                            if (!bool.TryParse(setting.SettingValue, out trackUserId))
-                            {
-                                trackUserId = false;
-                            }
+                            trackUserId = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -131,21 +124,36 @@ namespace DNN.Connectors.GoogleAnalytics
 
             if (portalSettings.DataConsentActive)
             {
-                anonymizeIp = true;
+                anonymizeIp = "true";
             }
 
             var configItems = new Dictionary<string, string>
             {
                 { "TrackingID", trackingId },
                 { "UrlParameter", urlParameter},
-                { "TrackAdministrators", trackForAdmin.ToString()},
-                { "AnonymizeIp", anonymizeIp.ToString()},
-                { "TrackUserId", trackUserId.ToString()},
-                { "DataConsent", portalSettings.DataConsentActive.ToString()},
-                { "isDeactivating", false.ToString()}
+                { "TrackAdministrators", trackForAdmin},
+                { "AnonymizeIp", anonymizeIp},
+                { "TrackUserId", trackUserId},
+                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+                { "isDeactivating", HandleCustomBoolean("false") }
             };
 
             return configItems;
+        }
+
+        /// <summary>
+        /// Handles custom conversion from "true" => "true"
+        /// Anything else to "" to support the strange knockout handling of string as booleans
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string HandleCustomBoolean(string value)
+        {
+            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return "true";
+            }
+            return "";
         }
 
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
@@ -165,9 +173,9 @@ namespace DNN.Connectors.GoogleAnalytics
 
                 string trackingID;
                 string urlParameter;
-                bool trackForAdmin;
-                bool anonymizeIp;
-                bool trackUserId;
+                string trackForAdmin;
+                string anonymizeIp;
+                string trackUserId;
 
                 isValid = true;
 
@@ -175,18 +183,17 @@ namespace DNN.Connectors.GoogleAnalytics
                 {
                     trackingID = null;
                     urlParameter = null;
-                    trackForAdmin = false;
-                    anonymizeIp = false;
-                    trackUserId = false;
+                    trackForAdmin = null;
+                    anonymizeIp = null;
+                    trackUserId = null;
                 }
                 else
                 {
-                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToString().Trim() : String.Empty;
-                    urlParameter = values["UrlParameter"] != null ? values["UrlParameter"].ToString().Trim() : String.Empty;
-
-                    bool.TryParse(values["TrackAdministrators"].ToLowerInvariant(), out trackForAdmin);
-                    bool.TryParse(values["AnonymizeIp"].ToLowerInvariant(), out anonymizeIp);
-                    bool.TryParse(values["TrackUserId"].ToLowerInvariant(), out trackUserId);
+                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToLowerInvariant().Trim() : string.Empty;
+                    urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
+                    trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
+                    anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
+                    trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
                     if (String.IsNullOrEmpty(trackingID))
                     {
@@ -219,24 +226,23 @@ namespace DNN.Connectors.GoogleAnalytics
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin.ToString().ToLowerInvariant()
+                        SettingValue = trackForAdmin
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "AnonymizeIp",
-                        SettingValue = anonymizeIp.ToString().ToLowerInvariant()
+                        SettingValue = anonymizeIp
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackUserId",
-                        SettingValue = trackUserId.ToString().ToLowerInvariant()
+                        SettingValue = trackUserId
                     });
 
                     AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
                 }
-
 
                 return isValid;
             }

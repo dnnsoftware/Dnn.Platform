@@ -32,15 +32,7 @@
               <name>jquery.min.map</name>
             </jsfile>
           </jsfiles>
-        </component>
-        <component type="File">
-          <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>jQuery (MIT).txt</name>
-            </file>
-          </files>
-        </component>
+        </component>        
         <component type="Cleanup" version="01.09.01" fileName="01.09.01.txt" />
       </components>
     </package>

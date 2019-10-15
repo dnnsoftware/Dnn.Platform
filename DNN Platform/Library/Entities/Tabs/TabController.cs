@@ -2473,7 +2473,8 @@ namespace DotNetNuke.Entities.Tabs
                                  false,
                                  false,
                                  false,
-                                 false);
+                                 false,
+                                 true);
         }
 
         /// <summary>
@@ -2497,7 +2498,8 @@ namespace DotNetNuke.Entities.Tabs
                                  includeDeleted,
                                  includeURL,
                                  false,
-                                 false);
+                                 false,
+                                 true);
         }
 
         /// <summary>
@@ -2525,7 +2527,8 @@ namespace DotNetNuke.Entities.Tabs
                                  includeDeleted,
                                  includeURL,
                                  checkViewPermisison,
-                                 checkEditPermission);
+                                 checkEditPermission,
+                                 true);
         }
 
         /// <summary>
@@ -2544,6 +2547,45 @@ namespace DotNetNuke.Entities.Tabs
         public static List<TabInfo> GetPortalTabs(List<TabInfo> tabs, int excludeTabId, bool includeNoneSpecified,
                                                   string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL,
                                                   bool checkViewPermisison, bool checkEditPermission)
+        {
+            return GetPortalTabs(
+                tabs,
+                excludeTabId,
+                includeNoneSpecified,
+                noneSpecifiedText,
+                includeHidden,
+                includeDeleted,
+                includeURL,
+                checkViewPermisison,
+                checkEditPermission,
+                true);
+        }
+
+        /// <summary>
+        /// Gets the portal tabs.
+        /// </summary>
+        /// <param name="tabs">The tabs.</param>
+        /// <param name="excludeTabId">The exclude tab id.</param>
+        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
+        /// <param name="noneSpecifiedText">The none specified text.</param>
+        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
+        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
+        /// <param name="includeURL">if set to <c>true</c> [include URL].</param>
+        /// <param name="checkViewPermisison">if set to <c>true</c> [check view permisison].</param>
+        /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
+        /// <param name="includeDeletedChildren">The value of this parameter affects <see cref="TabInfo.HasChildren"></see> property.</param>
+        /// <returns></returns>
+        public static List<TabInfo> GetPortalTabs(
+            List<TabInfo> tabs,
+            int excludeTabId,
+            bool includeNoneSpecified,
+            string noneSpecifiedText,
+            bool includeHidden,
+            bool includeDeleted,
+            bool includeURL,
+            bool checkViewPermisison,
+            bool checkEditPermission,
+            bool includeDeletedChildren)
         {
             var listTabs = new List<TabInfo>();
             if (includeNoneSpecified)
@@ -2580,6 +2622,9 @@ namespace DotNetNuke.Entities.Tabs
                             listTabs.Add(tab);
                         }
                     }
+
+                    // HasChildren should be true in case there is at least one not deleted child
+                    tab.HasChildren = tab.HasChildren && (includeDeletedChildren || GetTabsByParent(tab.TabID, tab.PortalID).Any(a => !a.IsDeleted));
                 }
             }
             return listTabs;

@@ -212,25 +212,7 @@ namespace log4net.Appender
 			set { m_smtpHost = value; }
 		}
 
-		/// <summary>
-		/// Obsolete
-		/// </summary>
-		/// <remarks>
-		/// Use the BufferingAppenderSkeleton Fix methods instead 
-		/// </remarks>
-		/// <remarks>
-		/// <para>
-		/// Obsolete property.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use the BufferingAppenderSkeleton Fix methods. Scheduled removal in v10.0.0.")]
-		public bool LocationInfo
-		{
-			get { return false; }
-			set { ; }
-		}
-
-		/// <summary>
+        /// <summary>
 		/// The mode to use to authentication with the SMTP server
 		/// </summary>
 		/// <remarks>

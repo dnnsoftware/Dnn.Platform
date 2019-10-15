@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace DotNetNuke.DependencyInjection.Extensions
@@ -32,8 +33,15 @@ namespace DotNetNuke.DependencyInjection.Extensions
             {
                 types = assembly.GetTypes();
             }
+            catch (ReflectionTypeLoadException ex)
+            {
+                //TODO: We should log the reason of the exception after the API cleanup
+                //Ensure that Dnn obtains all types that were loaded, ignoring the failure(s)
+                types = ex.Types.Where(x => x != null).ToArray<Type>();
+            }
             catch (Exception)
-            {               
+            {
+                //TODO: We should log the reason of the exception after the API cleanup
                 types = new Type[0];
             }
 

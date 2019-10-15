@@ -1,14 +1,14 @@
-#addin nuget:?package=Cake.XdtTransform&version=0.16.0
-#addin nuget:?package=Cake.FileHelpers&version=3.1.0
-#addin nuget:?package=Cake.Powershell&version=0.4.7
+#addin nuget:?package=Cake.XdtTransform&version=0.18.1&loaddependencies=true
+#addin nuget:?package=Cake.FileHelpers&version=3.2.0
+#addin nuget:?package=Cake.Powershell&version=0.4.8
 
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-#load "local:?path=Build/cake/version.cake"
-#load "local:?path=Build/cake/create-database.cake"
-#load "local:?path=Build/cake/unit-tests.cake"
+#load "local:?path=Build/Cake/version.cake"
+#load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/unit-tests.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -21,7 +21,6 @@ var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.buil
 
 var targetBranchCk = Argument("CkBranch", "development");
 var targetBranchCdf = Argument("CdfBranch", "dnn");
-var targetBranchCp = Argument("CpBranch", "development");
 
 
 //////////////////////////////////////////////////////////////////////
@@ -31,9 +30,12 @@ var targetBranchCp = Argument("CpBranch", "development");
 // Define directories.
 var buildDir = Directory("./src/");
 var artifactDir = Directory("./Artifacts/");
-var tempDir = "C:\\temp\\x\\";
-
+var tempDir = Directory("./Temp/");
 var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
+
+// Define versioned files (manifests) to backup and revert on build
+var manifestFiles = GetFiles("./**/*.dnn");
+manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -62,15 +64,12 @@ Task("Restore-NuGet-Packages")
 Task("Build")
     .IsDependentOn("CleanArtifacts")
 	.IsDependentOn("CompileSource")
-    
     .Does(() =>
 	{
-
 	});
     
 Task("BuildWithDatabase")
     .IsDependentOn("CleanArtifacts")
-    .IsDependentOn("CreateSource")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
@@ -79,7 +78,6 @@ Task("BuildWithDatabase")
     .IsDependentOn("CreateDatabase")
     .Does(() =>
 	{
-
 	});
     
 Task("BuildInstallUpgradeOnly")
@@ -89,11 +87,11 @@ Task("BuildInstallUpgradeOnly")
 	.IsDependentOn("CreateUpgrade")
     .Does(() =>
 	{
-
 	});
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
+	.IsDependentOn("BackupManifests")
 	.IsDependentOn("CompileSource")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CreateInstall")
@@ -101,10 +99,21 @@ Task("BuildAll")
     .IsDependentOn("CreateDeploy")
 	.IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
-    .IsDependentOn("CreateSource")
+	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
+	});
 
+Task("BackupManifests")
+	.Does( () => {		
+		Zip("./", "manifestsBackup.zip", manifestFiles);
+	});
+
+Task("RestoreManifests")	
+	.Does( () => {
+		DeleteFiles(manifestFiles);
+		Unzip("./manifestsBackup.zip", "./");
+		DeleteFiles("./manifestsBackup.zip");
 	});
 
 Task("CompileSource")
@@ -160,25 +169,6 @@ Task("CreateSymbols")
 			c.WithProperty("BUILD_NUMBER", GetProductVersion());
 			c.Targets.Add("CreateSymbols");
 		});
-	});   
-    
-    
-
-Task("CreateSource")
-    .IsDependentOn("UpdateDnnManifests")
-	.Does(() =>
-	{
-		
-		CleanDirectory("./src/Projects/");
-
-        CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateSource");
-		});
 	});
 
 Task("CreateDeploy")
@@ -231,32 +221,20 @@ Task("ExternalExtensions")
 .IsDependentOn("Clean")
     .Does(() =>
 	{
-        Information("CK:'{0}', CDF:'{1}', CP:'{2}'", targetBranchCk, targetBranchCdf, targetBranchCp);
-
-    
+        Information("CK:'{0}', CDF:'{1}'", targetBranchCk, targetBranchCdf);
 		Information("Downloading External Extensions to {0}", buildDirFullPath);
 
-        
-        
 		//ck
 		DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/" + targetBranchCk + ".zip", buildDirFullPath + "ckeditor.zip");
 	
 		//cdf
 		DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/" + targetBranchCdf + ".zip", buildDirFullPath + "clientdependency.zip");
 
-		//pb
-        Information("Downloading: {0}", "https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip");
-		DownloadFile("https://github.com/dnnsoftware/Dnn.AdminExperience/archive/" + targetBranchCp + ".zip", buildDirFullPath + "Dnn.AdminExperience.zip");
-
 		Information("Decompressing: {0}", "CK Editor");
 		Unzip(buildDirFullPath + "ckeditor.zip", buildDirFullPath + "Providers/");
 
 		Information("Decompressing: {0}", "CDF");
 		Unzip(buildDirFullPath + "clientdependency.zip", buildDirFullPath + "Modules");
-	
-		Information("Decompressing: {0}", "Admin Experience");
-		Unzip(buildDirFullPath + "Dnn.AdminExperience.zip", tempDir);
-
 
 		//look for solutions and start building them
 		var externalSolutions = GetFiles("./src/**/*.sln");
@@ -282,9 +260,8 @@ Task("ExternalExtensions")
 			MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
 		}
 
+		externalSolutions = GetFiles("./" + tempDir.ToString() + "/**/*.sln");
 
-		externalSolutions = GetFiles("c:\\temp\\x\\**\\*.sln");
-	
 		Information("Found {0} solutions.", externalSolutions.Count);
 	
 		foreach (var solution in externalSolutions){
@@ -316,13 +293,11 @@ Task("ExternalExtensions")
 		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
 		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
 	
-		fileCounter = GetFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "AdminExperience", fileCounter);
-		CopyFiles("C:\\temp\\x\\*\\Website\\Install\\Module\\*_Install.zip", "./Website/Install/Module/");
-	
+		var files = GetFiles("./" + tempDir.ToString() + "/*/Website/Install/Module/*_Install.zip");
+		Information("Copying {1} Artifacts from {0}", "AdminExperience", files.Count);
+		CopyFiles(files, "./Website/Install/Module/");
 	});
-    
-    
+
 Task("Run-Unit-Tests")
     .IsDependentOn("CompileSource")
     .Does(() =>

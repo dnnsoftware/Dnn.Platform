@@ -104,15 +104,7 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(subject, true);
             mailMessage.BodyEncoding = bodyEncoding;
 
-            //added support for multipart html messages
-            //add text part as alternate view
-            var PlainView = AlternateView.CreateAlternateViewFromString(ConvertToText(body), null, "text/plain");
-            mailMessage.AlternateViews.Add(PlainView);
-            if (mailMessage.IsBodyHtml)
-            {
-                var HTMLView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
-                mailMessage.AlternateViews.Add(HTMLView);
-            }
+            AddAlternateView(mailMessage, body, bodyEncoding);
 
             smtpServer = smtpServer.Trim();
             if (SmtpServerRegex.IsMatch(smtpServer))
@@ -196,6 +188,19 @@ namespace DotNetNuke.Services.Mail
             }
             
             return retValue;
+        }
+
+        internal static void AddAlternateView(MailMessage mailMessage, string body, Encoding bodyEncoding)
+        {   
+            //added support for multipart html messages
+            //add text part as alternate view
+            var PlainView = AlternateView.CreateAlternateViewFromString(ConvertToText(body), bodyEncoding, "text/plain");
+            mailMessage.AlternateViews.Add(PlainView);
+            if (mailMessage.IsBodyHtml)
+            {
+                var HTMLView = AlternateView.CreateAlternateViewFromString(body, bodyEncoding, "text/html");
+                mailMessage.AlternateViews.Add(HTMLView);
+            }
         }
 
         #endregion
@@ -290,6 +295,10 @@ namespace DotNetNuke.Services.Mail
                 case MessageType.UserRegistrationPrivate:
                     subject = "EMAIL_USER_REGISTRATION_PRIVATE_SUBJECT";
                     body = "EMAIL_USER_REGISTRATION_PRIVATE_BODY";
+                    break;
+                case MessageType.UserRegistrationPrivateNoApprovalRequired:
+                    subject = "EMAIL_USER_REGISTRATION_PUBLIC_SUBJECT";
+                    body = "EMAIL_USER_REGISTRATION_PUBLIC_BODY";
                     break;
                 case MessageType.UserRegistrationPublic:
                     subject = "EMAIL_USER_REGISTRATION_PUBLIC_SUBJECT";

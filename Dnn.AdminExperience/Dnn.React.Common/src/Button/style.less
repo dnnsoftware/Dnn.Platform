@@ -1,0 +1,50 @@
+@import "../../styles/index";
+button.dnn-ui-common-button {
+    border: 1px solid @curiousBlue;
+    height: 34px;
+    padding: 0 22px;
+    font-size: 10pt;
+    color: @curiousBlue;
+    background: @white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    &:hover {
+        color: @cerulean;
+        border-color: @cerulean;
+    }
+    &:focus{
+        outline: none;
+    }
+    &:active {
+        color: @matisse;
+        border-color: @matisse;
+    }
+    &:disabled {
+        color: @alto;
+        border-color: @alto;
+        cursor: not-allowed;
+    }
+
+    &.large{
+        height: 44px;
+    }
+
+    &[role=primary] {
+        background: @curiousBlue;
+        border: none;
+        color: @white;
+
+        &:hover {
+            background: @cerulean;
+        }
+        &:active {
+            background: @matisse;
+        }
+        &:disabled {
+            color: @mountainMist;
+            background: @mercury;
+            cursor: not-allowed;
+        }
+    }
+} 

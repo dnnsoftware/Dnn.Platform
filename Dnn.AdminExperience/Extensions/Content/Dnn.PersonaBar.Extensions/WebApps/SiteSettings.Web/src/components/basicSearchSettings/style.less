@@ -1,0 +1,150 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.basicSearchSettings) {
+    margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-dropdown {
+            width: 100%;
+            box-sizing: border-box;
+            .collapsible-label {
+                height: 16px;
+            }
+        }
+        .basicSearchSettings-row_switch {
+            margin-top: 25px;
+            width: 100%;
+            float: left;
+            .dnn-switch-container {
+                float: right;
+            }
+            .dnn-label.inline {                
+                label {
+                    max-width: 200px;
+                    font-weight: bolder;
+                    float: left;
+                }
+            }
+        }
+        .basicSearchSettings-row_slider {
+            .dnn-label {
+                width: 30%;
+                label {
+                    font-weight: bolder;
+                    float: left;
+                }
+            }
+            .slider-container {
+                margin-top: 8px;
+                float: right;
+                width: 65%;
+            }
+        }
+    }
+    .sectionTitle {
+        font-weight: bolder;
+        border-top: 1px solid @alto;
+        float: left;
+        width: 100%;
+        padding: 30px 0 15px 0;
+        margin: 20px 0 0 0;
+        &:first-child {
+            border-top: 0;
+            padding: 0 0 15px 0;
+            margin: 0;
+        }
+    }
+    .searchIndexWrapper {
+        float: left;
+        border: 1px solid @alto;
+        background-color: @gallery;
+        width: 100%;
+        margin: 0 0 20px 0;
+        .searchIndexWrapper-left {
+            width: 70%;
+            float: left;
+            padding: 0 30px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            border-right: 1px solid @alto;
+            .dnn-ui-common-input-group {
+                padding: 0 0 10px 0;
+                .dnn-label.inline {
+                    label {
+                        float: left;
+                        max-width: 220px;
+                    }
+                    &:last-child {
+                        float: right;
+                        margin-right: 0;
+                        width: 55%;
+                        label {
+                            font-weight: normal;
+                            word-break: break-all;
+                            margin: 0;
+                            float: right;
+                            color: @thunder;
+                            cursor: default;
+                        }
+                    }
+                }
+            }
+        }
+        .searchIndexWrapper-right {
+            width: 30%;
+            float: right;
+            .dnn-ui-common-button {
+                float: right;
+                margin: 0 30px 15px 0;
+                width: 70%;
+                height: auto;
+                padding-top: 6px;
+                padding-bottom: 6px;
+                &:first-child {
+                    margin-top: 40px;
+                }
+                &:last-child {
+                    float: right;
+                }
+            }
+        }
+        .searchIndexWarning, .searchCompactIndexWarning {
+            margin: 20px 0;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 10px 0 30px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}

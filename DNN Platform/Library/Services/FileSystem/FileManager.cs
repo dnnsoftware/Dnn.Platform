@@ -62,14 +62,6 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        #region Properties
-
-		public virtual IDictionary<string, string> ContentTypes
-		{
-			get { return FileContentTypeManager.Instance.ContentTypes; }
-		}
-
-        #endregion
 
         #region Constants
 
@@ -556,6 +548,14 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                     string.Format(
                         Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
+            }
+
+            if (!IsValidFilename(fileName))
+            {
+                throw new InvalidFilenameException(
+                    string.Format(
+                        Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed",
+                            "The file name '{0}' is not allowed. The file has not been added."), fileName));
             }
         }
 
@@ -1195,6 +1195,11 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
+            if (!IsValidFilename(newFileName))
+            {
+                throw new InvalidFilenameException(string.Format(Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
+            }
+
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (FileExists(folder, newFileName))
@@ -1790,6 +1795,13 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             return !string.IsNullOrEmpty(extension)
                    && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
+        }
+
+        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        internal virtual bool IsValidFilename(string fileName)
+        {
+            //regex ensures the file is a valid filename and doesn't include illegal characters
+            return Globals.FileValidNameRegex.IsMatch(fileName);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

@@ -313,7 +313,7 @@ namespace DotNetNuke.Entities.Portals
             setting = settings.GetValueOrDefault("DataConsentTermsLastChange", "");
             if (!string.IsNullOrEmpty(setting))
             {
-                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting);
+                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);
             }
             setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
             portalSettings.DataConsentConsentRedirect = int.Parse(setting);

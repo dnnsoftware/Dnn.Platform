@@ -766,20 +766,5 @@ namespace DotNetNuke.Services.Journal
 
         #endregion
 
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
-        public void SaveJournalItem(JournalItem journalItem, int tabId)
-        {
-            SaveJournalItem(journalItem, tabId, Null.NullInteger);
-        }
-
-        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
-        public void UpdateJournalItem(JournalItem journalItem, int tabId)
-        {
-            UpdateJournalItem(journalItem, tabId, Null.NullInteger);
-        }
-
-        #endregion
     }
 }

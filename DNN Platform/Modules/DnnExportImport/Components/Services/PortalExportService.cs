@@ -25,6 +25,7 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using System;
+using System.Globalization;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Dto.Portal;
@@ -211,8 +212,23 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var exportPortalLanguage in portalLanguages)
             {
                 if (CheckCancelled(importJob)) return;
+
+                var createdBy = Util.GetUserIdByName(importJob, exportPortalLanguage.CreatedByUserId, exportPortalLanguage.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdByName(importJob, exportPortalLanguage.LastModifiedByUserId, exportPortalLanguage.LastModifiedByUserName);
+
                 var localLanguageId =
                     localLanguages.FirstOrDefault(x => x.Code == exportPortalLanguage.CultureCode)?.LanguageId;
+                if (!localLanguageId.HasValue)
+                {
+                    var locale = new Locale
+                    {
+                        Code = exportPortalLanguage.CultureCode,
+                        Fallback = Localization.SystemLocale,
+                        Text = CultureInfo.GetCultureInfo(exportPortalLanguage.CultureCode).NativeName
+                    };
+                    Localization.SaveLanguage(locale);
+                    localLanguageId = locale.LanguageId;
+                }
                 var existingPortalLanguage =
                     localPortalLanguages.FirstOrDefault(
                         t =>
@@ -234,20 +250,16 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 if (isUpdate)
                 {
-                    var modifiedBy = Util.GetUserIdByName(importJob, exportPortalLanguage.LastModifiedByUserId, exportPortalLanguage.LastModifiedByUserName);
-
                     DotNetNuke.Data.DataProvider.Instance()
-                        .UpdatePortalLanguage(importJob.PortalId, exportPortalLanguage.LanguageId,
+                        .UpdatePortalLanguage(importJob.PortalId, localLanguageId.GetValueOrDefault(exportPortalLanguage.LanguageId),
                             exportPortalLanguage.IsPublished, modifiedBy);
 
                     Result.AddLogEntry("Updated portal language", exportPortalLanguage.CultureCode);
                 }
                 else
                 {
-                    var createdBy = Util.GetUserIdByName(importJob, exportPortalLanguage.CreatedByUserId, exportPortalLanguage.CreatedByUserName);
-
                     exportPortalLanguage.PortalLanguageId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddPortalLanguage(importJob.PortalId, exportPortalLanguage.LanguageId,
+                        .AddPortalLanguage(importJob.PortalId, localLanguageId.GetValueOrDefault(exportPortalLanguage.LanguageId),
                             exportPortalLanguage.IsPublished, createdBy);
                     Result.AddLogEntry("Added portal language", exportPortalLanguage.CultureCode);
                 }

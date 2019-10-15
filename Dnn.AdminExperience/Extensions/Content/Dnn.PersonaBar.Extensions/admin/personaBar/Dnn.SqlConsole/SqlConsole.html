@@ -1,0 +1,130 @@
+﻿<!-- panel -->
+<div class="socialpanelheader" id="sqlconsole-headerPanel">
+    <h3 data-bind="html: resx.Title" class="title-small"></h3>
+</div>
+
+<div class="socialpanelbody sqlconsolePanelContainer sqlconsolePanel" id="sqlconsole-bodyPanel" data-bind="css: {loading: loading, mask: saving}">
+    <div class="query-form">
+        <div class="form-item item-query">
+            <span class="caption inline" data-bind="html: resx.Query"></span>
+            <div>
+                <a href="#" class="btn-trash" data-bind="click: deleteQuery, clickBubble: false, visible: id() > 0" aria-label="Delete"></a>
+                <select data-bind="options: savedQueries, optionsText: 'name', optionsValue: 'id', value: selectedQuery" aria-label="Name"></select>
+            </div>
+            <span class="fileupload-wrapper">
+                <button class="dnn-ui-common-button uploadbtn large" role="secondary" data-bind="html: resx.UploadFile"></button>
+                <input type="file" aria-label="File" />
+            </span>
+        </div>
+        <div class="form-item" data-bind="visible: connections().length > 1">
+            <span class="caption inline" data-bind="html: resx.Connection"></span>
+            <div>
+                <select data-bind="options: connections, value: connection" aria-label="Connection"></select>
+            </div>
+        </div>
+        <div class="form-item">
+            <textarea data-bind="value: query" aria-label="Query"></textarea>
+        </div>
+        <div class="actions">
+            <button class="dnn-ui-common-button cancel" data-bind="click: startSaveQuery, html: resx.SaveQuery"></button>
+            <button class="dnn-ui-common-button create-page" role="primary" data-bind="html: resx.RunScript, click: runQuery"></button>
+        </div>
+        <div class="popup savequery-popup" data-bind="visible: saving">
+            <span data-bind="htm: resx.SaveQueryInfo"></span>
+            <div>
+                <input id="query-name" data-bind="value: name" aria-label="Name" />
+                <a href="#" class="btn cancel" data-bind="click: cancelSave" aria-label="Cancel"></a>
+                <a href="#" class="btn save" data-bind="click: saveQuery" aria-label="Save"></a>
+            </div>
+        </div>
+    </div>
+    <div class="splitter" data-bind="visible: tables().length > 0"></div>
+    <div class="results-container" data-bind="visible: tables().length > 0">
+        <div class="header">
+            <div class="result-tabs">
+                <ul>
+                    <!-- ko foreach: tables -->
+                    <li data-bind="css:{'selected': $index() == 0}">
+                        <a href="#" data-bind="html: title, attr: {'href': '#result' + $index()}, click: $root.changeTab, clickBubble: false"></a>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </div>
+        </div>
+        <div class="tables-container">
+            <!-- ko foreach: {data: tables, as: 'table'} -->
+            <div data-bind="attr: {'id': 'result' + $index()}, visible: $index() == 0">
+                <div class="actions-container" data-bind="visible: hasData">
+                    <div class="search">
+                        <input data-bind="value: keywords, valueUpdate: 'afterkeydown', attr: {placeholder: $root.resx.Search}" aria-label="Search"/>
+                    </div>
+                    <div class="export">
+                        <span data-bind="html: $parent.resx.Export, click: function(){showExportList(!showExportList());}"></span>
+                        <div class="popup list-popup export-popup" data-bind="visible: showExportList() && exportMethods.length > 0">
+                            <ul>
+                                <!-- ko foreach: exportMethods -->
+                                <li>
+                                    <a href="#" data-bind="html: name, click: onExport, clickBubble: false" aria-label="Export"></a>
+                                </li>
+                                <!-- /ko -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container" data-bind="jScrollPane:{}, event: {'jsp-initialised': $root.scrollPaneInitialised}, visible: hasData">
+                    <table cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
+                        <thead>
+                        <tr>
+                            <!-- ko foreach: header -->
+                            <th scope="col" data-bind="html: $data, sort: {}"></th>
+                            <!-- /ko -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- ko foreach: pageData -->
+                        <tr>
+                            <!-- ko foreach: $parent.header -->
+                            <td data-bind="html: $parent[$data]"></td>
+                            <!-- /ko -->
+                        </tr>
+                        <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pager-container" data-bind="visible: hasData">
+                    <div class="statistics" data-bind="html: statistics"></div>
+                    <div class="pager">
+                        <ul>
+                            <li class="option" data-bind="click: function(){showPageSizesList(!showPageSizesList());}">
+                                <span data-bind="html: pageSizesLabel"></span>
+                                <div class="popup list-popup pagesize-popup" data-bind="visible: showPageSizesList">
+                                    <ul>
+                                        <!-- ko foreach: pageSizes -->
+                                        <li>
+                                            <a href="#" data-bind="html: name, css: {'selected': value == $parent.pageSize()}, click: $parent.changePageSize, clickBubble: false" aria-label="Page Size"></a>
+                                        </li>
+                                        <!-- /ko -->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="prev" data-bind="visible: totalPages() > 1">
+                                <a href="#" data-bind="click: prev, clickBubble: false" aria-label="Prev"></a>
+                            </li>
+                            <!-- ko foreach: pagesNumber -->
+                            <li class="page" data-bind="css: {'selected': $parent.currentPage() == $data}, visible: $parent.totalPages() > 1">
+                                <a href="#" data-bind="html: $data, click: $parent.changePage, clickBubble: false" aria-label="Page"></a>
+                            </li>
+                            <!-- /ko -->
+                            <li class="next" data-bind="visible: totalPages() > 1">
+                                <a href="#" data-bind="click: next, clickBubble: false" aria-label="Next"></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="no-data" data-bind="visible: !hasData(), html: $root.resx.NoData"></div>
+            </div>            
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

@@ -85,6 +85,7 @@ namespace Dnn.ExportImport.Components.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
         private Dictionary<int, int> _partialImportedTabs = new Dictionary<int, int>();
         private Dictionary<int, bool> _searchedParentTabs = new Dictionary<int, bool>();
+        private IList<ImportModuleMapping> _importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
@@ -155,12 +156,14 @@ namespace Dnn.ExportImport.Components.Services
             var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);
 
             var index = 0;
+            var referenceTabs = new List<int>();
+            _importContentList.Clear();
             foreach (var otherTab in exportedTabs)
             {
                 if (CheckCancelled(_exportImportJob)) break;
                 if (_totals.LastProcessedId > index) continue; // this is the exported DB row ID; not the TabID
 
-                ProcessImportPage(otherTab, exportedTabs, localTabs);
+                ProcessImportPage(otherTab, exportedTabs, localTabs, referenceTabs);
 
                 CheckPoint.ProcessedItems++;
                 CheckPoint.Progress += progressStep;
@@ -169,11 +172,15 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.LastProcessedId = index++;
                 CheckPoint.StageData = JsonConvert.SerializeObject(_totals);
             }
+
+            //repair pages which linked to other pages
+            RepairReferenceTabs(referenceTabs, localTabs, exportedTabs);
+
             _searchedParentTabs.Clear();
             ReportImportTotals();
         }
 
-        protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
+        protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs, IList<int> referenceTabs)
         {
             var portalId = _exportImportJob.PortalId;
             var createdBy = Util.GetUserIdByName(_exportImportJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
@@ -207,20 +214,10 @@ namespace Dnn.ExportImport.Components.Services
                             }
                             CheckForPartialImportedTabs(otherTab);
                         }
-                        var urlTabId = -1;
                         var tabType = Globals.GetURLType(otherTab.Url);
-                        if (tabType == TabType.Tab)
+                        if (tabType == TabType.Tab && !referenceTabs.Contains(localTab.TabID))
                         {
-                            urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
-                            if (urlTabId == -1)
-                            {
-                                if (!isParentPresent)
-                                {
-                                    Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                                    return;
-                                }
-                                CheckForPartialImportedTabs(otherTab);
-                            }
+                            referenceTabs.Add(localTab.TabID);
                         }
 
                         // this is not saved when adding the tab; so set it explicitly
@@ -236,16 +233,14 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
                             localTab.ParentId = parentId;
-                            if (tabType == TabType.Tab && urlTabId > -1)
-                            {
-                                localTab.Url = urlTabId.ToString();
-                            }
-                            else if (tabType == TabType.Url)
+                            if (tabType == TabType.Url)
                             {
                                 localTab.Url = otherTab.Url;
                             }
                             SetPartialImportSettings(otherTab, localTab);
                             _tabController.UpdateTab(localTab);
+
+                            DotNetNuke.Data.DataProvider.Instance().UpdateTabOrder(localTab.TabID, localTab.TabOrder, localTab.ParentId, Null.NullInteger);
                         }
                         catch (Exception ex)
                         {
@@ -281,38 +276,25 @@ namespace Dnn.ExportImport.Components.Services
 
                     checkPartial = true;
                 }
-                var urlTabId = -1;
+
                 var tabType = Globals.GetURLType(otherTab.Url);
-                if (tabType == TabType.Tab)
-                {
-                    urlTabId = TryFindLocalUrlTabId(otherTab, exportedTabs, localTabs);
-                    if (urlTabId == -1)
-                    {
-                        if (!isParentPresent)
-                        {
-                            Result.AddLogEntry("Importing existing tab skipped as its referenced page was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
-                            return;
-                        }
-
-                        checkPartial = true;
-                    }
-                }
-
                 try
                 {
                     localTab.ParentId = parentId;
-                    if (tabType == TabType.Tab && urlTabId > -1)
-                    {
-                        localTab.Url = urlTabId.ToString();
-                    }
-                    else if (tabType == TabType.Url)
+                    if (tabType == TabType.Url)
                     {
                         localTab.Url = otherTab.Url;
                     }
                     localTab.UniqueId = Guid.NewGuid();
                     SetPartialImportSettings(otherTab, localTab);
-                    otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab);
+                    otherTab.LocalId = localTab.TabID = _tabController.AddTab(localTab, false);
+                    DotNetNuke.Data.DataProvider.Instance().UpdateTabOrder(localTab.TabID, localTab.TabOrder, localTab.ParentId, Null.NullInteger);
                     localTabs.Add(localTab);
+
+                    if (tabType == TabType.Tab && !referenceTabs.Contains(localTab.TabID))
+                    {
+                        referenceTabs.Add(localTab.TabID);
+                    }
 
                     if (checkPartial)
                     {
@@ -684,12 +666,18 @@ namespace Dnn.ExportImport.Components.Services
             var allExistingIds = localTabModules.Select(l => l.ModuleID).ToList();
             var allImportedIds = new List<int>();
 
+            var localOrders = BuildModuleOrders(localTabModules);
+            var exportOrders = BuildModuleOrders(exportedTabModules);
             foreach (var other in exportedTabModules)
             {
-                var locals = localTabModules.Where(
-                    m => m.UniqueId == other.UniqueId ||
-                        (m.ModuleDefinition.FriendlyName == other.FriendlyName &&
-                        m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder)).ToList();
+                var locals = new List<ModuleInfo>(localTabModules.Where(m => m.UniqueId == other.UniqueId && m.IsDeleted == other.IsDeleted));
+                if (locals.Count == 0)
+                {
+                    locals = new List<ModuleInfo>(localTabModules.Where(m => m.ModuleDefinition.FriendlyName == other.FriendlyName
+                                                                             && m.PaneName == other.PaneName
+                                                                             && ModuleOrderMatched(m, other, localOrders, exportOrders)
+                                                                             && m.IsDeleted == other.IsDeleted)).ToList();
+                }
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
                 if (otherModule == null) continue; // must not happen
@@ -897,7 +885,6 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DisplayTitle = other.DisplayTitle;
                                 local.DisplayPrint = other.DisplayPrint;
                                 local.DisplaySyndicate = other.DisplaySyndicate;
-                                local.IsDeleted = other.IsDeleted;
                                 local.IsShareable = otherModule.IsShareable;
                                 local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                                 local.IsWebSlice = other.IsWebSlice;
@@ -915,7 +902,8 @@ namespace Dnn.ExportImport.Components.Services
                                 }
 
                                 // updates both module and tab module db records
-                                _moduleController.UpdateModule(local);
+                                UpdateModuleWithIsDeletedHandling(other, otherModule, local);
+
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
@@ -926,11 +914,14 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     local.IsDeleted = other.IsDeleted;
                                     if (other.IsDeleted)
+                                    {
                                         _moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    }
                                     else
+                                    {
                                         _moduleController.RestoreModule(local);
+                                    }
                                 }
-
                             }
 
                             var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -972,12 +963,106 @@ namespace Dnn.ExportImport.Components.Services
                 var unimported = allExistingIds.Distinct().Except(allImportedIds);
                 foreach (var moduleId in unimported)
                 {
-                    _moduleController.DeleteTabModule(localTab.TabID, moduleId, false);
+                    try
+                    {
+                        _moduleController.DeleteTabModule(localTab.TabID, moduleId, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(new Exception($"Delete TabModule Failed: {moduleId}", ex));
+                    }
                     Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
                 }
             }
 
             return count;
+        }
+        
+        /*
+            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted. 
+            ExportTabModule.IsDeleted may different from ExportModule.IsDeleted when Module is deleted.
+            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
+            updating Modules.
+        */
+        private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)
+        {
+            importModule.IsDeleted = exportModule.IsDeleted;
+            ActionInWorkflowlessContext(importModule.TabID, () =>
+            {
+                _moduleController.UpdateModule(importModule);
+            });
+            importModule.IsDeleted = exportTabModule.IsDeleted;
+        }
+
+        private bool ModuleOrderMatched(ModuleInfo module, ExportTabModule exportTabModule, IDictionary<int, int> localOrders, IDictionary<int, int> exportOrders)
+        {
+            return localOrders.ContainsKey(module.ModuleID)
+                   && exportOrders.ContainsKey(exportTabModule.ModuleID)
+                   && localOrders[module.ModuleID] == exportOrders[exportTabModule.ModuleID];
+        }
+
+        private IDictionary<int, int> BuildModuleOrders(IList<ModuleInfo> modules)
+        {
+            var moduleOrders = new Dictionary<int, int>();
+            var moduleOrder = 1;
+            Action resetModulOrder = () => { moduleOrder = 1; };
+            var lastPane = string.Empty;
+            var lastIsDeleted = false;
+            foreach (var module in modules.OrderBy(m => m.PaneName.ToLowerInvariant()).ThenBy(m => m.IsDeleted))
+            {
+                var paneName = module.PaneName.ToLowerInvariant();
+                var isDeleted = module.IsDeleted;
+                if (paneName != lastPane || isDeleted != lastIsDeleted)
+                {
+                    resetModulOrder();
+                }
+
+                var currentOrder = moduleOrder + 2;
+
+                if (!moduleOrders.ContainsKey(module.ModuleID))
+                {
+                    moduleOrders.Add(module.ModuleID, currentOrder);
+                }
+
+                moduleOrder = currentOrder;
+
+                lastPane = paneName;
+                lastIsDeleted = isDeleted;
+            }
+
+            return moduleOrders;
+        }
+
+        private IDictionary<int, int> BuildModuleOrders(IList<ExportTabModule> modules)
+        {
+            var moduleOrders = new Dictionary<int, int>();
+            var moduleOrder = 1;
+            Action resetModulOrder = () => { moduleOrder = 1; };
+            var lastPane = string.Empty;
+            var lastIsDeleted = false;
+            foreach (var module in modules.OrderBy(m => m.PaneName.ToLowerInvariant()).ThenBy(m => m.IsDeleted))
+            {
+                var paneName = module.PaneName.ToLowerInvariant();
+                var isDeleted = module.IsDeleted;
+                if (paneName != lastPane || isDeleted != lastIsDeleted)
+                {
+                    resetModulOrder();
+                }
+
+                var currentOrder = moduleOrder + 2;
+
+                if (!moduleOrders.ContainsKey(module.ModuleID))
+                {
+                    moduleOrders.Add(module.ModuleID, currentOrder);
+                }
+
+                moduleOrder = currentOrder;
+
+                lastPane = paneName;
+                lastIsDeleted = isDeleted;
+            }
+
+            return moduleOrders;
         }
 
         private int ImportModuleSettings(ModuleInfo localModule, ExportModule otherModule, bool isNew)
@@ -1111,17 +1196,16 @@ namespace Dnn.ExportImport.Components.Services
                                     var restoreCount = 0;
                                     var version = DotNetNukeContext.Current.Application.Version.ToString(3);
 
-                                    bool versionEnabledPortalLevel, versionEnabledTabLevel, workflowEnabledPortalLevel, workflowEnabledTabLevel;
-                                    DisableVersioning(tabId, out versionEnabledPortalLevel, out versionEnabledTabLevel, out workflowEnabledPortalLevel, out workflowEnabledTabLevel);
-
-                                    try
+                                    ActionInWorkflowlessContext(tabId, () =>
                                     {
                                         foreach (var moduleContent in exportedContent)
                                         {
-                                            if (!moduleContent.IsRestored)
+                                            if (!moduleContent.IsRestored
+                                                || !_importContentList.Any(i => i.ExportModuleId == otherModule.ModuleID && i.LocalModuleId == localModule.ModuleID))
                                             {
                                                 try
                                                 {
+                                                    _importContentList.Add(new ImportModuleMapping { ExportModuleId = otherModule.ModuleID, LocalModuleId = localModule.ModuleID });
                                                     var content = moduleContent.XmlContent;
                                                     if (content.IndexOf('\x03') >= 0)
                                                     {
@@ -1142,11 +1226,7 @@ namespace Dnn.ExportImport.Components.Services
                                                 }
                                             }
                                         }
-                                    }
-                                    finally
-                                    {
-                                        RestoreVersioning(tabId, versionEnabledPortalLevel, versionEnabledTabLevel, workflowEnabledPortalLevel, workflowEnabledTabLevel);
-                                    }
+                                    });
 
                                     if (restoreCount > 0)
                                     {
@@ -1165,6 +1245,21 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             return 0;
+        }
+
+        private void ActionInWorkflowlessContext(int tabId, Action action)
+        {
+            bool versionEnabledPortalLevel, versionEnabledTabLevel, workflowEnabledPortalLevel, workflowEnabledTabLevel;
+            DisableVersioning(tabId, out versionEnabledPortalLevel, out versionEnabledTabLevel, out workflowEnabledPortalLevel, out workflowEnabledTabLevel);
+
+            try
+            {
+                action();
+            }
+            finally
+            {
+                RestoreVersioning(tabId, versionEnabledPortalLevel, versionEnabledTabLevel, workflowEnabledPortalLevel, workflowEnabledTabLevel);
+            }
         }
 
         private void DisableVersioning(int tabId,
@@ -1249,16 +1344,6 @@ namespace Dnn.ExportImport.Components.Services
             return count;
         }
 
-        private static int TryFindLocalUrlTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
-        {
-            int urlTabId;
-            if (int.TryParse(exportedTab.Url, out urlTabId))
-            {
-                return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, urlTabId);
-            }
-            return -1;
-        }
-
         private static int TryFindLocalParentTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
         {
             return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, exportedTab.ParentId);
@@ -1334,6 +1419,23 @@ namespace Dnn.ExportImport.Components.Services
             localTab.TabPath = otherTab.TabPath;
             localTab.HasBeenPublished = otherTab.HasBeenPublished;
             localTab.IsSystem = otherTab.IsSystem;
+        }
+
+        private void RepairReferenceTabs(IList<int> referenceTabs, IList<TabInfo> localTabs, IList<ExportTab> exportTabs)
+        {
+            foreach (var tabId in referenceTabs)
+            {
+                var localTab = localTabs.FirstOrDefault(t => t.TabID == tabId);
+                if (localTab != null && Int32.TryParse(localTab.Url, out int urlTabId))
+                {
+                    var exportTab = exportTabs.FirstOrDefault(t => t.TabId == urlTabId);
+                    if (exportTab != null && exportTab.LocalId.HasValue)
+                    {
+                        localTab.Url = exportTab.LocalId.ToString();
+                        TabController.Instance.UpdateTab(localTab);
+                    }
+                }
+            }
         }
 
         #region Methods for updating CreatedBy and ModifiedBy of various tables
@@ -1548,7 +1650,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ExportModulePackage(ExportModule exportModule)
         {
-            if (!_exportedModuleDefinitions.Contains(exportModule.ModuleDefID))
+            if (!_exportedModuleDefinitions.Contains(exportModule.ModuleDefID) && _exportDto.IncludeExtensions)
             {
                 var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
@@ -1559,19 +1661,28 @@ namespace Dnn.ExportImport.Components.Services
                 var filePath = InstallerUtil.GetPackageBackupPath(package);
                 if (File.Exists(filePath))
                 {
-                    var offset = Path.GetDirectoryName(filePath)?.Length + 1;
-                    CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
-
-                    Repository.CreateItem(new ExportPackage
+                    try
                     {
-                        PackageName = package.Name,
-                        Version = package.Version,
-                        PackageType = package.PackageType,
-                        PackageFileName = InstallerUtil.GetPackageBackupName(package)
-                    }, null);
+                        var offset = Path.GetDirectoryName(filePath)?.Length + 1;
+                        CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
 
-                    _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
-                    return 1;
+                        Repository.CreateItem(new ExportPackage
+                        {
+                            PackageName = package.Name,
+                            Version = package.Version,
+                            PackageType = package.PackageType,
+                            PackageFileName = InstallerUtil.GetPackageBackupName(package)
+                        }, null);
+
+                        _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
+                        return 1;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                        return 0;
+                    }
+
                 }
             }
             return 0;
@@ -1985,6 +2096,13 @@ namespace Dnn.ExportImport.Components.Services
 
             public int TotalTabModules { get; set; }
             public int TotalTabModuleSettings { get; set; }
+        }
+
+        private class ImportModuleMapping
+        {
+            public int ExportModuleId { get; set; }
+
+            public int LocalModuleId { get; set; }
         }
         #endregion
     }

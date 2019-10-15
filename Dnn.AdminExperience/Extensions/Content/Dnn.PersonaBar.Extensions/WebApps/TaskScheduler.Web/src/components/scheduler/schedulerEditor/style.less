@@ -1,0 +1,117 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.scheduler-setting-editor {
+    margin: 10px 0;
+    .scheduler-item-container{
+        display: flex;
+        .scheduler-item-column{
+            flex: 0 1 50%;
+        }
+    }
+    .container {
+        padding: 2% 8%;
+        &.right-column {
+            border-left: 1px solid @alto;
+        }
+        .title-row {
+            width: 100%;
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .status-row {
+            width: 100%;
+            float: left;
+            margin-bottom: 10px;
+            .left {
+                float: left;
+                width: 50%;
+            }
+            .right {
+                float: right;
+                width: 50%;
+                text-align: right;
+                .checkbox {
+                    float: right;
+                }
+            }
+        }
+        .editor-row {
+            float: left;
+            width: 100%;
+            label {
+                font-weight: bolder;
+                clear: both;
+                float: left;
+                text-align: left;
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            select {
+                padding: 8px 16px 8px 5px;
+                &.full {
+                    float: left;
+                    width: 100%;
+                }
+                &.two-fifth {
+                    float: left;
+                    width: 40%
+                }
+                &.one-fourth {
+                    float: left;
+                    width: 25%;
+                }
+            }
+            .dnn-dropdown{
+                width: 100%;
+                margin-bottom: 30px;
+            }
+            .text-section {
+                width: 5%;
+                float: left;
+                text-align: center;
+                vertical-align: middle;
+                margin-top: 9px;
+            }
+            .dnn-day-picker {
+                width: 100%;  
+                margin-bottom: 32px;              
+            }
+            .dnn-day-picker{
+                width: 100%;
+                select {
+                    padding: 0;
+                }
+                .calendar-text{
+                    width: ~"calc(100% - 37px)";
+                }
+                .clear-button{
+                    line-height: 28px;
+                }
+            }
+            .switch-button{
+                label{
+                    width: auto;
+                }
+            }
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        float: left;
+        margin: 10px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+        .edit-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+    }
+}

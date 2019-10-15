@@ -1,0 +1,77 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+#users-container {
+    .user-role-row {
+        width: 100%;
+        float: left;
+        padding: 13px 20px;
+        box-sizing: border-box;
+        text-align: left;
+        &:not(:last-child) {
+            border-bottom: 1px solid @alto;
+        }
+        div.edit-row a {
+            display: inline-block;
+        }
+        .dnn-grid-cell {
+            box-sizing: border-box;
+            .actions {
+                float: right;
+                box-sizing: border-box;
+                height: 20px;
+                text-align: right;
+                & > div {
+                    text-align: left;
+                    float: left;                    
+                }
+                span {
+                    float: left;
+                    .dnn-day-picker {
+                        height: 19px;
+                        .calendar-icon {
+                            opacity: 0;
+                            width: 19px;
+                            height: 19px;
+                            &.active {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    a {
+                        svg {
+                            width: 23px;
+                            height: 23px;
+                        }
+                    }
+                }
+                a {
+                    float: left;
+                    opacity: 0;
+                }
+                &:hover {
+                    a {
+                        display: inline-block;
+                    }
+                }
+                div.edit-row a {
+                    display: inline-block;
+                }
+            }
+        }
+        &:hover {
+            .dnn-grid-cell {
+                .actions {
+                    span {
+                        .dnn-day-picker {
+                            .calendar-icon {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    a {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}

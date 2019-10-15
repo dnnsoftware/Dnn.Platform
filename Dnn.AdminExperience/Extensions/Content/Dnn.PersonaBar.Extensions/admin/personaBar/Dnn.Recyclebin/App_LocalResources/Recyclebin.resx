@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="nav_Recyclebin.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="recyclebin_Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="recyclebin_CancelConfirm.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="recyclebin_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="recyclebin_DeleteConfirm.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="recyclebin_DeletedDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="recyclebin_EmptyRecycleBin.Text" xml:space="preserve">
+    <value>Empty Recycle Bin</value>
+  </data>
+  <data name="recyclebin_EmptyRecycleBinConfirm.Text" xml:space="preserve">
+    <value>Do you want to empty all files in the recycle bin?</value>
+  </data>
+  <data name="recyclebin_Modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="recyclebin_Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="recyclebin_ModuleTitle.Text" xml:space="preserve">
+    <value>Module Title</value>
+  </data>
+  <data name="recyclebin_Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="recyclebin_UserDisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="recyclebin_NoConfirm.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="recyclebin_NoItems.Text" xml:space="preserve">
+    <value>The recycle bin is currently empty</value>
+  </data>
+  <data name="recyclebin_NoModules.Text" xml:space="preserve">
+    <value>No Modules In Recycle Bin</value>
+  </data>
+  <data name="recyclebin_NoPages.Text" xml:space="preserve">
+    <value>No Pages In Recycle Bin</value>
+  </data>
+  <data name="recyclebin_NoUsers.Text" xml:space="preserve">
+    <value>No Users In Recycle Bin</value>
+  </data>
+  <data name="recyclebin_Page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="recyclebin_Pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="recyclebin_RemoveModuleConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this module.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemoveModulesConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete selected modules.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemovePageConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this page.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemovePagesConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete selected pages.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_Restore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="recyclebin_RestoreModuleConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore this module.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestoreModulesConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore selected modules.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestorePageConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore this page.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestorePageInvalid.Text" xml:space="preserve">
+    <value>You need to restore this page's parent first.</value>
+  </data>
+  <data name="recyclebin_RestorePagesConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore selected pages.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestorePagesInvalid.Text" xml:space="preserve">
+    <value>The page(s) you tried to restore should select their parent in same time.</value>
+  </data>
+  <data name="recyclebin_RestoreUserConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore this user.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestoreUsersConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore selected users.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemoveUserConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this user.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemoveUsersConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete selected users.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_Title.Text" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="recyclebin_UnableToSelectAllModules.Text" xml:space="preserve">
+    <value>Cannot permanently delete or restore a module's who's page is in the Recycle Bin.</value>
+  </data>
+  <data name="recyclebin_YesConfirm.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Service_RemoveTabError.Text" xml:space="preserve">
+    <value>Error removing page has occurred:{0}</value>
+  </data>
+  <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
+    <value>Error removing page modules has occurred:{0}</value>
+  </data>
+  <data name="Service_RemoveUserError.Text" xml:space="preserve">
+    <value>Error removing user has occurred:{0}</value>
+  </data>
+  <data name="Service_RestoreModuleError.Text" xml:space="preserve">
+    <value>Error restoring module {0} on page {1}. Page is deleted.</value>
+  </data>
+  <data name="Service_RestoreTabError.Text" xml:space="preserve">
+    <value>Page {0} cannot be restored until its parent is restored first.</value>
+  </data>
+  <data name="Service_RestoreTabModuleError.Text" xml:space="preserve">
+    <value>Error restoring page has occurred:{0}</value>
+  </data>
+  <data name="Service_EmptyRecycleBinError.Text" xml:space="preserve">
+    <value>Some of the items were not deleted.</value>
+  </data>
+  <data name="Service_RestoreUserError.Text" xml:space="preserve">
+    <value>Error restoring user.</value>
+  </data>
+  <data name="CanNotDeleteModule.Text" xml:space="preserve">
+    <value>You do not have permissions to delete module with id "{0}".</value>
+  </data>
+  <data name="ModuleNotSoftDeleted.Text" xml:space="preserve">
+    <value>Module with id "{0}" is not soft deleted.</value>
+  </data>
+  <data name="Prompt_FlagNotInt.Text" xml:space="preserve">
+    <value>--{0} must be an integer\n</value>
+  </data>
+  <data name="Prompt_FlagNotPositiveInt.Text" xml:space="preserve">
+    <value>--{0} must be greater than 0\n</value>
+  </data>
+  <data name="Prompt_MainParamRequired.Text" xml:space="preserve">
+    <value>The {0} is required. Please use the --{1} flag or pass it as the first argument after the command name\n</value>
+  </data>
+  <data name="ModuleNotFound.Text" xml:space="preserve">
+    <value>Module with id "{0}" not found on page "{1}".</value>
+  </data>
+  <data name="Prompt_ModulePurgedSuccessfully.Text" xml:space="preserve">
+    <value>Module with id "{0}" purged successfully.</value>
+  </data>
+  <data name="Service_RemoveTabWithChildError.Text" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.</value>
+  </data>
+  <data name="Prompt_FlagRequired.Text" xml:space="preserve">
+    <value>--{0} is required\n</value>
+  </data>
+  <data name="Prompt_ModuleRestoredSuccessfully.Text" xml:space="preserve">
+    <value>Module with id "{0}" restored successfully.</value>
+  </data>
+  <data name="CanNotDeleteTab.Text" xml:space="preserve">
+    <value>You do not have permissions to delete page with id "{0}".</value>
+  </data>
+  <data name="PageNotFound.Text" xml:space="preserve">
+    <value>Page with id "{0}" not found.&gt;br/&gt;</value>
+  </data>
+  <data name="Prompt_PagePurgedSuccessfully.Text" xml:space="preserve">
+    <value>Page with id "{0}" purged successfully.</value>
+  </data>
+  <data name="Prompt_PageRestoredSuccessfully.Text" xml:space="preserve">
+    <value>Page with id "{0}" and name "{1}" restored successfully.</value>
+  </data>
+  <data name="TabNotSoftDeleted.Text" xml:space="preserve">
+    <value>Page with id "{0}" is not soft deleted.</value>
+  </data>
+  <data name="PageNotFoundWithName.Text" xml:space="preserve">
+    <value>Page with name "{0}" not found.&gt;br/&gt;</value>
+  </data>
+  <data name="Prompt_RestorePageNoParams.Text" xml:space="preserve">
+    <value>You must specify either a Page ID or Page Name.</value>
+  </data>
+  <data name="UserNotFound.Text" xml:space="preserve">
+    <value>User with id "{0}" not found.</value>
+  </data>
+  <data name="Prompt_PurgeModule_Description.Text" xml:space="preserve">
+    <value>Permanently deletes a module. The module should be soft deleted first.</value>
+  </data>
+  <data name="Prompt_PurgeModule_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Module ID of the module to delete permanently. Use of the flag is not required. You can simply provide the ID value as the first argument.</value>
+  </data>
+  <data name="Prompt_PurgeModule_FlagPageId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Page Id on which the module was added originally.</value>
+  </data>
+  <data name="Prompt_PurgeModule_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Purge a Specific Module&lt;/h4&gt;
+        &lt;p&gt;The code below purges the module whose Module ID is 359&lt;/p&gt;
+        &lt;code class="block"&gt;purge-module 359 --pageid 20&lt;/code&gt;
+
+        &lt;h4&gt;Results&lt;/h4&gt;
+        Module with id "359" purged successfully.</value>
+  </data>
+  <data name="Prompt_PurgePage_Description.Text" xml:space="preserve">
+    <value>Permanently deletes a page from the portal that had previously been deleted and sent to DNN's Recycle Bin.</value>
+  </data>
+  <data name="Prompt_PurgePage_FlagDeleteChildren.Text" xml:space="preserve">
+    <value>Specifies that if a page has children, should the command delete them all or show error.</value>
+  </data>
+  <data name="Prompt_PurgePage_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Page ID to purge. Use of the flag name is not required. You can simply provide the ID value as the first argument.</value>
+  </data>
+  <data name="Prompt_PurgePage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Purge a Deleted Page By Page ID&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            purge-page 999
+        &lt;/code&gt;
+        OR
+        &lt;code class="block"&gt;
+            purge-page --id 999
+        &lt;/code&gt;
+
+        &lt;h4&gt;Purge a Deleted Page and All It's Child Pages&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            purge-page --id 999 --deletechildren true
+        &lt;/code&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_PurgeUser_Description.Text" xml:space="preserve">
+    <value>Permanently deletes the specified user from the portal. The user &lt;strong&gt;must&lt;/strong&gt; be deleted already. If you issue a &lt;code&gt;get-user&lt;/code&gt; command and the &lt;code&gt;IsDeleted&lt;/code&gt; property isn't &lt;code&gt;true&lt;/code&gt;, then you will get an error when attempting this command. You must use the &lt;code&gt;delete-user&lt;/code&gt; command on the user first.</value>
+  </data>
+  <data name="Prompt_PurgeUser_FlagId.Text" xml:space="preserve">
+    <value>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</value>
+  </data>
+  <data name="Prompt_PurgeUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Permanently Delete a User&lt;/h4&gt;
+    &lt;p&gt;Permanently delete's the user with a User ID of 345. If you issue the command: &lt;code&gt;get-user 345&lt;/code&gt; you will receive a 'user not found' message. &lt;/p&gt;
+    &lt;code class="block"&gt;purge-user 345&lt;/code&gt;
+    &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
+    &lt;code class="block"&gt;purge-user --id 345&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_UserPurged.Text" xml:space="preserve">
+    <value>The User has been permanently removed from the site.</value>
+  </data>
+  <data name="Prompt_CannotPurgeUser.Text" xml:space="preserve">
+    <value>Cannot purge user that has not been deleted first. Try delete-user.</value>
+  </data>
+  <data name="Prompt_RestoreModule_Description.Text" xml:space="preserve">
+    <value>Restores a module from the DNN Recycle Bin.</value>
+  </data>
+  <data name="Prompt_RestoreModule_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Module ID of the module to retrieve. Use of the flag is not required. You can simply provide the ID value as the first argument.</value>
+  </data>
+  <data name="Prompt_RestoreModule_FlagPageId.Text" xml:space="preserve">
+    <value>The Page ID of the page on which the module you want to restore resided prior to deletion.</value>
+  </data>
+  <data name="Prompt_RestoreModule_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Restore A Module from the Recycle Bin&lt;/h4&gt;
+        &lt;code class="block"&gt;restore-module 359 --pageid 71&lt;/code&gt;
+
+        &lt;h4&gt;Results&lt;/h4&gt;
+        Module with id "359" restored successfully.</value>
+  </data>
+  <data name="Prompt_RestorePage_Description.Text" xml:space="preserve">
+    <value>Restores a page from the DNN Recycle Bin.</value>
+  </data>
+  <data name="Prompt_RestorePage_FlagId.Text" xml:space="preserve">
+    <value>Explicitly specifies the Page ID to delete. Use of the flag name is not required. You can simply provide the ID value as the first argument. Required if &lt;span class="mono"&gt;--parentid&lt;/span&gt; and &lt;span class="mono"&gt;--name&lt;/span&gt; are not specified.</value>
+  </data>
+  <data name="Prompt_RestorePage_FlagName.Text" xml:space="preserve">
+    <value>Specifies the name (not title) of the page that should be restored. This can be combined with &lt;span class="mono"&gt;--parentid&lt;/span&gt; to target a page name with a specific Parent page. Required if &lt;span class="mono"&gt;--parentid&lt;/span&gt; and &lt;span class="mono"&gt;--name&lt;/span&gt; are not specified.</value>
+  </data>
+  <data name="Prompt_RestorePage_FlagParentId.Text" xml:space="preserve">
+    <value>Required if you want to delete a page by name and page is child of some other page. In that case provide the id of the parent page.</value>
+  </data>
+  <data name="Prompt_RestorePage_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;div&gt;
+        &lt;h4&gt;Restore a Deleted Page By Page ID&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            restore-page 999
+        &lt;/code&gt;
+        OR
+        &lt;code class="block"&gt;
+            restore-page --id 999
+        &lt;/code&gt;
+
+        &lt;h4&gt;Restore a Page With A Specific Page Name&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            restore-page --name "Page1"
+        &lt;/code&gt;
+
+        &lt;h4&gt;Restore a Page With A Specific Page Name and Parent&lt;/h4&gt;
+        &lt;code class="block"&gt;
+            restore-page --name "Page1" --parentid 30
+        &lt;/code&gt;
+    &lt;/div&gt;</value>
+  </data>
+  <data name="Prompt_RestoreUser_Description.Text" xml:space="preserve">
+    <value>Recovers a user that has been deleted but not purged.</value>
+  </data>
+  <data name="Prompt_RestoreUser_FlagId.Text" xml:space="preserve">
+    <value>The user's User ID. If the flag is not used, then the user's ID must be the first argument.</value>
+  </data>
+  <data name="Prompt_RestoreUser_ResultHtml.Text" xml:space="preserve">
+    <value>&lt;h4&gt;Recover a Deleted User&lt;/h4&gt;
+        &lt;p&gt;Restores the user with a User ID of 345. If the user hasn't been deleted, you will receive a message indicating there is nothing to restore. If the user has already been purged (or 'removed' via DNN's user interface, you will receive a 'user not found' message. &lt;/p&gt;
+        &lt;code class="block"&gt;restore-user 345&lt;/code&gt;
+        &lt;p&gt;This is the more explicit form of the above code.&lt;/p&gt;
+        &lt;code class="block"&gt;restore-user --id 345&lt;/code&gt;</value>
+  </data>
+  <data name="Prompt_RecylcleBinCategory.Text" xml:space="preserve">
+    <value>Recycle Bin Commands</value>
+  </data>
+  <data name="UserRestored.Text" xml:space="preserve">
+    <value>User restored successfully.</value>
+  </data>
+  <data name="Prompt_RestoreNotRequired.Text" xml:space="preserve">
+    <value>User not deleted. Restore not required.</value>
+  </data>
+  <data name="Service_RemoveTabParentTabError" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.</value>
+  </data>
+</root>

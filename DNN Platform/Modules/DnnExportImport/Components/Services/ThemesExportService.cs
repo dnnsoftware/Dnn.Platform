@@ -56,26 +56,30 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalThemes : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    foreach (var theme in exportThemes)
+                    using (var archive = CompressionUtil.OpenCreate(packagesZipFile))
                     {
-                        var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
-                        var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
-                        if (Directory.Exists(physicalPath))
+                        foreach (var theme in exportThemes)
                         {
-                            foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                            var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
+                            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
+                            if (Directory.Exists(physicalPath))
                             {
-                                var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
-                                CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
+                                foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                                {
+                                    var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
+                                    CompressionUtil.AddFileToArchive(archive, file, folderOffset);
+                                }
+                                totalThemesExported += 1;
                             }
-                            totalThemesExported += 1;
-                        }
 
-                        CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalThemes;
-                        currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                            CheckPoint.ProcessedItems++;
+                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalThemes;
+                            currentIndex++;
+                            //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                        }
                     }
+
                     CheckPoint.Stage++;
                     CheckPoint.Completed = true;
                     CheckPoint.Progress = 100;
