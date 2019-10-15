@@ -39,8 +39,7 @@
       <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebHelpers.3.1.1\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebHelpers.3.1.2\lib\net45\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -95,12 +94,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.Data.3.1.1\lib\net45\WebMatrix.Data.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.Data.3.1.2\lib\net45\WebMatrix.Data.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.WebData.3.1.1\lib\net45\WebMatrix.WebData.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.WebData.3.1.2\lib\net45\WebMatrix.WebData.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
