@@ -542,6 +542,6 @@ Standaard database installatie opties niet beschikbaar</value>
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
   <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 is vereist. Controleer op Windows-updates voordat u doorgaat.</value>
+    <value>.Net Framework 4.7.2 is vereist, u dient deze via Windows Update te installeren voordat u verder gaat.</value>
   </data>
 </root>
