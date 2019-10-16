@@ -12,10 +12,11 @@
 
 using System;
 using System.Collections.Generic;
-//using System.Xml;
 using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -39,6 +40,12 @@ namespace DotNetNuke.Modules.Journal.Components {
     //uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
+        protected INavigationManager NavigationManager { get; }
+        public FeatureController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Optional Interfaces
 
         /// -----------------------------------------------------------------------------
@@ -268,15 +275,15 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             if (groupId > 0 && tabId > 0)
             {
-                url = Globals.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
+                url = NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
             }
             else if (tabId == portalSettings.UserTabId)
             {
-                url = Globals.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
+                url = NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
             }
             else
             {
-                url = Globals.NavigateURL(tabId, string.Empty, "jid=" + journalId);
+                url = NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
             }
 
             return url;

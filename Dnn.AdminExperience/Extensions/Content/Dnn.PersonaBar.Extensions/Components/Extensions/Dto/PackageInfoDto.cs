@@ -21,7 +21,9 @@
 #region Usings
 
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -95,6 +97,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("siteSettingsLink", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string SiteSettingsLink { get; set; }
 
+        protected INavigationManager NavigationManager { get; }
+
         public PackageInfoDto()
         {
             
@@ -102,6 +106,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageInfoDto(int portalId, PackageInfo package)
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+
             PackageType = package.PackageType;
             FriendlyName = package.FriendlyName;
             Name = package.Name;
@@ -127,7 +133,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tabId = portalSettings.ActiveTab.TabID;
-            SiteSettingsLink = Globals.NavigateURL(tabId, "EditExtension",
+            SiteSettingsLink = NavigationManager.NavigateURL(tabId, "EditExtension",
                     new[]
                     {
                         $"packageid={PackageId}",

@@ -3042,7 +3042,7 @@ namespace DotNetNuke.Common
         /// <param name="language">The language code.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        /// [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return NavigateURL(tabID, isSuperTab, settings, controlKey, language, glbDefaultPage, additionalParameters);
@@ -3059,7 +3059,7 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page name to pass to <see cref="FriendlyUrl(DotNetNuke.Entities.Tabs.TabInfo,string,string)"/>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted url.</returns>
-        /// [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             string url = tabID == Null.NullInteger ? ApplicationURL() : ApplicationURL(tabID);

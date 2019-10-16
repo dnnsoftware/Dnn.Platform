@@ -29,8 +29,10 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -47,6 +49,11 @@ namespace Dnn.PersonaBar.Extensions.Components
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";
+        protected INavigationManager NavigationManager { get; }
+        public ExtensionsController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         public IDictionary<string, PackageType> GetPackageTypes()
         {
@@ -270,7 +277,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                     : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
-                    var url = Globals.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
+                    var url = NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
                     returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
                 index = index + 1;

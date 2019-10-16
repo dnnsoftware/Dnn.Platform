@@ -11,6 +11,7 @@
 */
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
@@ -22,6 +23,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Common.Interfaces;
 
 namespace DotNetNuke.Modules.Journal {
 
@@ -32,6 +34,7 @@ namespace DotNetNuke.Modules.Journal {
     /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase {
 
+        protected INavigationManager NavigationManager { get; }
         public int PageSize = 20;
         public bool AllowPhotos = true;
         public bool AllowFiles = true;
@@ -46,6 +49,11 @@ namespace DotNetNuke.Modules.Journal {
         public int Pid = -1;
         public long MaxUploadSize = Config.GetMaxUploadSize();
         public bool IsPublicGroup = false;
+
+        public View()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Event Handlers
 
@@ -180,7 +188,7 @@ namespace DotNetNuke.Modules.Journal {
                 BaseUrl = BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/";
                 BaseUrl += "DesktopModules/Journal/";
 
-                ProfilePage = Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
+                ProfilePage = NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
 
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
                 {

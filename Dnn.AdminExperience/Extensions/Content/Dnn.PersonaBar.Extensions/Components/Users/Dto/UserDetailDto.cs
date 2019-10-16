@@ -22,6 +22,7 @@
 using System;
 using System.Linq;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
@@ -30,6 +31,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Common.Interfaces;
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
@@ -79,13 +81,16 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
 
+        protected INavigationManager NavigationManager { get; }
+
         public UserDetailDto()
         {
-            
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
 
         public UserDetailDto(UserInfo user) : base(user)
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
             LastLogin = user.Membership.LastLoginDate;
             LastActivity = user.Membership.LastActivityDate;
             LastPasswordChange = user.Membership.LastPasswordChangeDate;
@@ -122,7 +127,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 return string.Empty;
             }
             //ctl/Edit/mid/345/packageid/52
-            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit",
+            return NavigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
                                             "mid=" + module.ModuleID,
                                             "popUp=true",
                                             "UserId=" + userId,

@@ -10,16 +10,19 @@ using DotNetNuke.Entities.Users;
 using System.Text;
 using DotNetNuke.Entities.Portals;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
 using System.Xml;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Common.Interfaces;
 
 namespace DotNetNuke.Modules.Journal.Components 
 {
 	public class JournalParser 
     {
+        protected INavigationManager NavigationManager { get; }
 	    PortalSettings PortalSettings { get; set; }
 		int ProfileId { get; set; }
 		int SocialGroupId { get; set; }
@@ -38,6 +41,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
 	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo) 
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
 			PortalSettings = portalSettings;
             ModuleId = moduleId;
 			ProfileId = profileId;
@@ -138,7 +142,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 ctl.LikeLink = String.Empty;
                 ctl.CommentLink = String.Empty;
                 
-                ctl.AuthorNameLink = "<a href=\"" + Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=" + ji.JournalAuthor.Id}) + "\">" + ji.JournalAuthor.Name + "</a>";
+                ctl.AuthorNameLink = "<a href=\"" + NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=" + ji.JournalAuthor.Id}) + "\">" + ji.JournalAuthor.Name + "</a>";
                 if (CurrentUser.UserID > 0 &&  !isUnverifiedUser) 
                 {
                     if (!ji.CommentsDisabled)
@@ -314,7 +318,7 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             sb.AppendFormat("<img src=\"{0}\" />", pic);
             sb.Append("<p>");
-            string userUrl = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
+            string userUrl = NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
             sb.AppendFormat("<a href=\"{1}\">{0}</a>", comment.DisplayName, userUrl);
             
             if (comment.CommentXML != null && comment.CommentXML.SelectSingleNode("/root/comment") != null)
