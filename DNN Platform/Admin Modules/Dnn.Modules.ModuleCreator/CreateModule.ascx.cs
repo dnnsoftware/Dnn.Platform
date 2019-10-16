@@ -40,7 +40,8 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Log.EventLog;
-
+using DotNetNuke.Common.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 
 namespace Dnn.Module.ModuleCreator
@@ -48,6 +49,11 @@ namespace Dnn.Module.ModuleCreator
 
     public partial class CreateModule : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public CreateModule()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Methods
 
@@ -438,7 +444,7 @@ namespace Dnn.Module.ModuleCreator
                     HostController.Instance.Update("Owner", txtOwner.Text, false);
                     if (CreateModuleDefinition())
                     {
-                        Response.Redirect(Globals.NavigateURL(), true);
+                        Response.Redirect(NavigationManager.NavigateURL(), true);
                     }
                 }
                 else
