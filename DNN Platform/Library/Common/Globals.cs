@@ -43,6 +43,7 @@ using System.Xml;
 
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -2514,6 +2515,7 @@ namespace DotNetNuke.Common
         /// <returns>URL to access denied view</returns>
         public static string AccessDeniedURL(string Message)
         {
+            var navigationManager = DependencyProvider.GetService<INavigationManager>();
             string strURL = "";
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -2521,14 +2523,14 @@ namespace DotNetNuke.Common
                 if (String.IsNullOrEmpty(Message))
                 {
                     //redirect to access denied page
-                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied");
+                    strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied");
                 }
                 else
                 {
                     //redirect to access denied page with custom message
                     var messageGuid = DataProvider.Instance().AddRedirectMessage(
                         _portalSettings.UserId, _portalSettings.ActiveTab.TabID, Message).ToString("N");
-                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
+                    strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
                 }
             }
             else
@@ -2840,6 +2842,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
+            var navigationManager = DependencyProvider.GetService<INavigationManager>();
             string loginUrl;
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -2856,24 +2859,24 @@ namespace DotNetNuke.Common
                 if (ValidateLoginTabID(portalSettings.LoginTabId))
                 {
                     loginUrl = string.IsNullOrEmpty(returnUrl)
-                                        ? NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
-                                        : NavigateURL(portalSettings.LoginTabId, "", returnUrl, popUpParameter);
+                                        ? navigationManager.NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
+                                        : navigationManager.NavigateURL(portalSettings.LoginTabId, "", returnUrl, popUpParameter);
                 }
                 else
                 {
                     string strMessage = string.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
                     //No account module so use portal tab
                     loginUrl = string.IsNullOrEmpty(returnUrl)
-                                 ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
-                                 : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
+                                 ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
+                                 : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
                 }
             }
             else
             {
                 //portal tab
                 loginUrl = string.IsNullOrEmpty(returnUrl)
-                                ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
-                                : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
+                                ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
+                                : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
             }
             return loginUrl;
         }
@@ -2888,10 +2891,13 @@ namespace DotNetNuke.Common
             string strURL = "";
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
+            strURL = DependencyProvider.GetService<INavigationManager>().NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
 
             return strURL;
         }
+
+
+
 
         /// <summary>
         /// Gets the URL to the current page.
@@ -3161,6 +3167,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string RegisterURL(string returnURL, string originalURL)
         {
+            var navigationManager = DependencyProvider.GetService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string extraParams = String.Empty;
@@ -3175,11 +3182,11 @@ namespace DotNetNuke.Common
             if (_portalSettings.RegisterTabId != -1)
             {
                 //user defined tab
-                strURL = NavigateURL(_portalSettings.RegisterTabId, "", extraParams);
+                strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, "", extraParams);
             }
             else
             {
-                strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Register", extraParams);
+                strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Register", extraParams);
             }
             return strURL;
         }
@@ -3427,7 +3434,7 @@ namespace DotNetNuke.Common
                 switch (UrlType)
                 {
                     case TabType.Tab:
-                        strLink = NavigateURL(int.Parse(Link));
+                        strLink = DependencyProvider.GetService<INavigationManager>().NavigateURL(int.Parse(Link));
                         break;
                     default:
                         strLink = Link;

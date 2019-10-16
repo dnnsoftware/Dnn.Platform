@@ -82,7 +82,7 @@
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+      <HintPath>..\DotNetNuke.Instrumentation\obj\Debug\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="dotnetnuke.log4net">
       <SpecificVersion>False</SpecificVersion>
@@ -189,6 +189,8 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\Interfaces\INavigationManager.cs" />
+    <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
