@@ -2904,6 +2904,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -2916,6 +2917,7 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
             return NavigateURL(tabID, Null.NullString);
@@ -2928,6 +2930,7 @@ namespace DotNetNuke.Common
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -2941,6 +2944,7 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
             if (controlKey == "Access Denied")
@@ -2961,6 +2965,7 @@ namespace DotNetNuke.Common
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -2974,6 +2979,7 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -2988,6 +2994,7 @@ namespace DotNetNuke.Common
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -3003,6 +3010,7 @@ namespace DotNetNuke.Common
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             bool isSuperTab = IsHostTab(tabID);
@@ -3020,6 +3028,7 @@ namespace DotNetNuke.Common
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             string cultureCode = GetCultureCode(tabID, isSuperTab, settings);
@@ -3036,6 +3045,7 @@ namespace DotNetNuke.Common
         /// <param name="language">The language code.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
+        /// [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return NavigateURL(tabID, isSuperTab, settings, controlKey, language, glbDefaultPage, additionalParameters);
@@ -3052,6 +3062,7 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page name to pass to <see cref="FriendlyUrl(DotNetNuke.Entities.Tabs.TabInfo,string,string)"/>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted url.</returns>
+        /// [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             string url = tabID == Null.NullInteger ? ApplicationURL() : ApplicationURL(tabID);
