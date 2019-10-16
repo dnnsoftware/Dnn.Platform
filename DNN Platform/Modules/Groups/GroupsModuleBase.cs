@@ -28,7 +28,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.Groups.Components;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -36,6 +38,12 @@ namespace DotNetNuke.Modules.Groups
 {
     public class GroupsModuleBase : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public GroupsModuleBase()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         public enum GroupMode
         {
             Setup = 0,
@@ -267,7 +275,7 @@ namespace DotNetNuke.Modules.Groups
 
         public string GetClearFilterUrl()
         {
-            return Globals.NavigateURL(TabId, "");
+            return NavigationManager.NavigateURL(TabId, "");
         }
 
         public string GetEditUrl()

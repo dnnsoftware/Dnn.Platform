@@ -23,8 +23,10 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -36,6 +38,12 @@ namespace DotNetNuke.UI.Modules
 {
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
+        protected INavigationManager NavigationManager { get; }
+        public ProfileModuleUserControlBase()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region IProfileModule Members
 
         public abstract bool DisplayModule { get; }
@@ -104,7 +112,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     //Clicked on breadcrumb - don't know which user
                     Response.Redirect(Request.IsAuthenticated
-                                          ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                          ? NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : GetRedirectUrl(), true);
                 }
                 catch (ThreadAbortException)

@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
@@ -60,12 +61,19 @@ using Reflection = DotNetNuke.Framework.Reflection;
 
 namespace DotNetNuke.UI.ControlPanel
 {
-	using System.Web.UI.WebControls;
+    using DotNetNuke.Common.Interfaces;
+    using System.Web.UI.WebControls;
 
 	public partial class AddModule : UserControlBase, IDnnRibbonBarTool
 	{
+        protected INavigationManager NavigationManager { get; }
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AddModule));
         private bool _enabled = true;
+
+        public AddModule()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         /// <summary>
         /// Return the <see cref="PortalSettings"/> for the selected portal (from the Site list), unless
@@ -167,7 +175,7 @@ namespace DotNetNuke.UI.ControlPanel
                             var objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
 							if (objModule != null)
 							{
-								var strURL = Globals.NavigateURL(objModule.TabID, true);
+								var strURL = NavigationManager.NavigateURL(objModule.TabID, true);
 								hlMoreExtensions.NavigateUrl = strURL + "#moreExtensions";
 							}
 							else

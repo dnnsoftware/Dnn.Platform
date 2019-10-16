@@ -24,8 +24,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 
@@ -33,8 +35,14 @@ namespace DotNetNuke.Web.Mvc.Routing
 {
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
+        protected INavigationManager NavigationManager { get; }
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
+        public StandardModuleRoutingProvider()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
 
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
@@ -50,7 +58,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             if (String.IsNullOrEmpty(controlKey))
             {
                 additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
-                url = Globals.NavigateURL("", additionalParams.ToArray());
+                url = NavigationManager.NavigateURL("", additionalParams.ToArray());
             }
             else
             {

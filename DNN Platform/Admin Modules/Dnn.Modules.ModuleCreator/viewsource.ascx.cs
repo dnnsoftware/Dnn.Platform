@@ -530,7 +530,7 @@ namespace Dnn.Module.ModuleCreator
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
-            Response.Redirect(Globals.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
+            Response.Redirect(NavigationManager.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
         }
 
         private void OnConfigureClick(object sender, EventArgs e)
@@ -539,7 +539,7 @@ namespace Dnn.Module.ModuleCreator
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
-            Response.Redirect(Globals.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
+            Response.Redirect(NavigationManager.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
         }
 
         private void OnCreateClick(object sender, EventArgs e)

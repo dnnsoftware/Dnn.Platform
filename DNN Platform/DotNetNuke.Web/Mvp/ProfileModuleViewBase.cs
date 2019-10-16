@@ -21,8 +21,10 @@
 
 using System;
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -34,6 +36,12 @@ namespace DotNetNuke.Web.Mvp
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule where TModel : class, new()
     {
+        protected INavigationManager NavigationManager { get; }
+        public ProfileModuleViewBase()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region IProfileModule Members
 
         public abstract bool DisplayModule { get; }
@@ -102,7 +110,7 @@ namespace DotNetNuke.Web.Mvp
             {
                 //Clicked on breadcrumb - don't know which user
                 Response.Redirect(Request.IsAuthenticated
-                                      ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                      ? NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                       : GetRedirectUrl(), true);
             }
 

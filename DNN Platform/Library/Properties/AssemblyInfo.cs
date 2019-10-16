@@ -61,3 +61,6 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Extensions")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Html")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Website.Deprecated")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.UI")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.Library")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DotNetNuke.Modules.Groups")] // Once Globals is refeactored to Dependency Injection we should be able to remove this

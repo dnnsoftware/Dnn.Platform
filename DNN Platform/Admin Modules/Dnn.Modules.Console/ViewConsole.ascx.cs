@@ -31,8 +31,10 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.Modules.Console.Components;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
@@ -53,12 +55,18 @@ namespace Dnn.Modules.Console
 {
 	public partial class ViewConsole : PortalModuleBase
 	{
+        protected INavigationManager NavigationManager { get; }
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ViewConsole));
 	    private ConsoleController _consoleCtrl;
 		private string _defaultSize = string.Empty;
 		private string _defaultView = string.Empty;
 	    private int _groupTabID = -1;
 		private IList<TabInfo> _tabs; 
+
+        public ViewConsole()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Public Properties
 
@@ -503,12 +511,12 @@ namespace Dnn.Modules.Console
 			    var tabUrl = tab.FullUrl;
                 if (ProfileUserId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (GroupId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
 				returnValue += string.Format(sb.ToString(),

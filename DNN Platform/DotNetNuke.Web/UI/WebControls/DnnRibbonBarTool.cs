@@ -24,9 +24,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -46,6 +48,12 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
+        protected INavigationManager NavigationManager { get; }
+        public DnnRibbonBarTool()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Properties
 
         private IDictionary<string, RibbonBarToolInfo> _allTools;
@@ -483,7 +491,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
 
                 case "ExportPage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
+                    returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
                     break;
 
                 case "NewPage":
@@ -570,7 +578,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 string currentCulture = Thread.CurrentThread.CurrentCulture.Name;
-                strURL = Globals.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
+                strURL = NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
             }
 
             return strURL;

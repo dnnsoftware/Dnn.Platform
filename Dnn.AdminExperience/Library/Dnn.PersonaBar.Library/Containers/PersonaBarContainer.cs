@@ -24,11 +24,13 @@ using System.Globalization;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Application;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -40,6 +42,12 @@ namespace Dnn.PersonaBar.Library.Containers
 {
     public class PersonaBarContainer : IPersonaBarContainer
     {
+        protected INavigationManager NavigationManager { get; }
+        public PersonaBarContainer(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
+
         #region Instance Methods
 
         private static IPersonaBarContainer _instance;
@@ -50,7 +58,7 @@ namespace Dnn.PersonaBar.Library.Containers
             {
                 if (_instance == null)
                 {
-                    _instance = new PersonaBarContainer();
+                    _instance = new PersonaBarContainer(Globals.DependencyProvider.GetService<INavigationManager>());
                 }
 
                 return _instance;
@@ -113,7 +121,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("userId", user.UserID);
             settings.Add("avatarUrl", Globals.ResolveUrl(Utilities.GetProfileAvatar(user)));
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
-            settings.Add("logOff", Globals.NavigateURL("Logoff"));
+            settings.Add("logOff", NavigationManager.NavigateURL("Logoff"));
             settings.Add("visible", Visible);
             settings.Add("userMode", portalSettings.UserMode.ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());

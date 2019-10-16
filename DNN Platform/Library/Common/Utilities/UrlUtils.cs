@@ -26,7 +26,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
-
+using Microsoft.Extensions.DependencyInjection;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -40,6 +41,12 @@ namespace DotNetNuke.Common.Utilities
 {
     public class UrlUtils
     {
+        protected INavigationManager NavigationManager { get; }
+        public UrlUtils()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
@@ -414,7 +421,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {
-                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+                response.Redirect(NavigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
             }
             else
             {

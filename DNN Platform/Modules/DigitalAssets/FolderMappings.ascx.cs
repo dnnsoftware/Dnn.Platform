@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             if (e.CommandName == "Edit")
             {
-                Response.Redirect(Globals.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
+                Response.Redirect(NavigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
             }
             else
             {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             try
             {
-                Response.Redirect(Globals.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true"));
+                Response.Redirect(NavigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {

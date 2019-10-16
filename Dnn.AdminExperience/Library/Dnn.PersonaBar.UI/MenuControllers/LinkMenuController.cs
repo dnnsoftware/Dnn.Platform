@@ -22,10 +22,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -34,6 +36,12 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 {
     public class LinkMenuController : IMenuItemController
     {
+        protected INavigationManager NavigationManager { get; }
+        public LinkMenuController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         public void UpdateParameters(MenuItem menuItem)
         {
             if (Visible(menuItem))
@@ -52,7 +60,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     tabId = Convert.ToInt32(query["tabId"]);
                 }
 
-                var tabUrl = Globals.NavigateURL(tabId, portalId == Null.NullInteger);
+                var tabUrl = NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
                 var alias = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
                 tabUrl = tabUrl.Replace(alias, string.Empty).TrimStart('/');
 

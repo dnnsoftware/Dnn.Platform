@@ -21,8 +21,10 @@
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
@@ -35,6 +37,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class EditFolderMapping : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public EditFolderMapping()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Private Variables
 
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
@@ -200,8 +208,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                     return;
                 }
 
-                if (!Response.IsRequestBeingRedirected) 
-                    Response.Redirect(Globals.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
+                if (!Response.IsRequestBeingRedirected)
+                    Response.Redirect(NavigationManager.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {
