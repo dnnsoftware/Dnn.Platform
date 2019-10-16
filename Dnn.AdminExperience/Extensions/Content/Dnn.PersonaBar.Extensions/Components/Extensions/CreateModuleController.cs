@@ -2,8 +2,10 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -19,6 +21,12 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
     {
+        protected INavigationManager NavigationManager { get; }
+        public CreateModuleController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         protected override Func<ICreateModuleController> GetFactory()
         {
             return () => new CreateModuleController();
@@ -314,7 +322,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 objModule.AllTabs = false;
                 ModuleController.Instance.AddModule(objModule);
 
-                return Globals.NavigateURL(newTab.TabID);
+                return NavigationManager.NavigateURL(newTab.TabID);
             }
 
             return string.Empty;

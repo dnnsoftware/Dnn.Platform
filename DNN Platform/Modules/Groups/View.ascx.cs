@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -34,6 +35,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.Groups.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Framework;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -46,6 +48,12 @@ namespace DotNetNuke.Modules.Groups
     /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public View()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
@@ -72,7 +80,7 @@ namespace DotNetNuke.Modules.Groups
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (GroupId < 0) {
                     if (TabId != GroupListTabId && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) {
-                       Response.Redirect(Globals.NavigateURL(GroupListTabId));
+                       Response.Redirect(NavigationManager.NavigateURL(GroupListTabId));
                     }
                 }
                 GroupsModuleBase ctl = (GroupsModuleBase)LoadControl(ControlPath);

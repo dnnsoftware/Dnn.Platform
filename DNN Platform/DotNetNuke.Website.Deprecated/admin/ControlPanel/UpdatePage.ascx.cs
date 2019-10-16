@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -43,10 +44,17 @@ using Telerik.Web.UI;
 
 namespace DotNetNuke.UI.ControlPanel
 {
+    using DotNetNuke.Common.Interfaces;
     using System.Web.UI.WebControls;
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {
+        protected INavigationManager NavigationManager { get; }
+        public UpdatePage()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
@@ -127,7 +135,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                 if ((string.IsNullOrEmpty(errMsg)))
                 {
-                    Response.Redirect(Globals.NavigateURL(tab.TabID));
+                    Response.Redirect(NavigationManager.NavigateURL(tab.TabID));
                 }
                 else
                 {

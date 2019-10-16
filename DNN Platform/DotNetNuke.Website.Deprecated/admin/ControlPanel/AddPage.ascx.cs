@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -41,10 +42,17 @@ using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.UI.ControlPanel
 {
+    using DotNetNuke.Common.Interfaces;
     using System.Web.UI.WebControls;
 
     public partial class AddPage : UserControl, IDnnRibbonBarTool
     {
+        protected INavigationManager NavigationManager { get; }
+        public AddPage()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
@@ -116,7 +124,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             if ((string.IsNullOrEmpty(errMsg)))
             {
-                Response.Redirect(Globals.NavigateURL(newTab.TabID));
+                Response.Redirect(NavigationManager.NavigateURL(newTab.TabID));
             }
             else
             {

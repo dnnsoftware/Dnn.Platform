@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -44,6 +45,7 @@ using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Common.Interfaces;
 
 namespace DotNetNuke.Modules.Html
 {
@@ -61,6 +63,11 @@ namespace DotNetNuke.Modules.Html
     {
 		public const int MAX_DESCRIPTION_LENGTH = 100;
         private const string PortalRootToken = "{{PortalRoot}}";
+        protected INavigationManager NavigationManager { get; }
+        public HtmlTextController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Methods
 
@@ -161,7 +168,7 @@ namespace DotNetNuke.Modules.Html
                                                            Localization.LocalSharedResourceFile);
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
-                    strBody = strBody.Replace("[URL]", Globals.NavigateURL(objModule.TabID));
+                    strBody = strBody.Replace("[URL]", NavigationManager.NavigateURL(objModule.TabID));
                     strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
 
                     // process user notification collection

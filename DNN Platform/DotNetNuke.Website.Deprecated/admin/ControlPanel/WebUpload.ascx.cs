@@ -26,8 +26,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -60,6 +62,11 @@ namespace DotNetNuke.Modules.Admin.FileManager
     public partial class WebUpload : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (WebUpload));
+        protected INavigationManager NavigationManager { get; }
+        public WebUpload()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 		#region "Members"
 
         private string _DestinationFolder;
@@ -185,7 +192,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
             }
         }
 
@@ -236,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             {
                 TabID = int.Parse(Request.Params["rtab"]);
             }
-            return Globals.NavigateURL(TabID);
+            return NavigationManager.NavigateURL(TabID);
         }
 
         protected override void OnInit(EventArgs e)

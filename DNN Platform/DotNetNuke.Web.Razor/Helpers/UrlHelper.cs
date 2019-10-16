@@ -21,8 +21,10 @@
 #region Usings
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.UI.Modules;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -32,23 +34,25 @@ namespace DotNetNuke.Web.Razor.Helpers
     public class UrlHelper
     {
         private readonly ModuleInstanceContext _context;
+        protected INavigationManager NavigationManager { get; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
             _context = context;
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl()
         {
-            return Globals.NavigateURL(_context.TabId);
+            return NavigationManager.NavigateURL(_context.TabId);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl(string controlKey)
         {
-            return Globals.NavigateURL(_context.TabId, controlKey, "mid=" + _context.ModuleId);
+            return NavigationManager.NavigateURL(_context.TabId, controlKey, "mid=" + _context.ModuleId);
         }
     }
 }

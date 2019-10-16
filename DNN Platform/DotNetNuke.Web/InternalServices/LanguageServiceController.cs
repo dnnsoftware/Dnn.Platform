@@ -37,12 +37,19 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Common.Interfaces;
 
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
     public class LanguageServiceController : DnnApiController
     {
+        protected INavigationManager NavigationManager { get; }
+        public LanguageServiceController(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
+
         public class PageDto
         {
             public string Name { get; set; }
@@ -70,8 +77,8 @@ namespace DotNetNuke.Web.InternalServices
                     pages.Add(new PageDto()
                     {
                         Name = page.TabName,
-                        ViewUrl = DotNetNuke.Common.Globals.NavigateURL(page.TabID),
-                        EditUrl = DotNetNuke.Common.Globals.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + PortalSettings.ActiveTab.TabID)
+                        ViewUrl = NavigationManager.NavigateURL(page.TabID),
+                        EditUrl = NavigationManager.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + PortalSettings.ActiveTab.TabID)
                     });
                 }
             }

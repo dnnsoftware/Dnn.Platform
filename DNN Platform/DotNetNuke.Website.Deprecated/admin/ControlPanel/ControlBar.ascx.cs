@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Application;
@@ -52,6 +53,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -61,6 +63,12 @@ namespace DotNetNuke.UI.ControlPanels
 {
     public partial class ControlBar : ControlPanelBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public ControlBar()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         private readonly IList<string> _adminCommonTabs = new List<string> { "Site Settings", 
                                                                             "Security Roles", 
                                                                             "User Accounts", 
@@ -309,61 +317,61 @@ namespace DotNetNuke.UI.ControlPanels
                 case "PageSettings":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=settingTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=settingTab");
                     }
                     break;
                 case "CopyPage":
                     if (TabPermissionController.CanCopyPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy&activeTab=copyTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy&activeTab=copyTab");
                     }
                     break;
                 case "DeletePage":
                     if (TabPermissionController.CanDeletePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                     }
                     break;
                 case "PageTemplate":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=advancedTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=advancedTab");
                     }
                     break;
                 case "PageLocalization":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=localizationTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=localizationTab");
                     }
                     break;
                 case "PagePermission":
                     if (TabPermissionController.CanAdminPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=permissionsTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=permissionsTab");
                     }
                     break;
                 case "ImportPage":
                     if (TabPermissionController.CanImportPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
                     }
                     break;
                 case "ExportPage":
                     if (TabPermissionController.CanExportPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
                     }
                     break;
                 case "NewPage":
                     if (TabPermissionController.CanAddPage())
                     {
-                        returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
+                        returnValue = NavigationManager.NavigateURL("Tab", "activeTab=settingTab");
                     }
                     break;
                 case "PublishPage":
                     if (TabPermissionController.CanAdminPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+                        returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID);
                     }
                     break;
                 default:
@@ -405,7 +413,7 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
                 string currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-                strURL = Globals.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, controlKey, currentCulture, additionalParams.ToArray());
+                strURL = NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, controlKey, currentCulture, additionalParams.ToArray());
             }
 
             return strURL;

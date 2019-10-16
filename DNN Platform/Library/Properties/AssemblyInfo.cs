@@ -58,4 +58,6 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Professional")]
 [assembly: InternalsVisibleTo("DotNetNuke.SiteExportImport")]
 [assembly: InternalsVisibleTo("DotNetNuke.Web.DDRMenu")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
-[assembly: InternalsVisibleTo("Dnn.PersonaBar.Extensions")]
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.Extensions")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DotNetNuke.Modules.Html")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DotNetNuke.Website.Deprecated")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
