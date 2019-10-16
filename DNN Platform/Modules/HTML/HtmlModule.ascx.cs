@@ -22,6 +22,7 @@
 
 using System;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
@@ -34,6 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Modules.Html.Components;
+using DotNetNuke.Common.Interfaces;
 
 
 #endregion
@@ -51,6 +53,12 @@ namespace DotNetNuke.Modules.Html
     {
         private bool EditorEnabled;
         private int WorkflowID;
+
+        protected INavigationManager NavigationManager { get; }
+        public HtmlModule()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region "Private Methods"
 
@@ -262,7 +270,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(PortalId));
 
                             // refresh page
-                            Response.Redirect(Globals.NavigateURL(), true);
+                            Response.Redirect(NavigationManager.NavigateURL(), true);
                         }
                     }
                 }

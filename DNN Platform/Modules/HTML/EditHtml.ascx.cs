@@ -26,6 +26,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
@@ -38,6 +39,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
 using Telerik.Web.UI;
 using DotNetNuke.Modules.Html.Components;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -51,6 +53,11 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class EditHtml : HtmlModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public EditHtml()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -435,7 +442,7 @@ namespace DotNetNuke.Modules.Html
         {
             base.OnInit(e);
             
-            hlCancel.NavigateUrl = Globals.NavigateURL();
+            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
 
             cmdEdit.Click += OnEditClick;
             cmdPreview.Click += OnPreviewClick;
@@ -583,7 +590,7 @@ namespace DotNetNuke.Modules.Html
             // redirect back to portal
             if (redirect)
             {
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
         }
         protected void OnEditClick(object sender, EventArgs e)

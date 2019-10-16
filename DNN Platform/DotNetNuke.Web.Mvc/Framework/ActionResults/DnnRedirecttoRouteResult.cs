@@ -21,7 +21,9 @@
 
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Helpers;
 
@@ -29,9 +31,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
     internal class DnnRedirecttoRouteResult : RedirectToRouteResult
     {
+        protected INavigationManager NavigationManager { get; }
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
             ActionName = actionName;
             ControllerName = controllerName;
         }
@@ -62,7 +66,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             else
             {
                 //TODO - match other actions
-                url = Globals.NavigateURL();
+                url = NavigationManager.NavigateURL();
             }
 
             if (Permanent)

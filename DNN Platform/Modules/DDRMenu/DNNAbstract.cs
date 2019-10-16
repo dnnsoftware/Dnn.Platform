@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Framework;
 using DotNetNuke.UI;
 using DotNetNuke.UI.WebControls;
@@ -15,6 +16,7 @@ using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.DDRMenu
 {
+    using DotNetNuke.Common.Interfaces;
     using DotNetNuke.Framework.JavaScriptLibraries;
 
     internal static class DNNAbstract
@@ -25,7 +27,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 			if (request.IsAuthenticated)
 			{
-				return Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, "Logoff");
+				return Globals.DependencyProvider.GetService<INavigationManager>().NavigateURL(PortalSettings.Current.ActiveTab.TabID, "Logoff");
 			}
 
 			var returnUrl = HttpContext.Current.Request.RawUrl;
@@ -46,7 +48,7 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				if (portalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
 				{
-					return Globals.RegisterURL(HttpUtility.UrlEncode(Globals.NavigateURL()), Null.NullString);
+					return Globals.RegisterURL(HttpUtility.UrlEncode(Globals.DependencyProvider.GetService<INavigationManager>().NavigateURL()), Null.NullString);
 				}
 			}
 			else

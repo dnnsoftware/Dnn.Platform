@@ -28,6 +28,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +90,12 @@
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -183,6 +190,7 @@
     <Content Include="Settings.ascx" />
     <None Include="dnn_HTML.dnn" />
     <Content Include="Module.build" />
+    <None Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.00.SqlDataProvider" />

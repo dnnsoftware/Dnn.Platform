@@ -21,8 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Application;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -38,6 +40,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class FolderMappings : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public FolderMappings()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Private Variables
 
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
@@ -102,7 +110,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnLoad(e);
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-            CancelButton.NavigateUrl = Globals.NavigateURL();
+            CancelButton.NavigateUrl = NavigationManager.NavigateURL();
             NewMappingButton.Click += OnNewMappingClick;
 
             if (!IsPostBack)

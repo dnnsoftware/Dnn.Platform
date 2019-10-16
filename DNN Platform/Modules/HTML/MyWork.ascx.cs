@@ -21,7 +21,9 @@
 #region Usings
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 
@@ -37,13 +39,18 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class MyWork : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public MyWork()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Protected Methods
 
         public string FormatURL(object dataItem)
         {
             var objHtmlTextUser = (HtmlTextUserInfo) dataItem;
-            return "<a href=\"" + Globals.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
+            return "<a href=\"" + NavigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
         #endregion
@@ -58,7 +65,7 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            hlCancel.NavigateUrl = Globals.NavigateURL();
+            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
 
             try
             {

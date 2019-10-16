@@ -2896,9 +2896,6 @@ namespace DotNetNuke.Common
             return strURL;
         }
 
-
-
-
         /// <summary>
         /// Gets the URL to the current page.
         /// </summary>

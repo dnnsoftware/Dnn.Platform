@@ -27,8 +27,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
@@ -64,9 +66,11 @@ namespace DotNetNuke.Modules.DigitalAssets
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
         private NameValueCollection damState;
 
+        protected INavigationManager NavigationManager { get; }
         public View()
         {
             controller = new Factory().DigitalAssetsController;
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
         }
 
         private IExtensionPointFilter Filter
@@ -139,7 +143,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                var url = Globals.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+                var url = NavigationManager.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "ReturnUrl=" + Server.UrlEncode(NavigationManager.NavigateURL()));
 
                 //append popUp parameter
                 var delimiter = url.Contains("?") ? "&" : "?";

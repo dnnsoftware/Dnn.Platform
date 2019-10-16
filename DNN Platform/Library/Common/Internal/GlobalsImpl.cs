@@ -21,15 +21,23 @@
 using System;
 using System.Text;
 using System.Web;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.UI.UserControls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Common.Internal
 {
     public class GlobalsImpl : IGlobals
     {
+        protected INavigationManager NavigationManager { get; }
+        public GlobalsImpl()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         public string ApplicationPath
         {
             get { return Globals.ApplicationPath; }
@@ -180,57 +188,57 @@ namespace DotNetNuke.Common.Internal
 
         public string NavigateURL()
         {
-            return Globals.NavigateURL();
+            return NavigationManager.NavigateURL();
         }
 
         public string NavigateURL(int tabID)
         {
-            return Globals.NavigateURL(tabID);
+            return NavigationManager.NavigateURL(tabID);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            return Globals.NavigateURL(tabID, isSuperTab);
+            return NavigationManager.NavigateURL(tabID, isSuperTab);
         }
 
         public string NavigateURL(string controlKey)
         {
-            return Globals.NavigateURL(controlKey);
+            return NavigationManager.NavigateURL(controlKey);
         }
 
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, string controlKey)
         {
-            return Globals.NavigateURL(tabID, controlKey);
+            return NavigationManager.NavigateURL(tabID, controlKey);
         }
 
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         public string FriendlyUrl(TabInfo tab, string path)

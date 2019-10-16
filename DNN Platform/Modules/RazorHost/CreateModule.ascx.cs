@@ -26,6 +26,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
