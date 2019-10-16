@@ -26,6 +26,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 
 * [Documentation](https://www.dnndocs.com/)
 * [Release Schedule](.github/RELEASE_SCHEDULE.md)
+* [Security Process](.github/SECURITY.md)
 * [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
 * [Discussion Forums](https://dnncommunity.org/forums)
 * [Community Showcase](https://dnncommunity.org/Showcase)
