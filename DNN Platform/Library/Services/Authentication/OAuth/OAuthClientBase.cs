@@ -241,7 +241,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                             new QueryParameter("response_type", "code")
                                         };
 
-                HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), true);
+                HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
                 return AuthorisationResult.RequestingCode;
             }
 
