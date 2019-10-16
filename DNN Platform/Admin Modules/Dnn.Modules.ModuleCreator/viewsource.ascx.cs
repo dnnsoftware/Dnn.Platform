@@ -28,6 +28,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -43,6 +44,7 @@ using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -50,6 +52,12 @@ namespace Dnn.Module.ModuleCreator
 {
     public partial class ViewSource : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public ViewSource()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
 
         #region Private Members
 
@@ -70,7 +78,7 @@ namespace Dnn.Module.ModuleCreator
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
             }
         }
 
