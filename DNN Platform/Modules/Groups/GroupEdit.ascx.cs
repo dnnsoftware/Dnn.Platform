@@ -5,11 +5,19 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using System.IO;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {
     public partial class GroupEdit : GroupsModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public GroupEdit()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         protected override void OnInit(EventArgs e)
         {
             InitializeComponent();
@@ -141,7 +149,7 @@ namespace DotNetNuke.Modules.Groups
 
                 }
 
-                Response.Redirect(Globals.NavigateURL(TabId, "", new String[] { "groupid=" + GroupId.ToString() }));
+                Response.Redirect(NavigationManager.NavigateURL(TabId, "", new String[] { "groupid=" + GroupId.ToString() }));
             }
         }
     }

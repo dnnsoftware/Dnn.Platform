@@ -10,13 +10,19 @@ using DotNetNuke.Services.FileSystem;
 using System.IO;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Modules.Groups.Components;
+using DotNetNuke.Common.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {
 
     public partial class Create : GroupsModuleBase
     {
-
+        protected INavigationManager NavigationManager { get; }
+        public Create()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
         protected override void OnInit(EventArgs e)
         {
             InitializeComponent();
@@ -109,7 +115,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);
 
-	        var groupUrl = Globals.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
+	        var groupUrl = NavigationManager.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
 			{
 				const int startIndex = 8; // length of https://
@@ -159,7 +165,7 @@ namespace DotNetNuke.Modules.Groups
                 GroupUtilities.CreateJournalEntry(roleInfo, UserInfo);
             }
 
-            Response.Redirect(Globals.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() }));
+            Response.Redirect(NavigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() }));
         }
     }
 }
