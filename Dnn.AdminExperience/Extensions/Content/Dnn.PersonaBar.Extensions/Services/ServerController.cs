@@ -50,7 +50,6 @@ namespace Dnn.PersonaBar.Servers.Services
             NavigationManager = navigationManager;
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RestartApplication()
