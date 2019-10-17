@@ -65,3 +65,4 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Library")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Groups")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Journal")] // Once Globals is refeactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DotNetNuke.Modules.RazorHost")] // Once Globals is refeactored to Dependency Injection we should be able to remove this

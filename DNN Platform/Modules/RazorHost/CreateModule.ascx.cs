@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Interfaces;
@@ -47,9 +48,15 @@ namespace DotNetNuke.Modules.RazorHost
     public partial class CreateModule : ModuleUserControlBase
     {
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
+        protected INavigationManager NavigationManager { get; }
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
+
+        public CreateModule()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
         
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string ModuleControl
@@ -184,7 +191,7 @@ namespace DotNetNuke.Modules.RazorHost
                     objModule.AllTabs = false;
                     ModuleController.Instance.AddModule(objModule);
 
-                    Response.Redirect(Globals.NavigateURL(newTab.TabID), true);
+                    Response.Redirect(NavigationManager.NavigateURL(newTab.TabID), true);
                 }
                 else
                 {
@@ -194,7 +201,7 @@ namespace DotNetNuke.Modules.RazorHost
             else
             {
                 //Redirect to main extensions page
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
         }
 
@@ -288,7 +295,7 @@ namespace DotNetNuke.Modules.RazorHost
 
             if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
             }
 
             if (! Page.IsPostBack)
@@ -302,7 +309,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -316,7 +323,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                    Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (Page.IsValid)

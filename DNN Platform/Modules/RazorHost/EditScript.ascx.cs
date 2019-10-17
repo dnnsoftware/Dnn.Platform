@@ -23,8 +23,10 @@
 using System;
 using System.IO;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
@@ -38,8 +40,14 @@ namespace DotNetNuke.Modules.RazorHost
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
+        protected INavigationManager NavigationManager { get; }
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
+
+        public EditScript()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected string RazorScriptFile
@@ -137,7 +145,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -162,7 +170,7 @@ namespace DotNetNuke.Modules.RazorHost
             try
             {
                 SaveScript();
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
