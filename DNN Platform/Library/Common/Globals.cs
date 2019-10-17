@@ -2904,8 +2904,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL();
         }
 
         /// <summary>
@@ -2917,7 +2916,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
-            return NavigateURL(tabID, Null.NullString);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID);
         }
 
         /// <summary>
@@ -2930,9 +2929,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            string cultureCode = GetCultureCode(tabID, isSuperTab, _portalSettings);
-            return NavigateURL(tabID, isSuperTab, _portalSettings, Null.NullString, cultureCode);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab);
         }
 
         /// <summary>
@@ -2944,15 +2941,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
-            if (controlKey == "Access Denied")
-            {
-                return AccessDeniedURL();
-            }
-            else
-            {
-                PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return NavigateURL(_portalSettings.ActiveTab.TabID, controlKey);
-            }
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(controlKey);
         }
 
         /// <summary>
@@ -2965,8 +2954,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return NavigateURL(_portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2979,8 +2967,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return NavigateURL(tabID, _portalSettings, controlKey, null);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, controlKey);
         }
 
         /// <summary>
@@ -2994,8 +2981,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return NavigateURL(tabID, _portalSettings, controlKey, additionalParameters);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3010,9 +2996,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            bool isSuperTab = IsHostTab(tabID);
-
-            return NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3028,8 +3012,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            string cultureCode = GetCultureCode(tabID, isSuperTab, settings);
-            return NavigateURL(tabID, isSuperTab, settings, controlKey, cultureCode, additionalParameters);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3045,7 +3028,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return NavigateURL(tabID, isSuperTab, settings, controlKey, language, glbDefaultPage, additionalParameters);
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         /// <summary>
@@ -3062,73 +3045,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            string url = tabID == Null.NullInteger ? ApplicationURL() : ApplicationURL(tabID);
-            if (!String.IsNullOrEmpty(controlKey))
-            {
-                url += "&ctl=" + controlKey;
-            }
-            if (additionalParameters != null)
-            {
-                url = additionalParameters.Where(parameter => !string.IsNullOrEmpty(parameter)).Aggregate(url, (current, parameter) => current + ("&" + parameter));
-            }
-            if (isSuperTab)
-            {
-                url += "&portalid=" + settings.PortalId;
-            }
-
-            TabInfo tab = null;
-
-            if (settings != null)
-            {
-                tab = TabController.Instance.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
-            }
-
-            //only add language to url if more than one locale is enabled
-            if (settings != null && language != null && LocaleController.Instance.GetLocales(settings.PortalId).Count > 1)
-            {
-                if (settings.ContentLocalizationEnabled)
-                {
-                    if (language == "")
-                    {
-                        if (tab != null && !string.IsNullOrEmpty(tab.CultureCode))
-                        {
-                            url += "&language=" + tab.CultureCode;
-                        }
-                    }
-                    else
-                    {
-                        url += "&language=" + language;
-                    }
-                }
-                else if (settings.EnableUrlLanguage)
-                {
-                    //legacy pre 5.5 behavior
-                    if (language == "")
-                    {
-                        url += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
-                    }
-                    else
-                    {
-                        url += "&language=" + language;
-                    }
-                }
-            }
-
-            if (Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
-            {
-                if (String.IsNullOrEmpty(pageName))
-                {
-                    pageName = glbDefaultPage;
-                }
-
-                url = (settings == null) ? FriendlyUrl(tab, url, pageName) : FriendlyUrl(tab, url, pageName, settings);
-            }
-            else
-            {
-                url = ResolveUrl(url);
-            }
-
-            return url;
+            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         /// <summary>
