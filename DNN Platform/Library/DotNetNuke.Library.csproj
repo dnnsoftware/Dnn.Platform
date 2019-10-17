@@ -82,7 +82,7 @@
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\obj\Debug\DotNetNuke.Instrumentation.dll</HintPath>
+      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="dotnetnuke.log4net">
       <SpecificVersion>False</SpecificVersion>
