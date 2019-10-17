@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         protected INavigationManager NavigationManager { get; }
         public ViewProfile()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		public override bool DisplayModule
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			}
 		}
 
-        public bool IncludeButton   
+        public bool IncludeButton
         {
             get
             {
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
             var action = Request.QueryString["action"];
 
-            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in. 
+            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in.
             {
                 string loginUrl = Common.Globals.LoginURL(Request.RawUrl, false);
                 Response.Redirect(loginUrl);
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             if (Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
             {
                 //current user, i.e. the one that the request was for
-                var currentUser = UserController.Instance.GetCurrentUserInfo();               
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 // the initiating user,i.e. the one who wanted to be friend
                 // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
                 var initiatingUser = UserController.Instance.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(Request.QueryString["UserID"]));
@@ -288,15 +288,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     return; //do not further process for users who are on their own profile page
                 }
-            
+
                 var friendRelationship = RelationshipController.Instance.GetFriendRelationship(currentUser, initiatingUser);
 
                 if (friendRelationship != null)
-                {                   
+                {
                     if (action.ToLowerInvariant() == "acceptfriend")
                     {
                         var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
-                        FriendsController.Instance.AcceptFriend(friend);                        
+                        FriendsController.Instance.AcceptFriend(friend);
                     }
 
                     if (action.ToLowerInvariant() == "followback")
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         {
                             //ignore
                         }
-                    }                    
+                    }
                 }
 
                 Response.Redirect(Common.Globals.UserProfileURL(initiatingUser.UserID));

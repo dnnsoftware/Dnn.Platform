@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -48,13 +48,13 @@ using DotNetNuke.Common.Interfaces;
 namespace DotNetNuke.Modules.Admin.Security
 {
 
-   
+
     public partial class PasswordReset : UserModuleBase
     {
         protected INavigationManager NavigationManager { get; }
         public PasswordReset()
         {
-            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         #endregion
-    
+
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
@@ -96,14 +96,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 Response.Redirect(NavigationManager.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
             }
             cmdChangePassword.Click +=cmdChangePassword_Click;
-            
+
             hlCancel.NavigateUrl = NavigationManager.NavigateURL();
 
             if (Request.QueryString["resetToken"] != null)
             {
                 ResetToken = Request.QueryString["resetToken"];
                 txtUsername.Enabled = false;
-                
+
             }
 
 	        var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 var failed = Localization.GetString("PasswordResetFailed");
                 LogFailure(failed);
                 lblHelp.Text = failed;
-                return;    
+                return;
             }
 
             //Check New Password is not same as username or banned
@@ -237,7 +237,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     var failed = Localization.GetString("PasswordResetFailed");
                     LogFailure(failed);
                     lblHelp.Text = failed;
-                    return;  
+                    return;
                 }
             }
 
@@ -281,8 +281,8 @@ namespace DotNetNuke.Modules.Admin.Security
                     var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                     UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
                     RedirectAfterLogin();
-                }            
-            }           
+                }
+            }
         }
 
         protected void RedirectAfterLogin()
@@ -319,7 +319,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        //redirect to current page 
+                        //redirect to current page
                         redirectURL = NavigationManager.NavigateURL();
                     }
                 }
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
             log.AddProperty("IP", _ipAddress);
-            
+
             LogController.Instance.AddLog(log);
         }
 

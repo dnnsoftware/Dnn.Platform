@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.Groups.Components
             CurrentUser = currentUser;
             Template = template;
             GroupViewTabId = groupViewTabId;
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string ParseView()
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Groups.Components
             Template = Template.Replace("[GROUPEDITBUTTON]", String.Empty);
 
             var url = NavigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + RoleInfo.RoleID.ToString() });
-            
+
             Template = Utilities.ParseTokenWrapper(Template, "IsPendingMember", membershipPending);
             Template = Template.Replace("[groupviewurl]", url);
             Components.GroupItemTokenReplace tokenReplace = new Components.GroupItemTokenReplace(RoleInfo);

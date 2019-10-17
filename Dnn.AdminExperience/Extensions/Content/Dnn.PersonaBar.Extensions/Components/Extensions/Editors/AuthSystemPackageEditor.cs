@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     public class AuthSystemPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         #region IPackageEditor Implementation
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)

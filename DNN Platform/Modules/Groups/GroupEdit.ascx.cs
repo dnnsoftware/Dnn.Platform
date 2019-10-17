@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.Groups
         protected INavigationManager NavigationManager { get; }
         public GroupEdit()
         {
-            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnInit(EventArgs e)
@@ -58,11 +58,11 @@ namespace DotNetNuke.Modules.Groups
                         txtGroupName.Text = roleInfo.RoleName;
                     else
                         litGroupName.Text = roleInfo.RoleName;
-                    
+
                     txtDescription.Text = roleInfo.Description;
                     rdAccessTypePrivate.Checked = !roleInfo.IsPublic;
                     rdAccessTypePublic.Checked = roleInfo.IsPublic;
-                    
+
 
                     if (roleInfo.Settings.ContainsKey("ReviewMembers"))
                     {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         roleInfo.RoleName = txtGroupName.Text;
                     }
-                    
+
                     roleInfo.Description = txtDescription.Text;
                     roleInfo.IsPublic = rdAccessTypePublic.Checked;
 

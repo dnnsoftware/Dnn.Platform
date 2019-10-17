@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         protected INavigationManager NavigationManager { get; }
         public CreateModuleController()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override Func<ICreateModuleController> GetFactory()
@@ -102,7 +102,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             var uniqueName = true;
             foreach (var package in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
             {
-                if (package.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase) 
+                if (package.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase)
                     || package.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase))
                 {
                     uniqueName = false;

@@ -1,13 +1,13 @@
 /*
 ' Copyright (c) 2011 DotNetNuke Corporation
 '  All rights reserved.
-' 
+'
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
 ' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 ' DEALINGS IN THE SOFTWARE.
-' 
+'
 */
 
 using System;
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         protected INavigationManager NavigationManager { get; }
         public FeatureController()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Optional Interfaces
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
             var userInfo = UserController.Instance.GetCurrentUserInfo();
-            
+
             var selfKey = string.Format("U{0}", userInfo.UserID);
 
             if (securityKeys.Contains("E") || securityKeys.Contains(selfKey))

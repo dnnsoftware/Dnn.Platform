@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         protected INavigationManager NavigationManager { get; }
         public ExtensionMenuController()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public void UpdateParameters(MenuItem menuItem)

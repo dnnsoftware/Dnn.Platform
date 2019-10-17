@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Groups
         protected INavigationManager NavigationManager { get; }
         public Create()
         {
-            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected override void OnInit(EventArgs e)
         {

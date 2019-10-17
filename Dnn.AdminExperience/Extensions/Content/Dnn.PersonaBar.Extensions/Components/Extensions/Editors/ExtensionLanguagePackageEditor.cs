@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         public ExtensionLanguagePackageEditor()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)

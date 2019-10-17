@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -65,10 +65,10 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
     /// Class	 : CDefault
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -84,7 +84,7 @@ namespace DotNetNuke.Framework
 
         public DefaultPage()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Properties
@@ -153,7 +153,7 @@ namespace DotNetNuke.Framework
                 return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
             }
         }
-        
+
         #endregion
 
         #region IClientAPICallbackEventHandler Members
@@ -187,14 +187,14 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <remarks>
         /// - Obtain PortalSettings from Current Context
         /// - redirect to a specific tab based on name
         /// - if first time loading this page then reload to avoid caching
         /// - set page title and stylesheet
-        /// - check to see if we should show the Assembly Version in Page Title 
+        /// - check to see if we should show the Assembly Version in Page Title
         /// - set the background image if there is one selected
         /// - set META tags, copyright, keywords and description
         /// </remarks>
@@ -289,7 +289,7 @@ namespace DotNetNuke.Framework
             {
                 metaPanel.Controls.Add(new LiteralControl(PortalSettings.PageHeadText));
             }
-            
+
             //set page title
             if (UrlUtils.InPopUp())
             {
@@ -320,7 +320,7 @@ namespace DotNetNuke.Framework
                             break;
                     }
                     var title = Localization.LocalizeControlTitle(control);
-                    
+
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
                     strTitle.Append(string.Concat(" > ", title));
                 }
@@ -515,7 +515,7 @@ namespace DotNetNuke.Framework
         }
 
         //I realize the parsing of this is rather primitive.  A better solution would be to use json serialization
-        //unfortunately, I don't have the time to write it.  When we officially adopt MS AJAX, we will get this type of 
+        //unfortunately, I don't have the time to write it.  When we officially adopt MS AJAX, we will get this type of
         //functionality and this should be changed to utilize it for its plumbing.
         private Dictionary<string, string> ParsePageCallBackArgs(string strArg)
         {
@@ -672,7 +672,7 @@ namespace DotNetNuke.Framework
                 }
                 else //other modes just depend on the default alias
                 {
-                    if (string.Compare(PortalSettings.PortalAlias.HTTPAlias, PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture ) != 0) 
+                    if (string.Compare(PortalSettings.PortalAlias.HTTPAlias, PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture ) != 0)
                         primaryHttpAlias = PortalSettings.DefaultPortalAlias;
                 }
                 if (primaryHttpAlias != null && string.IsNullOrEmpty(CanonicalLinkUrl))//a primary http alias was identified
@@ -716,7 +716,7 @@ namespace DotNetNuke.Framework
             //add Favicon
             ManageFavicon();
 
-            //ClientCallback Logic 
+            //ClientCallback Logic
             ClientAPI.HandleClientAPICallbackEvent(this);
 
             //add viewstateuserkey to protect against CSRF attacks
@@ -731,10 +731,10 @@ namespace DotNetNuke.Framework
 		        AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
 	        }
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module 
+        /// Initialize the Scrolltop html control which controls the open / closed nature of each module
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -766,7 +766,7 @@ namespace DotNetNuke.Framework
                 MetaAuthor.Content = PortalSettings.PortalName;
                 /*
                  * Never show to be html5 compatible and stay backward compatible
-                 * 
+                 *
                  * MetaCopyright.Content = Copyright;
                  * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
                  */

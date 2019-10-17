@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
         public Login()
         {
-            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region Protected Properties
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				return AuthenticationConfig.GetConfig(PortalId).Enabled;
 			}
 		}
-		
+
 		#endregion
 
 		#region Event Handlers
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					}
 					catch (Exception ex)
 					{
-						//control not there 
+						//control not there
 						Logger.Error(ex);
 					}
 				}
@@ -262,25 +262,25 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
-										PortalSecurity.FilterFlag.NoScripting | 
-                                        PortalSecurity.FilterFlag.NoAngleBrackets | 
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text,
+										PortalSecurity.FilterFlag.NoScripting |
+                                        PortalSecurity.FilterFlag.NoAngleBrackets |
                                         PortalSecurity.FilterFlag.NoMarkup);
 
                 //DNN-6093
                 //check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);                
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
 
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalId, userName);                     
+                    userByEmail = UserController.GetUserByEmail(PortalId, userName);
 
                     if (userByEmail != null)
                     {
                         //we need the username of the account in order to authenticate in the next step
-                        userName = userByEmail.Username; 
+                        userName = userByEmail.Username;
                     }
                 }
 
@@ -311,18 +311,18 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                         userName = objUser.Username = objUser.Email;
                     }
                 }
-				
+
 				//Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
 				                    {
-				                        Authenticated = authenticated, 
+				                        Authenticated = authenticated,
                                         Message = message,
                                         RememberMe = chkCookie.Checked
 				                    };
 				OnUserAuthenticated(eventArgs);
 			}
 		}
-		
+
 		#endregion
 
 		#region Private Methods
@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				}
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
-					//redirect to current page 
+					//redirect to current page
 					redirectUrl = NavigationManager.NavigateURL();
 				}
 			}

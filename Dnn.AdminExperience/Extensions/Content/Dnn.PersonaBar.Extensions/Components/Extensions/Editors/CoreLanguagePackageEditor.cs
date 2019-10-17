@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         protected INavigationManager NavigationManager { get; }
         public CoreLanguagePackageEditor()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)

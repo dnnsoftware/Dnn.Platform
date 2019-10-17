@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -99,7 +99,7 @@ namespace DotNetNuke.Common
         public static readonly Regex FileValidNameRegex = new Regex(@"^(?!(?:PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d)(?:\..+)?$)[^\x00-\x1F\xA5\\?*:\"";|\/<>]+(?<![\s.])$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
-        
+
         #region PerformanceSettings enum
 
         /// <summary>
@@ -148,13 +148,13 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <remarks>
         /// <para>NoRegistration: Disabled registration in portal.</para>
-        /// <para>PrivateRegistration: Once user's account information has been submitted, 
-        /// the portal Administrator will be notified and user's application will be subjected to a screening procedure. 
+        /// <para>PrivateRegistration: Once user's account information has been submitted,
+        /// the portal Administrator will be notified and user's application will be subjected to a screening procedure.
         /// If user's application is authorized, the user will receive notification of access to the portal environment.</para>
-        /// <para>PublicRegistration: Once user's account information has been submitted, 
+        /// <para>PublicRegistration: Once user's account information has been submitted,
         /// user will be immediately granted access to the portal environment.</para>
-        /// <para>VerifiedRegistration: Once user's account information has been submitted, 
-        /// user will receive an email containing unique Verification Code. 
+        /// <para>VerifiedRegistration: Once user's account information has been submitted,
+        /// user will receive an email containing unique Verification Code.
         /// The Verification Code will be required the first time when user attempt to sign in to the portal environment.</para>
         /// </remarks>
         public enum PortalRegistrationType
@@ -616,12 +616,12 @@ namespace DotNetNuke.Common
                     {
                         if (IsInstalled())
                         {
-                            //Errors connecting to the database after an initial installation should be treated as errors.				
+                            //Errors connecting to the database after an initial installation should be treated as errors.
                             tempStatus = UpgradeStatus.Error;
                         }
                         else
                         {
-                            //An error that occurs before the database has been installed should be treated as a new install				
+                            //An error that occurs before the database has been installed should be treated as a new install
                            tempStatus = UpgradeStatus.Install;
                         }
                     }
@@ -678,7 +678,7 @@ namespace DotNetNuke.Common
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
-                   
+
                     if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;
@@ -694,7 +694,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.  
+        /// If DotNetNuke has been installed, then we should treat database connection errors as real errors.
         /// If DotNetNuke has not been installed, then we should expect to have database connection problems
         /// since the connection string may not have been configured yet, which can occur during the installation
         /// wizard.
@@ -713,7 +713,7 @@ namespace DotNetNuke.Common
 
             bool isInstalled =  (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
 
-            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If 
+            // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
             // this value exists, then DNN was previously installed, and we should never try to re-install it
             return isInstalled || HasInstallVersion();
         }
@@ -1216,14 +1216,14 @@ namespace DotNetNuke.Common
        {
            try
            {
-               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);           
+               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);
            }
            catch (Exception)
            {
 
                return 0;
            }
-           
+
        }
 
         /// <summary>
@@ -1501,7 +1501,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns the folder path under the root for the portal 
+        /// Returns the folder path under the root for the portal
         /// </summary>
         /// <param name="strFileNamePath">The folder the absolute path</param>
         /// <param name="portalId">Portal Id.</param>
@@ -1560,7 +1560,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ImportFile - converts a file url (/Portals/0/somefile.gif) to the appropriate 
+        /// ImportFile - converts a file url (/Portals/0/somefile.gif) to the appropriate
         /// FileID=xx identification for use in importing portals, tabs and modules
         /// </summary>
         /// <remarks>
@@ -2113,8 +2113,8 @@ namespace DotNetNuke.Common
         /// <param name="strControlName">Name of control to look for</param>
         /// <returns></returns>
         /// <remarks>
-        /// This differs from FindControlRecursive in that it looks down the control hierarchy, whereas, the 
-        /// FindControlRecursive starts at the passed in control and walks the tree up.  Therefore, this function is 
+        /// This differs from FindControlRecursive in that it looks down the control hierarchy, whereas, the
+        /// FindControlRecursive starts at the passed in control and walks the tree up.  Therefore, this function is
         /// more a expensive task.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -2154,7 +2154,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        //Create JavaScript 
+                        //Create JavaScript
                         var sb = new StringBuilder();
                         sb.Append("<script type=\"text/javascript\">");
                         sb.Append("<!--");
@@ -2177,7 +2177,7 @@ namespace DotNetNuke.Common
                         sb.Append("// -->");
                         sb.Append(Environment.NewLine);
                         sb.Append("</script>");
-                        // Register Client Script 
+                        // Register Client Script
                         ClientAPI.RegisterClientScriptBlock(control.Page, "InitialFocus", sb.ToString());
                     }
                 }
@@ -2290,7 +2290,7 @@ namespace DotNetNuke.Common
                 Logger.Error(ex);
             }
         }
-        
+
         private static void DeleteFolder(string strRoot)
         {
             try
@@ -2366,7 +2366,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CleanName - removes characters from Module/Tab names that are being used for file names
-        /// in Module/Tab Import/Export.  
+        /// in Module/Tab Import/Export.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -2386,9 +2386,9 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   CreateValidClass - removes characters from Module/Tab names which are invalid  
+        ///   CreateValidClass - removes characters from Module/Tab names which are invalid
         ///   for use as an XHTML class attribute / CSS class selector value and optionally
-        ///   prepends the letter 'A' if the first character is not alphabetic.  This differs 
+        ///   prepends the letter 'A' if the first character is not alphabetic.  This differs
         ///   from <see>CreateValidID</see> which replaces invalid characters with an underscore
         ///   and replaces the first letter with an 'A' if it is not alphabetic
         /// </summary>
@@ -2432,7 +2432,7 @@ namespace DotNetNuke.Common
                         // If we're asked to validate the first character...
                         if ((validateFirstChar))
                         {
-                            // classes should begin with a letter ([A-Za-z])' 
+                            // classes should begin with a letter ([A-Za-z])'
                             // prepend a starting non-letter character with an A
                             if ((InvalidCharacters.IsMatch(returnValue)))
                             {
@@ -2486,7 +2486,7 @@ namespace DotNetNuke.Common
                         // Replace all characters that aren't in the list with an underscore
                         returnValue = InvalidCharacters.Replace(inputValue, "_");
 
-                        // identifiers '... must begin with a letter ([A-Za-z])' 
+                        // identifiers '... must begin with a letter ([A-Za-z])'
                         // replace a starting non-letter character with an A
                         returnValue = InvalidInitialCharacters.Replace(returnValue, "A");
 
@@ -2515,7 +2515,7 @@ namespace DotNetNuke.Common
         /// <returns>URL to access denied view</returns>
         public static string AccessDeniedURL(string Message)
         {
-            var navigationManager = DependencyProvider.GetService<INavigationManager>();
+            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL = "";
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -2573,7 +2573,7 @@ namespace DotNetNuke.Common
             {
                 return (ApplicationURL(_portalSettings.ActiveTab.TabID));
             }
-            return (ApplicationURL(-1));            
+            return (ApplicationURL(-1));
         }
 
         /// -----------------------------------------------------------------------------
@@ -2695,7 +2695,7 @@ namespace DotNetNuke.Common
         /// Generates the correctly formatted friendly URL
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the URL, and the portal 
+        /// This overload includes an optional page to include in the URL, and the portal
         /// settings for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
@@ -2712,7 +2712,7 @@ namespace DotNetNuke.Common
         /// Generates the correctly formatted friendly url
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the url, and the portal 
+        /// This overload includes an optional page to include in the url, and the portal
         /// alias for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
@@ -2758,7 +2758,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Url's as internal links to Files, Tabs and Users should only be imported if
         /// those files, tabs and users exist. This function parses the url, and checks
-        /// whether the internal links exist. 
+        /// whether the internal links exist.
         /// If the link does not exist, the function will return an empty string
         /// </summary>
         /// <param name="ModuleId">Integer</param>
@@ -2842,7 +2842,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
-            var navigationManager = DependencyProvider.GetService<INavigationManager>();
+            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string loginUrl;
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -2891,7 +2891,7 @@ namespace DotNetNuke.Common
             string strURL = "";
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = DependencyProvider.GetService<INavigationManager>().NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
+            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
 
             return strURL;
         }
@@ -2904,7 +2904,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL();
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL();
         }
 
         /// <summary>
@@ -2916,7 +2916,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID);
         }
 
         /// <summary>
@@ -2929,7 +2929,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab);
         }
 
         /// <summary>
@@ -2941,7 +2941,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(controlKey);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey);
         }
 
         /// <summary>
@@ -2954,7 +2954,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(controlKey, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2967,7 +2967,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, controlKey);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey);
         }
 
         /// <summary>
@@ -2981,7 +2981,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, controlKey, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -2996,7 +2996,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3012,7 +3012,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -3028,7 +3028,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         /// <summary>
@@ -3045,7 +3045,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return DependencyProvider.GetService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         /// <summary>
@@ -3092,7 +3092,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string RegisterURL(string returnURL, string originalURL)
         {
-            var navigationManager = DependencyProvider.GetService<INavigationManager>();
+            var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string extraParams = String.Empty;
@@ -3321,7 +3321,7 @@ namespace DotNetNuke.Common
                     strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
                     if (PortalId == Null.NullInteger) //To track Host files
                     {
-                        strLink += "&hf=1";                        
+                        strLink += "&hf=1";
                     }
                 }
                 if (String.IsNullOrEmpty(strLink))
@@ -3359,7 +3359,7 @@ namespace DotNetNuke.Common
                 switch (UrlType)
                 {
                     case TabType.Tab:
-                        strLink = DependencyProvider.GetService<INavigationManager>().NavigateURL(int.Parse(Link));
+                        strLink = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(int.Parse(Link));
                         break;
                     default:
                         strLink = Link;
@@ -3701,8 +3701,8 @@ namespace DotNetNuke.Common
 
         /// <summary>
         /// Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.
-        /// </summary>        
-        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2} 
+        /// </summary>
+        /// <returns>Formatted url,  e.g. http://www.mysite.com/DnnImageHandler.ashx?mode=profilepic&amp;userid={0}&amp;h={1}&amp;w={2}
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
@@ -3720,14 +3720,14 @@ namespace DotNetNuke.Common
                                       avatarUrl,
                                       !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 
-            avatarUrl += "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";            
+            avatarUrl += "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
 
             return avatarUrl;
         }
 
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
-        /// </summary>        
+        /// </summary>
         /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
@@ -3741,7 +3741,7 @@ namespace DotNetNuke.Common
 
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
-        /// </summary>        
+        /// </summary>
         /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
         /// <returns>Formatted url,  e.g. /DnnImageHandler.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
@@ -3768,9 +3768,9 @@ namespace DotNetNuke.Common
             return ApplicationPath + childPortalAlias + query + cdv;
 
         }
-        
+
         #region "Obsolete - retained for Binary Compatability"
-        
+
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.

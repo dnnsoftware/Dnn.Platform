@@ -11,7 +11,7 @@ namespace DotNetNuke.Modules.Groups
         public INavigationManager NavigationManager { get; }
         public List()
         {
-            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
