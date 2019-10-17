@@ -25,6 +25,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Microsoft.Extensions.DependencyInjection;
 using System;
