@@ -22,8 +22,10 @@
 
 using System;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Services.Exceptions;
@@ -40,8 +42,15 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Logo : SkinObjectBase
     {
+        protected INavigationManager NavigationManager { get; }
         public string BorderWidth { get; set; }
         public string CssClass { get; set; }
+
+        public Logo()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -79,7 +88,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 if (PortalSettings.HomeTabId != -1)
                 {
-                    hypLogo.NavigateUrl = Globals.NavigateURL(PortalSettings.HomeTabId);
+                    hypLogo.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
                 }
                 else
                 {

@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -39,6 +40,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -55,6 +57,11 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SendPassword : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
+        protected INavigationManager NavigationManager { get; }
+        public SendPassword()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -79,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 if (Convert.ToInt32(setting) > 0) //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
                 {
@@ -107,12 +114,12 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
                         //redirect to current page 
-                        _RedirectURL = Globals.NavigateURL();
+                        _RedirectURL = NavigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 }
 
@@ -223,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
-            lnkCancel.NavigateUrl = Globals.NavigateURL();
+            lnkCancel.NavigateUrl = NavigationManager.NavigateURL();
 
             _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
 

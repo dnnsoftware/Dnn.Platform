@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -32,6 +33,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -49,6 +51,12 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public Membership()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
 		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -104,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipPromoteToSuperuser != null)
             {
                 MembershipPromoteToSuperuser(this, e);
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
         }
 
@@ -122,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipDemoteFromSuperuser != null)
             {
                 MembershipDemoteFromSuperuser(this, e);
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
             }
         }
 

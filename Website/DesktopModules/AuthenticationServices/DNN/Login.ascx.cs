@@ -21,10 +21,10 @@
 #region Usings
 
 using System;
-using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -33,7 +33,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.Utilities;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -52,6 +51,12 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 	public partial class Login : AuthenticationLoginBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
+        protected INavigationManager NavigationManager { get; }
+
+        public Login()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
 		#region Protected Properties
 
@@ -109,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
-            var returnUrl = Globals.NavigateURL();
+            var returnUrl = NavigationManager.NavigateURL();
             string url;
             if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
             {
@@ -140,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = Globals.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = NavigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
                 passwordLink.NavigateUrl = url;
                 if (PortalSettings.EnablePopUps)
                 {
@@ -173,13 +178,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 	                    if (Request.IsAuthenticated)
 	                    {
-                            Response.Redirect(Globals.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            Response.Redirect(NavigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
 	                    }
 	                    else
 	                    {
                             if (redirectTabId > 0)
                             {
-                                var redirectUrl = Globals.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                var redirectUrl = NavigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), string.Empty);
                                 Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
                             }
@@ -328,7 +333,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;
 			if (checkSettings && redirectAfterLogin > 0) //redirect to after registration page
 			{
-				redirectUrl = Globals.NavigateURL(redirectAfterLogin);
+				redirectUrl = NavigationManager.NavigateURL(redirectAfterLogin);
 			}
 			else
 			{
@@ -353,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
 					//redirect to current page 
-					redirectUrl = Globals.NavigateURL();
+					redirectUrl = NavigationManager.NavigateURL();
 				}
 			}
 

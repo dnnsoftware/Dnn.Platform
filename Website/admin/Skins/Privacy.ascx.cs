@@ -21,10 +21,12 @@
 #region Usings
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -37,10 +39,16 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Privacy : SkinObjectBase
     {
+        protected INavigationManager NavigationManager { get; }
         private const string MyFileName = "Privacy.ascx";
         public string Text { get; set; }
 
         public string CssClass { get; set; }
+
+        public Privacy()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         private void InitializeComponent()
         {
@@ -70,7 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypPrivacy.NavigateUrl = PortalSettings.PrivacyTabId == Null.NullInteger ? Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Privacy") : Globals.NavigateURL(PortalSettings.PrivacyTabId);
+                hypPrivacy.NavigateUrl = PortalSettings.PrivacyTabId == Null.NullInteger ? NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Privacy") : NavigationManager.NavigateURL(PortalSettings.PrivacyTabId);
                 hypPrivacy.Attributes["rel"] = "nofollow";
             }
             catch (Exception exc)

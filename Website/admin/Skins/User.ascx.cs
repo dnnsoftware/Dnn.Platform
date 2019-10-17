@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -42,6 +43,7 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using DotNetNuke.Common.Interfaces;
     using DotNetNuke.Entities.Controllers;
 
     /// -----------------------------------------------------------------------------
@@ -51,9 +53,11 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class User : SkinObjectBase
     {
         private const string MyFileName = "User.ascx";
+        protected INavigationManager NavigationManager { get; }
 
         public User()
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
             ShowUnreadMessages = true;
             ShowAvatar = true;
             LegacyMode = true;
@@ -140,7 +144,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         registerLink.NavigateUrl = !String.IsNullOrEmpty(URL) 
                                             ? URL 
-                                            : Globals.RegisterURL(HttpUtility.UrlEncode(Globals.NavigateURL()), Null.NullString);
+                                            : Globals.RegisterURL(HttpUtility.UrlEncode(NavigationManager.NavigateURL()), Null.NullString);
                         enhancedRegisterLink.NavigateUrl = registerLink.NavigateUrl;
 
                         if (PortalSettings.EnablePopUps && PortalSettings.RegisterTabId == Null.NullInteger
@@ -179,8 +183,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
                             notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
-                            messageLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
-                            notificationLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
+                            messageLink.NavigateUrl = NavigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
+                            notificationLink.NavigateUrl = NavigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
                             notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             messageGroup.Visible = true;

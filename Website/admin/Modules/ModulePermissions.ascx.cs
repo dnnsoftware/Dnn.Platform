@@ -21,31 +21,17 @@
 #region Usings
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Instrumentation;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -62,6 +48,11 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// </remarks>
     public partial class ModulePermissions : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public ModulePermissions()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -77,7 +68,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
             }
         }
 

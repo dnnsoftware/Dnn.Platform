@@ -24,7 +24,9 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 
@@ -46,6 +48,11 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
         private string _homeUrl = "";
         private string _homeTabName = "Root";
+        protected INavigationManager NavigationManager { get; }
+        public BreadCrumb()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         // Separator between breadcrumb elements
         public string Separator
@@ -128,7 +135,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Make sure we have a home tab ID set
                 if (PortalSettings.HomeTabId != -1)
                 {
-                    _homeUrl = Globals.NavigateURL(PortalSettings.HomeTabId);
+                    _homeUrl = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
 
                     var tc = new TabController();
                     var homeTab = tc.GetTab(PortalSettings.HomeTabId, PortalSettings.PortalId, false);
@@ -177,13 +184,13 @@ namespace DotNetNuke.UI.Skins.Controls
                 // 
                 if (ProfileUserId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId);
+                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId);
                 }
 
                 // 
                 if (GroupId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "GroupId=" + GroupId);
+                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId);
                 }
 
                 // Begin breadcrumb

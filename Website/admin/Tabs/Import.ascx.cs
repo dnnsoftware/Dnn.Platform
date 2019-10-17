@@ -23,11 +23,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -46,6 +47,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Import : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+
+        public Import()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         private TabInfo _tab;
 
@@ -143,7 +150,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (!Page.IsPostBack)
                 {
-                    cmdCancel.NavigateUrl = Globals.NavigateURL();
+                    cmdCancel.NavigateUrl = NavigationManager.NavigateURL();
                     cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     var folders = FolderManager.Instance.GetFolders(UserInfo, "BROWSE, ADD");
                     var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
@@ -285,10 +292,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 switch (optRedirect.SelectedValue)
                 {
                     case "VIEW":
-                        Response.Redirect(Globals.NavigateURL(objTab.TabID), true);
+                        Response.Redirect(NavigationManager.NavigateURL(objTab.TabID), true);
                         break;
                     default:
-                        Response.Redirect(Globals.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
+                        Response.Redirect(NavigationManager.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
                         break;
                 }
             }

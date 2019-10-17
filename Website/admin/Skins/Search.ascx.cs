@@ -17,26 +17,32 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Entities.Icons;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-    using Web.Client;
+
 
     public partial class Search : SkinObjectBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public Search()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Private Members
 
         private const string MyFileName = "Search.ascx";
@@ -423,11 +429,11 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             if (Host.UseFriendlyUrls)
                             {
-                                Response.Redirect(Globals.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(NavigationManager.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
                             }
                             else
                             {
-                                Response.Redirect(Globals.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(NavigationManager.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
                             }
                         }
                         break;
@@ -447,11 +453,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (Host.UseFriendlyUrls)
                 {
-                    Response.Redirect(Globals.NavigateURL(searchTabId));
+                    Response.Redirect(NavigationManager.NavigateURL(searchTabId));
                 }
                 else
                 {
-                    Response.Redirect(Globals.NavigateURL(searchTabId));
+                    Response.Redirect(NavigationManager.NavigateURL(searchTabId));
                 }
             }
         }

@@ -21,18 +21,16 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
 
 #endregion
 
@@ -44,9 +42,10 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Login : SkinObjectBase
     {
-
+        protected INavigationManager NavigationManager { get; }
         public Login()
         {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
             LegacyMode = true;
         }
 
@@ -128,7 +127,7 @@ namespace DotNetNuke.UI.Skins.Controls
 					        loginLink.ToolTip = loginLink.Text;
 					        enhancedLoginLink.ToolTip = loginLink.Text;
 				        }
-				        loginLink.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
+				        loginLink.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
 				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
 			        }
 			        else

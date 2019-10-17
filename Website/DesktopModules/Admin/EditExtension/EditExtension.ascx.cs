@@ -24,8 +24,10 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -52,9 +54,14 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     /// </remarks>
     public partial class EditExtension : ModuleUserControlBase
     {
-
+        protected INavigationManager NavigationManager { get; }
         private Control _control;
         private PackageInfo _package;
+
+        public EditExtension()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         protected bool IsSuperTab
         {
@@ -275,7 +282,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             if (!IsPostBack)
             {
-                ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
+                ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : NavigationManager.NavigateURL();
                 switch (DisplayMode)
                 {
                     case "editor":

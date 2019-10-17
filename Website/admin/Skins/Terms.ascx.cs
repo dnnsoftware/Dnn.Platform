@@ -21,10 +21,12 @@
 #region Usings
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -37,10 +39,16 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Terms : SkinObjectBase
     {
+        protected INavigationManager NavigationManager { get; }
         private const string MyFileName = "Terms.ascx";
         public string Text { get; set; }
 
         public string CssClass { get; set; }
+
+        public Terms()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         private void InitializeComponent()
         {
@@ -70,7 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : Globals.NavigateURL(PortalSettings.TermsTabId);
+                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : NavigationManager.NavigateURL(PortalSettings.TermsTabId);
 
                 hypTerms.Attributes["rel"] = "nofollow";
             }

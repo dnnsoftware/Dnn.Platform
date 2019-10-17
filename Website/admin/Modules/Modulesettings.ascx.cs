@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -44,6 +45,7 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -61,6 +63,11 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
+        protected INavigationManager NavigationManager { get; }
+        public ModuleSettingsPage()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -89,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
             }
         }
 
@@ -260,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                              PortalAlias = defaultAlias
                                          };
 
-                var tabUrl = Globals.NavigateURL(tab.TabID, portalSettings, string.Empty);
+                var tabUrl = NavigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
 
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {

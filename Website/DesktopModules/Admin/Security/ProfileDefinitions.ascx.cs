@@ -23,7 +23,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -34,6 +34,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -51,6 +52,12 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
+        protected INavigationManager NavigationManager { get; }
+        public ProfileDefinitions()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Constants
 
         private const int COLUMN_REQUIRED = 11;
@@ -118,11 +125,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    returnURL = Globals.NavigateURL(TabId);
+                    returnURL = NavigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    returnURL = Globals.NavigateURL(TabId, "", filterParams);
+                    returnURL = NavigationManager.NavigateURL(TabId, "", filterParams);
                 }
                 return returnURL;
             }

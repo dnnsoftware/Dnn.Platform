@@ -21,14 +21,13 @@
 #region Usings
 
 using System;
-using System.Collections;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Web.UI.WebControls;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
@@ -46,8 +45,13 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Export : PortalModuleBase
     {
-
+        protected INavigationManager NavigationManager { get; }
         private TabInfo _tab;
+
+        public Export()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         public TabInfo Tab
         {
@@ -96,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             try
             {
                 if (Page.IsPostBack) return;
-                cmdCancel.NavigateUrl = Globals.NavigateURL();
+                cmdCancel.NavigateUrl = NavigationManager.NavigateURL();
                 var folderPath = "Templates/";
                 var templateFolder = FolderManager.Instance.GetFolder(UserInfo.PortalID, folderPath);
                 cboFolders.Services.Parameters.Add("permission", "ADD");

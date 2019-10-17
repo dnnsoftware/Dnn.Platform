@@ -22,12 +22,12 @@
 
 using System;
 using System.IO;
-using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
@@ -38,6 +38,11 @@ namespace DotNetNuke.Modules.Admin.Modules
 {
     public partial class ViewSource : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public ViewSource()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -66,7 +71,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
             }
         }
 

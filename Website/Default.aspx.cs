@@ -30,6 +30,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
@@ -58,6 +59,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Framework
 {
+    using DotNetNuke.Common.Interfaces;
     using Web.Client;
 
     /// -----------------------------------------------------------------------------
@@ -77,6 +79,13 @@ namespace DotNetNuke.Framework
 
         private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
+        protected INavigationManager NavigationManager { get; }
+
+        public DefaultPage()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Properties
 
@@ -221,7 +230,7 @@ namespace DotNetNuke.Framework
                                 break;
                         }
                     }
-                    Response.Redirect(Globals.NavigateURL(tab.TabID, Null.NullString, parameters.ToArray()), true);
+                    Response.Redirect(NavigationManager.NavigateURL(tab.TabID, Null.NullString, parameters.ToArray()), true);
                 }
                 else
                 {
@@ -639,7 +648,7 @@ namespace DotNetNuke.Framework
                 {
                     if (PortalSettings.HomeTabId > 0)
                     {
-                        Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId), true);
+                        Response.Redirect(NavigationManager.NavigateURL(PortalSettings.HomeTabId), true);
                     }
                     else
                     {

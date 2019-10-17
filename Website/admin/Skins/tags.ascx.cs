@@ -21,11 +21,10 @@
 #region Usings
 
 using System;
-
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Modules;
 
 #endregion
 
@@ -33,6 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     public partial class Tags : SkinObjectBase
     {
+        protected INavigationManager NavigationManager { get; }
         private const string MyFileName = "Tags.ascx";
         private string _AddImageUrl = IconController.IconURL("Add");
         private bool _AllowTagging = true;
@@ -43,6 +43,11 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _Separator = ",&nbsp;";
         private bool _ShowCategories = true;
         private bool _ShowTags = true;
+
+        public Tags()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         public string AddImageUrl
         {
@@ -174,7 +179,7 @@ namespace DotNetNuke.UI.Skins.Controls
             tagsControl.CssClass = CssClass;
 
             tagsControl.AllowTagging = AllowTagging && Request.IsAuthenticated;
-            tagsControl.NavigateUrlFormatString = Globals.NavigateURL(PortalSettings.SearchTabId, "", "Tag={0}");
+            tagsControl.NavigateUrlFormatString = NavigationManager.NavigateURL(PortalSettings.SearchTabId, "", "Tag={0}");
             tagsControl.RepeatDirection = RepeatDirection;
             tagsControl.Separator = Separator;
             tagsControl.ShowCategories = ShowCategories;

@@ -27,7 +27,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -41,6 +41,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
 using Globals = DotNetNuke.Common.Globals;
@@ -60,6 +61,7 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SecurityRoles));
+        protected INavigationManager NavigationManager { get; }
 		#region "Private Members"
 
         private int RoleId = Null.NullInteger;
@@ -72,6 +74,11 @@ namespace DotNetNuke.Modules.Admin.Security
         private int _totalRecords;
 
 		#endregion
+
+        public SecurityRoles()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
 		#region "Protected Members"
 
@@ -100,11 +107,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    _ReturnURL = Globals.NavigateURL(TabId);
+                    _ReturnURL = NavigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    _ReturnURL = Globals.NavigateURL(TabId, "", FilterParams);
+                    _ReturnURL = NavigationManager.NavigateURL(TabId, "", FilterParams);
                 }
                 return _ReturnURL;
             }
@@ -437,7 +444,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if (!ModulePermissionController.CanEditModuleContent(ModuleConfiguration))
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
             }
             base.DataBind();
 

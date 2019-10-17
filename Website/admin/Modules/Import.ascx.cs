@@ -29,8 +29,10 @@ using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
@@ -48,6 +50,11 @@ namespace DotNetNuke.Modules.Admin.Modules
 {
     public partial class Import : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public Import()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -66,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
             }
         }
 
@@ -112,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         ModuleController.DeserializeModule(xmlDoc.DocumentElement, Module, PortalId, TabId);
                                     }
-                                    Response.Redirect(Globals.NavigateURL(), true);
+                                    Response.Redirect(NavigationManager.NavigateURL(), true);
                                 }
                                 else
                                 {

@@ -24,9 +24,11 @@ using System;
 using System.IO;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -36,6 +38,12 @@ namespace DotNetNuke.Modules.RazorHost
     public partial class AddScript : ModuleUserControlBase
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
+        protected INavigationManager NavigationManager { get; }
+
+        public AddScript()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
         
         private void DisplayExtension()
         {
@@ -80,7 +88,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                    Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (Page.IsValid)

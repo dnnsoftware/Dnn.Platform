@@ -24,7 +24,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -37,6 +37,7 @@ using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -48,6 +49,12 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 	/// </summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
 	{
+        protected INavigationManager NavigationManager { get; }
+        public ViewProfile()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
 		public override bool DisplayModule
 		{
 			get
@@ -112,8 +119,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     template = Localization.GetString("DefaultTemplate", LocalResourceFile);
                 }
-			    var editUrl = Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=1");
-                var profileUrl = Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=2");
+			    var editUrl = NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=1");
+                var profileUrl = NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=2");
 
                 if (template.Contains("[BUTTON:EDITPROFILE]"))
                 {
@@ -247,7 +254,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
 			if (homeTabId > Null.NullInteger)
 			{
-				redirectUrl = Globals.NavigateURL(homeTabId);
+				redirectUrl = NavigationManager.NavigateURL(homeTabId);
 			}
 			else
 			{

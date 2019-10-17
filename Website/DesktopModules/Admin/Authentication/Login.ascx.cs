@@ -55,6 +55,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -70,9 +72,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
     public partial class Login : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
+        protected INavigationManager NavigationManager { get; }
 
         private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        public Login()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -213,19 +221,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         && Convert.ToInt32(setting) != Null.NullInteger
                         )
                     {
-                        redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                        redirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
                     else
                     {
                         if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
                         {
                             //redirect to portal home page specified
-                            redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
+                            redirectURL = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
                         }
                         else
                         {
                             //redirect to current page 
-                            redirectURL = Globals.NavigateURL();
+                            redirectURL = NavigationManager.NavigateURL();
                         }
                     }
 
@@ -539,7 +547,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             //Verify that the current user has access to this page
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
             }
             lblRegisterHelp.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
             switch (PortalSettings.UserRegistration)
@@ -970,7 +978,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         // Use the reset password token to identify the user during the redirect
                         UserController.ResetPasswordToken(objUser);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
-                        Response.Redirect(Globals.NavigateURL(PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                        Response.Redirect(NavigationManager.NavigateURL(PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
                     }
                     break;
             }
@@ -1070,7 +1078,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(Request.QueryString["verificationcode"]);
                     }
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId, "", parameters));
+                    Response.Redirect(NavigationManager.NavigateURL(PortalSettings.LoginTabId, "", parameters));
                 }
             }
             if (Page.IsPostBack == false)
@@ -1100,7 +1108,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 else //make module container invisible if user is not a page admin
                 {
                     var path = RedirectURL.Split('?')[0];
-                    if (NeedRedirectAfterLogin && path != Globals.NavigateURL() && path != Globals.NavigateURL(PortalSettings.HomeTabId))
+                    if (NeedRedirectAfterLogin && path != NavigationManager.NavigateURL() && path != NavigationManager.NavigateURL(PortalSettings.HomeTabId))
                     {
                         Response.Redirect(RedirectURL, true);
                     }
@@ -1241,7 +1249,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 case DataConsent.DataConsentStatus.Cancelled:
                 case DataConsent.DataConsentStatus.RemovedAccount:
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId), true);
+                    Response.Redirect(NavigationManager.NavigateURL(PortalSettings.HomeTabId), true);
                     break;
                 case DataConsent.DataConsentStatus.FailedToRemoveAccount:
                     AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);

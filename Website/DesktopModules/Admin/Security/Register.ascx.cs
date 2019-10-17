@@ -24,7 +24,6 @@
 #region Usings
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -33,15 +32,13 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
-using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -56,7 +53,7 @@ using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Cache;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -70,6 +67,12 @@ namespace DotNetNuke.Modules.Admin.Users
 		protected const string ConfirmPasswordTextBoxCssClass = "password-confirm";
 
 		private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
+        protected INavigationManager NavigationManager { get; }
+
+        public Register()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
 		#region Protected Properties
 
@@ -248,7 +251,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 			    try
 			    {
-			        Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+			        Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
 			    }
 			    catch (ThreadAbortException)
 			    {
@@ -298,7 +301,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				if (Globals.IsAdminControl())
 				{
 					//redirect to current page 
-					Response.Redirect(Globals.NavigateURL(), true);
+					Response.Redirect(NavigationManager.NavigateURL(), true);
 				}
 				else //make module container invisible if user is not a page admin
 				{
@@ -786,7 +789,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			var redirectAfterRegistration = PortalSettings.Registration.RedirectAfterRegistration;
 			if (checkSetting && redirectAfterRegistration > 0) //redirect to after registration page
 			{
-				redirectUrl = Globals.NavigateURL(redirectAfterRegistration);
+				redirectUrl = NavigationManager.NavigateURL(redirectAfterRegistration);
 			}
 			else
 			{
@@ -811,7 +814,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
 					//redirect to current page 
-					redirectUrl = Globals.NavigateURL();
+					redirectUrl = NavigationManager.NavigateURL();
 				}
 			}
 

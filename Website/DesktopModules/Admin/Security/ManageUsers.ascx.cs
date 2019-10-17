@@ -22,8 +22,10 @@
 
 using System;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -54,6 +56,12 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </remarks>
     public partial class ManageUsers : UserModuleBase, IActionable
     {
+        protected INavigationManager NavigationManager { get; }
+        public ManageUsers()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
 		#region Protected Members
 
         /// -----------------------------------------------------------------------------
@@ -100,12 +108,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
 						//redirect to current page 
-                        _RedirectURL = Globals.NavigateURL();
+                        _RedirectURL = NavigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
+					_RedirectURL = NavigationManager.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -119,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return Globals.NavigateURL(TabId, "", !String.IsNullOrEmpty(UserFilter) ? UserFilter : "");
+                return NavigationManager.NavigateURL(TabId, "", !String.IsNullOrEmpty(UserFilter) ? UserFilter : "");
             }
         }
 
@@ -343,7 +351,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         if (HasManageUsersModulePermission() == false)
                         {
                             //Display current user's profile
-                            Response.Redirect(Globals.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
+                            Response.Redirect(NavigationManager.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
                         }
                     }
                 }
@@ -584,7 +592,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(), true);
+            Response.Redirect(NavigationManager.NavigateURL(), true);
         }
 
         private bool HasManageUsersModulePermission()

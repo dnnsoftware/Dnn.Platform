@@ -22,7 +22,9 @@
 
 using System;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
@@ -40,6 +42,13 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     /// -----------------------------------------------------------------------------
     public partial class AuthenticationEditor : PackageEditorBase
     {
+        protected INavigationManager NavigationManager { get; }
+
+        public AuthenticationEditor()
+        {
+            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
+
 		#region "Private Members"
 
         private AuthenticationInfo _AuthSystem;
@@ -182,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             var displayMode = DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
-                Response.Redirect(Globals.NavigateURL(), true);
+                Response.Redirect(NavigationManager.NavigateURL(), true);
         }
 		
 		#endregion

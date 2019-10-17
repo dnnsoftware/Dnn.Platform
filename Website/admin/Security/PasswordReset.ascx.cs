@@ -23,6 +23,7 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -40,6 +41,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Common.Interfaces;
 
 #endregion
 
@@ -49,6 +51,12 @@ namespace DotNetNuke.Modules.Admin.Security
    
     public partial class PasswordReset : UserModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
+        public PasswordReset()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+
         #region Private Members
 
 	    private const int RedirectTimeout = 3000;
@@ -85,11 +93,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
-                Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+                Response.Redirect(NavigationManager.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
             }
             cmdChangePassword.Click +=cmdChangePassword_Click;
             
-            hlCancel.NavigateUrl = Globals.NavigateURL();
+            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
 
             if (Request.QueryString["resetToken"] != null)
             {
@@ -264,7 +272,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     LogSuccess();
                     ViewState.Add("PageNo", 3);
-                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
+                    Response.Redirect(NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
                 }
                 else
                 {
@@ -307,18 +315,18 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (PortalSettings.RegisterTabId != -1 && PortalSettings.HomeTabId != -1)
                     {
                         //redirect to portal home page specified
-                        redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
+                        redirectURL = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
                     }
                     else
                     {
                         //redirect to current page 
-                        redirectURL = Globals.NavigateURL();
+                        redirectURL = NavigationManager.NavigateURL();
                     }
                 }
             }
             else //redirect to after login page
             {
-                redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                redirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
             }
 
 			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);

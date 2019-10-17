@@ -24,8 +24,10 @@
 using System;
 using System.IO;
 using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -43,7 +45,13 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     public partial class Purchase : PortalModuleBase
     {
+        protected INavigationManager NavigationManager { get; }
         private int RoleID = -1;
+
+        public Purchase()
+        {
+            NavigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
 
         private void InitializeComponent()
         {
@@ -113,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else //security violation attempt to access item not related to this Module
                         {
-                            Response.Redirect(Globals.NavigateURL(), true);
+                            Response.Redirect(NavigationManager.NavigateURL(), true);
                         }
                     }
 					
