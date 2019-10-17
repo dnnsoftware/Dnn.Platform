@@ -81,16 +81,14 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
 
-        protected INavigationManager NavigationManager { get; }
+        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
 
         public UserDetailDto()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
 
         public UserDetailDto(UserInfo user) : base(user)
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
             LastLogin = user.Membership.LastLoginDate;
             LastActivity = user.Membership.LastActivityDate;
             LastPasswordChange = user.Membership.LastPasswordChangeDate;
@@ -127,7 +125,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 return string.Empty;
             }
             //ctl/Edit/mid/345/packageid/52
-            return NavigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
+            return _navigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
                                             "mid=" + module.ModuleID,
                                             "popUp=true",
                                             "UserId=" + userId,

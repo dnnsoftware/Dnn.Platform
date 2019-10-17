@@ -61,6 +61,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Http;
 using FileInfo = System.IO.FileInfo;
+using Constants = Dnn.PersonaBar.Library.Constants;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
