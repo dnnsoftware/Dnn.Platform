@@ -13,7 +13,7 @@
     <description>
       Provides API references for usage of the Client Dependency Framework (CDF) for the inclusion of CSS and JS files within DNN Platform
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
     </dependencies>
