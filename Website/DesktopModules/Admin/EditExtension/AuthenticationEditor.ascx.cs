@@ -24,7 +24,7 @@ using System;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;

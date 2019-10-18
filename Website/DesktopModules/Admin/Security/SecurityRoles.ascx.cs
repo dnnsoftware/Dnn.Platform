@@ -27,7 +27,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;

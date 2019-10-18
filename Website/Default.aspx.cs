@@ -32,6 +32,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -59,9 +60,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Framework
 {
-    using DotNetNuke.Common.Interfaces;
     using Web.Client;
-
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
     /// Class	 : CDefault

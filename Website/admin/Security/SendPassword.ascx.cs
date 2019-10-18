@@ -40,7 +40,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.UserRequest;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

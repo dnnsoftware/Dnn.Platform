@@ -37,7 +37,7 @@ using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

@@ -23,7 +23,7 @@
 using System;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;

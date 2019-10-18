@@ -36,7 +36,7 @@ using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

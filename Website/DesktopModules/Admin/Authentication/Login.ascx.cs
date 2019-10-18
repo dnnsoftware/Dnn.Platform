@@ -55,7 +55,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 #endregion

@@ -53,7 +53,7 @@ using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;

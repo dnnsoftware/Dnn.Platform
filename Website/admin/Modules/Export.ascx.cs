@@ -30,7 +30,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;

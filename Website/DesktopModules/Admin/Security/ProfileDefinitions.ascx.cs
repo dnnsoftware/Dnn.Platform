@@ -23,7 +23,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;

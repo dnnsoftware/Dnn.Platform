@@ -43,7 +43,7 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-    using DotNetNuke.Common.Interfaces;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Controllers;
 
     /// -----------------------------------------------------------------------------
