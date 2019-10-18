@@ -28,4 +28,8 @@ If you encounter any build issues, please re-run the build with more verbosity a
 ```
 This will log much more information about the problem and allow you to open an issue with those more detailed logs.
 
+Also, the build scripts should leave you with 0 tracked modified files in git.
+If a build fails midway and you have tracked artifacts, you can simply run:
+`git reset --hard` and/or `git clean -dxf` in order to come back to a clean state.
+
 If you encounter PowerShell security issues, please read [Cake - PowerShell Security](https://cakebuild.net/docs/tutorials/powershell-security)
