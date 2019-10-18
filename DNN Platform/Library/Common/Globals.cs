@@ -552,21 +552,13 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version DatabaseEngineVersion { get; set; }
 
-        private static IServiceProvider _serviceProvider;
         /// <summary>
         /// Gets or sets the Dependency Service.
         /// </summary>
         /// <value>
         /// The Dependency Service.
         /// </value>
-        internal static IServiceProvider DependencyProvider
-        {
-            get => _serviceProvider;
-            set
-            {
-                _serviceProvider = value;
-            }
-        }
+        internal static IServiceProvider DependencyProvider { get; set; }
 
         /// <summary>
         /// Redirects the specified URL.
