@@ -6,7 +6,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 
@@ -24,7 +23,6 @@ namespace DotNetNuke.Common
         /// Gets the URL to the current page.
         /// </summary>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL()
         {
             PortalSettings portalSettings = _portalController.GetCurrentPortalSettings();
@@ -36,7 +34,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID)
         {
             return NavigateURL(tabID, Null.NullString);
@@ -48,7 +45,6 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID, bool isSuperTab)
         {
             IPortalSettings _portalSettings = _portalController.GetCurrentSettings();
@@ -61,7 +57,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(string controlKey)
         {
             if (controlKey == "Access Denied")
@@ -81,7 +76,6 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             PortalSettings _portalSettings = _portalController.GetCurrentPortalSettings();
@@ -94,7 +88,6 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID, string controlKey)
         {
             PortalSettings _portalSettings = _portalController.GetCurrentPortalSettings();
@@ -108,7 +101,6 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
             PortalSettings _portalSettings = _portalController.GetCurrentPortalSettings();
@@ -123,7 +115,6 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             bool isSuperTab = Globals.IsHostTab(tabID);
@@ -140,7 +131,6 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, settings);
