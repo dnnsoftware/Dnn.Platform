@@ -105,17 +105,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		#endregion
 
 		#region Set Up
-
-        [TestFixtureSetUp]
-        public void FixtureSetup()
-        {
-            var navigationManagerMock = new Mock<INavigationManager>();
-            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => NavigateUrl(x));
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
-        }
-
 		[SetUp]
 		public void SetUp()
 		{
@@ -140,12 +129,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 dataProviderField.SetValue(tabController, _dataProvider.Object);
             }
-        }
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
-        {
-            Globals.DependencyProvider = null;
+            var navigationManagerMock = new Mock<INavigationManager>();
+            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => NavigateUrl(x));
+            var containerMock = new Mock<IServiceProvider>();
+            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
+            Globals.DependencyProvider = containerMock.Object;
         }
 
         [TearDown]
@@ -165,6 +154,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 _dtRules = null;
             }
             ComponentFactory.Container = null;
+            Globals.DependencyProvider = null;
         }
 
 		#endregion
