@@ -11,10 +11,11 @@ Also, we currently maintain two branches, the development branch is the next maj
 
 To prevent issues with long paths in some build scripts, fork this repository in a short named folder on the root of any drive such as `c:\dnnsrc\` if you fork to a long path such as `c:\users\username\documents\dnn\source\` you may encounter long path issues.
 
-If you need to build the next major release you simply need to open PowerShell and run the following command:
+In order to build the whole solution and produce the install and upgrade packages, you simply need to open PowerShell and run the following command:
 ```
 .\build.ps1
 ```
+Please note that the version number will be automatically set depending on the git branch you are on.
 
 In the rare situation where you would need to build from other branches of the external repositories, you can specify those branches as such:
 ```
