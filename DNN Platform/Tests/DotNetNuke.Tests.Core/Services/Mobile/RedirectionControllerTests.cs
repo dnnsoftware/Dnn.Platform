@@ -25,9 +25,8 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Reflection;
 using System.Web;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -35,7 +34,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mobile;
 using DotNetNuke.Tests.Core.Services.ClientCapability;
 using DotNetNuke.Tests.Instance.Utilities;
@@ -108,6 +106,16 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		#region Set Up
 
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            var navigationManagerMock = new Mock<INavigationManager>();
+            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => NavigateUrl(x));
+            var containerMock = new Mock<IServiceProvider>();
+            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
+            Globals.DependencyProvider = containerMock.Object;
+        }
+
 		[SetUp]
 		public void SetUp()
 		{
@@ -132,6 +140,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 dataProviderField.SetValue(tabController, _dataProvider.Object);
             }
+        }
+
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            Globals.DependencyProvider = null;
         }
 
         [TearDown]
