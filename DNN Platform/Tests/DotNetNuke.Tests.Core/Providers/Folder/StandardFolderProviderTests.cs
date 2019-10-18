@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
+            TestableGlobals.ClearInstance();
             var navigationManagerMock = new Mock<INavigationManager>();
             var containerMock = new Mock<IServiceProvider>();
             containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
@@ -125,12 +127,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
-        }
-
-        [TestFixtureTearDown]
-        public void FixtureTeardown()
-        {
-            Globals.DependencyProvider = null;
         }
 
         #endregion
