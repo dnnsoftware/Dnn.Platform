@@ -137,6 +137,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         [TearDown]
         public void TearDown()
         {
+            TestableGlobals.ClearInstance();
+            PortalController.ClearInstance();
             CachingProvider.Instance().PurgeCache();
             MockComponentProvider.ResetContainer();
             UnitTestHelper.ClearHttpContext();
@@ -155,8 +157,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void SetupContianer()
         {
-            TestableGlobals.ClearInstance();
-            PortalController.ClearInstance();
             var navigationManagerMock = new Mock<INavigationManager>();
             navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => NavigateUrl(x));
             var containerMock = new Mock<IServiceProvider>();

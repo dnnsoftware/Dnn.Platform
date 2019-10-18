@@ -63,7 +63,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            TestableGlobals.ClearInstance();
             var navigationManagerMock = new Mock<INavigationManager>();
             var containerMock = new Mock<IServiceProvider>();
             containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
@@ -127,6 +126,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
+            TestableGlobals.ClearInstance();
+            PortalController.ClearInstance();
         }
 
         #endregion
