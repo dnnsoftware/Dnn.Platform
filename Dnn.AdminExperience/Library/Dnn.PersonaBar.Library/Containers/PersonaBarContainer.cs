@@ -30,7 +30,7 @@ using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Application;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;

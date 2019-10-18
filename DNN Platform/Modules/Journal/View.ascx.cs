@@ -23,7 +23,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Journal {
 

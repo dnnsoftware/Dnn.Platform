@@ -16,7 +16,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;

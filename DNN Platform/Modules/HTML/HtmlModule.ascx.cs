@@ -35,7 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 
 #endregion

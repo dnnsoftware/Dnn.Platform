@@ -35,7 +35,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.Groups.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Framework;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

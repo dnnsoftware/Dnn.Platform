@@ -28,7 +28,7 @@ using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;

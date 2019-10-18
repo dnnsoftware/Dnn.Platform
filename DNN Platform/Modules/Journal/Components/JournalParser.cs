@@ -16,7 +16,7 @@ using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
 using System.Xml;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Journal.Components
 {

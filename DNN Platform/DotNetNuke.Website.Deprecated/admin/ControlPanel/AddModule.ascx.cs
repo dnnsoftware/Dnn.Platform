@@ -23,15 +23,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Web;
-using System.Web.UI;
+using System.Web.UI.WebControls;
 using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Application;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
@@ -46,7 +44,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Personalization;
-using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
@@ -61,9 +58,6 @@ using Reflection = DotNetNuke.Framework.Reflection;
 
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Common.Interfaces;
-    using System.Web.UI.WebControls;
-
 	public partial class AddModule : UserControlBase, IDnnRibbonBarTool
 	{
         protected INavigationManager NavigationManager { get; }

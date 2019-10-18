@@ -5,7 +5,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using System.IO;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups

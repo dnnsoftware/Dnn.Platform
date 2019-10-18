@@ -54,7 +54,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 using Localization = Dnn.PersonaBar.Pages.Components.Localization;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace Dnn.PersonaBar.Pages.Services
 {

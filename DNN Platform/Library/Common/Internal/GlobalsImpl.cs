@@ -21,7 +21,7 @@
 using System;
 using System.Text;
 using System.Web;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;

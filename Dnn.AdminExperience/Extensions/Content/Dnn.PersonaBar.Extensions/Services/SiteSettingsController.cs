@@ -23,7 +23,7 @@ using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;

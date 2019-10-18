@@ -21,7 +21,7 @@
 #region Usings
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.UI.Modules;
 using System;
 using Microsoft.Extensions.DependencyInjection;

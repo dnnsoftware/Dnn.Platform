@@ -39,7 +39,7 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Security;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Groups
 {

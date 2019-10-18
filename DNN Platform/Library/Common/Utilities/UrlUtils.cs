@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;

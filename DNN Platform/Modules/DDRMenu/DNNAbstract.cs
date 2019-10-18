@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Framework;
+using DotNetNuke.Abstractions;
 using DotNetNuke.UI;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
@@ -16,9 +16,6 @@ using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.DDRMenu
 {
-    using DotNetNuke.Common.Interfaces;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-
     internal static class DNNAbstract
 	{
 		public static string GetLoginUrl()

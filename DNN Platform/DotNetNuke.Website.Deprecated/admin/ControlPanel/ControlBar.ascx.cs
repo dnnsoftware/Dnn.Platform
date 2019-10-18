@@ -53,7 +53,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

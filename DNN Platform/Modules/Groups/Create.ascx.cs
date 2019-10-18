@@ -10,7 +10,7 @@ using DotNetNuke.Services.FileSystem;
 using System.IO;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups

@@ -40,10 +40,10 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
-
+using DotNetNuke.Abstractions;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -552,13 +552,21 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version DatabaseEngineVersion { get; set; }
 
+        private static IServiceProvider _serviceProvider;
         /// <summary>
         /// Gets or sets the Dependency Service.
         /// </summary>
         /// <value>
         /// The Dependency Service.
         /// </value>
-        internal static IServiceProvider DependencyProvider { get; set; }
+        internal static IServiceProvider DependencyProvider
+        {
+            get => _serviceProvider;
+            set
+            {
+                _serviceProvider = value;
+            }
+        }
 
         /// <summary>
         /// Redirects the specified URL.
@@ -810,7 +818,7 @@ namespace DotNetNuke.Common
         /// <param name="IsSuperTab">if set to <c>true</c> [is super tab].</param>
         /// <param name="settings">The settings.</param>
         /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
-        internal static string GetCultureCode(int TabID, bool IsSuperTab, PortalSettings settings)
+        internal static string GetCultureCode(int TabID, bool IsSuperTab, IPortalSettings settings)
         {
             string cultureCode = Null.NullString;
             if (settings != null)
@@ -2686,7 +2694,7 @@ namespace DotNetNuke.Common
         /// <param name="path">The path to format.</param>
         /// <param name="settings">The portal settings</param>
         /// <returns>The formatted (friendly) URL</returns>
-        public static string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
+        public static string FriendlyUrl(TabInfo tab, string path, IPortalSettings settings)
         {
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
         }
@@ -2703,7 +2711,7 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page to include in the URL.</param>
         /// <param name="settings">The portal settings</param>
         /// <returns>The formatted (friendly) url</returns>
-        public static string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        public static string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, settings);
         }

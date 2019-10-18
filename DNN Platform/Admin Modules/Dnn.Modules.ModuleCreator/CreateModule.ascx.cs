@@ -40,7 +40,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 #endregion
 

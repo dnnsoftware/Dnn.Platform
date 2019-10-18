@@ -23,8 +23,8 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;

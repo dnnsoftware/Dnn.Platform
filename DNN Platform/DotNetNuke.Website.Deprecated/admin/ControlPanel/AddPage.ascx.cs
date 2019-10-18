@@ -42,7 +42,7 @@ using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Common.Interfaces;
+    using DotNetNuke.Abstractions;
     using System.Web.UI.WebControls;
 
     public partial class AddPage : UserControl, IDnnRibbonBarTool

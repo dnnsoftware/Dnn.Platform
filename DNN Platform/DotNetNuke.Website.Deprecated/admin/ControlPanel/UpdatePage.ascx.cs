@@ -44,7 +44,7 @@ using Telerik.Web.UI;
 
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Common.Interfaces;
+    using DotNetNuke.Abstractions;
     using System.Web.UI.WebControls;
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool

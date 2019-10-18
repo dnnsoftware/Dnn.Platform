@@ -31,7 +31,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {

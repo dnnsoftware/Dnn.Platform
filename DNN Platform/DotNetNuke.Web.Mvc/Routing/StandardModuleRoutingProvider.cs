@@ -27,7 +27,7 @@ using System.Web.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 

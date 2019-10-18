@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 

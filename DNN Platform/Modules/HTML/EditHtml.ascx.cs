@@ -39,7 +39,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Common.Utilities;
 using Telerik.Web.UI;
 using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

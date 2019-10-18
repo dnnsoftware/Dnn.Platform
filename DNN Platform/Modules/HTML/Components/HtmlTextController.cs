@@ -45,7 +45,7 @@ using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Html
 {

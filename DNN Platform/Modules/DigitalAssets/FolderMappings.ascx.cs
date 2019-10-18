@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Application;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;

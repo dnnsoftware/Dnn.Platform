@@ -30,7 +30,7 @@ using DotNetNuke.Modules.Groups.Components;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 #endregion
 

@@ -8,7 +8,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Groups.Components
 {

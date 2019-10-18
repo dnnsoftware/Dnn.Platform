@@ -30,7 +30,7 @@ using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;

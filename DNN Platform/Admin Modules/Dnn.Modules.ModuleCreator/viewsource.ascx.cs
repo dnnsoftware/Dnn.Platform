@@ -25,11 +25,10 @@
 
 using System;
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -40,11 +39,8 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Security;
 using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Common.Interfaces;
 
 #endregion
 

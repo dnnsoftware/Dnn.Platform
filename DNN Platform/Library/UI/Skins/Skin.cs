@@ -35,7 +35,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Interfaces;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
