@@ -19,12 +19,12 @@ Please note that the version number will be automatically set depending on the g
 
 In the rare situation where you would need to build from other branches of the external repositories, you can specify those branches as such:
 ```
-.\build.ps1 -Target BuildAll -ScriptArgs '--CkBranch="development"','--CdfBranch="dnn"'
+.\build.ps1 -ScriptArgs '--CkBranch="development"','--CdfBranch="dnn"'
 ```
 
 If you encounter any build issues, please re-run the build with more verbosity as such:
 ```
-.\build.ps1 -Target BuildAll -Verbosity diagnostic
+.\build.ps1 -Verbosity diagnostic
 ```
 This will log much more information about the problem and allow you to open an issue with those more detailed logs.
 
