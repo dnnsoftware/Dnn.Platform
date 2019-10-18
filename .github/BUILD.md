@@ -15,11 +15,13 @@ In order to build the whole solution and produce the install and upgrade package
 ```
 .\build.ps1
 ```
-Please note that the version number will be automatically set depending on the git branch you are on.
 
-In the rare situation where you would need to build from other branches of the external repositories, you can specify those branches as such:
+The version you are building is the current version on the branch you are. However there are 2 external repositories that get bundled into Dnn build:
+[Dnn.Connect CKEditor provider](https://github.com/DNN-Connect/CKEditorProvider) is the default HTML editor provider and its default branch is development.	
+[Dnn.ClientDependency](https://github.com/dnnsoftware/ClientDependency), the default branch is dnn
+Under normal situations they are the branches used for the next release, however if you have a need to specify a different branch to pull during the build you can specify them as such:
 ```
-.\build.ps1 -ScriptArgs '--CkBranch="development"','--CdfBranch="dnn"'
+.\build.ps1 -ScriptArgs '--CkBranch="branch-name"','--CdfBranch="branch-name"'
 ```
 
 If you encounter any build issues, please re-run the build with more verbosity as such:
