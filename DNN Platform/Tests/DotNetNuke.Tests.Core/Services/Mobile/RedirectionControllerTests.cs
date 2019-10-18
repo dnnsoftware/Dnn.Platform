@@ -31,6 +31,7 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
@@ -155,6 +156,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         private void SetupContianer()
         {
             TestableGlobals.ClearInstance();
+            PortalController.ClearInstance();
             var navigationManagerMock = new Mock<INavigationManager>();
             navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => NavigateUrl(x));
             var containerMock = new Mock<IServiceProvider>();
