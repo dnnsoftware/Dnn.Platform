@@ -347,7 +347,7 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value>füge Installationsversion hinzu</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="dnnSecondaryAction" href="http://www.dotnetnuke.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
+    <value>&lt;a class="dnnSecondaryAction" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;Installations-Video&lt;/a&gt; (in engl. Sprache)</value>
   </data>
   <data name="InvalidQualifier.Text" xml:space="preserve">
     <value>Der Objekt-Präfix mus mit einem Buchstaben beginnen und darf nicht mehr als 20 Zeichen haben.</value>
@@ -539,6 +539,6 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
   <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 ist erforderlich. Suchen Sie nach Windows-Updates, bevor Sie fortfahren.</value>
+    <value>DNN benötigt .Net Framework in der Version 4.7.2 oder neuer. Bitte prüfen Sie verfügbare Updates für Windows, bevor Sie mit der Installation fortfahren.</value>
   </data>
 </root>

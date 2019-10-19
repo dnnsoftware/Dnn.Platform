@@ -1,6 +1,6 @@
 DotNetNuke
 
-For more details please see the DotNetNuke Installation Guide (downloadable from dotnetnuke.com) and http://www.dotnetnuke.com/Resources/Blogs/EntryId/3418/Announcing-DotNetNuke-7.aspx for an explanantion of minimum requirements.
+For more details please see the DotNetNuke Installation Guide (downloadable from dotnetnuke.com) and https://www.dnnsoftware.com/Resources/Blogs/EntryId/3418/Announcing-DotNetNuke-7.aspx for an explanantion of minimum requirements.
 
 Minimum Requirements
 -------------
@@ -16,7 +16,7 @@ Clean Installation
 
 - unzip package into C:\DotNetNuke (note: the install package is the most commonly used, the source package is intended for those who wish to make core changes or debug through the source)
 
-- the website user account must have Read, Write, and Change Control of the root website directory and subdirectories ( this allows the application to create files/folders and update it¡¯s config files), This account is different depending on the version of the OS/webserver, please see the list below for the correct account
+- the website user account must have Read, Write, and Change Control of the root website directory and subdirectories ( this allows the application to create files/folders and update itï¿½ï¿½s config files), This account is different depending on the version of the OS/webserver, please see the list below for the correct account
  - If using Windows 2008 R2 (IIS 7.5) or Windows 7 or Windows Server 2012 8 (IIS7.5, IIS8.0) this is the IIS AppPool\DefaultAppPool User Account.
 
 - create Virtual Directory in IIS called DotNetNuke which points to the directory where the DotNetNuke.webproj file exists )

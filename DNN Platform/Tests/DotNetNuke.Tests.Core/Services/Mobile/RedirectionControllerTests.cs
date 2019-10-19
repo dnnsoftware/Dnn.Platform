@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 	    public const bool EnabledFlag = true;
         public const bool DisabledFlag = false;
         public const bool IncludeChildTabsFlag = true;
-	    public const string ExternalSite = "http://www.dotnetnuke.com";
+	    public const string ExternalSite = "https://www.dnnsoftware.com";
 
 		private const string DisableMobileRedirectCookieName = "disablemobileredirect";
 		private const string DisableRedirectPresistCookieName = "disableredirectpresist";

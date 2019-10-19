@@ -6,8 +6,8 @@
       <owner>
         <name>DotNetNuke Corporation</name>
         <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <url>https://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />
