@@ -529,7 +529,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{8D99
 		Dnn.AdminExperience\Build\Symbols\releaseNotes.txt = Dnn.AdminExperience\Build\Symbols\releaseNotes.txt
 		Dnn.AdminExperience\Build\Symbols\Symbols.dnn = Dnn.AdminExperience\Build\Symbols\Symbols.dnn
 	EndProjectSection
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Abstractions", "DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj", "{6928A9B1-F88A-4581-A132-D3EB38669BB0}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Abstractions", "DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj", "{6928A9B1-F88A-4581-A132-D3EB38669BB0}"
 EndProject
 Global
