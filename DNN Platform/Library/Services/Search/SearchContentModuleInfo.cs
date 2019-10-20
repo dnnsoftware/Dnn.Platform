@@ -42,25 +42,8 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class SearchContentModuleInfo
     {
-#pragma warning disable 0618
-        protected ISearchable MModControllerType;
-#pragma warning restore 0618
         protected ModuleSearchBase SearchBaseControllerType;
         protected ModuleInfo MModInfo;
-
-#pragma warning disable 0618
-        public ISearchable ModControllerType
-        {
-            get
-            {
-                return MModControllerType;
-            }
-            set
-            {
-                MModControllerType = value;
-            }
-        }
-#pragma warning restore 0618
 
         public ModuleSearchBase ModSearchBaseControllerType
         {

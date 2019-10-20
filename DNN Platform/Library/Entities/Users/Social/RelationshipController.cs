@@ -33,7 +33,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Social.Data;
 using DotNetNuke.Entities.Users.Social.Internal;
 using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 

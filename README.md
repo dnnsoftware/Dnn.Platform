@@ -1,4 +1,4 @@
-[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/DNN%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=27&branchName=development)
+[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.Platform%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=83&branchName=development)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
@@ -24,26 +24,26 @@ In addition to robust content management, the free, open source DNN Platform inc
 
 ## Quick Links
 
-* [Contribute](CONTRIBUTING.md)
-* [Build](.github/BUILD.md)
-* [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
-* [Versioning Policy](.github/VERSIONING_POLICY.md)
+* [Documentation](https://www.dnndocs.com/)
 * [Release Schedule](.github/RELEASE_SCHEDULE.md)
+* [Security Policy](SECURITY.md)
 * [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
-* [Questions & Answers](http://answers.dnnsoftware.com/)
-* [Showcase](http://www.dnnsoftware.com/community/participate/community-showcase)
-* [Discussion Forums](http://forums.dnnsoftware.com/)
+* [Discussion Forums](https://dnncommunity.org/forums)
+* [Community Showcase](https://dnncommunity.org/Showcase)
 * [Video Library](http://www.dnnsoftware.com/videos)
-* [News](http://www.dnnsoftware.com/About/In-The-News/Press-Releases)
-* [Community Blogs](http://www.dnnsoftware.com/community-blog)
+* [Community Blogs](https://dnncommunity.org/blogs)
 * [DNN on Facebook](http://www.facebook.com/DNNsoftware)
 * [DNN on Twitter](http://www.Twitter.com/DNN)
 * [DNN Store](http://store.dnnsoftware.com/)
 
-## How to Contribute
+## Contributing to DNN Platform
 
-We encourage everyone to contribute.
-All the details on contributing with Git and on our working methods can be found on the [Contribute Page](CONTRIBUTING.md)
+We encourage contributions of all forms, including code changes, testing, bug reports or otherwise.  The following resources outline detailed contribution procedures.
+
+* [Contributing to DNN Platform](CONTRIBUTING.md)
+* [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
+* [Versioning Policy](.github/VERSIONING_POLICY.md)
+* [Build Process Documentation](.github/BUILD.md)
 
 In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
 
@@ -54,4 +54,5 @@ This project is supported by the [.NET Foundation](https://dotnetfoundation.org)
 ## NDepend
 
 We monitor code quality of the DNN Platform using [NDepend](https://www.ndepend.com).
+
 ![NDepend](.github/images/PoweredByNDepend.png)

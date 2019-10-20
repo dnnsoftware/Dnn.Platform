@@ -192,12 +192,5 @@ namespace DotNetNuke.Framework
             }
             return _HasPermission;
         }
-
-        [Obsolete("Replaced by correctly spelt method. Scheduled removal in v10.0.0.")]
-        public static bool HasRelectionPermission()
-        {
-            GetPermissions();
-            return m_ReflectionPermission;
-        }
     }
 }

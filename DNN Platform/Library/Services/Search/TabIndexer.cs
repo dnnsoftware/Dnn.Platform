@@ -143,11 +143,5 @@ namespace DotNetNuke.Services.Search
             searchDocuments.Clear();
             return total;
         }
-
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
-        {
-            return null;
-        }
     }
 }

@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Modules
                     //Test the interfaces
                     desktopModule.IsPortable = (objController is IPortable);
 #pragma warning disable 0618
-                    desktopModule.IsSearchable = (objController is ModuleSearchBase) || (objController is ISearchable);
+                    desktopModule.IsSearchable = (objController is ModuleSearchBase);
 #pragma warning restore 0618
                     desktopModule.IsUpgradeable = (objController is IUpgradeable);
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);

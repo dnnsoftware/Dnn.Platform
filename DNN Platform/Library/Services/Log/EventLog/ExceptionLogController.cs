@@ -102,17 +102,7 @@ namespace DotNetNuke.Services.Log.EventLog
 		public void AddLog(Exception objException, LogInfo log, ExceptionLogType logType)
 		{
 			log.LogTypeKey = logType.ToString();
-			if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
-			{
-				//Add SearchException Properties
-				var objSearchException = (SearchException)objException;
-				log.LogProperties.Add(new LogDetailInfo("ModuleId", objSearchException.SearchItem.ModuleId.ToString()));
-				log.LogProperties.Add(new LogDetailInfo("SearchItemId", objSearchException.SearchItem.SearchItemId.ToString()));
-				log.LogProperties.Add(new LogDetailInfo("Title", objSearchException.SearchItem.Title));
-				log.LogProperties.Add(new LogDetailInfo("SearchKey", objSearchException.SearchItem.SearchKey));
-				log.LogProperties.Add(new LogDetailInfo("GUID", objSearchException.SearchItem.GUID));
-			}
-			else if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
+			if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
 			{
 				//Add ModuleLoadException Properties
 				var objModuleLoadException = (ModuleLoadException)objException;

@@ -1335,7 +1335,7 @@ Please do not reply to this email.</value>
 
                             &lt;tr&gt;
                                 &lt;td align="center"&gt;
-                                    &lt;p&gt;Copyright 2013 &lt;a href="[SITEURL]"&gt;[PORTALNAME]&lt;/a&gt; All rights reserved.&lt;/p&gt;
+                                    &lt;p&gt;Copyright [year] &lt;a href="[SITEURL]"&gt;[PORTALNAME]&lt;/a&gt; All rights reserved.&lt;/p&gt;
                                     &lt;p&gt;If you wish to no longer receive emails in the future, please &lt;a href="[UNSUBSCRIBEURL]"&gt;unsubscribe&lt;/a&gt; here.&lt;/p&gt;
                                 &lt;/td&gt;
                             &lt;/tr&gt;

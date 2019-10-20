@@ -290,61 +290,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// property will return the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching)
-        /// </summary>
-        [Obsolete("Obsolete in 7.2.2, Use PhotoUrl instead of it.. Scheduled removal in v10.0.0.")]
-        public string PhotoURLFile
-        {
-            get
-            {
-                string photoURLFile = Globals.ApplicationPath + "/images/no_avatar.gif";
-                ProfilePropertyDefinition photoProperty = GetProperty(USERPROFILE_Photo);
-                if ((photoProperty != null))
-                {
-                    UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-
-                    bool isVisible = (user.UserID == _user.UserID);
-                    if (!isVisible)
-                    {
-                        switch (photoProperty.ProfileVisibility.VisibilityMode)
-                        {
-                            case UserVisibilityMode.AllUsers:
-                                isVisible = true;
-                                break;
-                            case UserVisibilityMode.MembersOnly:
-                                isVisible = user.UserID > 0;
-                                break;
-                            case UserVisibilityMode.AdminOnly:
-                                isVisible = user.IsInRole(settings.AdministratorRoleName);
-                                break;
-                            case UserVisibilityMode.FriendsAndGroups:
-                                break;
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
-                    {
-                        var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
-                        if ((fileInfo != null))
-                        {
-                            string rootFolder = "";
-                            if (fileInfo.PortalId == Null.NullInteger)
-                            {
-                                //Host
-                                rootFolder = Globals.HostPath;
-                            }
-                            else
-                            {
-                                rootFolder = settings.HomeDirectory;
-                            }
-                            photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
-                        }
-                    }
-                }
-                return photoURLFile;
-            }
-        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the PostalCode part of the Address

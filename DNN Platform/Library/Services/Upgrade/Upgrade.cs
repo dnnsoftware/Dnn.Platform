@@ -2094,90 +2094,6 @@ namespace DotNetNuke.Services.Upgrade
             AddSkinControl("STYLES", "DotNetNuke.StylesSkinObject", "Admin/Skins/Styles.ascx");
         }
 
-        private static void UpgradeToVersion600()
-        {
-            var hostPages = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-
-            //This ensures that all host pages have a tab path.
-            //so they can be found later. (DNNPRO-17129)
-            foreach (var hostPage in hostPages.Values)
-            {
-                hostPage.TabPath = Globals.GenerateTabPath(hostPage.ParentId, hostPage.TabName);
-                TabController.Instance.UpdateTab(hostPage);
-            }
-
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-
-            if (settings != null)
-            {
-                var hostTab = TabController.Instance.GetTab(settings.SuperTabId, Null.NullInteger, false);
-                hostTab.IsVisible = false;
-                TabController.Instance.UpdateTab(hostTab);
-                foreach (var module in ModuleController.Instance.GetTabModules(settings.SuperTabId).Values)
-                {
-                    ModuleController.Instance.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
-                }
-            }
-
-            //remove timezone editor
-            int moduleDefId = GetModuleDefinition("Languages", "Languages");
-            RemoveModuleControl(moduleDefId, "TimeZone");
-
-            //6.0 requires the old TimeZone property to be marked as Deleted - Delete for Host
-            ProfilePropertyDefinition ppdHostTimeZone = ProfileController.GetPropertyDefinitionByName(Null.NullInteger, "TimeZone");
-            if (ppdHostTimeZone != null)
-            {
-                ProfileController.DeletePropertyDefinition(ppdHostTimeZone);
-            }
-
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                //update timezoneinfo
-#pragma warning disable 612,618
-                TimeZoneInfo timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(portal.TimeZoneOffset);
-#pragma warning restore 612,618
-                PortalController.UpdatePortalSetting(portal.PortalID, "TimeZone", timeZoneInfo.Id, false);
-
-                //6.0 requires the old TimeZone property to be marked as Deleted - Delete for Portals
-                ProfilePropertyDefinition ppdTimeZone = ProfileController.GetPropertyDefinitionByName(portal.PortalID, "TimeZone");
-                if (ppdTimeZone != null)
-                {
-                    ProfileController.DeletePropertyDefinition(ppdTimeZone);
-                }
-
-                var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
-
-                adminTab.IsVisible = false;
-                TabController.Instance.UpdateTab(adminTab);
-
-                foreach (var module in ModuleController.Instance.GetTabModules(portal.AdminTabId).Values)
-                {
-                    ModuleController.Instance.UpdateTabModuleSetting(module.TabModuleID, "hideadminborder", "true");
-                }
-            }
-
-            //Ensure that Display Beta Notice setting is present
-            var displayBetaNotice = Host.DisplayBetaNotice;
-            HostController.Instance.Update("DisplayBetaNotice", displayBetaNotice ? "Y" : "N");
-
-            moduleDefId = GetModuleDefinition("Languages", "Languages");
-            AddModuleControl(moduleDefId, "EnableContent", "Enable Localized Content", "DesktopModules/Admin/Languages/EnableLocalizedContent.ascx", "", SecurityAccessLevel.Host, 0, null, false);
-
-            AddDefaultModuleIcons();
-
-            AddIconToAllowedFiles();
-
-            FavIconsToPortalSettings();
-
-            var tab = TabController.Instance.GetTabByName("Host", Null.NullInteger, Null.NullInteger);
-
-            if (tab != null)
-            {
-                RemoveModule("Extensions", "Module Definitions", tab.TabID, true);
-                RemoveModule("Marketplace", "Marketplace", tab.TabID, true);
-            }
-        }
-
         private static void UpgradeToVersion601()
         {
             //List module needs to be available to Portals also
@@ -2480,21 +2396,6 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
         }
-
-        private static void UpgradeToVersion623()
-        {
-#pragma warning disable 618
-            if (Host.jQueryUrl == "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
-            {
-                HostController.Instance.Update("jQueryUrl", jQuery.DefaultHostedUrl);
-            }
-
-            if (Host.jQueryUIUrl == "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js")
-            {
-                HostController.Instance.Update("jQueryUIUrl", jQuery.DefaultUIHostedUrl);
-			}
-#pragma warning restore 618
-		}
 
         private static void UpgradeToVersion624()
         {
@@ -2894,28 +2795,6 @@ namespace DotNetNuke.Services.Upgrade
 
             //Make ProfessionalPreview Premium
             MakeModulePremium(@"ProfessionalPreview");
-        }
-
-        private static void UpgradeToVersion730()
-        {
-#pragma warning disable 612,618
-            if (jQuery.UseHostedScript)
-            {
-                HostController.Instance.Update("CDNEnabled","True",true);
-
-                var jquery = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQuery);
-                jquery.CDNPath = jQuery.HostedUrl;
-                JavaScriptLibraryController.Instance.SaveLibrary(jquery);
-
-                var jqueryui = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQueryUI);
-                jqueryui.CDNPath = jQuery.HostedUIUrl;
-                JavaScriptLibraryController.Instance.SaveLibrary(jqueryui);
-
-                var jquerymigrate = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQueryMigrate);
-                jquerymigrate.CDNPath = jQuery.HostedMigrateUrl;
-                JavaScriptLibraryController.Instance.SaveLibrary(jquerymigrate);
-            }
-#pragma warning restore 612,618
         }
 
         private static void UpgradeToVersion732()
@@ -5306,9 +5185,7 @@ namespace DotNetNuke.Services.Upgrade
                         case "5.6.2":
                             UpgradeToVersion562();
                             break;
-                        case "6.0.0":
-                            UpgradeToVersion600();
-                            break;
+
                         case "6.0.1":
                             UpgradeToVersion601();
                             break;
@@ -5329,9 +5206,6 @@ namespace DotNetNuke.Services.Upgrade
                             break;
                         case "6.2.1":
                             UpgradeToVersion621();
-                            break;
-                        case "6.2.3":
-                            UpgradeToVersion623();
                             break;
                         case "6.2.4":
                             UpgradeToVersion624();
@@ -5356,9 +5230,6 @@ namespace DotNetNuke.Services.Upgrade
                             break;
                         case "7.2.2":
                             UpgradeToVersion722();
-                            break;
-                        case "7.3.0":
-                            UpgradeToVersion730();
                             break;
                         case "7.3.2":
                             UpgradeToVersion732();

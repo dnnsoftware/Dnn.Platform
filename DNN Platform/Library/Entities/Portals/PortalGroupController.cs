@@ -29,12 +29,10 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals.Data;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 
 #endregion
 

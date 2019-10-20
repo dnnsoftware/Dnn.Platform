@@ -117,15 +117,6 @@ namespace DotNetNuke.Entities.Host
             return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
         }
 
-        [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
-        public void IsIPAddressBanned(string ipAddress)
-        {
-            if (CheckIfBannedIPAddress(ipAddress))
-            {//should throw 403.6
-            throw new HttpException(403, "");
-            }
-        }
-
         /// <summary>
         /// Check the set of rules to see if an IP address is banned (used on login)
         /// </summary>

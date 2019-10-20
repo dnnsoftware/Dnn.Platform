@@ -773,9 +773,6 @@ namespace DotNetNuke.Entities.Portals
 
         #endregion
 
-        [XmlIgnore]
-        [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
-        public int TimeZoneOffset { get; set; }
 
         #region IHydratable Members
 
@@ -861,9 +858,6 @@ namespace DotNetNuke.Entities.Portals
             PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
-#pragma warning disable 612,618 //needed for upgrades and backwards compatibility
-            TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);
-#pragma warning restore 612,618
             AdminTabId = Null.SetNullInteger(dr["AdminTabID"]);
             HomeDirectory = Null.SetNullString(dr["HomeDirectory"]);
             SuperTabId = Null.SetNullInteger(dr["SuperTabId"]);

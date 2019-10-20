@@ -8,7 +8,6 @@ using DotNetNuke;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;

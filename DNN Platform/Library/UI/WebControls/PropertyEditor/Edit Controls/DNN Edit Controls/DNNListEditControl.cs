@@ -105,20 +105,7 @@ namespace DotNetNuke.UI.WebControls
                 return intValue;
             }
         }
-
-        /// <summary>
-        /// List gets the List associated with the control
-        /// </summary>
-        [Obsolete("Obsoleted in 6.0.1 use ListEntries instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
-        protected ListEntryInfoCollection List
-        {
-            get
-            {
-                var listController = new ListController();
-                return listController.GetListEntryInfoCollection(ListName, ParentKey, PortalId);
-            }
-        }
-
+        
         /// <summary>
         /// Gets the ListEntryInfo objects associated witht the control
         /// </summary>

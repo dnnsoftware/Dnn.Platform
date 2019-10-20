@@ -28,7 +28,6 @@ using System;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
 using System.Web.UI.WebControls;
 using DotNetNuke.Modules.Groups.Components;

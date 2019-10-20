@@ -294,15 +294,6 @@ namespace DotNetNuke.Services.EventQueue
         }
 		
 		#endregion
-		
-		#region "Obsolete Methods"
-
-        [Obsolete("This method is obsolete. Use Sendmessage(message, eventName) instead. Scheduled removal in v10.0.0.")]
-        public bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
-        {
-            return SendMessage(message, eventName);
-        }
-		
-		#endregion
+        
     }
 }

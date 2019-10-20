@@ -2236,34 +2236,6 @@ namespace DotNetNuke.Services.FileSystem
 
         #endregion
 
-        #region Obsolete Methods
-
-        /// <summary>
-        /// Moves the specified folder and its contents to a new location.
-        /// </summary>
-        /// <param name="folder">The folder to move.</param>
-        /// <param name="newFolderPath">The new folder path.</param>
-        /// <returns>The moved folder.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) . Scheduled removal in v10.0.0.")]
-        public virtual IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath)
-        {
-            Requires.NotNull("folder", folder);
-            Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
-
-            var nameCharIndex = newFolderPath.Substring(0, newFolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1;
-            var parentFolder = GetFolder(folder.PortalID, newFolderPath.Substring(0, nameCharIndex));
-            if (parentFolder.FolderID == folder.ParentID)
-            {
-                var newFolderName = newFolderPath.Substring(nameCharIndex, newFolderPath.Length - nameCharIndex - 1);
-                RenameFolder(folder, newFolderName);
-                return folder;
-            }
-
-            return MoveFolder(folder, parentFolder);
-        }
-
-        #endregion
     }
 
     class SyncFolderData

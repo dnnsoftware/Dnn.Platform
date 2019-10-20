@@ -62,14 +62,6 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        #region Properties
-
-		public virtual IDictionary<string, string> ContentTypes
-		{
-			get { return FileContentTypeManager.Instance.ContentTypes; }
-		}
-
-        #endregion
 
         #region Constants
 

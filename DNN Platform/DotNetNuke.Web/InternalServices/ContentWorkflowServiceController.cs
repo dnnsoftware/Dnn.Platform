@@ -123,55 +123,6 @@ namespace DotNetNuke.Web.InternalServices
 
         }
 
-        [Obsolete("Obsolted in Platform 7.4.0. Scheduled removal in v10.0.0.")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage Review(NotificationDTO postData)
-        {
-            try
-            {
-                var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-
-                if (notification != null)
-                {
-                    if (string.IsNullOrEmpty(notification.Context))
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
-                    }
-
-                    var source = notification.Context;
-                    string[] parameters = null;
-                    if (notification.Context.Contains(";"))
-                    {
-                        parameters = notification.Context.Split(';');
-                        source = parameters[0];
-                        parameters = parameters.ToList().Skip(1).ToArray();
-                    }
-
-                    var workflow = ContentWorkflowController.Instance.GetDefaultWorkflow(PortalSettings.PortalId);
-                    var workflowSource = ContentWorkflowController.Instance.GetWorkflowSource(workflow.WorkflowID, source);
-                    if (workflowSource == null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                    }
-
-                    var sourceAction = Reflection.CreateInstance(Reflection.CreateType(workflowSource.SourceType)) as IContentWorkflowAction;
-                    if (sourceAction == null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                    }
-
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) }); 
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
-
-        }
         #endregion
     }
 }
