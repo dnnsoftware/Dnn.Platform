@@ -104,6 +104,20 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Determines whether the argValue is null, empty, or has whitespace only.
+        /// </summary>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentException"></exception>
+        public static void NotNullOrHasNoWhiteSpace(string argName, string argValue)
+        {
+            if (string.IsNullOrWhiteSpace(argValue))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("ArgumentCannotBeNullOrEmpty", "The argument '{0}' cannot be null or empty.", argName), argName);
+            }
+        }
+
+        /// <summary>
         /// Determines whether a property is negative.
         /// </summary>
         /// <param name="item">The object to test.</param>
