@@ -43,8 +43,8 @@ Add any other context that may be helpful.
 Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
 -->
 
-* [ ] 10.0.0 non-release build
-* [ ] 9.4.1 non-release build
+* [ ] 10.0.0 alpha build
+* [ ] 9.4.1 alpha build
 * [ ] 9.4.0 latest supported release
 
 ## Affected browser
