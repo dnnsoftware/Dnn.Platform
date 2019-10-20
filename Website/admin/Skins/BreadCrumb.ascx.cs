@@ -48,10 +48,10 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
         private string _homeUrl = "";
         private string _homeTabName = "Root";
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public BreadCrumb()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         // Separator between breadcrumb elements
@@ -135,7 +135,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Make sure we have a home tab ID set
                 if (PortalSettings.HomeTabId != -1)
                 {
-                    _homeUrl = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
+                    _homeUrl = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
 
                     var tc = new TabController();
                     var homeTab = tc.GetTab(PortalSettings.HomeTabId, PortalSettings.PortalId, false);
@@ -184,13 +184,13 @@ namespace DotNetNuke.UI.Skins.Controls
                 //
                 if (ProfileUserId > -1)
                 {
-                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId);
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId);
                 }
 
                 //
                 if (GroupId > -1)
                 {
-                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId);
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId);
                 }
 
                 // Begin breadcrumb

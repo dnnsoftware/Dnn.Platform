@@ -56,10 +56,10 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// -----------------------------------------------------------------------------
     public partial class Export : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Export()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
             }
         }
 

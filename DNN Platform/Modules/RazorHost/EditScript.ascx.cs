@@ -40,13 +40,13 @@ namespace DotNetNuke.Modules.RazorHost
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
         public EditScript()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.RazorHost
             try
             {
                 SaveScript();
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {

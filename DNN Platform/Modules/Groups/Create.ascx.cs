@@ -18,10 +18,10 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class Create : GroupsModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Create()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected override void OnInit(EventArgs e)
         {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);
 
-	        var groupUrl = NavigationManager.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
+	        var groupUrl = _navigationManager.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
 			{
 				const int startIndex = 8; // length of https://
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.Groups
                 GroupUtilities.CreateJournalEntry(roleInfo, UserInfo);
             }
 
-            Response.Redirect(NavigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() }));
+            Response.Redirect(_navigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() }));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Terms : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Terms.ascx";
         public string Text { get; set; }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Terms()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : NavigationManager.NavigateURL(PortalSettings.TermsTabId);
+                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : _navigationManager.NavigateURL(PortalSettings.TermsTabId);
 
                 hypTerms.Attributes["rel"] = "nofollow";
             }

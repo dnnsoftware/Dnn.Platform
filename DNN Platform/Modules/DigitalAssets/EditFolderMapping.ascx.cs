@@ -37,10 +37,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class EditFolderMapping : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public EditFolderMapping()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Variables
@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 if (!Response.IsRequestBeingRedirected)
-                    Response.Redirect(NavigationManager.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
+                    Response.Redirect(_navigationManager.NavigateURL(TabId, "FolderMappings", "mid=" + ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {

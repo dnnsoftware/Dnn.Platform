@@ -57,11 +57,11 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class EditUser : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public EditUser()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Protected Members
@@ -110,12 +110,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
                         //redirect to current page
-                        _RedirectURL = NavigationManager.NavigateURL();
+                        _RedirectURL = _navigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = NavigationManager.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
+                    _RedirectURL = _navigationManager.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return NavigationManager.NavigateURL(TabId, "", !String.IsNullOrEmpty(UserFilter) ? UserFilter : "");
+                return _navigationManager.NavigateURL(TabId, "", !String.IsNullOrEmpty(UserFilter) ? UserFilter : "");
             }
         }
 
@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
                         {
                             //Display current user's profile
-                            Response.Redirect(NavigationManager.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
+                            Response.Redirect(_navigationManager.NavigateURL(PortalSettings.UserTabId, "", "UserID=" + UserInfo.UserID), true);
                         }
                     }
                     else
@@ -484,7 +484,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             //DNN-26777
             PortalSecurity.Instance.SignOut();
-            Response.Redirect(NavigationManager.NavigateURL(PortalSettings.HomeTabId));
+            Response.Redirect(_navigationManager.NavigateURL(PortalSettings.HomeTabId));
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)

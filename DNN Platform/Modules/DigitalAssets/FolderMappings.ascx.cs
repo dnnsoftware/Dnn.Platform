@@ -40,10 +40,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class FolderMappings : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public FolderMappings()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Variables
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnLoad(e);
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-            CancelButton.NavigateUrl = NavigationManager.NavigateURL();
+            CancelButton.NavigateUrl = _navigationManager.NavigateURL();
             NewMappingButton.Click += OnNewMappingClick;
 
             if (!IsPostBack)
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             if (e.CommandName == "Edit")
             {
-                Response.Redirect(NavigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
+                Response.Redirect(_navigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
             }
             else
             {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             try
             {
-                Response.Redirect(NavigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true"));
+                Response.Redirect(_navigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {

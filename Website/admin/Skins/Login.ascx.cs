@@ -42,10 +42,10 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Login : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Login()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             LegacyMode = true;
         }
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.UI.Skins.Controls
 					        loginLink.ToolTip = loginLink.Text;
 					        enhancedLoginLink.ToolTip = loginLink.Text;
 				        }
-				        loginLink.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
+				        loginLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
 				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
 			        }
 			        else

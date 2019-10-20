@@ -52,10 +52,10 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public ProfileDefinitions()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Constants
@@ -125,11 +125,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    returnURL = NavigationManager.NavigateURL(TabId);
+                    returnURL = _navigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    returnURL = NavigationManager.NavigateURL(TabId, "", filterParams);
+                    returnURL = _navigationManager.NavigateURL(TabId, "", filterParams);
                 }
                 return returnURL;
             }

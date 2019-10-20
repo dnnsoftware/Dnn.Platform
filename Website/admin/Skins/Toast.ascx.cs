@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     public partial class Toast : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Toast()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public bool IsOnline()
@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string GetMessageLink()
         {
-            return NavigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
+            return _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
         }
 
         public string GetMessageLabel()

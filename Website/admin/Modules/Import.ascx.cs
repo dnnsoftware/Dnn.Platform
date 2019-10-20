@@ -50,10 +50,10 @@ namespace DotNetNuke.Modules.Admin.Modules
 {
     public partial class Import : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Import()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         ModuleController.DeserializeModule(xmlDoc.DocumentElement, Module, PortalId, TabId);
                                     }
-                                    Response.Redirect(NavigationManager.NavigateURL(), true);
+                                    Response.Redirect(_navigationManager.NavigateURL(), true);
                                 }
                                 else
                                 {

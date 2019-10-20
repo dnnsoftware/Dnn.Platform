@@ -54,10 +54,10 @@ namespace DotNetNuke.Modules.Html
         private bool EditorEnabled;
         private int WorkflowID;
 
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public HtmlModule()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region "Private Methods"
@@ -270,7 +270,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(PortalId));
 
                             // refresh page
-                            Response.Redirect(NavigationManager.NavigateURL(), true);
+                            Response.Redirect(_navigationManager.NavigateURL(), true);
                         }
                     }
                 }

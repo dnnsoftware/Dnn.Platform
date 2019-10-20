@@ -49,10 +49,10 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 	/// </summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
 	{
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public ViewProfile()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		public override bool DisplayModule
@@ -119,8 +119,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     template = Localization.GetString("DefaultTemplate", LocalResourceFile);
                 }
-			    var editUrl = NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=1");
-                var profileUrl = NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=2");
+			    var editUrl = _navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=1");
+                var profileUrl = _navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + ProfileUserId, "pageno=2");
 
                 if (template.Contains("[BUTTON:EDITPROFILE]"))
                 {
@@ -254,7 +254,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
 			if (homeTabId > Null.NullInteger)
 			{
-				redirectUrl = NavigationManager.NavigateURL(homeTabId);
+				redirectUrl = _navigationManager.NavigateURL(homeTabId);
 			}
 			else
 			{

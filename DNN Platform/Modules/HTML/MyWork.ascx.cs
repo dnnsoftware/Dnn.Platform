@@ -39,10 +39,10 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class MyWork : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public MyWork()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Protected Methods
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Html
         public string FormatURL(object dataItem)
         {
             var objHtmlTextUser = (HtmlTextUserInfo) dataItem;
-            return "<a href=\"" + NavigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
+            return "<a href=\"" + _navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
         #endregion
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
+            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
 
             try
             {

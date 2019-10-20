@@ -49,10 +49,10 @@ namespace DotNetNuke.UI.ControlPanel
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public UpdatePage()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region "Event Handlers"
@@ -135,7 +135,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                 if ((string.IsNullOrEmpty(errMsg)))
                 {
-                    Response.Redirect(NavigationManager.NavigateURL(tab.TabID));
+                    Response.Redirect(_navigationManager.NavigateURL(tab.TabID));
                 }
                 else
                 {

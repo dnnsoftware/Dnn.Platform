@@ -51,11 +51,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 	public partial class Login : AuthenticationLoginBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public Login()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region Protected Properties
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
-            var returnUrl = NavigationManager.NavigateURL();
+            var returnUrl = _navigationManager.NavigateURL();
             string url;
             if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
             {
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = NavigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = _navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
                 passwordLink.NavigateUrl = url;
                 if (PortalSettings.EnablePopUps)
                 {
@@ -178,13 +178,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 	                    if (Request.IsAuthenticated)
 	                    {
-                            Response.Redirect(NavigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            Response.Redirect(_navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
 	                    }
 	                    else
 	                    {
                             if (redirectTabId > 0)
                             {
-                                var redirectUrl = NavigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                var redirectUrl = _navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), string.Empty);
                                 Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
                             }
@@ -333,7 +333,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;
 			if (checkSettings && redirectAfterLogin > 0) //redirect to after registration page
 			{
-				redirectUrl = NavigationManager.NavigateURL(redirectAfterLogin);
+				redirectUrl = _navigationManager.NavigateURL(redirectAfterLogin);
 			}
 			else
 			{
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
 					//redirect to current page
-					redirectUrl = NavigationManager.NavigateURL();
+					redirectUrl = _navigationManager.NavigateURL();
 				}
 			}
 

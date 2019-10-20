@@ -38,10 +38,10 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public partial class Search : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Search()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -430,11 +430,11 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             if (Host.UseFriendlyUrls)
                             {
-                                Response.Redirect(NavigationManager.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(_navigationManager.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
                             }
                             else
                             {
-                                Response.Redirect(NavigationManager.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(_navigationManager.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
                             }
                         }
                         break;
@@ -454,11 +454,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (Host.UseFriendlyUrls)
                 {
-                    Response.Redirect(NavigationManager.NavigateURL(searchTabId));
+                    Response.Redirect(_navigationManager.NavigateURL(searchTabId));
                 }
                 else
                 {
-                    Response.Redirect(NavigationManager.NavigateURL(searchTabId));
+                    Response.Redirect(_navigationManager.NavigateURL(searchTabId));
                 }
             }
         }

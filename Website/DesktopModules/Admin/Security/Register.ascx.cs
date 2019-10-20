@@ -67,11 +67,11 @@ namespace DotNetNuke.Modules.Admin.Users
 		protected const string ConfirmPasswordTextBoxCssClass = "password-confirm";
 
 		private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public Register()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region Protected Properties
@@ -251,7 +251,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 			    try
 			    {
-			        Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
+			        Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
 			    }
 			    catch (ThreadAbortException)
 			    {
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				if (Globals.IsAdminControl())
 				{
 					//redirect to current page
-					Response.Redirect(NavigationManager.NavigateURL(), true);
+					Response.Redirect(_navigationManager.NavigateURL(), true);
 				}
 				else //make module container invisible if user is not a page admin
 				{
@@ -789,7 +789,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			var redirectAfterRegistration = PortalSettings.Registration.RedirectAfterRegistration;
 			if (checkSetting && redirectAfterRegistration > 0) //redirect to after registration page
 			{
-				redirectUrl = NavigationManager.NavigateURL(redirectAfterRegistration);
+				redirectUrl = _navigationManager.NavigateURL(redirectAfterRegistration);
 			}
 			else
 			{
@@ -814,7 +814,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
 					//redirect to current page
-					redirectUrl = NavigationManager.NavigateURL();
+					redirectUrl = _navigationManager.NavigateURL();
 				}
 			}
 

@@ -51,10 +51,10 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public Membership()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region "Public Properties"
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipPromoteToSuperuser != null)
             {
                 MembershipPromoteToSuperuser(this, e);
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
         }
 
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (MembershipDemoteFromSuperuser != null)
             {
                 MembershipDemoteFromSuperuser(this, e);
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
         }
 

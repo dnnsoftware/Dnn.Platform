@@ -42,11 +42,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     /// -----------------------------------------------------------------------------
     public partial class AuthenticationEditor : PackageEditorBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public AuthenticationEditor()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region "Private Members"
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             var displayMode = DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
         }
 
 		#endregion

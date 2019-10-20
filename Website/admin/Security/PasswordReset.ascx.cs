@@ -51,10 +51,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
     public partial class PasswordReset : UserModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public PasswordReset()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -93,11 +93,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
-                Response.Redirect(NavigationManager.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+                Response.Redirect(_navigationManager.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
             }
             cmdChangePassword.Click +=cmdChangePassword_Click;
 
-            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
+            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
 
             if (Request.QueryString["resetToken"] != null)
             {
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     LogSuccess();
                     ViewState.Add("PageNo", 3);
-                    Response.Redirect(NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
+                    Response.Redirect(_navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
                 }
                 else
                 {
@@ -315,18 +315,18 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (PortalSettings.RegisterTabId != -1 && PortalSettings.HomeTabId != -1)
                     {
                         //redirect to portal home page specified
-                        redirectURL = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
+                        redirectURL = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
                     }
                     else
                     {
                         //redirect to current page
-                        redirectURL = NavigationManager.NavigateURL();
+                        redirectURL = _navigationManager.NavigateURL();
                     }
                 }
             }
             else //redirect to after login page
             {
-                redirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
+                redirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
             }
 
 			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);

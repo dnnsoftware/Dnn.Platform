@@ -53,10 +53,10 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class EditHtml : HtmlModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public EditHtml()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -442,7 +442,7 @@ namespace DotNetNuke.Modules.Html
         {
             base.OnInit(e);
 
-            hlCancel.NavigateUrl = NavigationManager.NavigateURL();
+            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
 
             cmdEdit.Click += OnEditClick;
             cmdPreview.Click += OnPreviewClick;
@@ -590,7 +590,7 @@ namespace DotNetNuke.Modules.Html
             // redirect back to portal
             if (redirect)
             {
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
         }
         protected void OnEditClick(object sender, EventArgs e)

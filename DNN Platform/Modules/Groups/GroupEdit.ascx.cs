@@ -12,10 +12,10 @@ namespace DotNetNuke.Modules.Groups
 {
     public partial class GroupEdit : GroupsModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public GroupEdit()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnInit(EventArgs e)
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.Groups
 
                 }
 
-                Response.Redirect(NavigationManager.NavigateURL(TabId, "", new String[] { "groupid=" + GroupId.ToString() }));
+                Response.Redirect(_navigationManager.NavigateURL(TabId, "", new String[] { "groupid=" + GroupId.ToString() }));
             }
         }
     }

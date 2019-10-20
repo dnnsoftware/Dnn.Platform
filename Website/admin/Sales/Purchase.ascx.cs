@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     public partial class Purchase : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private int RoleID = -1;
 
         public Purchase()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else //security violation attempt to access item not related to this Module
                         {
-                            Response.Redirect(NavigationManager.NavigateURL(), true);
+                            Response.Redirect(_navigationManager.NavigateURL(), true);
                         }
                     }
 

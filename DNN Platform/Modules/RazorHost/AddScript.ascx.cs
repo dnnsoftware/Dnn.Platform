@@ -38,11 +38,11 @@ namespace DotNetNuke.Modules.RazorHost
     public partial class AddScript : ModuleUserControlBase
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public AddScript()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void DisplayExtension()
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
+                    Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (Page.IsValid)

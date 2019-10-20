@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.DigitalAssets
         private readonly ExtensionPointManager epm = new ExtensionPointManager();
         private NameValueCollection damState;
 
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public View()
         {
             controller = new Factory().DigitalAssetsController;
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private IExtensionPointFilter Filter
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                var url = NavigationManager.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "ReturnUrl=" + Server.UrlEncode(NavigationManager.NavigateURL()));
+                var url = _navigationManager.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "ReturnUrl=" + Server.UrlEncode(_navigationManager.NavigateURL()));
 
                 //append popUp parameter
                 var delimiter = url.Contains("?") ? "&" : "?";

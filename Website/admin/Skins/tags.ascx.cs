@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     public partial class Tags : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Tags.ascx";
         private string _AddImageUrl = IconController.IconURL("Add");
         private bool _AllowTagging = true;
@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Tags()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string AddImageUrl
@@ -179,7 +179,7 @@ namespace DotNetNuke.UI.Skins.Controls
             tagsControl.CssClass = CssClass;
 
             tagsControl.AllowTagging = AllowTagging && Request.IsAuthenticated;
-            tagsControl.NavigateUrlFormatString = NavigationManager.NavigateURL(PortalSettings.SearchTabId, "", "Tag={0}");
+            tagsControl.NavigateUrlFormatString = _navigationManager.NavigateURL(PortalSettings.SearchTabId, "", "Tag={0}");
             tagsControl.RepeatDirection = RepeatDirection;
             tagsControl.Separator = Separator;
             tagsControl.ShowCategories = ShowCategories;

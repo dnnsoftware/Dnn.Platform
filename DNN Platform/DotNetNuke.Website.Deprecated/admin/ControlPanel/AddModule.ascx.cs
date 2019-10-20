@@ -60,13 +60,13 @@ namespace DotNetNuke.UI.ControlPanel
 {
 	public partial class AddModule : UserControlBase, IDnnRibbonBarTool
 	{
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AddModule));
         private bool _enabled = true;
 
         public AddModule()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.ControlPanel
                             var objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
 							if (objModule != null)
 							{
-								var strURL = NavigationManager.NavigateURL(objModule.TabID, true);
+								var strURL = _navigationManager.NavigateURL(objModule.TabID, true);
 								hlMoreExtensions.NavigateUrl = strURL + "#moreExtensions";
 							}
 							else

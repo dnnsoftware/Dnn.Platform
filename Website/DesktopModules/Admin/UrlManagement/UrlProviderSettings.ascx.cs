@@ -21,11 +21,11 @@ namespace DotNetNuke.Modules.UrlManagement
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
         private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()
         {
-            NavigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
 
         protected override void OnInit(EventArgs e)
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
         void cmdCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+            Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
         void cmdUpdate_Click(object sender, EventArgs e)
@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
             if (DisplayMode != "editor" && DisplayMode != "settings")
             {
-                Response.Redirect(NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+                Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
     }

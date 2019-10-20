@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Privacy : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Privacy.ascx";
         public string Text { get; set; }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Privacy()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypPrivacy.NavigateUrl = PortalSettings.PrivacyTabId == Null.NullInteger ? NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Privacy") : NavigationManager.NavigateURL(PortalSettings.PrivacyTabId);
+                hypPrivacy.NavigateUrl = PortalSettings.PrivacyTabId == Null.NullInteger ? _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Privacy") : _navigationManager.NavigateURL(PortalSettings.PrivacyTabId);
                 hypPrivacy.Attributes["rel"] = "nofollow";
             }
             catch (Exception exc)

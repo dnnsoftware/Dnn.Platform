@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Export : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         private TabInfo _tab;
 
         public Export()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             try
             {
                 if (Page.IsPostBack) return;
-                cmdCancel.NavigateUrl = NavigationManager.NavigateURL();
+                cmdCancel.NavigateUrl = _navigationManager.NavigateURL();
                 var folderPath = "Templates/";
                 var templateFolder = FolderManager.Instance.GetFolder(UserInfo.PortalID, folderPath);
                 cboFolders.Services.Parameters.Add("permission", "ADD");

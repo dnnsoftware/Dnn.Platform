@@ -57,10 +57,10 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SendPassword : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public SendPassword()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 if (Convert.ToInt32(setting) > 0) //redirect to after registration page
                 {
-                    _RedirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
                 {
@@ -114,12 +114,12 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
                         //redirect to current page
-                        _RedirectURL = NavigationManager.NavigateURL();
+                        _RedirectURL = _navigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = NavigationManager.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 }
 
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
-            lnkCancel.NavigateUrl = NavigationManager.NavigateURL();
+            lnkCancel.NavigateUrl = _navigationManager.NavigateURL();
 
             _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
 

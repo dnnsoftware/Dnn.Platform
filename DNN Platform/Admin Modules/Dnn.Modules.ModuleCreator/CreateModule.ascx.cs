@@ -49,10 +49,10 @@ namespace Dnn.Module.ModuleCreator
 
     public partial class CreateModule : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public CreateModule()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Methods
@@ -444,7 +444,7 @@ namespace Dnn.Module.ModuleCreator
                     HostController.Instance.Update("Owner", txtOwner.Text, false);
                     if (CreateModuleDefinition())
                     {
-                        Response.Redirect(NavigationManager.NavigateURL(), true);
+                        Response.Redirect(_navigationManager.NavigateURL(), true);
                     }
                 }
                 else

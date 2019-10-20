@@ -8,10 +8,10 @@ namespace DotNetNuke.Modules.Groups
 {
     public partial class List : GroupsModuleBase
     {
-        public INavigationManager NavigationManager { get; }
+        public INavigationManager _navigationManager { get; }
         public List()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Groups
         {
             if(!Page.IsValid) return;
 
-            Response.Redirect(NavigationManager.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
+            Response.Redirect(_navigationManager.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
         }
     }
 }

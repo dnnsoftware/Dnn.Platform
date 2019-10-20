@@ -48,14 +48,14 @@ namespace DotNetNuke.Modules.RazorHost
     public partial class CreateModule : ModuleUserControlBase
     {
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private string razorScriptFolder = "~/DesktopModules/RazorModules/RazorHost/Scripts/";
 
         public CreateModule()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.RazorHost
                     objModule.AllTabs = false;
                     ModuleController.Instance.AddModule(objModule);
 
-                    Response.Redirect(NavigationManager.NavigateURL(newTab.TabID), true);
+                    Response.Redirect(_navigationManager.NavigateURL(newTab.TabID), true);
                 }
                 else
                 {
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.RazorHost
             else
             {
                 //Redirect to main extensions page
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
         }
 
@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.RazorHost
 
             if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
-                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
+                Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
             }
 
             if (! Page.IsPostBack)
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(NavigationManager.NavigateURL(), true);
+                Response.Redirect(_navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -323,7 +323,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
+                    Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
                 }
 
                 if (Page.IsValid)

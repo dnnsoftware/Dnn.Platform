@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SecurityRoles));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 		#region "Private Members"
 
         private int RoleId = Null.NullInteger;
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         public SecurityRoles()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region "Protected Members"
@@ -107,11 +107,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    _ReturnURL = NavigationManager.NavigateURL(TabId);
+                    _ReturnURL = _navigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    _ReturnURL = NavigationManager.NavigateURL(TabId, "", FilterParams);
+                    _ReturnURL = _navigationManager.NavigateURL(TabId, "", FilterParams);
                 }
                 return _ReturnURL;
             }
@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if (!ModulePermissionController.CanEditModuleContent(ModuleConfiguration))
             {
-                Response.Redirect(NavigationManager.NavigateURL("Access Denied"), true);
+                Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
             }
             base.DataBind();
 

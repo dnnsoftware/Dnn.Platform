@@ -47,11 +47,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Import : PortalModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         public Import()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private TabInfo _tab;
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (!Page.IsPostBack)
                 {
-                    cmdCancel.NavigateUrl = NavigationManager.NavigateURL();
+                    cmdCancel.NavigateUrl = _navigationManager.NavigateURL();
                     cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     var folders = FolderManager.Instance.GetFolders(UserInfo, "BROWSE, ADD");
                     var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
@@ -292,10 +292,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 switch (optRedirect.SelectedValue)
                 {
                     case "VIEW":
-                        Response.Redirect(NavigationManager.NavigateURL(objTab.TabID), true);
+                        Response.Redirect(_navigationManager.NavigateURL(objTab.TabID), true);
                         break;
                     default:
-                        Response.Redirect(NavigationManager.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
+                        Response.Redirect(_navigationManager.NavigateURL(objTab.TabID, "Tab", "action=edit"), true);
                         break;
                 }
             }

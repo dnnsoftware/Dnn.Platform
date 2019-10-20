@@ -45,13 +45,13 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class UserAndLogin : SkinObjectBase
     {
         private const string MyFileName = "UserAndLogin.ascx";
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 
         protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(PortalSettings.UserId, 32, 32);
 
         public UserAndLogin()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected bool CanRegister
@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Globals.RegisterURL(HttpUtility.UrlEncode(NavigationManager.NavigateURL()), Null.NullString);
+                return Globals.RegisterURL(HttpUtility.UrlEncode(_navigationManager.NavigateURL()), Null.NullString);
             }
         }
 
@@ -176,11 +176,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
                 viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
-                logoffLink.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
-                editProfileLink.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=2");
-                accountLink.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
-                messagesLink.NavigateUrl = NavigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
-                notificationsLink.NavigateUrl = NavigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
+                logoffLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
+                editProfileLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=2");
+                accountLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
+                messagesLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
+                notificationsLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
 
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(PortalSettings.UserId, PortalSettings.PortalId);
                 var unreadAlerts = NotificationsController.Instance.CountNotifications(PortalSettings.UserId, PortalSettings.PortalId);

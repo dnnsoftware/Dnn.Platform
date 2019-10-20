@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Journal {
     /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase {
 
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public int PageSize = 20;
         public bool AllowPhotos = true;
         public bool AllowFiles = true;
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Journal {
 
         public View()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Event Handlers
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.Journal {
                 BaseUrl = BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/";
                 BaseUrl += "DesktopModules/Journal/";
 
-                ProfilePage = NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
+                ProfilePage = _navigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
 
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"]))
                 {

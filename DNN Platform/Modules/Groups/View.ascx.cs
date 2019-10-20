@@ -48,10 +48,10 @@ namespace DotNetNuke.Modules.Groups
     /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public View()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Event Handlers
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.Groups
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (GroupId < 0) {
                     if (TabId != GroupListTabId && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) {
-                       Response.Redirect(NavigationManager.NavigateURL(GroupListTabId));
+                       Response.Redirect(_navigationManager.NavigateURL(GroupListTabId));
                     }
                 }
                 GroupsModuleBase ctl = (GroupsModuleBase)LoadControl(ControlPath);

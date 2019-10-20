@@ -52,7 +52,7 @@ namespace Dnn.Modules.Console
 {
 	public partial class ViewConsole : PortalModuleBase
 	{
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ViewConsole));
 	    private ConsoleController _consoleCtrl;
 		private string _defaultSize = string.Empty;
@@ -62,7 +62,7 @@ namespace Dnn.Modules.Console
 
         public ViewConsole()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Public Properties
@@ -508,12 +508,12 @@ namespace Dnn.Modules.Console
 			    var tabUrl = tab.FullUrl;
                 if (ProfileUserId > -1)
                 {
-                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (GroupId > -1)
                 {
-                    tabUrl = NavigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
 				returnValue += string.Format(sb.ToString(),

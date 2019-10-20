@@ -63,10 +63,10 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public ModuleSettingsPage()
         {
-            NavigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? NavigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
             }
         }
 
@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                              PortalAlias = defaultAlias
                                          };
 
-                var tabUrl = NavigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
+                var tabUrl = _navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
 
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {

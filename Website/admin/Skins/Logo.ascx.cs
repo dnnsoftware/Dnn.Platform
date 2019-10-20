@@ -42,13 +42,13 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Logo : SkinObjectBase
     {
-        protected INavigationManager NavigationManager { get; }
+        private readonly INavigationManager _navigationManager;
         public string BorderWidth { get; set; }
         public string CssClass { get; set; }
 
         public Logo()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 if (PortalSettings.HomeTabId != -1)
                 {
-                    hypLogo.NavigateUrl = NavigationManager.NavigateURL(PortalSettings.HomeTabId);
+                    hypLogo.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
                 }
                 else
                 {
