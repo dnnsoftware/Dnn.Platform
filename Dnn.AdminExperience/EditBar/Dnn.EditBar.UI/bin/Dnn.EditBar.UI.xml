@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dnn.EditBar.UI</name>
+    </assembly>
+    <members>
+        <member name="T:Dnn.EditBar.UI.Controllers.ContentEditorManager">
+            <summary>
+            Content Editor Manager
+            </summary>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Controllers.ContentEditorManager.RemoveEmptyPaneClass">
+            <summary>
+            remove default empty pane class as some skin have special style on it
+            and it may caught style issues with content editor feature, then we use a
+            new style to cover it.
+            </summary>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Controllers.ILocalizationController.GetLocalizedDictionary(System.String,System.String)">
+            <summary>
+            Returns a dictionary of localized key for a resource file for a given culture
+            </summary>
+            <param name="resourceFile">The relative file path of the main resource file, e.g. ~/DesktopModules/SocialLibrary/App_LocalResources/CmxResources.resx</param>
+            <param name="culture">The culture for which this dictionay is requested</param>
+            <remarks>This API does not fallback to any other DNN resource files.</remarks>
+        </member>
+        <member name="T:Dnn.EditBar.UI.Helpers.PageSecurityHelper">
+            <summary>
+            This class offers some common methods to work with pages and their permission
+            </summary>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Helpers.PageSecurityHelper.IsPageEditor(System.Int32,DotNetNuke.Entities.Portals.PortalSettings)">
+            <summary>
+            Checks if current user is page editor of the passed tab
+            </summary>
+            <param name="tabId">Tab ID</param>
+            <param name="portalSettings">Portal Settings related with the portal which contains the tab</param>
+            <returns>Returns true if current user has a edit permission on the page or is admin of some module in the page. Otherwise, returns false</returns>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Helpers.PageSecurityHelper.IsPageAdmin">
+            <summary>
+            Checks if current user is page admin of the currentpage
+            </summary>
+            <returns>Returns true if current user has any admin permission. Otherwise returns false</returns>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Helpers.PageSecurityHelper.IsModuleAdmin(DotNetNuke.Entities.Portals.PortalSettings)">
+            <summary>
+            Check if current user is Module admin of any module in the current page
+            </summary>
+            <param name="portalSettings">Portal Settings related with the portal which contains the tab</param>
+            <returns>Returns true if current user has admin permission over some module in the current page. Otherwise, returns false</returns>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Helpers.PageSecurityHelper.IsModuleAdmin(DotNetNuke.Entities.Portals.PortalSettings,DotNetNuke.Entities.Tabs.TabInfo)">
+            <summary>
+            Check if current user is Module admin of any module in the passed page
+            </summary>
+            <param name="portalSettings">Portal Settings related with the portal which contains the tab</param>
+            <param name="tab">Tab to check</param>
+            <returns>Returns true if current user has admin permission over some module in the passed page. Otherwise, returns false</returns>
+        </member>
+        <member name="M:Dnn.EditBar.UI.Services.LocalizationController.GetTable(System.String)">
+            <summary>
+            Retrieve a list of CMX related Localization Keys with it's values for the current culture. 
+            </summary>
+        </member>
+    </members>
+</doc>

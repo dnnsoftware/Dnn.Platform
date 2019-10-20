@@ -1,0 +1,1401 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Web</name>
+    </assembly>
+    <members>
+        <member name="M:DotNetNuke.Web.Api.AuthFilterBase.IsAuthorized(DotNetNuke.Web.Api.AuthFilterContext)">
+            <summary>
+            Tests if the request passes the authorization requirements
+            </summary>
+            <param name="context">The auth filter context</param>
+            <returns>True when authorization is succesful</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.AuthFilterBase.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.AuthFilterBase.AllowMultiple">
+            <summary>
+            Gets or sets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.AuthFilterContext.HandleUnauthorizedRequest">
+            <summary>
+            Processes requests that fail authorization. This default implementation creates a new response with the
+            Unauthorized status code. Override this method to provide your own handling for unauthorized requests.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.AuthorizeAttributeBase.IsAuthorized(DotNetNuke.Web.Api.AuthFilterContext)">
+            <summary>
+            Tests if the request passes the authorization requirements
+            </summary>
+            <param name="context">The auth filter context</param>
+            <returns>True when authorization is succesful</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.AuthorizeAttributeBase.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            Called by framework at start of Auth process, check if auth should be skipped and handles auth failure.  Should rarely need to be overridden.
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.AuthorizeAttributeBase.SkipAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required
+            </summary>
+            <param name="actionContext"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnAuthorizeAttribute.StaticRoles">
+            <summary>
+            Gets or sets the authorized roles (separated by comma) 
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnAuthorizeAttribute.DenyRoles">
+            <summary>
+            Gets or sets the denied roles (separated by comma)
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnAuthorizeAttribute.AuthTypes">
+            <summary>
+            Gets or sets the allowed authentication types (separated by comma)
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Api.HttpStatusCodeAdditions">
+            <summary>
+            Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Api.HttpStatusCodeAdditions.UnprocessableEntity">
+            <summary>
+            Equivalent to HTTP Status 422. Unprocessable Entity status code means the server understands the content type of the request entity (hence a
+            415 (Unsupported Media Type) status code is inappropriate), and the syntax of the request entity is correct (thus a 400 (Bad Request)
+            status code is inappropriate) but was unable to process the contained instructions.
+            <see>
+                <cref>http://tools.ietf.org/html/rfc4918</cref>
+            </see>
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.Auth.AuthMessageHandlerBase.OnInboundRequest(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+            A chance to process inbound requests
+            </summary>
+            <param name="request">the request message</param>
+            <param name="cancellationToken">a cancellationtoken</param>
+            <returns>null normally, if a response is returned all inbound processing is terminated and the resposne is returned</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.Auth.AuthMessageHandlerBase.OnOutboundResponse(System.Net.Http.HttpResponseMessage,System.Threading.CancellationToken)">
+            <summary>
+            A change to process outbound responses
+            </summary>
+            <param name="response">The response message</param>
+            <param name="cancellationToken">a cancellationtoken</param>
+            <returns>the responsemessage</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.Auth.AuthMessageHandlerBase.MustEnforceSslInRequest(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Validated the <see cref="P:DotNetNuke.Web.Api.Auth.AuthMessageHandlerBase.ForceSsl"/> setting of the instane against the HTTP(S) request.
+            </summary>
+            <returns>True if <see cref="P:DotNetNuke.Web.Api.Auth.AuthMessageHandlerBase.ForceSsl"/> matcher the request scheme; false otherwise.</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.RouteExtensions.GetNameSpaces(System.Web.Routing.Route)">
+            <summary>
+            Get Namespaces that are searched for controllers for this route
+            </summary>
+            <returns>Namespaces</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.RouteExtensions.GetNameSpaces(System.Web.Http.Routing.IHttpRoute)">
+            <summary>
+            Get Namespaces that are searched for controllers for this route
+            </summary>
+            <returns>Namespaces</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.RouteExtensions.GetName(System.Web.Routing.Route)">
+            <summary>
+            Get the name of the route
+            </summary>
+            <returns>Route name</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.RouteExtensions.GetName(System.Web.Http.Routing.IHttpRoute)">
+            <summary>
+            Get the name of the route
+            </summary>
+            <returns>Route name</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.RequireHostAttribute.IsAuthorized(DotNetNuke.Web.Api.AuthFilterContext)">
+            <summary>
+            Tests if the request passes the authorization requirements
+            </summary>
+            <param name="context">The auth filter context</param>
+            <returns>True when authorization is succesful</returns>
+        </member>
+        <member name="T:DotNetNuke.Web.Api.StringPassThroughMediaTypeFormatter">
+            <summary>
+            A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.StringPassThroughMediaTypeFormatter.#ctor">
+            <summary>
+            Initialize a formatter that can handle text/plain and text/html
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.StringPassThroughMediaTypeFormatter.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initialize a formatter that can handle the specified media types
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.UrlHelperExtensions.DnnLink(System.Web.Http.Routing.UrlHelper,System.String,System.String,System.Object)">
+            <summary>
+            Generate WebAPI Links compatible with DNN Services Framework
+            </summary>
+            <param name="urlHelper">The UrlHelper</param>
+            <param name="moduleFolderName">ModuleFolderName for the route</param>
+            <param name="routeName">RouteName for the route</param>
+            <param name="routeValues">Values to be passed to the route</param>
+            <returns>a url</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.UrlHelperExtensions.DnnLink(System.Web.Http.Routing.UrlHelper,System.String,System.String,System.Object,DotNetNuke.Entities.Portals.PortalAliasInfo)">
+            <summary>
+            Generate WebAPI Links compatible with DNN Services Framework
+            </summary>
+            <param name="urlHelper">The UrlHelper</param>
+            <param name="moduleFolderName">ModuleFolderName for the route</param>
+            <param name="routeName">RouteName for the route</param>
+            <param name="routeValues">Values to be passed to the route</param>
+            <param name="portalAliasInfo">The PortalAlias to use in the Url </param>
+            <returns>a url</returns>
+        </member>
+        <member name="T:DotNetNuke.Web.Api.WebApiException">
+            <summary>
+            Represents a non successful response while executing a WebApi call.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.WebApiException.#ctor(System.Exception,System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Initializes a new instance of the WebApiException class, with the specified inner exception and response
+            message that caused the exception
+            </summary>
+            <param name="innerException">The original exception</param>
+            <param name="result">The result of the request</param>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.WebApiException.Result">
+            <summary>
+            The result of the request. Can be used to retrieve additional info like HTTP status code
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.WebApiException.Body">
+            <summary>
+            Body from the Get Response. Available when exception is thrown as well.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnApiController.PortalSettings">
+            <summary>
+            PortalSettings for the current portal
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnApiController.UserInfo">
+            <summary>
+            UserInfo for the current user
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Api.DnnApiController.ActiveModule">
+            <summary>
+            ModuleInfo for the current module
+            <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Api.IOverrideDefaultAuthLevel">
+            <summary>
+            Implementing this interface on an Auth filter will allow the filter to override the default
+            Host level auth provided by DnnController
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.IMapRoute.MapHttpRoute(System.String,System.String,System.String,System.Object,System.Object,System.String[])">
+            <summary>
+            Sets up the route(s) for DotNetNuke services
+            </summary>
+            <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides</param>
+            <param name="routeName">A unique name for the route</param>
+            <param name="url">The parameterized portion of the route</param>
+            <param name="defaults">Default values for the route parameters</param>
+            <param name="constraints">The constraints</param>
+            <param name="namespaces">The namespace(s) in which to search for the controllers for this route</param>
+            <returns>A list of all routes that were registered.</returns>
+            <remarks>The combination of moduleFolderName and routeName must be unique for each route</remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.IMapRoute.MapHttpRoute(System.String,System.String,System.String,System.Object,System.String[])">
+            <summary>
+            Sets up the route(s) for DotNetNuke services
+            </summary>
+            <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides</param>
+            <param name="routeName">A unique name for the route</param>
+            <param name="url">The parameterized portion of the route</param>
+            <param name="defaults">Default values for the route parameters</param>
+            <param name="namespaces">The namespace(s) in which to search for the controllers for this route</param>
+            <returns>A list of all routes that were registered.</returns>
+            <remarks>The combination of moduleFolderName and routeName must be unique for each route</remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.Api.IMapRoute.MapHttpRoute(System.String,System.String,System.String,System.String[])">
+            <summary>
+            Sets up the route(s) for DotNetNuke services
+            </summary>
+            <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides</param>
+            <param name="routeName">A unique name for the route</param>
+            <param name="url">The parameterized portion of the route</param>
+            <param name="namespaces">The namespace(s) in which to search for the controllers for this route</param>
+            <returns>A list of all routes that were registered.</returns>
+            <remarks>The combination of moduleFolderName and routeName must be unique for each route</remarks> 
+        </member>
+        <member name="T:DotNetNuke.Web.Extensions.StartupExtensions">
+            <summary>
+            Adds DNN Web API Specific startup extensions to simplify the
+            <see cref="T:DotNetNuke.Web.Startup"/> Class.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Extensions.StartupExtensions.AddWebApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures all of the <see cref="T:DotNetNuke.Web.Api.DnnApiController"/>'s to be used
+            with the Service Collection for Dependency Injection.
+            </summary>
+            <param name="services">
+            Service Collection used to registering services in the container.
+            </param>
+        </member>
+        <member name="T:DotNetNuke.Web.Common.Internal.DotNetNukeHttpApplication">
+            <summary>
+            DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetCategoryDesktopModules(System.Int32,System.String,System.String)">
+            <summary>
+            Get all desktop modules that belong to a category
+            </summary>
+            <param name="portalId">Portal Id where modules are installed</param>
+            <param name="category">Catenory name</param>
+            <param name="searchTerm">Search term to filter modules</param>
+            <returns>A list with all matched desktop modules</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetBookmarkedDesktopModules(System.Int32,System.Int32,System.String)">
+            <summary>
+            Get all desktop modules bookmark by user in Control Bar
+            </summary>
+            <param name="portalId">Portal Id where modules are installed</param>
+            <param name="userId">User Id who has bookmarked the modules</param>
+            <param name="searchTerm">Search term to filter modules</param>
+            <returns>A list with all matched modules</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.SaveBookMark(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Save a user bookmark
+            </summary>
+            <param name="portalId">Portal Id where save the bookmark</param>
+            <param name="userId">User Id who is going to create the bookmark</param>
+            <param name="bookarkTitle">Title for the personalization setting</param>
+            <param name="bookmarkValue">Value for the personalization setting</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetBookmarkCategory(System.Int32)">
+            <summary>
+            Get the category name where the bookmarked modules are shown
+            </summary>
+            <param name="portalId">Portal Id where modules are installed</param>
+            <returns>The name of the bookmark category</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetUpgradeIndicator(System.Version,System.Boolean,System.Boolean)">
+            <summary>
+            Returns the upgrade indicator model
+            </summary>
+            <param name="version"></param>
+            <param name="isLocal"></param>
+            <param name="isSecureConnection"></param>
+            <returns>An instance of the view model UpgradeIndicator</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetControlBarLogoURL">
+            <summary>
+            Get the current Logo URL shown in Control Bar
+            </summary>
+            <returns>The URL of the Control Bar Logo</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.Components.Controllers.IControlBarController.GetCustomMenuItems">
+            <summary>
+            Gets all custom Menu item available in the system
+            </summary>
+            <returns>All custom Menu Items</returns>
+        </member>
+        <member name="P:DotNetNuke.Web.ConfigSection.MessageHandlerEntry.DefaultInclude">
+            <summary>
+            This property specifies whether this is automatically included when the <see cref="T:DotNetNuke.Web.Api.DnnAuthorizeAttribute"/>
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.ImageHeader">
+            <summary>
+                Taken from http://stackoverflow.com/questions/111345/getting-image-dimensions-without-reading-the-entire-file/111349
+                Minor improvements including supporting unsigned 16-bit integers when decoding Jfif and added logic
+                to load the image using new Bitmap if reading the headers fails
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.InternalServices.ImageHeader.GetDimensions(System.String)">
+            <summary>
+                Gets the dimensions of an image.
+            </summary>
+            <param name="path">The path of the image to get the dimensions of.</param>
+            <returns>The dimensions of the specified image.</returns>
+            <exception cref="T:System.ArgumentException">The image was of an unrecognised format.</exception>
+        </member>
+        <member name="M:DotNetNuke.Web.InternalServices.ImageHeader.GetDimensions(System.IO.BinaryReader)">
+            <summary>
+                Gets the dimensions of an image.
+            </summary>
+            <param name="binaryReader">The path of the image to get the dimensions of.</param>
+            <returns>The dimensions of the specified image.</returns>
+            <exception cref="T:System.ArgumentException">The image was of an unrecognised format.</exception>
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.ItemListServiceController.SearchResult">
+            <summary>
+            This class stores a single search result needed by jQuery Tokeninput
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.InternalServices.ModuleServiceController.DeleteModule(DotNetNuke.Web.InternalServices.ModuleServiceController.DeleteModuleDto)">
+            <summary>
+            Web method that deletes a tab module.
+            </summary>
+            <remarks>This has been introduced for integration testing purpuses.</remarks>
+            <param name="deleteModuleDto">delete module dto</param>
+            <returns>Http response message</returns>
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.MessagingServiceController.SearchResult">
+            <summary>
+            This class stores a single search result needed by jQuery Tokeninput
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.Views.Search.GroupedDetailView">
+            <summary>
+            DetailedView grouped by Url (TabId)
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.GroupedDetailView.DocumentUrl">
+            <summary>
+            Document's Url
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.GroupedDetailView.Title">
+            <summary>
+            Document's Title
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.GroupedDetailView.Results">
+            <summary>
+            Results of the Search
+            </summary>   
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.Views.Search.GroupedBasicView">
+            <summary>
+            BasicView grouped by DocumentTypeName
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.GroupedBasicView.DocumentTypeName">
+            <summary>
+            Type of Search Document
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.GroupedBasicView.Results">
+            <summary>
+            Results of the Search
+            </summary>   
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.Views.Search.BasicView">
+            <summary>
+            Detailed Search Result View
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.Title">
+            <summary>
+            Document's Title
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.Snippet">
+            <summary>
+            Highlighted snippet from document
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.Description">
+            <summary>
+            Description from document
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.DocumentUrl">
+            <summary>
+            Link to the Document
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.DocumentTypeName">
+            <summary>
+            Display Name of the Document Type
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.BasicView.Attributes">
+            <summary>
+            Custom Attributes of the document.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.InternalServices.Views.Search.DetailedView">
+            <summary>
+            Detailed Search Result View
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.Tags">
+            <summary>
+            Tags associated with Document
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.DisplayModifiedTime">
+            <summary>
+            Time when Content was last modified (in Utc)
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.AuthorProfileUrl">
+            <summary>
+            Author profile URL
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.AuthorName">
+            <summary>
+            Optional: Display Name of the Author
+            </summary>
+            <remarks>This may be different form current Display Name when Index was run prior to change in Display Name.</remarks>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.Likes">
+            <summary>
+            Number of Likes associated with Content.
+            </summary>
+            <remarks>Content with more Likes is ranked higher.</remarks>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.Comments">
+            <summary>
+            Number of Comments associated with Content.
+            </summary>
+            <remarks>Content with more Comments is ranked higher.</remarks>
+        </member>
+        <member name="P:DotNetNuke.Web.InternalServices.Views.Search.DetailedView.Views">
+            <summary>
+            Number of Views associated with Content.
+            </summary>
+            <remarks>Content with more Views is ranked higher.</remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.Mvp.SettingsViewBase.OnSettingsLoaded">
+            <summary>
+            The OnSettingsLoaded method is called when the Settings have been Loaded 
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Mvp.SettingsViewBase.OnSavingSettings">
+            <summary>
+            OnSavingSettings method is called just before the Settings are saved
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Services.MobileHelperController.Monikers(System.String)">
+            <summary>
+            Gets the various defined monikers for the various tab modules in the system
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFileDropDownList.SelectedFile">
+            <summary>
+            Gets the selected Folder in the control, or selects the Folder in the control.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPortalPageDropDownList.SelectedPage">
+            <summary>
+            Gets the selected Page in the control, or selects the Page in the control.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList.SelectedFolder">
+            <summary>
+            Gets the selected Folder in the control, or selects the Folder in the control.
+            </summary>
+        </member>
+        <member name="E:DotNetNuke.Web.UI.WebControls.DnnDropDownList.SelectionChanged">
+            <summary>
+            Occurs when the selection from the list control changes between posts to the server.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.SelectedItem">
+            <summary>
+            Gets the selected item in the control, or selects the item in the control.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.SelectedItemValueAsInt">
+            <summary>
+            When this method returns, contains the 32-bit signed integer value equivalent to the number contained in
+            SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.UndefinedItem">
+            <summary>
+            SelectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
+            Always displayed as first option in the list
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.FirstItem">
+            <summary>
+            Item to be displayed as first item
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.SelectItemDefaultText">
+            <summary>
+            DropDownList Caption when no Item is selected.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.AutoPostBack">
+            <summary>
+            Gets or sets a value indicating whether a postback to the server automatically occurs when the user changes the list selection.
+            </summary>
+            <returns>
+            true if a postback to the server automatically occurs whenever the user changes the selection of the list; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.CausesValidation">
+            <summary>
+            Gets or sets a value indicating whether validation is performed when a control is clicked.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.ValidationGroup">
+            <summary>
+            Gets or sets the group of controls for which the control causes validation when it posts back to the server.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.OnClientSelectionChanged">
+            <summary>
+            Register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnDropDownList.ExpandPath">
+            <summary>
+            When the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
+            we need expand its parent nodes to make it selected.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFormPasswordItem.CreateControlInternal(System.Web.UI.Control)">
+            <summary>
+            Use container to add custom control hierarchy to
+            </summary>
+            <param name="container"></param>
+            <returns>An "input" control that can be used for attaching validators</returns>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.DnnMemberListControl">
+            <summary>
+            This control is used for displaying a template based list of users based upon various filter and sorting capabilities.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.HeaderTemplate">
+            <summary>
+            Gets or sets the template for displaying the header section of a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.RowHeaderTemplate">
+            <summary>
+            Gets or sets the template for the row header.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.ItemTemplate">
+            <summary>
+            Gets or sets the template for displaying an item in a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.RowFooterTemplate">
+            <summary>
+            Gets or sets the template for the row footer.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.AlternatingRowHeaderTemplate">
+            <summary>
+            Gets or sets the template for displaying the alternating row headers in a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the template for displaying the alternating items in a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.AlternatingRowFooterTemplate">
+            <summary>
+            Gets or sets the template for displaying the alternating row footers in a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.FooterTemplate">
+            <summary>
+            Gets or sets the template for displaying the footer section of a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.PageIndex">
+            <summary>
+            Gets or sets the index of the currently displayed page.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.PageSize">
+            <summary>
+            Gets or sets the number of records to display on a page in a DnnMemberListControl object.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.RowSize">
+            <summary>
+            Gets or sets the number of items displayed on each row.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.SortBy">
+            <summary>
+            Sets the property value to sort by.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.SortAscending">
+            <summary>
+            Gets or sets the sort direction
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnMemberListControl.Filters">
+            <summary>
+            Gets or sets the collection of filters to apply when getting the list of members.
+            </summary>
+            <remarks>
+            Posible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
+            </remarks>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.DisabledNotSelectable">
+            <summary>
+            Whether disabled pages are not selectable
+            Please note: IncludeDisabledTabs needs also be set to true to include disabled pages
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.IncludeActiveTab">
+            <summary>
+            Whether include active page.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.IncludeDisabledTabs">
+            <summary>
+            Whether include pages which are disabled.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.IncludeAllTabTypes">
+            <summary>
+            Whether include pages which tab type is not normal.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.IncludeHostPages">
+            <summary>
+            Whether include Host Pages
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.SelectedPage">
+            <summary>
+            Gets the selected Page in the control, or selects the Page in the control.
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnPageDropDownList.Roles">
+            <summary>
+            Specific to only show tabs which have view permission on these roles.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnPaswordStrengthOptions.OnSerializing(System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            To avoid fetching data from the database in constructor, the OnSerializing method is consumed
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem.ClearContentInPasswordMode">
+            <summary>
+            do not output field's value after post back when text mode set to password mode.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFormItemBase.CreateControlInternal(System.Web.UI.Control)">
+            <summary>
+            Use container to add custom control hierarchy to
+            </summary>
+            <param name="container"></param>
+            <returns>An "input" control that can be used for attaching validators</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Extensions.ListControlExtensions.FindByTextWithIgnoreCase(System.Web.UI.WebControls.ListItemCollection,System.String)">
+            <summary>
+            Use this method instead of ListItemCollection.FindByText to find the specific item with case-insensitive.
+            </summary>
+            <param name="listItems">the items.</param>
+            <param name="text">the item with this text want to find.</param>
+            <returns>the specific item or null if didn't match the text with any item.</returns>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Extensions.ListControlExtensions.FindByValueWithIgnoreCase(System.Web.UI.WebControls.ListItemCollection,System.String)">
+            <summary>
+            Use this method instead of ListItemCollection.FindBValue to find the specific item with case-insensitive.
+            </summary>
+            <param name="listItems">the items.</param>
+            <param name="value">the item with this value want to find.</param>
+            <returns>the specific item or null if didn't match the value with any item.</returns>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnCheckBoxList">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnComboBoxOption">
+            <remarks>
+             This class is added only for internal use, please don't reference it in any other places as it may removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnFormComboBoxItem">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnFormToggleButtonItem">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnGrid">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnGridBoundColumn">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnGridTemplateColumn">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnModuleComboBox">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnScriptBlock">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.DnnSkinComboBox">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl">
+            -----------------------------------------------------------------------------
+            <summary>
+            The DateEditControl control provides a standard UI component for editing
+            date properties.
+            </summary>
+            <remarks>
+            This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.DateValue">
+            -----------------------------------------------------------------------------
+            <summary>
+            DateValue returns the Date representation of the Value
+            </summary>
+            <value>A Date representing the Value</value>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.DefaultFormat">
+            -----------------------------------------------------------------------------
+            <summary>
+            DefaultDateFormat is a string that will be used to format the date in the absence of a
+            FormatAttribute
+            </summary>
+            <value>A String representing the default format to use to render the date</value>
+            <returns>A Format String</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.Format">
+            -----------------------------------------------------------------------------
+            <summary>
+            Format is a string that will be used to format the date in View mode
+            </summary>
+            <value>A String representing the format to use to render the date</value>
+            <returns>A Format String</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.OldDateValue">
+            -----------------------------------------------------------------------------
+            <summary>
+            OldDateValue returns the Date representation of the OldValue
+            </summary>
+            <value>A Date representing the OldValue</value>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.StringValue">
+            <summary>
+            The Value expressed as a String
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.OnDataChanged(System.EventArgs)">
+            <summary>
+            OnDataChanged is called by the PostBack Handler when the Data has changed
+            </summary>
+            <param name="e">An EventArgs object</param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.RenderEditMode(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderEditMode is called by the base control to render the control in Edit Mode
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateEditControl.RenderViewMode(System.Web.UI.HtmlTextWriter)">
+            -----------------------------------------------------------------------------
+            <summary>
+            RenderViewMode renders the View (readonly) mode of the control
+            </summary>
+            <param name="writer">A HtmlTextWriter.</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl">
+            -----------------------------------------------------------------------------
+            Project:    DotNetNuke
+            Namespace:  DotNetNuke.UI.WebControls
+            Class:      DateEditControl
+            -----------------------------------------------------------------------------
+            <summary>
+            The DateEditControl control provides a standard UI component for editing
+            date properties.
+            </summary>
+            <remarks>
+            This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.DateValue">
+            -----------------------------------------------------------------------------
+            <summary>
+            DateValue returns the Date representation of the Value
+            </summary>
+            <value>A Date representing the Value</value>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.DefaultFormat">
+            -----------------------------------------------------------------------------
+            <summary>
+            DefaultDateFormat is a string that will be used to format the date in the absence of a
+            FormatAttribute
+            </summary>
+            <value>A String representing the default format to use to render the date</value>
+            <returns>A Format String</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.Format">
+            -----------------------------------------------------------------------------
+            <summary>
+            Format is a string that will be used to format the date in View mode
+            </summary>
+            <value>A String representing the format to use to render the date</value>
+            <returns>A Format String</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.OldDateValue">
+            -----------------------------------------------------------------------------
+            <summary>
+            OldDateValue returns the Date representation of the OldValue
+            </summary>
+            <value>A Date representing the OldValue</value>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.StringValue">
+            <summary>
+            The Value expressed as a String
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.OnDataChanged(System.EventArgs)">
+            <summary>
+            OnDataChanged is called by the PostBack Handler when the Data has changed
+            </summary>
+            <param name="e">An EventArgs object</param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.RenderEditMode(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            RenderEditMode is called by the base control to render the control in Edit Mode
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.DateTimeEditControl.RenderViewMode(System.Web.UI.HtmlTextWriter)">
+            -----------------------------------------------------------------------------
+            <summary>
+            RenderViewMode renders the View (readonly) mode of the control
+            </summary>
+            <param name="writer">A HtmlTextWriter.</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.Internal.TermsSelector">
+            <remarks>
+             This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+             </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.TypedControlCollection`1">
+            <summary>
+            Restricts the client to add only controls of specific type into the control collection
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.IndexOf(`1)">
+            <summary>
+            Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.
+            </summary>
+            <returns>
+            The index of <paramref name="item" /> if found in the list; otherwise, -1.
+            </returns>
+            <param name="item">
+            The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.
+            </param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Insert(System.Int32,`1)">
+            <summary>
+             Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.
+            </summary>
+            <param name="index">
+             The zero-based index at which <paramref name="item" /> should be inserted.
+            </param>
+            <param name="item">
+             The object to insert into the <see cref="T:System.Collections.Generic.IList`1" />.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+            </exception>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.
+            </summary>
+            <param name="index">
+            The zero-based index of the item to remove.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+            </exception>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Item(System.Int32)">
+            <summary>
+            Gets or sets the element at the specified index.
+            </summary>
+            <returns>
+            The element at the specified index.
+            </returns>
+            <param name="index">
+            The zero-based index of the element to get or set.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The property is set and the <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+            </exception>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <returns>
+            The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Remove(`1)">
+            <summary>
+            Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <returns>
+            true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+            <param name="item">
+            The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </param>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+            </exception>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+            </summary>
+            <returns>
+            true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. 
+            </exception>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Add(`1)">
+            <summary>
+            Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <param name="item">
+            The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </param>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+            </exception>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.CopyTo(`1[],System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
+            </summary>
+            <param name="array">
+            The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.
+            </param>
+            <param name="arrayIndex">
+            The zero-based index in <paramref name="array" /> at which copying begins.
+            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="array" /> is null.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.
+            </exception>
+            <exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.
+            -or-
+            <paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.
+            -or-
+            The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.
+            -or-
+            Type paramref name="T" cannot be cast automatically to the type of the destination <paramref name="array" />.
+            </exception>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.Contains(`1)">
+            <summary>
+            Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+            </summary>
+            <returns>
+            true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
+            </returns>
+            <param name="item">
+            The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.UniformControlCollection`2.EnumerableGetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.DnnUnsortedList">
+            <summary>
+            Creates a control that renders its childs as a bulleted list.
+            </summary>
+            <remarks>
+            Control renders an unordered list HTML contol. 
+            Each child control in <see cref="T:DotNetNuke.Web.UI.WebControls.DnnUnsortedList"/> is rendered as a separate list item.
+            To obtain a control over list item style, add a <see cref="T:DotNetNuke.Web.UI.WebControls.DnnUnsortedListItem" /> to a controls list, 
+            and tune this object appropriately.
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnUnsortedList.AddListItem(System.Web.UI.Control[])">
+            <summary>
+            A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method
+            </summary>
+            <remarks>
+            All controls from the list will be rendered as a childs of a single list item.
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.DnnUnsortedListItem">
+            <summary>
+            Creates a control that render one item in a list ($lt;li> control).
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.FileFilter">
+            -----------------------------------------------------------------------------
+            <summary>
+              Gets or sets the current file extension filter.
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.FilePath">
+            -----------------------------------------------------------------------------
+            <summary>
+              Gets or sets the current file path.
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.CreateChildControls">
+            -----------------------------------------------------------------------------
+            <summary>
+              Creates the control contained within this control
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.OnPreRender(System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Runs before the control is rendered.
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.RenderEditMode(System.Web.UI.HtmlTextWriter)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Renders the control in edit mode
+            </summary>
+            <param name = "writer">An HtmlTextWriter to render the control to</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFileEditControl.LoadPostData(System.String,System.Collections.Specialized.NameValueCollection)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Loads the Post Back Data and determines whether the value has change
+            </summary>
+            <remarks>
+              In this case because the <see cref = "F:DotNetNuke.Web.UI.WebControls.DnnFileEditControl._fileControl" /> is a contained control, we do not need 
+              to process the PostBackData (it has been handled by the File Control).  We just use
+              this method as the Framework calls it for us.
+            </remarks>
+            <param name = "postDataKey">A key to the PostBack Data to load</param>
+            <param name = "postCollection">A name value collection of postback data</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.DnnFilePicker">
+            <summary>
+              The FilePicker Class provides a File Picker Control for DotNetNuke
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileControlMode">
+            <summary>
+              Represents a possible mode for the File Control
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileControlMode.Normal">
+            <summary>
+              The File Control is in its Normal mode
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileControlMode.UpLoadFile">
+            <summary>
+              The File Control is in the Upload File mode
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileControlMode.Preview">
+            <summary>
+              The File Control is in the Preview mode
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.IsHost">
+            <summary>
+              Gets whether the control is on a Host or Portal Tab
+            </summary>
+            <value>A Boolean</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.Mode">
+            <summary>
+              Gets or sets the current mode of the control
+            </summary>
+            <remarks>
+              Defaults to FileControlMode.Normal
+            </remarks>
+            <value>A FileControlMode enum</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.ParentFolder">
+            <summary>
+              Gets the root folder for the control
+            </summary>
+            <value>A String</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.PortalId">
+            <summary>
+              Gets or sets the file PortalId to use
+            </summary>
+            <remarks>
+              Defaults to PortalSettings.PortalId
+            </remarks>
+            <value>An Integer</value>        
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.PortalSettings">
+            <summary>
+              Gets the current Portal Settings
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.CommandCssClass">
+            <summary>
+              Gets or sets the class to be used for the Labels
+            </summary>
+            <remarks>
+              Defaults to 'CommandButton'
+            </remarks>
+            <value>A String</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileFilter">
+            <summary>
+              Gets or sets the file Filter to use
+            </summary>
+            <remarks>
+              Defaults to ''
+            </remarks>
+            <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif"</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FileID">
+            <summary>
+              Gets or sets the FileID for the control
+            </summary>
+            <value>An Integer</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.FilePath">
+            <summary>
+              Gets or sets the FilePath for the control
+            </summary>
+            <value>A String</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.UsePersonalFolder">
+            <summary>
+              Gets or sets whether to Include Personal Folder
+            </summary>
+            <remarks>
+              Defaults to false
+            </remarks>
+            <value>A Boolean</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.LabelCssClass">
+            <summary>
+              Gets or sets the class to be used for the Labels
+            </summary>
+            <value>A String</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.Required">
+            <summary>
+              Gets or sets whether the combos have a "Not Specified" option
+            </summary>
+            <remarks>
+              Defaults to True (ie no "Not Specified")
+            </remarks>
+            <value>A Boolean</value>
+        </member>
+        <member name="P:DotNetNuke.Web.UI.WebControls.DnnFilePicker.ShowUpLoad">
+            <summary>
+              Gets or sets whether to Show the Upload Button
+            </summary>
+            <remarks>
+              Defaults to True
+            </remarks>
+            <value>A Boolean</value>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.AddButton(System.Web.UI.WebControls.LinkButton@)">
+            <summary>
+              AddButton adds a button to the Command Row
+            </summary>
+            <param name = "button">The button to add to the Row</param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.AddButtonArea">
+            <summary>
+              AddCommandRow adds the Command Row
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.AddFileAndUploadArea">
+            <summary>
+              AddFileRow adds the Files Row
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.AddFolderArea">
+            <summary>
+              AddFolderRow adds the Folders Row
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.GeneratePreviewImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.AddMessageRow">
+            <summary>
+              AddMessageRow adds the Message Row
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.LoadFolders">
+            <summary>
+              LoadFolders fetches the list of folders from the Database
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.SetFilePath">
+            <summary>
+              SetFilePath sets the FilePath property
+            </summary>
+            <remarks>
+              This overload uses the selected item in the Folder combo
+            </remarks>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.SetFilePath(System.String)">
+            <summary>
+              SetFilePath sets the FilePath property
+            </summary>
+            <remarks>
+              This overload allows the caller to specify a file
+            </remarks>
+            <param name = "fileName">The filename to use in setting the property</param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.ShowButton(System.Web.UI.WebControls.LinkButton,System.String)">
+            <summary>
+              ShowButton configures and displays a button
+            </summary>
+            <param name = "button">The button to configure</param>
+            <param name = "command">The command name (amd key) of the button</param>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.ShowImage">
+            <summary>
+              ShowImage displays the Preview Image
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.CreateChildControls">
+            <summary>
+              CreateChildControls overrides the Base class's method to correctly build the
+              control based on the configuration
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnFilePicker.OnPreRender(System.EventArgs)">
+            <summary>
+              OnPreRender runs just before the control is rendered
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnLanguageLabel.CreateChildControls">
+            -----------------------------------------------------------------------------
+            <summary>
+              CreateChildControls overrides the Base class's method to correctly build the
+              control based on the configuration
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:DotNetNuke.Web.UI.WebControls.DnnLanguageLabel.OnPreRender(System.EventArgs)">
+            -----------------------------------------------------------------------------
+            <summary>
+              OnPreRender runs just before the control is rendered
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,1016 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebFormsMvp</name>
+    </assembly>
+    <members>
+        <member name="T:WebFormsMvp.Binder.AssemblyExtensions">
+            <summary>
+            Extension methods for Assembly class
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.AssemblyExtensions.GetNameSafe(System.Reflection.Assembly)">
+            <summary>
+            Returns the short name of an assembly in a way that is safe in medium trust
+            </summary>
+            <param name="assembly">The assembly to return the name for</param>
+            <returns>The assembly short name</returns>
+        </member>
+        <member name="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy">
+            <summary>
+            Combines multiple presenter discovery strategies into one. Strategies will be evaluated in the order
+            they are provided. The first strategy to provide a result wins.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Binder.IPresenterDiscoveryStrategy">
+            <summary>
+            Defines that contract for classes that implement logic for finding relevant presenters given
+            some hosts and some view instances.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.IPresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary>
+            Gets the presenter bindings for passed views using the passed hosts.
+            </summary>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.#ctor(WebFormsMvp.Binder.IPresenterDiscoveryStrategy[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy"/> class.
+            </summary>
+            <param name="strategies">The strategies to be evaluated.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.#ctor(System.Collections.Generic.IEnumerable{WebFormsMvp.Binder.IPresenterDiscoveryStrategy})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy"/> class.
+            </summary>
+            <param name="strategies">The strategies to be evaluated.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary>
+            Gets the presenter bindings for passed views using the passed hosts.
+            </summary>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
+        </member>
+        <member name="T:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy">
+            <summary>
+            Attempts to find presenters for a view type based on a set of naming formats conventions.
+            To use custom naming formats, derive from this class and override the CandidatePresenterTypeFullNameFormats property.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy.#ctor(WebFormsMvp.IBuildManager)">
+            <summary>
+             Creates a new instance of the ConventionBasedPresenterDiscoveryStrategy class.
+            </summary>
+            <param name="buildManager">The IBuildManager implementation to use.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy.ViewInstanceSuffixes">
+            <summary>
+            Override this property to extend the list of suffixes that are automatically stripped from view instances when generating presenter type name candidates.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Binder.ConventionBasedPresenterDiscoveryStrategy.CandidatePresenterTypeFullNameFormats">
+            <summary>
+            Override this property to extend the list of format strings used to generate candidate names for presenter types.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Binder.DefaultHttpContextAdapterFactory">
+            <summary>
+             Provides a default implementation of <see cref="T:WebFormsMvp.Binder.IHttpContextAdapterFactory"/> that
+             returns instances of <see cref="T:System.Web.HttpContextWrapper"/>.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Binder.IHttpContextAdapterFactory">
+            <summary>
+            Defines the methods of a factory class capable of creating adapters between
+            <see cref="T:System.Web.HttpContext"/> and <see cref="T:System.Web.HttpContextBase"/>.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.IHttpContextAdapterFactory.Create(System.Web.HttpContext)">
+            <summary>
+            Creates an adapter for the specified <see cref="T:System.Web.HttpContext"/> instance.
+            </summary>
+            <param name="httpContext">The instance to create an adapter for.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.DefaultHttpContextAdapterFactory.Create(System.Web.HttpContext)">
+            <summary>
+            Creates an adapter for the specified <see cref="T:System.Web.HttpContext"/> instance.
+            </summary>
+            <param name="httpContext">The instance to create an adapter for.</param>
+        </member>
+        <member name="T:WebFormsMvp.Binder.AttributeBasedPresenterDiscoveryStrategy">
+            <summary>
+            A strategy for discovery presenters based on [PresenterBinding] attributes being placed
+            on views and view hosts.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.AttributeBasedPresenterDiscoveryStrategy.GetBindings(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary>
+            Gets the presenter bindings for passed views using the passed hosts.
+            </summary>
+            <param name="hosts">A list of view hosts (master pages, pages, etc).</param>
+            <param name="viewInstances">A list of view instances (user controls, pages, etc).</param>
+        </member>
+        <member name="T:WebFormsMvp.Binder.DefaultPresenterFactory">
+            <summary>
+            Provides a default implementation of <see cref="T:WebFormsMvp.Binder.IPresenterFactory"/>.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Binder.IPresenterFactory">
+            <summary>
+            Defines the methods of a factory class capable of creating presenters.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.IPresenterFactory.Create(System.Type,System.Type,WebFormsMvp.IView)">
+            <summary>
+            Creates a new instance of the specific presenter type, for the specified
+            view type and instance.
+            </summary>
+            <param name="presenterType">The type of presenter to create.</param>
+            <param name="viewType">The type of the view as defined by the binding that matched.</param>
+            <param name="viewInstance">The view instance to bind this presenter to.</param>
+            <returns>An instantitated presenter.</returns>
+        </member>
+        <member name="M:WebFormsMvp.Binder.IPresenterFactory.Release(WebFormsMvp.IPresenter)">
+            <summary>
+            Releases the specified presenter from any of its lifestyle demands.
+            This method's activities are implementation specific - for example,
+            an IoC based factory would return the presenter to the container.
+            </summary>
+            <param name="presenter">The presenter to release.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.DefaultPresenterFactory.Create(System.Type,System.Type,WebFormsMvp.IView)">
+            <summary>
+            Creates a new instance of the specific presenter type, for the specified
+            view type and instance.
+            </summary>
+            <param name="presenterType">The type of presenter to create.</param>
+            <param name="viewType">The type of the view as defined by the binding that matched.</param>
+            <param name="viewInstance">The view instance to bind this presenter to.</param>
+            <returns>An instantitated presenter.</returns>
+        </member>
+        <member name="M:WebFormsMvp.Binder.DefaultPresenterFactory.Release(WebFormsMvp.IPresenter)">
+            <summary>
+            Releases the specified presenter from any of its lifestyle demands.
+            </summary>
+            <param name="presenter">The presenter to release.</param>
+        </member>
+        <member name="T:WebFormsMvp.Binder.PresenterBinding">
+            <summary/>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinding.#ctor(System.Type,System.Type,WebFormsMvp.BindingMode,System.Collections.Generic.IEnumerable{WebFormsMvp.IView})">
+            <summary/>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinding.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:WebFormsMvp.Binder.PresenterBinding"/> is equal to the current <see cref="T:WebFormsMvp.Binder.PresenterBinding"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:WebFormsMvp.Binder.PresenterBinding"/> is equal to the current <see cref="T:WebFormsMvp.Binder.PresenterBinding"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:WebFormsMvp.Binder.PresenterBinding"/> to compare with the current <see cref="T:WebFormsMvp.Binder.PresenterBinding"/>.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinding.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:WebFormsMvp.Binder.PresenterBinding"/>.
+            </returns>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinding.PresenterType">
+            <summary/>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinding.ViewType">
+            <summary/>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinding.BindingMode">
+            <summary/>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinding.ViewInstances">
+            <summary/>
+        </member>
+        <member name="T:WebFormsMvp.Binder.PresenterCreatedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:WebFormsMvp.Binder.PresenterBinder.PresenterCreated"/> event.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterCreatedEventArgs.#ctor(WebFormsMvp.IPresenter)">
+            <summary />
+            <param name="presenter">The presenter that was just created.</param>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterCreatedEventArgs.Presenter">
+            <summary>
+            Gets the presenter that was just created.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Binder.PresenterDiscoveryResult">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterDiscoveryResult.#ctor(System.Collections.Generic.IEnumerable{WebFormsMvp.IView},System.String,System.Collections.Generic.IEnumerable{WebFormsMvp.Binder.PresenterBinding})">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterDiscoveryResult.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/> is equal to the current <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/> is equal to the current <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/> to compare with the current <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/>.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterDiscoveryResult.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:WebFormsMvp.Binder.PresenterDiscoveryResult"/>.
+            </returns>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterDiscoveryResult.ViewInstances">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterDiscoveryResult.Message">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterDiscoveryResult.Bindings">
+            <summary />
+        </member>
+        <member name="T:WebFormsMvp.BindingMode">
+            <summary>
+            Defines the different modes through which presenters and views may be related.
+            </summary>
+        </member>
+        <member name="F:WebFormsMvp.BindingMode.Default">
+            <summary>
+            A separate presenter is created for each applicable view.
+            </summary>
+        </member>
+        <member name="F:WebFormsMvp.BindingMode.SharedPresenter">
+            <summary>
+            A single presenter instance is created and bound to all of the applicable views.
+            The presenter sees only a single view, however this is a composite view that
+            proxies calls to each of the underlying views. See:
+            http://wiki.webformsmvp.com/index.php?title=Feature_walkthroughs#Shared_Presenters
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.CollectionExtensions.SetEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            An order independent version of <see cref="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})"/>.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.CompositeView`1">
+            <summary>
+             Provides a basic implementation of the <see cref="T:WebFormsMvp.ICompositeView"/> contract.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.ICompositeView">
+            <summary>
+            Defines the contract that composite view wrappers must expose.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IView">
+            <summary>
+            Represents a class that is a view in a Web Forms Model-View-Presenter application.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IView.ThrowExceptionIfNoPresenterBound">
+            <summary />
+        </member>
+        <member name="E:WebFormsMvp.IView.Load">
+            <summary>
+            Occurs at the discretion of the view. For <see cref="T:WebFormsMvp.Web.MvpUserControl"/>
+            implementations (the most commonly used), this is fired duing the ASP.NET
+            Load event.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.ICompositeView.Add(WebFormsMvp.IView)">
+            <summary>
+            Adds the specified view instance to the composite view collection.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.CompositeView`1.Add(WebFormsMvp.IView)">
+            <summary>
+            Adds the specified view instance to the composite view collection.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.CompositeView`1.Views">
+            <summary>
+            Gets the list of individual views represented by this composite view.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.CompositeView`1.ThrowExceptionIfNoPresenterBound">
+            <summary />
+        </member>
+        <member name="E:WebFormsMvp.CompositeView`1.Load">
+            <summary>
+            Occurs at the discretion of the view. For <see cref="T:WebFormsMvp.Web.MvpUserControl"/>
+            implementations (the most commonly used), this is fired duing the ASP.NET
+            Load event.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IAsyncTaskManager">
+            <summary>
+            Represents a class that can register async tasks to be completed for this page request.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IAsyncTaskManager.ExecuteRegisteredAsyncTasks">
+            <summary>
+            Starts the execution of an asynchronous task.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IAsyncTaskManager.RegisterAsyncTask(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Web.EndEventHandler,System.Object,System.Boolean)">
+            <summary>
+            Registers a new asynchronous task with the page.
+            </summary>
+            <param name="beginHandler">The handler to call when beginning an asynchronous task.</param>
+            <param name="endHandler">The handler to call when the task is completed successfully within the time-out period.</param>
+            <param name="timeout">The handler to call when the task is not completed successfully within the time-out period.</param>
+            <param name="state">The object that represents the state of the task.</param>
+            <param name="executeInParallel">The vlaue that indicates whether the task can be executed in parallel with other tasks.</param>
+        </member>
+        <member name="T:WebFormsMvp.IMessageBus">
+            <summary>
+            Defines the basic methods of a cross-presenter messaging bus.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IMessageBus.Publish``1(``0)">
+            <summary>
+            Publishes a message to the bus. Any existing subscriptions to this type,
+            or an assignable type such as a base class or an interface, will be notified
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of the message to publish</typeparam>
+            <param name="message">The message to publish</param>
+        </member>
+        <member name="M:WebFormsMvp.IMessageBus.Subscribe``1(System.Action{``0})">
+            <summary>
+            Registers a subscription to messages of the specified type. Any previously
+            published messages that are valid for this subscription will be raised
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+            <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
+        </member>
+        <member name="M:WebFormsMvp.IMessageBus.Subscribe``1(System.Action{``0},System.Action)">
+            <summary>
+            Registers a subscription to messages of the specified type. Any previously
+            published messages that are valid for this subscription will be raised
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+            <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
+            <param name="neverReceivedCallback">A callback that will be invoked if no matching message is ever received. This callback will not be invoked more than once.</param>
+        </member>
+        <member name="T:WebFormsMvp.IMessageCoordinator">
+            <summary>
+            Defines the basic methods of a cross-presenter messaging coordinator.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IMessageCoordinator.Close">
+            <summary>
+            <para>
+                Closes the message bus, causing any subscribers that have not yet received
+                a message to have their "never received" callback fired.
+            </para>
+            <para>
+                After this method is called, any further calls to <see cref="M:WebFormsMvp.IMessageBus.Publish``1(``0)"/> or
+                <see cref="M:WebFormsMvp.IMessageBus.Subscribe``1(System.Action{``0})"/> will result in an
+                <see cref="T:System.InvalidOperationException"/>.
+            </para>
+            <para>
+                The <see cref="M:WebFormsMvp.IMessageCoordinator.Close"/> method may be called multiple times and must not
+                fail in this scenario.
+            </para>
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IPresenter">
+            <summary>
+            Represents a class that is a presenter in a Web Forms Model-View-Presenter application.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.HttpContext">
+            <summary>
+            Gets or sets HTTP-specific information about an individual HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.Request">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpRequestBase"/> object for the current HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.Response">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpResponseBase"/> object for the current HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.Server">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpServerUtilityBase"/> object that provides methods that are used during Web request processing.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.Cache">
+            <summary>
+            Gets the cache object for the current web application domain.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.RouteData">
+            <summary>
+            Gets the route data for the current request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.AsyncManager">
+            <summary>
+            Gets or sets the async task manager.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter.Messages">
+            <summary>
+            Gets or sets the message bus used for cross presenter messaging.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IPresenter`1">
+            <summary>
+            Represents a class that is a presenter with a strongly typed view in a Web Forms Model-View-Presenter application.
+            </summary>
+            <typeparam name="TView">The type of the view.</typeparam>
+        </member>
+        <member name="P:WebFormsMvp.IPresenter`1.View">
+            <summary>
+            Gets the view instance that this presenter is bound to.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.ITraceContext">
+            <summary>
+            A bespoke substitute for the lack of System.Web.Abstractions.TraceContextBase.
+            Lazy Microsoft.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.ITraceContext.Write(System.Object,System.Func{System.String})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="source">The object writing the trace message.</param>
+            <param name="messageCallback">A callback that builds the trace message to write to the log.</param>
+        </member>
+        <member name="M:WebFormsMvp.ITraceContext.Write(System.Type,System.Func{System.String})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="sourceType">The type of the object writing the trace message.</param>
+            <param name="messageCallback">A callback that builds the trace message to write to the log.</param>
+        </member>
+        <member name="M:WebFormsMvp.ITraceContext.Write(System.Type,System.Func{System.Collections.Generic.IEnumerable{System.String}})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="sourceType">The type of the object writing the trace message.</param>
+            <param name="messageCallback">A callback that builds a series of trace messages to write to the log.</param>
+        </member>
+        <member name="T:WebFormsMvp.IViewLifecycleManager">
+            <summary>
+            An intermediate interface while we slowly remove the
+            ReleaseView method from presenters. No new code should
+            use this interface.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IViewLifecycleManager.ReleaseView">
+            <summary>
+            Releases the view.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IView`1">
+            <summary>
+            Represents a class that is a view with a strongly typed view model in a Web Forms Model-View-Presenter application.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+        </member>
+        <member name="P:WebFormsMvp.IView`1.Model">
+            <summary>
+            Gets the model instance. The default presenter base class
+            (<see cref="T:WebFormsMvp.Presenter`1"/>) initializes this automatically.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.MessageCoordinator">
+            <summary>
+            A default implementation for cross presenter messaging.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.MessageCoordinator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.MessageCoordinator"/> class.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.MessageCoordinator.Publish``1(``0)">
+            <summary>
+            Publishes a message to the bus. Any existing subscriptions to this type,
+            or an assignable type such as a base class or an interface, will be notified
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of the message to publish</typeparam>
+            <param name="message">The message to publish</param>
+        </member>
+        <member name="M:WebFormsMvp.MessageCoordinator.Subscribe``1(System.Action{``0})">
+            <summary>
+            Registers a subscription to messages of the specified type. Any previously
+            published messages that are valid for this subscription will be raised
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+            <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
+        </member>
+        <member name="M:WebFormsMvp.MessageCoordinator.Subscribe``1(System.Action{``0},System.Action)">
+            <summary>
+            Registers a subscription to messages of the specified type. Any previously
+            published messages that are valid for this subscription will be raised
+            at this time.
+            </summary>
+            <typeparam name="TMessage">The type of messages to subscribe to</typeparam>
+            <param name="messageReceivedCallback">A callback that will be invoked for each message received. This callback will be invoked once per message.</param>
+            <param name="neverReceivedCallback">A callback that will be invoked if no matching message is ever received. This callback will not be invoked more than once.</param>
+        </member>
+        <member name="M:WebFormsMvp.MessageCoordinator.Close">
+            <summary>
+            <para>
+                Closes the message bus, causing any subscribers that have not yet received
+                a message to have their "never received" callback fired.
+            </para>
+            <para>
+                After this method is called, any further calls to <see cref="M:WebFormsMvp.IMessageBus.Publish``1(``0)"/> or
+                <see cref="M:WebFormsMvp.IMessageBus.Subscribe``1(System.Action{``0})"/> will result in an
+                <see cref="T:System.InvalidOperationException"/>.
+            </para>
+            <para>
+                The <see cref="M:WebFormsMvp.IMessageCoordinator.Close"/> method may be called multiple times and must not
+                fail in this scenario.
+            </para>
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.TraceContextAdapter">
+            <summary>
+            A bespoke substitute for the lack of System.Web.Abstractions.TraceContextWrapper.
+            Lazy Microsoft.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.TraceContextAdapter.Write(System.Object,System.Func{System.String})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="source">The object writing the trace message.</param>
+            <param name="messageCallback">A callback that builds the trace message to write to the log.</param>
+        </member>
+        <member name="M:WebFormsMvp.TraceContextAdapter.Write(System.Type,System.Func{System.String})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="sourceType">The type of the object writing the trace message.</param>
+            <param name="messageCallback">A callback that builds the trace message to write to the log.</param>
+        </member>
+        <member name="M:WebFormsMvp.TraceContextAdapter.Write(System.Type,System.Func{System.Collections.Generic.IEnumerable{System.String}})">
+            <summary>
+            Writes trace information to the trace log.
+            </summary>
+            <param name="sourceType">The type of the object writing the trace message.</param>
+            <param name="messagesCallback">A callback that builds a series of trace messages to write to the log.</param>
+        </member>
+        <member name="T:WebFormsMvp.Web.BuildManagerWrapper">
+            <summary>
+             Represents a class that wraps the System.Web.Compilation.BuildManager class.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.IBuildManager">
+            <summary>
+             Represents a class that can resolve types by name in the currently running ASP.NET application.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.IBuildManager.GetType(System.String,System.Boolean)">
+            <summary>
+             Attemps to load a type by name based within the scope of the currently running ASP.NET application.
+            </summary>
+            <param name="typeName">The name of the type to resolve.</param>
+            <param name="throwOnError">True if an exception should be thrown if the type cannot be found, otherwise false.</param>
+            <returns>The type found, or null if not found and throwOnError is false.</returns>
+        </member>
+        <member name="M:WebFormsMvp.Web.BuildManagerWrapper.GetType(System.String,System.Boolean)">
+            <summary>
+             Attemps to load a type by name based within the scope of the currently running ASP.NET application.
+            </summary>
+            <param name="typeName">The name of the type to resolve.</param>
+            <param name="throwOnError">True if an exception should be thrown if the type cannot be found, otherwise false.</param>
+            <returns>The type found, or null if not found and throwOnError is false.</returns>
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpHttpHandler">
+            <summary>
+            Provides the base implementation for a custom HTTP handler that uses the
+            Web Forms Model-View-Presenter library.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpHttpHandler.#ctor">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpHttpHandler.#ctor(System.Boolean)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpHttpHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpHttpHandler.OnLoad">
+            <summary>
+            Raises the <see cref="E:WebFormsMvp.Web.MvpHttpHandler.Load"/> event.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpHttpHandler.ThrowExceptionIfNoPresenterBound">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpHttpHandler.IsReusable">
+            <summary />
+        </member>
+        <member name="E:WebFormsMvp.Web.MvpHttpHandler.Load">
+            <summary>
+            Occurs during the <see cref="M:WebFormsMvp.Web.MvpHttpHandler.ProcessRequest(System.Web.HttpContext)"/> method.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpPage`1">
+            <summary>
+            Represents a page that is a view with a strongly typed model in a Web Forms Model-View-Presenter application.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpPage">
+            <summary>
+            Represents a page that is a view in a Web Forms Model-View-Presenter application.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpPage.#ctor">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpPage.OnInit(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.Init"/> event to initialize the page.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpPage.AutoDataBind">
+            <summary>
+            Gets or sets whether the page should automatically data bind itself at the Page.PreRenderComplete event.
+            </summary>
+            <value><c>true</c> if auto data binding is enabled (default); otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpPage.ThrowExceptionIfNoPresenterBound">
+            <summary>
+            Gets or sets whether the runtime should throw an exception if a presenter is not bound to this control.
+            </summary>
+            <value><c>true</c> if an exception should be thrown (default); otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpPage`1.Model">
+            <summary>
+            Gets or sets the view model.
+            </summary>
+            <value>The view model.</value>
+        </member>
+        <member name="T:WebFormsMvp.Web.PageAsyncTaskManagerWrapper">
+            <summary>
+            Represents a class that wraps the page's async task methods
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageAsyncTaskManagerWrapper.#ctor(System.Web.UI.Page)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.PageAsyncTaskManagerWrapper.ExecuteRegisteredAsyncTasks">
+            <summary>
+            Starts the execution of an asynchronous task.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageAsyncTaskManagerWrapper.RegisterAsyncTask(System.Web.BeginEventHandler,System.Web.EndEventHandler,System.Web.EndEventHandler,System.Object,System.Boolean)">
+            <summary>
+            Registers a new asynchronous task with the page.
+            </summary>
+            <param name="beginHandler">The handler to call when beginning an asynchronous task.</param>
+            <param name="endHandler">The handler to call when the task is completed successfully within the time-out period.</param>
+            <param name="timeout">The handler to call when the task is not completed successfully within the time-out period.</param>
+            <param name="state">The object that represents the state of the task.</param>
+            <param name="executeInParallel">The vlaue that indicates whether the task can be executed in parallel with other tasks.</param>
+        </member>
+        <member name="T:WebFormsMvp.Presenter`1">
+            <summary>
+            Represents a presenter in a Web Forms Model-View-Presenter application.
+            </summary>
+            <typeparam name="TView">The type of the view.</typeparam>
+        </member>
+        <member name="M:WebFormsMvp.Presenter`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Presenter`1"/> class.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Presenter`1.ReleaseView">
+            <summary>
+            Releases the view.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.View">
+            <summary>
+            Gets the view instance that this presenter is bound to.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.HttpContext">
+            <summary>
+            Gets or sets HTTP-specific information about an individual HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.Request">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpRequestBase"/> object for the current HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.Response">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpResponseBase"/> object for the current HTTP request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.Server">
+            <summary>
+            Gets the <see cref="T:System.Web.HttpServerUtilityBase"/> object that provides methods that are used during Web request processing.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.Cache">
+            <summary>
+            Gets the cache object for the current web application domain.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.RouteData">
+            <summary>
+            Gets the route data for the current request.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.AsyncManager">
+            <summary>
+            Gets or sets the async task manager.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Presenter`1.Messages">
+            <summary>
+            Gets or sets the message bus used for cross presenter messaging.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Web.PageDataSource">
+            <summary>
+            Represents an ObjectDataSource that binds to its hosting page or user control
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.#ctor">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.#ctor(System.String,System.String)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.OnInit(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.OnObjectCreating(System.Object,System.Web.UI.WebControls.ObjectDataSourceEventArgs)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.OnObjectDisposing(System.Object,System.Web.UI.WebControls.ObjectDataSourceDisposingEventArgs)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.PageDataSource.FindParentHost(System.Web.UI.Control)">
+            <summary>
+            Walks the control tree to find the hosting parent page or user control
+            </summary>
+            <param name="ctl">The control to start the tree walk at</param>
+        </member>
+        <member name="P:WebFormsMvp.Web.PageDataSource.ParentHost">
+            <summary />
+        </member>
+        <member name="T:WebFormsMvp.Binder.PresenterBinder">
+            <summary>
+            Handles the creation and binding of presenters based on the decoration of
+            <see cref="T:WebFormsMvp.PresenterBindingAttribute"/> attributes on a host class, such as page.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.#ctor(System.Object,System.Web.HttpContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.PresenterBinder"/> class.
+            </summary>
+            <param name="host">The host.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.#ctor(System.Collections.Generic.IEnumerable{System.Object},System.Web.HttpContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.PresenterBinder"/> class.
+            </summary>
+            <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.#ctor(System.Collections.Generic.IEnumerable{System.Object},System.Web.HttpContextBase,WebFormsMvp.ITraceContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Binder.PresenterBinder"/> class.
+            </summary>
+            <param name="hosts">The array of hosts, useful in scenarios like ASP.NET master pages.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+            <param name="traceContext">The tracing context.</param>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.RegisterView(WebFormsMvp.IView)">
+            <summary>
+            Registers a view instance as being a candidate for binding. If
+            <see cref="M:WebFormsMvp.Binder.PresenterBinder.PerformBinding"/> has not been called, the view will
+            be queued until that time. If <see cref="M:WebFormsMvp.Binder.PresenterBinder.PerformBinding"/> has
+            already been called, binding is attempted instantly.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.PerformBinding">
+            <summary>
+            Attempts to bind any already registered views.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Binder.PresenterBinder.Release">
+            <summary>
+            Closes the message bus, releases each of the views from the
+            presenters then releases each of the presenters from the factory
+            (useful in IoC scenarios).
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinder.Factory">
+            <summary>
+             Gets or sets the factory that the binder will use to create
+             new presenter instances. This is pre-initialized to a
+             default implementation but can be overriden if desired.
+             This property can only be set once.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+            <exception cref="T:System.InvalidOperationException">Thrown if the property is being set for a second time.</exception>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinder.DiscoveryStrategy">
+            <summary>
+             Gets or sets the strategy that the binder will use to discover which presenters should be bound to which views.
+             This is pre-initialized to a default implementation but can be overriden if desired. To combine multiple
+             strategies in a fallthrough approach, use <see cref="T:WebFormsMvp.Binder.CompositePresenterDiscoveryStrategy"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinder.HttpContextAdapterFactory">
+            <summary>
+             Gets or sets the factory that the binder will use to build adapters for concrete <see cref="T:System.Web.HttpContext"/> instances.
+             This is pre-initialized to a default implementation but can be overriden if desired.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Thrown if a null value is passed to the setter.</exception>
+        </member>
+        <member name="E:WebFormsMvp.Binder.PresenterBinder.PresenterCreated">
+            <summary>
+            Occurs when the binder creates a new presenter instance. Useful for
+            populating extra information into presenters.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Binder.PresenterBinder.MessageCoordinator">
+            <summary>
+            Returns the message coordinator instance that is being shared with
+            each of the presenters.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.PresenterBindingAttribute">
+            <summary>
+            Used to define bindings between presenters and a views.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.PresenterBindingAttribute.#ctor(System.Type)">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.PresenterBindingAttribute.PresenterType">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.PresenterBindingAttribute.ViewType">
+            <summary />
+        </member>
+        <member name="P:WebFormsMvp.PresenterBindingAttribute.BindingMode">
+            <summary />
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpUserControl">
+            <summary>
+            Represents a user control that is a view in a Web Forms Model-View-Presenter application
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpUserControl.#ctor">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpUserControl.OnInit(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpUserControl.DataItem``1">
+            <summary>
+            Gets the data item at the top of the data-binding context stack as <typeparamref name="T"/> otherwise returns a new instance of <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to get the data item as</typeparam>
+            <returns>The data item as type <typeparamref name="T"/>, or a new instance of <typeparamref name="T"/> if the data item is null.</returns>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpUserControl.DataValue``1">
+            <summary>
+            Gets the data item at the top of the data-binding context stack casted to T.
+            </summary>
+            <typeparam name="T">The type to cast the data item to</typeparam>
+            <returns>The data item cast to type T.</returns>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpUserControl.DataValue``1(System.String)">
+            <summary>
+            Gets the data item at the top of the data-binding context stack casted to T and formatted using the given format string.
+            </summary>
+            <typeparam name="T">The type to cast the data item to</typeparam>
+            <param name="format">The format string.</param>
+            <returns>The formatted data item value.</returns>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpUserControl.AutoDataBind">
+            <summary>
+            Gets or sets whether the user control should automatically data bind itself at the Page.PreRenderComplete event.
+            </summary>
+            <value><c>true</c> if auto data binding is enabled (default); otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpUserControl.ThrowExceptionIfNoPresenterBound">
+            <summary>
+            Gets or sets whether the runtime should throw an exception if a presenter is not bound to this control.
+            </summary>
+            <value><c>true</c> if an exception should be thrown (default); otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpUserControl`1">
+            <summary>
+            Represents a user control that is a view with a strongly typed model in a Web Forms Model-View-Presenter application
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpUserControl`1.Model">
+            <summary>
+            Gets or sets the view model.
+            </summary>
+            <value>The view model.</value>
+        </member>
+        <member name="T:WebFormsMvp.Web.MvpWebService">
+            <summary>
+            Represents a web service that is a self hosting view in a Web Forms Model-View-Presenter application
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpWebService.#ctor">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpWebService.#ctor(System.Boolean)">
+            <summary />
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpWebService.OnLoad">
+            <summary>
+            Raises the <see cref="E:WebFormsMvp.Web.MvpWebService.Load"/> event.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.MvpWebService.ReleaseView">
+            <summary>
+            Releases the view from the presenter.
+            </summary>
+        </member>
+        <member name="P:WebFormsMvp.Web.MvpWebService.ThrowExceptionIfNoPresenterBound">
+            <summary />
+        </member>
+        <member name="E:WebFormsMvp.Web.MvpWebService.Load">
+            <summary>
+            Occurs at the discretion of the view.
+            </summary>
+        </member>
+        <member name="T:WebFormsMvp.Web.PageViewHost">
+            <summary>
+            Provides lifecycle management and synchronization services required for efficiently
+            hosting multiple WebFormsMvp based controls on an ASP.NET page.
+            </summary>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageViewHost.#ctor(System.Web.UI.Page,System.Web.HttpContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebFormsMvp.Web.PageViewHost"/> class.
+            </summary>
+            <param name="page">The page instance that this view host will be responsible for.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageViewHost.Register``1(``0,System.Web.HttpContext)">
+            <summary>
+            Registers the specified control into the view host for the current page.
+            If no view host has yet been initialized for the current page instance, one will be created.
+            </summary>
+            <param name="control">The control instance to register.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+            <exception cref="T:System.ArgumentNullException">The control argument was null.</exception>
+            <exception cref="T:System.InvalidOperationException">The control is not in a valid state for registration. Controls can only be registered once they have been added to the live control tree. The best place to register them is within the control's <see cref="E:System.Web.UI.Control.Init"/> event.</exception>
+        </member>
+        <member name="M:WebFormsMvp.Web.PageViewHost.Register``1(``0,System.Web.HttpContext,System.Boolean)">
+            <summary>
+            Registers the specified control into the view host for the current page.
+            If no view host has yet been initialized for the current page instance, one will be created.
+            </summary>
+            <param name="control">The control instance to register.</param>
+            <param name="httpContext">The owning HTTP context.</param>
+            <param name="enableAutomaticDataBinding">Specifies whether the control's <see cref="M:System.Web.UI.Control.DataBind"/> method should be called when the page's <see cref="E:System.Web.UI.Page.PreRenderComplete"/> event is fired.</param>
+            <exception cref="T:System.ArgumentNullException">The control argument was null.</exception>
+            <exception cref="T:System.InvalidOperationException">The control is not in a valid state for registration. Controls can only be registered once they have been added to the live control tree. The best place to register them is within the control's <see cref="E:System.Web.UI.Control.Init"/> event.</exception>
+        </member>
+    </members>
+</doc>

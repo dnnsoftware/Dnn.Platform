@@ -1,0 +1,446 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetNuke.Web.Client</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.DnnJsIncludeFallback">
+            <summary>
+                Emit a fallback block for a script in the same part of the page
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceInclude">
+            <summary>
+            Represents an included client resource
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceLoader">
+            <summary>
+            The central control with which all client resources are registered.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager">
+            <summary>
+            Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.AddConfiguration">
+            <summary>
+            Adds the neccessary configuration to website root web.config to use the Client Depenedecny componenet.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String,System.Int32)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String,DotNetNuke.Web.Client.FileOrder.Js)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String,DotNetNuke.Web.Client.FileOrder.Js,System.String)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+            <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String,System.Int32,System.String)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+            <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(System.Web.UI.Page,System.String,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Requests that a JavaScript file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the JavaScript resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+            <param name="provider">The name of the provider responsible for rendering the script output.</param>
+            <param name="name">Name of framework like Bootstrap, Angular, etc</param>
+            <param name="version">Version nr of framework</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterStyleSheet(System.Web.UI.Page,System.String)">
+            <summary>
+            Requests that a CSS file be registered on the client browser
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the CSS resource.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterStyleSheet(System.Web.UI.Page,System.String,System.Int32)">
+            <summary>
+            Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the CSS resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterStyleSheet(System.Web.UI.Page,System.String,DotNetNuke.Web.Client.FileOrder.Css)">
+            <summary>
+            Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the CSS resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterStyleSheet(System.Web.UI.Page,System.String,System.Int32,System.String)">
+            <summary>
+            Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the CSS resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+            <param name="provider">The provider name to be used to render the css file on the page.</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterStyleSheet(System.Web.UI.Page,System.String,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.
+            </summary>
+            <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+            <param name="filePath">The relative file path to the CSS resource.</param>
+            <param name="priority">The relative priority in which the file should be loaded.</param>
+            <param name="provider">The provider name to be used to render the css file on the page.</param>
+            <param name="name">Name of framework like Bootstrap, Angular, etc</param>
+            <param name="version">Version nr of framework</param>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.UpdateVersion">
+            <summary>
+            This is a utility method that can be called to update the version of the composite files.
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.ClearCache">
+            <summary>
+            Clear the default compisite files so that it can be generated next time.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourcePath">
+            <summary>
+            Defines the path to a client resource
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.ClientResourcePathCollection">
+            <summary>
+            Represents a collection of client resource paths.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude">
+            <summary>
+            Registers a CSS resource
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.DnnHtmlInclude">
+            <summary>
+            Allows for registration of CSS and JavaScript resources
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.ClientResourceManagement.DnnJsInclude">
+            <summary>
+            Registers a JavaScript resource
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceManagement.DnnJsInclude.#ctor">
+            <summary>
+            Sets up default settings for the control
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.FileOrder">
+            <summary>
+            Contains enumerations that define the relative loading order of both JavaScript and CSS files within the framework's registration system.
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.FileOrder.Js">
+            <summary>
+            Defines load order of key JavaScript files within the framework
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DefaultPriority">
+            <summary>
+            The default priority (100) indicates that the ordering will be done based on the order in which the registrations are made
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.jQuery">
+            <summary>
+            jQuery (CDN or local file) has the priority of 5
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.jQueryMigrate">
+            <summary>
+            jQuery Migrate file has the priority of 6, it should appear just after jquery.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.jQueryUI">
+            <summary>
+            jQuery UI (CDN or local file) has the priority of 10
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnXml">
+            <summary>
+            /js/dnn.xml.js has the priority of 15
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnXmlJsParser">
+            <summary>
+            /js/dnn.xml.jsparser.js has the priority of 20
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnXmlHttp">
+            <summary>
+            /js/dnn.xmlhttp.js has the priority of 25
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnXmlHttpJsXmlHttpRequest">
+            <summary>
+            /js/dnn.xmlhttp.jsxmlhttprequest.js has the pririty of 30
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnDomPositioning">
+            <summary>
+            /js/dnn.dom.positioning.js has the priority of 35
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnControls">
+            <summary>
+            /js/dnn.controls.js has the priority of 40
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnControlsLabelEdit">
+            <summary>
+            /js/dnn.controls.labeledit.js has the priority of 45
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.DnnModalPopup">
+            <summary>
+            /js/dnn.modalpopup.js has the priority of 50
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Js.HoverIntent">
+            <summary>
+            jQuery Hover Intent JS File has the priority of 55
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.FileOrder.Css">
+            <summary>
+            Defines load order of key CSS files within the framework
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.DefaultPriority">
+            <summary>
+            The default priority (100) indicates that the ordering will be done based on the order in which the registrations are made
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.DefaultCss">
+            <summary>
+            The default.css file has a priority of 5
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.AdminCss">
+            <summary>
+            The admin.css file has a priority of 6
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.FeatureCss">
+            <summary>
+            The feature.css file has a priority of 7
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.IeCss">
+            <summary>
+            The ie.css file has a priority of 8
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.ModuleCss">
+            <summary>
+            Module CSS files have a priority of 10
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.ResourceCss">
+            <summary>
+            Resources CSS files have a priority of 12
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.SkinCss">
+            <summary>
+            Skin CSS files have a priority of 15
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.SpecificSkinCss">
+            <summary>
+            Specific skin control's CSS files have a priority of 20
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.ContainerCss">
+            <summary>
+            Container CSS files have a priority of 25
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.SpecificContainerCss">
+            <summary>
+            Specific container control's CSS files have a priority of 30
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.FileOrder.Css.PortalCss">
+            <summary>
+            The portal.css file has a priority of 35
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.ClientResourceSettings.IsOverridingDefaultSettingsEnabled">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.ClientResourceSettings.UpgradeStatus.Upgrade">
+            <summary>
+            The application need update to a higher version.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.ClientResourceSettings.UpgradeStatus.Install">
+            <summary>
+            The application need to install itself.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.ClientResourceSettings.UpgradeStatus.None">
+            <summary>
+            The application is normal running.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.ClientResourceSettings.UpgradeStatus.Error">
+            <summary>
+            The application occur error when running.
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.ClientResourceSettings.UpgradeStatus.Unknown">
+            <summary>
+            The application status is unknown,
+            </summary>
+            <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.Providers.DnnCompositeFileProcessingProvider">
+            <summary>
+            A provider for combining, minifying, compressing and saving composite scripts/css files
+            </summary>
+        </member>
+        <member name="P:DotNetNuke.Web.Client.Providers.DnnFileRegistrationProvider.EnableCompositeFiles">
+            <summary>
+            Checks if the composite files option is set for the current portal (DNN site settings).
+            If not enabled at the portal level it defers to the core CDF setting (web.config).
+            </summary>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider">
+            <summary>
+            Registers resources at the top of the body on default.aspx
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider.DefaultName">
+            <summary>
+            The default name of the provider
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider.CssPlaceHolderName">
+            <summary>
+            The name of the placeholder in which the controls will be rendered
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.Providers.DnnPageHeaderProvider.RegisterDependencies(System.Web.HttpContextBase,System.String,System.String)">
+            <summary>
+            Registers the dependencies in the body of default.aspx
+            </summary>
+            <param name="http"></param>
+            <param name="js"></param>
+            <param name="css"></param>
+            <remarks>
+            For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
+            we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.
+            
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.Providers.DnnFormBottomProvider">
+            <summary>
+            Registers resources at the top of the body on default.aspx
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnFormBottomProvider.DefaultName">
+            <summary>
+            The default name of the provider
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnFormBottomProvider.DnnFormBottomPlaceHolderName">
+            <summary>
+            The name of the placeholder in which the controls will be rendered
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.Providers.DnnFormBottomProvider.RegisterDependencies(System.Web.HttpContextBase,System.String,System.String)">
+            <summary>
+            Registers the dependencies in the body of default.aspx
+            </summary>
+            <param name="http"></param>
+            <param name="js"></param>
+            <param name="css"></param>
+            <remarks>
+            For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
+            we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.
+            
+            </remarks>
+        </member>
+        <member name="T:DotNetNuke.Web.Client.Providers.DnnBodyProvider">
+            <summary>
+            Registers resources at the top of the body on default.aspx
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnBodyProvider.DefaultName">
+            <summary>
+            The name of the provider
+            </summary>
+        </member>
+        <member name="F:DotNetNuke.Web.Client.Providers.DnnBodyProvider.DnnBodyPlaceHolderName">
+            <summary>
+            The name of the placeholder in which the controls will be rendered
+            </summary>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.Providers.DnnBodyProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Initializes the provider.
+            </summary>
+            <param name="name">The friendly name of the provider.
+                            </param><param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.
+                            </param><exception cref="T:System.ArgumentNullException">The name of the provider is null.
+                            </exception><exception cref="T:System.ArgumentException">The name of the provider has a length of zero.
+                            </exception><exception cref="T:System.InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+                            </exception>
+        </member>
+        <member name="M:DotNetNuke.Web.Client.Providers.DnnBodyProvider.RegisterDependencies(System.Web.HttpContextBase,System.String,System.String)">
+            <summary>
+            Registers the dependencies in the body of default.aspx
+            </summary>
+            <param name="http"></param>
+            <param name="js"></param>
+            <param name="css"></param>
+            <remarks>
+            For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
+            we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.
+            
+            </remarks>
+        </member>
+    </members>
+</doc>

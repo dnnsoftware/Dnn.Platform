@@ -1,0 +1,464 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+DotNetNuke.WebUtility
+</name>
+</assembly>
+<members>
+<member name="T:DotNetNuke.UI.Utilities.ClientAPI">
+ -----------------------------------------------------------------------------
+ Project	 : DotNetNuke
+ Class	 : ClientAPI
+ -----------------------------------------------------------------------------
+ <summary>
+ Library responsible for interacting with DNN Client API.
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="T:DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences">
+ -----------------------------------------------------------------------------
+ <summary>
+ Enumerates each namespace with a seperate js file
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="F:DotNetNuke.UI.Utilities.ClientAPI.m_sScriptPath">
+ -----------------------------------------------------------------------------
+ <summary>Private variable holding location of client side js files.  Shared by entire application.</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.ClientVariableControl(System.Web.UI.Page)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Finds __dnnVariable control on page, if not found it attempts to add its own.
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <value></value>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.FindForm(System.Web.UI.Control)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Loop up parent controls to find form
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/2/2006	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetDNNVariableControl(System.Web.UI.Control)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Returns __dnnVariable control if present
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	4/6/2005	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.COLUMN_DELIMITER">
+ -----------------------------------------------------------------------------
+ <summary>Character used for delimiting name from value</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.CUSTOM_COLUMN_DELIMITER">
+ -----------------------------------------------------------------------------
+ <summary>Character used for delimiting name from value</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.CUSTOM_ROW_DELIMITER">
+ -----------------------------------------------------------------------------
+ <summary>Character used for delimiting name/value pairs</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.QUOTE_REPLACEMENT">
+ -----------------------------------------------------------------------------
+ <summary>In order to reduce payload, substitute out " with different char, since when put in a hidden control it uses &quot;</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.ROW_DELIMITER">
+ -----------------------------------------------------------------------------
+ <summary>Character used for delimiting name/value pairs</summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPI.ScriptPath">
+ -----------------------------------------------------------------------------
+ <summary>
+ Path where js files are placed
+ </summary>
+ <value></value>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/19/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetClientVariableNameValuePair(System.Web.UI.Page,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Parses DNN Variable control contents and returns out the delimited name/value pair
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <param name="strVar">Name to retrieve</param>
+ <returns>Delimited name/value pair string</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetKeyDownHandler(System.Int32,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Returns javascript to call dnncore.js key handler logic
+ </summary>
+ <param name="intKeyAscii">ASCII value to trap</param>
+ <param name="strJavascript">Javascript to execute</param>
+ <returns>Javascript to handle key press</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/17/2005	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.AddButtonConfirm(System.Web.UI.WebControls.WebControl,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Common way to handle confirmation prompts on client
+ </summary>
+ <param name="objButton">Button to trap click event</param>
+ <param name="strText">Text to display in confirmation</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/17/2005	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.BrowserSupportsFunctionality(DotNetNuke.UI.Utilities.ClientAPI.ClientFunctionality)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Determines of browser currently requesting page adaquately supports passed un client-side functionality
+ </summary>
+ <param name="eFunctionality">Desired Functionality</param>
+ <returns>True when browser supports it</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetClientVariable(System.Web.UI.Page,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Retrieves DNN Client Variable value
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <param name="strVar">Variable name to retrieve value for</param>
+ <returns>Value of variable</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetClientVariable(System.Web.UI.Page,System.String,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Retrieves DNN Client Variable value
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <param name="strVar">Variable name to retrieve value for</param>
+ <param name="strDefaultValue">Default value if variable not found</param>
+ <returns>Value of variable</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Escapes string to be safely used in client side javascript.  
+ </summary>
+ <param name="strString">String to escape</param>
+ <returns>Escaped string</returns>
+ <remarks>
+ Currently this only escapes out quotes and apostrophes
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/17/2005	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.NeedsDNNVariable(System.Web.UI.Control)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Determines if DNNVariable control is present in page's control collection
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	4/6/2005	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterClientReference(System.Web.UI.Page,DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Responsible for registering client side js libraries and its dependecies.
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <param name="eRef">Enumerator of library to reference</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterClientVariable(System.Web.UI.Page,System.String,System.String,System.Boolean)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Registers a client side variable (name/value) pair
+ </summary>
+ <param name="objPage">Current page rendering content</param>
+ <param name="strVar">Variable name</param>
+ <param name="strValue">Value</param>
+ <param name="blnOverwrite">Determins if a replace or append is applied when variable already exists</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	8/3/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterDNNVariableControl(System.Web.UI.Control)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Responsible for inputting the hidden field necessary for the ClientAPI to pass variables back in forth
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	4/6/2005	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterKeyCapture(System.Web.UI.Control,System.Web.UI.Control,System.Int32)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Traps client side keydown event looking for passed in key press (ASCII) and hooks it up with server side postback handler
+ </summary>
+ <param name="objControl">Control that should trap the keydown</param>
+ <param name="objPostbackControl">Server-side control that has its onclick event handled server-side</param>
+ <param name="intKeyAscii">ASCII value of key to trap</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/17/2005	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterKeyCapture(System.Web.UI.Control,System.String,System.Int32)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Traps client side keydown event looking for passed in key press (ASCII) and hooks it up with client-side javascript
+ </summary>
+ <param name="objControl">Control that should trap the keydown</param>
+ <param name="strJavascript">Javascript to execute when event fires</param>
+ <param name="intKeyAscii">ASCII value of key to trap</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	2/17/2005	Commented
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.RegisterPostBackEventHandler(System.Web.UI.Control,System.String,DotNetNuke.UI.Utilities.ClientAPIPostBackControl.PostBackEvent,System.Boolean)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Allows a listener to be associated to a client side post back
+ </summary>
+ <param name="objParent">The current control on the page or the page itself.  Depending on where the page is in its lifecycle it may not be possible to add a control directly to the page object, therefore we will use the current control being rendered to append the postback control.</param>
+ <param name="strEventName">Name of the event to sync.  If a page contains more than a single client side event only the events associated with the passed in name will be raised.</param>
+ <param name="objDelegate">Server side AddressOf the function to handle the event</param>
+ <param name="blnMultipleHandlers">Boolean flag to determine if multiple event handlers can be associated to an event.</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.EnableClientSideReorder(System.Web.UI.Control,System.Web.UI.Page,System.Boolean,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Registers a button inside a table for the ability to perform client-side reordering
+ </summary>
+ <param name="objButton">Button responsible for moving the row up or down.</param>
+ <param name="objPage">Page the table belongs to.  Can't just use objButton.Page because inside ItemCreated event of grid the button has no page yet.</param>
+ <param name="blnUp">Determines if the button is responsible for moving the row up or down</param>
+ <param name="strKey">Unique key for the table/grid to be used to obtain the new order on postback.  Needed when calling GetClientSideReOrder</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	3/10/2006	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPI.GetClientSideReorder(System.String,System.Web.UI.Page)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Retrieves an array of the new order for the rows
+ </summary>
+ <param name="strKey">Unique key for the table/grid to be used to obtain the new order on postback.  Needed when calling GetClientSideReOrder</param>
+ <param name="objPage">Page the table belongs to.  Can't just use objButton.Page because inside ItemCreated event of grid the button has no page yet.</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	3/10/2006	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="T:DotNetNuke.UI.Utilities.ClientAPIPostBackControl">
+ -----------------------------------------------------------------------------
+ Project	 : DotNetNuke
+ Class	 : ClientAPIPostBackControl
+ 
+ -----------------------------------------------------------------------------
+ <summary>
+ Control used to register post-back events
+ </summary>
+ <remarks>
+ In order for a post-back event to be trapped we need to associate a control to 
+ handle the event.
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:DotNetNuke.UI.Utilities.ClientAPIPostBackControl.EventHandlers(System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Property to access individual post back event handlers based off of event name
+ </summary>
+ <param name="strEventName">Event Name</param>
+ <returns>PostBackEvent</returns>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPIPostBackControl.AddEventHandler(System.String,DotNetNuke.UI.Utilities.ClientAPIPostBackControl.PostBackEvent)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Adds a postback event handler to the control
+ </summary>
+ <param name="strEventName">Event Name</param>
+ <param name="objDelegate">Delegate for Function of type PostBackEvent</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPIPostBackControl.#ctor(System.Web.UI.Page,System.String,DotNetNuke.UI.Utilities.ClientAPIPostBackControl.PostBackEvent)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Constructor
+ </summary>
+ <param name="objPage">Page</param>
+ <param name="strEventName">Event Name</param>
+ <param name="objDelegate">Delegate for Function of type PostBackEvent</param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.ClientAPIPostBackControl.RaisePostBackEvent(System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Function implementing IPostBackEventHandler which allows the ASP.NET page to invoke
+ the control's events
+ </summary>
+ <param name="strEventArgument"></param>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="T:DotNetNuke.UI.Utilities.ClientAPIPostBackEventArgs">
+ -----------------------------------------------------------------------------
+ Project	 : DotNetNuke
+ Class	 : ClientAPIPostBackEventArgs
+ 
+ -----------------------------------------------------------------------------
+ <summary>
+ Event arguments passed to a delegate associated to a client postback event 
+ </summary>
+ <remarks>
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/15/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:DotNetNuke.UI.Utilities.Globals.FindControlRecursive(System.Web.UI.Control,System.String)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Searches control hierarchy from top down to find a control matching the passed in name
+ </summary>
+ <param name="objParent">Root control to begin searching</param>
+ <param name="strControlName">Name of control to look for</param>
+ <returns></returns>
+ <remarks>
+ This differs from FindControlRecursive in that it looks down the control hierarchy, whereas, the 
+ FindControlRecursive starts at the passed in control and walks the tree up.  Therefore, this function is 
+ more a expensive task.
+ </remarks>
+ <history>
+ 	[Jon Henning]	9/17/2004	Created
+     [Jon Henning]   12/3/2004   Now checking if the control HasControls before calling FindControl.
+                                 Using FindControl or accessing the controls collection on controls like
+                                 the DataList can cause problems with ViewState
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+</members>
+</doc>

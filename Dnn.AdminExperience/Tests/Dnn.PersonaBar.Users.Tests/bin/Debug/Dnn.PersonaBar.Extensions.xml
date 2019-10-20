@@ -1,0 +1,1819 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dnn.PersonaBar.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:Dnn.PersonaBar.Prompt.Components.Commands.Portal.GetSite">
+            <summary>
+            alias for get-portal
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Prompt.Components.Commands.Portal.ListSites">
+            <summary>
+            Alias for list-portals
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Prompt.Components.Models.CommandOption.Flag">
+            <summary>
+            Name of the flag
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Prompt.Components.Models.CommandOption.Type">
+            <summary>
+            Type of the flag value expected.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Prompt.Components.Models.CommandOption.Required">
+            <summary>
+            Is flag required or not
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Prompt.Components.Models.CommandOption.DefaultValue">
+            <summary>
+            Default value of the flag
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Prompt.Components.Models.CommandOption.Description">
+            <summary>
+            Description of flag
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Prompt.Components.Models.ModuleInstanceModel">
+            <summary>
+            Similar to ModuleInfoModel, however this one has information more specific to a module's 
+            implementation on a particular page (like the PaneName)
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Prompt.Components.Repositories.ICommandRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Prompt.Services.CommandController.AddLogAndReturnResponse(Dnn.PersonaBar.Library.Prompt.IConsoleCommand,System.Type,Dnn.PersonaBar.Prompt.Components.Models.CommandInputModel,System.DateTime,System.String)">
+            <summary>
+            Log every command run by a users.
+            </summary>
+            <param name="consoleCommand"></param>
+            <param name="cmdTypeToRun"></param>
+            <param name="command"></param>
+            <param name="startTime"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetLogTypes">
+            GET: api/AdminLogs/GetLogTypes
+            <summary>
+            Gets log types
+            </summary>
+            <param></param>
+            <returns>List of log types</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetLogItems(System.String,System.Int32,System.Int32)">
+            GET: api/AdminLogs/GetLogItems
+            <summary>
+            Gets log items
+            </summary>
+            <param></param>
+            <param name="logType"></param>
+            <param name="pageSize"></param>
+            <param name="pageIndex"></param>
+            <returns>List of log items</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.DeleteLogItems(System.Collections.Generic.IEnumerable{System.String})">
+            POST: api/AdminLogs/DeleteLogItems
+            <summary>
+            Deletes log items
+            </summary>
+            <param name="logIds">List of log items to be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.EmailLogItems(Dnn.PersonaBar.AdminLogs.Services.Dto.EmailLogItemsRequest)">
+            POST: api/AdminLogs/EmailLogItems
+            <summary>
+            Sends log items via email
+            </summary>
+            <param name="request">send email request</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.ClearLog">
+            POST: api/AdminLogs/ClearLog
+            <summary>
+            Clears all log items
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetKeepMostRecentOptions">
+            GET: api/AdminLogs/GetKeepMostRecentOptions
+            <summary>
+            Gets options of Keep Most Recent
+            </summary>
+            <param></param>
+            <returns>Option list of Keep Most Recent</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetOccurrenceOptions">
+            GET: api/AdminLogs/GetOccurenceThresholdOptions
+            <summary>
+            Gets options of Occurence Threshold
+            </summary>
+            <param></param>
+            <returns>Option list of Occurence Threshold</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetLogSettings">
+            GET: api/AdminLogs/GetLogSettings
+            <summary>
+            Gets log settings
+            </summary>
+            <param></param>
+            <returns>List of log settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetLogSetting(System.String)">
+            GET: api/AdminLogs/GetLogSettings
+            <summary>
+            Gets log type settings
+            </summary>
+            <param name="logTypeConfigId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.AddLogSetting(Dnn.PersonaBar.AdminLogs.Services.Dto.UpdateLogSettingsRequest)">
+            POST: api/AdminLogs/AddLogSettings
+            <summary>
+            Adds a new log settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.UpdateLogSetting(Dnn.PersonaBar.AdminLogs.Services.Dto.UpdateLogSettingsRequest)">
+            POST: api/AdminLogs/UpdateLogSettings
+            <summary>
+            Updates an existing log settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.DeleteLogSetting(Dnn.PersonaBar.AdminLogs.Services.Dto.DeleteLogSettingsRequest)">
+            POST: api/AdminLogs/DeleteLogSettings
+            <summary>
+            Deletes an existing log settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.AdminLogs.Services.AdminLogsController.GetLatestLogSetting">
+            GET: api/AdminLogs/GetLatestLogSetting
+            <summary>
+            Gets latest log setting
+            </summary>
+            <param></param>
+            <returns>Log Setting</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Components.CreateModuleController.CreateModule(Dnn.PersonaBar.Extensions.Components.Dto.CreateModuleDto,System.String@,System.String@)">
+            <summary>
+            create new module.
+            </summary>
+            <param name="createModuleDto"></param>
+            <param name="newPageUrl"></param>
+            <param name="errorMessage"></param>
+            <returns>return the new package id.</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.GetPackageTypes">
+            GET: api/Extensions/GetPackageTypes
+            <summary>
+            Get installed package types.
+            </summary>
+            <returns>List of package types</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.GetAllPackagesListExceptLangPacks">
+            GET: api/Extensions/GetAllPackagesListExceptLangPacks
+            <summary>
+            Get installed packages list except language packs.
+            </summary>
+            <returns>List of [Id,Name] pairs of all system packages</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.GetInstalledPackages(System.String)">
+            GET: api/Extensions/GetInstalledPackages
+            <summary>
+            Gets installed packages
+            </summary>
+            <param name="packageType"></param>
+            <returns>List of installed packages</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.GetAvailablePackages(System.String)">
+            GET: api/Extensions/GetAvailablePackages
+            <summary>
+            Gets available packages
+            </summary>
+            <param name="packageType"></param>
+            <returns>List of available packages</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.InstallAvailablePackage(Dnn.PersonaBar.Extensions.Components.Dto.DownloadPackageDto)">
+            <summary>
+            Inatall a package that is already included under one of the installation folders.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Extensions.Services.ExtensionsController.DownloadPackage(System.String,System.String)">
+            <summary>
+            Download install package.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.ConfigConsole.Services.ConfigConsoleController.GetConfigFilesList">
+            GET: api/ConfigConsole/GetConfigFilesList
+            <summary>
+            Gets list of config files
+            </summary>
+            <param></param>
+            <returns>List of config files</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.ConfigConsole.Services.ConfigConsoleController.GetConfigFile(System.String)">
+            GET: api/ConfigConsole/GetConfigFile
+            <summary>
+            Gets content of a specific config file
+            </summary>
+            <param name="fileName">Name of a config file</param>
+            <returns>Content of a config file</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.ConfigConsole.Services.ConfigConsoleController.UpdateConfigFile(Dnn.PersonaBar.ConfigConsole.Services.Dto.ConfigFileDto)">
+            POST: api/ConfigConsole/UpdateConfigFile
+            <summary>
+            Updates a config file
+            </summary>
+            <param name="configFileDto">Content of config file</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.ConfigConsole.Services.ConfigConsoleController.MergeConfigFile(Dnn.PersonaBar.ConfigConsole.Services.Dto.ConfigFileDto)">
+            POST: api/ConfigConsole/MergeConfigFile
+            <summary>
+            Merges config files
+            </summary>
+            <param name="configFileDto">Content of config file</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Connectors.Services.ConnectorsController.DeleteConnection(System.Object)">
+            <summary>
+            Delete a connector. Supported only for connectors with SupportsMultiple=true.
+            </summary>
+            <param name="postData"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Pages.Components.ICloneModuleExecutionContext">
+            <summary>
+            Provides an abstraction over the current context of the Clone Module thread
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.ICloneModuleExecutionContext.SetCloneModuleContext(System.Boolean)">
+            <summary>
+            Sets whether the import/export process of the Visualizer module is executed
+            as part of the process of cloning a module or not. 
+            F.i: when creating a page from a template, duplicating, etc.
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Pages.Components.IDefaultPortalThemeController">
+            <summary>
+            Theme controller
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IDefaultPortalThemeController.GetDefaultPortalContainer">
+            <summary>
+            Returns the default current portal container
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IDefaultPortalThemeController.GetDefaultPortalLayout">
+            <summary>
+            Returns the default current portal layout
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IPageManagementController.TabHasChildren(DotNetNuke.Entities.Tabs.TabInfo)">
+            <summary>
+            Returns true if tab has children, false otherwise
+            </summary>
+            <param name="tabInfo">Tab info object</param>
+            <returns>Returns true if tab has children, false otherwise</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IPagesController.CleanTabUrl(System.String)">
+            <summary>
+            Returns a clean tab relative url based on Advanced Management Url settings
+            </summary>
+            <param name="url">Url not cleaned, this could containes blank space or invalid characters</param>
+            <returns>Cleaned Url</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IPagesController.CopyThemeToDescendantPages(System.Int32,Dnn.PersonaBar.Pages.Services.Dto.Theme)">
+            <summary>
+            Copy the given theme to all descendant pages
+            </summary>
+            <param name="pageId">page identifier</param>
+            <param name="theme">Theme</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.IPagesController.CopyPermissionsToDescendantPages(System.Int32)">
+            <summary>
+            Copy the current page permissions to all descendant pages
+            </summary>
+            <param name="pageId">page identifier</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.PagesControllerImpl.GetTabDescription(Dnn.PersonaBar.Pages.Services.Dto.PageSettings)">
+            <summary>
+            If the tab description is equal to the portal description
+            we store null so the system will serve the portal description instead
+            </summary>
+            <param name="pageSettings"></param>
+            <returns>Tab Description value to be stored</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Components.PagesControllerImpl.GetKeyWords(Dnn.PersonaBar.Pages.Services.Dto.PageSettings)">
+            <summary>
+            If the tab keywords is equal to the portal keywords
+            we store null so the system will serve the portal keywords instead
+            </summary>
+            <param name="pageSettings"></param>
+            <returns>Tab Keywords value to be stored</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetPageDetails(System.Int32)">
+            GET: api/Pages/GetPageDetails
+            <summary>
+            Get detail of a page
+            </summary>
+            <param name="pageId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetCustomUrls(System.Int32)">
+            GET: api/Pages/GetCustomUrls
+            <summary>
+            Get custom Urls of a page
+            </summary>
+            <param name="pageId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetPageList(System.Int32,System.String)">
+            GET: api/Pages/GetPageList
+            <summary>
+            
+            </summary>
+            <param name="parentId"></param>
+            <param name="searchKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.SearchPages(System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            GET: api/Pages/SearchPages
+            <summary>
+            
+            </summary>
+            <param name="searchKey"></param>
+            <param name="pageType"></param>
+            <param name="tags"></param>
+            <param name="publishStatus"></param>
+            <param name="publishDateStart"></param>
+            <param name="publishDateEnd"></param>
+            <param name="workflowId"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetTabLocalization(System.Int32)">
+            <summary>
+            Gets the view data that used to be in the old ControlBar's localization tab
+            under Page Settings ( /{page}/ctl/Tab/action/edit/activeTab/settingTab ).
+            </summary>
+            <param name="pageId">The ID of the tab to get localization for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetContentLocalizationEnabled">
+            <summary>
+            Gets ContentLocalizationEnabled 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Pages.Services.PagesController.GetCachedItemCount(System.String,System.Int32)">
+            <summary>
+            Gets GetCachedItemCount 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Recyclebin.Components.RecyclebinController.CanManageUser(DotNetNuke.Entities.Users.UserInfo)">
+            <summary>
+            Checks if the current user has enough rights to manage the provided user or not
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Roles.Components.RolesController.GetRoles(DotNetNuke.Entities.Portals.PortalSettings,System.Int32,System.String,System.Int32@,System.Int32,System.Int32)">
+            <summary>
+            Gets a paginated list of Roles matching given search criteria
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="groupId"></param>
+            <param name="keyword"></param>
+            <param name="total"></param>
+            <param name="startIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Roles.Components.RolesController.GetRolesByNames(DotNetNuke.Entities.Portals.PortalSettings,System.Int32,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Gets a list (not paginated) of Roles given a comma separated list of Roles' names.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="groupId"></param>
+            <param name="rolesFilter"></param>
+            <returns>List of found Roles</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.CleanUpInstallerFiles">
+            <summary>
+                delete unnedded installwizard files
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.SearchFiles(System.String)">
+            <summary>
+                search all files in the website for matching text
+            </summary>
+            <param name="searchText">the matching text</param>
+            <returns>ienumerable of file names</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.FindUnexpectedExtensions(System.Collections.Generic.IList{System.String})">
+            <summary>
+                search all website files for files with a potential dangerous extension
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.FineHiddenSystemFiles">
+            <summary>
+                search all website files which are hidden or system.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Recursively finds file
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Components.Utility.GetFiles(System.String,System.String,System.IO.SearchOption,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Recursively finds file
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetBasicLoginSettings(System.String)">
+            GET: api/Security/GetBasicLoginSettings
+            <summary>
+            Gets portal's basic login settings
+            </summary>
+            <param name="cultureCode"></param>
+            <returns>Portal's basic login settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateBasicLoginSettings(Dnn.PersonaBar.Security.Services.Dto.UpdateBasicLoginSettingsRequest)">
+            POST: api/Security/UpdateBasicLoginSettings
+            <summary>
+            Updates an existing log settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetIpFilters">
+            GET: api/Security/GetIpFilters
+            <summary>
+            Gets list of IP filters
+            </summary>
+            <param></param>
+            <returns>List of IP filters</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetIpFilter(System.Int32)">
+            GET: api/Security/GetIpFilter
+            <summary>
+            Gets an IP filter
+            </summary>
+            <param name="filterId"></param>
+            <returns>IP filter</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateIpFilter(Dnn.PersonaBar.Security.Services.Dto.UpdateIpFilterRequest)">
+            POST: api/Security/UpdateIpFilter
+            <summary>
+            Updates an IP filter
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.DeleteIpFilter(System.Int32)">
+            POST: api/Security/DeleteIpFilter
+            <summary>
+            Deletes an IP filter
+            </summary>
+            <param name="filterId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetMemberSettings">
+            GET: api/Security/GetMemberSettings
+            <summary>
+            Gets portal's member settings
+            </summary>
+            <returns>Portal's member settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateMemberSettings(Dnn.PersonaBar.Security.Services.Dto.UpdateMemberSettingsRequest)">
+            POST: api/Security/UpdateMemberSettings
+            <summary>
+            Updates member settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetRegistrationSettings">
+            GET: api/Security/GetRegistrationSettings
+            <summary>
+            Gets portal's registration settings
+            </summary>
+            <returns>Portal's registration settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateRegistrationSettings(Dnn.PersonaBar.Security.Services.Dto.UpdateRegistrationSettingsRequest)">
+            POST: api/Security/UpdateRegistrationSettings
+            <summary>
+            Updates registration settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetSslSettings">
+            GET: api/Security/GetSslSettings
+            <summary>
+            Gets portal's SSL settings
+            </summary>
+            <returns>Portal's ssl settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateSslSettings(Dnn.PersonaBar.Security.Services.Dto.UpdateSslSettingsRequest)">
+            POST: api/Security/UpdateSslSettings
+            <summary>
+            Updates SSL settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetSecurityBulletins">
+            GET: api/Security/GetSecurityBulletins
+            <summary>
+            Gets security bulletins
+            </summary>
+            <returns>Security bulletins</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetOtherSettings">
+            GET: api/Security/GetOtherSettings
+            <summary>
+            Gets host other settings
+            </summary>
+            <returns>Portal's ssl settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.UpdateOtherSettings(Dnn.PersonaBar.Security.Services.Dto.UpdateOtherSettingsRequest)">
+            POST: api/Security/UpdateOtherSettings
+            <summary>
+            Updates other settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetAuditCheckResults(System.Boolean)">
+            GET: api/Security/GetAuditCheckResults
+            <summary>
+            Gets audit check results
+            </summary>
+            <returns>audit check results</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetAuditCheckResult(System.String)">
+            GET: api/Security/GetAuditCheckResult?id={id}
+            <summary>
+            Gets audit check result for a specific checker.
+            </summary>
+            <returns>audit check result</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetSuperuserActivities">
+            GET: api/Security/GetSuperuserActivities
+            <summary>
+            Gets super user activities.
+            </summary>
+            <returns>super user activities.</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.SearchFileSystemAndDatabase(System.String)">
+            GET: api/Security/SearchFileSystemAndDatabase
+            <summary>
+            Searchs file system and database
+            </summary>
+            <returns>Searchs file system and database</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetLastModifiedFiles">
+            GET: api/Security/GetLastModifiedFiles
+            <summary>
+            Gets recently modified files
+            </summary>
+            <returns>last modified files</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Security.Services.SecurityController.GetLastModifiedSettings">
+            GET: api/Security/GetRecentlyModifiedSettings
+            <summary>
+            Gets last modified settings
+            </summary>
+            <returns>last modified settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.GetGeneralSettings">
+            GET: api/SEO/GetGeneralSettings
+            <summary>
+            Gets general SEO settings
+            </summary>
+            <returns>General SEO settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.UpdateGeneralSettings(Dnn.PersonaBar.Seo.Services.Dto.UpdateGeneralSettingsRequest)">
+            POST: api/SEO/UpdateGeneralSettings
+            <summary>
+            Updates SEO general settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.GetRegexSettings">
+            GET: api/SEO/GetRegexSettings
+            <summary>
+            Gets SEO regex settings
+            </summary>
+            <returns>General SEO regex settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.UpdateRegexSettings(Dnn.PersonaBar.Seo.Services.Dto.UpdateRegexSettingsRequest)">
+            POST: api/SEO/UpdateRegexSettings
+            <summary>
+            Updates SEO regex settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.GetSitemapSettings">
+            GET: api/SEO/GetSitemapSettings
+            <summary>
+            Gets sitemap settings
+            </summary>
+            <param></param>
+            <returns>Data of sitemap settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.CreateVerification(System.String)">
+            POST: api/SEO/CreateVerification
+            <summary>
+            Creates a verification file for specific search engine
+            </summary>
+            <param name="verification">Name of verification</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.UpdateSitemapSettings(Dnn.PersonaBar.Seo.Services.Dto.SitemapSettingsRequest)">
+            POST: api/SEO/UpdateSitemapSettings
+            <summary>
+            Updates sitemap settings
+            </summary>
+            <param name="request">Data of sitemap settings</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.ResetCache">
+            POST: api/SEO/ResetCache
+            <summary>
+            Resets cache
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.GetSitemapProviders">
+            GET: api/SEO/GetSitemapProviders
+            <summary>
+            Gets list of sitemap providers
+            </summary>
+            <param></param>
+            <returns>Web Server information</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.UpdateSitemapProvider(Dnn.PersonaBar.Seo.Services.Dto.UpdateSitemapProviderRequest)">
+            POST: api/SEO/UpdateSitemapProvider
+            <summary>
+            Updates settings of a sitemap provider
+            </summary>
+            <param name="request">Data of sitemap provider</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.GetExtensionUrlProviders">
+            GET: api/SEO/GetExtensionUrlProviders
+            <summary>
+            Gets list of extension url providers
+            </summary>
+            <param></param>
+            <returns>extension url providers</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.UpdateExtensionUrlProviderStatus(Dnn.PersonaBar.Seo.Services.Dto.UpdateExtensionUrlProviderStatusRequest)">
+            POST: api/SEO/UpdateExtensionUrlProviderStatus
+            <summary>
+            Enable or disable extension url provider
+            </summary>
+            <param name="request">Data of extension url provider</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.TestUrl(System.Int32,System.String,System.String)">
+            <summary>
+            Tests the internal URL
+            </summary>
+            <returns>Various forms of the URL and any messages when they exist</returns>
+            <example>
+            GET /API/PersonaBar/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page
+            </example>
+        </member>
+        <member name="M:Dnn.PersonaBar.Seo.Services.SeoController.TestUrlRewrite(System.String)">
+            GET: api/SEO/TestUrlRewrite
+            <summary>
+            Tests the rewritten URL
+            </summary>
+            <returns>Rewitten URL and few other information about the URL ( language, redirection result and reason, messages)</returns>
+            <example>
+            GET /API/PersonaBar/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page
+            </example>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsPerformanceController.GetPerformanceSettings">
+            GET: api/Servers/GetPerformanceSettings
+            <summary>
+            Gets performance settings
+            </summary>
+            <param></param>
+            <returns>performance settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsPerformanceController.IncrementPortalVersion">
+            POST: api/Servers/IncrementPortalVersion
+            <summary>
+            Increment portal resources management version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsPerformanceController.IncrementHostVersion">
+            POST: api/Servers/IncrementHostVersion
+            <summary>
+            Increment host resources management version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsPerformanceController.UpdatePerformanceSettings(Dnn.PersonaBar.Servers.Services.Dto.UpdatePerfSettingsRequest)">
+            POST: api/Servers/UpdatePerformanceSettings
+            <summary>
+            Updates performance settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsSmtpAdminController.SendTestEmail(Dnn.PersonaBar.Servers.Services.Dto.SendTestEmailRequest)">
+            POST: api/Servers/SendTestEmail
+            <summary>
+            Tests SMTP settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Servers.Services.ServerSettingsSmtpHostController.SendTestEmail(Dnn.PersonaBar.Servers.Services.Dto.SendTestEmailRequest)">
+            POST: api/Servers/SendTestEmail
+            <summary>
+            Tests SMTP settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.LanguagesController.LoadFile(System.Int32,Dnn.PersonaBar.SiteSettings.Components.Constants.LanguageResourceMode,System.String,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Loads resources from file
+            </summary>
+            <param name = "portalId">Portal Id</param>
+            <param name = "mode">Active editor mode</param>
+            <param name = "type">Resource being loaded (edit or default)</param>
+            <param name="locale">The locale of the file being edited</param>
+            <returns></returns>
+            <remarks>
+              Depending on the editor mode, resources will be overrided using default DNN schema.
+              "Edit" resources will only load selected file.
+              When loading "Default" resources (to be used on the editor as helpers) fallback resource
+              chain will be used in order for the editor to be able to correctly see what
+              is the current default value for the any key. This process depends on the current active
+              editor mode:
+              - System: when editing system base resources on en-US needs to be loaded
+              - Host: base en-US, and base locale especific resource
+              - Portal: base en-US, host override for en-US, base locale especific resource, and host override
+              for locale
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.LanguagesController.LoadResource(System.Collections.IDictionary,System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+             Loads resources from file into the HastTable
+            </summary>
+            <param name = "ht">Current resources HashTable</param>
+            <param name = "filepath">Resources file</param>
+            <returns>Base table updated with new resources </returns>
+            <remarks>
+              Returned hashtable uses resourcekey as key.
+              Value contains a Pair object where:
+              First=>value to be edited
+              Second=>default value
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.LanguagesController.ResourceFile(System.Int32,System.String,Dnn.PersonaBar.SiteSettings.Components.Constants.LanguageResourceMode)">
+            -----------------------------------------------------------------------------
+            <summary>
+              Returns the resource file name for a given resource and language
+            </summary>
+            <param name="portalId">Portal Id</param>
+            <param name="language">Language Name.</param>
+            <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
+            <returns>Localized File Name</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.LanguagesController.SaveResourceFileFile(System.Int32,Dnn.PersonaBar.SiteSettings.Components.Constants.LanguageResourceMode,System.String,System.Collections.Generic.IEnumerable{Dnn.PersonaBar.SiteSettings.Services.Dto.LocalizationEntry})">
+            -----------------------------------------------------------------------------
+            <summary>
+              Updates all values from the datagrid
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetPortalSettings(System.Nullable{System.Int32},System.String)">
+            GET: api/SiteSettings/GetPortalSettings
+            <summary>
+            Gets site settings
+            </summary>
+            <param name="portalId"></param>
+            <param name="cultureCode"></param>
+            <returns>site settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetCultureList(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetCultureList
+            <summary>
+            Gets culture list
+            </summary>
+            <param name="portalId"></param>
+            <returns>Culture List</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdatePortalSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSiteSettingsRequest)">
+            POST: api/SiteSettings/UpdatePortalSettings
+            <summary>
+            Updates site settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetDefaultPagesSettings(System.Nullable{System.Int32},System.String)">
+            GET: api/SiteSettings/GetDefaultPagesSettings
+            <summary>
+            Gets default pages settings
+            </summary>
+            <param name="portalId"></param>
+            <param name="cultureCode"></param>
+            <returns>default pages settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateDefaultPagesSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateDefaultPagesSettingsRequest)">
+            POST: api/SiteSettings/UpdateDefaultPagesSettings
+            <summary>
+            Updates default pages settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetMessagingSettings(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetMessagingSettings
+            <summary>
+            Gets messaging settings
+            </summary>
+            <param name="portalId"></param>
+            <returns>messaging settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateMessagingSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateMessagingSettingsRequest)">
+            POST: api/SiteSettings/UpdateMessagingSettings
+            <summary>
+            Updates messaging settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetProfileSettings(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetProfileSettings
+            <summary>
+            Gets profile settings
+            </summary>
+            <param name="portalId"></param>
+            <returns>profile settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateProfileSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateProfileSettingsRequest)">
+            POST: api/SiteSettings/UpdateProfileSettings
+            <summary>
+            Updates profile settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetProfileProperties(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetProfileProperties
+            <summary>
+            Gets profile properties
+            </summary>
+            <param name="portalId"></param>
+            <returns>profile properties</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetProfileProperty(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetProfileProperty
+            <summary>
+            Gets profile property by id
+            </summary>
+            <param name="propertyId"></param>
+            <param name="portalId"></param>
+            <returns>profile property</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetProfilePropertyLocalization(System.Nullable{System.Int32},System.String,System.String,System.String)">
+            GET: api/SiteSettings/GetProfilePropertyLocalization
+            <summary>
+            Gets profile property localization
+            </summary>
+            <param name="portalId"></param>
+            <param name="propertyName"></param>
+            <param name="propertyCategory"></param>
+            <param name="cultureCode"></param>
+            <returns>profile property</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateProfilePropertyLocalization(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateProfilePropertyLocalizationRequest)">
+            POST: api/SiteSettings/UpdateProfilePropertyLocalization
+            <summary>
+            Updates profile property localization
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.AddProfileProperty(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateProfilePropertyRequest)">
+            POST: api/SiteSettings/AddProfileProperty
+            <summary>
+            Creates profile property
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateProfileProperty(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateProfilePropertyRequest)">
+            POST: api/SiteSettings/UpdateProfileProperty
+            <summary>
+            Updates profile property
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateProfilePropertyOrders(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateProfilePropertyOrdersRequest)">
+            POST: api/SiteSettings/SwapProfilePropertyOrders
+            <summary>
+            Moves profile property
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.DeleteProfileProperty(System.Int32,System.Nullable{System.Int32})">
+            POST: api/SiteSettings/DeleteProfileProperty
+            <summary>
+            Deletes profile property
+            </summary>
+            <param name="propertyId"></param>
+            <param name="portalId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetUrlMappingSettings(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetUrlMappingSettings
+            <summary>
+            Gets Url mapping settings
+            </summary>
+            <param name="portalId"></param>
+            <returns>Url mapping settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateUrlMappingSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateUrlMappingSettingsRequest)">
+            POST: api/SiteSettings/UpdateUrlMappingSettings
+            <summary>
+            Updates Url mapping settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetSiteAliases(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/getSiteAliases
+            <summary>
+            Gets site aliases
+            </summary>
+            <param name="portalId"></param>
+            <returns>site aliases</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetSiteAlias(System.Int32)">
+            GET: api/SiteSettings/GetSiteAlias
+            <summary>
+            Gets site alias by id
+            </summary>
+            <param name="portalAliasId"></param>
+            <returns>site alias</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.AddSiteAlias(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSiteAliasRequest)">
+            POST: api/SiteSettings/AddSiteAlias
+            <summary>
+            Adds site alias
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateSiteAlias(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSiteAliasRequest)">
+            POST: api/SiteSettings/UpdateSiteAlias
+            <summary>
+            Updates site alias
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.DeleteSiteAlias(System.Int32)">
+            POST: api/SiteSettings/DeleteSiteAlias
+            <summary>
+            Deletes site alias
+            </summary>
+            <param name="portalAliasId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.SetPrimarySiteAlias(System.Int32)">
+            POST: api/SiteSettings/SetPrimarySiteAlias
+            <summary>
+            Sets primary site alias
+            </summary>
+            <param name="portalAliasId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetListInfo(System.String,System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetListInfo
+            <summary>
+            Gets list info
+            </summary>
+            <param name="listName"></param>
+            <param name="portalId"></param>
+            <returns>list entries</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateListEntry(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateListEntryRequest)">
+            POST: api/SiteSettings/UpdateListEntry
+            <summary>
+            Adds/Updates list entry
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.DeleteListEntry(System.Int32,System.Nullable{System.Int32})">
+            POST: api/SiteSettings/DeleteListEntry
+            <summary>
+            Deletes list entry
+            </summary>
+            <param name="entryId"></param>
+            <param name="portalId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateListEntryOrders(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateListEntryOrdersRequest)">
+            POST: api/SiteSettings/UpdateListEntryOrders
+            <summary>
+            Updates list entry sort order
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetPrivacySettings(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetPrivacySettings
+            <summary>
+            Gets messaging settings
+            </summary>
+            <param name="portalId"></param>
+            <returns>privacy settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdatePrivacySettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdatePrivacySettingsRequest)">
+            POST: api/SiteSettings/UpdatePrivacySettings
+            <summary>
+            Updates privacy settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.ResetTermsAgreement(Dnn.PersonaBar.SiteSettings.Services.Dto.ResetTermsAgreementRequest)">
+            POST: api/SiteSettings/ResetTermsAgreement
+            <summary>
+            Resets terms and conditions agreements
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetBasicSearchSettings">
+            GET: api/SiteSettings/GetBasicSearchSettings
+            <summary>
+            Gets basic search settings
+            </summary>
+            <returns>basic search settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateBasicSearchSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateBasicSearchSettingsRequest)">
+            POST: api/SiteSettings/UpdateBasicSearchSettings
+            <summary>
+            Updates basic search settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.CompactSearchIndex">
+            POST: api/SiteSettings/CompactSearchIndex
+            <summary>
+            Compacts search index
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.HostSearchReindex">
+            POST: api/SiteSettings/HostSearchReindex
+            <summary>
+            Re-index host search
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.PortalSearchReindex(System.Nullable{System.Int32})">
+            POST: api/SiteSettings/PortalSearchReindex
+            <summary>
+            Re-index portal search
+            </summary>
+            <param name="portalId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetPortals">
+            GET: api/SiteSettings/GetPortals
+            <summary>
+            Gets portals
+            </summary>
+            <param></param>
+            <returns>List of portals</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetSynonymsGroups(System.Nullable{System.Int32},System.String)">
+            GET: api/SiteSettings/GetSynonymsGroups
+            <summary>
+            Gets Synonyms Groups
+            </summary>
+            <param name="portalId"></param>
+            <param name="cultureCode"></param>
+            <returns>Synonyms Groups</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.AddSynonymsGroup(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSynonymsGroupRequest)">
+            POST: api/SiteSettings/AddSynonymsGroup
+            <summary>
+            Adds Synonyms Group
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateSynonymsGroup(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSynonymsGroupRequest)">
+            POST: api/SiteSettings/UpdateSynonymsGroup
+            <summary>
+            Updates Synonyms Group
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.DeleteSynonymsGroup(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateSynonymsGroupRequest)">
+            POST: api/SiteSettings/DeleteSynonymsGroup
+            <summary>
+            Deletes Synonyms Group
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetIgnoreWords(System.Nullable{System.Int32},System.String)">
+            GET: api/SiteSettings/GetIgnoreWords
+            <summary>
+            Gets ignore words
+            </summary>
+            <param name="portalId"></param>
+            <param name="cultureCode"></param>
+            <returns>ignore words</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.AddIgnoreWords(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateIgnoreWordsRequest)">
+            POST: api/SiteSettings/AddIgnoreWords
+            <summary>
+            Adds ignore words
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateIgnoreWords(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateIgnoreWordsRequest)">
+            POST: api/SiteSettings/UpdateIgnoreWords
+            <summary>
+            Updates ignore words
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.DeleteIgnoreWords(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateIgnoreWordsRequest)">
+            POST: api/SiteSettings/DeleteSynonymsGroup
+            <summary>
+            Deletes Synonyms Group
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetLanguageSettings(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetLanguageSettings
+            <summary>
+            Gets language settings
+            </summary>
+            <param name="portalId"></param>
+            <returns>language settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateLanguageSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateLanguageSettingsRequest)">
+            POST: api/SiteSettings/UpdateLanguageSettings
+            <summary>
+            Updates language settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetLanguages(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetLanguages
+            <summary>
+            Gets languages
+            </summary>
+            <param name="portalId"></param>
+            <returns>languages</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetLanguage(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetLanguage
+            <summary>
+            Gets language
+            </summary>
+            <param name="portalId"></param>
+            <param name="languageId"></param>
+            <returns>language</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetAllLanguages">
+            GET: api/SiteSettings/GetAllLanguages
+            <summary>
+            Gets language
+            </summary>
+            <returns>all languages</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.AddLanguage(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateLanguageRequest)">
+            POST: api/SiteSettings/AddLanguage
+            <summary>
+            Adds language
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateLanguageRoles(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateLanguageRequest)">
+            POST: api/SiteSettings/UpdateLanguageRoles
+            <summary>
+            Updates language security
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateLanguage(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateLanguageRequest)">
+            POST: api/SiteSettings/UpdateLanguage
+            <summary>
+            Updates language
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.VerifyLanguageResourceFiles">
+            GET: api/SiteSettings/VerifyLanguageResourceFiles
+            <summary>
+            Verifies language resource files
+            </summary>
+            <returns>verification results</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetModuleList(System.String)">
+            GET: api/SiteSettings/GetModuleList
+            <summary>
+            Gets module list by type
+            </summary>
+            <returns>list of modules</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.CreateLanguagePack(Dnn.PersonaBar.SiteSettings.Services.Dto.CreateLanguagePackRequest)">
+            POST: api/SiteSettings/CreateLanguagePack
+            <summary>
+            Creates language
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetTranslatorRoles(System.Nullable{System.Int32},System.Int32,System.String)">
+            GET: api/SiteSettings/GetTranslatorRoles
+            <summary>
+            Gets roles
+            </summary>
+            <returns>list of translator roles</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetTranslatorRoleGroups(System.Nullable{System.Int32})">
+            GET: api/SiteSettings/GetTranslatorRoleGroups
+            <summary>
+            Gets role groups
+            </summary>
+            <returns>list of translator role groups</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.GetOtherSettings">
+            GET: api/SiteSettings/GetOtherSettings
+            <summary>
+            Gets other settings
+            </summary>
+            <returns>other settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.SiteSettings.Services.SiteSettingsController.UpdateOtherSettings(Dnn.PersonaBar.SiteSettings.Services.Dto.UpdateOtherSettingsRequest)">
+            POST: api/SiteSettings/UpdateOtherSettings
+            <summary>
+            Updates other settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.GetPortals(System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets list of portals
+            </summary>
+            <param name="portalGroupId"></param>
+            <param name="filter"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns>List of portals</returns>
+            <example>
+            GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10
+            </example>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.CreatePortal(Dnn.PersonaBar.Sites.Services.Dto.CreatePortalRequest)">
+            POST: api/Sites/CreatePortal
+            <summary>
+            Adds a portal
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.DeletePortal(System.Int32)">
+            POST: api/Sites/DeletePortal
+            <summary>
+            Deletes a portal
+            </summary>
+            <param name="portalId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.ExportPortalTemplate(Dnn.PersonaBar.Sites.Services.Dto.ExportTemplateRequest)">
+            POST: api/Sites/ExportPortalTemplate
+            <summary>
+            Exports portal template
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.GetPortalLocales(System.Int32)">
+            GET: api/Sites/GetPortalLocales
+            <summary>
+            Gets list of portal locales
+            </summary>
+            <param name="portalId"></param>
+            <returns>List of portal locales</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.DeleteExpiredPortals">
+            POST: api/Sites/DeleteExpiredPortals
+            <summary>
+            Deletes expired portals
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.GetPortalTemplates">
+            GET: api/Sites/GetPortalTemplates
+            <summary>
+            Gets list of portal templates
+            </summary>
+            <param></param>
+            <returns>List of portal templates</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Sites.Services.SitesController.RequiresQuestionAndAnswer">
+            GET: api/Sites/RequiresQuestionAndAnswer
+            <summary>
+            Gets whether a Question/Answer is required for Password retrieval
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models.TaskModel">
+            <summary>
+            Represents a DNN ScheduleItem
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetServers">
+            GET: api/TaskScheduler/GetServers
+            <summary>
+            Gets list of servers
+            </summary>
+            <param></param>
+            <returns>List of servers</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetScheduleItems(System.String)">
+            GET: api/TaskScheduler/GetScheduleItems
+            <summary>
+            Gets list of schedule items
+            </summary>
+            <param name="serverName"></param>
+            <returns>List of schedule items</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetSchedulerSettings">
+            GET: api/TaskScheduler/GetSchedulerSettings
+            <summary>
+            Gets scheduler settings
+            </summary>
+            <param></param>
+            <returns>scheduler settings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.UpdateSchedulerSettings(Dnn.PersonaBar.TaskScheduler.Services.Dto.UpdateSettingsRequest)">
+            POST: api/TaskScheduler/UpdateSchedulerSettings
+            <summary>
+            Updates scheduler settings
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetScheduleItemHistory(System.Int32,System.Int32,System.Int32)">
+            GET: api/TaskScheduler/GetScheduleItemHistory
+            <summary>
+            Gets schedule item history
+            </summary>
+            <param name="scheduleId"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns>schedule item history</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetScheduleItem(System.Int32)">
+            GET: api/TaskScheduler/GetScheduleItem
+            <summary>
+            Gets an existing schedule item
+            </summary>
+            <param></param>
+            <returns>schedule item</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.CreateScheduleItem(Dnn.PersonaBar.TaskScheduler.Services.Dto.ScheduleDto)">
+            POST: api/TaskScheduler/CreateScheduleItem
+            <summary>
+            Creates a new schedule item
+            </summary>
+            <param name="scheduleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.UpdateScheduleItem(Dnn.PersonaBar.TaskScheduler.Services.Dto.ScheduleDto)">
+            POST: api/TaskScheduler/UpdateScheduleItem
+            <summary>
+            Updates an existing schedule item
+            </summary>
+            <param name="scheduleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.GetScheduleStatus">
+            GET: api/TaskScheduler/GetScheduleStatus
+            <summary>
+            Gets schedule status
+            </summary>
+            <param></param>
+            <returns>schedule status</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.StartSchedule">
+            POST: api/TaskScheduler/StartSchedule
+            <summary>
+            Starts schedule
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.StopSchedule">
+            POST: api/TaskScheduler/StopSchedule
+            <summary>
+            Stops schedule
+            </summary>
+            <param></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.RunSchedule(Dnn.PersonaBar.TaskScheduler.Services.Dto.ScheduleDto)">
+            POST: api/TaskScheduler/RunSchedule
+            <summary>
+            Runs schedule
+            </summary>
+            <param name="scheduleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.TaskScheduler.Services.TaskSchedulerController.DeleteSchedule(Dnn.PersonaBar.TaskScheduler.Services.Dto.ScheduleDto)">
+            POST: api/TaskScheduler/DeleteSchedule
+            <summary>
+            Runs schedule
+            </summary>
+            <param name="scheduleDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.GetLayouts(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            Get Skins.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="level">portal level or host level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.GetContainers(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            Get Containers.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="level">portal level or host level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.GetThemeFiles(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo)">
+            <summary>
+            get skin files in the skin.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.ApplyTheme(System.Int32,Dnn.PersonaBar.Themes.Components.DTO.ThemeFileInfo,Dnn.PersonaBar.Themes.Components.ApplyThemeScope)">
+            <summary>
+            update portal skin.
+            </summary>
+            <param name="portalId">portal id.</param>
+            <param name="themeFile">skin info.</param>
+            <param name="scope">change skin or container.</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.DeleteTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeFileInfo)">
+            <summary>
+            delete a skin or container.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="themeFile"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.DeleteThemePackage(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo)">
+            <summary>
+            
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.UpdateTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.UpdateThemeInfo)">
+            <summary>
+            Update Theme Attributes.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="updateTheme"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.ParseTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo,Dnn.PersonaBar.Themes.Components.ParseType)">
+            <summary>
+            Parse skin package.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+            <param name="parseType"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.GetThemeFile(DotNetNuke.Entities.Portals.PortalSettings,System.String,Dnn.PersonaBar.Themes.Components.ThemeType)">
+            <summary>
+            
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="filePath"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.IThemesController.ApplyDefaultTheme(DotNetNuke.Entities.Portals.PortalSettings,System.String,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            update portal skin.
+            </summary>
+            <param name="portalSettings">portal settings.</param>
+            <param name="themeName"></param>
+            <param name="level"></param>
+        </member>
+        <member name="F:Dnn.PersonaBar.Themes.Components.ThemeLevel.Site">
+            <summary>
+            Themes only available in current site.
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Themes.Components.ThemeLevel.SiteSystem">
+            <summary>
+            Themes only available in current site which saved in portal system directory.
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Themes.Components.ThemeLevel.Global">
+            <summary>
+            Themes available in all sites.
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Themes.Components.ThemeLevel.All">
+            <summary>
+            All Themes.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.GetLayouts(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            Get Skins.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="level">portal level or host level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.GetContainers(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            Get Containers.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="level">portal level or host level.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.GetThemeFiles(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo)">
+            <summary>
+            get skin files in the skin.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.ApplyTheme(System.Int32,Dnn.PersonaBar.Themes.Components.DTO.ThemeFileInfo,Dnn.PersonaBar.Themes.Components.ApplyThemeScope)">
+            <summary>
+            update portal skin.
+            </summary>
+            <param name="portalId">portal id.</param>
+            <param name="themeFile">skin info.</param>
+            <param name="scope">change skin or container.</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.ApplyDefaultTheme(DotNetNuke.Entities.Portals.PortalSettings,System.String,Dnn.PersonaBar.Themes.Components.ThemeLevel)">
+            <summary>
+            update portal skin.
+            </summary>
+            <param name="portalSettings">portal settings.</param>
+            <param name="themeName"></param>
+            <param name="level"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.DeleteTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeFileInfo)">
+            <summary>
+            delete a skin or container.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="themeFile"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.DeleteThemePackage(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo)">
+            <summary>
+            
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.UpdateTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.UpdateThemeInfo)">
+            <summary>
+            Update Theme Attributes.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="updateTheme"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Themes.Components.ThemesController.ParseTheme(DotNetNuke.Entities.Portals.PortalSettings,Dnn.PersonaBar.Themes.Components.DTO.ThemeInfo,Dnn.PersonaBar.Themes.Components.ParseType)">
+            <summary>
+            Parse skin package.
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="theme"></param>
+            <param name="parseType"></param>
+        </member>
+        <member name="P:Dnn.PersonaBar.Users.Components.Contracts.RegisterationDetails.IgnoreRegistrationMode">
+            <summary>
+            When set to true, whatever registration mode is set, it will always add user
+            Please check below issue for this property
+            https://dnntracker.atlassian.net/browse/SOCIAL-3158
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Users.Data.IUsersDataService.GetUsersByUserIds(System.Int32,System.String)">
+            <summary>
+            Get Users basic info by UserId
+            </summary>
+            <param name="portalId">PortalId</param>
+            <param name="userIds">Comma separated user Id</param>
+            <returns>List of UserBasic</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Users.Services.UsersController.CreateUser(Dnn.PersonaBar.Users.Components.Contracts.CreateUserContract)">
+            <summary>
+            Create a User.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Users.Services.UsersController.GetUsers(System.String,Dnn.PersonaBar.Users.Components.Dto.UserFilters,System.Int32,System.Int32,System.String,System.Boolean)">
+            <summary>
+            Perform a search on Users registered in the Site.
+            </summary>
+            <param name="searchText">Search filter text (if any)</param>
+            <param name="filter">User filter. Send -1 to disable.</param>
+            <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
+            <param name="pageSize">Number of records to return per page</param>
+            <param name="sortColumn">Column to sort on</param>
+            <param name="sortAscending">Sort ascending or descending</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Users.Services.UsersController.GetUserDetail(System.Int32)">
+            <summary>
+            Get User Detail Info.
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Users.Services.UsersController.PasswordStrengthOptions">
+            <summary>
+            Return Password security options from server 
+            </summary>
+            <returns>MembershipPasswordSettings</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.GetVocabularies(System.Int32,System.Int32,System.Int32)">
+            GET: api/Vocabularies/GetVocabularies
+            <summary>
+            Gets an overall list of vocabularies
+            </summary>
+            <param></param>
+            <returns>List of vocabularies</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.CreateVocabulary(Dnn.PersonaBar.Vocabularies.Services.Dto.VocabularyDto)">
+            POST: api/Vocabularies/CreateVocabulary
+            <summary>
+            Creates a new vocabulary
+            </summary>
+            <param name="vocabularyDto">Data of a new vocabulary</param>
+            <returns>Id of the new added vocabulary</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.UpdateVocabulary(Dnn.PersonaBar.Vocabularies.Services.Dto.VocabularyDto)">
+            POST: api/Vocabularies/UpdateVocabulary
+            <summary>
+            Updates an existing vocabulary
+            </summary>
+            <param name="vocabularyDto">Data of an existing vocabulary</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.DeleteVocabulary(System.Int32)">
+            POST: api/Vocabularies/DeleteVocabulary
+            <summary>
+            Removes an existing vocabulary
+            </summary>
+            <param name="vocabularyId">Id of an existing vocabulary that will be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.GetTermsByVocabularyId(System.Int32)">
+            GET: api/Vocabularies/GetTermsByVocabularyId
+            <summary>
+            Gets a list of terms belonging to a specific vocabulary
+            </summary>
+            <param name="vocabularyId">Id of an existing vocabulary</param>
+            <returns>List of terms</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.GetTerm(System.Int32)">
+            GET: api/Vocabularies/GetTerm
+            <summary>
+            Gets a term
+            </summary>
+            <param name="termId">Id of an existing term</param>
+            <returns>Data of a term</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.CreateTerm(Dnn.PersonaBar.Vocabularies.Services.Dto.TermDto)">
+            POST: api/Vocabularies/CreateTerm
+            <summary>
+            Creates a new term
+            </summary>
+            <param name="termDto">Data of a new term</param>
+            <returns>Id of the new created term</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.UpdateTerm(Dnn.PersonaBar.Vocabularies.Services.Dto.TermDto)">
+            POST: api/Vocabularies/UpdateTerm
+            <summary>
+            Updates an existing term
+            </summary>
+            <param name="termDto">Data of an existing term</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Vocabularies.Services.VocabulariesController.DeleteTerm(System.Int32)">
+            POST: api/Vocabularies/DeleteTerm
+            <summary>
+            Removes an existing term
+            </summary>
+            <param name="termId">Id of an existing term</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.CssEditor.Services.CssEditorController.GetStyleSheet(System.Int32)">
+            GET: api/CssEditor/GetStyleSheet
+            <summary>
+            Gets portal.css of specific portal
+            </summary>
+            <param name="portalId">Id of portal</param>
+            <returns>Content of portal.css</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.CssEditor.Services.CssEditorController.UpdateStyleSheet(Dnn.PersonaBar.CssEditor.Services.Dto.UpdateCssRequest)">
+            POST: api/CssEditor/UpdateStyleSheet
+            <summary>
+            Updates portal.css of specific portal
+            </summary>
+            <param name="request">Content of portal css</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.CssEditor.Services.CssEditorController.RestoreStyleSheet(Dnn.PersonaBar.CssEditor.Services.Dto.RestoreCssRequest)">
+            POST: api/CssEditor/RestoreStyleSheet
+            <summary>
+            Restores portal.css of specific portal
+            </summary>
+            <param name="request">Id of portal</param>
+            <returns>Content of portal.css</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Licensing.Services.LicensingController.GetProduct">
+            GET: api/Licensing/GetProduct
+            <summary>
+            Gets product info
+            </summary>
+            <param></param>
+            <returns>product info</returns>
+        </member>
+    </members>
+</doc>

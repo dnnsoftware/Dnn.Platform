@@ -1,0 +1,578 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dnn.PersonaBar.Library</name>
+    </assembly>
+    <members>
+        <member name="T:Dnn.PersonaBar.Library.AppEvents.Attributes.IgnoreVersionMatchCheckAttribute">
+            <summary>
+            Attribute to be used to decorate IAppLifecycleEvent implementors.
+            This will ignore the version match check that is performed to avoid load IAppLifecycleEvent implementors
+            on assembly with a version different from the version of Evoq.Library
+            </summary>
+            <remarks>This has been added as workaround for microservices module and a jira (CONTENT-6958) has been
+            created to review if the version match check can be removed in the future</remarks>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.AppEvents.ISkinEvents">
+            <summary>
+            This interface defines methods that need to be called in skins lifecycle.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.ISkinEvents.Init(DotNetNuke.UI.Skins.EventListeners.SkinEventArgs)">
+            <summary>
+            call durgin skin skin event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.ISkinEvents.Load(DotNetNuke.UI.Skins.EventListeners.SkinEventArgs)">
+            <summary>
+            call durgin skin load event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.ISkinEvents.PreRender(DotNetNuke.UI.Skins.EventListeners.SkinEventArgs)">
+            <summary>
+            call durgin skin pre render event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.ISkinEvents.UnLoad(DotNetNuke.UI.Skins.EventListeners.SkinEventArgs)">
+            <summary>
+            call durgin skin unload event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.AppEvents.IAppEvents">
+            <summary>
+            This interface defines methods that need to be called at various points during
+            the application lifecycle. All modules that need to have any housekeeping applied
+            during these events, need to create a concrete class that extends this interface.
+            The main application start event will enumerate these (through reflection) and
+            call the related methods in these classes
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.IAppEvents.ApplicationBegin">
+            <summary>
+            Method called after the application starts to perform any required startup actions by the implemetor.
+            </summary>
+            <remarks>This method must not used multi-threading and must perform it's task as fast as possible.</remarks>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.AppEvents.IAppEvents.ApplicationEnd">
+            <summary>
+            Method called before the application stops to perform any required shutdown actions by the implemetor.
+            </summary>
+            <remarks>This method must not used multi-threading and must perform it's task as fast as possible.</remarks>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.AdvancedPermissionAttribute.MenuName">
+            <summary>
+            The menu identifier.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.AdvancedPermissionAttribute.Permission">
+            <summary>
+            The permission key. 
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.AdvancedPermissionAttribute.CheckPermissionForAdmin">
+            <summary>
+            When true, it will force admin to have explicit Permission. When false, admin is passed without checking the Permission.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.MenuPermissionAttribute.Scope">
+            <summary>
+            The default service scope when <see cref="P:Dnn.PersonaBar.Library.Attributes.MenuPermissionAttribute.MenuName"/> is not defined.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.MenuPermissionAttribute.MenuName">
+            <summary>
+            The menu identifier which decide the api whether can requested.
+            For example, if this value set to "Pages", the user who have access to pages module can request api.
+            Users who don't have permissions to Pages module, will not available to request the api.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Attributes.MenuPermissionAttribute.Exclude">
+            <summary>
+            The Roles which need exclude from permissions, when user in the role will receive 401 exception.
+            If need set multiple roles, put semicolon(;) between role names. 
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Common.Utilities.GetProfileAvatar(DotNetNuke.Entities.Users.UserInfo,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Returns a relative URL for the user profile image while removing that of the deleted and super users
+            </summary>
+            <param name="user">user info</param>
+            <param name="width">width in pixel</param>
+            <param name="height">height in pixel</param>
+            <param name="showSuperUsers">true if want show super users user profile picture, false otherwise</param>
+            <returns>relative user profile picture url</returns>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Common.Utilities.GetProfileAvatar(System.Int32)">
+            <summary>
+            Get User's standard Profile avatar. The Url is resolved to current portal
+            </summary>
+            <param name="userId">user Id</param>
+            <returns>user profile picture url</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Common.IocUtil.RegisterComponent``2(System.String)">
+            <summary>
+            Register a component into the IOC container for later instantiation.
+            </summary>
+            <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>
+            <typeparam name="TConcrete">Concrete implementation class (must have apublic default constructor).</typeparam>
+            <param name="name">Optional name for the contract. Useful when more than once class implements the same contract.</param>
+            <returns>True if the component was created; false if it was already created in the system.</returns>
+            <remarks>This helper creates a singleton instance for the contract.</remarks>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Common.IocUtil.RegisterComponentInstance``1(System.String,System.Object)">
+            <summary>
+            Register a specific instance into the IOC container for later use.
+            </summary>
+            <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>
+            <param name="name">Name for the contract. Useful when more than once class implements the same contract. Pass as null when unused.</param>
+            <param name="instance">Concrete implementation class (must have apublic default constructor).</param>
+            <returns>True if the component was created; false if it was already created in the system.</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Common.IocUtil.GetInstanceContracts``1">
+            <summary>
+            Retrieves a concrete implementation of the given interface/contract.
+            </summary>
+            <typeparam name="TContract">Contract interface for the component to get a concrete implementation of.</typeparam>
+            <returns>A concrete implementation of the given interface (or null if none is registered).</returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Containers.IPersonaBarContainer">
+            <summary>
+            Persona Bar Container.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Containers.IPersonaBarContainer.RootItems">
+            <summary>
+            Items allowed to defined in root level.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Containers.IPersonaBarContainer.Visible">
+            <summary>
+            Indicate whether persona bar is available.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Containers.IPersonaBarContainer.Initialize(System.Web.UI.UserControl)">
+            <summary>
+            Initialize the persona bar container.
+            </summary>
+            <param name="personaBarControl">The Persona Bar Container control.</param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Containers.IPersonaBarContainer.GetConfiguration">
+            <summary>
+            Get Persona Bar Settings.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.ILocalizationController.GetLocalizedDictionary(System.String,System.String)">
+            <summary>
+            Returns a dictionary of localized key for a resource file for a given culture
+            </summary>
+            <param name="resourceFile">The relative file path of the main resource file, e.g. ~/DesktopModules/SocialLibrary/App_LocalResources/CmxResources.resx</param>
+            <param name="culture">The culture for which this dictionay is requested</param>
+            <remarks>This API does not fallback to any other DNN resource files.</remarks>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IMenuItemController.UpdateParameters(Dnn.PersonaBar.Library.Model.MenuItem)">
+            <summary>
+            Update menu item parameters.
+            </summary>
+            <param name="menuItem"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IMenuItemController.Visible(Dnn.PersonaBar.Library.Model.MenuItem)">
+            <summary>
+            whether the menu item visible in current context.
+            </summary>
+            <param name="menuItem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IMenuItemController.GetSettings(Dnn.PersonaBar.Library.Model.MenuItem)">
+            <summary>
+            get menu settings.
+            </summary>
+            <param name="menuItem"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Controllers.IPersonaBarController">
+            <summary>
+            Interface responsible to manage the PersonaBar structure by User's Roles and Sku
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IPersonaBarController.GetMenu(DotNetNuke.Entities.Portals.PortalSettings,DotNetNuke.Entities.Users.UserInfo)">
+            <summary>
+            Gets the menu structure of the persona bar
+            </summary>
+            <param name="portalSettings"></param>
+            <param name="userInfo">the user that will be used to filter the menu</param>
+            <returns>Persona bar menu structure for the user</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IPersonaBarController.IsVisible(DotNetNuke.Entities.Portals.PortalSettings,DotNetNuke.Entities.Users.UserInfo,Dnn.PersonaBar.Library.Model.MenuItem)">
+            <summary>
+            Whether the menu item is visible.
+            </summary>
+            <param name="portalSettings">Portal Settings.</param>
+            <param name="user">User Info.</param>
+            <param name="menuItem">The menu item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IPersonaBarUserSettingsController.UpdatePersonaBarUserSettings(Dnn.PersonaBar.Library.DTO.UserSettings,System.Int32,System.Int32)">
+            <summary>
+            Updates the PersonaBar user settings
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Controllers.IPersonaBarUserSettingsController.GetPersonaBarUserSettings">
+            <summary>
+            Gets the PersonaBar user settings
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.DTO.UserSettings">
+            <summary>
+            Persona Bar Settings For User.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Helper.IPermissionGridApi.GetRoles">
+            <summary>
+            Returns all roles/role groups info
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.HttpRequestMessageExtensions">
+            <summary>
+            Extends the HttpRequestMessage collection
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.HttpRequestMessageExtensions.GetQueryStrings(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Returns a dictionary of QueryStrings that's easier to work with 
+            than GetQueryNameValuePairs KevValuePairs collection.
+            
+            If you need to pull a few single values use GetQueryString instead.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.HttpRequestMessageExtensions.GetQueryString(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Returns an individual querystring value
+            </summary>
+            <param name="request"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.HttpRequestMessageExtensions.GetQueryStringAsInteger(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Returns an individual querystring value as integer.
+            </summary>
+            <param name="request"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.HttpRequestMessageExtensions.GetHeader(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Returns an individual HTTP Header value
+            </summary>
+            <param name="request"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.HttpRequestMessageExtensions.GetCookie(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Retrieves an individual cookie from the cookies collection
+            </summary>
+            <param name="request"></param>
+            <param name="cookieName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.PersonaBarApiController">
+            <summary>
+            The base class for persona bar api.
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Model.PermissionInfo">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : MenuPermissionInfo
+            -----------------------------------------------------------------------------
+            <summary>
+            MenuPermissionInfo provides the Entity Layer for Module Permissions
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.PermissionInfo.Fill(System.Data.IDataReader)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Fills a MenuPermissionInfo from a Data Reader
+            </summary>
+            <param name="dr">The Data Reader to use</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Model.PermissionInfo.KeyID">
+            -----------------------------------------------------------------------------
+            <summary>
+            Gets and sets the Key ID
+            </summary>
+            <returns>An Integer</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Model.MenuPermissionInfo">
+            -----------------------------------------------------------------------------
+            Project	 : DotNetNuke
+            Namespace: DotNetNuke.Security.Permissions
+            Class	 : MenuPermissionInfo
+            -----------------------------------------------------------------------------
+            <summary>
+            MenuPermissionInfo provides the Entity Layer for Module Permissions
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.#ctor">
+            -----------------------------------------------------------------------------
+            <summary>
+            Constructs a new MenuPermissionInfo
+            </summary>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.#ctor(Dnn.PersonaBar.Library.Model.PermissionInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Constructs a new MenuPermissionInfo
+            </summary>
+            <param name="permission">A PermissionInfo object</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.MenuPermissionId">
+            -----------------------------------------------------------------------------
+            <summary>
+            Gets and sets the Module Permission ID
+            </summary>
+            <returns>An Integer</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.MenuId">
+            -----------------------------------------------------------------------------
+            <summary>
+            Gets and sets the Module ID
+            </summary>
+            <returns>An Integer</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.Fill(System.Data.IDataReader)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Fills a MenuPermissionInfo from a Data Reader
+            </summary>
+            <param name="dr">The Data Reader to use</param>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.KeyID">
+            -----------------------------------------------------------------------------
+            <summary>
+            Gets and sets the Key ID
+            </summary>
+            <returns>An Integer</returns>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.Equals(Dnn.PersonaBar.Library.Model.MenuPermissionInfo)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Compares if two MenuPermissionInfo objects are equivalent/equal
+            </summary>
+            <param name="other">a ModulePermissionObject</param>
+            <returns>true if the permissions being passed represents the same permission
+            in the current object
+            </returns>
+            <remarks>
+            This function is needed to prevent adding duplicates to the ModulePermissionCollection.
+            ModulePermissionCollection.Contains will use this method to check if a given permission
+            is already included in the collection.
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Model.MenuPermissionInfo.Equals(System.Object)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Compares if two MenuPermissionInfo objects are equivalent/equal
+            </summary>
+            <param name="obj">a ModulePermissionObject</param>
+            <returns>true if the permissions being passed represents the same permission
+            in the current object
+            </returns>
+            <remarks>
+            This function is needed to prevent adding duplicates to the ModulePermissionCollection.
+            ModulePermissionCollection.Contains will use this method to check if a given permission
+            is already included in the collection.
+            </remarks>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Permissions.MenuPermissionCollection">
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute">
+            <summary>
+            Attribute to define the help for the flag parameter.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute.Flag">
+            <summary>
+            Name of the flag
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute.Type">
+            <summary>
+            Type of the flag value expected.
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute.Required">
+            <summary>
+            Is flag required or not
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute.DefaultValue">
+            <summary>
+            Default value of the flag
+            </summary>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.Attributes.FlagParameterAttribute.Description">
+            <summary>
+            Description of flag
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Prompt.ConsoleCommandBase.GetFlagValue``1(System.String,System.String,``0,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Get the flag value
+            </summary>
+            <typeparam name="T">Type of the output expected</typeparam>
+            <param name="flag">Flag name to look</param>
+            <param name="fieldName">Filed name to show in message</param>
+            <param name="defaultVal">Default value of the flag, if any.</param>
+            <param name="required">Is this a required flag or not.</param>
+            <param name="checkmain">Try to find the flag value in first args or not.</param>
+            <param name="checkpositive">This would be applicable only if the output is of type int or double and value should be positive.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Dnn.PersonaBar.Library.Prompt.ConsoleCommandBase.ResultHtml">
+            <summary>
+            Resource key for the result html.
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Prompt.Models.ConsoleResultModel">
+            <summary>
+            Standard response object sent to client
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository">
+            <summary>
+            Interface responsible for persona bar extensions.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository.SaveExtension(Dnn.PersonaBar.Library.Model.PersonaBarExtension)">
+            <summary>
+            save extension.
+            </summary>
+            <param name="extension"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository.DeleteExtension(Dnn.PersonaBar.Library.Model.PersonaBarExtension)">
+            <summary>
+            delete extension.
+            </summary>
+            <param name="extension"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository.DeleteExtension(System.String)">
+            <summary>
+            delete extension.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository.GetExtensions">
+            <summary>
+            get persona bar extensions.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarExtensionRepository.GetExtensions(System.Int32)">
+            <summary>
+            get persona bar extensions for menu.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository">
+            <summary>
+            Interface responsible to get the Persona Bar menu structure from the data layer
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.GetMenu">
+            <summary>
+            Gets the menu structure of the persona bar
+            </summary>
+            <returns>Persona bar menu structure</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.SaveMenuItem(Dnn.PersonaBar.Library.Model.MenuItem)">
+            <summary>
+            Save menu item info.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.DeleteMenuItem(System.String)">
+            <summary>
+            remove a menu item.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.GetMenuItem(System.String)">
+            <summary>
+            Get the menu item by identifier.
+            </summary>
+            <param name="identifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.GetMenuItem(System.Int32)">
+            <summary>
+            Get the menu item by menu id.
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.GetMenuDefaultPermissions(System.Int32)">
+            <summary>
+            Get a menu item's default allowed permissions.
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.Library.Repository.IPersonaBarRepository.SaveMenuDefaultPermissions(Dnn.PersonaBar.Library.Model.MenuItem,System.String)">
+            <summary>
+            Save a menu item's default allowed permissions.
+            </summary>
+            <param name="menuItem"></param>
+            <param name="roleNames"></param>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.Security.ISecurityService">
+            <summary>
+            Global level security service to do permission check.
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.Library.ServiceScope">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Library.ServiceScope.Regular">
+            <summary>
+            the service available for all users.
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Library.ServiceScope.Admin">
+            <summary>
+            the service only available for admin users.
+            </summary>
+        </member>
+        <member name="F:Dnn.PersonaBar.Library.ServiceScope.Host">
+            <summary>
+            the service only available for host users.
+            </summary>
+        </member>
+    </members>
+</doc>

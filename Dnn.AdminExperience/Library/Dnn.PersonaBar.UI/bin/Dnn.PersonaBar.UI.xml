@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dnn.PersonaBar.UI</name>
+    </assembly>
+    <members>
+        <member name="F:Dnn.PersonaBar.UI.UserControls.PersonaBarContainer.PersonaBarPanel">
+            <summary>
+            PersonaBarPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:Dnn.PersonaBar.UI.Components.Installers.PersonaBarMenuInstaller">
+            <summary>
+            Installer for persona bar menus.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.ServerSummaryController.GetServerInfo">
+            <summary>
+            Return server info.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.MenuExtensionsController.GetExtensions(System.String)">
+            <summary>
+            Retrieve a list of extensions for menu. 
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.LocalizationController.GetTable(System.String)">
+            <summary>
+            Retrieve a list of CMX related Localization Keys with it's values for the current culture. 
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.UI.Services.ComponentsController">
+            <summary>
+            Services used for common components.
+            </summary>
+        </member>
+        <member name="T:Dnn.PersonaBar.UI.Services.PortalsController">
+            <summary>
+            Service to perform portal operations.
+            </summary>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.PortalsController.GetPortals(System.Boolean)">
+            GET: api/Portals/GetPortals
+            <summary>
+            Gets portals
+            </summary>
+            <param></param>
+            <param name="addAll">Add all portals item in list.</param>
+            <returns>List of portals</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.TabsController.GetPortalTabs(System.Int32,System.String,System.Boolean,System.Boolean,System.String,System.Boolean,System.Int32,System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            GET: api/Tabs/GetPortalTabs
+            <summary>
+            Gets list of portal tabs
+            </summary>
+            <param name="portalId"></param>
+            <param name="cultureCode"></param>
+            <param name="isMultiLanguage"></param>
+            <param name="excludeAdminTabs"></param>
+            <param name="roles"></param>
+            <param name="disabledNotSelectable"></param>
+            <param name="sortOrder"></param>
+            <param name="selectedTabId">Currently Selected tab id</param>
+            <param name="validateTab"></param>
+            <param name="includeHostPages"></param>
+            <param name="includeDisabled"></param>
+            <param name="includeDeleted"></param>
+            <param name="includeDeletedChildren"></param>
+            <returns>List of portal tabs</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.TabsController.SearchPortalTabs(System.String,System.Int32,System.String,System.Boolean,System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="searchText"></param>
+            <param name="portalId"></param>
+            <param name="roles"></param>
+            <param name="disabledNotSelectable"></param>
+            <param name="sortOrder"></param>
+            <param name="validateTab"></param>
+            <param name="includeHostPages"></param>
+            <param name="includeDisabled"></param>
+            <param name="includeDeleted"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.TabsController.GetPortalTab(System.Int32,System.Int32,System.String)">
+            GET: api/Tabs/GetPortalTab
+            <summary>
+            Gets list of portal tabs
+            </summary>
+            <param name="portalId"></param>
+            <param name="tabId"></param>
+            <param name="cultureCode"></param>
+            <returns>List of portal tabs</returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.TabsController.GetTabsDescendants(System.Int32,System.Int32,System.String,System.Boolean,System.String,System.Boolean,System.Int32,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="portalId"></param>
+            <param name="parentId"></param>
+            <param name="cultureCode"></param>
+            <param name="isMultiLanguage"></param>
+            <param name="roles"></param>
+            <param name="disabledNotSelectable"></param>
+            <param name="sortOrder"></param>
+            <param name="validateTab"></param>
+            <param name="includeHostPages"></param>
+            <param name="includeDisabled"></param>
+            <param name="includeDeletedChildren"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dnn.PersonaBar.UI.Services.UserSettingsController.UpdateUserSettings(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Update Person Bar's User Settings
+            </summary>
+        </member>
+    </members>
+</doc>

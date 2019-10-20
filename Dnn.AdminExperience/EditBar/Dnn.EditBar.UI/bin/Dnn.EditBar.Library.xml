@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dnn.EditBar.Library</name>
+    </assembly>
+    <members>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Name">
+            <summary>
+            the menu item name
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Group">
+            <summary>
+            the menu item's group.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.CssClass">
+            <summary>
+            the menu's css class.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Text">
+            <summary>
+            the menu's text, when template set value, this will be ignored.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Template">
+            <summary>
+            the content will render as the menu item.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Parent">
+            <summary>
+            parent which the menu item will stay in.
+            currently we have LeftMenu and RightMenu defined in edit bar.
+            if the edit bar modified and add new position, this value can extend with more values.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Order">
+            <summary>
+            the menu order.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Loader">
+            <summary>
+            the menu script path, which will handle the button click event.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.CustomLayout">
+            <summary>
+            the menu have custom layout.
+            </summary>
+        </member>
+        <member name="P:Dnn.EditBar.Library.Items.BaseMenuItem.Settings">
+            <summary>
+            menu custom settings.
+            </summary>
+        </member>
+        <member name="M:Dnn.EditBar.Library.Items.BaseMenuItem.Visible">
+            <summary>
+            whether the menu is visible in current context.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
