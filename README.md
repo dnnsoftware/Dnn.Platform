@@ -1,5 +1,5 @@
 <div dir="rtl" align="right">
-[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.Platform%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=83&branchName=development)
+
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
@@ -21,24 +21,6 @@
 * [DNN on Twitter](http://www.Twitter.com/DNN)
 * [DNN Store](http://store.dnnsoftware.com/)
 
-## Contributing to DNN Platform
-
-We encourage contributions of all forms, including code changes, testing, bug reports or otherwise.  The following resources outline detailed contribution procedures.
-
-* [Contributing to DNN Platform](CONTRIBUTING.md)
-* [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
-* [Versioning Policy](.github/VERSIONING_POLICY.md)
-* [Build Process Documentation](.github/BUILD.md)
-
-In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
-
-## .NET Foundation
-
-This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
-
-## NDepend
-
-We monitor code quality of the DNN Platform using [NDepend](https://www.ndepend.com).
 
 ![NDepend](.github/images/PoweredByNDepend.png)
 </div>
