@@ -401,7 +401,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         private void Validate(RoleGroupDto role)
         {
-            Requires.NotNullOrEmpty("Name", role.Name);
+            Requires.NotNullOrHasNoWhiteSpace("Name", role.Name);
         }
 
         private void Validate(UserRoleDto userRoleDto)
