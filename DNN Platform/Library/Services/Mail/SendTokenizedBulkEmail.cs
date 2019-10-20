@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -345,9 +345,12 @@ namespace DotNetNuke.Services.Mail
 			var attachments = new List<Attachment>();
 			foreach (var attachment in _attachments)
 			{
+                Attachment newAttachment;
+                MemoryStream memoryStream = null;
 				var buffer = new byte[4096];
-                using (var memoryStream = new MemoryStream())
+                try
                 {
+                    memoryStream = new MemoryStream();
                     while (true)
                     {
                         var read = attachment.ContentStream.Read(buffer, 0, 4096);
@@ -357,15 +360,18 @@ namespace DotNetNuke.Services.Mail
                         }
                         memoryStream.Write(buffer, 0, read);
                     }
-
-                    var newAttachment = new Attachment(memoryStream, attachment.ContentType);
+                    newAttachment = new Attachment(memoryStream, attachment.ContentType);
                     newAttachment.ContentStream.Position = 0;
                     attachments.Add(newAttachment);
                     //reset original position
                     attachment.ContentStream.Position = 0;
+                    memoryStream = null;
+                }
+                finally
+                {
+                    memoryStream?.Dispose();
                 }
 			}
-
 			return attachments;
 		}
 		

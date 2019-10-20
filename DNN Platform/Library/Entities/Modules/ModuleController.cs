@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -38,6 +38,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
@@ -247,6 +248,90 @@ namespace DotNetNuke.Entities.Modules
             foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
             {
                 UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+            }
+        }
+
+        /// <summary>
+        /// Checks whether module VIEW permission is inherited from its tab
+        /// </summary> 
+        /// <param name="module">The module</param>
+        /// <param name="permission">The module permission.</param>
+        private bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
+        {
+            Requires.NotNull(module);
+
+            Requires.NotNull(permission);
+
+            var permissionViewKey = "VIEW";
+
+            if (!module.InheritViewPermissions || permission.PermissionKey != permissionViewKey)
+            {
+                return false;
+            }
+
+            var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
+            
+            return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
+        }
+
+        /// <summary>
+        /// Checks whether given permission is granted for translator role
+        /// </summary>
+        /// <param name="permission">The module permission.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="culture">The culture code.</param>
+        private bool IsTranslatorRolePermission(ModulePermissionInfo permission, int portalId, string culture)
+        {
+            Requires.NotNull(permission);
+
+            if (string.IsNullOrWhiteSpace(culture) || portalId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            var translatorSettingKey = $"DefaultTranslatorRoles-{ culture }";
+
+            var translatorSettingValue = 
+                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ?? 
+                HostController.Instance.GetString(translatorSettingKey, null);
+
+            var translatorRoles =
+                translatorSettingValue?.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            return translatorRoles?.Any(r => r.Equals(permission.RoleName, StringComparison.OrdinalIgnoreCase)) == true;
+        }
+
+        /// <summary>
+        /// Copies permissions from source to new tab
+        /// </summary>
+        /// <param name="sourceModule">Source module.</param>
+        /// <param name="newModule">New module.</param>
+        private void CopyModulePermisions(ModuleInfo sourceModule, ModuleInfo newModule)
+        {
+            Requires.NotNull(sourceModule);
+
+            Requires.NotNull(newModule);
+
+            foreach (ModulePermissionInfo permission in sourceModule.ModulePermissions)
+            {
+                // skip inherited view and translator permissions
+                if (IsModuleViewPermissionInherited(newModule, permission) ||
+                    IsTranslatorRolePermission(permission, sourceModule.PortalID, sourceModule.CultureCode))
+                {
+                    continue;
+                }
+
+                // need to force vew permission to be copied 
+                permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
+                    null :
+                    permission.PermissionKey;
+
+                AddModulePermission(
+                    newModule,
+                    permission,
+                    permission.RoleID,
+                    permission.UserID,
+                    permission.AllowAccess);
             }
         }
 
@@ -614,6 +699,9 @@ namespace DotNetNuke.Entities.Modules
                         AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, editPermisison, "EDIT");
                     }
                 }
+
+                // copy permisions from source to new module
+                CopyModulePermisions(sourceModule, newModule);
 
                 //Add Module
                 AddModuleInternal(newModule);

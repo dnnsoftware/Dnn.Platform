@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -401,7 +401,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         private void Validate(RoleGroupDto role)
         {
-            Requires.NotNullOrEmpty("Name", role.Name);
+            Requires.NotNullOrHasNoWhiteSpace("Name", role.Name);
         }
 
         private void Validate(UserRoleDto userRoleDto)

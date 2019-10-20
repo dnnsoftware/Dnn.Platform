@@ -19,7 +19,6 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -110,9 +109,9 @@
     <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
-    <None Include="Module.build">
+    <Content Include="Module.build">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="01.05.00.txt" />

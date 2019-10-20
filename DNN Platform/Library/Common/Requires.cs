@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -98,6 +98,20 @@ namespace DotNetNuke.Common
         public static void NotNullOrEmpty(string argName, string argValue)
         {
             if (string.IsNullOrEmpty(argValue))
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("ArgumentCannotBeNullOrEmpty", "The argument '{0}' cannot be null or empty.", argName), argName);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the argValue is null, empty, or has whitespace only.
+        /// </summary>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentException"></exception>
+        public static void NotNullOrHasNoWhiteSpace(string argName, string argValue)
+        {
+            if (string.IsNullOrWhiteSpace(argValue))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("ArgumentCannotBeNullOrEmpty", "The argument '{0}' cannot be null or empty.", argName), argName);
             }
