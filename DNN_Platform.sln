@@ -144,6 +144,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 	EndProjectSection
 EndProject
@@ -405,10 +406,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		Build\BuildScripts\Microsoft.Build.Utilities.dll = Build\BuildScripts\Microsoft.Build.Utilities.dll
 		Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll = Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
+		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
 		Build\BuildScripts\ModulePackage.targets = Build\BuildScripts\ModulePackage.targets
 		Build\BuildScripts\MSBuild.Community.Tasks.dll = Build\BuildScripts\MSBuild.Community.Tasks.dll
 		Build\BuildScripts\MSBuild.Community.Tasks.Targets = Build\BuildScripts\MSBuild.Community.Tasks.Targets
 		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
+		Build\BuildScripts\AEPackage.targets = Build\BuildScripts\AEPackage.targets
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
 	EndProjectSection
