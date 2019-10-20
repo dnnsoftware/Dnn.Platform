@@ -3,11 +3,18 @@
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
-# (DNN®)نسخه فارسی دی ان ان
+# نسخه فارسی دی ان ان (DNN)
 
+جامعه DNN فارسی جهت بومی سازی سریع و با کیفیت نسخه فارسی DNN این مخزن را راه اندازی کرده است.
 
+##اعضای تیم
 
-## Quick Links
+* مرتضی کرمانی
+* حسین نوروزی
+* محمد ثنامهر
+* محمود نورایی
+
+## لینک های سریع
 
 * [Documentation](https://www.dnndocs.com/)
 * [Release Schedule](.github/RELEASE_SCHEDULE.md)
@@ -21,6 +28,4 @@
 * [DNN on Twitter](http://www.Twitter.com/DNN)
 * [DNN Store](http://store.dnnsoftware.com/)
 
-
-![NDepend](.github/images/PoweredByNDepend.png)
 </div>
