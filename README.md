@@ -1,7 +1,7 @@
 <div dir="rtl" align="right">
 
 
-<a href='http://www.dnnsoftwate.ir/'><img src='logo.png' /></a>
+<a href='http://www.dnnsoftware.ir/'><img src='logo.png' /></a>
 
 # نسخه فارسی دی ان ان (DNN)
 
