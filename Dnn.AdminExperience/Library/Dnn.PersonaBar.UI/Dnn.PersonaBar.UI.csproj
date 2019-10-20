@@ -44,14 +44,6 @@
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>Dnn.PersonaBar.UI</DNNFileName>
-    <PackageName>Dnn.PersonaBar.UI</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
       <HintPath>..\..\..\Packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
@@ -294,8 +286,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets" />
-  <Import Project="..\..\..\Build\BuildScripts\AEModule.build" />
+  <Import Project="Module.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -8,8 +8,8 @@
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
   </PropertyGroup>
   
-  <Import Project="$(AEBuildScriptsPath)\Package.Targets" />
-  <Import Project="$(AEBuildScriptsPath)\Module.Build"/>
+  <Import Project=""..\..\..\Build\BuildScripts\AEModule.build" />
+  <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets"/>
   
   <PropertyGroup>
     <Extension>zip</Extension>

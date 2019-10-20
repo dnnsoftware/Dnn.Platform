@@ -4,8 +4,8 @@
 	<BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
 </PropertyGroup>
 
-  <Import Project="$(BuildScriptsPath)\Package.targets" />
-  <Import Project="$(BuildScriptsPath)\Module.build"/>
+  <Import Project="..\..\..\..\Build\BuildScripts\AEPackage.targets" />
+  <Import Project="..\..\..\..\Build\BuildScripts\AEModule.build"/>
 
 <PropertyGroup>
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\Website</WebsitePath>
