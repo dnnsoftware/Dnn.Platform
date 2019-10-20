@@ -125,6 +125,7 @@
     <Compile Include="Collections\ReaderWriterSlimLockTests.cs" />
     <Compile Include="Collections\SharedDictionaryTests.cs" />
     <Compile Include="Collections\SharedListTests.cs" />
+    <Compile Include="Common\NavigationManagerTests.cs" />
     <Compile Include="ComponentModel\ComponentFactoryTests.cs" />
     <Compile Include="ComponentModel\Helpers\ServiceImpl.cs" />
     <Compile Include="ComponentModel\Helpers\IService.cs" />
