@@ -1,7 +1,7 @@
 <div dir="rtl" align="right">
 
 
-<a href='http://www.dnnsoftware.ir/'><img src='logo.png' /></a>
+<a href='http://www.dnnsoftwate.ir/'><img src='PersianDnnSoftwareLogo.png' /></a>
 
 # نسخه فارسی دی ان ان (DNN)
 
@@ -9,7 +9,7 @@
 
 ## اعضای تیم
 
-* مرتضی کرمانی
+* مرتضی کرمانی (<i>مدیر تیم</i>)
 * حسین نوروزی
 * محمد ثنامهر
 * محمود نورایی
