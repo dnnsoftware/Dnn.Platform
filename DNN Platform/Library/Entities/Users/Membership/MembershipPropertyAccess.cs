@@ -40,6 +40,7 @@ namespace DotNetNuke.Entities.Users
 
         #region IPropertyAccess Members
 
+        [Obsolete]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             UserMembership objMembership = objUser.Membership;

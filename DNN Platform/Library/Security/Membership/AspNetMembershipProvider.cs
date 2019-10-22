@@ -1238,7 +1238,10 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="user">The user whose Membership information we are retrieving.</param>
         /// -----------------------------------------------------------------------------
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void GetUserMembership(ref UserInfo user)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             //Get AspNet MembershipUser
             MembershipUser aspnetUser = GetMembershipUser(user);

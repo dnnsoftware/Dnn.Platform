@@ -219,7 +219,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #region Event Handlers
 
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 

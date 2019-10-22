@@ -54,6 +54,7 @@ namespace Dnn.PersonaBar.Library.DTO
             return null;
         }
 
+        [Obsolete]
         public void ReadXml(XmlReader reader)
         {
             bool wasEmpty = reader.IsEmptyElement;

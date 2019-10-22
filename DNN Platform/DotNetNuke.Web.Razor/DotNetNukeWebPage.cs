@@ -39,7 +39,9 @@ namespace DotNetNuke.Web.Razor
         protected internal UrlHelper Url { get; internal set; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void ConfigurePage(WebPageBase parentPage)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.ConfigurePage(parentPage);
 

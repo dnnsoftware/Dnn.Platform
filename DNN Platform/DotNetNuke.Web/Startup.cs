@@ -27,7 +27,9 @@ namespace DotNetNuke.Web
 
         public IServiceProvider DependencyProvider { get; private set; }
 
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public void ConfigureServices(IServiceCollection services)
+#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             var startupTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => x != Assembly.GetAssembly(typeof(Startup)))

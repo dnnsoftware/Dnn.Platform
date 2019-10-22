@@ -360,6 +360,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return true;
         }
 
+       
         private void BindMembership()
         {
             ctlMembership.User = User;

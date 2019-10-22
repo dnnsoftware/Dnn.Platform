@@ -195,16 +195,19 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void DataBind()
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
 			//disable/enable buttons
             if (UserInfo.UserID == User.UserID)

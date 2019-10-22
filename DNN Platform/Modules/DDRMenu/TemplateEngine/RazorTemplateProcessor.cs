@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
         }
 
+        [Obsolete]
         private StringWriter RenderTemplate(string virtualPath, dynamic model)
         {
             var page = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);

@@ -27,19 +27,25 @@ namespace DotNetNuke.Web.Razor
     public class RazorModuleControlFactory : BaseModuleControlFactory
     {
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             return new RazorHostControl("~/" + controlSrc);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             return CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             return CreateControl(containerControl, String.Empty, controlSrc);
         }

@@ -190,6 +190,7 @@ namespace DotNetNuke.Framework
         /// - set META tags, copyright, keywords and description
         /// </remarks>
         /// -----------------------------------------------------------------------------
+      
         private void InitializePage()
         {
             //There could be a pending installation/upgrade process

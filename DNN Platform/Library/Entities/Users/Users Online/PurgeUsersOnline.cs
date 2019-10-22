@@ -85,7 +85,9 @@ namespace DotNetNuke.Entities.Users
         ///</summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override void DoWork()
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             try
             {

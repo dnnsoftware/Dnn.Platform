@@ -271,7 +271,9 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
@@ -281,7 +283,9 @@ namespace DotNetNuke.Modules.RazorHost
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 

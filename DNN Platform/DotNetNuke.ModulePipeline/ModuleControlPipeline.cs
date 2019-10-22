@@ -33,6 +33,8 @@ namespace DotNetNuke.ModulePipeline
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private Dictionary<string, IModuleControlFactory> _controlFactories;
+
+        [Obsolete]
         public ModuleControlPipeline(
             WebFormsModuleControlFactory webforms,
             Html5ModuleControlFactory html5,

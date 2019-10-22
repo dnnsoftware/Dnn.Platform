@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Authentication
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected IServiceProvider DependencyProvider { get; }
+        protected new IServiceProvider DependencyProvider { get; }
 
         public AuthenticationLogoffBase()
         {

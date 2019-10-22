@@ -84,6 +84,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             
         }
 
+        [Obsolete]
         public UserDetailDto(UserInfo user) : base(user)
         {
             LastLogin = user.Membership.LastLoginDate;

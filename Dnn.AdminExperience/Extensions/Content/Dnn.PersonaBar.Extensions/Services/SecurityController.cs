@@ -157,6 +157,7 @@ namespace Dnn.PersonaBar.Security.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
+        [Obsolete]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
             if (!ModelState.IsValid)

@@ -372,6 +372,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+       
         private void AddPortal()
         {
             //Start Timer
@@ -397,7 +398,8 @@ namespace DotNetNuke.Services.Install
                     {
                         if (node != null)
                         {
-                            Upgrade.Upgrade.AddPortal(node, true, 0);
+                            Upgrade.Upgrade.AddPortal(node, true, 0, null);
+                         ;
                         }
                     }
                 }

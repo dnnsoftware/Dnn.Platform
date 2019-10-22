@@ -62,6 +62,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             base.OnInit(e);
         }
 
+        [Obsolete]
         protected string AlternateItemTemplate
         {
             get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
