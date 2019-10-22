@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -27,7 +27,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -41,6 +41,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
 using Globals = DotNetNuke.Common.Globals;
@@ -60,6 +61,7 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SecurityRoles));
+        private readonly INavigationManager _navigationManager;
 		#region "Private Members"
 
         private int RoleId = Null.NullInteger;
@@ -72,6 +74,11 @@ namespace DotNetNuke.Modules.Admin.Security
         private int _totalRecords;
 
 		#endregion
+
+        public SecurityRoles()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
 		#region "Protected Members"
 
@@ -100,11 +107,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    _ReturnURL = Globals.NavigateURL(TabId);
+                    _ReturnURL = _navigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    _ReturnURL = Globals.NavigateURL(TabId, "", FilterParams);
+                    _ReturnURL = _navigationManager.NavigateURL(TabId, "", FilterParams);
                 }
                 return _ReturnURL;
             }
@@ -201,7 +208,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public PortalModuleBase ParentModule { get; set; }
-		
+
 		#endregion
 
         #region IActionable Members
@@ -270,7 +277,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     plRoles.Visible = false;
                 }
             }
-			
+
             //bind all portal users to dropdownlist
             if (UserId == -1)
             {
@@ -327,7 +334,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
-            
+
 
             if (RoleId != Null.NullInteger)
             {
@@ -351,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Security
             ctlPagingControl.TabID = TabId;
             ctlPagingControl.QuerystringParams = System.Web.HttpUtility.UrlDecode(string.Join("&", Request.QueryString.ToString().Split('&').
                                                                         ToList().
-                                                                        Where(s => s.StartsWith("ctl", StringComparison.OrdinalIgnoreCase) 
+                                                                        Where(s => s.StartsWith("ctl", StringComparison.OrdinalIgnoreCase)
                                                                             || s.StartsWith("mid", StringComparison.OrdinalIgnoreCase)
                                                                             || s.StartsWith("RoleId", StringComparison.OrdinalIgnoreCase)
                                                                             || s.StartsWith("UserId", StringComparison.OrdinalIgnoreCase)
@@ -437,7 +444,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if (!ModulePermissionController.CanEditModuleContent(ModuleConfiguration))
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
             }
             base.DataBind();
 
@@ -695,10 +702,10 @@ namespace DotNetNuke.Modules.Admin.Security
                         {
                             datExpiryDate = Null.NullDate;
                         }
-						
+
                         //Add User to Role
                         var isOwner = false;
-                        
+
                         if(((Role.SecurityMode == SecurityMode.SocialGroup) || (Role.SecurityMode == SecurityMode.Both)))
                             isOwner = chkIsOwner.Checked;
 
@@ -801,7 +808,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
         }
-		
+
 		#endregion
     }
 }

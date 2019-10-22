@@ -440,8 +440,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9-8B8B-441B-8623-9347B62884A1}"
 	ProjectSection(SolutionItems) = preProject
 		Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec = Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec
+		Build\Tools\NuGet\DotNetNuke.Abstractions.nuspec = Build\Tools\NuGet\DotNetNuke.Abstractions.nuspec
 		Build\Tools\NuGet\DotNetNuke.Bundle.nuspec = Build\Tools\NuGet\DotNetNuke.Bundle.nuspec
 		Build\Tools\NuGet\DotNetNuke.Core.nuspec = Build\Tools\NuGet\DotNetNuke.Core.nuspec
+		Build\Tools\NuGet\DotNetNuke.DependencyInjection.nuspec = Build\Tools\NuGet\DotNetNuke.DependencyInjection.nuspec
 		Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec = Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec
 		Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec = Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec
 		Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec = Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec
@@ -527,6 +529,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{8D99
 		Dnn.AdminExperience\Build\Symbols\releaseNotes.txt = Dnn.AdminExperience\Build\Symbols\releaseNotes.txt
 		Dnn.AdminExperience\Build\Symbols\Symbols.dnn = Dnn.AdminExperience\Build\Symbols\Symbols.dnn
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Abstractions", "DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj", "{6928A9B1-F88A-4581-A132-D3EB38669BB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1894,6 +1898,30 @@ Global
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|x86.ActiveCfg = Release|Any CPU
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2000,6 +2028,7 @@ Global
 		{10D11155-ED05-40CB-9644-AD861A6D7096} = {392B91E8-C85D-4475-A169-1D4E33B06A4A}
 		{622791DE-3AE7-4D54-9E66-2FED9686AA9E} = {10D11155-ED05-40CB-9644-AD861A6D7096}
 		{8D99B9CD-004B-4237-8CFE-77CD327B4370} = {10D11155-ED05-40CB-9644-AD861A6D7096}
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

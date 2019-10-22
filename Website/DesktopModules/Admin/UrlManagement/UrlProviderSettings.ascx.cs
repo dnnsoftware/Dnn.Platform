@@ -9,8 +9,10 @@ using System;
 using System.Linq;
 
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.UI.Modules;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.UrlManagement
 {
@@ -19,6 +21,12 @@ namespace DotNetNuke.Modules.UrlManagement
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
         private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        private readonly INavigationManager _navigationManager;
+
+        public ProviderSettings()
+        {
+            _navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -66,7 +74,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
         void cmdCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+            Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
         void cmdUpdate_Click(object sender, EventArgs e)
@@ -87,7 +95,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
             if (DisplayMode != "editor" && DisplayMode != "settings")
             {
-                Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+                Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
     }

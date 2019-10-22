@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return Globals.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return NavigationManager.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
             }
         }
 

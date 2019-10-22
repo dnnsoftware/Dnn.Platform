@@ -1,21 +1,22 @@
 /*
 ' Copyright (c) 2011 DotNetNuke Corporation
 '  All rights reserved.
-' 
+'
 ' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
 ' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 ' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 ' DEALINGS IN THE SOFTWARE.
-' 
+'
 */
 
 using System;
 using System.Collections.Generic;
-//using System.Xml;
 using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -39,6 +40,12 @@ namespace DotNetNuke.Modules.Journal.Components {
     //uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
+        protected INavigationManager NavigationManager { get; }
+        public FeatureController()
+        {
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         #region Optional Interfaces
 
         /// -----------------------------------------------------------------------------
@@ -217,7 +224,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
             var userInfo = UserController.Instance.GetCurrentUserInfo();
-            
+
             var selfKey = string.Format("U{0}", userInfo.UserID);
 
             if (securityKeys.Contains("E") || securityKeys.Contains(selfKey))
@@ -268,15 +275,15 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             if (groupId > 0 && tabId > 0)
             {
-                url = Globals.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
+                url = NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
             }
             else if (tabId == portalSettings.UserTabId)
             {
-                url = Globals.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
+                url = NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
             }
             else
             {
-                url = Globals.NavigateURL(tabId, string.Empty, "jid=" + journalId);
+                url = NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
             }
 
             return url;

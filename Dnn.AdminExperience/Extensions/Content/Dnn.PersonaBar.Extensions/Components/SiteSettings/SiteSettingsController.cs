@@ -41,6 +41,7 @@ using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Localization;
+using Constants = Dnn.PersonaBar.Library.Constants;
 
 namespace Dnn.PersonaBar.SiteSettings.Components
 {

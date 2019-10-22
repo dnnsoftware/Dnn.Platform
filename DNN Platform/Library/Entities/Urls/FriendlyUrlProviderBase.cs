@@ -25,7 +25,7 @@
 
 using System;
 using System.Collections.Specialized;
-
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName);
 
-        internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings portalSettings);
+        internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings);
 
         internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
     }

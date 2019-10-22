@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -44,6 +45,7 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Abstractions;
 
 #endregion
 
@@ -53,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 {
 
     /// <summary>
-    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a 
+    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
     /// <remarks>
@@ -61,6 +63,11 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
+        private readonly INavigationManager _navigationManager;
+        public ModuleSettingsPage()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -89,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
             }
         }
 
@@ -260,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                              PortalAlias = defaultAlias
                                          };
 
-                var tabUrl = Globals.NavigateURL(tab.TabID, portalSettings, string.Empty);
+                var tabUrl = _navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
 
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {
@@ -351,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                    
+
                         _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = _control as ISettingsControl;
@@ -435,11 +442,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         chkAllowIndex.Enabled = false;
                         cboTab.Enabled = false;
                     }
-                    
+
                     if (_moduleId != -1)
                     {
                         BindData();
-                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) || 
+                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) ||
                              TabPermissionController.CanAddContentToPage()) && !HideDeleteButton;
                     }
                     else
@@ -661,8 +668,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //These Module Copy/Move statements must be 
-                    //at the end of the Update as the Controller code assumes all the 
+                    //These Module Copy/Move statements must be
+                    //at the end of the Update as the Controller code assumes all the
                     //Updates to the Module have been carried out.
 
                     //Check if the Module is to be Moved to a new Tab
