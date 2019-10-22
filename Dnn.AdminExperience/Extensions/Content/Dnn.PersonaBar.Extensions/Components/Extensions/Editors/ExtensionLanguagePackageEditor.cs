@@ -2,17 +2,25 @@
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
     public class ExtensionLanguagePackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+        protected INavigationManager NavigationManager { get; }
+
+        public ExtensionLanguagePackageEditor()
+        {
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
@@ -24,7 +32,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
                 DependentPackageId = languagePack.DependentPackageID,
-                EditUrlFormat = Globals.NavigateURL(languagesTab, "", "Locale={0}")
+                EditUrlFormat = NavigationManager.NavigateURL(languagesTab, "", "Locale={0}")
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)

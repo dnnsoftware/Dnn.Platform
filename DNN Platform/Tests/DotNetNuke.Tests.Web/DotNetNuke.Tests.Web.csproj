@@ -114,6 +114,10 @@
       <Project>{3b2fa1d9-ec7d-4cec-8ff5-a7700cf5cb40}</Project>
       <Name>Dnn.AuthServices.Jwt</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
       <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
       <Name>DotNetNuke.Log4Net</Name>

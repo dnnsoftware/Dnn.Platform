@@ -13,7 +13,7 @@
     <description>
       Provides basic references to the DotNetNuke.dll to develop extensions for the DNN Platform.  For MVC or WebAPI please see other packages available as well
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
 	<dependencies>
       <dependency id="DotNetNuke.DependencyInjection" version="$version$" />
     </dependencies>

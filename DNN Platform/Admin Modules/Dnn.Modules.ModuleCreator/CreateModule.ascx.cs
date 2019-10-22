@@ -1,22 +1,22 @@
 #region Copyright
 
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2012
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
 #endregion
@@ -40,7 +40,8 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Log.EventLog;
-
+using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 
 namespace Dnn.Module.ModuleCreator
@@ -48,6 +49,11 @@ namespace Dnn.Module.ModuleCreator
 
     public partial class CreateModule : PortalModuleBase
     {
+        private readonly INavigationManager _navigationManager;
+        public CreateModule()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         #region Private Methods
 
@@ -147,7 +153,7 @@ namespace Dnn.Module.ModuleCreator
                 sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
-                //get filename 
+                //get filename
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
                 fileName = fileName.Replace("_OWNER_", GetOwner());
@@ -325,7 +331,7 @@ namespace Dnn.Module.ModuleCreator
                         var objModuleDefinition = new ModuleDefinitionInfo();
                         objModuleDefinition.ModuleDefID = Null.NullInteger;
                         objModuleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
-                        // need core enhancement to have a unique DefinitionName  
+                        // need core enhancement to have a unique DefinitionName
                         objModuleDefinition.FriendlyName = GetClassName();
                         //objModuleDefinition.FriendlyName = txtModule.Text;
                         //objModuleDefinition.DefinitionName = GetClassName();
@@ -438,7 +444,7 @@ namespace Dnn.Module.ModuleCreator
                     HostController.Instance.Update("Owner", txtOwner.Text, false);
                     if (CreateModuleDefinition())
                     {
-                        Response.Redirect(Globals.NavigateURL(), true);
+                        Response.Redirect(_navigationManager.NavigateURL(), true);
                     }
                 }
                 else
