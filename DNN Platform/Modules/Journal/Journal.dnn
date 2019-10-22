@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Journal" type="Module" isSystem="true">
+        <package name="Journal" type="Module" isSystem="true" version="10.00.00">
             <friendlyName>Journal</friendlyName>
             <description>DotNetNuke Corporation Journal module</description>
             <iconFile>DesktopModules/Journal/Images/journal_32X32.png</iconFile>
@@ -23,19 +23,19 @@
                         <foldername>Journal</foldername>
                         <shareable>Supported</shareable>
                         <businessControllerClass>DotNetNuke.Modules.Journal.Components.FeatureController</businessControllerClass>
-                        <supportedFeatures />
+                        <supportedFeatures/>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Journal</friendlyName>
                                 <defaultCacheTime>0</defaultCacheTime>
                                 <moduleControls>
                                     <moduleControl>
-                                        <controlKey />
+                                        <controlKey/>
                                         <controlSrc>DesktopModules/Journal/View.ascx</controlSrc>
                                         <supportsPartialRendering>False</supportsPartialRendering>
-                                        <controlTitle />
+                                        <controlTitle/>
                                         <controlType>View</controlType>
-                                        <iconFile />
+                                        <iconFile/>
                                         <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                                         <viewOrder>0</viewOrder>
                                     </moduleControl>
@@ -45,7 +45,7 @@
                                         <supportsPartialRendering>False</supportsPartialRendering>
                                         <controlTitle>Journal Settings</controlTitle>
                                         <controlType>Edit</controlType>
-                                        <iconFile />
+                                        <iconFile/>
                                         <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                                         <viewOrder>0</viewOrder>
                                     </moduleControl>

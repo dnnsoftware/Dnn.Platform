@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Console" type="Module">
+        <package name="DotNetNuke.Console" type="Module" version="10.00.00">
             <friendlyName>Console</friendlyName>
             <description>Display children pages as icon links for navigation.</description>
             <iconFile>~/DesktopModules/Admin/Console/console.png</iconFile>
@@ -27,7 +27,7 @@
                                 <friendlyName>Console</friendlyName>
                                 <moduleControls>
                                     <moduleControl>
-                                        <controlKey />
+                                        <controlKey/>
                                         <controlSrc>DesktopModules/Admin/Console/ViewConsole.ascx</controlSrc>
                                         <controlTitle>Console</controlTitle>
                                         <controlType>View</controlType>

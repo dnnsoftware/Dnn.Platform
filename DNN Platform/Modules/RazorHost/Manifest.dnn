@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="{0}" type="Module"  isSystem="true">
+    <package name="{0}" type="Module"  isSystem="true" version="10.00.00">
       <friendlyName>{0}</friendlyName>
       <description>{1}</description>
       <owner>
@@ -21,21 +21,21 @@
           <desktopModule>
             <moduleName>{0}</moduleName>
             <foldername>RazorModules/{2}</foldername>
-            <businessControllerClass />
-            <supportedFeatures />
+            <businessControllerClass/>
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>{0}</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/RazorModules/{2}/{3}</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

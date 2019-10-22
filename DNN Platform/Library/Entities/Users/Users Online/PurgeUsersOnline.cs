@@ -80,9 +80,9 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// -----------------------------------------------------------------------------
-        /// <summary>
+        ///<summary>
         /// DoWork does th4 Scheduler work
-        /// </summary>
+        ///</summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DoWork()

@@ -1,4 +1,4 @@
-#region Copyright
+﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
@@ -34,3 +34,6 @@ using System.Reflection;
 [assembly: AssemblyProduct("http://www.dnnsoftware.com")]
 [assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by DNN Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
+[assembly: AssemblyVersion("10.0.0.0")]
+[assembly: AssemblyFileVersion("10.0.0.5802")]
+[assembly: AssemblyInformationalVersion("10.0.0-unstable.5802+Branch.my-contribution.Sha.c2eaaee22d5f45785733dd17466650e68a54579f")]

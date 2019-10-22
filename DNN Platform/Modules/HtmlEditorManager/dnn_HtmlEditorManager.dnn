@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.HtmlEditorManager" type="Module" >
+    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="10.00.00" >
       <friendlyName>Html Editor Management</friendlyName>
       <iconFile>Images/HtmlEditorManager_Standard_32x32.png</iconFile>
       <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke HtmlEditor Provider.</description>
@@ -20,7 +20,7 @@
             <moduleName>DotNetNuke.HtmlEditorManager</moduleName>
             <foldername>Admin/HtmlEditorManager</foldername>
             <businessControllerClass>DotNetNuke.Modules.HtmlEditorManager.Components.UpgradeController, DotNetNuke.Modules.HtmlEditorManager</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures/>
             <isPremium>false</isPremium>
             <isAdmin>true</isAdmin>
             <moduleDefinitions>
@@ -35,7 +35,7 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Html Editor Management</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
