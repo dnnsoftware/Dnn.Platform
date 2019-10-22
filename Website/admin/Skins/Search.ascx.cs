@@ -1,42 +1,49 @@
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Collections;
-
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Entities.Icons;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-    using Web.Client;
+
 
     public partial class Search : SkinObjectBase
     {
+        private readonly INavigationManager _navigationManager;
+        public Search()
+        {
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         #region Private Members
 
         private const string MyFileName = "Search.ascx";
@@ -100,8 +107,8 @@ namespace DotNetNuke.UI.Skins.Controls
         /// Gets or sets the site icon URL.
         /// </summary>
         /// <value>The site icon URL.</value>
-        /// <remarks>If the SiteIconURL is not set or is an empty string then this will return a site relative URL for the 
-        /// DnnSearch_16X16_Standard.png image in the images/search subfolder.  SiteIconURL supports using 
+        /// <remarks>If the SiteIconURL is not set or is an empty string then this will return a site relative URL for the
+        /// DnnSearch_16X16_Standard.png image in the images/search subfolder.  SiteIconURL supports using
         /// app relative virtual paths designated by the use of the tilde (~).</remarks>
         public string SiteIconURL
         {
@@ -118,7 +125,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 _siteIconURL = value;
             }
         }
-                
+
         public string SeeMoreText
         {
             get
@@ -194,7 +201,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 _siteToolTip = value;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the URL for doing web based site searches.
         /// </summary>
@@ -237,7 +244,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>
         /// Gets or sets a value indicating whether to display the site/web options using a drop down list.
         /// </summary>
-        /// <remarks>If true, then the site and web options are displayed in a drop down list.  If the 
+        /// <remarks>If true, then the site and web options are displayed in a drop down list.  If the
         /// drop down list is used, then the <see cref="ShowWeb">ShowWeb</see> and <see cref="ShowSite">ShowSite</see>
         /// properties are not used.</remarks>
         public bool UseDropDownList { get; set; }
@@ -246,8 +253,8 @@ namespace DotNetNuke.UI.Skins.Controls
         /// Gets or sets the web icon URL.
         /// </summary>
         /// <value>The web icon URL.</value>
-        /// <remarks>If the WebIconURL is not set or is an empty string then this will return a site relative URL for the 
-        /// google-icon.gif image in the images/search subfolder.  WebIconURL supports using 
+        /// <remarks>If the WebIconURL is not set or is an empty string then this will return a site relative URL for the
+        /// google-icon.gif image in the images/search subfolder.  WebIconURL supports using
         /// app relative virtual paths designated by the use of the tilde (~).</remarks>
         public string WebIconURL
         {
@@ -423,11 +430,11 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             if (Host.UseFriendlyUrls)
                             {
-                                Response.Redirect(Globals.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(_navigationManager.NavigateURL(searchTabId) + "?Search=" + Server.UrlEncode(searchText));
                             }
                             else
                             {
-                                Response.Redirect(Globals.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
+                                Response.Redirect(_navigationManager.NavigateURL(searchTabId) + "&Search=" + Server.UrlEncode(searchText));
                             }
                         }
                         break;
@@ -447,11 +454,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (Host.UseFriendlyUrls)
                 {
-                    Response.Redirect(Globals.NavigateURL(searchTabId));
+                    Response.Redirect(_navigationManager.NavigateURL(searchTabId));
                 }
                 else
                 {
-                    Response.Redirect(Globals.NavigateURL(searchTabId));
+                    Response.Redirect(_navigationManager.NavigateURL(searchTabId));
                 }
             }
         }
@@ -467,11 +474,11 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-                        
+
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Search/SearchSkinObjectPreview.js");
-            
+
 
             cmdSearch.Click += CmdSearchClick;
             cmdSearchNew.Click += CmdSearchNewClick;
@@ -546,7 +553,7 @@ namespace DotNetNuke.UI.Skins.Controls
             ClassicSearch.Visible = !UseDropDownList;
             DropDownSearch.Visible = UseDropDownList;
             CultureCode = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-            
+
             if (UseDropDownList)
             {
                 //Client Variables will survive a postback so there is no reason to register them.

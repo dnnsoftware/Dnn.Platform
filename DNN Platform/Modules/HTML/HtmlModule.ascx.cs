@@ -1,27 +1,28 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
 
 using System;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
@@ -34,6 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Modules.Html.Components;
+using DotNetNuke.Abstractions;
 
 
 #endregion
@@ -51,6 +53,12 @@ namespace DotNetNuke.Modules.Html
     {
         private bool EditorEnabled;
         private int WorkflowID;
+
+        private readonly INavigationManager _navigationManager;
+        public HtmlModule()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         #region "Private Methods"
 
@@ -195,7 +203,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
         {
             try
             {
-                // verify security 
+                // verify security
                 if ((!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text)))
                 {
                     throw new SecurityException();
@@ -245,7 +253,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             {
                 if (e.Action.CommandArgument == "publish")
                 {
-                    // verify security 
+                    // verify security
                     if (IsEditable && PortalSettings.UserMode == PortalSettings.Mode.Edit)
                     {
                         // get content
@@ -262,7 +270,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(PortalId));
 
                             // refresh page
-                            Response.Redirect(Globals.NavigateURL(), true);
+                            Response.Redirect(_navigationManager.NavigateURL(), true);
                         }
                     }
                 }

@@ -10,16 +10,19 @@ using DotNetNuke.Entities.Users;
 using System.Text;
 using DotNetNuke.Entities.Portals;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
 using System.Xml;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Abstractions;
 
-namespace DotNetNuke.Modules.Journal.Components 
+namespace DotNetNuke.Modules.Journal.Components
 {
-	public class JournalParser 
+	public class JournalParser
     {
+        protected INavigationManager NavigationManager { get; }
 	    PortalSettings PortalSettings { get; set; }
 		int ProfileId { get; set; }
 		int SocialGroupId { get; set; }
@@ -36,8 +39,9 @@ namespace DotNetNuke.Modules.Journal.Components
         private static readonly Regex TemplateRegex = new Regex("{CanComment}(.*?){/CanComment}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 
-	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo) 
+	    public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
         {
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 			PortalSettings = portalSettings;
             ModuleId = moduleId;
 			ProfileId = profileId;
@@ -62,7 +66,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         private static readonly Regex BaseUrlRegex = new Regex("\\[BaseUrl\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-		public string GetList(int currentIndex, int rows) 
+		public string GetList(int currentIndex, int rows)
         {
             if (CurrentUser.UserID > 0) {
                 isAdmin = CurrentUser.IsInRole(PortalSettings.AdministratorRoleName);
@@ -70,7 +74,7 @@ namespace DotNetNuke.Modules.Journal.Components
 		    isUnverifiedUser = !CurrentUser.IsSuperUser && CurrentUser.IsInRole("Unverified Users");
 
 			var journalControllerInternal = InternalJournalController.Instance;
-			var sb = new StringBuilder();		
+			var sb = new StringBuilder();
 
             string statusTemplate = Localization.GetString("journal_status", ResxPath);
             string linkTemplate = Localization.GetString("journal_link", ResxPath);
@@ -83,7 +87,7 @@ namespace DotNetNuke.Modules.Journal.Components
             fileTemplate = BaseUrlRegex.Replace(fileTemplate, url);
 
             string comment = Localization.GetString("comment", ResxPath);
-            
+
             IList<JournalItem> journalList;
             if (JournalId > 0)
             {
@@ -95,15 +99,15 @@ namespace DotNetNuke.Modules.Journal.Components
                     journalList.Add(journal);
                 }
             }
-            else if (ProfileId > 0) 
+            else if (ProfileId > 0)
             {
                 journalList = journalControllerInternal.GetJournalItemsByProfile(OwnerPortalId, ModuleId, CurrentUser.UserID, ProfileId, currentIndex, rows);
-            } 
-            else if (SocialGroupId > 0) 
+            }
+            else if (SocialGroupId > 0)
             {
                 journalList = journalControllerInternal.GetJournalItemsByGroup(OwnerPortalId, ModuleId, CurrentUser.UserID, SocialGroupId, currentIndex, rows);
-            } 
-            else 
+            }
+            else
             {
                 journalList = journalControllerInternal.GetJournalItems(OwnerPortalId, ModuleId, CurrentUser.UserID, currentIndex, rows);
             }
@@ -130,41 +134,41 @@ namespace DotNetNuke.Modules.Journal.Components
                 } else {
                     rowTemplate = GetJournalTemplate(ji.JournalType, ji);
                 }
-                
+
 				var ctl = new JournalControl();
-				
+
                 bool isLiked = false;
                 ctl.LikeList = GetLikeListHTML(ji, ref isLiked);
                 ctl.LikeLink = String.Empty;
                 ctl.CommentLink = String.Empty;
-                
-                ctl.AuthorNameLink = "<a href=\"" + Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=" + ji.JournalAuthor.Id}) + "\">" + ji.JournalAuthor.Name + "</a>";
-                if (CurrentUser.UserID > 0 &&  !isUnverifiedUser) 
+
+                ctl.AuthorNameLink = "<a href=\"" + NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=" + ji.JournalAuthor.Id}) + "\">" + ji.JournalAuthor.Name + "</a>";
+                if (CurrentUser.UserID > 0 &&  !isUnverifiedUser)
                 {
                     if (!ji.CommentsDisabled)
                     {
                         ctl.CommentLink = "<a href=\"#\" id=\"cmtbtn-" + ji.JournalId + "\">" + comment + "</a>";
                     }
 
-                    if (isLiked) 
+                    if (isLiked)
                     {
                         ctl.LikeLink = "<a href=\"#\" id=\"like-" + ji.JournalId + "\">{resx:unlike}</a>";
-                    } 
-                    else 
+                    }
+                    else
                     {
                         ctl.LikeLink = "<a href=\"#\" id=\"like-" + ji.JournalId + "\">{resx:like}</a>";
                     }
                 }
-                
+
                 ctl.CommentArea = GetCommentAreaHTML(ji, comments);
 				ji.TimeFrame = DateUtils.CalculateDateForDisplay(ji.DateCreated);
                 ji.DateCreated = CurrentUser.LocalTime(ji.DateCreated);
- 
+
                 if (ji.Summary != null)
                 {
                     ji.Summary = ji.Summary.Replace("\n", "<br />");
                 }
-                
+
                 if (ji.Body != null)
                 {
                     ji.Body = ji.Body.Replace(Environment.NewLine, "<br />");
@@ -180,11 +184,11 @@ namespace DotNetNuke.Modules.Journal.Components
 				sb.Append(tmp);
 				sb.Append("</div>");
 			}
-          
+
 			return Utilities.LocalizeControl(sb.ToString());
 		}
 
-        internal string GetJournalTemplate(string journalType, JournalItem ji) 
+        internal string GetJournalTemplate(string journalType, JournalItem ji)
         {
             string template = Localization.GetString("journal_" + journalType, ResxPath);
             if (String.IsNullOrEmpty(template))
@@ -199,7 +203,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return TemplateRegex.Replace(template, replacement);
         }
 
-		internal string GetLikeListHTML(JournalItem ji, ref bool isLiked) 
+		internal string GetLikeListHTML(JournalItem ji, ref bool isLiked)
         {
 			var sb = new StringBuilder();
             isLiked = false;
@@ -243,7 +247,7 @@ namespace DotNetNuke.Modules.Journal.Components
 							} else {
 								sb.Append(" {resx:other}");
 							}
-							break; 
+							break;
 						}
 						sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
 						xc += 1;
@@ -274,7 +278,7 @@ namespace DotNetNuke.Modules.Journal.Components
 			}
 		}
 
-		   
+
 			sb.Append("</div>");
 			return sb.ToString();
 		}
@@ -300,7 +304,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 sb.Append("<li class=\"cmtbtn\">");
                 sb.Append("<a href=\"#\">{resx:comment}</a></li>");
             }
-            
+
             sb.Append("</ul>");
             return sb.ToString();
         }
@@ -314,16 +318,16 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             sb.AppendFormat("<img src=\"{0}\" />", pic);
             sb.Append("<p>");
-            string userUrl = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
+            string userUrl = NavigationManager.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
             sb.AppendFormat("<a href=\"{1}\">{0}</a>", comment.DisplayName, userUrl);
-            
+
             if (comment.CommentXML != null && comment.CommentXML.SelectSingleNode("/root/comment") != null)
             {
                 string text;
                 if (CdataRegex.IsMatch(comment.CommentXML.SelectSingleNode("/root/comment").InnerText))
                 {
                     var match = CdataRegex.Match(comment.CommentXML.SelectSingleNode("/root/comment").InnerText);
-                    text = match.Groups["text"].Value;                
+                    text = match.Groups["text"].Value;
                 }
                 else
                 {
@@ -334,12 +338,12 @@ namespace DotNetNuke.Modules.Journal.Components
             else
             {
                 sb.Append(comment.Comment.Replace("\n", "<br />"));
-            }           
+            }
 
             var timeFrame = DateUtils.CalculateDateForDisplay(comment.DateCreated);
             comment.DateCreated = CurrentUser.LocalTime(comment.DateCreated);
             sb.AppendFormat("<abbr title=\"{0}\">{1}</abbr>", comment.DateCreated, timeFrame);
-  
+
             sb.Append("</p>");
             sb.Append("</li>");
             return sb.ToString();

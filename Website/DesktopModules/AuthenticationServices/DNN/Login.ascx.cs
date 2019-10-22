@@ -1,30 +1,30 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
 
 using System;
-using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -33,7 +33,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.Utilities;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -52,6 +51,12 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 	public partial class Login : AuthenticationLoginBase
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
+        private readonly INavigationManager _navigationManager;
+
+        public Login()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
 		#region Protected Properties
 
@@ -81,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				return AuthenticationConfig.GetConfig(PortalId).Enabled;
 			}
 		}
-		
+
 		#endregion
 
 		#region Event Handlers
@@ -109,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
-            var returnUrl = Globals.NavigateURL();
+            var returnUrl = _navigationManager.NavigateURL();
             string url;
             if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
             {
@@ -140,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = Globals.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = _navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
                 passwordLink.NavigateUrl = url;
                 if (PortalSettings.EnablePopUps)
                 {
@@ -173,13 +178,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
 	                    if (Request.IsAuthenticated)
 	                    {
-                            Response.Redirect(Globals.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            Response.Redirect(_navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
 	                    }
 	                    else
 	                    {
                             if (redirectTabId > 0)
                             {
-                                var redirectUrl = Globals.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                var redirectUrl = _navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), string.Empty);
                                 Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
                             }
@@ -219,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					}
 					catch (Exception ex)
 					{
-						//control not there 
+						//control not there
 						Logger.Error(ex);
 					}
 				}
@@ -257,25 +262,25 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text, 
-										PortalSecurity.FilterFlag.NoScripting | 
-                                        PortalSecurity.FilterFlag.NoAngleBrackets | 
+				string userName = PortalSecurity.Instance.InputFilter(txtUsername.Text,
+										PortalSecurity.FilterFlag.NoScripting |
+                                        PortalSecurity.FilterFlag.NoAngleBrackets |
                                         PortalSecurity.FilterFlag.NoMarkup);
 
                 //DNN-6093
                 //check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);                
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
 
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalId, userName);                     
+                    userByEmail = UserController.GetUserByEmail(PortalId, userName);
 
                     if (userByEmail != null)
                     {
                         //we need the username of the account in order to authenticate in the next step
-                        userName = userByEmail.Username; 
+                        userName = userByEmail.Username;
                     }
                 }
 
@@ -306,18 +311,18 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                         userName = objUser.Username = objUser.Email;
                     }
                 }
-				
+
 				//Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
 				                    {
-				                        Authenticated = authenticated, 
+				                        Authenticated = authenticated,
                                         Message = message,
                                         RememberMe = chkCookie.Checked
 				                    };
 				OnUserAuthenticated(eventArgs);
 			}
 		}
-		
+
 		#endregion
 
 		#region Private Methods
@@ -328,7 +333,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;
 			if (checkSettings && redirectAfterLogin > 0) //redirect to after registration page
 			{
-				redirectUrl = Globals.NavigateURL(redirectAfterLogin);
+				redirectUrl = _navigationManager.NavigateURL(redirectAfterLogin);
 			}
 			else
 			{
@@ -352,8 +357,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				}
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
-					//redirect to current page 
-					redirectUrl = Globals.NavigateURL();
+					//redirect to current page
+					redirectUrl = _navigationManager.NavigateURL();
 				}
 			}
 

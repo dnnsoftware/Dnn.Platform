@@ -1,12 +1,18 @@
 ﻿using System;
-
+using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.Groups
 {
     public partial class List : GroupsModuleBase
     {
+        public INavigationManager _navigationManager { get; }
+        public List()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -49,7 +55,7 @@ namespace DotNetNuke.Modules.Groups
         {
             if(!Page.IsValid) return;
 
-            Response.Redirect(Globals.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
+            Response.Redirect(_navigationManager.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
         }
     }
 }

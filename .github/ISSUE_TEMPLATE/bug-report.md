@@ -39,8 +39,8 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 -->
 
 * [ ] 10.0.0 alpha build
-* [ ] 9.4.1 alpha build
-* [ ] 9.4.0 latest supported release
+* [ ] 9.4.2 alpha build
+* [ ] 9.4.1 latest supported release
 
 ## Affected browser
 <!-- 

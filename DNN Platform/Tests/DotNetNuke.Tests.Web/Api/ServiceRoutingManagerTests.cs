@@ -23,6 +23,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework.Internal.Reflection;
 using DotNetNuke.Framework.Reflections;
@@ -51,6 +53,11 @@ namespace DotNetNuke.Tests.Web.Api
             _mockPortalController = new Mock<IPortalController>();
             _portalController = _mockPortalController.Object;
             PortalController.SetTestableInstance(_portalController);
+
+            var navigationManagerMock = new Mock<INavigationManager>();
+            var containerMock = new Mock<IServiceProvider>();
+            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
+            Globals.DependencyProvider = containerMock.Object;
         }
 
         [TearDown]
