@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -23,7 +23,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -34,6 +34,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -51,6 +52,12 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
+        private readonly INavigationManager _navigationManager;
+        public ProfileDefinitions()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         #region Constants
 
         private const int COLUMN_REQUIRED = 11;
@@ -118,11 +125,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 if (string.IsNullOrEmpty(Request.QueryString["filter"]))
                 {
-                    returnURL = Globals.NavigateURL(TabId);
+                    returnURL = _navigationManager.NavigateURL(TabId);
                 }
                 else
                 {
-                    returnURL = Globals.NavigateURL(TabId, "", filterParams);
+                    returnURL = _navigationManager.NavigateURL(TabId, "", filterParams);
                 }
                 return returnURL;
             }
@@ -432,7 +439,7 @@ namespace DotNetNuke.Modules.Admin.Users
             catch (Exception exc) //Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }            
+            }
         }
 
         #endregion
@@ -606,7 +613,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated 
+        /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
         /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
         ///	client-side script for each event handler
         /// </summary>
@@ -620,7 +627,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 switch (e.Item.ItemType)
                 {
                     case ListItemType.Header:
-                        //we combined the header label and checkbox in same place, so it is control 1 instead of 0                       
+                        //we combined the header label and checkbox in same place, so it is control 1 instead of 0
                         ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
                         ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
 

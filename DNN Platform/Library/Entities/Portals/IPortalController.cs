@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Entities.Portals
@@ -94,7 +95,14 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the current portal settings.
         /// </summary>
         /// <returns>portal settings.</returns>
+        [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0. Use GetCurrentSettings instead.")]
         PortalSettings GetCurrentPortalSettings();
+
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        /// <returns>portal settings.</returns>
+        IPortalSettings GetCurrentSettings();
 
         /// <summary>
         ///   Gets information of a portal

@@ -31,7 +31,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -72,13 +72,13 @@ namespace DotNetNuke.Entities.Urls
             return FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
         }
 
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings portalSettings)
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
         {
             if (portalSettings == null)
             {
                 throw new ArgumentNullException("portalSettings");
             }
-            return FriendlyUrlInternal(tab, path, pageName, String.Empty, portalSettings);
+            return FriendlyUrlInternal(tab, path, pageName, String.Empty, (PortalSettings)portalSettings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)

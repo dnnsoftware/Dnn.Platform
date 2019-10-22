@@ -23,6 +23,7 @@ using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
@@ -60,6 +61,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Http;
 using FileInfo = System.IO.FileInfo;
+using Constants = Dnn.PersonaBar.Library.Constants;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -85,6 +87,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
+
+        protected INavigationManager NavigationManager { get; }
+        public SiteSettingsController(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
 
         #region Site Info API
 
@@ -2727,7 +2735,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                         if (LocaleController.Instance.GetLocales(pid).Count == 2)
                         {
-                            redirectUrl = Globals.NavigateURL();
+                            redirectUrl = NavigationManager.NavigateURL();
                         }
                     }
                     else
@@ -2741,7 +2749,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                                 StringComparison.OrdinalIgnoreCase) ||
                             LocaleController.Instance.GetLocales(pid).Count == 1)
                         {
-                            redirectUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID,
+                            redirectUrl = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID,
                                 PortalSettings.ActiveTab.IsSuperTab,
                                 PortalSettings, "", defaultLocale.Code);
                         }

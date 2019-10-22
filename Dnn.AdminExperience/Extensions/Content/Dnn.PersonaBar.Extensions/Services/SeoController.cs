@@ -36,6 +36,7 @@ using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Seo.Components;
 using Dnn.PersonaBar.Seo.Services.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
@@ -56,6 +57,12 @@ namespace Dnn.PersonaBar.Seo.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
         private readonly Components.SeoController _controller = new Components.SeoController();
         private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo/App_LocalResources/Seo.resx");
+        protected INavigationManager NavigationManager { get; }
+
+        public SeoController(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
 
         /// GET: api/SEO/GetGeneralSettings
         /// <summary>
@@ -547,7 +554,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     p.ExtensionUrlProviderId,
                     p.ProviderName,
                     p.IsActive,
-                    SettingUrl = Globals.NavigateURL(PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
+                    SettingUrl = NavigationManager.NavigateURL(PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
                 }).ToList();
 
                 var response = new

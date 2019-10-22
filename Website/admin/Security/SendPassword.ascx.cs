@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -39,6 +40,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Abstractions;
 
 #endregion
 
@@ -55,6 +57,11 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SendPassword : UserModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
+        private readonly INavigationManager _navigationManager;
+        public SendPassword()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         #region Private Members
 
@@ -79,11 +86,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 if (Convert.ToInt32(setting) > 0) //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
                 {
-                
+
                 if (Convert.ToInt32(setting) <= 0)
                 {
                     if (Request.QueryString["returnurl"] != null)
@@ -106,19 +113,19 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
-                        //redirect to current page 
-                        _RedirectURL = Globals.NavigateURL();
+                        //redirect to current page
+                        _RedirectURL = _navigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 }
 
                 return _RedirectURL;
             }
-        
+
 		}
 
         /// <summary>
@@ -179,7 +186,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnInit(e);
 
             var isEnabled = true;
-			
+
             //both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
@@ -192,7 +199,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
                 divPassword.Visible = false;
             }
-			
+
 			if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 isEnabled = false;
@@ -204,7 +211,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
             }
-			
+
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", LocalResourceFile);
@@ -223,9 +230,9 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
-            lnkCancel.NavigateUrl = Globals.NavigateURL();
+            lnkCancel.NavigateUrl = _navigationManager.NavigateURL();
 
-            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));            
+            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
 
 			divEmail.Visible = ShowEmailField;
 			divUsername.Visible = !UsernameDisabled;
@@ -295,7 +302,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         {
                             canSend = false;
                         }
-                        else 
+                        else
                         {
                             if (_user.Membership.Approved == false)
                             {
@@ -369,7 +376,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 LogUserID = UserId,
                 LogUserName = portalSecurity.InputFilter(txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
             };
-			
+
             if (string.IsNullOrEmpty(message))
             {
                 log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
@@ -379,9 +386,9 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogTypeKey = "PASSWORD_SENT_FAILURE";
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
-            
+
 			log.AddProperty("IP", _ipAddress);
-            
+
             LogController.Instance.AddLog(log);
 
         }

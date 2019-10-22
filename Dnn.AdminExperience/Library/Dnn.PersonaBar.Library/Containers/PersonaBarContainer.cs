@@ -1,21 +1,21 @@
 ﻿#region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
@@ -24,11 +24,13 @@ using System.Globalization;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Application;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -40,6 +42,12 @@ namespace Dnn.PersonaBar.Library.Containers
 {
     public class PersonaBarContainer : IPersonaBarContainer
     {
+        protected INavigationManager NavigationManager { get; }
+        public PersonaBarContainer(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
+
         #region Instance Methods
 
         private static IPersonaBarContainer _instance;
@@ -50,7 +58,7 @@ namespace Dnn.PersonaBar.Library.Containers
             {
                 if (_instance == null)
                 {
-                    _instance = new PersonaBarContainer();
+                    _instance = new PersonaBarContainer(Globals.DependencyProvider.GetRequiredService<INavigationManager>());
                 }
 
                 return _instance;
@@ -74,13 +82,13 @@ namespace Dnn.PersonaBar.Library.Containers
 
         #region IPersonaBarContainer Implements
 
-        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"}; 
+        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"};
 
         public virtual bool Visible => true;
 
         public virtual void Initialize(UserControl personaBarControl)
         {
-            
+
         }
 
         public virtual IDictionary<string, object> GetConfiguration()
@@ -92,7 +100,7 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
-            
+
         }
 
         #endregion
@@ -113,7 +121,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("userId", user.UserID);
             settings.Add("avatarUrl", Globals.ResolveUrl(Utilities.GetProfileAvatar(user)));
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
-            settings.Add("logOff", Globals.NavigateURL("Logoff"));
+            settings.Add("logOff", NavigationManager.NavigateURL("Logoff"));
             settings.Add("visible", Visible);
             settings.Add("userMode", portalSettings.UserMode.ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());

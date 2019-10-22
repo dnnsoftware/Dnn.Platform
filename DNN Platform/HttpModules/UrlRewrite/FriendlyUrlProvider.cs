@@ -24,7 +24,7 @@
 #region Usings
 
 using System;
-
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
             return _providerInstance.FriendlyUrl(tab, path, pageName);
         }
 
-        public override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return _providerInstance.FriendlyUrl(tab, path, pageName, settings);
         }

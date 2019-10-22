@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -42,6 +43,7 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Controllers;
 
     /// -----------------------------------------------------------------------------
@@ -51,9 +53,11 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class User : SkinObjectBase
     {
         private const string MyFileName = "User.ascx";
+        private readonly INavigationManager _navigationManager;
 
         public User()
         {
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             ShowUnreadMessages = true;
             ShowAvatar = true;
             LegacyMode = true;
@@ -128,7 +132,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             enhancedRegisterLink.ToolTip = registerLink.Text;
                         }
                         if (PortalSettings.Users < PortalSettings.UserQuota || PortalSettings.UserQuota == 0)
-                        {                            
+                        {
                             if (LegacyMode) registerLink.Visible = true;
                             else  enhancedRegisterLink.Visible = true;
                         }
@@ -138,9 +142,9 @@ namespace DotNetNuke.UI.Skins.Controls
                             registerLink.Visible = false;
                         }
 
-                        registerLink.NavigateUrl = !String.IsNullOrEmpty(URL) 
-                                            ? URL 
-                                            : Globals.RegisterURL(HttpUtility.UrlEncode(Globals.NavigateURL()), Null.NullString);
+                        registerLink.NavigateUrl = !String.IsNullOrEmpty(URL)
+                                            ? URL
+                                            : Globals.RegisterURL(HttpUtility.UrlEncode(_navigationManager.NavigateURL()), Null.NullString);
                         enhancedRegisterLink.NavigateUrl = registerLink.NavigateUrl;
 
                         if (PortalSettings.EnablePopUps && PortalSettings.RegisterTabId == Null.NullInteger
@@ -163,8 +167,8 @@ namespace DotNetNuke.UI.Skins.Controls
                     var userInfo = UserController.Instance.GetCurrentUserInfo();
                     if (userInfo.UserID != -1)
                     {
-                        registerLink.Text = userInfo.DisplayName;                                                
-                        registerLink.NavigateUrl = Globals.UserProfileURL(userInfo.UserID);                        
+                        registerLink.Text = userInfo.DisplayName;
+                        registerLink.NavigateUrl = Globals.UserProfileURL(userInfo.UserID);
                         registerLink.ToolTip = Localization.GetString("VisitMyProfile", Localization.GetResourceFile(this, MyFileName));
 
                         enhancedRegisterLink.Text = registerLink.Text;
@@ -179,8 +183,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
                             notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
-                            messageLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
-                            notificationLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
+                            messageLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
+                            notificationLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
                             notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             messageGroup.Visible = true;
@@ -202,7 +206,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             avatar.ImageUrl = GetAvatarUrl(userInfo);
                             avatar.NavigateUrl = enhancedRegisterLink.NavigateUrl;
                             avatar.ToolTip = avatar.Text = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
-                            avatarGroup.Visible = true;                            
+                            avatarGroup.Visible = true;
                         }
                         else
                         {
@@ -241,7 +245,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private int FindMessageTab()
         {
-            //On brand new install the new Message Center Module is on the child page of User Profile Page 
+            //On brand new install the new Message Center Module is on the child page of User Profile Page
             //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
             var profileTab = TabController.Instance.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
             if (profileTab != null)
@@ -254,14 +258,14 @@ namespace DotNetNuke.UI.Skins.Controls
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Message Center" && !module.IsDeleted)
                         {
-                            return tab.TabID;                            
+                            return tab.TabID;
                         }
                     }
                 }
             }
 
             //default to User Profile Page
-            return PortalSettings.UserTabId;            
+            return PortalSettings.UserTabId;
         }
     }
 }

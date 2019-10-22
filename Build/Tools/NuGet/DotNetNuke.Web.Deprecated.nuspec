@@ -13,7 +13,7 @@
     <description>
       	Provides API references for deprecated items removed from the primary API's, such as DNN's Telerik component.  These elements may not be distributed with DNN in the future
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Web" version="$version$" />
     </dependencies>
