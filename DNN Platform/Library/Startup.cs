@@ -1,7 +1,4 @@
-﻿using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.DependencyInjection;
-using DotNetNuke.Entities.Portals;
+﻿using DotNetNuke.DependencyInjection;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Modules.Html5;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +12,6 @@ namespace DotNetNuke
             services.AddSingleton<WebFormsModuleControlFactory>();
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
-            services.AddTransient(x => PortalController.Instance);
-            services.AddTransient<INavigationManager, NavigationManager>();
         }
     }
 }

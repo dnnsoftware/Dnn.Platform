@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
@@ -11,12 +9,6 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
 {
     public class ExtensionMenuController : IMenuItemController
     {
-        protected INavigationManager NavigationManager { get; }
-        public ExtensionMenuController()
-        {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
         public void UpdateParameters(MenuItem menuItem)
         {
         }
@@ -31,7 +23,7 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         {
             var settings = new Dictionary<string, object>();
             settings.Add("portalId", PortalSettings.Current.PortalId);
-            settings.Add("installUrl", NavigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "Install", "popUp=true"));
+            settings.Add("installUrl", Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "Install", "popUp=true"));
             return settings;
         }
     }

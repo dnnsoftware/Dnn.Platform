@@ -1,9 +1,7 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
@@ -15,11 +13,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     public class CoreLanguagePackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
-        protected INavigationManager NavigationManager { get; }
-        public CoreLanguagePackageEditor()
-        {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
@@ -30,7 +23,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
-                EditUrlFormat = NavigationManager.NavigateURL(languagesTab, "", "Locale={0}")
+                EditUrlFormat = Globals.NavigateURL(languagesTab, "", "Locale={0}")
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)

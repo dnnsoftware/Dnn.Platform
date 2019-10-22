@@ -20,7 +20,6 @@
 #endregion
 #region Usings
 
-using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -47,7 +46,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName);
 
-        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings);
+        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings);
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
 		

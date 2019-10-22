@@ -25,8 +25,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Web.Api;
@@ -38,14 +36,6 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class PortalAliasRouteManagerTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-            var navigationManagerMock = new Mock<INavigationManager>();
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
-        }
 
         [TearDown]
         public void TearDown()

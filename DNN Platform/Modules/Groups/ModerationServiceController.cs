@@ -39,25 +39,18 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Security;
-using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Groups
 {
     [DnnAuthorize]
     public class ModerationServiceController : DnnApiController
     {
-        protected INavigationManager NavigationManager { get; }
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModerationServiceController));
         private int _tabId;
         private int _moduleId;
         private int _roleId;
         private int _memberId;
         private RoleInfo _roleInfo;
-
-        public ModerationServiceController(INavigationManager navigationManager)
-        {
-            NavigationManager = navigationManager;
-        }
 
         public class NotificationDTO
         {
@@ -165,7 +158,7 @@ namespace DotNetNuke.Modules.Groups
                             RoleController.Instance.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                             RoleController.Instance.UpdateRole(_roleInfo);
 
-                            var url = NavigationManager.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + _roleInfo.RoleID });
+                            var url = Globals.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + _roleInfo.RoleID });
                             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
                         
                         }

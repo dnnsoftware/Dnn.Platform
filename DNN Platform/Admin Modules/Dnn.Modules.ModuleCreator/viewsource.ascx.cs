@@ -1,22 +1,22 @@
 #region Copyright
 
-//
+// 
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2012
 // by DotNetNuke Corporation
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
 // of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 
 #endregion
@@ -25,10 +25,10 @@
 
 using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -39,7 +39,9 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Security;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -48,12 +50,6 @@ namespace Dnn.Module.ModuleCreator
 {
     public partial class ViewSource : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-        public ViewSource()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
 
         #region Private Members
 
@@ -74,7 +70,7 @@ namespace Dnn.Module.ModuleCreator
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
             }
         }
 
@@ -355,7 +351,7 @@ namespace Dnn.Module.ModuleCreator
                 sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
-                //get filename
+                //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
                 fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", ""));
@@ -526,7 +522,7 @@ namespace Dnn.Module.ModuleCreator
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
-            Response.Redirect(_navigationManager.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
+            Response.Redirect(Globals.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
         }
 
         private void OnConfigureClick(object sender, EventArgs e)
@@ -535,7 +531,7 @@ namespace Dnn.Module.ModuleCreator
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
             ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
-            Response.Redirect(_navigationManager.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
+            Response.Redirect(Globals.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
         }
 
         private void OnCreateClick(object sender, EventArgs e)

@@ -1,21 +1,21 @@
 #region Copyright
-//
+// 
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
 // of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -23,7 +23,6 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -41,22 +40,15 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Services.UserRequest;
-using DotNetNuke.Abstractions;
 
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Security
 {
 
-
+   
     public partial class PasswordReset : UserModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-        public PasswordReset()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
         #region Private Members
 
 	    private const int RedirectTimeout = 3000;
@@ -75,7 +67,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         #endregion
-
+    
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
@@ -93,17 +85,17 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
-                Response.Redirect(_navigationManager.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+                Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
             }
             cmdChangePassword.Click +=cmdChangePassword_Click;
-
-            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
+            
+            hlCancel.NavigateUrl = Globals.NavigateURL();
 
             if (Request.QueryString["resetToken"] != null)
             {
                 ResetToken = Request.QueryString["resetToken"];
                 txtUsername.Enabled = false;
-
+                
             }
 
 	        var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
@@ -222,7 +214,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 var failed = Localization.GetString("PasswordResetFailed");
                 LogFailure(failed);
                 lblHelp.Text = failed;
-                return;
+                return;    
             }
 
             //Check New Password is not same as username or banned
@@ -237,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     var failed = Localization.GetString("PasswordResetFailed");
                     LogFailure(failed);
                     lblHelp.Text = failed;
-                    return;
+                    return;  
                 }
             }
 
@@ -272,7 +264,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     LogSuccess();
                     ViewState.Add("PageNo", 3);
-                    Response.Redirect(_navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
                 }
                 else
                 {
@@ -281,8 +273,8 @@ namespace DotNetNuke.Modules.Admin.Security
                     var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                     UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
                     RedirectAfterLogin();
-                }
-            }
+                }            
+            }           
         }
 
         protected void RedirectAfterLogin()
@@ -315,18 +307,18 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (PortalSettings.RegisterTabId != -1 && PortalSettings.HomeTabId != -1)
                     {
                         //redirect to portal home page specified
-                        redirectURL = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
+                        redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
                     }
                     else
                     {
-                        //redirect to current page
-                        redirectURL = _navigationManager.NavigateURL();
+                        //redirect to current page 
+                        redirectURL = Globals.NavigateURL();
                     }
                 }
             }
             else //redirect to after login page
             {
-                redirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
+                redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
             }
 
 			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -375,7 +367,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
             log.AddProperty("IP", _ipAddress);
-
+            
             LogController.Instance.AddLog(log);
         }
 

@@ -28,7 +28,6 @@ using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
@@ -42,13 +41,8 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
-        protected INavigationManager NavigationManager { get; }
-        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
 
-        public ServerController(INavigationManager navigationManager)
-        {
-            NavigationManager = navigationManager;
-        }
+        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,7 +54,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return Request.CreateResponse(HttpStatusCode.OK, new {url = NavigationManager.NavigateURL()});
+                return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL()});
             }
             catch (Exception exc)
             {
@@ -77,7 +71,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {url = NavigationManager.NavigateURL() });
+                return Request.CreateResponse(HttpStatusCode.OK, new {url = Globals.NavigateURL() });
             }
             catch (Exception exc)
             {
