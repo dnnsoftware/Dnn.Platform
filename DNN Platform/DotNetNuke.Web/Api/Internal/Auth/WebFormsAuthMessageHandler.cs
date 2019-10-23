@@ -31,7 +31,9 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+#pragma warning disable CS0612 // Type or member is obsolete
             MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);
+#pragma warning restore CS0612 // Type or member is obsolete
 
             return request;
         }

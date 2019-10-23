@@ -91,6 +91,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// Initializes the specified application.
         /// </summary>
         /// <param name="application">The application.</param>
+        [Obsolete]
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
@@ -106,6 +107,7 @@ namespace DotNetNuke.HttpModules.Membership
 
         #endregion
 
+        [Obsolete]
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication) sender;
@@ -153,6 +155,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensinons.</param>
+        [Obsolete]
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;

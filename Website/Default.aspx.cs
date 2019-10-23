@@ -190,7 +190,8 @@ namespace DotNetNuke.Framework
         /// - set META tags, copyright, keywords and description
         /// </remarks>
         /// -----------------------------------------------------------------------------
-      
+
+        [Obsolete]
         private void InitializePage()
         {
             //There could be a pending installation/upgrade process
@@ -592,7 +593,10 @@ namespace DotNetNuke.Framework
         /// - add skin control placeholder.  This holds all the modules and content of the page.
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 

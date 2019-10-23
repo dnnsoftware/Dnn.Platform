@@ -60,6 +60,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         #region IMapRoute Members
 
+        [Obsolete]
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || String.IsNullOrEmpty(namespaces[0]))
@@ -97,11 +98,13 @@ namespace DotNetNuke.Web.Api.Internal
             return routes;
         }
 
+        [Obsolete]
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return MapHttpRoute(moduleFolderName, routeName, url, defaults, null, namespaces);
         }
 
+        [Obsolete]
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return MapHttpRoute(moduleFolderName, routeName, url, null, null, namespaces);

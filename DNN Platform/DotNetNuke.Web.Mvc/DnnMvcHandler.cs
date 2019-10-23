@@ -57,7 +57,9 @@ namespace DotNetNuke.Web.Mvc
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
+#pragma warning disable CS0612 // Type or member is obsolete
             MembershipModule.AuthenticateRequest(RequestContext.HttpContext, allowUnknownExtensions: true);
+#pragma warning restore CS0612 // Type or member is obsolete
             ProcessRequest(httpContext);
         }
 

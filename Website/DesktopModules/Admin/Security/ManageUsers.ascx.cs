@@ -245,8 +245,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 
-		#region Private Methods
+        #region Private Methods
 
+        [Obsolete]
         private void BindData()
         {
             if (User != null)
@@ -360,7 +361,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return true;
         }
 
-       
+        [Obsolete]
         private void BindMembership()
         {
             ctlMembership.User = User;
@@ -370,6 +371,7 @@ namespace DotNetNuke.Modules.Admin.Users
             imgOnline.Visible = ctlMembership.UserMembership.IsOnLine;
         }
 
+        [Obsolete]
         private void BindUser()
         {
             if (AddUser)
@@ -415,6 +417,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlUser.Visible = false;
         }
 
+        [Obsolete]
         private void ShowPanel()
         {
             if (AddUser)
@@ -473,9 +476,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -483,7 +486,10 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnInit(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnInit(e);
 
@@ -558,7 +564,10 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         protected override void OnLoad(EventArgs e)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             base.OnLoad(e);
 
@@ -653,6 +662,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
         private void MembershipAuthorized(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -684,6 +694,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -711,6 +722,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete]
         private void MembershipPromoteToSuperuser(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -736,6 +748,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete]
         private void MembershipDemoteFromSuperuser(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -760,6 +773,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
         private void MembershipUnAuthorized(object sender, EventArgs e)
         {
             if (IsAdmin == false)
@@ -784,6 +798,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        [Obsolete]
         private void MembershipUnLocked(object sender, EventArgs e)
         {
             if (IsAdmin == false)

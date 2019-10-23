@@ -93,7 +93,9 @@ namespace DotNetNuke.Tests.Web.Api
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
+#pragma warning disable CS0612 // Type or member is obsolete
             Assert.Throws<ArgumentException>(() => srm.MapHttpRoute("usm", "default", "url", null, namespaces));
+#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         [Test]
@@ -140,7 +142,9 @@ namespace DotNetNuke.Tests.Web.Api
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
+#pragma warning disable CS0612 // Type or member is obsolete
             Assert.Throws<ArgumentException>(() => srm.MapHttpRoute(uniqueName, "default", "url", null, new[] { "foo" }));
+#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         [Test]
@@ -153,7 +157,9 @@ namespace DotNetNuke.Tests.Web.Api
             var srm = new ServicesRoutingManager(new RouteCollection());
 
             //Assert
+#pragma warning disable CS0612 // Type or member is obsolete
             Assert.DoesNotThrow(() => srm.MapHttpRoute("name", "default", "/url", null, new[] { "foo" }));
+#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         [Test]
@@ -170,7 +176,9 @@ namespace DotNetNuke.Tests.Web.Api
             var srm = new ServicesRoutingManager(routeCollection);
 
             //Act
+#pragma warning disable CS0612 // Type or member is obsolete
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
+#pragma warning restore CS0612 // Type or member is obsolete
 
             //Assert
             var route = (Route) routeCollection[0];
@@ -191,8 +199,12 @@ namespace DotNetNuke.Tests.Web.Api
             var srm = new ServicesRoutingManager(routeCollection);
 
             //Act
+#pragma warning disable CS0612 // Type or member is obsolete
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
+#pragma warning restore CS0612 // Type or member is obsolete
+#pragma warning disable CS0612 // Type or member is obsolete
             srm.MapHttpRoute("folder", "another", "alt/url", new[] { "foo" });
+#pragma warning restore CS0612 // Type or member is obsolete
 
             //Assert
             var route = (Route)routeCollection[0];
@@ -215,7 +227,9 @@ namespace DotNetNuke.Tests.Web.Api
             var srm = new ServicesRoutingManager(routeCollection);
 
             //Act
+#pragma warning disable CS0612 // Type or member is obsolete
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
+#pragma warning restore CS0612 // Type or member is obsolete
 
             //Assert
             var route = (Route)routeCollection[0];

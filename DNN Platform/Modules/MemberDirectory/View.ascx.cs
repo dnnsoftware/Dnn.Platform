@@ -101,6 +101,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
+        [Obsolete]
         protected string ItemTemplate
         {
             get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
@@ -110,10 +111,13 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 return GetSettingAsInt32(ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
+        [Obsolete]
         protected string PopUpTemplate
         {
             get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }

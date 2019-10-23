@@ -100,7 +100,9 @@ namespace Dnn.PersonaBar.Users.Components
                 return null;
             }
             user.PortalID = portalId;
+#pragma warning disable CS0612 // Type or member is obsolete
             return new UserDetailDto(user);
+#pragma warning restore CS0612 // Type or member is obsolete
         }
 
         public bool ChangePassword(int portalId, int userId, string newPassword)
