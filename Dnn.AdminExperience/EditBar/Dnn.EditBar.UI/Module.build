@@ -8,7 +8,7 @@
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
   </PropertyGroup>
   
-  <Import Project=""..\..\..\Build\BuildScripts\AEModule.build" />
+  <Import Project="..\..\..\Build\BuildScripts\AEModule.build" />
   <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets"/>
   
   <PropertyGroup>
