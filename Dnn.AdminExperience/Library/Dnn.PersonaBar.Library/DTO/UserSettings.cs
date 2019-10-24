@@ -33,7 +33,9 @@ namespace Dnn.PersonaBar.Library.DTO
     /// Persona Bar Settings For User.
     /// </summary>
     [DataContract]
+#pragma warning disable CA2237 // Mark ISerializable types with serializable
     public class UserSettings : Dictionary<string, object>, IXmlSerializable
+#pragma warning restore CA2237 // Mark ISerializable types with serializable
     {
         [IgnoreDataMember]
         public bool ExpandPersonaBar
