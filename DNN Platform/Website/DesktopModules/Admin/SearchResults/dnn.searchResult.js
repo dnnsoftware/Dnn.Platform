@@ -389,7 +389,6 @@
         var sterm = dnn.searchResult.queryOptions.searchTerm;
         var advancedTerm = dnn.searchResult.queryOptions.advancedTerm;
         if ((!sterm || $.trim(sterm).length <= 1) && (!advancedTerm || $.trim(advancedTerm).length <= 1)) {
-            dnn.searchResult.renderResults(null);
             return;
         }
 
