@@ -50,6 +50,14 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>Dnn.PersonaBar.Extensions</DNNFileName>
+    <PackageName>Dnn.PersonaBar.Extensions</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Compile Include="..\..\..\..\SolutionInfo.cs">

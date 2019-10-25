@@ -1,15 +1,15 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Dnn.AdminExperience\Build\BuildScripts</BuildScriptsPath>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
     <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
   </PropertyGroup>
   
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Import Project="$(BuildScriptsPath)\Module.Build"/>
+  <Import Project="..\..\..\Build\BuildScripts\AEModule.build" />
+  <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets"/>
   
   <PropertyGroup>
     <Extension>zip</Extension>

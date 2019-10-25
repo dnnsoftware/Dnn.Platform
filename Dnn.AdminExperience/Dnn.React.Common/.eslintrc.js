@@ -56,7 +56,6 @@ module.exports = {
         "no-multiple-empty-lines":  "warn",
         "react/jsx-equals-spacing": ["warn", "never"],
         "id-match": ["error", "^([A-Za-z0-9_])+$", {"properties": true}],
-        "import/no-unresolved": 2,
         "import/named": 2,
         "import/default": 2,
         "filenames/match-exported": 2,

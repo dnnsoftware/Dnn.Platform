@@ -1,0 +1,55 @@
+{
+  "installExclude": [
+    "/**/*.csproj",
+    "/**/*.user",
+    "/**/*.cs",
+    "/**/*.less",
+    "/**/packages.config",
+    "/bin/**/*.pdb",
+    "/bin/**/*.xml",
+    "/obj/**/*",
+    "/development.config",
+    "/packages.config",
+    "/release.config",
+    "/App_Data/RadSpell/en-US.tdf",
+    "/bin/Dnn.AuthServices.Jwt.*",
+    "/bin/Dnn.EditBar.*",
+    "/bin/Dnn.Modules.*",
+    "/bin/Dnn.PersonaBar.*",
+    "/bin/DotNetNuke.Authentication.*",
+    "/bin/DotNetNuke.Modules.*",
+    "/bin/DotNetNuke.Web.Deprecated.dll",
+    "/bin/DotNetNuke.Website.Deprecated.dll",
+    "/bin/System.IdentityModel.Tokens.Jwt.*",
+    "/bin/Telerik.Web.UI.dll",
+    "/bin/Telerik.Web.UI.Skins.dll",
+    "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"
+  ],
+  "installInclude": ["/Install/InstallWizard.aspx.cs"],
+  "upgradeExclude": [
+    "/favicon.ico",
+    "/Robots.txt",
+    "/web.config",
+    "/App_Data/Database.mdf",
+    "/App_Data/Database_log.LDF",
+    "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
+    "/bin/Newtonsoft.Json.dll",
+    "/Config/DotNetNuke.config",
+    "/Install/InstallWizard.aspx"
+  ],
+  "symbolsInclude": [
+    "/bin/*.pdb",
+    "/bin/*.xml",
+    "/bin/Providers/*.pdb",
+    "/bin/Providers/*.xml"
+  ],
+  "symbolsExclude": [
+    "/bin/DotNetNuke.log4net*",
+    "/bin/HtmlAgilityPack*",
+    "/bin/Lucene*",
+    "/bin/Newtonsoft*",
+    "/bin/SchwabenCode*",
+    "/bin/System*",
+    "/bin/WebFormsMvp*"
+  ]
+}

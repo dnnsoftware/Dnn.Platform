@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="DotNetNuke_Symbols" type="Library" >
-      <friendlyName>DNN @@VER_NAME@@ Symbols</friendlyName>
-      <description>This package contains Debug Symbols and Intellisense files for DNN @@VER_NAME@@ Edition.</description>
+      <friendlyName>DNN Platform Symbols</friendlyName>
+      <description>This package contains Debug Symbols and Intellisense files for DNN Platform.</description>
       <owner>
         <name>DNN Corporation</name>
         <organization>DNN Corporation</organization>
