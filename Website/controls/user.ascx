@@ -31,7 +31,7 @@
 			<asp:requiredfieldvalidator id="valUsername" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Username Is Required."
 				controltovalidate="txtUsername" resourcekey="valUsername"></asp:requiredfieldvalidator></td>
 	</tr>
-    <tr>
+        <tr>
 		<td class="SubHead" width="175">
 			<dnn:label id="plEmail" runat="server" controlname="txtEmail" text="Email Address:"></dnn:label></td>
 		<td class="NormalBold" noWrap>
