@@ -19,8 +19,7 @@
 				maxlength="50"></asp:textbox>&nbsp;*
 			<asp:requiredfieldvalidator id="valLastName" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Last Name Is Required."
 				controltovalidate="txtLastName" resourcekey="valLastName"></asp:requiredfieldvalidator></td>
-	</tr>	
-
+	</tr>
 	<tr>
 		<td class="SubHead" width="175">
 			<dnn:label id="plUserName" runat="server" controlname="txtUsername" text="User Name:"></dnn:label></td>
@@ -31,7 +30,7 @@
 			<asp:label id="lblUsername" runat="server"></asp:label>
 			<asp:requiredfieldvalidator id="valUsername" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Username Is Required."
 				controltovalidate="txtUsername" resourcekey="valUsername"></asp:requiredfieldvalidator></td>
-	</tr>    
+	</tr>
     <tr>
 		<td class="SubHead" width="175">
 			<dnn:label id="plEmail" runat="server" controlname="txtEmail" text="Email Address:"></dnn:label></td>
@@ -62,7 +61,6 @@
 			<asp:comparevalidator id="valConfirm2" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Password Values Entered Do Not Match."
 				controltovalidate="txtConfirm" resourcekey="valConfirm2" controltocompare="txtPassword"></asp:comparevalidator></td>
 	</tr>
-
 	<tr>
 		<td class="SubHead" width="175">
 			<dnn:label id="plWebsite" runat="server" controlname="txtWebsite" text="Website:"></dnn:label></td>
