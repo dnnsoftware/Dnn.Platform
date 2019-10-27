@@ -86,6 +86,9 @@ UpgradeLog*.XML
 ## DNN
 ############
 
+# Ignore local settings
+local.*
+
 # Ignore temporary artifacts
 /[Tt]emp/
 /[Ww]ebsite/
