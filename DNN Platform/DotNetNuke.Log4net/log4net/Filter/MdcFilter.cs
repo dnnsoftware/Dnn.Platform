@@ -18,47 +18,30 @@
 #endregion
 
 using System;
-using System.Text;
-using System.IO;
+using System.Text.RegularExpressions;
 
+using log4net;
 using log4net.Core;
+using log4net.Util;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Filter
 {
 	/// <summary>
-	/// Pattern converter for the class name
+	/// Simple filter to match a keyed string in the <see cref="MDC"/>
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Outputs the <see cref="LocationInfo.ClassName"/> of the event.
+	/// Simple filter to match a keyed string in the <see cref="MDC"/>
+	/// </para>
+	/// <para>
+	/// As the MDC has been replaced with layered properties the
+	/// <see cref="PropertyFilter"/> should be used instead.
 	/// </para>
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
-	internal sealed class TypeNamePatternConverter : NamedPatternConverter
+	/// <author>Gert Driesen</author>
+	/*[Obsolete("MdcFilter has been replaced by PropertyFilter")]*/
+	public class MdcFilter : PropertyFilter
 	{
-		/// <summary>
-		/// Gets the fully qualified name of the class
-		/// </summary>
-		/// <param name="loggingEvent">the event being logged</param>
-		/// <returns>The fully qualified type name for the caller location</returns>
-		/// <remarks>
-		/// <para>
-		/// Returns the <see cref="LocationInfo.ClassName"/> of the <paramref name="loggingEvent"/>.
-		/// </para>
-		/// </remarks>
-		override protected string GetFullyQualifiedName(LoggingEvent loggingEvent)
-		{
-			if (loggingEvent == null)
-			{
-				return string.Empty;
-			}
-
-			if (loggingEvent.LocationInformation == null)
-			{
-				return string.Empty;
-			}
-
-			return loggingEvent.LocationInformation.ClassName;
-		}
 	}
 }

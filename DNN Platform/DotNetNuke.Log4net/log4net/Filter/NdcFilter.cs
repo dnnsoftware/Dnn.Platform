@@ -18,47 +18,43 @@
 #endregion
 
 using System;
-using System.Text;
-using System.IO;
+using System.Text.RegularExpressions;
 
+using log4net;
 using log4net.Core;
+using log4net.Util;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Filter
 {
 	/// <summary>
-	/// Pattern converter for the class name
+	/// Simple filter to match a string in the <see cref="NDC"/>
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Outputs the <see cref="LocationInfo.ClassName"/> of the event.
+	/// Simple filter to match a string in the <see cref="NDC"/>
+	/// </para>
+	/// <para>
+	/// As the MDC has been replaced with named stacks stored in the
+	/// properties collections the <see cref="PropertyFilter"/> should
+	/// be used instead.
 	/// </para>
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
-	internal sealed class TypeNamePatternConverter : NamedPatternConverter
+	/// <author>Gert Driesen</author>
+	/*[Obsolete("NdcFilter has been replaced by PropertyFilter")]*/
+	public class NdcFilter : PropertyFilter
 	{
 		/// <summary>
-		/// Gets the fully qualified name of the class
+		/// Default constructor
 		/// </summary>
-		/// <param name="loggingEvent">the event being logged</param>
-		/// <returns>The fully qualified type name for the caller location</returns>
 		/// <remarks>
 		/// <para>
-		/// Returns the <see cref="LocationInfo.ClassName"/> of the <paramref name="loggingEvent"/>.
+		/// Sets the <see cref="PropertyFilter.Key"/> to <c>"NDC"</c>.
 		/// </para>
 		/// </remarks>
-		override protected string GetFullyQualifiedName(LoggingEvent loggingEvent)
+		public NdcFilter()
 		{
-			if (loggingEvent == null)
-			{
-				return string.Empty;
-			}
-
-			if (loggingEvent.LocationInformation == null)
-			{
-				return string.Empty;
-			}
-
-			return loggingEvent.LocationInformation.ClassName;
+			base.Key = "NDC";
 		}
 	}
 }

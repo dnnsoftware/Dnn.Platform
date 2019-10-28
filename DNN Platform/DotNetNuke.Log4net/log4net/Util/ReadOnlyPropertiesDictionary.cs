@@ -1,10 +1,10 @@
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -35,7 +35,7 @@ namespace log4net.Util
 	/// This collection is readonly and cannot be modified.
 	/// </para>
 	/// <para>
-	/// While this collection is serializable only member 
+	/// While this collection is serializable only member
 	/// objects that are serializable will
 	/// be serialized along with this collection.
 	/// </para>
@@ -100,7 +100,7 @@ namespace log4net.Util
 		/// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
 		/// <remarks>
 		/// <para>
-		/// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary" /> class 
+		/// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary" /> class
 		/// with serialized data.
 		/// </para>
 		/// </remarks>
@@ -205,26 +205,31 @@ namespace log4net.Util
 		/// </para>
 		/// </remarks>
 #if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
-        [System.Security.SecurityCritical]
+		[System.Security.SecurityCritical]
 #else
 		[System.Security.Permissions.SecurityPermissionAttribute(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter=true)]
 #endif
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			foreach(DictionaryEntry entry in InnerHashtable.Clone() as IDictionary)
 			{
 				string entryKey = entry.Key as string;
 				object entryValue = entry.Value;
 
-                // If value is serializable then we add it to the list
-#if NETSTANDARD1_3
-                bool isSerializable = entryValue.GetType().GetTypeInfo().IsSerializable;
-#else
-                bool isSerializable = entryValue.GetType().IsSerializable;
-#endif
-				if (entryKey != null && entryValue != null && isSerializable)
+				if (entryKey == null || entryValue == null)
 				{
-					// Store the keys as an Xml encoded local name as it may contain colons (':') 
+					continue;
+				}
+
+				// If value is serializable then we add it to the list
+#if NETSTANDARD1_3
+				bool isSerializable = entryValue.GetType().GetTypeInfo().IsSerializable;
+#else
+				bool isSerializable = entryValue.GetType().IsSerializable;
+#endif
+				if (isSerializable)
+				{
+					// Store the keys as an Xml encoded local name as it may contain colons (':')
 					// which are NOT escaped by the Xml Serialization framework.
 					// This must be a bug in the serialization framework as we cannot be expected
 					// to know the implementation details of all the possible transport layers.
