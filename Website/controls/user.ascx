@@ -41,7 +41,7 @@
 			<asp:label id="lblUsername" runat="server"></asp:label>
 			<asp:requiredfieldvalidator id="valUsername" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Username Is Required."
 				controltovalidate="txtUsername" resourcekey="valUsername"></asp:requiredfieldvalidator></td>
-
+	</tr>
 	<tr id="PasswordRow" runat="server">
 		<td class="SubHead" width="175">
 		    <dnn:label id="plPassword" runat="server" controlname="txtPassword" text="Password:"></dnn:label></td>
