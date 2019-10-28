@@ -26,7 +26,7 @@ class ModuleEdit extends Component {
     onIFrameLoad() {
         const iframe = this.iframeRef;
         const location = iframe.contentWindow.location.href;
-        if(location.indexOf("popUp") === -1){
+        if(location.toLowerCase().indexOf("popup") === -1){
             if(this.closeOnEndRequest){
                 this.props.onUpdatedModuleSettings();
             } else {
@@ -67,7 +67,7 @@ class ModuleEdit extends Component {
         }
 
         if(editUrl !== ""){
-            if(editUrl.indexOf('popUp') === -1){
+            if(editUrl.toLowerCase().indexOf('popup') === -1){
                 this.redirectUrl(editUrl);
             } else {
                 editUrl = utils.url.appendQueryString(editUrl, queryString);
