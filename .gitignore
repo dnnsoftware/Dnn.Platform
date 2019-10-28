@@ -87,7 +87,8 @@ UpgradeLog*.XML
 ############
 
 # Ignore local settings
-local.*
+Build/**/*.local.*
+settings.local.json
 
 # Ignore temporary artifacts
 /[Tt]emp/

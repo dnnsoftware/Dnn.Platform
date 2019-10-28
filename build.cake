@@ -9,6 +9,8 @@
 
 #load "local:?path=Build/Cake/compiling.cake"
 #load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/database.cake"
+#load "local:?path=Build/Cake/devsite.cake"
 #load "local:?path=Build/Cake/external.cake"
 #load "local:?path=Build/Cake/nuget.cake"
 #load "local:?path=Build/Cake/packaging.cake"
