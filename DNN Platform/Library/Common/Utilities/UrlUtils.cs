@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -26,7 +26,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
-
+using Microsoft.Extensions.DependencyInjection;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -40,6 +41,8 @@ namespace DotNetNuke.Common.Utilities
 {
     public class UrlUtils
     {
+        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
@@ -219,7 +222,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect)
         {
-            return PopUpUrl(url, control, portalSettings, onClickEvent, responseRedirect, string.Empty);
+            return PopUpUrl(url, control, portalSettings, onClickEvent, responseRedirect, 550, 950);
         }
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, String closingUrl)
@@ -419,7 +422,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {
-                response.Redirect(Globals.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+                response.Redirect(_navigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
             }
             else
             {
