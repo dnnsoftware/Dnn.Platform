@@ -20,7 +20,6 @@
 			<asp:requiredfieldvalidator id="valLastName" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Last Name Is Required."
 				controltovalidate="txtLastName" resourcekey="valLastName"></asp:requiredfieldvalidator></td>
 	</tr>
-	</tr>
         <tr>
 	    <td class="SubHead" width="175">
 			<dnn:label id="plEmail" runat="server" controlname="txtEmail" text="Email Address:"></dnn:label></td>
