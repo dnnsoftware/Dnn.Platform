@@ -52,6 +52,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private const int SessionTokenTtl = 60; // in minutes = 1 hour
         private const int RenewalTokenTtl = 14; // in days = 2 weeks
         private const string SessionClaimType = "sid";
+        private const string AudienceClaimType = "aud";
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         public const string AuthScheme = "Bearer";
@@ -168,7 +169,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
 
             var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, loginData.Audience, ptoken, userInfo.Roles);
             var accessToken = jwt.RawData;
 
             ptoken.TokenHash = GetHashedStr(accessToken);
@@ -248,10 +249,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-token");
             }
 
-            return UpdateToken(renewalToken, ptoken, userInfo);
+            var audience = GetJwtAudienceValue(jwt);
+            return UpdateToken(renewalToken, ptoken, userInfo, audience);
         }
 
-        private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
+        private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo, string audience)
         {
             var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
             if (expiry > ptoken.RenewalExpiry)
@@ -263,7 +265,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, audience, ptoken, userInfo.Roles);
             var accessToken = jwt.RawData;
 
             // save hash values in DB so no one with access can create JWT header from existing data
@@ -290,7 +292,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return new LoginResultData { Error = error };
         }
 
-        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken ptoken, IEnumerable<string> roles)
+        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, string audience, PersistedToken ptoken, IEnumerable<string> roles)
         {
             //var key = Convert.FromBase64String(symmetricKey);
             var credentials = new SigningCredentials(
@@ -305,7 +307,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var notBefore = DateTime.UtcNow.AddMinutes(-ClockSkew);
             var notAfter = ptoken.TokenExpiry;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(issuer, null, claimsIdentity, notBefore, notAfter, credentials);
+            var token = tokenHandler.CreateToken(issuer, audience, claimsIdentity, notBefore, notAfter, credentials);
             return token;
         }
 
@@ -470,6 +472,12 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             var sessionClaim = jwt?.Claims?.FirstOrDefault(claim => SessionClaimType.Equals(claim.Type));
             return sessionClaim?.Value;
+        }
+
+        private static string GetJwtAudienceValue(JwtSecurityToken jwt)
+        {
+            var audienceClaim = jwt?.Claims?.FirstOrDefault(claim => AudienceClaimType.Equals(claim.Type));
+            return audienceClaim?.Value;
         }
 
         private static byte[] ObtainSecret(string sessionId, Guid portalGuid, DateTime userCreationDate)
