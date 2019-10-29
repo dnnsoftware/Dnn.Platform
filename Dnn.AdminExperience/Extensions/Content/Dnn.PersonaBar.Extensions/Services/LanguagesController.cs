@@ -24,6 +24,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Abstractions;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -33,6 +34,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
+        protected INavigationManager NavigationManager { get; }
+        public LanguagesController(INavigationManager navigationManager)
+        {
+            NavigationManager = navigationManager;
+        }
 
         // Sample matches:
         // MyResources.ascx.en-US.resx
@@ -971,7 +977,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         PageId = page.TabID,
                         PageName = page.TabName,
-                        ViewUrl = Globals.NavigateURL(page.TabID),
+                        ViewUrl = NavigationManager.NavigateURL(page.TabID),
                     }));
             }
             return pages;

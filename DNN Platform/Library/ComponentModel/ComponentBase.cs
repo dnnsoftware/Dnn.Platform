@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -28,10 +28,16 @@ namespace DotNetNuke.ComponentModel
 {
     public abstract class ComponentBase<TContract, TType> where TType : class, TContract
     {
+        private static TContract _testableInstance;
+        private static bool _useTestable = false;
+
         public static TContract Instance
         {
             get
             {
+                if (_useTestable && _testableInstance != null)
+                    return _testableInstance;
+
                 var component = ComponentFactory.GetComponent<TContract>();
 
                 if (component == null)
@@ -42,6 +48,27 @@ namespace DotNetNuke.ComponentModel
 
                 return component;
             }
+        }
+
+        /// <summary>
+        /// Registers an instance to use for the Singleton
+        /// </summary>
+        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        /// <param name="instance"></param>
+        internal static void SetTestableInstance(TContract instance)
+        {
+            _testableInstance = instance;
+            _useTestable = true;
+        }
+
+        /// <summary>
+        /// Clears the current instance, a new instance will be initialized when next requested
+        /// </summary>
+        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        internal static void ClearInstance()
+        {
+            _useTestable = false;
+            _testableInstance = default(TContract);
         }
 
         public static void RegisterInstance(TContract instance)

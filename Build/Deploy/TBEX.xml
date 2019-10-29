@@ -4,25 +4,25 @@
     <AddLink InDashboard="True">
       <Title>Installing DotNetNuke for the First Time</Title>
       <Description>If this is your first time to install DotNetNuke you may wish to review this short installation video.  It will guide you through the initial setup and configuration of your new DotNetNuke site.</Description>
-      <Uri>http://www.dotnetnuke.com/Resources/Video-Library/Viewer/VideoId/408/Installing-DotNetNuke-With-WebMatrix.aspx?from=webmatrix</Uri>
+      <Uri>https://www.dnnsoftware.com/Resources/Video-Library/Viewer/VideoId/408/Installing-DotNetNuke-With-WebMatrix.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/first.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
       <Title>Using DotNetNuke</Title>
       <Description>Now that you've successfully created your DotNetNuke site, what next?  Browse training videos and learn how to use all of the features of DotNetNuke.</Description>
-      <Uri>http://www.dotnetnuke.com/Resources/Training/Tutorials.aspx?from=webmatrix</Uri>
+      <Uri>https://www.dnnsoftware.com/Resources/Training/Tutorials.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/using.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True" InLearn="True">
       <Title>Extending DotNetNuke</Title>
       <Description>You don't have to write any code to use or extend DotNetNuke. But if you want to create your own extensions we'll show you how.</Description>
-      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge/Development.aspx?from=webmatrix</Uri>
+      <Uri>https://www.dnnsoftware.com/Community/Extensions-Forge/Development.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/extend.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
       <Title>DotNetNuke Forge - Open Source Community Projects</Title>
       <Description>Find a free, open source extension to use in your site or learn from for your own development. The forge includes extensions of all kinds; modules, widgets, skins, libraries, etc.</Description>
-      <Uri>http://www.dotnetnuke.com/Community/Extensions-Forge.aspx?from=webmatrix</Uri>
+      <Uri>https://www.dnnsoftware.com/Community/Extensions-Forge.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/forge.png</ImageUri>
     </AddLink>
     <AddLink InDashboard="True">
@@ -34,7 +34,7 @@
     <AddLink InDashboard="True">
       <Title>DotNetNuke Professional Products</Title>
       <Description>DotNetNuke Corporation also offers Professional and Enterprise edition products with extended features for your most important business asset.</Description>
-      <Uri>http://www.dotnetnuke.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
+      <Uri>https://www.dnnsoftware.com/Products/Compare-Editions.aspx?from=webmatrix</Uri>
       <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/pro.png</ImageUri>
     </AddLink>
   </Links>
@@ -48,13 +48,13 @@
     
 <AddRibbonButton>
 <Label>Get Answers</Label>
-<Uri>http://www.dotnetnuke.com/Community/Community-Exchange.aspx?from=webmatrix</Uri>
+<Uri>https://www.dnnsoftware.com/Community/Community-Exchange.aspx?from=webmatrix</Uri>
 <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/qa.png</ImageUri>
 </AddRibbonButton>
 
 <AddRibbonButton>
 <Label>Our Community</Label>
-<Uri>http://www.dotnetnuke.com/Community/Community-Overview.aspx?from=webmatrix</Uri>
+<Uri>https://www.dnnsoftware.com/Community/Community-Overview.aspx?from=webmatrix</Uri>
 <ImageUri>http://cdn.dotnetnuke.com/images/webmatrix/triad.png</ImageUri>
 </AddRibbonButton>
 

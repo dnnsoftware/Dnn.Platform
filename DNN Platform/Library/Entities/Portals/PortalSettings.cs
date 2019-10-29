@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -34,6 +34,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions.Portals;
 
 #endregion
 
@@ -47,7 +48,7 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
-    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess
+    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
         #region ControlPanelPermission enum
 

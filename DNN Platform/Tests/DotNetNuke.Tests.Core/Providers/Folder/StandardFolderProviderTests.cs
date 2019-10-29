@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
@@ -57,6 +60,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #endregion
 
         #region Setup
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            var navigationManagerMock = new Mock<INavigationManager>();
+            var containerMock = new Mock<IServiceProvider>();
+            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
+            Globals.DependencyProvider = containerMock.Object;
+        }
 
         [SetUp]
         public void Setup()
@@ -115,6 +126,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
+            TestableGlobals.ClearInstance();
+            PortalController.ClearInstance();
         }
 
         #endregion

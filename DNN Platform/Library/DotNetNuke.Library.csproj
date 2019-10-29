@@ -189,6 +189,7 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
@@ -1734,9 +1735,6 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
-    <None Include="Module.build">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="UI\Diagrams\Skinning.cd" />
   </ItemGroup>
@@ -1837,6 +1835,10 @@
       <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>
       <Name>CountryListBox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
       <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
       <Name>DotNetNuke.DependencyInjection</Name>
@@ -1858,12 +1860,4 @@
       <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="Module.build" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
 </Project>

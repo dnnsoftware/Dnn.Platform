@@ -1,21 +1,21 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Application;
@@ -52,6 +53,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
+using DotNetNuke.Abstractions;
 
 #endregion
 
@@ -61,9 +63,15 @@ namespace DotNetNuke.UI.ControlPanels
 {
     public partial class ControlBar : ControlPanelBase
     {
-        private readonly IList<string> _adminCommonTabs = new List<string> { "Site Settings", 
-                                                                            "Security Roles", 
-                                                                            "User Accounts", 
+        private readonly INavigationManager _navigationManager;
+        public ControlBar()
+        {
+            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        private readonly IList<string> _adminCommonTabs = new List<string> { "Site Settings",
+                                                                            "Security Roles",
+                                                                            "User Accounts",
                                                                             "File Management" };
 
         private readonly IList<string> _hostCommonTabs = new List<string> { "Host Settings",
@@ -84,7 +92,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string LoadTabModuleMessage { get; set; }
 
-        protected string BookmarkModuleCategory 
+        protected string BookmarkModuleCategory
         {
             get
             {
@@ -114,7 +122,7 @@ namespace DotNetNuke.UI.ControlPanels
                 return base.IncludeInControlHierarchy && (IsPageAdmin() || IsModuleAdmin());
             }
         }
-      
+
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
@@ -134,7 +142,7 @@ namespace DotNetNuke.UI.ControlPanels
         }
 
         protected override void OnLoad(EventArgs e)
-        {           
+        {
             base.OnLoad(e);
 
             if (PortalSettings.EnablePopUps && Host.EnableModuleOnLineHelp)
@@ -175,7 +183,7 @@ namespace DotNetNuke.UI.ControlPanels
 
             LoadTabModuleMessage = multipleSite ? GetString("LoadingTabModuleCE.Text") : GetString("LoadingTabModule.Text");
 		}
-	
+
 		#endregion
 
 		#region Protected Methods
@@ -189,7 +197,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected string GetUpgradeIndicator()
         {
             UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-           
+
             if (objUser != null && objUser.IsSuperUser)
             {
                 var upgradeIndicator = ControlBarController.Instance.GetUpgradeIndicator(DotNetNukeContext.Current.Application.Version,
@@ -208,28 +216,28 @@ namespace DotNetNuke.UI.ControlPanels
         {
             foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
             {
-                var liElement = new HtmlGenericControl("li");                
+                var liElement = new HtmlGenericControl("li");
                 liElement.Attributes.Add("id", menuItem.ID + "_tab");
 
                 var control = Page.LoadControl(menuItem.Source);
                 control.ID = menuItem.ID;
-                            
+
                 liElement.Controls.Add(control);
-                
+
                 CustomMenuItems.Controls.Add(liElement);
             }
         }
 
         private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
-        {            
+        {
             return string.Format("<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
                 upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
 		protected string PreviewPopup()
 		{
-			var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}", 
-										Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), 
+			var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
+										Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
 										"MobilePreview",
 										PortalSettings.ActiveTab.TabID);
 
@@ -276,7 +284,7 @@ namespace DotNetNuke.UI.ControlPanels
                         p.ToString(),
                         "BOTTOM"
                     };
-                   
+
                     resultPanes.Add(botPane);
                 }
             }
@@ -290,7 +298,7 @@ namespace DotNetNuke.UI.ControlPanels
             return Localization.GetString(key, LocalResourceFile);
         }
 
-        protected string BuildToolUrl(string toolName, bool isHostTool, string moduleFriendlyName, 
+        protected string BuildToolUrl(string toolName, bool isHostTool, string moduleFriendlyName,
                                       string controlKey, string navigateUrl, bool showAsPopUp)
         {
             if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -309,68 +317,68 @@ namespace DotNetNuke.UI.ControlPanels
                 case "PageSettings":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=settingTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=settingTab");
                     }
                     break;
                 case "CopyPage":
                     if (TabPermissionController.CanCopyPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy&activeTab=copyTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy&activeTab=copyTab");
                     }
                     break;
                 case "DeletePage":
                     if (TabPermissionController.CanDeletePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                     }
                     break;
                 case "PageTemplate":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=advancedTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=advancedTab");
                     }
                     break;
                 case "PageLocalization":
                     if (TabPermissionController.CanManagePage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=localizationTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=localizationTab");
                     }
                     break;
                 case "PagePermission":
                     if (TabPermissionController.CanAdminPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=permissionsTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=permissionsTab");
                     }
                     break;
                 case "ImportPage":
                     if (TabPermissionController.CanImportPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
                     }
                     break;
                 case "ExportPage":
                     if (TabPermissionController.CanExportPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
                     }
                     break;
                 case "NewPage":
                     if (TabPermissionController.CanAddPage())
                     {
-                        returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
+                        returnValue = _navigationManager.NavigateURL("Tab", "activeTab=settingTab");
                     }
                     break;
                 case "PublishPage":
                     if (TabPermissionController.CanAdminPage())
                     {
-                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+                        returnValue = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID);
                     }
                     break;
                 default:
                     if (!string.IsNullOrEmpty(moduleFriendlyName))
                     {
                         var additionalParams = new List<string>();
-                        returnValue = GetTabURL(additionalParams, toolName, isHostTool, 
+                        returnValue = GetTabURL(additionalParams, toolName, isHostTool,
                                                 moduleFriendlyName, controlKey, showAsPopUp);
                     }
                     break;
@@ -378,7 +386,7 @@ namespace DotNetNuke.UI.ControlPanels
             return returnValue;
         }
 
-        protected string GetTabURL(List<string> additionalParams, string toolName, bool isHostTool, 
+        protected string GetTabURL(List<string> additionalParams, string toolName, bool isHostTool,
                                    string moduleFriendlyName, string controlKey, bool showAsPopUp)
         {
             int portalId = isHostTool ? Null.NullInteger : PortalSettings.PortalId;
@@ -405,7 +413,7 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
                 string currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
-                strURL = Globals.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, controlKey, currentCulture, additionalParams.ToArray());
+                strURL = _navigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, controlKey, currentCulture, additionalParams.ToArray());
             }
 
             return strURL;
@@ -544,7 +552,7 @@ namespace DotNetNuke.UI.ControlPanels
             }
             return string.Empty;
         }
-    
+
 
         protected string GetAdminBaseMenu()
         {
@@ -575,7 +583,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected string GetHostBaseMenu()
         {
             var tabs = HostBaseTabs;
-            
+
             var sb = new StringBuilder();
             foreach (var tab in tabs)
             {
@@ -603,7 +611,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var isHostTool = title == "host";
             var bookmarkItems = isHostTool ? HostBookmarkItems : AdminBookmarkItems;
-            
+
             if(bookmarkItems != null && bookmarkItems.Any())
             {
                 var sb = new StringBuilder();
@@ -660,7 +668,7 @@ namespace DotNetNuke.UI.ControlPanels
                 if(CurrentUICulture  == null)
                 {
                     object oCulture = Personalization.GetProfile("Usability", "UICulture");
-                    
+
                     if (oCulture != null)
                     {
                         CurrentUICulture = oCulture.ToString();
@@ -672,7 +680,7 @@ namespace DotNetNuke.UI.ControlPanels
                         SetLanguage(true, CurrentUICulture);
                     }
                 }
-                
+
 
                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, CurrentUICulture, "", false);
                 foreach (var cultureItem in cultureListItems)
@@ -817,7 +825,7 @@ namespace DotNetNuke.UI.ControlPanels
         }
 
         private void LoadVisibilityList()
-        { 
+        {
             var items = new Dictionary<string, string> { { "0", GetString("PermissionView") }, { "1", GetString("PermissionEdit") } };
 
             VisibilityLst.Items.Clear();
@@ -860,7 +868,7 @@ namespace DotNetNuke.UI.ControlPanels
                     SetUserMode("EDIT");
                     SetLastPageHistory(pageId);
                     Response.Redirect(Request.RawUrl, true);
-                    
+
                 }
 
                 return;
@@ -949,8 +957,8 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + PortalSettings.PortalId);
 
-                    _adminBookmarkItems = bookmarkItems != null 
-                                                ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                    _adminBookmarkItems = bookmarkItems != null
+                                                ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
                                                 : new List<string>();
                 }
 
@@ -967,14 +975,14 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + PortalSettings.PortalId);
 
-                    _hostBookmarkItems = bookmarkItems != null 
-                                            ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                    _hostBookmarkItems = bookmarkItems != null
+                                            ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
                                             : new List<string>();
                 }
 
                 return _hostBookmarkItems;
             }
-        } 
+        }
 
         private List<TabInfo> _adminTabs;
         private List<TabInfo> _adminBaseTabs;

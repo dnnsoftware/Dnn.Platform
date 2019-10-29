@@ -138,6 +138,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
+		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
 		build.cake = build.cake
 		Build_Install_Package.bat = Build_Install_Package.bat
 		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
@@ -187,16 +188,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnockoutMapping", "Knockout
 		DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt = DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{A765907D-1AB9-4CF4-AAAB-FC2F8049EEBA}"
-	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Website\Templates\Blank Website.template = DNN Platform\Website\Templates\Blank Website.template
-		DNN Platform\Website\Templates\Blank Website.template.en-US.resx = DNN Platform\Website\Templates\Blank Website.template.en-US.resx
-		DNN Platform\Website\Templates\Blank Website.template.resources = DNN Platform\Website\Templates\Blank Website.template.resources
-		DNN Platform\Website\Templates\Default Website.template = DNN Platform\Website\Templates\Default Website.template
-		DNN Platform\Website\Templates\Default Website.template.en-US.resx = DNN Platform\Website\Templates\Default Website.template.en-US.resx
-		DNN Platform\Website\Templates\Default Website.template.resources = DNN Platform\Website\Templates\Default Website.template.resources
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5EC5DBCB-B4AD-453E-896C-E238F0F57FDA}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -230,7 +221,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin Modules", "Admin Modu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Log4Net", "DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj", "{04F77171-0634-46E0-A95E-D7477C88712E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "DNN Platform\Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345} = {A86EBC44-2BC8-4C4A-997B-2708E4AAC345}
 		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
@@ -408,13 +399,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{2D7DB29D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{50D97EFD-A619-4B88-92F1-C68A4F2A1BF2}"
 	ProjectSection(SolutionItems) = preProject
+		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
+		Build\BuildScripts\AEPackage.targets = Build\BuildScripts\AEPackage.targets
 		Build\BuildScripts\CombineSymbols.ps1 = Build\BuildScripts\CombineSymbols.ps1
-		Build\BuildScripts\CopyPackagingFiles.build = Build\BuildScripts\CopyPackagingFiles.build
-		Build\BuildScripts\CreateCommunityPackages.build = Build\BuildScripts\CreateCommunityPackages.build
-		Build\BuildScripts\CreateDocumentation.build = Build\BuildScripts\CreateDocumentation.build
-		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
-		Build\BuildScripts\ExternallySourced.targets = Build\BuildScripts\ExternallySourced.targets
 		Build\BuildScripts\ICSharpCode.SharpZipLib.dll = Build\BuildScripts\ICSharpCode.SharpZipLib.dll
 		Build\BuildScripts\Microsoft.Build.Framework.dll = Build\BuildScripts\Microsoft.Build.Framework.dll
 		Build\BuildScripts\Microsoft.Build.Utilities.dll = Build\BuildScripts\Microsoft.Build.Utilities.dll
@@ -440,8 +428,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9-8B8B-441B-8623-9347B62884A1}"
 	ProjectSection(SolutionItems) = preProject
 		Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec = Build\Tools\NuGet\Dnn.PersonaBar.Library.nuspec
+		Build\Tools\NuGet\DotNetNuke.Abstractions.nuspec = Build\Tools\NuGet\DotNetNuke.Abstractions.nuspec
 		Build\Tools\NuGet\DotNetNuke.Bundle.nuspec = Build\Tools\NuGet\DotNetNuke.Bundle.nuspec
 		Build\Tools\NuGet\DotNetNuke.Core.nuspec = Build\Tools\NuGet\DotNetNuke.Core.nuspec
+		Build\Tools\NuGet\DotNetNuke.DependencyInjection.nuspec = Build\Tools\NuGet\DotNetNuke.DependencyInjection.nuspec
 		Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec = Build\Tools\NuGet\DotNetNuke.Instrumentation.nuspec
 		Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec = Build\Tools\NuGet\DotNetNuke.Providers.FolderProviders.nuspec
 		Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec = Build\Tools\NuGet\DotNetNuke.SiteExportImport.nuspec
@@ -490,6 +480,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Library", "Dnn.AdminExperience\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj", "{8B50BA8B-0A08-41B8-81B8-EA70707C7379}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.UI", "Dnn.AdminExperience\Library\Dnn.PersonaBar.UI\Dnn.PersonaBar.UI.csproj", "{7D92D57E-EB66-4816-A0FA-B39213452539}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {9CCA271F-CFAA-42A3-B577-7D5CBB38C646}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}"
 EndProject
@@ -498,6 +491,37 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.Security.Tests\Dnn.PersonaBar.Security.Tests.csproj", "{A64708EF-4972-48A3-B7B9-6B65E47EFE27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.Users.Tests\Dnn.PersonaBar.Users.Tests.csproj", "{15506C01-A730-46B9-8571-99C20226AAE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{10D11155-ED05-40CB-9644-AD861A6D7096}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{622791DE-3AE7-4D54-9E66-2FED9686AA9E}"
+	ProjectSection(SolutionItems) = preProject
+		Dnn.AdminExperience\Build\BuildScripts\CreateSourcePackage.build = Dnn.AdminExperience\Build\BuildScripts\CreateSourcePackage.build
+		Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.build = Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.build
+		Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
+		Dnn.AdminExperience\Build\BuildScripts\Evoq_Package.build = Dnn.AdminExperience\Build\BuildScripts\Evoq_Package.build
+		Dnn.AdminExperience\Build\BuildScripts\ICSharpCode.SharpZipLib.dll = Dnn.AdminExperience\Build\BuildScripts\ICSharpCode.SharpZipLib.dll
+		Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.dll = Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.dll
+		Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll = Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll
+		Dnn.AdminExperience\Build\BuildScripts\Module.build = Dnn.AdminExperience\Build\BuildScripts\Module.build
+		Dnn.AdminExperience\Build\BuildScripts\ModulePackage.targets = Dnn.AdminExperience\Build\BuildScripts\ModulePackage.targets
+		Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.dll = Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.dll
+		Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.Targets = Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.Targets
+		Dnn.AdminExperience\Build\BuildScripts\Package.targets = Dnn.AdminExperience\Build\BuildScripts\Package.targets
+		Dnn.AdminExperience\Build\BuildScripts\SharpZipLib.dll = Dnn.AdminExperience\Build\BuildScripts\SharpZipLib.dll
+		Dnn.AdminExperience\Build\BuildScripts\Variables.build = Dnn.AdminExperience\Build\BuildScripts\Variables.build
+		Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.dll = Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.dll
+		Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll = Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{8D99B9CD-004B-4237-8CFE-77CD327B4370}"
+	ProjectSection(SolutionItems) = preProject
+		Dnn.AdminExperience\Build\Symbols\license.txt = Dnn.AdminExperience\Build\Symbols\license.txt
+		Dnn.AdminExperience\Build\Symbols\releaseNotes.txt = Dnn.AdminExperience\Build\Symbols\releaseNotes.txt
+		Dnn.AdminExperience\Build\Symbols\Symbols.dnn = Dnn.AdminExperience\Build\Symbols\Symbols.dnn
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Abstractions", "DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj", "{6928A9B1-F88A-4581-A132-D3EB38669BB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1865,6 +1889,30 @@ Global
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|x86.ActiveCfg = Release|Any CPU
 		{15506C01-A730-46B9-8571-99C20226AAE6}.Release-Net45|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Debug|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Cloud_Release|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|Any CPU.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|x86.ActiveCfg = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Debug-Net45|x86.Build.0 = Debug|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release|x86.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|x86.ActiveCfg = Release|Any CPU
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0}.Release-Net45|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1914,7 +1962,6 @@ Global
 		{6040AAC4-8533-4EBF-8918-2173B5400415} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{96F739AA-D737-4A48-B423-326B4ED37425} = {886DB964-63D4-4841-81D1-5A7360C98230}
-		{A765907D-1AB9-4CF4-AAAB-FC2F8049EEBA} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{000181C6-C95F-4302-9130-A66B693FFFD2} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{9806C125-8CA9-48CC-940A-CCD0442C5993} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
@@ -1968,6 +2015,10 @@ Global
 		{05515510-9979-4424-8D0A-647F32A25FE7} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
 		{15506C01-A730-46B9-8571-99C20226AAE6} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
+		{10D11155-ED05-40CB-9644-AD861A6D7096} = {392B91E8-C85D-4475-A169-1D4E33B06A4A}
+		{622791DE-3AE7-4D54-9E66-2FED9686AA9E} = {10D11155-ED05-40CB-9644-AD861A6D7096}
+		{8D99B9CD-004B-4237-8CFE-77CD327B4370} = {10D11155-ED05-40CB-9644-AD861A6D7096}
+		{6928A9B1-F88A-4581-A132-D3EB38669BB0} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

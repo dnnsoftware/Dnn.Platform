@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -41,6 +41,7 @@ using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Localization;
+using Constants = Dnn.PersonaBar.Library.Constants;
 
 namespace Dnn.PersonaBar.SiteSettings.Components
 {

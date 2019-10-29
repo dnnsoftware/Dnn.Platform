@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.PersonaBar.Pages.Components.Security;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
 using Dnn.PersonaBar.Themes.Components.DTO;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -20,6 +22,7 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     public static class Converters
     {
+        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
         {
             return new T
@@ -65,7 +68,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private static string GetModuleEditSettingUrl(ModuleInfo module)
         {
             var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
-            return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
+            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
         }
 
         private static string GetModuleEditContentUrl(ModuleInfo module)
@@ -79,7 +82,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     parameters.Add("popUp=true");
                 }
 
-                return Globals.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
+                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
             }
 
             return string.Empty;

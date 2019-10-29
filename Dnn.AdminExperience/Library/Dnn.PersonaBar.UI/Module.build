@@ -1,20 +1,24 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="..\..\..\Dnn_Platform.build" />
-    <PropertyGroup>
-        <Extension>zip</Extension>
-        <DNNFileName>Dnn.PersonaBar.UI</DNNFileName>
-        <PackageName>Dnn.PersonaBar.UI</PackageName>
-        <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
-    </PropertyGroup>
-    <Import Project="$(BuildScriptsPath)\Package.Targets" />
-    <Import Project="$(BuildScriptsPath)\Module.Build"/>
+  <PropertyGroup>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
+    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
+    <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <Extension>zip</Extension>
+    <DNNFileName>Dnn.PersonaBar.UI</DNNFileName>
+    <PackageName>Dnn.PersonaBar.UI</PackageName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets" />
+  <Import Project="..\..\..\Build\BuildScripts\AEModule.build"/>
 
-    <Target Name="CopyBin">
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.dll" DestinationFolder="$(WebsitePath)/bin" />
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.pdb" DestinationFolder="$(WebsitePath)/bin" />
-        <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.xml" DestinationFolder="$(WebsitePath)/bin" />
-    </Target>
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.PersonaBar.Library.xml" DestinationFolder="$(WebsitePath)/bin" />
+  </Target>
 </Project>

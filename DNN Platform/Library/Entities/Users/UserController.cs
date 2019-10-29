@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -2174,7 +2174,7 @@ namespace DotNetNuke.Entities.Users
             var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
             //Validate NonAlphaChars
-            var rx = Globals.InvalidCharacters;
+            var rx = Globals.NonAlphanumericCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;

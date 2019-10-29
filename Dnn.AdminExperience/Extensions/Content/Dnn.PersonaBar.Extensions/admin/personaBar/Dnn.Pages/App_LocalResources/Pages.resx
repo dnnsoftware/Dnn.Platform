@@ -367,7 +367,7 @@
     <value>End Date</value>
   </data>
   <data name="TitleTooltip.Text" xml:space="preserve">
-    <value>Enter a title for the page. The title will be displayed in the browser window title.</value>
+    <value>Enter a title for the page. The title will be displayed in the browser window title. For SEO it is recommended to use 50 - 60 characters</value>
   </data>
   <data name="Keywords.Text" xml:space="preserve">
     <value>Keywords</value>
