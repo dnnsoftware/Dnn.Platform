@@ -8,7 +8,7 @@
     <DNNFileName>Dnn.Jwt</DNNFileName>
     <PackageName>DnnJwtAuth</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\AuthenticationServices\JWTAuth</ModuleFolderName>
-    <InstallPath>$(WebsiteInstallPath)\Module</InstallPath>
+    <InstallPath>$(WebsiteInstallPath)\Provider</InstallPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;Package" />

@@ -7,7 +7,7 @@
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>dnn_Web_Deprecated</DNNFileName>
-    <PackageName>DNNCE_01_Web.Deprecated</PackageName>
+    <PackageName>DNNCE_Web.Deprecated</PackageName>
     <ModuleFolderName>$(WebsitePath)</ModuleFolderName>
     <InstallPath>$(WebsiteInstallPath)\Module</InstallPath>
   </PropertyGroup>
@@ -17,6 +17,5 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>
