@@ -3,19 +3,19 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
-    using System;
-    using System.IO;
-    using System.Xml.XPath;
+using System;
+using System.IO;
+using System.Xml.XPath;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Tabs.TabVersions;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.EventQueue;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -180,8 +180,19 @@ namespace DotNetNuke.Services.Installer.Installers
             // Load the Desktop Module from the manifest
             this._desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
 
-            this._desktopModule.FriendlyName = this.Package.FriendlyName;
-            this._desktopModule.Description = this.Package.Description;
+            // Allow a <component type="Module"> (i.e. a DesktopModule) to have its own friendlyname / description.
+            // This allows multiple DesktopModules in one Package, allowing large MVC packages which share one assembly
+            // but have many functions.
+            if (this._desktopModule.FriendlyName == null || this._desktopModule.FriendlyName.Trim().Length == 0)
+            {
+                this._desktopModule.FriendlyName = this.Package.FriendlyName;
+            }
+
+            if (this._desktopModule.Description == null || this._desktopModule.Description.Trim().Length == 0)
+            {
+                this._desktopModule.Description = this.Package.Description;
+            }
+
             this._desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
             this._desktopModule.CompatibleVersions = Null.NullString;
             this._desktopModule.Dependencies = Null.NullString;
@@ -192,7 +203,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             this._eventMessage = this.ReadEventMessageNode(manifestNav);
-
+			
             // Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
             {
