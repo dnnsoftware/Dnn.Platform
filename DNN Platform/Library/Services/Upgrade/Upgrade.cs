@@ -4920,7 +4920,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <returns></returns>
         public static IDictionary<string, PackageInfo> GetInstallPackages()
         {
-            var packageTypes = new string[] { "Module", "Skin", "Container", "JavaScriptLibrary", "Language", "Provider", "AuthSystem", "Package" };
+            var packageTypes = new string[] { "Library", "Module", "Skin", "Container", "JavaScriptLibrary", "Language", "Provider", "AuthSystem", "Package" };
             var invalidPackages = new List<string>();
 
             var packages = new Dictionary<string, PackageInfo>();
