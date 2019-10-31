@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DigitalAssetsManagement" type="Module" isSystem="true">
+    <package name="DigitalAssetsManagement" type="Module" isSystem="true" version="09.04.02">
       <friendlyName>Digital Asset Management</friendlyName>
       <description>DotNetNuke Corporation Digital Asset Management module</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
@@ -32,12 +32,12 @@
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/DigitalAssets/View.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>                  
@@ -47,8 +47,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Digital Asset Management Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                     <moduleControl>
@@ -57,8 +57,8 @@
                         <supportsPartialRendering>False</supportsPartialRendering>
                         <controlTitle>Folder Info</controlTitle>
                         <controlType>View</controlType>
-                        <iconFile />
-                        <helpUrl />
+                        <iconFile/>
+                        <helpUrl/>
                         <viewOrder>0</viewOrder>
                         <supportsPopUps>True</supportsPopUps>
                     </moduleControl>
@@ -68,8 +68,8 @@
                         <supportsPartialRendering>False</supportsPartialRendering>
                         <controlTitle>File Info</controlTitle>
                         <controlType>View</controlType>
-                        <iconFile />
-                        <helpUrl />
+                        <iconFile/>
+                        <helpUrl/>
                         <viewOrder>0</viewOrder>
                         <supportsPopUps>True</supportsPopUps>
                     </moduleControl>
@@ -79,8 +79,8 @@
                         <supportsPartialRendering>False</supportsPartialRendering>
                         <controlTitle>Folder Mappings</controlTitle>
                         <controlType>Edit</controlType>
-                        <iconFile />
-                        <helpUrl />
+                        <iconFile/>
+                        <helpUrl/>
                         <viewOrder>0</viewOrder>
                         <supportsPopUps>True</supportsPopUps>
                     </moduleControl>
@@ -90,8 +90,8 @@
                         <supportsPartialRendering>True</supportsPartialRendering>
                         <controlTitle>Edit Folder Mapping</controlTitle>
                         <controlType>Edit</controlType>
-                        <iconFile />
-                        <helpUrl />
+                        <iconFile/>
+                        <helpUrl/>
                         <viewOrder>0</viewOrder>
                         <supportsPopUps>True</supportsPopUps>
                     </moduleControl>                
