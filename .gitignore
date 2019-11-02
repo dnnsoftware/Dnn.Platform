@@ -91,7 +91,7 @@ node_modules/
 
 # Ignore local settings
 Build/**/*.local.*
-settings.local.json
+*.local.*
 
 # Ignore temporary artifacts
 /[Tt]emp/

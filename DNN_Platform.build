@@ -1,9 +1,11 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="!Exists('.\DNN_Platform.local.build')">
+    <WebsitePath>$(RootDirectory)\Website</WebsitePath>
+  </PropertyGroup>
+  <Import Project=".\DNN_Platform.local.build" Condition="Exists('.\DNN_Platform.local.build')" />
   <PropertyGroup>
     <BuildScriptsPath>$(RootDirectory)\Build\BuildScripts</BuildScriptsPath>
     <AEBuildScriptsPath>$(RootDirectory)\Dnn.AdminExperience\Build\BuildScripts</AEBuildScriptsPath>
-    <WebsitePath Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">$(RootDirectory)\Website</WebsitePath>
-    <WebsitePath Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">$(RootDirectory)\Website</WebsitePath>
     <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
     <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
