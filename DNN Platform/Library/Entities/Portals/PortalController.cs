@@ -3359,7 +3359,7 @@ namespace DotNetNuke.Entities.Portals
         /// Checks the desktop modules whether is installed.
         /// </summary>
         /// <param name="nav">The nav.</param>
-        /// <returns>Empty string if the module hasn't been installed, otherwise return the frind name.</returns>
+        /// <returns>Empty string if the module hasn't been installed, otherwise return the friendly name.</returns>
         public static string CheckDesktopModulesInstalled(XPathNavigator nav)
         {
             string friendlyName;
