@@ -38,10 +38,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.log4net">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
