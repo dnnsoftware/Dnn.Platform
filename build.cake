@@ -107,11 +107,13 @@ Task("BuildAll")
 	});
 
 Task("BackupManifests")
-	.Does( () => {		
-		Zip("./", "manifestsBackup.zip", manifestFiles);
+	.Does( () => {
+		if (!System.IO.File.Exists("manifestsBackup.zip")) {
+			Zip("./", "manifestsBackup.zip", manifestFiles);
+		}
 	});
 
-Task("RestoreManifests")	
+Task("RestoreManifests")
 	.Does( () => {
 		DeleteFiles(manifestFiles);
 		Unzip("./manifestsBackup.zip", "./");
