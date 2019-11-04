@@ -1,5 +1,5 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="!Exists('.\DNN_Platform.local.build')">
+  <PropertyGroup>
     <WebsitePath>$(RootDirectory)\Website</WebsitePath>
   </PropertyGroup>
   <Import Project=".\DNN_Platform.local.build" Condition="Exists('.\DNN_Platform.local.build')" />

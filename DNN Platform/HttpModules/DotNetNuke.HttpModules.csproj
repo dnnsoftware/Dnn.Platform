@@ -121,11 +121,15 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.dll" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.pdb" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.xml" DestinationFolder="..\..\Website\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
 </Project>
