@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 var activeTab = Request.QueryString["activeTab"];
-                return string.IsNullOrEmpty(activeTab) ? activeTab : System.Text.RegularExpressions.Regex.Replace(activeTab, "[^\\w]", "");
+                return string.IsNullOrEmpty(activeTab) ? "" : System.Text.RegularExpressions.Regex.Replace(activeTab, "[^\\w]", "");
             }
         }
 
