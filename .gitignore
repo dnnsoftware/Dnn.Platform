@@ -15,6 +15,7 @@
 ## Ignore VS2015/Roslyn artifacts
 *.sln.ide/
 .vs/
+.vscode/
 
 ## Ignore Webstorm artifacts
 *.idea/
