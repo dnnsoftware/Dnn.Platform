@@ -2193,6 +2193,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (totalItems == totalSelectedItems) {
                 $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', true);
                 $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.unselectAll);
+                $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').addClass('dnnCheckbox-checke');
             }
             updateSelectionToolBar();
         }, 2);
@@ -2220,6 +2221,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         updateSelectionToolBarTimeout = setTimeout(function () {
             $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', false);
             $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.selectAll);
+            $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').removeClass('dnnCheckbox-checked');
             updateSelectionToolBar();
         }, 2);
     }
