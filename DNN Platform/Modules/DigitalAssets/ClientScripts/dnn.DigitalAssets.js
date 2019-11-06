@@ -2193,7 +2193,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (totalItems == totalSelectedItems) {
                 $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', true);
                 $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.unselectAll);
-                $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').addClass('dnnCheckbox-checke');
+                $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').addClass('dnnCheckbox-checked');
             }
             updateSelectionToolBar();
         }, 2);
