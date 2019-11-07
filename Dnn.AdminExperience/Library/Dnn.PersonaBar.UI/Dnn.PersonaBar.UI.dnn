@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.UI" type="Library">
+        <package name="Dnn.PersonaBar.UI" type="Library" version="09.04.02">
             <friendlyName>Dnn.PersonaBar.UI</friendlyName>
             <description></description>
             <dependencies/>
@@ -155,7 +155,7 @@
                         </file>
                     </files>
                 </component>
-                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
+                <component type="Cleanup" version="01.03.00" fileName="01.03.00.txt" />
               <component type="File">
                 <files>
                   <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
@@ -165,7 +165,7 @@
                   </file>
                 </files>
               </component>
-              <component type="Cleanup" version="03.00.00" fileName ="03.00.00.txt" />
+              <component type="Cleanup" version="03.00.00" fileName="03.00.00.txt" />
             </components>
             <eventMessage>
                 <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>

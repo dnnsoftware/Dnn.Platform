@@ -20,8 +20,8 @@
           <desktopModule>
             <moduleName>DotNetNuke.RadEditorProvider</moduleName>
             <foldername>Admin/RadEditorProvider</foldername>
-            <businessControllerClass />
-            <supportedFeatures />
+            <businessControllerClass/>
+            <supportedFeatures/>
             <isPremium>true</isPremium>
             <isAdmin>true</isAdmin>
             <moduleDefinitions>
@@ -30,12 +30,12 @@
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/Admin/RadEditorProvider/ProviderConfig.ascx</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
