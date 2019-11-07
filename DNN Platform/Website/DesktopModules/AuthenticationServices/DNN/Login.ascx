@@ -32,10 +32,10 @@
 	<div class="dnnFormItem">
         <span class="dnnFormLabel">&nbsp;</span>
         <div class="dnnLoginActions">
-			<ul class="dnnActions dnnClear">
-				<li id="liRegister" runat="server"><asp:HyperLink ID="registerLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRegister" ViewStateMode="Disabled" /></li>                
-				<li id="liPassword" runat="server"><asp:HyperLink ID="passwordLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdPassword" ViewStateMode="Disabled" /></li>
-			</ul>
+		<ul class="dnnActions dnnClear">
+			<li id="liRegister" runat="server"><asp:HyperLink ID="registerLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRegister" ViewStateMode="Disabled" /></li>                
+			<li id="liPassword" runat="server"><asp:HyperLink ID="passwordLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdPassword" ViewStateMode="Disabled" /></li>
+		</ul>
         </div>
     </div>
 </div>
