@@ -5,6 +5,13 @@ var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
 var buildNumber = "";
 var productVersion = "";
 
+var unversionedManifests = new string[] {
+  "DNN Platform/Components/Microsoft.*/**/*.dnn",
+  "DNN Platform/Components/Newtonsoft/*.dnn",
+  "DNN Platform/JavaScript Libraries/**/*.dnn",
+  "Temp/**/*.dnn"
+};
+
 Task("BuildServerSetVersion")
   .IsDependentOn("SetVersion")
   .Does(() => {
@@ -26,8 +33,9 @@ Task("SetVersion")
 
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
-  .DoesForEach(GetFiles("**/*.dnn"), (file) => 
+  .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 
+    Information("Transforming: " + file);
     var transformFile = File(System.IO.Path.GetTempFileName());
     FileAppendText(transformFile, GetXdtTransformation());
     XdtTransformConfig(file, transformFile, file);
@@ -51,8 +59,7 @@ public string GetXdtTransformation()
 <dotnetnuke xmlns:xdt=""http://schemas.microsoft.com/XML-Document-Transform"">
   <packages>
     <package version=""{versionString}"" 
-             xdt:Transform=""SetAttributes(version)""
-             xdt:Locator=""Condition([not(@version)])"" />
+             xdt:Transform=""SetAttributes(version)"" />
   </packages>
 </dotnetnuke>";
 }
