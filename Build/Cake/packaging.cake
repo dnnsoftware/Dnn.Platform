@@ -12,7 +12,7 @@ PackagingPatterns packagingPatterns;
 
 Task("PreparePackaging")
 	.IsDependentOn("CopyWebsite")
-	.IsDependentOn("CompileSource")
+	.IsDependentOn("Build")
 	.IsDependentOn("CopyWebConfig")
 	.IsDependentOn("CopyWebsiteBinFolder")
     .Does(() =>

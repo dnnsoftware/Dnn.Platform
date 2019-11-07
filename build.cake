@@ -7,6 +7,7 @@
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
+#load "local:?path=Build/Cake/ci.cake"
 #load "local:?path=Build/Cake/compiling.cake"
 #load "local:?path=Build/Cake/create-database.cake"
 #load "local:?path=Build/Cake/database.cake"
@@ -64,44 +65,6 @@ Task("CleanArtifacts")
     .Does(() =>
 	{
 		CleanDirectory(artifactsDir);
-	});
-
-Task("Build")
-	.IsDependentOn("CompileSource")
-    .Does(() =>
-	{
-	});
-    
-Task("BuildWithDatabase")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-	.IsDependentOn("CreateDeploy")
-    .IsDependentOn("CreateSymbols")
-    .IsDependentOn("CreateDatabase")
-    .Does(() =>
-	{
-	});
-    
-Task("BuildInstallUpgradeOnly")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-    .Does(() =>
-	{
-	});
-
-Task("BuildAll")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-    .IsDependentOn("CreateDeploy")
-    .IsDependentOn("CreateSymbols")
-    .IsDependentOn("CreateNugetPackages")
-    .Does(() =>
-	{
 	});
 
 //////////////////////////////////////////////////////////////////////
