@@ -95,29 +95,13 @@ Task("BuildInstallUpgradeOnly")
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("BackupManifests")
 	.IsDependentOn("CreateInstall")
 	.IsDependentOn("CreateUpgrade")
     .IsDependentOn("CreateDeploy")
     .IsDependentOn("CreateSymbols")
     .IsDependentOn("CreateNugetPackages")
-	.IsDependentOn("RestoreManifests")
     .Does(() =>
 	{
-	});
-
-Task("BackupManifests")
-	.Does( () => {
-		if (!System.IO.File.Exists("manifestsBackup.zip")) {
-			Zip("./", "manifestsBackup.zip", manifestFiles);
-		}
-	});
-
-Task("RestoreManifests")
-	.Does( () => {
-		DeleteFiles(manifestFiles);
-		Unzip("./manifestsBackup.zip", "./");
-		DeleteFiles("./manifestsBackup.zip");
 	});
 
 //////////////////////////////////////////////////////////////////////

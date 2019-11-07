@@ -1,3 +1,5 @@
+// These tasks are meant for our CI build process. They set the versions of the assemblies and manifests to the version found on Github.
+
 GitVersion version;
 var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
 var buildNumber = "";
@@ -11,23 +13,12 @@ Task("BuildServerSetVersion")
 
 Task("SetVersion")
   .Does(() => {
-    Information("Local Settings Version is : " + Settings.Version);
-    if (Settings.Version == "auto") {
-      version = GitVersion();
-      Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
-      Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
-      Information("Informational Version : " + version.InformationalVersion);
-      buildNumber = version.LegacySemVerPadded;
-      productVersion = version.MajorMinorPatch;
-    } else {
-      var v = new System.Version(Settings.Version);
-      if (v.Revision == -1) {
-        v = new System.Version(Settings.Version + ".0");
-      }
-      Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(v, Settings.Version + " - Custom local build", "SolutionInfo.cs");
-      buildNumber = Settings.Version;
-      productVersion = v.ToString(3);
-    }
+    version = GitVersion();
+    Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
+    Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
+    Information("Informational Version : " + version.InformationalVersion);
+    buildNumber = version.LegacySemVerPadded;
+    productVersion = version.MajorMinorPatch;
     Information("Product Version : " + productVersion);
     Information("Build Number : " + buildNumber);
     Information("The build Id is : " + buildId);
