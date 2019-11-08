@@ -7,16 +7,19 @@ module.exports = {
   optimization: {
     minimize: true
   },
+  node: {
+    fs: "empty"
+  },
   output: {
     path:
       isProduction || settings.WebsitePath == ""
         ? path.resolve(
-            "../../../../admin/personaBar/scripts/exportables/Sites"
+            "../../../../admin/personaBar/Dnn.Sites/scripts/exportables/Sites"
           )
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Sites\\scripts\\exportables\\Sites\\",
     filename: "SitesListView.js",
-    publicPath: "http://localhost:8050/dist/"
+    publicPath: isProduction ? "" : "http://localhost:8050/dist/"
   },
   module: {
     rules: [
@@ -46,10 +49,11 @@ module.exports = {
   resolve: {
     extensions: [".js", ".json", ".jsx"],
     modules: [
-      path.resolve("./src"),
-      path.resolve("./src"),
-      path.resolve("./node_modules"), // Last fallback to node_modules
-      path.resolve("../") // Look in src first
+      path.resolve(__dirname, "./src"),
+      path.resolve(__dirname, "../"),
+      path.resolve(__dirname, "node_modules"),
+      path.resolve(__dirname, "../../node_modules"),
+      path.resolve(__dirname, "../../../../../../../../node_modules")
     ]
   }
 };
