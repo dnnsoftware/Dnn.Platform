@@ -1,5 +1,6 @@
 const path = require("path");
 const settings = require("../../../../../../../../settings.local.json");
+const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
   entry: "./index",
