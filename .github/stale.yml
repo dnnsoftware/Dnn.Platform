@@ -29,6 +29,6 @@ markComment: >
   you for your continued involvement and contributions!
 # Comment to post when closing a stale issue. Set to `false` to disable
 closeComment: >
-  This issue has been closed automatically due to the aforementioned 
-  inactivity. Feel free to re-open the issue if you believe it should not 
-  be closed.
+  This issue has been closed automatically due to inactivity (as mentioned 
+  14 days ago). Feel free to re-open the issue if you believe it is still 
+  relevant.
