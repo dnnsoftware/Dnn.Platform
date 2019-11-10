@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_City = "City";
         public const string USERPROFILE_Country = "Country";
         public const string USERPROFILE_Region = "Region";
-	public const string USERPROFILE_PostalCode = "PostalCode";
+		public const string USERPROFILE_PostalCode = "PostalCode";
 
         //Phone contact
         public const string USERPROFILE_Telephone = "Telephone";
