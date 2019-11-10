@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnLoginService dnnLoginForm dnnClear">
     <div class="dnnFormItem dnnLoginFormItemUsername">
-		<div class="dnnLoginLabelUsername">
+		<div class="dnnLabel dnnLoginLabelUsername">
 			<asp:label id="plUsername" AssociatedControlID="txtUsername" runat="server" CssClass="dnnFormLabel dnnLoginFormLabelUsername" />
 		</div>        
         <asp:textbox id="txtUsername" runat="server" />
@@ -27,7 +27,7 @@
         
     </div>
 	<div class="dnnFormItem dnnLoginFormItemRemember">
-		<asp:label id="lblLoginRememberMe" runat="server" CssClass="dnnLoginFormLabelRemember" />
+		<asp:label id="lblLoginRememberMe" runat="server" CssClass="dnnFormLabel dnnLoginFormLabelRemember" />
 		<span class="dnnLoginRememberMe"><asp:checkbox id="chkCookie" resourcekey="Remember" runat="server" /></span>
 	</div>
     <div class="dnnFormItem dnnLoginFormItemActions">
