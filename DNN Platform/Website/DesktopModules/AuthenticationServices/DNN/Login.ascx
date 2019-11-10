@@ -21,7 +21,7 @@
         <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" runat="server" errorstyle-cssclass="dnnFormMessage dnnFormError dnnCaptcha dnnLoginFormMessageCaptcha" ViewStateMode="Disabled" />
     </div>
     <div class="dnnFormItem dnnLoginFormItemLogin">
-        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel dnnLoginFormLabelSignin" ViewStateMode="Disabled" />
+        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel dnnLoginFormLabelLogin" ViewStateMode="Disabled" />
         <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction dnnLoginPrimaryAction dnnLoginActionLogin" text="Login" runat="server" CausesValidation="false" />
 		<asp:HyperLink id="cancelLink" runat="server" CssClass="dnnSecondaryAction dnnLoginSecondaryAction dnnLoginActionCancel" resourcekey="cmdCancel" CausesValidation="false" />
         
