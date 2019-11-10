@@ -13,7 +13,7 @@
         <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
         <div class="dnnSocialRegistration">
             <div id="mainContainer" class="dnnSocialRegistrationContainer">
-                <ul class="buttonList dnnRegistrationSocialButtonList">
+                <ul class="buttonList dnnSocialRegistrationButtonList">
                     <asp:PlaceHolder ID="socialLoginControls" runat="server"/>
                 </ul>
             </div>
