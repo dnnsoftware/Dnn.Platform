@@ -21,7 +21,7 @@
     </div>
     <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha dnnRegistrationCaptcha">
         <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" CssClass="dnnRegistrationLabelCaptcha" />
-        <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha dnnRegistrationCaptchaCtl" runat="server" />
+        <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha dnnRegistrationMessageCaptcha" runat="server" />
     </div>
     <input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" aria-label="gotcha" />
     <ul id="actionsRow" runat="server" class="dnnActions dnnRegistrationActions dnnClear">
