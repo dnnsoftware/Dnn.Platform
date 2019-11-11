@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System" name="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System" name="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="$this.DefaultModifiers" type="System.CodeDom.MemberAttributes, System">
-    <value>Скрытое</value>
+    <value>Private</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="$this.TrayLargeIcon" type="System.Boolean, mscorlib">
-    <value>Нет</value>
+    <value>False</value>
   </data>
   <data name="$this.TrayAutoArrange" type="System.Boolean, mscorlib">
-    <value>Да</value>
+    <value>True</value>
   </data>
   <data name="cmdCancel.Text" xml:space="preserve">
     <value>Закрыть окно</value>
@@ -144,37 +144,37 @@
     <value>Папки:</value>
   </data>
   <data name="cmdDownload.Help" xml:space="preserve">
-    <value>Скачать выбранный файл</value>
+    <value>Скачать выбранный файл.</value>
   </data>
   <data name="cmdDownload.Text" xml:space="preserve">
     <value>Скачать файл</value>
   </data>
   <data name="cmdUpload.Help" xml:space="preserve">
-    <value>Подгрузить новый файл</value>
+    <value>Выгрузить новый файл.</value>
   </data>
   <data name="cmdUpload.Text" xml:space="preserve">
-    <value>Подгрузить файл</value>
+    <value>Выгрузить файл</value>
   </data>
   <data name="Error1.Text" xml:space="preserve">
-    <value>Вы не вошли в систему!</value>
+    <value>У пользователя нет разрешений на выполнение этой задачи.</value>
   </data>
   <data name="Error2.Text" xml:space="preserve">
-    <value>Запрещенное расширение имени файла!</value>
+    <value>Запрещенное расширение имени файла.</value>
   </data>
   <data name="Error3.Text" xml:space="preserve">
-    <value>Запрещенное расширение имени файла!</value>
+    <value>Запрещенное расширение имени файла.</value>
   </data>
   <data name="Error4.Text" xml:space="preserve">
-    <value>У Вас недостаточно прав для просмотра этой папки!</value>
+    <value>У Вас недостаточно прав для просмотра этой папки.</value>
   </data>
   <data name="Error5.Text" xml:space="preserve">
     <value>Не выбран файл.</value>
   </data>
   <data name="cmdUploadCancel.Text" xml:space="preserve">
-    <value>Отменить подгрузку</value>
+    <value>Отменить выгрузку</value>
   </data>
   <data name="cmdUploadNow.Text" xml:space="preserve">
-    <value>Подгрузить сейчас</value>
+    <value>Выгрузить сейчас</value>
   </data>
   <data name="lblUrlType.Text" xml:space="preserve">
     <value>Выберите тип URL:</value>
@@ -189,7 +189,7 @@
     <value>Новая папка</value>
   </data>
   <data name="cmdDelete.Help" xml:space="preserve">
-    <value>Удалить выбранный файл</value>
+    <value>Удалить выбранный файл.</value>
   </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Удалить файл</value>
@@ -210,7 +210,7 @@
     <value>Изменить размер сейчас</value>
   </data>
   <data name="cmdResizer.Help" xml:space="preserve">
-    <value>Редактирование выбранного изображения</value>
+    <value>Редактирование выбранного изображения.</value>
   </data>
   <data name="cmdResizer.Text" xml:space="preserve">
     <value>Редактор изображений</value>
@@ -246,7 +246,7 @@
     <value>Повернуть</value>
   </data>
   <data name="cmdZoom.Text" xml:space="preserve">
-    <value>Мастабировать</value>
+    <value>Масштабировать</value>
   </data>
   <data name="imgOriginal.Text" xml:space="preserve">
     <value>Исходное изображение (масштабировано под экран)</value>
@@ -288,7 +288,7 @@
     <value>Выберите якорь на странице:</value>
   </data>
   <data name="TrackClicks.Text" xml:space="preserve">
-    <value>Учитывать число кликов?</value>
+    <value>Учитывать число кликов:</value>
   </data>
   <data name="absLnk.Text" xml:space="preserve">
     <value>Абсолютный URL  - &lt;em&gt;'http://www.MyWebsite.com/Images/MyImage.jpg'&lt;/em&gt;</value>
@@ -324,25 +324,25 @@
     <value>Подробно</value>
   </data>
   <data name="DetailViewTitle.Text" xml:space="preserve">
-    <value>Каждый файл отображается с большим значком предпросмотра изображения, именем файла и другой информацией о файле</value>
+    <value>Каждый файл отображается с большим значком предпросмотра изображения, именем файла и другой информацией о файле.</value>
   </data>
   <data name="IconsView.Text" xml:space="preserve">
     <value>Значки</value>
   </data>
   <data name="IconsViewTitle.Text" xml:space="preserve">
-    <value>Все файлы отображаются с предпросмотром изображения в виде плитки</value>
+    <value>Все файлы отображаются с предпросмотром изображения в виде плитки.</value>
   </data>
   <data name="ListView.Text" xml:space="preserve">
     <value>Список</value>
   </data>
   <data name="ListViewTitle.Text" xml:space="preserve">
-    <value>Файлы отображаются с малельким значком предпросмотра изрображения, именем файла и информацией о файле</value>
+    <value>Файлы отображаются с малельким значком предпросмотра изрображения, именем файла и информацией о файле.</value>
   </data>
   <data name="FirstPage.Text" xml:space="preserve">
     <value>Первая</value>
   </data>
   <data name="GoTo.Text" xml:space="preserve">
-    <value>Перейти к</value>
+    <value>Перейти к </value>
   </data>
   <data name="LastPage.Text" xml:space="preserve">
     <value>Последняя</value>
@@ -354,13 +354,13 @@
     <value>Пред.</value>
   </data>
   <data name="SortAscending.Help" xml:space="preserve">
-    <value>Сортировать список файлов по имени файла, в порядке возрастания</value>
+    <value>Сортировать список файлов по имени файла, в порядке возрастания.</value>
   </data>
   <data name="SortAscending.Text" xml:space="preserve">
     <value>По возрастанию</value>
   </data>
   <data name="SortDescending.Help" xml:space="preserve">
-    <value>Сортировать список файлов по имени файла, в порядке убывания</value>
+    <value>Сортировать список файлов по имени файла, в порядке убывания.</value>
   </data>
   <data name="SortDescending.Text" xml:space="preserve">
     <value>По убыванию</value>
@@ -381,16 +381,16 @@
     <value>Синхронизировать папку</value>
   </data>
   <data name="FileSizeRestriction.Text" xml:space="preserve">
-    <value>Максимальный размер подгружаемого файла {0} Мб. &lt;br /&gt; Разрешенные типы файлов: "{1}"</value>
+    <value>Максимальный размер выгружаемого файла {0} Мб. &lt;br /&gt; Разрешенные типы файлов: "{1}"</value>
   </data>
   <data name="FileToBig.Text" xml:space="preserve">
-    <value>Файл слишком большой.</value>
+    <value>Файл слишком большой для выгрузки.</value>
   </data>
   <data name="OverrideFile.Text" xml:space="preserve">
     <value>Перезаписать файл, если существует, или создать файл с именем, к которому будет добавлено _1?</value>
   </data>
   <data name="FileToBigMessage.Text" xml:space="preserve">
-    <value>Размер подгружаемого файла больше, чем максимально разрешенный!</value>
+    <value>Размер выгружаемого файла больше, чем максимально разрешенный.</value>
   </data>
   <data name="AddFiles.Text" xml:space="preserve">
     <value>Добавить файл(ы)...</value>
@@ -399,6 +399,23 @@
     <value>Перетащите файл(ы) сюда</value>
   </data>
   <data name="StartUploads.Text" xml:space="preserve">
-    <value>Начать подгрузку</value>
+    <value>Начать выгрузку(и)</value>
+  </data>  <data name="RootFolder.Text" xml:space="preserve">
+    <value>Корневая папка</value>
+  </data>
+  <data name="BrowserModus.Image.Text" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
+  <data name="BrowserModus.Link.Text" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Создан</value>
+  </data>
+  <data name="lblBrowserModus.Text" xml:space="preserve">
+    <value>Режим: {0}</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Размер</value>
   </data>
 </root>
