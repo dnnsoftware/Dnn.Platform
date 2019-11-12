@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Telerik.Web" type="Library" isSystem="true">
+    <package name="DotNetNuke.Telerik.Web" type="Library" isSystem="true" version="09.04.02">
       <friendlyName>DotNetNuke Telerik Web Components</friendlyName>
       <description>Provides Telerik Components for DotNetNuke.</description>
       <dependencies/>
@@ -65,15 +65,12 @@
                   <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
                     <add name="Telerik.Web.UI.ChartHttpHandler" verb="*" path="ChartImage.axd" type="Telerik.Web.UI.ChartHttpHandler, Telerik.Web.UI, Culture=neutral, PublicKeyToken=121fae78165ba3d4"/>
                   </node>
-                  <node path="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Telerik.Web.UI']" action="update" targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Telerik.Web.UI']/ab:bindingRedirect" collision="save"  nameSpace="urn:schemas-microsoft-com:asm.v1" nameSpacePrefix="ab">
-                    <bindingRedirect oldVersion="2008.0.0.0-2020.0.0.0" newVersion="2013.2.717.40" />
-                  </node>
                 </nodes>
               </configuration>
             </install>
             <uninstall>
               <configuration>
-                <nodes />
+                <nodes/>
               </configuration>
             </uninstall>
           </config>
