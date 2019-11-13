@@ -2,7 +2,7 @@
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
-# Project Description (Persian)
+# Project Description
 
 DNN® ( formerly DotNetNuke® ) is the leading open source web content management platform (CMS) in the Microsoft ecosystem. The product is used to build professional looking and easy-to-use commercial websites, social intranets, community portals, or partner extranets. Containing dynamic content of all types, DNN sites are easy to deploy and update. The DNN Platform has been downloaded more than 8 million times and powers more than 750,000 websites globally. A community of more than 1 million members forms a powerful support network. 
 
