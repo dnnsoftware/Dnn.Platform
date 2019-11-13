@@ -457,11 +457,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dnn.AdminExperience", "Dnn.
 		Dnn.AdminExperience\.browserslistrc = Dnn.AdminExperience\.browserslistrc
 		Dnn.AdminExperience\.gitignore = Dnn.AdminExperience\.gitignore
 		Dnn.AdminExperience\.npmrc = Dnn.AdminExperience\.npmrc
-		Dnn.AdminExperience\Build-Yarn-Workspace.ps1 = Dnn.AdminExperience\Build-Yarn-Workspace.ps1
 		Dnn.AdminExperience\CONTRIBUTING.md = Dnn.AdminExperience\CONTRIBUTING.md
-		Dnn.AdminExperience\lerna.json = Dnn.AdminExperience\lerna.json
 		Dnn.AdminExperience\LICENSE.txt = Dnn.AdminExperience\LICENSE.txt
-		Dnn.AdminExperience\package.json = Dnn.AdminExperience\package.json
 		Dnn.AdminExperience\README.md = Dnn.AdminExperience\README.md
 	EndProjectSection
 EndProject

@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
-    <WorkingDirectory>$(MSBuildProjectDirectory)\..\..\Dnn.AdminExperience</WorkingDirectory>
+    <WorkingDirectory>$(RootDirectory)</WorkingDirectory>
   </PropertyGroup>
 
   <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>

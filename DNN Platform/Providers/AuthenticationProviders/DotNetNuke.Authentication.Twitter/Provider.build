@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\..\..\DNN_Platform.build" />
+  <PropertyGroup>
     <Extension>resources</Extension>
     <DNNFileName>Twitter_Auth</DNNFileName>
     <PackageName>Twitter_Auth</PackageName>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\AuthSystem</WebsiteInstallPath>
+    <InstallPath>$(WebsiteInstallPath)\AuthSystem</InstallPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">

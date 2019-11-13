@@ -41,7 +41,7 @@
       <Output TaskParameter="Include" ItemName="OutputContent" />
     </CreateItem>
     <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsiteInstallPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
   </Target>

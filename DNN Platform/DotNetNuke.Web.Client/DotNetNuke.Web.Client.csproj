@@ -85,10 +85,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.pdb" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Client.pdb" DestinationFolder="$(WebsitePath)\bin\" />
   </Target>
 </Project>
