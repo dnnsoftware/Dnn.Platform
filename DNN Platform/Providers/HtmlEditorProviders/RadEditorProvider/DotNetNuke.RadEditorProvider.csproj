@@ -279,13 +279,15 @@
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\..\..\DNN_Platform.build" />
+  <PropertyGroup>
     <Extension>resources</Extension>
     <DNNFileName>DotNetNuke.RadEditorProvider</DNNFileName>
     <PackageName>RadEditorProvider</PackageName>
     <Providers>/Providers</Providers>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\..\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\Website</WebsitePath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
+    <InstallPath>$(WebsiteInstallPath)\Provider</InstallPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
