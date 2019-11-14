@@ -22,6 +22,16 @@
 	</tr>
 	<tr>
 		<td class="SubHead" width="175">
+			<dnn:label id="plEmail" runat="server" controlname="txtEmail" text="Email Address:"></dnn:label></td>
+		<td class="NormalBold" noWrap>
+			<asp:textbox id="txtEmail" tabIndex="6" runat="server" cssclass="NormalTextBox" size="25" maxlength="175"></asp:textbox>&nbsp;*
+			<asp:requiredfieldvalidator id="valEmail1" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Email Is Required."
+				controltovalidate="txtEmail" resourcekey="valEmail1"></asp:requiredfieldvalidator>
+			<asp:regularexpressionvalidator id="valEmail2" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Email Must be Valid."
+				controltovalidate="txtEmail" resourcekey="valEmail2" validationexpression="[\w\.-]+(\+[\w-]*)?@([\w-]+\.)+[\w-]+"></asp:regularexpressionvalidator></td>
+	</tr>	
+	<tr>
+		<td class="SubHead" width="175">
 			<dnn:label id="plUserName" runat="server" controlname="txtUsername" text="User Name:"></dnn:label></td>
 		<td class="NormalBold" noWrap>
 			<asp:textbox id="txtUsername" tabIndex="3" runat="server" cssclass="NormalTextBox" size="25"
@@ -50,16 +60,6 @@
 				controltovalidate="txtConfirm" resourcekey="valConfirm1"></asp:requiredfieldvalidator>
 			<asp:comparevalidator id="valConfirm2" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Password Values Entered Do Not Match."
 				controltovalidate="txtConfirm" resourcekey="valConfirm2" controltocompare="txtPassword"></asp:comparevalidator></td>
-	</tr>
-	<tr>
-		<td class="SubHead" width="175">
-			<dnn:label id="plEmail" runat="server" controlname="txtEmail" text="Email Address:"></dnn:label></td>
-		<td class="NormalBold" noWrap>
-			<asp:textbox id="txtEmail" tabIndex="6" runat="server" cssclass="NormalTextBox" size="25" maxlength="175"></asp:textbox>&nbsp;*
-			<asp:requiredfieldvalidator id="valEmail1" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Email Is Required."
-				controltovalidate="txtEmail" resourcekey="valEmail1"></asp:requiredfieldvalidator>
-			<asp:regularexpressionvalidator id="valEmail2" runat="server" cssclass="NormalRed" display="Dynamic" errormessage="<br>Email Must be Valid."
-				controltovalidate="txtEmail" resourcekey="valEmail2" validationexpression="[\w\.-]+(\+[\w-]*)?@([\w-]+\.)+[\w-]+"></asp:regularexpressionvalidator></td>
 	</tr>
 	<tr>
 		<td class="SubHead" width="175">
