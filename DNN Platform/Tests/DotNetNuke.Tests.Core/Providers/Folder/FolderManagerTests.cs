@@ -443,7 +443,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFolder.Setup(mf => mf.DeleteFolder(_folderInfo.Object));
 
             _directory.Setup(d => d.Exists(Constants.FOLDER_ValidFolderPath)).Returns(true);
-            _directory.Setup(d => d.Delete(Constants.FOLDER_ValidFolderPath, false)).Verifiable();
+            _directory.Setup(d => d.Delete(Constants.FOLDER_ValidFolderPath, true)).Verifiable();
 
             _mockFolderManager.Setup(mfm => mfm.DeleteFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath));
 
