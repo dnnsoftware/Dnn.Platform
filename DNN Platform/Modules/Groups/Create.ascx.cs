@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.Groups
                 GroupUtilities.CreateJournalEntry(roleInfo, UserInfo);
             }
 
-            Response.Redirect(_navigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() }));
+            Response.Redirect(ModuleContext.NavigateUrl(TabId, string.Empty, false, null));
         }
     }
 }

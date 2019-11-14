@@ -25,10 +25,11 @@ using System.Linq;
 using System.Web.Routing;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
+using DotNetNuke.DependencyInjection;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework.Internal.Reflection;
 using DotNetNuke.Framework.Reflections;
-
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 using ServicesRoutingManager = DotNetNuke.Web.Api.Internal.ServicesRoutingManager;
@@ -55,15 +56,20 @@ namespace DotNetNuke.Tests.Web.Api
             PortalController.SetTestableInstance(_portalController);
 
             var navigationManagerMock = new Mock<INavigationManager>();
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
+            var services = new ServiceCollection();
+            services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
+            Globals.DependencyProvider = services.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
             PortalController.ClearInstance();
+
+            if (Globals.DependencyProvider is IDisposable disposable)
+                disposable.Dispose();
+
+            Globals.DependencyProvider = null;
         }
 
         [Test]
