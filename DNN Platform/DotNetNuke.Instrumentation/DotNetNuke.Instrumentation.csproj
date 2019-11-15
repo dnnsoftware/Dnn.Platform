@@ -60,12 +60,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="bin\DotNetNuke.Log4Net.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.dll" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.pdb" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.xml" DestinationFolder="..\..\Website\bin" />
+    <Copy SourceFiles="bin\DotNetNuke.Log4Net.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="bin\DotNetNuke.Instrumentation.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
 </Project>

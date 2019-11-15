@@ -1,0 +1,29 @@
+{
+  "name": "dnn-platform",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "Dnn.AdminExperience/Dnn.React.Common",
+    "Dnn.AdminExperience/Library/Dnn.PersonaBar.UI/admin/personaBar/Bundle.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/AdminLogs.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Extensions.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Licensing.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Pages.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Prompt.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Roles.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Security.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Seo.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Servers.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteImportExport.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Sites.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteSettings.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/TaskScheduler.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Themes.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Users.Web/src/_exportables",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Vocabularies.Web"
+  ],
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  }
+}

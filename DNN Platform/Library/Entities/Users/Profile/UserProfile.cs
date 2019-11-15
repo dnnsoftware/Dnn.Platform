@@ -61,8 +61,8 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_Unit = "Unit";
         public const string USERPROFILE_Street = "Street";
         public const string USERPROFILE_City = "City";
-        public const string USERPROFILE_Region = "Region";
         public const string USERPROFILE_Country = "Country";
+        public const string USERPROFILE_Region = "Region";
         public const string USERPROFILE_PostalCode = "PostalCode";
 
         //Phone contact

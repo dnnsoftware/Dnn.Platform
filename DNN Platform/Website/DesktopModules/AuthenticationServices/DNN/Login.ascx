@@ -20,16 +20,15 @@
     <div class="dnnFormItem dnnCaptcha" id="divCaptcha2" runat="server" visible="false">
         <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" runat="server" errorstyle-cssclass="dnnFormMessage dnnFormError dnnCaptcha" ViewStateMode="Disabled" />
     </div>
-    <div class="dnnFormItem">
-        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
-        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" CausesValidation="false" />
-		<asp:HyperLink id="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" />
-        
-    </div>
-	<div class="dnnFormItem">
+    	<div class="dnnFormItem">
 		<asp:label id="lblLoginRememberMe" runat="server" CssClass="dnnFormLabel" />
 		<span class="dnnLoginRememberMe"><asp:checkbox id="chkCookie" resourcekey="Remember" runat="server" /></span>
 	</div>
+    <div class="dnnFormItem">
+        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
+        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" CausesValidation="false" />
+		<asp:HyperLink id="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" />        
+    </div>
     <div class="dnnFormItem">
         <span class="dnnFormLabel">&nbsp;</span>
         <div class="dnnLoginActions">

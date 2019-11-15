@@ -4225,7 +4225,7 @@ namespace DotNetNuke.Data
         {
             try
             {
-                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToString());
+                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToJsonString());
             }
             catch (SqlException ex)
             {

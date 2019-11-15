@@ -9,9 +9,12 @@
 
 #load "local:?path=Build/Cake/compiling.cake"
 #load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/database.cake"
+#load "local:?path=Build/Cake/devsite.cake"
 #load "local:?path=Build/Cake/external.cake"
 #load "local:?path=Build/Cake/nuget.cake"
 #load "local:?path=Build/Cake/packaging.cake"
+#load "local:?path=Build/Cake/settings.cake"
 #load "local:?path=Build/Cake/testing.cake"
 #load "local:?path=Build/Cake/thirdparty.cake"
 #load "local:?path=Build/Cake/unit-tests.cake"
@@ -104,11 +107,13 @@ Task("BuildAll")
 	});
 
 Task("BackupManifests")
-	.Does( () => {		
-		Zip("./", "manifestsBackup.zip", manifestFiles);
+	.Does( () => {
+		if (!System.IO.File.Exists("manifestsBackup.zip")) {
+			Zip("./", "manifestsBackup.zip", manifestFiles);
+		}
 	});
 
-Task("RestoreManifests")	
+Task("RestoreManifests")
 	.Does( () => {
 		DeleteFiles(manifestFiles);
 		Unzip("./manifestsBackup.zip", "./");
