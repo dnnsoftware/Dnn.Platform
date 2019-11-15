@@ -8,7 +8,8 @@
     <owners>DNN Corporation</owners>
     <licenseUrl>http://www.dnnsoftware.com</licenseUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.EditBar</projectUrl>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
+    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN EditBar Common Library</description>
     <releaseNotes>
@@ -28,5 +29,6 @@
     <file src="bin\Dnn.EditBar.Library.dll" target="lib\net45"/>
     <file src="bin\Dnn.EditBar.Library.pdb" target="lib\net45"/>
     <file src="bin\Dnn.EditBar.Library.xml" target="lib\net45"/>
+    <file src="..\..\..\Build\Tools\NuGet\logo-for-nuget.png" target="images\"/>
   </files>
 </package>
