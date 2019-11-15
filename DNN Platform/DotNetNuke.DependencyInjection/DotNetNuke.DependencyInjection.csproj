@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
+
+  <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -14,4 +19,9 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\netstandard2.0\DotNetNuke.DependencyInjection*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y" />
+  </Target>
+
 </Project>

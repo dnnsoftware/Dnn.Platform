@@ -183,8 +183,17 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
+  </Target>
+  <Target Name="DebugProject">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.WebUtility.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.WebUtility.pdb" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.WebUtility.xml" DestinationFolder="$(WebsitePath)\bin\" />
   </Target>
 </Project>

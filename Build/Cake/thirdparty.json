@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Telerik",
+    "folder": "DNN Platform/Components/Telerik/",
+    "destination": "Install/Module",
+    "excludes": ["**/*.xml"]
+  },
+  {
+    "name": "jQuery",
+    "folder": "DNN Platform/JavaScript Libraries/jQuery/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "jQueryMigrate",
+    "folder": "DNN Platform/JavaScript Libraries/jQueryMigrate/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "jQueryUI",
+    "folder": "DNN Platform/JavaScript Libraries/jQueryUI/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "Knockout",
+    "folder": "DNN Platform/JavaScript Libraries/Knockout/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "KnockoutMapping",
+    "folder": "DNN Platform/JavaScript Libraries/KnockoutMapping/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "Selectize",
+    "folder": "DNN Platform/JavaScript Libraries/Selectize/",
+    "destination": "Install/JavaScriptLibrary"
+  },
+  {
+    "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
+    "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
+    "destination": "Install/Library",
+    "extension": "resources"
+  },
+  {
+    "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform_net46",
+    "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46/",
+    "destination": "Install/Library",
+    "extension": "resources"
+  }
+]
