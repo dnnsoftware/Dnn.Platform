@@ -22,11 +22,6 @@ Documentation of any other items researched for resolution.
 
 ## Affected version
 <!-- Check all that apply and add more if necessary -->
-* [x] 9.3.2
-* [x] 9.3.1
-* [x] 9.2.2
-* [x] 9.2.1
-* [x] 9.2
-* [x] 9.1.1
-* [ ] 9.1
-* [ ] 9.0
+* [ ] 10.0.0 alpha build
+* [ ] 9.4.3 alpha build
+* [ ] 9.4.2 latest supported release
