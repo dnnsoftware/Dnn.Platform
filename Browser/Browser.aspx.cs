@@ -855,7 +855,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                         if (!IsPostBack)
                         {
-                            GetAcceptedFileTypes();
+                            AcceptFileTypes = GetAcceptedFileTypes();
 
                             title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", lblModus.Text);
 
@@ -3056,24 +3056,17 @@ namespace DNNConnect.CKEditorProvider.Browser
                     spaceAvailable);
         }
 
-        /// <summary>
-        /// Gets the accepted file types.
-        /// </summary>
-        private void GetAcceptedFileTypes()
+        /// <summary>Gets the accepted file types.</summary>
+        private string GetAcceptedFileTypes()
         {
             switch (browserModus)
             {
                 case "Flash":
-                    AcceptFileTypes = string.Join("|", AllowedFlashExtensions);
-
-                    break;
+                    return string.Join("|", AllowedFlashExtensions);
                 case "Image":
-                    AcceptFileTypes = string.Join("|", AllowedImageExtensions);
-
-                    break;
+                    return string.Join("|", AllowedImageExtensions);
                 default:
-                    AcceptFileTypes = extensionWhiteList.ToStorageString().Replace(",", "|");
-                    break;
+                    return extensionWhiteList.ToStorageString().Replace(",", "|");
             }
         }
 
