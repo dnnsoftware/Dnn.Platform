@@ -184,6 +184,7 @@ border-bottom-left-radius: 3px;
 
 .journalitem p{
 	margin-bottom: 5px;
+	word-break: break-word;
 }
 
 /* File Upload */
