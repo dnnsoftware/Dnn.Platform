@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Library.DTO
     /// Persona Bar Settings For User.
     /// </summary>
     [DataContract]
-       public class UserSettings : Dictionary<string, object>, IXmlSerializable
+    public class UserSettings : Dictionary<string, object>, IXmlSerializable
     {
         [IgnoreDataMember]
         public bool ExpandPersonaBar
