@@ -31,6 +31,10 @@ class App extends Component {
     render() {
         const {props} = this;
         const buttonVisible = utils.isHostUser();
+        if (this.props.reloadPage) {
+            window.top.location = window.top.location.protocol + '//' + window.top.location.host + window.top.location.pathname + window.top.location.search;
+            return;
+        }
         return (
             <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={true}>
