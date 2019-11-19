@@ -11,7 +11,6 @@ public class OtherPackage {
 }
 
 Task("OtherPackages")
-    .IsDependentOn("UpdateDnnManifests")
     .IsDependentOn("Newtonsoft")
     .Does(() =>
 	{
