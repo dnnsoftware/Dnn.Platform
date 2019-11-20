@@ -32,7 +32,7 @@ class App extends Component {
         const {props} = this;
         const buttonVisible = utils.isHostUser();
         if (this.props.reloadPage) {
-            window.top.location = window.top.location.protocol + '//' + window.top.location.host + window.top.location.pathname + window.top.location.search;
+            window.top.location.reload();
             return;
         }
         return (
