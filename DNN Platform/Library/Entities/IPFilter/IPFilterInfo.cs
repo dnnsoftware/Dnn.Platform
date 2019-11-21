@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -31,7 +31,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 
 #endregion
 

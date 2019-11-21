@@ -1,0 +1,72 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.ip-filter-setting-editor {
+    .container {
+        padding: 10px 30px 10px 30px;
+        .dnn-ui-common-input-group {
+            width: 100%;
+            &:first-child {
+                border-bottom: solid 1px @alto;
+                margin: 0 0 20px 0;
+            }
+            padding: 0 0 10px 0;
+            margin: 0 0 10px 0;
+            .dnn-dropdown {
+                width: 100%;
+            }
+            .dnn-label {
+                margin: 5px 0 0 0;
+                label {
+                    float: left;
+                    font-weight: bolder;
+                }
+            }
+            .dnn-single-line-input-with-error {
+                width: 100%;
+            }
+            .dnn-radio-buttons {
+                float: left;
+                width: 300px;
+                margin: 9px 0 0 30px;
+                label {
+                    float: left;
+                }
+                li {
+                    margin: 0 20px 0 0;
+                }
+            }
+        }
+        .mask {
+            display: block;
+        }
+        .mask-hidden {
+            display: none;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        float: left;
+        margin: 0 0 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+        .edit-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+        .delete-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+    }
+}

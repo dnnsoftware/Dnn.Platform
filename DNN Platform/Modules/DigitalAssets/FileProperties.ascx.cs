@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -74,7 +74,8 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return Request.QueryString["activeTab"];
+                var activeTab = Request.QueryString["activeTab"];
+                return string.IsNullOrEmpty(activeTab) ? "" : System.Text.RegularExpressions.Regex.Replace(activeTab, "[^\\w]", "");
             }
         }
 
@@ -174,7 +175,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         private void OnItemUpdated()
         {
             SetFilePreviewInfo();
@@ -231,7 +232,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void SetFilePreviewInfo()
         {
             var previewPanelInstance = (PreviewPanelControl)previewPanelControl;
-            previewPanelInstance.SetPreviewInfo(controller.GetFilePreviewInfo(file, fileItem));            
+            previewPanelInstance.SetPreviewInfo(controller.GetFilePreviewInfo(file, fileItem));
         }
 
         private void PrepareFilePreviewInfoControl()

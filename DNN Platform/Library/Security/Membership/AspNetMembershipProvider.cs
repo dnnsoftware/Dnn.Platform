@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -215,44 +215,30 @@ namespace DotNetNuke.Security.Membership
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
-            string userName = objSecurity.InputFilter(user.Username,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-            string email = objSecurity.InputFilter(user.Email,
-                                                   PortalSecurity.FilterFlag.NoScripting |
-                                                   PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                   PortalSecurity.FilterFlag.NoMarkup);
-            string lastName = objSecurity.InputFilter(user.LastName,
-                                                      PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
-            string firstName = objSecurity.InputFilter(user.FirstName,
-                                                       PortalSecurity.FilterFlag.NoScripting |
-                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                       PortalSecurity.FilterFlag.NoMarkup);
-            var createStatus = UserCreateStatus.Success;
-            string displayName = objSecurity.InputFilter(user.DisplayName,
-                                                         PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
-            if (displayName.Contains("<") || displayName.Contains(">"))
+            var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+            user.Username = objSecurity.InputFilter(user.Username, filterFlags);
+            user.Email = objSecurity.InputFilter(user.Email, filterFlags);
+            user.LastName = objSecurity.InputFilter(user.LastName, filterFlags);
+            user.FirstName = objSecurity.InputFilter(user.FirstName, filterFlags);
+            user.DisplayName = objSecurity.InputFilter(user.DisplayName, filterFlags);
+            if (user.DisplayName.Contains("<") || user.DisplayName.Contains(">"))
             {
-                displayName = HttpUtility.HtmlEncode(displayName);
+                user.DisplayName = HttpUtility.HtmlEncode(user.DisplayName);
             }
-            bool updatePassword = user.Membership.UpdatePassword;
-            bool isApproved = user.Membership.Approved;
+            var updatePassword = user.Membership.UpdatePassword;
+            var isApproved = user.Membership.Approved;
+            var createStatus = UserCreateStatus.Success;
             try
             {
                 user.UserID =
                     Convert.ToInt32(_dataProvider.AddUser(user.PortalID,
-                                                          userName,
-                                                          firstName,
-                                                          lastName,
+                                                          user.Username,
+                                                          user.FirstName,
+                                                          user.LastName,
                                                           user.AffiliateID,
                                                           user.IsSuperUser,
-                                                          email,
-                                                          displayName,
+                                                          user.Email,
+                                                          user.DisplayName,
                                                           updatePassword,
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));
@@ -512,10 +498,7 @@ namespace DotNetNuke.Security.Membership
                         IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                         UserID = Null.SetNullInteger(dr["UserID"]),
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
-                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
-                        HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]),
-                        HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]),
-                        RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"])
+                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                     };
 
                     var schema = dr.GetSchemaTable();
@@ -529,16 +512,22 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
-                    }
-
-                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
-                    user.Username = Null.SetNullString(dr["Username"]);
-                    UserController.GetUserMembership(user);
-                    user.Email = Null.SetNullString(dr["Email"]);
-                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-
-                    if (schema != null)
-                    {
+                        if (schema.Select("ColumnName = 'HasAgreedToTerms'").Length > 0)
+                        {
+                            user.HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]);
+                        }
+                        if (schema.Select("ColumnName = 'HasAgreedToTermsOn'").Length > 0)
+                        {
+                            user.HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]);
+                        }
+                        else
+                        {
+                            user.HasAgreedToTermsOn = Null.NullDate;
+                        }
+                        if (schema.Select("ColumnName = 'RequestsRemoval'").Length > 0)
+                        {
+                            user.RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"]);
+                        }
                         if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
                         {
                             user.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
@@ -548,6 +537,13 @@ namespace DotNetNuke.Security.Membership
                             user.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
                         }
                     }
+
+                    user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
+                    user.Username = Null.SetNullString(dr["Username"]);
+                    UserController.GetUserMembership(user);
+                    user.Email = Null.SetNullString(dr["Email"]);
+                    user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+
                     if (!user.IsSuperUser)
                     {
                         user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);

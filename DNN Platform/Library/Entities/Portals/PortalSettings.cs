@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -34,6 +34,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Common;
+using DotNetNuke.Abstractions.Portals;
 
 #endregion
 
@@ -47,7 +48,7 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
-    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess
+    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
         #region ControlPanelPermission enum
 
@@ -92,12 +93,6 @@ namespace DotNetNuke.Entities.Portals
         #endregion
 
         private TimeZoneInfo _timeZone = TimeZoneInfo.Local;
-        private bool _dataConsentActive = false;
-        private DateTime _dataConsentTermsLastChange = DateTime.MinValue;
-        private int _dataConsentConsentRedirect = -1;
-        private UserDeleteAction _dataConsentUserDeleteAction = UserDeleteAction.DelayedHardDelete;
-        private int _dataConsentDelay = 1;
-        private string _dataConsentDelayMeasurement = "d";
 
         #region Constructors
 
@@ -247,10 +242,7 @@ namespace DotNetNuke.Entities.Portals
 
         public int SearchTabId { get; set; }
 
-        [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
-        public int SiteLogHistory { get; set; }
-
-		public int SplashTabId { get; set; }
+        public int SplashTabId { get; set; }
 
 		public int SuperTabId { get; set; }
 
@@ -329,15 +321,6 @@ namespace DotNetNuke.Entities.Portals
         public bool EnableBrowserLanguage { get; internal set; }
 
         public bool EnableCompositeFiles { get; internal set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether to use the module effect in edit mode.
-        /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
-        public bool EnableModuleEffect { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -676,65 +659,40 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        public bool DataConsentActive
-        {
-            get { return _dataConsentActive; }
-            set
-            {
-                _dataConsentActive = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentActive", value.ToString(), true);
-            }
-        }
+        /// <summary>
+        /// If true then all users will be pushed through the data consent workflow
+        /// </summary>
+        public bool DataConsentActive { get; internal set; }
 
-        public DateTime DataConsentTermsLastChange
-        {
-            get { return _dataConsentTermsLastChange; }
-            set
-            {
-                _dataConsentTermsLastChange = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentTermsLastChange", value.ToString("u"), true);
-            }
-        }
+        /// <summary>
+        /// Last time the terms and conditions have been changed. This will determine if the user needs to 
+        /// reconsent or not. Legally once the terms have changed, users need to sign again. This value is set
+        /// by the "reset consent" button on the UI.
+        /// </summary>
+        public DateTime DataConsentTermsLastChange { get; internal set; }
 
-        public int DataConsentConsentRedirect
-        {
-            get { return _dataConsentConsentRedirect; }
-            set
-            {
-                _dataConsentConsentRedirect = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentConsentRedirect", value.ToString(), true);
-            }
-        }
+        /// <summary>
+        /// If set this is a tab id of a page where the user will be redirected to for consent. If not set then
+        /// the platform's default logic is used.
+        /// </summary>
+        public int DataConsentConsentRedirect { get; internal set; }
 
-        public UserDeleteAction DataConsentUserDeleteAction
-        {
-            get { return _dataConsentUserDeleteAction; }
-            set
-            {
-                _dataConsentUserDeleteAction = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentUserDeleteAction", ((int)value).ToString(), true);
-            }
-        }
+        /// <summary>
+        /// Sets what should happen to the user account if a user has been deleted. This is important as
+        /// under certain circumstances you may be required by law to destroy the user's data within a 
+        /// certain timeframe after a user has requested deletion.
+        /// </summary>
+        public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }
 
-        public int DataConsentDelay
-        {
-            get { return _dataConsentDelay; }
-            set
-            {
-                _dataConsentDelay = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentDelay", value.ToString(), true);
-            }
-        }
+        /// <summary>
+        /// Sets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction
+        /// </summary>
+        public int DataConsentDelay { get; internal set; }
 
-        public string DataConsentDelayMeasurement
-        {
-            get { return _dataConsentDelayMeasurement; }
-            set
-            {
-                _dataConsentDelayMeasurement = value;
-                PortalController.UpdatePortalSetting(PortalId, "DataConsentDelayMeasurement", value, true);
-            }
-        }
+        /// <summary>
+        /// Units for DataConsentDelay
+        /// </summary>
+        public string DataConsentDelayMeasurement { get; internal set; }
 
         #endregion
 

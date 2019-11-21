@@ -58,9 +58,6 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Administration, Version=7.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Windows\System32\inetsrv\Microsoft.Web.Administration.dll</HintPath>

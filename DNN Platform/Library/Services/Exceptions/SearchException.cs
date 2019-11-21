@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -31,24 +31,14 @@ namespace DotNetNuke.Services.Exceptions
     #pragma warning disable 0618
     public class SearchException : BasePortalException
     {
-        private readonly SearchItemInfo m_SearchItem;
-
         //default constructor
 		public SearchException()
         {
         }
 
-        public SearchException(string message, Exception inner, SearchItemInfo searchItem) : base(message, inner)
+        public SearchException(string message, Exception inner) : base(message, inner)
         {
-            m_SearchItem = searchItem;
-        }
-
-        public SearchItemInfo SearchItem
-        {
-            get
-            {
-                return m_SearchItem;
-            }
+           
         }
     }
     #pragma warning restore 0618

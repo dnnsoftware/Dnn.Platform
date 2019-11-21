@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         /// A key-value collection containing all capabilities supported by requester
         /// </summary>    
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v10.0.0.")]    
+        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v11.0.0.")]    
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>

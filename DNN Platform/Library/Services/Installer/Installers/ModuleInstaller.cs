@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -296,8 +296,13 @@ namespace DotNetNuke.Services.Installer.Installers
             //Load the Desktop Module from the manifest
             _desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
 
-            _desktopModule.FriendlyName = Package.FriendlyName;
-            _desktopModule.Description = Package.Description;
+            // Allow a <component type="Module"> (i.e. a DesktopModule) to have its own friendlyname / description.
+            // This allows multiple DesktopModules in one Package, allowing large MVC packages which share one assembly
+            // but have many functions.
+            if( _desktopModule.FriendlyName == null || _desktopModule.FriendlyName.Trim().Length == 0 )
+                _desktopModule.FriendlyName = Package.FriendlyName;
+            if (_desktopModule.Description == null || _desktopModule.Description.Trim().Length == 0)
+                _desktopModule.Description = Package.Description;
             _desktopModule.Version = Globals.FormatVersion(Package.Version, "00", 4, ".");
             _desktopModule.CompatibleVersions = Null.NullString;
             _desktopModule.Dependencies = Null.NullString;

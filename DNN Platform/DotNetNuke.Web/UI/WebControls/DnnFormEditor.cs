@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -146,12 +146,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         #region Private Methods
-
-        [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
-        {
-            SetUpItems(items, parentControl, localResourceFile, false);
-        }
 
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
         {

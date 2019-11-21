@@ -90,9 +90,6 @@
       <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PetaPoco">
-      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -125,6 +122,7 @@
     <Compile Include="Collections\ReaderWriterSlimLockTests.cs" />
     <Compile Include="Collections\SharedDictionaryTests.cs" />
     <Compile Include="Collections\SharedListTests.cs" />
+    <Compile Include="Common\NavigationManagerTests.cs" />
     <Compile Include="ComponentModel\ComponentFactoryTests.cs" />
     <Compile Include="ComponentModel\Helpers\ServiceImpl.cs" />
     <Compile Include="ComponentModel\Helpers\IService.cs" />
@@ -190,6 +188,7 @@
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
     <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
+    <Compile Include="Services\Mail\MailTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
     <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
@@ -205,6 +204,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>

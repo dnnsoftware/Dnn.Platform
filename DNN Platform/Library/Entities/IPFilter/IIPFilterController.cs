@@ -1,7 +1,7 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -41,9 +41,6 @@ namespace DotNetNuke.Entities.Host
         IPFilterInfo GetIPFilter(int ipFilter);
 
         IList<IPFilterInfo> GetIPFilters();
-
-        [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead. Scheduled removal in v10.0.0.")]
-        void IsIPAddressBanned(string ipAddress);
 
         bool IsIPBanned(string ipAddress);
 

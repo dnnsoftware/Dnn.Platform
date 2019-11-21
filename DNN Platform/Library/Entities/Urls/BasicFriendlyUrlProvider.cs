@@ -1,7 +1,7 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -324,9 +324,9 @@ namespace DotNetNuke.Entities.Urls
             return FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
-            return FriendlyUrl(tab, path, pageName, settings.PortalAlias.HTTPAlias, settings);
+            return FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
@@ -334,7 +334,7 @@ namespace DotNetNuke.Entities.Urls
             return FriendlyUrl(tab, path, pageName, portalAlias, null);
         }
 
-        private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
+        private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, IPortalSettings portalSettings)
         {
             string friendlyPath = path;
             bool isPagePath = (tab != null);

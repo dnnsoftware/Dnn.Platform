@@ -1,10 +1,10 @@
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -29,8 +29,8 @@ namespace log4net.Appender
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The application configuration file can be used to control what listeners 
-	/// are actually used. See the MSDN documentation for the 
+	/// The application configuration file can be used to control what listeners
+	/// are actually used. See the MSDN documentation for the
 	/// <see cref="System.Diagnostics.Debug"/> class for details on configuring the
 	/// debug system.
 	/// </para>
@@ -57,7 +57,7 @@ namespace log4net.Appender
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DebugAppender" /> 
+		/// Initializes a new instance of the <see cref="DebugAppender" />
 		/// with a specified layout.
 		/// </summary>
 		/// <param name="layout">The layout to use with this appender.</param>
@@ -77,16 +77,16 @@ namespace log4net.Appender
 		#region Public Instance Properties
 
 		/// <summary>
-		/// Gets or sets a value that indicates whether the appender will 
+		/// Gets or sets a value that indicates whether the appender will
 		/// flush at the end of each write.
 		/// </summary>
 		/// <remarks>
-		/// <para>The default behavior is to flush at the end of each 
-		/// write. If the option is set to<c>false</c>, then the underlying 
-		/// stream can defer writing to physical medium to a later time. 
+		/// <para>The default behavior is to flush at the end of each
+		/// write. If the option is set to<c>false</c>, then the underlying
+		/// stream can defer writing to physical medium to a later time.
 		/// </para>
 		/// <para>
-		/// Avoiding the flush operation at the end of each append results 
+		/// Avoiding the flush operation at the end of each append results
 		/// in a performance gain of 10 to 20 percent. However, there is safety
 		/// trade-off involved in skipping flushing. Indeed, when flushing is
 		/// skipped, then it is likely that the last few log events will not
@@ -100,24 +100,41 @@ namespace log4net.Appender
 			set { m_immediateFlush = value; }
 		}
 
+		/// <summary>
+		/// Formats the category parameter sent to the Debug method.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Defaults to a <see cref="Layout.PatternLayout"/> with %logger as the pattern which will use the logger name of the current
+		/// <see cref="LoggingEvent"/> as the category parameter.
+		/// </para>
+		/// <para>
+		/// </para>
+		/// </remarks>
+		public PatternLayout Category
+		{
+			get { return m_category; }
+			set { m_category = value; }
+		}
+
 		#endregion Public Instance Properties
 
 #if !NETSTANDARD1_3
-            /// <summary>
-            /// Flushes any buffered log data.
-            /// </summary>
-            /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
-            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
-            public override bool Flush(int millisecondsTimeout)
-            {
-                // Nothing to do if ImmediateFlush is true
-                if (m_immediateFlush) return true;
+			/// <summary>
+			/// Flushes any buffered log data.
+			/// </summary>
+			/// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+			/// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+			public override bool Flush(int millisecondsTimeout)
+			{
+				// Nothing to do if ImmediateFlush is true
+				if (m_immediateFlush) return true;
 
-                // System.Diagnostics.Debug is thread-safe, so no need for lock(this).
-                System.Diagnostics.Debug.Flush();
+				// System.Diagnostics.Debug is thread-safe, so no need for lock(this).
+				System.Diagnostics.Debug.Flush();
 
-                return true;
-            }
+				return true;
+			}
 #endif
 
 		#region Override implementation of AppenderSkeleton
@@ -133,20 +150,35 @@ namespace log4net.Appender
 		/// is called.
 		/// </para>
 		/// </remarks>
-		override protected void Append(LoggingEvent loggingEvent) 
+		override protected void Append(LoggingEvent loggingEvent)
 		{
 			//
 			// Write the string to the Debug system
 			//
-			System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
+			if(m_category == null)
+			{
+				System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent));
+			}
+			else
+			{
+				string category = m_category.Format(loggingEvent);
+				if (string.IsNullOrEmpty(category))
+				{
+					System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent));
+				}
+				else
+				{
+					System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), category);
+				}
+			}
 #if !NETSTANDARD1_3
 			//
 			// Flush the Debug system if needed
 			//
-			if (m_immediateFlush) 
+			if (m_immediateFlush)
 			{
 				System.Diagnostics.Debug.Flush();
-			} 
+			}
 #endif
 		}
 
@@ -174,7 +206,7 @@ namespace log4net.Appender
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// Immediate flush is slower but ensures that each append request is 
+		/// Immediate flush is slower but ensures that each append request is
 		/// actually written. If <see cref="ImmediateFlush"/> is set to
 		/// <c>false</c>, then there is a good chance that the last few
 		/// logs events are not actually written to persistent media if and
@@ -184,6 +216,11 @@ namespace log4net.Appender
 		/// The default value is <c>true</c>.</para>
 		/// </remarks>
 		private bool m_immediateFlush = true;
+
+		/// <summary>
+		/// Defaults to a <see cref="Layout.PatternLayout"/> with %logger as the pattern.
+		/// </summary>
+		private PatternLayout m_category = new PatternLayout("%logger");
 
 		#endregion Private Instance Fields
 	}

@@ -1,6 +1,6 @@
 ﻿#region Copyright
 //
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
@@ -33,5 +33,7 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
         public string Username;
         [JsonProperty("p")]
         public string Password;
+        [JsonProperty("a")]
+        public string Audience;
     }
 }

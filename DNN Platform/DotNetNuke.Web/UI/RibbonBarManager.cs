@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -37,7 +37,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;

@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -1398,6 +1398,10 @@ namespace DotNetNuke.Entities.Users
                 case UserCreateStatus.DuplicateProviderUserKey:
                 case UserCreateStatus.InvalidProviderUserKey:
                     return Localization.GetString("RegError");
+                case UserCreateStatus.InvalidFirstName:
+                    return Localization.GetString("InvalidFirstName");
+                case UserCreateStatus.InvalidLastName:
+                    return Localization.GetString("InvalidLastName");
                 default:
                     throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
             }
@@ -2170,7 +2174,7 @@ namespace DotNetNuke.Entities.Users
             var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
             //Validate NonAlphaChars
-            var rx = Globals.InvalidCharacters;
+            var rx = Globals.NonAlphanumericCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;

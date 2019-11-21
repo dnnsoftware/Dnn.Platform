@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -115,15 +115,6 @@ namespace DotNetNuke.Entities.Host
         IList<IPFilterInfo> IIPFilterController.GetIPFilters()
         {
             return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
-        }
-
-        [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
-        public void IsIPAddressBanned(string ipAddress)
-        {
-            if (CheckIfBannedIPAddress(ipAddress))
-            {//should throw 403.6
-            throw new HttpException(403, "");
-            }
         }
 
         /// <summary>

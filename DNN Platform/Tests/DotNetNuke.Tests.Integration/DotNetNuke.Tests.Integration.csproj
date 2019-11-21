@@ -91,7 +91,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PetaPoco">
-      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+      <HintPath>..\..\Library\bin\PetaPoco.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -215,6 +215,8 @@
     <Content Include="Files\Test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldPreserveEmptyNamespaceOnSaveTarget.xml" />
+    <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldPreserveEmptyNamespaceOnSaveMerge.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldChangeOnOverwriteMerge.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\ShouldChangeOnOverwriteTarget.xml" />
     <EmbeddedResource Include="Services\Installer\MergeFiles\NoChangeOnOverwriteTarget.xml" />

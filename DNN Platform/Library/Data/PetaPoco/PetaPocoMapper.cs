@@ -1,7 +1,7 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -35,12 +35,14 @@ namespace DotNetNuke.Data.PetaPoco
 {
     public class PetaPocoMapper : IMapper
     {
+        private static IMapper _defaultMapper;
         private readonly string _tablePrefix;
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         public PetaPocoMapper(string tablePrefix)
         {
             _tablePrefix = tablePrefix;
+            _defaultMapper = new StandardMapper();
         }
 
         #region Implementation of IMapper
@@ -114,17 +116,15 @@ namespace DotNetNuke.Data.PetaPoco
             _lock.EnterWriteLock();
             try
             {
-                if (Mappers.GetMapper(typeof (T), mapper) is StandardMapper)
+                if (Mappers.GetMapper(typeof (T), _defaultMapper) is StandardMapper)
                 {
-                    Mappers.Register(typeof (T), mapper);
+                    Mappers.Register(typeof(T), mapper);
                 }
-
             }
             finally
             {
                 _lock.ExitWriteLock();
             }
-
         }
     }
 }

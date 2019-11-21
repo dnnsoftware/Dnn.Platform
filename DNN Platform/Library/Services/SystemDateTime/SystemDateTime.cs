@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -60,11 +60,6 @@ namespace DotNetNuke.Services.SystemDateTime
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        [Obsolete("Deprecated in DNN 7.1.2.  Replaced by DateUtils.GetDatabaseUtcTime, which includes caching. Scheduled removal in v10.0.0.")]
-        public static DateTime GetCurrentTimeUtc()
-        {
-            return Provider.GetDatabaseTimeUtc();
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

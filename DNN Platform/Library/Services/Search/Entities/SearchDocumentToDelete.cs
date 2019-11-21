@@ -1,6 +1,6 @@
 ﻿#region Copyright
 //
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 //
@@ -130,12 +130,21 @@ namespace DotNetNuke.Services.Search.Entities
         }
 
         /// <summary>
-        /// This is overriden to allow saving into DB using object.ToString() as JSON entity
+        /// This is to allow saving current instance into DB as JSON entity
+        /// </summary>
+        /// <returns></returns>
+        public string ToJsonString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// This is overriden to present current instance as JSON string
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            return this.ToJsonString();
         }
     }
 }

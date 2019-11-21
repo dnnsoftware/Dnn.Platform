@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -315,30 +315,5 @@ namespace DotNetNuke.Services.FileSystem
 
         #endregion
 
-        #region Obsolete Methods
-
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-            : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
-        {
-        }
-
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-        {
-            FolderID = Null.NullInteger;
-            UniqueId = uniqueId;
-            VersionGuid = Guid.NewGuid();
-            WorkflowID = Null.NullInteger;
-
-            PortalID = portalId;
-            FolderPath = folderpath;
-            StorageLocation = storageLocation;
-            IsProtected = isProtected;
-            IsCached = isCached;
-            LastUpdated = lastUpdated;
-        }
-
-        #endregion
     }
 }

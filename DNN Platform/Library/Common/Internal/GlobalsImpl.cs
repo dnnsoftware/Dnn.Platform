@@ -1,35 +1,43 @@
 #region Copyright
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
 using System.Text;
 using System.Web;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.UI.UserControls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Common.Internal
 {
     public class GlobalsImpl : IGlobals
     {
+        protected INavigationManager NavigationManager { get; }
+        public GlobalsImpl()
+        {
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         public string ApplicationPath
         {
             get { return Globals.ApplicationPath; }
@@ -83,7 +91,7 @@ namespace DotNetNuke.Common.Internal
         public string GetDomainName(Uri requestedUri, bool parsePortNumber)
         {
             var domainName = new StringBuilder();
-            
+
             // split both URL separater, and parameter separator
             // We trim right of '?' so test for filename extensions can occur at END of URL-componenet.
             // Test:   'www.aspxforum.net'  should be returned as a valid domain name.
@@ -118,7 +126,7 @@ namespace DotNetNuke.Common.Internal
                         needExit = true;
                         break;
                     default:
-                        // exclude filenames ENDing in ".aspx" or ".axd" --- 
+                        // exclude filenames ENDing in ".aspx" or ".axd" ---
                         //   we'll use reverse match,
                         //   - but that means we are checking position of left end of the match;
                         //   - and to do that, we need to ensure the string we test against is long enough;
@@ -180,57 +188,57 @@ namespace DotNetNuke.Common.Internal
 
         public string NavigateURL()
         {
-            return Globals.NavigateURL();
+            return NavigationManager.NavigateURL();
         }
 
         public string NavigateURL(int tabID)
         {
-            return Globals.NavigateURL(tabID);
+            return NavigationManager.NavigateURL(tabID);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            return Globals.NavigateURL(tabID, isSuperTab);
+            return NavigationManager.NavigateURL(tabID, isSuperTab);
         }
 
         public string NavigateURL(string controlKey)
         {
-            return Globals.NavigateURL(controlKey);
+            return NavigationManager.NavigateURL(controlKey);
         }
 
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, string controlKey)
         {
-            return Globals.NavigateURL(tabID, controlKey);
+            return NavigationManager.NavigateURL(tabID, controlKey);
         }
 
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         public string FriendlyUrl(TabInfo tab, string path)

@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -42,6 +42,8 @@ namespace DotNetNuke.Security.Membership
         AddUserToPortal = 17,
         InvalidDisplayName = 18,
         DuplicateDisplayName = 19,
-        BannedPasswordUsed = 20
+        BannedPasswordUsed = 20,
+        InvalidFirstName = 21,
+        InvalidLastName = 22
     }
 }

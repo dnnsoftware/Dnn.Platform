@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -32,25 +32,6 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.FileSystem;
 
 #endregion
-
-namespace DotNetNuke.Entities.Content
-{
-    [Obsolete("Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions. Scheduled removal in v10.0.0.")]
-    public static class ContentExtensions
-    {
-        //only forwarding public methods that existed as of 6.1.0
-        //calls to internal methods will be fixed in the source
-        public static string ToDelimittedString(this List<Term> terms, string delimiter)
-        {
-            return Common.ContentExtensions.ToDelimittedString(terms, delimiter);
-        }
-
-        public static string ToDelimittedString(this List<Term> terms, string format, string delimiter)
-        {
-            return Common.ContentExtensions.ToDelimittedString(terms, format, delimiter);
-        }
-    }
-}
 
 namespace DotNetNuke.Entities.Content.Common
 {

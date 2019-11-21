@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -142,12 +142,6 @@ namespace DotNetNuke.Services.Search
             SetLocalTimeOfLastIndexedItem(portalId, scheduleId, searchDocuments.Last().ModifiedTimeUtc);
             searchDocuments.Clear();
             return total;
-        }
-
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        public override SearchItemInfoCollection GetSearchIndexItems(int portalId)
-        {
-            return null;
         }
     }
 }

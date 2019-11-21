@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -558,8 +558,10 @@ namespace DotNetNuke.Services.Installer
 
 		                    var targetNodeContent = GetNodeContentWithoutComment(targetNode);
 							XmlComment commentNode = TargetConfig.CreateComment(targetNodeContent);
-                            rootNode.RemoveChild(targetNode);
-                            rootNode.InnerXml = rootNode.InnerXml + commentHeader.OuterXml + commentNode.OuterXml + child.OuterXml;
+                            var newChild = this.TargetConfig.ImportNode(child, true);
+                            rootNode.ReplaceChild(newChild, targetNode);
+                            rootNode.InsertBefore(commentHeader, newChild);
+                            rootNode.InsertBefore(commentNode, newChild);
                             changedNode = true;
                             break;
                         case "ignore":

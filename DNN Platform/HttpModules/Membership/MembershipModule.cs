@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -42,7 +42,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.UserRequest;
 
 #endregion

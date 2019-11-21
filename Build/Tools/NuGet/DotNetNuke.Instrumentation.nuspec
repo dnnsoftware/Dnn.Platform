@@ -13,7 +13,7 @@
     <description>
       Provides references to enhanced logging and instrumentation available within DNN Platform for extension developers. Including access to Log4Net
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
     </dependencies>

@@ -1813,7 +1813,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var node = treeView.get_nodes().getItem(0);
         node.expand();
         var p = path.split('/');
-        for (var i = 0; i < p.length; i++) {
+        for (var i = 1; i < p.length; i++) {
             var name = p[i];
             if (name != '') {
                 var nodes = node.get_nodes();
@@ -2193,6 +2193,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (totalItems == totalSelectedItems) {
                 $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', true);
                 $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.unselectAll);
+                $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').addClass('dnnCheckbox-checked');
             }
             updateSelectionToolBar();
         }, 2);
@@ -2220,6 +2221,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         updateSelectionToolBarTimeout = setTimeout(function () {
             $("#dnnModuleDigitalAssetsListViewToolbar input[type=checkbox]", "#" + controls.scopeWrapperId).attr('checked', false);
             $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnModuleDigitalAssetsListViewToolbarTitle', "#" + controls.scopeWrapperId).text(resources.selectAll);
+            $('#dnnModuleDigitalAssetsListViewToolbar>span.dnnCheckbox').removeClass('dnnCheckbox-checked');
             updateSelectionToolBar();
         }, 2);
     }

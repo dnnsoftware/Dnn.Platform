@@ -33,15 +33,7 @@
               <name>knockout.mapping.js</name>
             </jsfile>
           </jsfiles>
-        </component>
-        <component type="File">
-          <files>
-            <basePath>Licenses</basePath>
-            <file>
-              <name>Knockout Mapping (MIT).txt</name>
-            </file>
-          </files>
-        </component>
+        </component>       
         <component type="Cleanup" version="02.04.01" fileName="02.04.01.txt" />
       </components>
     </package>

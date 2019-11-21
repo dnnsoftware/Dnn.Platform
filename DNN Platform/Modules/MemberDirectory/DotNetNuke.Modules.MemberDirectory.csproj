@@ -166,6 +166,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
       <Name>DotNetNuke.Web</Name>

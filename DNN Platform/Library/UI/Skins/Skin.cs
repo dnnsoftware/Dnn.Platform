@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -35,6 +35,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
@@ -105,6 +106,7 @@ namespace DotNetNuke.UI.Skins
         public Skin()
         {
             ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Protected Properties
@@ -125,6 +127,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         protected IModuleControlPipeline ModuleControlPipeline { get; }
+        protected INavigationManager NavigationManager { get; }
         #endregion
 
         #region Friend Properties
@@ -464,7 +467,7 @@ namespace DotNetNuke.UI.Skins
 
                     if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
                     {
-                        Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                        Response.Redirect(NavigationManager.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
                     }
                 }
 
@@ -645,6 +648,9 @@ namespace DotNetNuke.UI.Skins
 					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof (ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
 				}
 				AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             }
 
             //Process the Panes attributes

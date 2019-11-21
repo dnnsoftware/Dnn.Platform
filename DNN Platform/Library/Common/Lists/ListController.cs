@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -391,31 +391,6 @@ namespace DotNetNuke.Common.Lists
             ListEntryInfo entry = GetListEntryInfo(EntryID);
             ClearListCache(entry.PortalID);
             ClearEntriesCache(entry.ListName, entry.PortalID);
-        }
-
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
-        {
-            return GetListEntryInfoCollection(listName, "", Null.NullInteger);
-        }
-
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
-        {
-            return GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
-        }
-
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
-        public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
-        {
-            var items = GetListEntryInfoItems(listName, parentKey, portalId);
-
-            var collection = new ListEntryInfoCollection();
-            if (items != null)
-            {
-                items.ToList().ForEach(x => collection.Add(x.Key, x));
-            }
-            return collection;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -2131,22 +2131,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #endregion
 
         #region MoveFolder
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MoveFolder_Throws_On_Null_Folder()
-        {
-            _folderManager.MoveFolder(null, It.IsAny<string>());
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void MoveFolder_Throws_On_Null_Or_Emtpy_NewFolderPath(string newFolderPath)
-        {
-            _folderManager.MoveFolder(_folderInfo.Object, newFolderPath);
-        }
 
         [Test]
         public void MoveFolder_Returns_The_Same_Folder_If_The_Paths_Are_The_Same()

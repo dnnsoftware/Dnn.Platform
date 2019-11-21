@@ -1,0 +1,128 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.role-details-editor {
+    padding: 10px 0;
+    background-color: @white;
+    display: block;
+    float: left;
+    .editor-container {
+        float: left;
+        padding: 10px 20px;
+        width: 100%;
+        box-sizing: border-box;
+        &.right-column {
+            border-left: 1px solid @alto;
+        }
+        .title-row {
+            width: 100%;
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .status-row {
+            width: 100%;
+            float: left;
+            margin-bottom: 10px;
+            .left {
+                float: left;
+                width: 70%;
+                .dnn-label {
+                    float: left;
+                    label {
+                        float: left;
+                    }
+                }
+            }
+            .right {
+                float: right;
+                width: 30%;
+                text-align: right;
+                .checkbox {
+                    float: right;
+                }
+            }
+            .dnn-switch-container {
+                float: right;
+            }
+        }
+        .editor-row {
+            float: left;
+            width: 100%;
+            select {
+                &.full {
+                    float: left;
+                    width: 100%;
+                }
+                &.two-fifth {
+                    float: left;
+                    width: 40%
+                }
+                &.one-fourth {
+                    float: left;
+                    width: 25%;
+                }
+            }
+            .text-section {
+                width: 5%;
+                float: left;
+                text-align: center;
+                vertical-align: middle;
+                margin-top: 9px;
+            }
+            .dnn-single-line-input-with-error, input {
+                width: 100%;
+                .dnn-label {
+                    label {
+                        font-weight: 500;
+                        cursor: default;
+                    }
+                }
+                &.disabled {
+                    input {
+                        cursor: default;
+                    }
+                }
+            }
+            &.divider {
+                padding-bottom: 20px;
+                .dnn-uicommon-select, .dnn-ui-common-single-line-input {
+                    border-radius: 0px;
+                }
+                .dnn-ui-common-multi-line-input {
+                    padding: 8px 16px 62px;
+                    border-radius: 0px;
+                    min-height: 106px;
+                    margin-bottom: 5px;
+                }
+                .new-group-container {
+                    position: absolute;
+                    z-index: 999;
+                }
+                .dnn-label {
+                    float: left;
+                    label {
+                        float: left;
+                    }
+                }
+            }
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        float: left;
+        margin: 15px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+        .edit-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+    }
+}

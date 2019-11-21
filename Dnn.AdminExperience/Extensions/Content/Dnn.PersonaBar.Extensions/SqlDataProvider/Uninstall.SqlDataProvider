@@ -1,0 +1,58 @@
+﻿/************************************************************/
+/***** Users SqlDataProvider                            *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsersByUserIds') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsersByUserIds
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Personabar_GetUsers') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}Personabar_GetUsers
+GO
+
+IF EXISTS (SELECT * FROM sys.procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchTerm]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Personabar_GetUsersBySearchterm]
+GO
+
+/************************************************************/
+/***** Security SqlDataProvider                         *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_SearchAllTables]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_SearchAllTables]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModulesHasHeaderFooter]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModulesHasHeaderFooter]
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModifiedSettings]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModifiedSettings]
+GO
+
+
+/************************************************************/
+/***** Servers SqlDataProvider                          *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbBackups') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbBackups]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbFileInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbFileInfo]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetDbInfo') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetDbInfo]
+GO
+
+/************************************************************/
+/***** End SqlDataProvider                              *****/
+/************************************************************/

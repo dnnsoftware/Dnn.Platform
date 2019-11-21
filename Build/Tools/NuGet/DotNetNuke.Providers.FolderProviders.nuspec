@@ -13,7 +13,7 @@
     <description>
       Provides API references needed to develop custom folder providers, or to consume folder providers
     </description>
-    <copyright>DotNetNuke is copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
     </dependencies>
