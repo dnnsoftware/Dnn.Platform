@@ -3,7 +3,7 @@ Task("CreateNugetPackages")
 	.Does(() =>
 	{
 		//look for solutions and start building them
-		var nuspecFiles = GetFiles("./Build/Tools/NuGet/DotNetNuke.*.nuspec");
+		var nuspecFiles = GetFiles("./Build/Tools/NuGet/*.nuspec");
 	
 		Information("Found {0} nuspec files.", nuspecFiles.Count);
 
