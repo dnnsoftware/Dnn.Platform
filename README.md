@@ -47,6 +47,8 @@ All the details on contributing with Git and on our working methods can be found
 
 In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
 
+Pull requests are reviewed and accepted by the Approvers Group. Read more about the process and this group here: [Approvers](.github/APPROVERS.md)
+
 ## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
