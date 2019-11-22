@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 var fileName = node.Attributes["name"].Value;
                 var sum = node.Attributes["sum"].Value;
                 var file = Path.Combine(Globals.ApplicationMapPath, fileName);
-                if (!File.Exists(file) || Utility.GetFileCheckSum(file).ToLower() != sum.ToLower())
+                if (!File.Exists(file) || !Utility.GetFileCheckSum(file).Equals(sum, StringComparison.OrdinalIgnoreCase))
                 {
                     fileModified = true;
                     modifiedFiles.Add(fileName);
