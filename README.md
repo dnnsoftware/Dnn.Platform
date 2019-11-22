@@ -12,7 +12,7 @@ In addition to robust content management, the free, open source DNN Platform inc
 
 * Single installation with multi-site capability
 * File and folder management
-* Static and dynamic Localization - 6 languages out-of-the-box (English, Ducth, French, German, Italian, and Spanish)
+* Static and dynamic Localization - 6 languages out-of-the-box (English, Dutch, French, German, Italian, and Spanish)
 * Customized web site templates and themes
 * Cloud-ready with MS Azure compatibility
 * 100's of REST API for site and content managment
