@@ -117,7 +117,7 @@ border-bottom-left-radius: 3px;
         margin-bottom: 0px;
     }
 .journalrow div.journalitem ul.jcmt, .journalrow div.journalitem ul.jcmt li{list-style-type:none;}
-.journalrow div.journalitem ul.jcmt li textarea{border:solid 0px #ccc;font-family:tahoma,verdana,arial,sans-serif;font-size:12px;padding:0px;height:20px;margin-left:0px;margin-right:0px;width:100%;}
+.journalrow div.journalitem ul.jcmt li textarea{border:solid 0px #ccc;font-family:tahoma,verdana,arial,sans-serif;font-size:12px;padding:0px;height:20px;margin-left:0px;margin-right:0px;width:100%;max-width:100%;word-break:break-word;}
 .journalrow div.journalitem ul.jcmt li .miniclose{margin:2px;}
 .journalrow div.journalitem ul.jcmt li:hover .miniclose, .journalrow:hover .minidel{display:block;}
 .journalrow div.journalitem ul.jcmt li.cmtbtn a{display:none;} 
@@ -160,10 +160,10 @@ border-bottom-left-radius: 3px;
 	border-bottom:1px solid #fff;
 	
 	/*CSS3*/
-	-moz-border-radius-topright: 3px;
-	-moz-border-radius-topleft:	3px;
-	-webkit-border-radius: 			3px 3px 0px 0px;
-	border-radius: 					3px 3px 0px 0px; 
+	-moz-border-radius-topright: 	3px;
+	-moz-border-radius-topleft: 	3px;
+	-webkit-border-radius: 		3px 3px 0px 0px;
+	border-radius: 			3px 3px 0px 0px; 
 }
 .DnnModule .securityMenu ul{
 	position:absolute; top:-5px; right:2px;
@@ -173,11 +173,11 @@ border-bottom-left-radius: 3px;
 	background:#fff;
 	
 	-webkit-border-radius: 3px 0px 3px 3px;
-    border-radius: 3px 0px 3px 3px;
+    	border-radius: 3px 0px 3px 3px;
 	
 	-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
-	-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
-	box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+	-moz-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+	box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5); 
         
 }
 .securityMenu ul li{list-style:none; margin-bottom: 4px;}
@@ -207,8 +207,8 @@ div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.pro
 }
 
 .journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;padding:5px;border:1px #ccc solid;}
-    .journalrow div.journalitem .jlink a{font-weight:bold;display:block}
-    
+.journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
+.journalrow div.journalitem .jlink div{max-width: 67%;word-break:break-word;}   
 div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:none;overflow:auto;}
 .journalrow .juser{ cursor: pointer;}
 
@@ -258,12 +258,12 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 		/*CSS3*/
 		-moz-border-radius-bottomright: 3px;
 		-moz-border-radius-bottomleft:	3px;
-		-webkit-border-radius: 			0px 0px 3px 3px;
-		border-radius: 					0px 0px 3px 3px; 
+		-webkit-border-radius: 		0px 0px 3px 3px;
+		border-radius: 			0px 0px 3px 3px; 
 		
 		-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
-		-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
-		box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+		-moz-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+		box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5); 
 	}
 	ul.ui-autocomplete li{display:block;clear:both;overflow:hidden}
 	ul.ui-autocomplete li a{
