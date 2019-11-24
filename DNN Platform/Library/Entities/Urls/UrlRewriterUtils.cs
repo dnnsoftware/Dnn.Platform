@@ -111,9 +111,16 @@ namespace DotNetNuke.Entities.Urls
 
             if (request != null)
             {
-                if (request.UrlReferrer != null)
+                try
                 {
-                    log.LogProperties.Add(new LogDetailInfo("Referer", request.UrlReferrer.AbsoluteUri));
+                    if (request.UrlReferrer != null)
+                    {
+                        log.LogProperties.Add(new LogDetailInfo("Referer", request.UrlReferrer.AbsoluteUri));
+                    }
+                }
+                catch (Exception)
+                {
+                    log.LogProperties.Add(new LogDetailInfo("Referer", request.Headers["Referer"]));
                 }
                 log.LogProperties.Add(new LogDetailInfo("Url", request.Url.AbsoluteUri));
                 log.LogProperties.Add(new LogDetailInfo("UserAgent", request.UserAgent));
