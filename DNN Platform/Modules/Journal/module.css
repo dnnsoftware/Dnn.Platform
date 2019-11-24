@@ -101,12 +101,11 @@ border-bottom-left-radius: 3px;
 .journalTools #btnShare.disabled,.jcmt li.cmtbtn a.disabled{background:#cdcdcd;color:#999;cursor:text;}
 .journalTools ul.jacmenu li.liselected{background-color:#ffffcc;}
 
-
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
 .journalrow div.author{overflow:hidden;float:left;}
 .journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background:#fff;border:1px #ccc solid;padding:4px;}
-.journalrow div.journalitem{margin-left:65px;overflow: hidden;word-break: break-all;}
 
+.journalrow div.journalitem{margin-left:65px;overflow: hidden;word-break: break-all;}
 .journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
 .journalrow div.journalitem .authorname{padding-right:6px;}
 .journalrow div.journalitem ul.jcmt,.journalrow div.journalitem .likes{width:100%;padding:0px;font-size:11px;}
@@ -137,7 +136,7 @@ border-bottom-left-radius: 3px;
 .journalrow div.journalitem .journalfooter abbr {border-style:none;}
 .journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;padding:5px;border:1px #ccc solid;}
 .journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
-.journalrow div.journalitem .jlink div{max-width: 67%;word-break:break-word;}   
+.journalrow div.journalitem .jlink div{max-width: 100%;word-break:break-word;}   
 .journalrow div.journalitem .likes{padding:2px;}                                              
 .jcmt .cmteditor{max-width:445px;display:none;resize:none;outline:none;}
 .jcmt .cmteditarea{margin: 2px 4px 4px 2px;}
@@ -174,8 +173,8 @@ div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:n
 	list-style:none;
 	background:#fff;
 	
-	-webkit-border-radius: 3px 0px 3px 3px;
-    	border-radius: 3px 0px 3px 3px;
+	-webkit-border-radius: 	3px 0px 3px 3px;
+    	border-radius: 		3px 0px 3px 3px;
 	
 	-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
 	-moz-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
