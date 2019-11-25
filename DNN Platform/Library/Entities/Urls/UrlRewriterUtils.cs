@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Urls
                         log.LogProperties.Add(new LogDetailInfo("Referer", request.UrlReferrer.AbsoluteUri));
                     }
                 }
-                catch (Exception)
+                catch (UriFormatException)
                 {
                     log.LogProperties.Add(new LogDetailInfo("Referer", request.Headers["Referer"]));
                 }
