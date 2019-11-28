@@ -1905,12 +1905,15 @@ namespace DotNetNuke.Entities.Modules
             //Update the Tab reference for the module's ContentItems
             var contentController = Util.GetContentController();
             var contentItems = contentController.GetContentItemsByModuleId(moduleId);
-            if (contentItems != null && contentItems.Count() > 0)
+            if (contentItems?.Count() > 0)
             {
                 foreach (var item in contentItems)
                 {
-                    item.TabID = toTabId;
-                    contentController.UpdateContentItem(item);
+                    if (item.TabID != toTabId)
+                    {
+                        item.TabID = toTabId;
+                        contentController.UpdateContentItem(item);
+                    }
                 }
             }
 
