@@ -1,0 +1,163 @@
+@import "../../styles/index";
+
+.dnn-uicommon-tags-field-input {
+    background: #fff;
+    float: left;
+    width: 100%;
+    border: 1px solid @mountainMist;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 0px;
+    font-size: 13px !important;
+    font-family: proxima_nova,Arial !important;
+
+    * {
+        box-sizing: content-box !important;
+    }
+
+    &.error {
+        border-bottom: 2px solid red;
+    }
+    &.disabled {
+        &, * {
+            pointer-events: none;
+        }
+        background: @mercury;
+        border-color: @mercury;
+        .tag {
+            background: @alto;
+        }
+    }
+    &.active {
+        border: 1px solid @curiousBlue;
+    }
+    div[type="text"] {
+        width: 100%;
+        padding: 0px !important;
+        height: auto;
+        float: left;
+        margin: 0 !important;
+    }
+
+    div.typing-text {
+        height: 16px;
+        padding: 9px;
+        color: #C8C8C8;
+    }
+
+    .input-container {
+        float: left;
+        position: relative;
+    }
+
+    .suggestions-container {
+        position: relative;
+        float: left;
+        width: 100%;
+
+        .suggestions {
+            position: absolute;
+            left: -11px;
+            top: -9px;
+            padding: 10px;
+            list-style-type: none;
+            width: 100%;
+            z-index: 9999;
+
+            .suggestion {
+                color: gray;
+                padding: 9px;
+                background-color: #FFFFFF;
+                cursor: pointer;
+                margin: 0px;
+                list-style: none;
+                height: 15px;
+
+                &:hover {
+                    background-color: @gallery;
+                    color: @curiousBlue;
+                }
+
+                &.selected {
+                    background-color: @curiousBlue;
+                    color: @gallery;
+                }
+            }
+        }
+    }
+    
+    input {
+        padding: 0;
+        padding: 9px 12px;
+        background: transparent;
+        border: none;
+        color: @bulgarianRose;
+        float: left;
+        box-sizing: content-box !important;
+        outline: none !important;
+        max-width: calc(100% - 24px);
+
+        &::-ms-clear, &::-ms-reveal {
+            display: none; width : 0; height: 0;
+        }
+    }
+    .dnn-uicommon-tag-input {
+        float: left;
+        position: relative;
+        padding: 3px 18px 3px 7px !important;
+        margin: 7px 0 5px 9px !important;
+        background: @seagull;
+        border: none;
+        color: white;
+        font-size: 11px;
+        border-radius: 0px;
+        max-width: calc(100% - 18px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .close {
+            position: absolute;
+            padding: 0 5px;
+            font-size: 16px;
+            line-height: 26px;
+            cursor: pointer;
+            right: 0px;
+            top: -1px;
+        }
+    }
+    .dnn-uicommon-tag-input.disabled{
+         padding: 3px 7px 3px 7px !important;
+    }
+    .tag-search-results {
+        position: absolute;
+        width: 100%;
+        border: 1px solid @mountainMist;
+        top: 100%;
+        margin-top: 1px;
+        border-top: none;
+        left: -1px;
+        padding: 6px 0px;
+        background: white;
+        .result-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            &.selected {
+                background: @gallery;
+                color: @curiousBlue;
+            }
+        }
+    }
+    .dnn-ui-common-tooltip {
+        position: absolute;
+        right: 0px;
+        .icon {
+            float: right;
+            margin-top: 6px;
+            margin-right: 4px;
+        }
+    }
+}
+
+.dnn-uicommon-tags-field-input.disabled {
+    background: @mercury;
+    border-color: @mercury;
+}

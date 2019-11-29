@@ -1,0 +1,112 @@
+@import "../../styles/index";
+.dnn-checkbox-container {
+    .dnn-label {
+        label {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .dnn-ui-common-tooltip {
+            .icon {
+                display: inline-block;
+                position: relative;
+                top: 5px;
+            }
+        }
+    }
+    &.align-left {
+        .dnn-ui-common-tooltip {
+            margin-right: 20px;
+        }
+    }
+    .checkbox {
+        position: relative;
+        display: inline;
+        margin-right: 15px;
+        > label {
+            width: 13px;
+            height: 13px;
+            text-indent: -100px;
+            overflow: hidden;
+        }
+        input[type="checkbox"] {
+            opacity: 0;
+            padding: 0;
+            & + label {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background: white;
+                border: 1px solid @thunder;
+                cursor: pointer;
+                border-radius: 0px;
+                &:after {
+                    transform: rotate(-45deg);
+                    opacity: 0;
+                    content: '';
+                    position: absolute;
+                    width: 9px;
+                    height: 5px;
+                    background: 0 0;
+                    top: 5px;
+                    left: 4px;
+                    border-width: 3px;
+                    border-style: solid;
+                    border-color: rgba(255, 255, 255, 0.25);
+                    border-top: none;
+                    border-right: none;
+                }
+                &:hover:after {
+                    opacity: .6;
+                }
+            }
+            &:checked + label {
+                background: white !important;
+                border-color: @thunder;
+                &:after {
+                    opacity: 1!important;
+                    border-color: @thunder;
+                    width: 72%;
+                    height: 36%;
+                    top: 1.5px;
+                    left: 0.5px;
+                    border-width: 2px;
+                    opacity: 1 !important;
+                }
+            }
+        }
+        &.deselect-state {
+            input[type="checkbox"]:checked + label[for] {
+                &:after {
+                    transform: none;
+                    height: 0px;
+                    top: 6px;
+                    left: 2px;
+                }
+            }
+        }
+    }
+    &.disabled {
+        background: @mercury;
+        color: @mountainMist;
+        cursor: default;
+        * {
+            cursor: default;
+        }
+        .checkbox {
+            input[type="checkbox"] {
+                & + label {
+                    background: @gallery;
+                    border-color: @alto;
+                    cursor: default;
+                    &:after {
+                        border-color: @alto;
+                    }
+                }
+            }
+        }
+        svg {
+            fill: @mountainMist;
+        }
+        cursor: not-allowed;
+    }
+}

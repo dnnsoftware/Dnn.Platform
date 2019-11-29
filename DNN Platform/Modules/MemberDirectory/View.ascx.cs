@@ -1,7 +1,7 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return Globals.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return NavigationManager.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
             }
         }
 

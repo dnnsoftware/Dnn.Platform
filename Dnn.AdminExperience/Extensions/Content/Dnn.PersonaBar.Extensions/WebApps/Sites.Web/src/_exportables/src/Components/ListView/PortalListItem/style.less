@@ -1,0 +1,79 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.portalListItem) {
+    * {
+        box-sizing: border-box;
+    }
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    border:1px solid @alto;
+    padding: 15px;
+    margin-top: 25px;
+    background: @white;
+    .portal-main-info {
+        border-right: 1px solid @alto;
+        .portal-name-info {
+            .dnn-text-overflow-wrapper {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 5px;
+            }
+            a {
+                color: @curiousBlue;
+                max-width: 100%;
+                word-wrap: break-word;
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        &:hover {
+            .icon-container {
+                > div {
+                    svg {
+                        fill: @alto;
+                        &:hover {
+                            fill: @rollingStone;
+                        }
+                        &:active {
+                            fill: @curiousBlue;
+                        }
+                    }
+                }
+            }
+        }
+        .icon-container {
+            margin-top: 10px;
+            >div {
+                display: inline;
+                margin-right: 10px;
+                svg {
+                    cursor: pointer;
+                    width: 20px;
+                    height: 20px;
+                    fill: white;
+                }
+            }
+        }
+    }
+    .portal-statistics-info {
+        padding: 0 15px;
+        .portal-statistic {
+            float: left;
+            width: 50%;
+            .statistic-label {
+                padding: 0 15px;
+                float: left;
+                width: 100%;
+                margin-bottom: 5px;
+                p {
+                    span {
+                        float: right;
+                        margin-right: 24px;
+                    }
+                }
+            }
+        }
+    }
+}

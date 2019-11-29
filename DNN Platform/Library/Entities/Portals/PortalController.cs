@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -63,6 +63,7 @@ using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Web.Client;
 using ICSharpCode.SharpZipLib.Zip;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
 #endregion
 
@@ -2335,6 +2336,11 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
+        IAbPortalSettings IPortalController.GetCurrentSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
+        }
+
         /// <summary>
         ///   Gets information of a portal
         /// </summary>
@@ -3353,7 +3359,7 @@ namespace DotNetNuke.Entities.Portals
         /// Checks the desktop modules whether is installed.
         /// </summary>
         /// <param name="nav">The nav.</param>
-        /// <returns>Empty string if the module hasn't been installed, otherwise return the frind name.</returns>
+        /// <returns>Empty string if the module hasn't been installed, otherwise return the friendly name.</returns>
         public static string CheckDesktopModulesInstalled(XPathNavigator nav)
         {
             string friendlyName;

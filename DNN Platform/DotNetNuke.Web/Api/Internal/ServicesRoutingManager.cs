@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 //controller selector that respects namespaces
                 GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DnnHttpControllerSelector(GlobalConfiguration.Configuration));
-                GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new DnnHttpControllerActivator());
+                GlobalConfiguration.Configuration.DependencyResolver = new DnnDependencyResolver(Globals.DependencyProvider);
 
                 //tracwriter for dotnetnuke.instrumentation
                 GlobalConfiguration.Configuration.Services.Replace(typeof(ITraceWriter), new TraceWriter(IsTracingEnabled()));

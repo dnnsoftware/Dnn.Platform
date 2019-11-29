@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AcceptTerms.Required" lastModified="2018-06-01 16:33:29">
+    <value xml:space="preserve">Acepte los términos del acuerdo de licencia para continuar.</value>
+  </data>
+  <data name="AcceptTerms.Text" lastModified="2018-06-01 16:33:30">
+    <value xml:space="preserve">Acepto los términos del &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;acuerdo de licencia&lt;/a&gt;</value>
+  </data>
+  <data name="AccountInfo.Text">
+    <value xml:space="preserve">Información de cuenta</value>
+  </data>
+  <data name="BestPractices.Text" lastModified="2018-06-01 16:33:30">
+    <value xml:space="preserve">Está a punto de actualizar su sitio web a una versión más reciente de la aplicación. Aplicar las actualizaciones de forma consistente es la mejor manera de garantizar la seguridad de su sistema, de los usuarios y de los documentos de la web. Antes de proceder con el proceso de actualización verifique que:
+&lt;ul&gt;
+&lt;li&gt;ha realizado pruebas de actualización en un entorno de test
+&lt;li&gt;ha documentado las características de su instalación incluyendo la compatibilidad de los módulos que se utilizan en este sistema
+&lt;li&gt;ha realizado las copias de seguridad necesarias para poder restaurar el sistema en caso de un error inesperado durante la actualización.
+&lt;/ul&gt;</value>
+  </data>
+  <data name="CurrentVersion.Text">
+    <value xml:space="preserve">Versión actual - {0}</value>
+  </data>
+  <data name="DatabaseUpgrade.Text">
+    <value xml:space="preserve">Actualizando base de datos </value>
+  </data>
+  <data name="Error.Text">
+    <value xml:space="preserve">Error</value>
+  </data>
+  <data name="ErrorInStep.Text">
+    <value xml:space="preserve">Ha ocurrido un ERROR - {0}</value>
+  </data>
+  <data name="ExtensionsUpgrade.Text">
+    <value xml:space="preserve">Actualizando extensiones</value>
+  </data>
+  <data name="ImprovementProgramExplain.Text" lastModified="2016-11-29 16:19:57">
+    <value xml:space="preserve">El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
+  </data>
+  <data name="ImprovementProgramLabel.Text" lastModified="2016-11-29 16:19:57">
+    <value xml:space="preserve">Enviar información anónima de uso a DNN</value>
+  </data>
+  <data name="ImprovementsProgramTitle.Text" lastModified="2016-11-29 16:19:57">
+    <value xml:space="preserve">Programa de mejoras del producto</value>
+  </data>
+  <data name="IntroDetail.Text">
+    <value xml:space="preserve">&lt;p&gt;Bienvenido a la página de actualización de DotNetNuke.&lt;/p&gt;
+
+&lt;p&gt;El primer paso consiste en seleccionar el idioma que quiera usar para la actualización.&lt;/p&gt;</value>
+  </data>
+  <data name="InvalidCredentials.Text">
+    <value xml:space="preserve">Usuario y contraseña no reconocidos.</value>
+  </data>
+  <data name="Next.Text">
+    <value xml:space="preserve">Actualizar ahora</value>
+  </data>
+  <data name="NoInstallationLog.Text">
+    <value xml:space="preserve">No hay ningún registro de instalación</value>
+  </data>
+  <data name="Password.Help">
+    <value xml:space="preserve">Introduzca la contraseña del superusuario.</value>
+  </data>
+  <data name="Password.Text">
+    <value xml:space="preserve">Contraseña:</value>
+  </data>
+  <data name="Retry.Text">
+    <value xml:space="preserve">Volver a intentar</value>
+  </data>
+  <data name="SeeLogs.Text">
+    <value xml:space="preserve">Ver el registro</value>
+  </data>
+  <data name="TimerMinutes.Text">
+    <value xml:space="preserve">Minutos</value>
+  </data>
+  <data name="Title.Text">
+    <value xml:space="preserve">Actualización</value>
+  </data>
+  <data name="Upgrade.Text">
+    <value xml:space="preserve">Actualización</value>
+  </data>
+  <data name="UpgradeDone.Text">
+    <value xml:space="preserve">Actualización completada</value>
+  </data>
+  <data name="UpgradeStarted.Text" lastModified="2015-12-29 15:59:19">
+    <value xml:space="preserve">Actualización iniciada </value>
+  </data>
+  <data name="UpgradingDatabase.Text">
+    <value xml:space="preserve">Actualizando la base de datos</value>
+  </data>
+  <data name="Username.Help">
+    <value xml:space="preserve">Introduzca el usuario del superusuario.</value>
+  </data>
+  <data name="Username.Text">
+    <value xml:space="preserve">Usuario administrador del sistema (superusuario):</value>
+  </data>
+  <data name="Version.Text">
+    <value xml:space="preserve">Actualización - Versión {0}</value>
+  </data>
+  <data name="VersionsMatch.Text" lastModified="2018-06-01 13:34:17">
+    <value xml:space="preserve">La versión de la base de datos y la aplicación coinciden. No hay ninguna actualización pendiente de aplicar.</value>
+  </data>
+  <data name="VersionsMatchButIncrementalExists.Text" lastModified="2015-09-14 05:45:10">
+    <value xml:space="preserve">La versión de la base de datos y la aplicación coinciden. Hay una versión incremental a la que puede actualizar.</value>
+  </data>
+  <data name="ViewWebsite.Text">
+    <value xml:space="preserve">Ver el sitio web</value>
+  </data>
+  <data name="VisitWebsite.Text">
+    <value xml:space="preserve">Ver el sitio web</value>
+  </data>
+</root>

@@ -8,12 +8,13 @@
     <owners>DNN Corp.</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
+    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides API references needed to develop custom folder providers, or to consume folder providers
     </description>
-    <copyright>DotNetNuke is copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
     </dependencies>
@@ -21,5 +22,6 @@
   <files>
     <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\net45\"/>
     <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

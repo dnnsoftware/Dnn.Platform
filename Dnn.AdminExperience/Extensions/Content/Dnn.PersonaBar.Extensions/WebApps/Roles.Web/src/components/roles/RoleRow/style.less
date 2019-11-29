@@ -1,0 +1,71 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+
+.roles-list-container {
+    .collapsible-component1 {
+        display: table;
+        width: 100%;
+        border-bottom: 1px solid @alto;
+        cursor: auto;
+        > div {
+            float: left;
+            width: 100%;
+            > div {
+                float: left;
+                width: 100%;
+            }
+        }
+        &.true {
+            border-top: 2px solid @curiousBlue;
+            border-bottom: 2px solid @curiousBlue;
+            margin-top: -1px;
+        }
+        .role-row-collapsible {
+            background-color: @white;
+            > div {
+                padding: 25px;
+            }
+        }
+        div.collapsible-header1 {
+            color: @rollingStone;
+            width: 100%;
+            float: left;
+            position: relative;
+            padding: 15px 18px;
+            box-sizing: border-box;
+            cursor: auto;
+            .ellipsis {
+                -ms-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            .edit-icon {
+                margin-left: 5px;
+                float: right;
+                cursor: pointer;
+                svg {
+                    width: 18px;
+                    float: left;
+                    height: 18px;
+                }
+                &.false {
+                    svg {
+                        fill: @curiousBlue;
+                    }
+                    svg:hover {
+                        fill: @thunder;
+                    }
+                }
+            }
+            .icon-flat {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                vertical-align: middle;
+                svg {
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+}

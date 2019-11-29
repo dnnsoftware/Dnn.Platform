@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -22,8 +22,8 @@
 
 using System;
 using System.IO;
+using System.Net;
 using System.Text;
-using System.Web.UI.WebControls;
 using System.Xml;
 
 #endregion
@@ -180,23 +180,23 @@ namespace DotNetNuke.Services.Exceptions
 		public override string ToString()
 		{
 			var str = new StringBuilder();
-			str.Append("<p><strong>AssemblyVersion:</strong>" + AssemblyVersion + "</p>");
+			str.Append("<p><strong>AssemblyVersion:</strong>" + WebUtility.HtmlEncode(AssemblyVersion) + "</p>");
 			str.Append("<p><strong>PortalId:</strong>" + PortalId + "</p>");
 			str.Append("<p><strong>UserId:</strong>" + UserId + "</p>");
 			str.Append("<p><strong>TabId:</strong>" + TabId + "</p>");
-			str.Append("<p><strong>RawUrl:</strong>" + RawUrl + "</p>");
-			str.Append("<p><strong>Referrer:</strong>" + Referrer + "</p>");
-			str.Append("<p><strong>UserAgent:</strong>" + UserAgent + "</p>");
-			str.Append("<p><strong>ExceptionHash:</strong>" + ExceptionHash + "</p>");
-			str.Append("<p><strong>Message:</strong>" + Message + "</p>");
-			str.Append("<p><strong>StackTrace:</strong><pre>" + StackTrace.Replace(") at ", ")<br/>at ") + "</pre></p>");
-			str.Append("<p><strong>InnerMessage:</strong>" + InnerMessage + "</p>");
-			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + InnerStackTrace.Replace(") at ",")<br/>at ") + "</pre></p>");
-			str.Append("<p><strong>Source:</strong>" + Source + "</p>");
-			str.Append("<p><strong>FileName:</strong>" + FileName + "</p>");
+			str.Append("<p><strong>RawUrl:</strong>" + WebUtility.HtmlEncode(RawUrl) + "</p>");
+			str.Append("<p><strong>Referrer:</strong>" + WebUtility.HtmlEncode(Referrer) + "</p>");
+			str.Append("<p><strong>UserAgent:</strong>" + WebUtility.HtmlEncode(UserAgent) + "</p>");
+			str.Append("<p><strong>ExceptionHash:</strong>" + WebUtility.HtmlEncode(ExceptionHash) + "</p>");
+			str.Append("<p><strong>Message:</strong>" + WebUtility.HtmlEncode(Message) + "</p>");
+			str.Append("<p><strong>StackTrace:</strong><pre>" + WebUtility.HtmlEncode(StackTrace)?.Replace(") at ", ")<br/>at ") + "</pre></p>");
+			str.Append("<p><strong>InnerMessage:</strong>" + WebUtility.HtmlEncode(InnerMessage) + "</p>");
+			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + WebUtility.HtmlEncode(InnerStackTrace)?.Replace(") at ",")<br/>at ") + "</pre></p>");
+			str.Append("<p><strong>Source:</strong>" + WebUtility.HtmlEncode(Source) + "</p>");
+			str.Append("<p><strong>FileName:</strong>" + WebUtility.HtmlEncode(FileName) + "</p>");
 			str.Append("<p><strong>FileLineNumber:</strong>" + FileLineNumber + "</p>");
 			str.Append("<p><strong>FileColumnNumber:</strong>" + FileColumnNumber + "</p>");
-			str.Append("<p><strong>Method:</strong>" + Method + "</p>");
+			str.Append("<p><strong>Method:</strong>" + WebUtility.HtmlEncode(Method) + "</p>");
 			return str.ToString();
 		}
 

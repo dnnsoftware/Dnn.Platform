@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -61,8 +61,8 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_Unit = "Unit";
         public const string USERPROFILE_Street = "Street";
         public const string USERPROFILE_City = "City";
-        public const string USERPROFILE_Region = "Region";
         public const string USERPROFILE_Country = "Country";
+        public const string USERPROFILE_Region = "Region";
         public const string USERPROFILE_PostalCode = "PostalCode";
 
         //Phone contact

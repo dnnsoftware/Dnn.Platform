@@ -1,0 +1,48 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+@strong: green;
+@fair: rgb(246, 213, 0);
+@weak: red;
+
+.passwordContainer{
+    position: relative;
+}
+
+.passwordStrength {
+    line-height: 1.5pt;
+    height: 1.5pt;
+    position: relative;
+    top:-18px; 
+
+    &.weak {
+        background-color:@weak;
+        width: 25%;
+    }
+
+    &.fair {
+        background-color: @fair;
+        width: 75%;
+    }
+
+    &.strong {
+        background-color: @strong;
+        width: 100%;
+    }
+}
+
+.passwordStrengthLabel {
+    position: absolute;
+    bottom: 30px;
+    right: 1em;
+    font-weight: 700;
+    text-align: right;
+
+    &.weak{
+        color: @weak;
+    }
+    &.fair {
+        color:@fair;
+    }
+    &.strong {
+        color: @strong;
+    }
+}

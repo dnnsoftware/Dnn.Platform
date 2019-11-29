@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
@@ -483,6 +483,28 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual(3, nodes.Count);
             
             Assert.True(merge.ConfigUpdateChangedNodes);
+        }
+
+        [Test]
+        public void ShouldPreserveEmptyNamespaceOnSave()
+        {
+            var targetDoc = ExecuteMerge();
+
+            var ns = new XmlNamespaceManager(targetDoc.NameTable);
+            ns.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+
+            // removed the existing node, since it matched targetpath attribute
+            var nodesWithNamespace = targetDoc.SelectNodes("/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly", ns);
+            Assert.AreEqual(0, nodesWithNamespace.Count);
+
+            // added a new node with xmlns=""
+            var nodesWithoutNamespace = targetDoc.SelectNodes("/configuration/runtime/ab:assemblyBinding/dependentAssembly", ns);
+            Assert.AreEqual(1, nodesWithoutNamespace.Count);
+
+            // non-namespaced node has newVersion from merge
+            var dependentAssembly = nodesWithoutNamespace[0];
+            var bindingRedirect = dependentAssembly.SelectSingleNode("bindingRedirect", ns);
+            Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
         }
 
 // ReSharper restore PossibleNullReferenceException

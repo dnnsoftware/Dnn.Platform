@@ -1,22 +1,22 @@
 #region Copyright
 
-// 
-// DotNetNuke® - http://www.dotnetnuke.com
+//
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
 #endregion
@@ -29,15 +29,14 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using Dnn.Modules.Console.Components;
-using DotNetNuke.Common;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -53,12 +52,18 @@ namespace Dnn.Modules.Console
 {
 	public partial class ViewConsole : PortalModuleBase
 	{
+        private readonly INavigationManager _navigationManager;
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ViewConsole));
 	    private ConsoleController _consoleCtrl;
 		private string _defaultSize = string.Empty;
 		private string _defaultView = string.Empty;
 	    private int _groupTabID = -1;
-		private IList<TabInfo> _tabs; 
+		private IList<TabInfo> _tabs;
+
+        public ViewConsole()
+        {
+            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         #region Public Properties
 
@@ -74,7 +79,7 @@ namespace Dnn.Modules.Console
 
 	    public bool IncludeHiddenPages
 	    {
-            get { return Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(Settings["IncludeHiddenPages"].ToString()); }	        
+            get { return Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(Settings["IncludeHiddenPages"].ToString()); }
 	    }
 
         public ConsoleController ConsoleCtrl
@@ -377,7 +382,7 @@ namespace Dnn.Modules.Console
                 }
                 IconSize.SelectedValue = DefaultSize;
                 View.SelectedValue = DefaultView;
-                
+
                 if ((!IsPostBack))
                 {
                     Console.Attributes["class"] = Console.Attributes["class"] + " " + Mode.ToLower(CultureInfo.InvariantCulture);
@@ -414,7 +419,7 @@ namespace Dnn.Modules.Console
 							{
 								tabIdList.Add(tab.TabID);
 							}
-							_tabs.Add(tab);  
+							_tabs.Add(tab);
 						}
 					}
 
@@ -503,12 +508,12 @@ namespace Dnn.Modules.Console
 			    var tabUrl = tab.FullUrl;
                 if (ProfileUserId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "UserId=" + ProfileUserId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (GroupId > -1)
                 {
-                    tabUrl = Globals.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = _navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
 				returnValue += string.Format(sb.ToString(),

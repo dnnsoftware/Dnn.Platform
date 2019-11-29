@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
@@ -39,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
 
-        private static readonly Regex InvalidFileUrlCharsRegex = new Regex(@"[%;?:@&=+$,]", RegexOptions.Compiled);
+        private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
         #region Public Properties
 
@@ -193,15 +192,25 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            var portalSettings = GetPortalSettings(file.PortalId);
+            var portalSettings = file.PortalId == PortalSettings.Current?.PortalId ?
+                PortalSettings.Current : 
+                GetPortalSettings(file.PortalId);
+
             var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
 
             var fullPath = rootFolder + file.Folder + file.FileName;
 
             //check if a filename has a character that is not valid for urls
-            if (InvalidFileUrlCharsRegex.IsMatch(fullPath))
+            if (fullPath.IndexOfAny(InvalidFileUrlChars) >= 0)
             {
-                return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
+                return Globals.LinkClick($"fileid={file.FileId}", 
+                    Null.NullInteger, 
+                    Null.NullInteger, 
+                    true, 
+                    false, 
+                    portalSettings.PortalId, 
+                    portalSettings.EnableUrlLanguage, 
+                    portalSettings.GUID.ToString());
             }
 
             // Does site management want the cachebuster parameter?

@@ -8,12 +8,13 @@
     <owners>DNN Corp</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
+    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides API references needed to use Dependency Injection for the DNN Platform.
     </description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2019 by DNN Corp. All Rights Reserved.</copyright>
+    <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
     </dependencies>
@@ -21,5 +22,6 @@
   <files>
     <file src="..\..\..\Website\bin\DotNetNuke.DependencyInjection.dll" target="lib\netstandard2.0" />
     <file src="..\..\..\Website\bin\DotNetNuke.DependencyInjection.pdb" target="lib\netstandard2.0" />
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

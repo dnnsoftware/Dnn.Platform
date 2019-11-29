@@ -1,0 +1,87 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.language-editor {
+    float: left;
+    margin: 20px 30px;
+    box-sizing: border-box;
+    .topMessage {
+        border: 1px solid @alto;
+        padding: 10px 20px;
+        background-color: @mercury;
+        margin: 0 0 20px 0;
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        display: block;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-label {
+            margin: 8px 0;
+        }
+        .dnn-dropdown
+        {
+            width: 100% !important;
+            box-sizing: border-box;
+            .collapsible-label {
+                .language-name {
+                    width: 210px !important;
+                }
+            }
+            li {
+                width: 100% !important;
+            }
+        }        
+        .dnn-single-line-input-with-error {
+            width: 100% !important;
+        }    
+        .dnn-switch-container {
+            float: right;
+        }    
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            border-right: 1px solid @alto;
+        }
+        .right-column {
+            padding-left: 30px;    
+            border-left: 0 !important;        
+        }        
+    }
+    .editor-buttons-box {
+        width: 100%;
+        text-align: center;
+        float: left;
+        margin: 30px 0 0 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+        .edit-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+    }
+    .editor-buttons-box-roles {
+        width: 100%;
+        text-align: center;
+        float: left;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+        .edit-icon {
+            margin: 0px 10px 20px 10px;
+            float: right;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+            }
+        }
+    }
+}

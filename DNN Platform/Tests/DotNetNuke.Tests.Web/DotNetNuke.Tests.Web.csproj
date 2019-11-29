@@ -41,6 +41,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\bin\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -84,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BasicAuthMessageHandlerTests.cs" />
+    <Compile Include="Api\Internals\DnnDependencyResolverTests.cs" />
     <Compile Include="Api\JwtAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DigestAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DnnActionFilterProviderTests.cs" />
@@ -113,6 +120,14 @@
     <ProjectReference Include="..\..\Dnn.AuthServices.Jwt\Dnn.AuthServices.Jwt.csproj">
       <Project>{3b2fa1d9-ec7d-4cec-8ff5-a7700cf5cb40}</Project>
       <Name>Dnn.AuthServices.Jwt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0FCA217A-5F9A-4F5B-A31B-86D64AE65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
       <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>

@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
             {
-                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, false);
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
             }
             DeleteFolder(folder.PortalID, folder.FolderPath);
 

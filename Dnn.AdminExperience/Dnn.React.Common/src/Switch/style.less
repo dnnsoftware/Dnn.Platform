@@ -1,0 +1,103 @@
+@import "../../styles/index";
+.dnn-switch-container {
+    float: left;
+    padding: 5px 0;
+    .dnn-ui-common-tooltip {
+        float: left;
+        margin-left: 10px;
+        .tooltip-text {
+            max-width: 255px;
+            text-align: center;
+            padding: 7px 15px;
+        }
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    .switch-label {
+        padding-top: 1px;
+        color: @bulgarianRose;
+        font-size: 13px;
+        font-weight: bold;
+        float: left;
+    }
+    .switch-button {
+        float: right;
+        .on-off-text {
+            margin-top: 2px;
+            color: @bulgarianRose;
+            &.place-left {
+                float: left;
+            }
+            &.place-right {
+                float: right;
+            }
+        }
+    }
+    .dnn-switch {
+        display: inline-block;
+        position: relative;
+        width: 45px;
+        height: 21px;
+        -webkit-border-radius: 14px;
+        -moz-border-radius: 14px;
+        border-radius: 14px;
+        border: 1px solid @mountainMist;
+        background-color: @alto;
+        margin: 0;
+        cursor: pointer;
+        -webkit-transition: background 100ms linear;
+        -moz-transition: background 100ms linear;
+        -o-transition: background 100ms linear;
+        transition: background 100ms linear;
+        box-sizing: content-box !important;
+        -moz-box-sizing: content-box !important;
+        &.place-left {
+            margin-left: 8px;
+        }
+        &.place-right {
+            margin-right: 8px;
+        }
+        &.dnn-switch-active {
+            background-color: @cerulean;
+            border-color: @matisse;
+            .mark {
+                left: 24px;
+                border-color: @matisse;
+            }
+        }
+        &.dnn-switch-readonly {
+            border: 1px solid @mercury;
+            cursor: not-allowed;
+            background-color: @mercury;
+            .mark {
+                border: 1px solid @mercury;
+                background-color: @gallery;
+            }
+        }
+        .mark {
+            width: 21px;
+            height: 21px;
+            display: inline-block;
+            -webkit-border-radius: 13px;
+            -moz-border-radius: 13px;
+            border-radius: 13px;
+            background-color: @white;
+            border: 1px solid @mountainMist;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            -moz-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            -o-transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            transition: left 100ms linear, background-color 100ms linear, border-color 100ms linear;
+            img {
+                display: none;
+            }
+        }
+    }
+}

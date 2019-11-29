@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -20,6 +20,9 @@
 #endregion
 #region Usings
 
+using System;
+
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -46,7 +49,13 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName);
 
-        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings);
+        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
+        public virtual string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        {
+            return this.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
+        }
+        
+        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings);
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
 		

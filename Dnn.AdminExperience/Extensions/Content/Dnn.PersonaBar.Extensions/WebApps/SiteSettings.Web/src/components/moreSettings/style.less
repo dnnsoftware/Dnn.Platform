@@ -1,0 +1,125 @@
+
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.moreSettings) {
+    margin: 30px 30px;
+    .sectionTitle {
+        font-weight: bolder;
+        float: left;
+        width: 100%;
+        padding: 30px 0 15px 0;
+        margin: 20px 0 0 0;
+        text-transform: uppercase;
+        &:first-child {
+            border-top: 0;
+            padding: 0 0 15px 0;
+            margin: 0;
+        }
+    }
+    .messageBox {
+        border: 1px solid @alto;
+        background-color: @gallery;
+        margin: 20px 0;
+        clear: both;
+        padding: 10px 30px;
+        display: inline-block;
+    }
+    .dnn-grid-system {
+        border-top: 1px solid @alto;
+        margin-top: 20px;
+        padding-top: 20px;
+        .dnn-grid-cell {
+            .left-column {
+                padding-right: 30px;
+                .dnn-ui-common-input-group {
+                    padding: 0 0 15px 0;
+                    label {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    input {
+                        width: auto;
+                    }
+                    .dnn-switch-container {
+                        float: right;
+                    }
+                    .dnn-label {
+                        width: 70%;
+                        label{
+                            width: 70%;
+                        }
+                    }
+                }
+            }
+            .right-column {
+                padding-left: 30px;
+                border-left: 1px solid @alto;
+                .dnn-ui-common-input-group {
+                    padding: 0 0 15px 0;
+                    label {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    input {
+                        width: auto;
+                    }
+                    .dnn-switch-container {
+                        float: right;
+                    }
+                    .dnn-label {
+                        width: 70%;
+                        label{
+                            width: 70%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .buttons-box {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .htmlEditorWrapper {
+        float: left;
+        border: 1px solid @alto;
+        background-color: @gallery;
+        width: 100%;
+        margin: 0 0 20px 0;
+        .htmlEditorWrapper-left {
+            width: 70%;
+            float: left;
+            padding: 0 30px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            .searchIndexWarning {
+                float: left;
+                font-weight: bolder;
+                margin: 10px 30px 30px 30px;
+                color: @thunder;
+            }
+        }
+        .htmlEditorWrapper-right {
+            width: 30%;
+            float: right;
+            .dnn-ui-common-button {
+                float: right;
+                height: auto;
+                padding-top: 6px;
+                padding-bottom: 6px;
+                margin: 0 30px 15px 0;
+                width: 70%;
+                &:first-child {
+                    margin-top: 15px;
+                }
+                &:last-child {
+                    float: right;
+                }
+            }
+        }
+    }
+}

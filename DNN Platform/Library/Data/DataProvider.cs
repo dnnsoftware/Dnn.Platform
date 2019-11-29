@@ -1,7 +1,7 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -517,7 +517,7 @@ namespace DotNetNuke.Data
         {
             return
                 CreatePortal(
-                                            portalname,
+                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
                                             currency,
                                             ExpiryDate,
                                             HostFee,
@@ -536,7 +536,7 @@ namespace DotNetNuke.Data
         {
             return
                 ExecuteScalar<int>("AddPortalInfo",
-                                            portalname,
+                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
                                             currency,
                                             GetNull(ExpiryDate),
                                             HostFee,
@@ -653,14 +653,14 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, 
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId,
                                              int termsTabId, int privacyTabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
                                       portalId,
                                       portalGroupId,
-                                      portalName,
+                                      PortalSecurity.Instance.InputFilter(portalName, PortalSecurity.FilterFlag.NoMarkup),
                                       GetNull(logoFile),
                                       GetNull(footerText),
                                       GetNull(expiryDate),
@@ -3179,6 +3179,11 @@ namespace DotNetNuke.Data
                                       iconFile);
         }
 
+        public virtual void SetCorePackageVersions()
+        {
+            ExecuteNonQuery("SetCorePackageVersions");
+        }
+
         #endregion
 
         #region Languages/Localization
@@ -4225,7 +4230,7 @@ namespace DotNetNuke.Data
         {
             try
             {
-                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToString());
+                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToJsonString());
             }
             catch (SqlException ex)
             {
