@@ -814,30 +814,28 @@ namespace DotNetNuke.Entities.Modules
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
 
-	            var settingExist = false;
 	            string existValue = null;
                 if (dr.Read())
                 {
-					settingExist = true;
 	                existValue = dr.GetString(1);
                 }
 
 				dr.Close();
 
-				if (existValue != settingValue)
-	            {
-					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-														"ModuleId", moduleId, settingName, settingValue,
-														currentUser.UserID);
-				}
-				else if (!settingExist)
-				{
-					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
-													"ModuleId", moduleId, settingName, settingValue,
-													currentUser.UserID);
-				}
+                if (existValue == null)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
+                        "ModuleId", moduleId, settingName, settingValue,
+                        currentUser.UserID);
+                } 
+                else if (existValue != settingValue)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                                                        "ModuleId", moduleId, settingName, settingValue,
+                                                        currentUser.UserID);
+                }
 
                 if (updateVersion)
                 {
