@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Urls
                 var result = new UrlAction(request)
                                         {
                                             IsSecureConnection = request.IsSecureConnection,
-                                            IsSSLOffloaded = IsSSLOffloadEnabled(request),
+                                            IsSSLOffloaded = UrlUtils.IsSslOffloadEnabled(request),
                                             RawUrl = request.RawUrl
                                         };
                 ProcessRequest(app.Context,
@@ -1649,22 +1649,6 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
             return url;
-        }
-
-        private bool IsSSLOffloadEnabled(HttpRequest request)
-        {
-            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader");
-            //if the ssloffloadheader variable has been set check to see if a request header with that type exists
-            if (!string.IsNullOrEmpty(ssloffloadheader) && request != null)
-            {
-                string ssloffload = request.Headers[ssloffloadheader];
-                if (!string.IsNullOrEmpty(ssloffload))
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
         }
 
         protected bool IsPortalAliasIncorrect(HttpContext context, 

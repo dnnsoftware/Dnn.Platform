@@ -321,7 +321,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     {
                         //if page is secure and connection is not secure orelse ssloffload is enabled and server value exists
                         if ((portalSettings.ActiveTab.IsSecure && !request.IsSecureConnection) &&
-                            (IsSSLOffloadEnabled(request) == false))
+                            (UrlUtils.IsSslOffloadEnabled(request) == false))
                         {
                             //switch to secure connection
                             strURL = requestedPath.Replace("http://", "https://");
@@ -791,23 +791,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     }
                 }
             }
-        }
-
-
-        private bool IsSSLOffloadEnabled(HttpRequest request)
-        {
-            string ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", "");
-            //if the ssloffloadheader variable has been set check to see if a request header with that type exists
-            if (!string.IsNullOrEmpty(ssloffloadheader))
-            {
-                string ssloffload = request.Headers[ssloffloadheader];
-                if (!string.IsNullOrEmpty(ssloffload))
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
         }
 
         #endregion
