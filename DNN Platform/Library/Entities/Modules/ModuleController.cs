@@ -1902,6 +1902,21 @@ namespace DotNetNuke.Entities.Modules
             //Move the module to the Tab
             dataProvider.MoveTabModule(fromTabId, moduleId, toTabId, toPaneName, UserController.Instance.GetCurrentUserInfo().UserID);
 
+            //Update the Tab reference for the module's ContentItems
+            var contentController = Util.GetContentController();
+            var contentItems = contentController.GetContentItemsByModuleId(moduleId);
+            if (contentItems != null)
+            {
+                foreach (var item in contentItems)
+                {
+                    if (item.TabID != toTabId)
+                    {
+                        item.TabID = toTabId;
+                        contentController.UpdateContentItem(item);
+                    }
+                }
+            }
+
             //Update Module Order for source tab, also updates the tabmodule version guid
             UpdateTabModuleOrder(fromTabId);
 
