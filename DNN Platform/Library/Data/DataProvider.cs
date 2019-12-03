@@ -3159,6 +3159,11 @@ namespace DotNetNuke.Data
                                       iconFile);
         }
 
+        public virtual void SetCorePackageVersions()
+        {
+            ExecuteNonQuery("SetCorePackageVersions");
+        }
+
         #endregion
 
         #region Languages/Localization
@@ -3961,7 +3966,7 @@ namespace DotNetNuke.Data
         {
             return ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
-        
+
         public virtual int AddContentWorkflowStatePermission(int stateId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
         {
             return ExecuteScalar<int>("AddContentWorkflowStatePermission",
@@ -4004,7 +4009,6 @@ namespace DotNetNuke.Data
         {
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
-
 
         #endregion
 

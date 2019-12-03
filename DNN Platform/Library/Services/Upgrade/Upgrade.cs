@@ -5748,6 +5748,7 @@ namespace DotNetNuke.Services.Upgrade
                 //execute config file updates
                 UpdateConfig(providerPath, ver, true);
             }
+            DataProvider.Instance().SetCorePackageVersions();
 
             // perform general application upgrades
             HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Performing General Upgrades<br>");

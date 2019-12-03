@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Social Groups" type="Module" isSystem="true">
+    <package name="Social Groups" type="Module" isSystem="true" version="09.04.02">
       <friendlyName>Social Groups</friendlyName>
       <description>DotNetNuke Corporation Social Groups module</description>
       <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>
@@ -22,19 +22,19 @@
             <moduleName>Social Groups</moduleName>
             <foldername>SocialGroups</foldername>
             <businessControllerClass>DotNetNuke.Modules.Groups.Components.GroupsBusinessController, DotNetNuke.Modules.Groups</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Social Groups</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/SocialGroups/Loader.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -45,7 +45,7 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Create A Group</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <supportsPopUps>True</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -56,8 +56,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Edit Group</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <supportsPopUps>True</supportsPopUps>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
@@ -67,8 +67,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Social Groups List Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
                   </moduleControl>

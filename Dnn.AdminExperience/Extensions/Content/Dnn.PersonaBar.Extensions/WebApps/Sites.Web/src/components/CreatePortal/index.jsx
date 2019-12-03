@@ -88,7 +88,7 @@ class CreatePortal extends Component {
             if (newPortal.SiteAlias !== "" && newPortal.SiteAlias.indexOf(rootDomain) === -1) {
                 newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteAlias;
             } else {
-                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName;
+                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName.replace(/[^a-zA-Z0-9-_]/g, '');
             }
             error.SiteAlias = this.resolveSiteAliasError(newPortal.SiteAlias, isChildSite);
             this.setState({ newPortal, error });

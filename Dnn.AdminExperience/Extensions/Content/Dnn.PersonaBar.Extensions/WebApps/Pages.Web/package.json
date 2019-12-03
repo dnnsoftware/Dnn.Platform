@@ -8,6 +8,7 @@
     "test:watch": "jest --watch",
     "build": "set NODE_ENV=production&&webpack -p",
     "webpack": "webpack-dev-server --host localhost -d --port 8080 --hot --inline --content-base dist/ --history-api-fallback",
+    "watch": "set NODE_ENV=debug & webpack --mode=development --progress --colors --watch",
     "analyze": "set NODE_ENV=production&&webpack -p --json | webpack-bundle-size-analyzer"
   },
   "jest": {

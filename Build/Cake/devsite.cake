@@ -1,12 +1,10 @@
 Task("ResetDevSite")
     .IsDependentOn("ResetDatabase")
-	.IsDependentOn("BackupManifests")
     .IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
 	.IsDependentOn("ExternalExtensions")
 	.IsDependentOn("CopyToDevSite")
 	.IsDependentOn("CopyWebConfigToDevSite")
-	.IsDependentOn("RestoreManifests")
     .Does(() => 
     {
     });

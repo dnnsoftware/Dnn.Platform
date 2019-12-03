@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Module Creator" type="Module">
+        <package name="DotNetNuke.Module Creator" type="Module" version="09.04.02">
             <friendlyName>Module Creator</friendlyName>
             <description>Development of modules.</description>
             <iconFile>~/Icons/Sigma/ModuleCreator_32x32.png</iconFile>
@@ -27,7 +27,7 @@
                                 <friendlyName>Module Creator</friendlyName>
                                 <moduleControls>
                                     <moduleControl>
-                                        <controlKey />
+                                        <controlKey/>
                                         <controlSrc>DesktopModules/Admin/ModuleCreator/CreateModule.ascx</controlSrc>
                                         <controlTitle></controlTitle>
                                         <controlType>Host</controlType>

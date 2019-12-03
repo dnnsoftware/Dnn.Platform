@@ -8,7 +8,8 @@
     <owners>DNN Corp</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
+    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides references to enhanced logging and instrumentation available within DNN Platform for extension developers. Including access to Log4Net
@@ -23,5 +24,6 @@
     <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net45\" />
     <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net45\"/>
     <file src="..\..\..\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>
