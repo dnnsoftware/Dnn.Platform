@@ -1808,7 +1808,6 @@
   <Import Project="..\..\DNN_Platform.build" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
-  <Target Name="DebugProject">
   <Target Name="AfterBuild" DependsOnTargets="CopyBin">
   </Target>
   <Target Name="CopyBin">
