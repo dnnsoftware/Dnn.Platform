@@ -1,9 +1,8 @@
 // Main solution
 var dnnSolutionPath = "./DNN_Platform.sln";
 
-Task("CompileSource")
+Task("Build")
     .IsDependentOn("CleanWebsite")
-    .IsDependentOn("UpdateDnnManifests")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() =>
 	{

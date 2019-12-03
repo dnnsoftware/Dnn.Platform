@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Library.Containers
             {
                 if (_instance == null)
                 {
-                    _instance = new PersonaBarContainer(Globals.DependencyProvider.GetRequiredService<INavigationManager>());
+                    _instance = Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
                 }
 
                 return _instance;

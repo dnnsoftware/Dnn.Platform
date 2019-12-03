@@ -2686,9 +2686,43 @@ namespace DotNetNuke.Common
         /// <param name="path">The path to format.</param>
         /// <param name="settings">The portal settings</param>
         /// <returns>The formatted (friendly) URL</returns>
+        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
+        public static string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
+        {
+            return FriendlyUrl(tab, path, (IPortalSettings)settings);
+        }
+
+        /// <summary>
+        /// Generates the correctly formatted friendly URL
+        /// </summary>
+        /// <remarks>
+        /// This overload includes the portal settings for the site
+        /// </remarks>
+        /// <param name="tab">The current tab</param>
+        /// <param name="path">The path to format.</param>
+        /// <param name="settings">The portal settings</param>
+        /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path, IPortalSettings settings)
         {
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
+        }
+
+        /// <summary>
+        /// Generates the correctly formatted friendly URL
+        /// </summary>
+        /// <remarks>
+        /// This overload includes an optional page to include in the URL, and the portal
+        /// settings for the site
+        /// </remarks>
+        /// <param name="tab">The current tab</param>
+        /// <param name="path">The path to format.</param>
+        /// <param name="pageName">The page to include in the URL.</param>
+        /// <param name="settings">The portal settings</param>
+        /// <returns>The formatted (friendly) url</returns>
+        [Obsolete("Deprecated in Platform 9.4.3. Scheduled for removal in v11.0.0. Use the IPortalSettings overload")]
+        public static string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
+        {
+            return FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
         /// <summary>

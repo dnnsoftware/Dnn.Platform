@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
             {
-                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, false);
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
             }
             DeleteFolder(folder.PortalID, folder.FolderPath);
 

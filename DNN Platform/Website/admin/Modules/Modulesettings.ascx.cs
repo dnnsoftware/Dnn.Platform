@@ -1,21 +1,21 @@
 #region Copyright
-// 
+//
 // DotNetNuke® - https://www.dnnsoftware.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 {
 
     /// <summary>
-    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a 
+    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
     /// <remarks>
@@ -212,6 +212,14 @@ namespace DotNetNuke.Modules.Admin.Modules
             moduleContainerCombo.SelectedValue = Module.ContainerSrc;
         }
 
+        private void BindModulePages()
+        {
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
+            tabsByModule.Remove(TabId);
+            dgOnTabs.DataSource = tabsByModule.Values;
+            dgOnTabs.DataBind();
+        }
+
         private void BindModuleCacheProviderList()
         {
             cboCacheProvider.DataSource = GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
@@ -358,7 +366,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                    
+
                         _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = _control as ISettingsControl;
@@ -402,10 +410,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
                     dgPermissions.ModuleID = _moduleId;
 
-                    var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
-                    tabsByModule.Remove(TabId);
-                    dgOnTabs.DataSource = tabsByModule.Values;
-                    dgOnTabs.DataBind();
+                    BindModulePages();
 
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
@@ -442,11 +447,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         chkAllowIndex.Enabled = false;
                         cboTab.Enabled = false;
                     }
-                    
+
                     if (_moduleId != -1)
                     {
                         BindData();
-                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) || 
+                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) ||
                              TabPermissionController.CanAddContentToPage()) && !HideDeleteButton;
                     }
                     else
@@ -668,8 +673,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //These Module Copy/Move statements must be 
-                    //at the end of the Update as the Controller code assumes all the 
+                    //These Module Copy/Move statements must be
+                    //at the end of the Update as the Controller code assumes all the
                     //Updates to the Module have been carried out.
 
                     //Check if the Module is to be Moved to a new Tab
@@ -748,7 +753,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             webSliceTTL.Visible = chkWebSlice.Checked;
         }
 
-        #endregion
+        protected void dgOnTabs_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
+        {
+            dgOnTabs.PageIndex = e.NewPageIndex;
+            BindModulePages();
+        }
 
+        #endregion
     }
 }
