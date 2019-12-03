@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module">
+    <package name="DNN_HTML" type="Module" version="09.04.02">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
@@ -120,12 +120,12 @@
                 <defaultCacheTime>1200</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/HTML/HtmlModule.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
@@ -135,7 +135,7 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
@@ -146,7 +146,7 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>My Work</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
@@ -157,7 +157,7 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>

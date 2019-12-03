@@ -510,6 +510,26 @@ namespace DotNetNuke.Data
 
         #region Portal Methods
 
+        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v10.0.0.")]
+        public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
+                                        double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
+                                         string HomeDirectory, int CreatedByUserID)
+        {
+            return
+                CreatePortal(
+                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
+                                            currency,
+                                            ExpiryDate,
+                                            HostFee,
+                                            HostSpace,
+                                            PageQuota,
+                                            UserQuota,
+                                            SiteLogHistory,
+                                            HomeDirectory,
+                                            "en-US",
+                                            CreatedByUserID);
+        }
+
         public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
                                         double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
                                          string HomeDirectory, string CultureCode, int CreatedByUserID)
@@ -3157,6 +3177,11 @@ namespace DotNetNuke.Data
                                       lastModifiedByUserID,
                                       folderName,
                                       iconFile);
+        }
+
+        public virtual void SetCorePackageVersions()
+        {
+            ExecuteNonQuery("SetCorePackageVersions");
         }
 
         #endregion

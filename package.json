@@ -16,6 +16,7 @@
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Servers.Web",
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteImportExport.Web",
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Sites.Web",
+    "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Sites.Web/src/_exportables",
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/SiteSettings.Web",
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/TaskScheduler.Web",
     "Dnn.AdminExperience/Extensions/Content/Dnn.PersonaBar.Extensions/WebApps/Themes.Web",

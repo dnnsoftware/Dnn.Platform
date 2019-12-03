@@ -212,6 +212,14 @@ namespace DotNetNuke.Modules.Admin.Modules
             moduleContainerCombo.SelectedValue = Module.ContainerSrc;
         }
 
+        private void BindModulePages()
+        {
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
+            tabsByModule.Remove(TabId);
+            dgOnTabs.DataSource = tabsByModule.Values;
+            dgOnTabs.DataBind();
+        }
+
         private void BindModuleCacheProviderList()
         {
             cboCacheProvider.DataSource = GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
@@ -358,7 +366,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                    
+
                         _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = _control as ISettingsControl;
@@ -402,10 +410,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
                     dgPermissions.ModuleID = _moduleId;
 
-                    var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
-                    tabsByModule.Remove(TabId);
-                    dgOnTabs.DataSource = tabsByModule.Values;
-                    dgOnTabs.DataBind();
+                    BindModulePages();
 
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
@@ -442,11 +447,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         chkAllowIndex.Enabled = false;
                         cboTab.Enabled = false;
                     }
-                    
+
                     if (_moduleId != -1)
                     {
                         BindData();
-                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) || 
+                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) ||
                              TabPermissionController.CanAddContentToPage()) && !HideDeleteButton;
                     }
                     else
@@ -668,8 +673,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //These Module Copy/Move statements must be 
-                    //at the end of the Update as the Controller code assumes all the 
+                    //These Module Copy/Move statements must be
+                    //at the end of the Update as the Controller code assumes all the
                     //Updates to the Module have been carried out.
 
                     //Check if the Module is to be Moved to a new Tab
@@ -748,7 +753,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             webSliceTTL.Visible = chkWebSlice.Checked;
         }
 
-        #endregion
+        protected void dgOnTabs_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
+        {
+            dgOnTabs.PageIndex = e.NewPageIndex;
+            BindModulePages();
+        }
 
+        #endregion
     }
 }

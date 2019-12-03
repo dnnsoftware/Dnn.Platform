@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DDRMenu" type="Module">
+		<package name="DDRMenu" type="Module" version="09.04.02">
 			<friendlyName>DDR Menu</friendlyName>
 			<description>DotNetNuke Navigation Provider.</description>
 			<owner>
@@ -34,7 +34,7 @@
 								<defaultCacheTime>0</defaultCacheTime>
 								<moduleControls>
 									<moduleControl>
-										<controlKey />
+										<controlKey/>
 										<controlSrc>DesktopModules/DDRMenu/MenuView.ascx</controlSrc>
 										<supportsPartialRendering>False</supportsPartialRendering>
 										<controlTitle>DDR menu</controlTitle>

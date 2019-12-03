@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNCorp.RazorHost" type="Module" >
+    <package name="DNNCorp.RazorHost" type="Module" version="09.04.02" >
       <friendlyName>Razor Host</friendlyName>
       <description>The Razor Host module allows developers to host Razor Scripts.</description>
       <owner>
@@ -21,21 +21,21 @@
           <desktopModule>
             <moduleName>DNNCorp.RazorHost</moduleName>
             <foldername>RazorModules/RazorHost</foldername>
-            <businessControllerClass />
-            <supportedFeatures />
+            <businessControllerClass/>
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Razor Host</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/RazorModules/RazorHost/RazorHost.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
@@ -44,8 +44,8 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Edit Razor Script</controlTitle>
                     <controlType>Host</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -55,8 +55,8 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Add Razor Script</controlTitle>
                     <controlType>Host</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>                 
@@ -66,8 +66,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Create Module</controlTitle>
                     <controlType>Host</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -77,8 +77,8 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Razor Host Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
