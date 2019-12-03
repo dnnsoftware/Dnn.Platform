@@ -53,11 +53,7 @@ Task("CreateInstall")
         var files = GetFilesByPatterns(websiteFolder, new string[] {"**/*"}, packagingPatterns.installExclude);
         files.Add(GetFilesByPatterns(websiteFolder, packagingPatterns.installInclude));
         Information("Zipping {0} files for Install zip", files.Count);
-<<<<<<< HEAD
-        var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Install.zip", GetProductVersion());
-=======
         var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Install.zip", GetBuildNumber());
->>>>>>> release/9.4.x
         Zip(websiteFolder, packageZip, files);
 	});
 
@@ -74,11 +70,7 @@ Task("CreateUpgrade")
         var files = GetFilesByPatterns(websiteFolder, new string[] {"**/*"}, excludes);
 		files.Add(GetFiles("./Website/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"));
         Information("Zipping {0} files for Upgrade zip", files.Count);
-<<<<<<< HEAD
-        var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Upgrade.zip", GetProductVersion());
-=======
         var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Upgrade.zip", GetBuildNumber());
->>>>>>> release/9.4.x
         Zip(websiteFolder, packageZip, files);
 	});
     
@@ -89,11 +81,7 @@ Task("CreateDeploy")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
-<<<<<<< HEAD
-        var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Deploy.zip", GetProductVersion());
-=======
         var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Deploy.zip", GetBuildNumber());
->>>>>>> release/9.4.x
 		var deployFolder = "./DotNetNuke/";
 		var deployDir = Directory(deployFolder);
 		System.IO.Directory.Move(websiteDir.Path.FullPath, deployDir.Path.FullPath);
@@ -111,11 +99,7 @@ Task("CreateSymbols")
 	.Does(() =>
 	{
         CreateDirectory(artifactsFolder);
-<<<<<<< HEAD
-        var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Symbols.zip", GetProductVersion());
-=======
         var packageZip = string.Format(artifactsFolder + "DNN_Platform_{0}_Symbols.zip", GetBuildNumber());
->>>>>>> release/9.4.x
         Zip("./Build/Symbols/", packageZip, GetFiles("./Build/Symbols/*"));
 		// Fix for WebUtility symbols missing from bin folder
 		CopyFiles(GetFiles("./DNN Platform/DotNetNuke.WebUtility/bin/DotNetNuke.WebUtility.*"), websiteFolder + "bin/");
