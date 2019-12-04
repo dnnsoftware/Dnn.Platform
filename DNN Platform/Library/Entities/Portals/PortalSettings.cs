@@ -583,7 +583,7 @@ namespace DotNetNuke.Entities.Portals
             get { return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false); }
         }
 
-        public TimeZoneInfo TimeZone { get; set; }
+        public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
 
         public string PageHeadText
         {
