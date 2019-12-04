@@ -8,6 +8,7 @@ be extremely difficult for the core maintainers to reproduce. We want to keep it
 If you are new to Dnn Development, you can start by watching this video playlist which explains how to setup the required tools, your development environment and submit pull requests for modules, this repository and the Persona Bar.
 
 [How to make a pull requests playlist](https://www.youtube.com/playlist?list=PLIx1M8IdVvqZ0bnODGqJyxvONNPj5BzMP)
+Please note that this playlist was recorded some time ago, if you encounter conflicting information, please rely on the most recent written documentation over what you see in those videos.
 
 * Make sure you have a [GitHub account](https://github.com/signup/free)
 * [Submit a ticket](https://github.com/dnnsoftware/Dnn.Platform/issues/new) for your issue, assuming one does not already exist.  After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
@@ -28,9 +29,9 @@ If this is your first time working with Dnn:Platform. You will need to fork the 
 ## Making Changes
 
 * Create a topic branch from where you want to base your work.
-  * This is usually the 'development' branch.
+  * This is usually the 'develop' branch.
   * Release branches should only be targeted in special cases and with approval from the approver group.
-  * To quickly create a topic branch based on development; `git checkout -b my_contribution development`
+  * To quickly create a topic branch based on develop; `git checkout -b my_contribution develop`
 * Make commits of logical units.
 * Check for unnecessary whitespace with `git diff --check` before committing.
 * When ready to publish your changes, you can with `git push -u origin my_contribution`
@@ -75,7 +76,7 @@ a ticket number.
 ````
 
 ## Submitting Changes
-Once your change is completed you will want to follow the [Pull Request Process](https://github.com/dnnsoftware/Dnn.Platform/blob/development/.github/PULL_REQUEST_PROCESS.md) to submit your changes for review & inclusion in the next release.
+Once your change is completed you will want to follow the [Pull Request Process](https://github.com/dnnsoftware/Dnn.Platform/blob/develop/.github/PULL_REQUEST_PROCESS.md) to submit your changes for review & inclusion in the next release.
 
 # Additional Resources
 
