@@ -466,6 +466,11 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("AddFolderAlreadyExists", "The provided folder path already exists. The folder has not been added."));
             }
 
+            if (!IsValidFolderPath(folderPath))
+            {
+                throw new InvalidFolderPathException(Localization.Localization.GetExceptionMessage("AddFolderNotAllowed", "The folder path '{0}' is not allowed. The folder has not been added.", folderPath));
+            }
+
             var parentFolder = GetParentFolder(folderMapping.PortalID, folderPath);
             if (parentFolder != null)
             {
@@ -513,6 +518,12 @@ namespace DotNetNuke.Services.FileSystem
             OnFolderAdded(folder, GetCurrentUserId());
 
             return folder;
+        }
+
+        internal virtual bool IsValidFolderPath(string folderPath)
+        {
+            var illegalInFolderPath = new Regex(string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidPathChars()))), RegexOptions.Compiled);
+            return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
         }
 
         /// <summary>
