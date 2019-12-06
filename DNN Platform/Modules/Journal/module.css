@@ -64,7 +64,7 @@ border-bottom-right-radius: 3px;
 border-bottom-left-radius: 3px;
     top: -10px;
     position:relative;
-    width: 96%;
+    width: 100%;
 }
 .journalTools #journalOptionArea div{font-size:12px;padding:6px;padding-top:12px;padding-bottom:12px;}
 .journalTools #journalOptionArea div span{font-weight:bold;color:#333;padding-right:12px;padding-left:12px;}
