@@ -23,6 +23,7 @@
 .journalTools ul.jacmenu{display:none; position: absolute;z-index: 4; list-style-type:none;border:solid 1px #dcdcdc;background-color:#f5f5f5;}
 .journalTools ul.jacmenu li{padding:2px;list-style-type:none;border-bottom:1px solid #dcdcdc;background-color:#f3f3f3;}
 
+#journalEditor {width:100%;}
 #journalEditor #journalContent{overflow:auto;outline:none;}
 #journalEditor #journalContent span{padding:0 2px 0 2px;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;}
 #journalEditor #journalContent .juser, .journalrow .juser{color:#000;border:1px solid #ccd5e4; background-color:#eff2f7;}
@@ -272,15 +273,15 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 #journalEditor #tbar span#tbar-attach:hover{background-position:-24px -16px;}
 #journalEditor #tbar span#tbar-perm:hover{background-position:-81px -16px;}
 .journalTools #journalOptionArea{background-color:#f5f5f5;display:none; border: 1px solid #bbb; border-top:0px none transparent;
-                                 -webkit-border-bottom-right-radius: 3px;
--webkit-border-bottom-left-radius: 3px;
--moz-border-radius-bottomright: 3px;
--moz-border-radius-bottomleft: 3px;
-border-bottom-right-radius: 3px;
-border-bottom-left-radius: 3px;
-    top: -10px;
-    position:relative;
-    width: 100%;
+				-webkit-border-bottom-right-radius: 3px;
+				-webkit-border-bottom-left-radius: 3px;
+				-moz-border-radius-bottomright: 3px;
+				-moz-border-radius-bottomleft: 3px;
+				border-bottom-right-radius: 3px;
+				border-bottom-left-radius: 3px;
+					top: -10px;
+					position:relative;
+					width: 100%;
 }
 
 .journalTools #journalOptionArea div{font-size:12px;padding:6px;padding-top:12px;padding-bottom:12px;}
