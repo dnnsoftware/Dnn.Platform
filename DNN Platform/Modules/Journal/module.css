@@ -414,7 +414,7 @@ div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.pro
 
 .journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;height:auto;padding:5px;}
 .journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
-.journalrow div.journalitem .jlink div{max-width: 67%;word-break:break-word;}   
+.journalrow div.journalitem .jlink div{max-width: 100%;word-break:break-word;}   
 div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:none;overflow:auto;}
 .journalrow .juser{ cursor: pointer;}
 
