@@ -1,11 +1,9 @@
 @charset "utf-8";
 /* CSS Document */
-
-
 #journalEditor, .jcmt .cmteditarea
 {
         display:inline-block;
-		width:96%;
+		width:100%;
 		position:relative;
 		background: #fff url('Images/input-bg.png') left top no-repeat;
         margin:10px 0 0; 
@@ -38,7 +36,6 @@
 #journalEditor #journalPlaceholder,.jcmt .cmteditarea .editorPlaceholder{font-size:14px;color:#999;height:24px;line-height:24px;padding-left:7px;}
 #journalEditor #journalContent{font-family:Arial, Helvetica; float:left; display:none;height:1px;margin-bottom:4px;padding: 2px 4px 6px 4px;font-size:14px; border: none; -webkit-box-shadow: none; box-shadow: none; line-height:1.3em;width:99%;resize:none;}
 
-
 #journalEditor .journalPlaceholder {width:100%;}
 #journalEditor .dnnClear{height:0;}
 
@@ -58,7 +55,7 @@
 #journalEditor #tbar span#tbar-attach:hover,#journalEditor #tbar span#tbar-attach.selected{background-position:-24px -16px;}
 #journalEditor #tbar span#tbar-attach:hover{background-position:-24px -16px;}
 #journalEditor #tbar span#tbar-perm:hover{background-position:-81px -16px;}
-.journalTools #journalOptionArea{background-color:#f5f5f5;display:none; border: 1px solid #bbb; border-top:0px none transparent;
+.journalTools #journalOptionArea{width:100%;background-color:#f5f5f5;display:none; border: 1px solid #bbb; border-top:0px none transparent;
                                  -webkit-border-bottom-right-radius: 3px;
 -webkit-border-bottom-left-radius: 3px;
 -moz-border-radius-bottomright: 3px;
@@ -69,14 +66,9 @@ border-bottom-left-radius: 3px;
     position:relative;
     width: 96%;
 }
-
 .journalTools #journalOptionArea div{font-size:12px;padding:6px;padding-top:12px;padding-bottom:12px;}
 .journalTools #journalOptionArea div span{font-weight:bold;color:#333;padding-right:12px;padding-left:12px;}
-
 .journalTools #journalOptionArea #itemUpload{margin:0;padding:0;}
-
-
-
 .journalTools #journalOptionArea .jpa{display:none;}
 .journalTools #journalOptionArea #linkArea #imagePreviewer{width:150px; float:left;margin-right:12px;}
 .journalTools #journalOptionArea #linkArea #imagePreviewer #image{width:140px; height:100px; overflow:hidden;}
@@ -103,18 +95,14 @@ border-bottom-left-radius: 3px;
 
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
 .journalrow div.author{overflow:hidden;float:left;}
-.journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;background:#fff;border:1px #ccc solid;padding:4px;}
-
-.journalrow div.journalitem{margin-left:65px;overflow: hidden;word-break: break-all;}
+.journalrow div.author img{width:32px;max-width:100%;height:auto;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+.journalrow div.journalitem{margin-left:50px;overflow: hidden;word-break: break-all;}
 .journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
 .journalrow div.journalitem .authorname{padding-right:6px;}
 .journalrow div.journalitem ul.jcmt,.journalrow div.journalitem .likes{width:100%;padding:0px;font-size:11px;}
 
 /*.journalrow div.journalitem ul.jcmt li{border-bottom: solid 1px #fff;}*/
-    .journalrow div.journalitem ul.jcmt {
-        margin-left: 0px;
-        margin-bottom: 0px;
-    }
+.journalrow div.journalitem ul.jcmt {margin-left: 0px;margin-bottom: 0px;}
 .journalrow div.journalitem ul.jcmt, .journalrow div.journalitem ul.jcmt li{list-style-type:none;}
 .journalrow div.journalitem ul.jcmt li textarea{border:solid 0px #ccc;font-family:tahoma,verdana,arial,sans-serif;font-size:12px;padding:0px;height:20px;margin-left:0px;margin-right:0px;width:100%;max-width:100%;word-break:break-word;}
 .journalrow div.journalitem ul.jcmt li .miniclose{margin:2px;}
@@ -134,7 +122,7 @@ border-bottom-left-radius: 3px;
                                               padding-left: 5px;
                                               padding-top: 4px;}
 .journalrow div.journalitem .journalfooter abbr {border-style:none;}
-.journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;padding:5px;border:1px #ccc solid;}
+.journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;height:auto;padding:5px;}
 .journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
 .journalrow div.journalitem .jlink div{max-width: 100%;word-break:break-word;}   
 .journalrow div.journalitem .likes{padding:2px;}                                              
@@ -187,7 +175,6 @@ div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:n
 	margin-bottom: 5px;
 	word-break: break-word;
 }
-
 /* File Upload */
 .progress_bar_wrapper{ width: 500px;overflow: hidden;}
 .progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
@@ -195,7 +182,7 @@ div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:n
 #tbar-attach-Area input:not([type=file]){cursor:pointer; left: 0;top: 0;width: 150px;position:absolute; opacity:0; display:inline;height:18px;padding:4px;margin-bottom:9px;font-size:13px;line-height:18px;color:#555555;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 
 .journalTools #journalOptionArea div span.browser-upload-btn{position:relative; font-weight: bold; padding-left:0px; cursor:pointer;display: block; }
-    .browser-upload-btn:hover{cursor:pointer;}
+	.browser-upload-btn:hover{cursor:pointer;}
 div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.filePreviewArea {padding:0;margin:0}
 div.journalTools div#journalOptionArea div.fileUploadArea div#itemUpload div.progress_bar_wrapper{padding:0;margin:0;}
 
@@ -298,11 +285,7 @@ border-bottom-left-radius: 3px;
 
 .journalTools #journalOptionArea div{font-size:12px;padding:6px;padding-top:12px;padding-bottom:12px;}
 .journalTools #journalOptionArea div span{font-weight:bold;color:#333;padding-right:12px;padding-left:12px;}
-
 .journalTools #journalOptionArea #itemUpload{margin:0;padding:0;}
-
-
-
 .journalTools #journalOptionArea .jpa{display:none;}
 .journalTools #journalOptionArea #linkArea #imagePreviewer{width:150px; float:left;margin-right:12px;}
 .journalTools #journalOptionArea #linkArea #imagePreviewer #image{width:140px; height:100px; overflow:hidden;}
@@ -326,7 +309,6 @@ border-bottom-left-radius: 3px;
 	    
 .journalTools #btnShare.disabled,.jcmt li.cmtbtn a.disabled{background:#cdcdcd;color:#999;cursor:text;}
 .journalTools ul.jacmenu li.liselected{background-color:#ffffcc;}
-
 
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
 .journalrow div.author{overflow:hidden;float:left;}
@@ -367,7 +349,6 @@ border-bottom-left-radius: 3px;
 .jcmt .cmteditor{max-width:445px;display:none;resize:none;outline:none;}
 .jcmt .cmteditarea{margin: 2px 4px 4px 2px;}
 .jcmt .cmteditarea .editorPlaceholder{height:18px;font-size:11px;line-height:18px;}
-
 /* Visibility and Security */
 .securityMenu{
 	position: absolute;
@@ -412,7 +393,6 @@ border-bottom-left-radius: 3px;
 	margin-bottom: 5px;
 	word-break: break-word;
 }
-
 /* File Upload */
 .progress_bar_wrapper{ width: 500px;overflow: hidden;}
 .progress-bar div{ background-image: url('Images/progress.gif');position:relative;padding:0 !important;}
