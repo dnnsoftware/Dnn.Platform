@@ -9,10 +9,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Integration Testing framework to run NUint type Stored Procedure or DNN WebAPI Integration testing</description>
     <copyright>DotNetNuke is copyright 2002-2018 by DNN Corp. All Rights Reserved.</copyright>
+    <icon>images\logo-for-nuget.png</icon>
+    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
   </metadata>
   <files>
     <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.dll" target="lib\"/>
     <file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\DNN.Integration.Test.Framework.pdb" target="lib\"/>
-    <!-- file src="Dnn.Platform\DNN Platform\Tests\DotNetNuke.Tests.Integration\bin\Release\PetaPoco.dll" target="lib\"/ -->
+    <file src="..\..\..\Build\Tools\NuGet\logo-for-nuget.png" target="images\"/>
   </files>
 </package>

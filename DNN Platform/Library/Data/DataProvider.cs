@@ -3179,6 +3179,11 @@ namespace DotNetNuke.Data
                                       iconFile);
         }
 
+        public virtual void SetCorePackageVersions()
+        {
+            ExecuteNonQuery("SetCorePackageVersions");
+        }
+
         #endregion
 
         #region Languages/Localization

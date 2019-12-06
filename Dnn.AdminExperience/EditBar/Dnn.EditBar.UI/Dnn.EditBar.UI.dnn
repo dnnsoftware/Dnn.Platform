@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.EditBar.UI" type="Library">
+        <package name="Dnn.EditBar.UI" type="Library" version="09.04.02">
             <friendlyName>Dnn.EditBar.UI</friendlyName>
             <description></description>
             <dependencies/>
@@ -56,7 +56,7 @@
                         </resourceFile>
                     </resourceFiles>
                 </component>
-                <component type="Cleanup" version="01.05.00" fileName ="01.05.00.txt" />
+                <component type="Cleanup" version="01.05.00" fileName="01.05.00.txt" />
                 <component type="File">
                     <files>
                         <basePath>DesktopModules\admin\Dnn.EditBar</basePath>

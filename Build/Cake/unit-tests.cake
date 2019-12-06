@@ -1,4 +1,3 @@
-
 Task("EnsureAllProjectsBuilt")
   .IsDependentOn("UpdateDnnManifests")
   .IsDependentOn("Restore-NuGet-Packages")

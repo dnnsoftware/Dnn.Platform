@@ -10,7 +10,7 @@
         <url>http://www.dnnsoftware.com</url>
         <email>support@dnnsoftware.com</email>
       </owner>
-      <license />
+      <license/>
       <releaseNotes src="releaseNotes.txt"></releaseNotes>
       <components>
         <component type="Assembly">

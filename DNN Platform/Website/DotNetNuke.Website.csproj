@@ -3326,6 +3326,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.04.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

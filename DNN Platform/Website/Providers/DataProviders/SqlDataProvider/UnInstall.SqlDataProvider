@@ -1160,6 +1160,8 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}ResetTermsAgreement]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SetCorePackageVersions]
+GO
 
 /** Remove AspNet Data **/
 
