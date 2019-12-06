@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -56,6 +57,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public class LanguagePropertyAccess : IPropertyAccess
     {
+        private const string FlagIconPhysicalLocation = @"~\images\Flags";
+        private const string NonExistingFlagIconFileName = "none.gif";
         private readonly PortalSettings objPortal;
         public LanguageTokenReplace objParent;
 
@@ -74,7 +77,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 case "url":
                     return NewUrl(objParent.Language);
                 case "flagsrc":
-                    return "/" + objParent.Language + ".gif";
+                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{objParent.Language}.gif");
+                    return File.Exists(mappedGifFile) ? $"/{objParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
                 case "selected":
                     return (objParent.Language == CultureInfo.CurrentCulture.Name).ToString();
                 case "label":
