@@ -18,19 +18,18 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
-        <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
-        <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha" runat="server" />
-    </div>
-    <input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" aria-label="gotcha" />
+	</div>
+	<div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
+		<dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
+		<dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha" runat="server" />
+	</div>
+	<input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" aria-label="gotcha" />
 	<div class="registerButtonGroup">    
 		<ul id="actionsRow" runat="server" class="dnnActions dnnClear">
 			<li><asp:LinkButton id="registerButton" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdRegister" /></li>
 			<li><asp:HyperLink ID="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
 		</ul>
 	</div>
-</div>
 </div>
 <asp:HyperLink ID="closeLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="Close" CausesValidation="false" Visible="False" />
 <script type="text/javascript">
