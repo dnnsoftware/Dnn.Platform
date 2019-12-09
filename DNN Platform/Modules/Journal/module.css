@@ -107,7 +107,7 @@ border-bottom-left-radius: 3px;
 .journalrow div.journalitem ul.jcmt, .journalrow div.journalitem ul.jcmt li{list-style-type:none;}
 .journalrow div.journalitem ul.jcmt li textarea{border:solid 0px #ccc;font-family:tahoma,verdana,arial,sans-serif;font-size:12px;padding:0px;height:20px;margin-left:0px;margin-right:0px;width:100%;max-width:100%;word-break:break-word;}
 .journalrow div.journalitem ul.jcmt li .miniclose{margin:2px;}
-.journalrow div.journalitem ul.jcmt li:hover .miniclose, .journalrow:hover .minidel, div:hover #linkClose{visibility:visible;}
+.journalrow div.journalitem ul.jcmt li:hover .miniclose, .journalrow:hover .minidel, div:hover #linkClose,div:hover #journalEditor #journalClose{visibility:visible;}
 .journalrow div.journalitem ul.jcmt li.cmtbtn a{display:none;} 
 .journalrow div.journalitem ul.jcmt li img{ float: left;
     left: 0;
