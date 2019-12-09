@@ -127,7 +127,7 @@ border-bottom-left-radius: 3px;
 .journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
 .journalrow div.journalitem .jlink div{max-width: 100%;word-break:break-word;}   
 .journalrow div.journalitem .likes{padding:2px;}                                              
-.jcmt .cmteditor{max-width:445px;display:none;resize:none;outline:none;}
+.jcmt .cmteditor{max-width:100%;display:none;resize:none;outline:none;}
 .jcmt .cmteditarea{margin: 2px 4px 4px 2px;}
 .jcmt .cmteditarea .editorPlaceholder{height:18px;font-size:11px;line-height:18px;}
 div#journalItems div.journalrow div.journalitem ul.jcmt li.cmteditarea{display:none;overflow:auto;word-break:break-word;}
