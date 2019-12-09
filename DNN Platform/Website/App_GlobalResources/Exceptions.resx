@@ -510,4 +510,7 @@
   <data name="SubnetMaskIncorrect.Text" xml:space="preserve">
     <value>Subnet mask is not in correct format</value>
   </data>
+  <data name="AddFolderNotAllowed.Text" xml:space="preserve">
+    <value>The folder path '{0}' is not allowed.  The folder has not been added.</value>
+  </data>
 </root>
