@@ -1700,7 +1700,9 @@ namespace DotNetNuke.Entities.Urls
                                     //var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
                                     string url = requestUri.ToString();
                                     RewriteController.CheckLanguageMatch(ref url, result);
-                                    var cpa = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
+                                    var cpa = portalAliases
+                                        .Where(a => a.IsPrimary || result.PortalAliasMapping != PortalSettings.PortalAliasMapping.Redirect)
+                                        .GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
 
                                     if (cpa != null)
                                     {
