@@ -2,12 +2,12 @@
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..\..</RootDirectory>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>
 
-  <Import Project="..\..\..\..\DNN_Platform.build" />
-  <Import Project="..\..\..\..\Build\BuildScripts\AEPackage.targets" />
-  <Import Project="..\..\..\..\Build\BuildScripts\AEModule.build"/>
+  <Import Project="..\..\DNN_Platform.build" />
+  <Import Project="..\..\Build\BuildScripts\AEPackage.targets" />
+  <Import Project="..\..\Build\BuildScripts\AEModule.build"/>
 
   <PropertyGroup>
     <Extension>zip</Extension>
@@ -15,7 +15,7 @@
     <PackageName>Dnn.PersonaBar.Extensions</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\</ModuleFolderName>
     <InstallPath>$(WebsiteInstallPath)\Module</InstallPath>
-    <YarnWorkingDirectory>..\..\..\..\package.json</YarnWorkingDirectory>
+    <YarnWorkingDirectory>..\..\package.json</YarnWorkingDirectory>
   </PropertyGroup>
 
 </Project>
