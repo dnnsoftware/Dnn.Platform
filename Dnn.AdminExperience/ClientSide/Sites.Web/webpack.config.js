@@ -12,7 +12,7 @@ const languages = {
   // "it": require("./localizations/it.json"),
   // "nl": require("./localizations/nl.json")
 };
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 const moduleName = "sites";
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
   output: {
     path:
       isProduction || settings.WebsitePath == ""
-        ? path.resolve("../../admin/personaBar/Dnn.Sites/scripts/bundles/")
+        ? path.resolve("../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/bundles/")
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Sites\\scripts\\bundles\\",
     filename: moduleName + "-bundle.js",
@@ -70,7 +70,7 @@ module.exports = {
       path.resolve("./src"), // Look in src first
       path.resolve("./exportables"), // Look in exportables after
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
   externals: Object.assign(webpackExternals, {

@@ -3,7 +3,7 @@ const I18nPlugin = require("i18n-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 
 module.exports = {
   entry: "./src/main.jsx",
@@ -13,7 +13,7 @@ module.exports = {
   output: {
     path:
       isProduction || settings.WebsitePath == ""
-        ? path.resolve("../../admin/personaBar/Dnn.Roles/scripts/bundles/")
+        ? path.resolve("../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/")
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Roles\\scripts\\bundles\\",
     filename: "roles-bundle.js",
@@ -57,7 +57,7 @@ module.exports = {
     modules: [
       path.resolve("./src"), // Look in src first
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
 
