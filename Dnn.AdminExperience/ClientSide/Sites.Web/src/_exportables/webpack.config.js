@@ -1,11 +1,11 @@
 const path = require("path");
-const settings = require("../../../settings.local.json");
+const settings = require("../../../../../settings.local.json");
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
   entry: "./index",
   optimization: {
-    minimize: isProduction
+    minimize: true
   },
   node: {
     fs: "empty"
@@ -14,11 +14,11 @@ module.exports = {
     path:
       isProduction || settings.WebsitePath == ""
         ? path.resolve(
-            "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users"
+            "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/exportables/Sites"
           )
         : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Users\\scripts\\exportables\\Users\\",
-    filename: "UsersCommon.js",
+          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Sites\\scripts\\exportables\\Sites\\",
+    filename: "SitesListView.js",
     publicPath: isProduction ? "" : "http://localhost:8050/dist/"
   },
   module: {
@@ -42,24 +42,7 @@ module.exports = {
           ]
         }
       },
-      {
-        test: /\.(less|css)$/,
-        use: [
-          { loader: "style-loader" },
-          { loader: "css-loader", options: { modules: "global" } },
-          { loader: "less-loader" }
-        ]
-      },
-      { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
-      { test: /\.(gif|png)$/, loader: "url-loader?mimetype=image/png" },
-      {
-        test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-        loader: "url-loader?mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-        loader: "file-loader?name=[name].[ext]"
-      }
+      { test: /\.(less|css)$/, loader: "style-loader!css-loader!less-loader" }
     ]
   },
   externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
@@ -69,8 +52,8 @@ module.exports = {
       path.resolve(__dirname, "./src"),
       path.resolve(__dirname, "../"),
       path.resolve(__dirname, "node_modules"),
-      path.resolve(__dirname, "../../../node_modules")
+      path.resolve(__dirname, "../../node_modules"),
+      path.resolve(__dirname, "../../../../../node_modules")
     ]
-  },
-  devtool: "source-map"
+  }
 };
