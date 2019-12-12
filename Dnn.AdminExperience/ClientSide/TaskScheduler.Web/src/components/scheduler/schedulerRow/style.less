@@ -1,0 +1,123 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-component-scheduler {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-header-scheduler {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {    
+            float: left;
+            width: 100%;      
+            .item-row-name {
+                width: 28%;
+                float: left;
+                padding-left: 15px;
+            }
+            .item-row-frequency {
+                width: 17%;
+                float: left;
+            }
+            .item-row-retryTimeLapse {
+                width: 17%;
+                float: left;
+            }
+            .item-row-nextStart {
+                width: 19%;
+                float: left;
+            }
+            .item-row-enabled {
+                width: 10%;
+                float: left;
+                text-align: center;
+                .checkMarkIcon {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    > svg {
+                        fill: @thunder;
+                    }
+                }
+            }
+            .item-row-editButton {
+                width: 3%;
+                float: right;
+                margin-right: 5px;       
+                .edit-icon {
+                    cursor: pointer;
+                    > svg {
+                        width: 22px;
+                        float: left;
+                        height: 22px;
+                        margin-top: -2px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .edit-icon-active {
+                    cursor: pointer;
+                    > svg {
+                        width: 22px;
+                        float: left;
+                        height: 22px;    
+                        margin-top: -2px;                    
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-historyButton {
+                width: 3%;
+                float: right;      
+                margin-right: 10px;             
+                .collapsible-content {
+                    -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                    -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+                    z-index: 1000;
+                    background-color: @white;
+                    position: absolute;
+                    width: 810px;
+                    margin: -114px 0 0 -764px;
+                    text-align: left;
+                }
+                .history-icon {
+                    cursor: pointer;
+                    > svg {
+                        width: 22px;
+                        float: left;
+                        height: 22px;
+                        margin-top: -2px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .history-icon-active {
+                    cursor: pointer;
+                    > svg {
+                        width: 22px;
+                        float: left;
+                        height: 22px;    
+                        margin-top: -2px;                    
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

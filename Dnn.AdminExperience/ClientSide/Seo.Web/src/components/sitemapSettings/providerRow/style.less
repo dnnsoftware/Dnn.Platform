@@ -1,0 +1,77 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-component-providers {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-providers {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {
+            .item-row-name {
+                width: 40%;
+                padding-left: 15px;
+                float: left;
+            }
+            .item-row-enabled {
+                width: 20%;
+                float: left;
+                text-align: center;
+                .item-row-enabled-display {
+                    color: @mountainMist;
+                    margin: 0 0 0 -15px;
+                    display: table;
+                    margin: 0 auto;
+                    .enabled-icon {
+                        > svg {
+                            padding: 0 15px 0 15px;
+                            width: 16px;
+                            float: left;
+                            height: 16px;
+                            fill: @mountainMist;
+                        }
+                    }
+                }
+            }
+            .item-row-priority {
+                width: 30%;
+                float: left;
+                text-align: center;
+            }
+            .item-row-editButton {
+                width: 6%;
+                float: left;
+                .edit-icon {
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .edit-icon-active {
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

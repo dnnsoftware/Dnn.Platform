@@ -1,0 +1,67 @@
+
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+:local(.defaultPagesSettings) {
+    margin: 30px 30px;
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-dropdown {
+            width: 681px;
+        }
+        .dnn-file-upload {
+            width: 313px;
+        }
+        .dnn-multi-line-input-with-error {
+            width: 100%;
+            .dnn-ui-common-multi-line-input  {
+                margin-bottom: 0 !important;
+            }
+        }
+    }
+    .sectionTitle {
+        font-weight: bolder;
+        border-top: 1px solid @alto;
+        float: left;
+        width: 100%;
+        padding: 30px 0 15px 0;
+        margin: 20px 0 0 0;
+    }
+    .buttons-box {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}
+.ToolTipPortal {
+    & > div {
+        max-width: 220px;
+        background: #4b4e4f;
+    }
+}
