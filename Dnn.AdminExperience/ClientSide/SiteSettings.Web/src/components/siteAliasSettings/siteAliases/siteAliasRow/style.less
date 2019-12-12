@@ -1,0 +1,95 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+.collapsible-component-alias {
+    display: block;
+    float: left;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-alias {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {
+            float: left;
+            width: 100%;
+            .item-row-alias {
+                width: 35%;
+                float: left;
+                padding-left: 15px;
+                word-break: break-all;
+            }
+            .item-row-browser {
+                width: 12%;
+                float: left;
+            }
+            .item-row-theme {
+                width: 20%;
+                float: left;
+                word-break: break-all;
+                padding-right: 5px;
+                box-sizing: border-box;
+            }
+            .item-row-language {
+                width: 10%;
+                float: left;
+            }
+            .item-row-primary {
+                width: 10%;
+                float: left;
+                text-align: center;
+                .checkMarkIcon {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    > svg {
+                        fill: @thunder;
+                    }
+                }
+            }
+            .item-row-actionButtons {
+                width: 8%;
+                margin-right: 15px;
+                float: right;
+                &:not(:last-child) {
+                    float: left;
+                    margin-right: 0px;
+                }
+                .delete-icon, .edit-icon {
+                    margin-left: 5px;
+                    float: right;
+                    display: block;
+                    cursor: pointer;
+                    > svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .delete-icon-hidden {
+                    display: none;
+                }
+                .edit-icon-active {
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

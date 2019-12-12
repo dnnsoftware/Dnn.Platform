@@ -1,0 +1,233 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+#dnnPrompt-container {
+    .dnnPrompt-app {
+        &.personaBar-mainContainer {
+            * {
+                font-size: 16px !important;
+                box-sizing: border-box;
+            }
+
+            .wrapper {
+                display: block;
+                width: 100%;
+                height: 100%;
+                position:  absolute;
+                top: 0;
+                left:  0;
+                background: @blackPearl;
+                border: solid 1px @alabaster;
+                box-shadow: 0 0 3px @thunder, 0 0 8px @thunder inset;
+
+                .dnn-prompt {
+                    background: @blackPearl;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    padding: 5px;
+                    padding-bottom: 1em;
+                    margin: 2px;
+                    /* keep status bar from covering prompt input */
+                    overflow: auto;
+                    z-index: 2000;
+                    width: ~"calc(100% - 25px)";
+                    box-shadow: none;
+                }
+
+                .dnn-prompt-output {                    
+                     & > div { 
+                         margin:10px 0; 
+                     }
+                    .dnn-prompt-cmd {
+                        /*pending*/
+                    }
+                }
+                .dnn-prompt-input-wrapper {
+                    position: relative;
+                }
+                .dnn-prompt-input {
+                    display: inline-block;
+                    width: 98%;
+                    background: transparent;
+                    border: none;
+                    color: #8AE234;
+                    margin: 0;
+                    padding: 0;
+                    outline: none;
+                    /* Get rid of Chrome focus border */
+                    position: absolute;
+                    left: 17px;
+
+                    &.hidden-text {
+                      opacity: 0;
+                    }
+                }
+                .dnn-prompt-input-wrapper {
+                    &::before {
+                        content: ">";
+                        color: #8AE234;
+                        margin-left: 3px;
+                        display: inline-block;
+                    }
+
+                    &.hidden-cursor {
+                        &::before {
+                          content: " ";
+                        }
+                    }
+                }
+
+                /* remove MS Edge clear button */
+                .dnn-prompt-input::-ms-clear {
+                    display: none;
+                }
+                /* Output text
+    ----------------------------------*/
+                .dnn-prompt-cmd {
+                    color: #AAA;
+                }
+                .dnn-prompt-error {
+                    margin-top: 10px;
+                    color: #F00;
+                }
+                .dnn-prompt-ok {
+                    color: #0FF;
+                }
+                /* Table */
+                .dnn-prompt-tbl {
+                    color: #8AE234;
+                }
+                .dnn-prompt-tbl thead th {
+                    color: #03ade0;
+                    border-bottom: 1px dashed;
+                }
+                .dnn-prompt-tbl td, .dnn-prompt-tbl th {
+                    padding: 2px 5px;
+                    margin: 2px 5px;
+                }
+                .dnn-prompt-tbl td:first-child, .dnn-prompt-tbl th:first-child {
+                    padding-left: 0;
+                    margin-left: 0;
+                }
+                .dnn-prompt-lbl {
+                    color: #FFF;
+                }
+                .dnn-prompt-val {
+                    color: #D3D7CF;
+                }
+                a.dnn-prompt-cmd-insert, a.dnn-prompt-cmd-insert:link, a.dnn-prompt-cmd-insert:visited, a.dnn-prompt-cmd-insert:active {
+                    color: #03ade0;
+                }
+                /* Busy/Loading Indicator */
+                .dnn-prompt-busy {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    border-top: 2px solid #03ade0;
+                    border-right: 2px solid transparent;
+                    margin: 4px 0;
+                    animation: spin .6s linear infinite;
+                }
+                @keyframes spin {
+                    to {
+                        transform: rotate(360deg);
+                    }
+                }
+                /* Persona Bar Styling for Help */
+                section.dnn-prompt-inline-help {
+                    color: #AAA;
+                    margin-top: 0.8em !important;
+                }
+                section.dnn-prompt-inline-help em {
+                    font-style: italic !important;
+                    font-size: 1em !important;
+                }
+                section.dnn-prompt-inline-help strong {
+                    font-weight: bold !important;
+                    font-size: 1em !important;
+                    color: #DDD;
+                }
+                section.dnn-prompt-inline-help .text-danger {
+                    color: red;
+                }
+                section.dnn-prompt-inline-help h4 {
+                    color: #FFF;
+                    margin: 15px auto 10px auto !important;
+                    font-size: 1.3em !important;
+                }
+                section.dnn-prompt-inline-help h3 {
+                    color: #03ade0 !important;
+                    background-color: azure;
+                    font-size: 1.5em !important;
+                    margin: 10px auto !important;
+                    padding: .5em;
+                }
+                section.dnn-prompt-inline-help p {
+                    margin: 10px auto;
+                    line-height: 1.2em !important;
+                }
+                section.dnn-prompt-inline-help p.lead {
+                    font-size: 1.1em !important;
+                }
+                section.dnn-prompt-inline-help blockquote {
+                    line-height: 1.2em !important;
+                    border: 1px solid rgba(0, 255, 0, .4);
+                    border-left: 10px solid rgba(0, 255, 0, .4);
+                    padding: 10px;
+                    font-size: 0.85em !important;
+                }
+                section.dnn-prompt-inline-help .mono {
+                    color: rgb(255, 140, 0);
+                }
+                section.dnn-prompt-inline-help li {
+                    margin-left: 2.2em;
+                    margin-bottom: .6em;
+                }
+                section.dnn-prompt-inline-help code.block {
+                    display: inline-block;
+                    padding: 8px;
+                    border: 1px solid rgba(255, 140, 0, .1);
+                    background: rgba(255, 140, 0, .08);
+                    color: rgb(255, 140, 0);
+                    margin: 5px auto;
+                }
+                section.dnn-prompt-inline-help table.table {
+                    // border: 1px solid rgba(255, 255, 255, .4);
+                }
+                section.dnn-prompt-inline-help table thead th {
+                    background: rgba(255, 255, 255, .4);
+                    color: #FFF;
+                    padding: 8px;
+                }
+                section.dnn-prompt-inline-help table.table td {
+                    padding: 5px;
+                }
+                section.dnn-prompt-inline-help table.table tr td:first-child {
+                    white-space: nowrap;
+                }
+                section.dnn-prompt-inline-help table.command-result-tbl {
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+                section.dnn-prompt-inline-help table.command-result-tbl td {
+                    font-size: .85em !important;
+                }
+                section.dnn-prompt-inline-help table.command-result-tbl tr td:first-child {
+                    white-space: nowrap;
+                }
+                section.dnn-prompt-inline-help table tr.divider td {
+                    text-transform: uppercase;
+                    font-size: 1.3em !important;
+                    text-align: center;
+                    padding: 1em !important;
+                    color: #DDD;
+                }
+
+
+            } /* .wrapper */
+        }
+    }
+}
+
+#showsite { margin-right: 25px; }

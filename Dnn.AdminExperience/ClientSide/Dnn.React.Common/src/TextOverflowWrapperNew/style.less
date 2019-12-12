@@ -1,0 +1,22 @@
+.dnn-text-overflow-wrapper {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    .overflow-tooltip {
+        z-index: 10000;
+        max-width: 255px;
+        text-align: center;
+        padding: 7px 15px;
+        pointer-events: auto !important;
+        word-wrap: break-word;
+        word-break: break-all;
+        &:hover {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    }
+    .__react_component_tooltip {
+        z-index: 10000;
+    }
+}

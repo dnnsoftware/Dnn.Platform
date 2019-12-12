@@ -1,0 +1,46 @@
+.slider-container {
+    float: left;
+    width: 100%;
+    & > span {
+        float: left;
+        width: 60px;
+        text-align: center;
+        min-height: 1px;
+    }
+    &.with-min-max {
+        .slider {
+            width: calc(~"100% - 124px");
+        }
+    }
+    .slider {
+        background: #c6c6c6;
+        height: 10px;
+        border: 1px solid #6891a7;
+        border-radius: 10px;
+        width: 100%;
+        float: left;
+        margin-top: 2px;
+        .handle {
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            background: #fff;
+            border: 1px solid #bfbfbf;
+            top: -6px;
+            & > div {
+                position: absolute;
+                top: -100%;
+                background: #fff;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+        }
+        .bar {
+            height: 100%;
+            &.bar-0 {
+                border-radius: 10px;
+                background: #0087c6;
+            }
+        }
+    }
+}
