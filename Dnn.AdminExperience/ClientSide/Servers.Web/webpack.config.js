@@ -3,7 +3,7 @@ const packageJson = require("./package.json");
 const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 
 module.exports = {
   entry: "./src/main.jsx",
@@ -15,7 +15,7 @@ module.exports = {
       isProduction || settings.WebsitePath == ""
         ? path.resolve(
             __dirname,
-            "../../admin/personaBar/Dnn.Servers/scripts/bundles/"
+            "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Servers/scripts/bundles/"
           )
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Servers\\scripts\\bundles\\",
@@ -30,7 +30,7 @@ module.exports = {
     modules: [
       path.resolve("./src"), // Look in src first
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
   module: {

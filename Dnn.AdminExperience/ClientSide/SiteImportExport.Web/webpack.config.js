@@ -11,7 +11,7 @@ const languages = {
   // "it": require("./localizations/it.json"),
   // "nl": require("./localizations/nl.json")
 };
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 
 module.exports = {
   entry: "./src/main.jsx",
@@ -23,7 +23,7 @@ module.exports = {
       isProduction || settings.WebsitePath == ""
         ? path.resolve(
             __dirname,
-            "../../admin/personaBar/Dnn.SiteImportExport/scripts/bundles/"
+            "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.SiteImportExport/scripts/bundles/"
           )
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.SiteImportExport\\scripts\\bundles\\",
@@ -38,7 +38,7 @@ module.exports = {
     modules: [
       path.resolve("./src"), // Look in src first
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
   module: {

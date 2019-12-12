@@ -11,7 +11,7 @@ const languages = {
   // "it": require("./localizations/it.json"),
   // "nl": require("./localizations/nl.json")
 };
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 
 module.exports = {
   entry: "./src/main.jsx",
@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     path: isProduction || settings.WebsitePath == ""
-      ? path.resolve("../../admin/personaBar/Dnn.AdminLogs/scripts/bundles/")
+      ? path.resolve("../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.AdminLogs/scripts/bundles/")
       : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.AdminLogs\\scripts\\bundles\\",
     filename: "adminLogs-bundle.js",
     publicPath: isProduction ? "" : "http://localhost:8080/dist/"
@@ -55,7 +55,7 @@ module.exports = {
     modules: [
       path.resolve("./src"), // Look in src first
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
 

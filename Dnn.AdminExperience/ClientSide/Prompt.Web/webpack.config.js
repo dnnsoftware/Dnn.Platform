@@ -7,7 +7,7 @@ const extractTextPlugin = require("extract-text-webpack-plugin");
 const optimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
-const settings = require("../../../../../../settings.local.json");
+const settings = require("../../../settings.local.json");
 
 module.exports = {
   context: path.resolve(__dirname, "."),
@@ -20,7 +20,7 @@ module.exports = {
       isProduction || settings.WebsitePath == ""
         ? path.resolve(
             __dirname,
-            "../../admin/personaBar/Dnn.Prompt/scripts/bundles/"
+            "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Prompt/scripts/bundles/"
           )
         : settings.WebsitePath +
           "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Prompt\\scripts\\bundles\\",
@@ -36,7 +36,7 @@ module.exports = {
     modules: [
       path.resolve("./src"), // Look in src first
       path.resolve("./node_modules"), // Try local node_modules
-      path.resolve("../../../../../../node_modules") // Last fallback to workspaces node_modules
+      path.resolve("../../../node_modules") // Last fallback to workspaces node_modules
     ]
   },
   module: {
