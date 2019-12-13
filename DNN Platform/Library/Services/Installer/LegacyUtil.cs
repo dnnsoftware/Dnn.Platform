@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Installer
                 package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
                 package.Organization = ".NET Foundation";
                 package.Url = "https://dnncommunity.org";
-                package.Email = "support@dnnsoftware.com";
+                package.Email = "info@dnncommunity.org";
                 package.ReleaseNotes = "There are no release notes for this version.";
             }
             else

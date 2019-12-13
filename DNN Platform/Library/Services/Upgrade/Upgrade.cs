@@ -296,9 +296,9 @@ namespace DotNetNuke.Services.Upgrade
                                       Name = string.Concat("DotNetNuke.", desktopModuleName),
                                       PackageType = "Module",
                                       Owner = "DNN",
-                                      Organization = "DNN Corp.",
-                                      Url = "http://www.dnnsoftware.com",
-                                      Email = "support@dnnsoftware.com"
+                                      Organization = ".NET Foundation",
+                                      Url = "https://dnncommunity.org",
+                                      Email = "info@dnncommunity.org"
                                   };
                 if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer")
                 {
@@ -1586,9 +1586,9 @@ namespace DotNetNuke.Services.Upgrade
                                   Version = new Version(1, 0, 0),
                                   Owner = "DNN",
                                   License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile),
-                                  Organization = "DNN Corp.",
-                                  Url = "http://www.dnnsoftware.com",
-                                  Email = "support@dnnsoftware.com",
+                                  Organization = ".NET Foundation",
+                                  Url = "https://dnncommunity.org",
+                                  Email = "info@dnncommunity.org",
                                   ReleaseNotes = "There are no release notes for this version.",
                                   IsSystemPackage = true
                               };
@@ -2928,7 +2928,7 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
 
             //update help url
-            HostController.Instance.Update("HelpURL", "http://www.dnnsoftware.com/help", false);
+            HostController.Instance.Update("HelpURL", "https://dnndocs.com", false);
         }
 
         private static void UpgradeToVersion733()
