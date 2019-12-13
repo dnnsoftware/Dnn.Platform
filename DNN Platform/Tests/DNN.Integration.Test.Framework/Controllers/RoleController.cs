@@ -1,8 +1,4 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2018, DNN Corp.
-// All Rights Reserved
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Text;
 using DNN.Integration.Test.Framework.Helpers;

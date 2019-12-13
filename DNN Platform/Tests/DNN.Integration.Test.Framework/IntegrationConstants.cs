@@ -1,9 +1,4 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-//
-// Copyright (c) 2002-2018, DNN Corp.
-// All rights reserved.
-
-namespace DNN.Integration.Test.Framework
+﻿namespace DNN.Integration.Test.Framework
 {
     public static class IntegrationConstants
     {
