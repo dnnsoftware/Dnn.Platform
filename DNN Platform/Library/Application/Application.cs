@@ -64,24 +64,24 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the help URL related to the DotNetNuke application
         /// </summary>
-        /// <value>Fixed result: https://www.dnnsoftware.com/docs/ </value>
+        /// <value>Fixed result: https://dnndocs.com/ </value>
         public string HelpUrl
         {
             get
             {
-                return "https://www.dnnsoftware.com/docs/";
+                return "https://dnndocs.com/";
             }
         }
 
         /// <summary>
         /// Gets the legal copyright.
         /// </summary>
-        /// <value>Dynamic: DotNetNuke� is copyright 2002-todays year by DotNetNuke Corporation"</value>
+        /// <value>Dynamic: DNN Platform is copyright 2002-todays year by .NET Foundation"</value>
         public string LegalCopyright
         {
             get
             {
-                return string.Concat("DotNetNuke� is copyright 2002-", DateTime.Today.ToString("yyyy")," by DotNetNuke Corporation");
+                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy")," by .NET Foundation");
             }
         }
 
@@ -194,12 +194,12 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the URL of the application
         /// </summary>
-        /// <value>Fixed value: https://www.dnnsoftware.com </value>
+        /// <value>Fixed value: https://dnncommunity.org</value>
         public string Url
         {
             get
             {
-                return "https://www.dnnsoftware.com";
+                return "https://dnncommunity.org";
             }
         }
 

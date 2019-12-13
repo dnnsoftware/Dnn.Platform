@@ -220,8 +220,8 @@ namespace DotNetNuke.Services.Installer
             if (package.Owner == "DotNetNuke" || package.Owner == "DNN")
             {
                 package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
-                package.Organization = "DNN Corp.";
-                package.Url = "http://www.dnnsoftware.com";
+                package.Organization = ".NET Foundation";
+                package.Url = "http://dnncommunity.org";
                 package.Email = "support@dnnsoftware.com";
                 package.ReleaseNotes = "There are no release notes for this version.";
             }

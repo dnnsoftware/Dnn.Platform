@@ -249,9 +249,9 @@ namespace DotNetNuke.Framework
                 Comment += string.Concat(Environment.NewLine,
                                          "<!--*********************************************-->",
                                          Environment.NewLine,
-                                         "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
+                                         "<!-- DNN Platform - http://dnncommunity.org      -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2018, by DNN Corporation -->",
+                                         "<!-- Copyright (c) 2002-2019, by .NET Foundation -->",
                                          Environment.NewLine,
                                          "<!--*********************************************-->",
                                          Environment.NewLine);
