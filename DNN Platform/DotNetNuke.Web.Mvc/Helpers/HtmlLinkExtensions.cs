@@ -1,7 +1,4 @@
-﻿// Copyright (c) DNN Software. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using DotNetNuke.Common;
+﻿using DotNetNuke.Common;
 using DotNetNuke.Web.Mvc.Common;
 using System;
 using System.Collections.Generic;
