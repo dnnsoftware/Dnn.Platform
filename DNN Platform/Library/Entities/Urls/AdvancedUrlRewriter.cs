@@ -2777,15 +2777,7 @@ namespace DotNetNuke.Entities.Urls
                                 //DNN-9158: prevent SSL Offloading infinite redirects
                                 if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https"))
                                 {
-                                    if (bestFriendlyNoScheme.Contains("?"))
-                                    {
-                                        var urlParts = bestFriendlyNoScheme.Split('?');
-                                        bestFriendlyNoScheme = $"{urlParts[0].Replace("https://", "http://")}?{urlParts[1]}";
-                                    }
-                                    else
-                                    {
-                                        bestFriendlyNoScheme = bestFriendlyNoScheme.Replace("https://", "http://");
-                                    }
+                                    bestFriendlyNoScheme = $"http://{bestFriendlyNoScheme.Substring(8)}";
                                 }
 
                                 if (!(bestFriendlyNoScheme == requestedPathNoScheme
