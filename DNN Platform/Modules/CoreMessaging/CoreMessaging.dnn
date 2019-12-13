@@ -6,9 +6,9 @@
       <iconFile>~/DesktopModules/CoreMessaging/Images/messaging_32X32.png</iconFile>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
@@ -36,7 +36,7 @@
                     <controlTitle>Core Messaging View</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

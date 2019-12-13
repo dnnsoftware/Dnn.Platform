@@ -5,9 +5,9 @@
       <description>This package contains Debug Symbols and Intellisense files for DNN Platform.</description>
       <owner>
         <name>DNN Corporation</name>
-        <organization>DNN Corporation</organization>
-        <url>https://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />

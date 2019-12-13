@@ -6,9 +6,9 @@
             <iconFile>~/DesktopModules/Admin/Console/console.png</iconFile>
             <owner>
                 <name>DNN</name>
-                <organization>DNN Corp.</organization>
-                <url>http://www.dnnsoftware.com</url>
-                <email>support@dnnsoftware.com</email>
+                <organization>.NET Foundation</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />
