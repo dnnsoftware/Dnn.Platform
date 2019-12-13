@@ -1,9 +1,4 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-//
-// Copyright (c) 2002-2018, DNN Corp.
-// All rights reserved.
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
