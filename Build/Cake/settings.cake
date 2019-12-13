@@ -8,6 +8,7 @@ public class LocalSettings {
     public string DnnDatabaseName {get; set;} = "Dnn_Platform";
     public string DnnSqlUsername {get; set;} = "";
     public string DatabasePath {get; set;} = "";
+    public string Version {get; set;} = "auto";
 }
 
 LocalSettings Settings;
