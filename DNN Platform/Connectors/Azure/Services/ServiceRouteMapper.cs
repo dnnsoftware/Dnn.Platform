@@ -1,11 +1,4 @@
-﻿#region Copyright
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// All Rights Reserved
-#endregion
-
-using DotNetNuke.Web.Api;
+﻿using DotNetNuke.Web.Api;
 
 namespace Dnn.AzureConnector.Services
 {

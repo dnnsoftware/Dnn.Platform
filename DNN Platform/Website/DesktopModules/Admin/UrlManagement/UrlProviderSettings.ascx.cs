@@ -1,11 +1,4 @@
-﻿#region Copyright
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// All Rights Reserved
-#endregion
-
-using System;
+﻿using System;
 using System.Linq;
 
 using DotNetNuke.Common;

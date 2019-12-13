@@ -1,13 +1,4 @@
-#region Copyright
-
-// 
-// Copyright (c) _YEAR_
-// by _OWNER_
-// 
-
-#endregion
-
-using System;
+﻿using System;
 using DotNetNuke;
 
 namespace _OWNER_._MODULE_

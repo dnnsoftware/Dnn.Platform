@@ -1,11 +1,4 @@
-﻿#region Copyright
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// All Rights Reserved
-#endregion
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;

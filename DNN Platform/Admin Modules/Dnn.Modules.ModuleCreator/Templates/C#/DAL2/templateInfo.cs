@@ -1,13 +1,4 @@
-﻿#region Copyright
-
-// 
-// Copyright (c) _YEAR_
-// by _OWNER_
-// 
-
-#endregion
-
-#region Using Statements
+﻿#region Using Statements
 
 using System;
 using System.Web.Caching;
