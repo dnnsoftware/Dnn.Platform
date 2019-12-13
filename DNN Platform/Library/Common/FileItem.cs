@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Common
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Common
 {
     /// <summary>
     /// This class handles basic elements about File Items. Is is a basic Get/Set for Value and Text

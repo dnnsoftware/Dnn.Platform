@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Services.Tokens
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
     /// Scope informs the property access classes about the planned usage of the token

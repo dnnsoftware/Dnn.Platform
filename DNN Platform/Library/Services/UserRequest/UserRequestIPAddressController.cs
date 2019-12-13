@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Entities.Controllers;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Entities.Controllers;
 using System;
 using System.Web;
 using System.Linq;

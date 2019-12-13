@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using System.Web.Mvc;
 using DotNetNuke.Tests.Web.Mvc.Fakes;
 using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Controllers;

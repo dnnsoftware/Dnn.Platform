@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Entities.Urls
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
     /// The DupKeyCheck class is a small helper class used to maintain state of what to do with a duplicate Url when building the Url Index.

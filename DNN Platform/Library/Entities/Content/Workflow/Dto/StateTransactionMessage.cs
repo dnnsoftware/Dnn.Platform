@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Entities.Content.Workflow.Dto
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Entities.Content.Workflow.Dto
 {
     /// <summary>
     /// This class represents the message that will be notified on workflow state transaction

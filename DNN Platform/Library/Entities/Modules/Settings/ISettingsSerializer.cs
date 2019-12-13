@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Entities.Modules.Settings
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Entities.Modules.Settings
 {
     /// <summary>
     /// Implement this interface to control how property values are serialized and deserialized.
