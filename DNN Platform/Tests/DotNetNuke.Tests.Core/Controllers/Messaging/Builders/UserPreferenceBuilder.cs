@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Services.Social.Messaging;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Tests.Utilities;
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders

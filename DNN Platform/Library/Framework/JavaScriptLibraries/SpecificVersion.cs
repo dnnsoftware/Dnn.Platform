@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Framework.JavaScriptLibraries
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     /// <summary>
     /// determine which version of a script is to be used

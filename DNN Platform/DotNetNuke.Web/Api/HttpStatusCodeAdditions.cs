@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Web.Api
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Web.Api
 {
     /// <summary>
     /// Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework

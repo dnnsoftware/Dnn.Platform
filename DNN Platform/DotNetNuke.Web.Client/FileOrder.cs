@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Web.Client
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Web.Client
 {
     /// <summary>
     /// Contains enumerations that define the relative loading order of both JavaScript and CSS files within the framework's registration system.

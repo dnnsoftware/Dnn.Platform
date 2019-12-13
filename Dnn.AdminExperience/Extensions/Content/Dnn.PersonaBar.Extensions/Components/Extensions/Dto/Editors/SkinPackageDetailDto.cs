@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Services.Installer.Packages;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors

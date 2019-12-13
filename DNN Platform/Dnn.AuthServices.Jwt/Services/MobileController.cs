@@ -1,4 +1,8 @@
-﻿using System.Net.Http.Headers;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Dnn.AuthServices.Jwt.Components.Common.Controllers;
 using Dnn.AuthServices.Jwt.Components.Entity;

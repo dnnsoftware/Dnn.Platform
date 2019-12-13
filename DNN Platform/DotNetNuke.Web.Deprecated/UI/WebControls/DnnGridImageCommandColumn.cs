@@ -1,4 +1,8 @@
-﻿using System.Web;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.UI.WebControls;

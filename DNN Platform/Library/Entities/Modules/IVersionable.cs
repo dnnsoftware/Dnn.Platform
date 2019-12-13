@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Entities.Modules
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+namespace DotNetNuke.Entities.Modules
 {
     /// <summary>
     /// This interface allow the page to interact with his modules to delete/rollback or publish a specific version. 
