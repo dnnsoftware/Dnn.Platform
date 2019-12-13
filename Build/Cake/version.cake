@@ -20,11 +20,25 @@ Task("BuildServerSetVersion")
 
 Task("SetVersion")
   .Does(() => {
-    version = GitVersion();
+    if (Settings.Version == "auto") {
+      version = GitVersion();
+      buildNumber = version.LegacySemVerPadded;
+    } else {
+      version = new GitVersion();
+      var requestedVersion = new System.Version(Settings.Version);
+      version.Major = requestedVersion.Major;
+      version.Minor = requestedVersion.Minor;
+      version.Patch = requestedVersion.Build;
+      version.InformationalVersion = requestedVersion.ToString(3) + " Custom build";
+      version.MajorMinorPatch = requestedVersion.ToString(3);
+      if (requestedVersion.Revision != -1) {
+        version.CommitsSinceVersionSource = requestedVersion.Revision;
+        version.InformationalVersion = requestedVersion.ToString(4) + " Custom build";
+      }
+    }
     Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
     Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
     Information("Informational Version : " + version.InformationalVersion);
-    buildNumber = version.LegacySemVerPadded;
     productVersion = version.MajorMinorPatch;
     Information("Product Version : " + productVersion);
     Information("Build Number : " + buildNumber);
