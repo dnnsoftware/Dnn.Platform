@@ -279,21 +279,21 @@ namespace DotNetNuke.UI.UserControls
                     txtIM.TabIndex = Convert.ToInt16(_StartTabIndex + 7);
                     txtFirstName.Text = _FirstName;
                     txtLastName.Text = _LastName;
+                    txtEmail.Text = _Email;		    
                     txtUsername.Text = _UserName;
                     lblUsername.Text = _UserName;
                     txtPassword.Text = _Password;
                     txtConfirm.Text = _Confirm;
-                    txtEmail.Text = _Email;
                     txtWebsite.Text = _Website;
                     txtIM.Text = _IM;
                     if (!String.IsNullOrEmpty(_ControlColumnWidth))
                     {
                         txtFirstName.Width = Unit.Parse(_ControlColumnWidth);
                         txtLastName.Width = Unit.Parse(_ControlColumnWidth);
+                        txtEmail.Width = Unit.Parse(_ControlColumnWidth);			
                         txtUsername.Width = Unit.Parse(_ControlColumnWidth);
                         txtPassword.Width = Unit.Parse(_ControlColumnWidth);
                         txtConfirm.Width = Unit.Parse(_ControlColumnWidth);
-                        txtEmail.Width = Unit.Parse(_ControlColumnWidth);
                         txtWebsite.Width = Unit.Parse(_ControlColumnWidth);
                         txtIM.Width = Unit.Parse(_ControlColumnWidth);
                     }

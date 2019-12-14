@@ -141,6 +141,20 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			if (PortalSettings.Registration.RegistrationFormType == 0)
 			{
+				//DisplayName
+				if (String.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+				{
+					AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+				}
+				else
+				{
+					AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+					AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+				}
+
+				//Email
+				AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+
 				//UserName
 				if (!PortalSettings.Registration.UseEmailAsUserName)
 				{
@@ -167,20 +181,6 @@ namespace DotNetNuke.Modules.Admin.Users
 					AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
 					AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
 				}
-
-				//DisplayName
-				if (String.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
-				{
-					AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-				}
-				else
-				{
-					AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-					AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-				}
-
-				//Email
-				AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 
 				if (PortalSettings.Registration.RequireValidProfile)
 				{
@@ -216,9 +216,12 @@ namespace DotNetNuke.Modules.Admin.Users
 					{
 						case "Username":
 							AddField("Username", String.Empty, true, String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator)
-																		? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
+																? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
 																		TextBoxMode.SingleLine);
 							break;
+						case "DisplayName":
+							AddField(trimmedField, String.Empty, true, ExcludeTerms, TextBoxMode.SingleLine);
+							break;	
 						case "Email":
 							AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 							break;
@@ -231,9 +234,6 @@ namespace DotNetNuke.Modules.Admin.Users
 						case "PasswordQuestion":
 						case "PasswordAnswer":
 							AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
-							break;
-						case "DisplayName":
-							AddField(trimmedField, String.Empty, true, ExcludeTerms, TextBoxMode.SingleLine);
 							break;
 						default:
 							ProfilePropertyDefinition property = User.Profile.GetProperty(trimmedField);
