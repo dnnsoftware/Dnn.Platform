@@ -93,7 +93,7 @@
 .journalrow div.journalitem{margin-left:44px;overflow: hidden;word-break: break-all;}
 .journalitem p{margin-bottom: 5px;word-break: break-word;}
 .journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
-.journalrow div.journalitem .authorname{padding-right:6px;display:flex;}
+.journalrow div.journalitem .authorname{padding-right:6px;display:inline-flex;}
 .journalrow div.journalitem ul.jcmt,.journalrow div.journalitem .likes{width:100%;padding:0px;font-size:11px;}
 /*.journalrow div.journalitem ul.jcmt li{border-bottom: solid 1px #fff;}*/
     .journalrow div.journalitem ul.jcmt {
@@ -111,7 +111,7 @@
     position: relative;
     top: 0;}
 .journalrow div.journalitem ul.jcmt li p{padding:4px 0px 4px 5px; margin:3px 0px 5px 42px;}
-.journalrow div.journalitem ul.jcmt li p a{padding-right:6px;display:flex;}                                         
+.journalrow div.journalitem ul.jcmt li p a{padding-right:6px;display:inline-flex;}                                         
 .journalrow div.journalitem ul.jcmt li p abbr{border-style: none;
                                               display: block;
                                               margin-bottom: 3px;
