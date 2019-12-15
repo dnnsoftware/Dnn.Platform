@@ -87,6 +87,9 @@
 .journalTools #btnShare.disabled,.jcmt li.cmtbtn a.disabled{background:#cdcdcd;color:#999;cursor:text;}
 .journalTools ul.jacmenu li.liselected{background-color:#ffffcc;}
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
+.journalrow div.journalitem ul.jcmt li p a{display: inline-flex;}
+.journalrow div.journalitem .jlink a{display: inline-flex;}
+.journalrow div.journalitem .authorname{display: inline-flex;}
 .journalrow div.author{overflow:hidden;float:left;}
 .journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 .journalrow div.journalitem{margin-left:44px;overflow: hidden;word-break: break-all;}
