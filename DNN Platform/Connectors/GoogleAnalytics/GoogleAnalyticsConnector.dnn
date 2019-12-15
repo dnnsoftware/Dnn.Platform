@@ -10,8 +10,8 @@
           <owner>
               <name>DNN Community</name>
               <organization>.NET Foundation and Contributors</organization>
-              <url>http://www.dnnsoftware.com</url>
-              <email>support@dnnsoftware.com</email>
+              <url>https://dnncommunity.org</url>
+              <email>info@dnncommunity.org</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />

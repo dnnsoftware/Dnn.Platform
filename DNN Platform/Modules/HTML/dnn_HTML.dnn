@@ -6,9 +6,9 @@
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" />
@@ -126,7 +126,7 @@
                     <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
@@ -136,7 +136,7 @@
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -147,7 +147,7 @@
                     <controlTitle>My Work</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -158,7 +158,7 @@
                     <controlTitle>Settings</controlTitle>
                     <controlType>Edit</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
