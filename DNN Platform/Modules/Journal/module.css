@@ -87,15 +87,12 @@
 .journalTools #btnShare.disabled,.jcmt li.cmtbtn a.disabled{background:#cdcdcd;color:#999;cursor:text;}
 .journalTools ul.jacmenu li.liselected{background-color:#ffffcc;}
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
-.journalrow div.journalitem ul.jcmt li p a{display: inline-flex;}
-.journalrow div.journalitem .jlink a{display: inline-flex;}
-.journalrow div.journalitem .authorname{display: inline-flex;}
 .journalrow div.author{overflow:hidden;float:left;}
 .journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 .journalrow div.journalitem{margin-left:44px;overflow: hidden;word-break: break-all;}
 .journalitem p{margin-bottom: 5px;word-break: break-word;}
 .journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
-.journalrow div.journalitem .authorname{padding-right:6px;}
+.journalrow div.journalitem .authorname{padding-right:6px;display:flex;}
 .journalrow div.journalitem ul.jcmt,.journalrow div.journalitem .likes{width:100%;padding:0px;font-size:11px;}
 /*.journalrow div.journalitem ul.jcmt li{border-bottom: solid 1px #fff;}*/
     .journalrow div.journalitem ul.jcmt {
@@ -113,7 +110,7 @@
     position: relative;
     top: 0;}
 .journalrow div.journalitem ul.jcmt li p{padding:4px 0px 4px 5px; margin:3px 0px 5px 42px;}
-.journalrow div.journalitem ul.jcmt li p a{padding-right:6px;}                                         
+.journalrow div.journalitem ul.jcmt li p a{padding-right:6px;display:flex;}                                         
 .journalrow div.journalitem ul.jcmt li p abbr{border-style: none;
                                               display: block;
                                               margin-bottom: 3px;
@@ -121,9 +118,9 @@
                                               padding-left: 5px;
                                               padding-top: 4px;}
 .journalrow div.journalitem .journalfooter abbr {border-style:none;}
-.journalrow div.journalitem .jlink a{font-weight:bold;display:block}
+.journalrow div.journalitem .jlink a{font-weight:bold;display:block;word-break:break-word;}
 .journalrow div.journalitem .jlink img{float:left; margin-right:12px;max-width:150px;width:100%;height:auto;padding:5px;}
-.journalrow div.journalitem .jlink div{max-width:100%;}
+.journalrow div.journalitem .jlink div{max-width:100%;word-break:break-word;}
 .journalrow div.journalitem .likes{padding:2px;}                                              
 .jcmt .cmteditor{max-width:100%;display:none;resize:none;outline:none;}
 .jcmt .cmteditarea{margin: 2px 4px 4px 2px;z-index:0;}
