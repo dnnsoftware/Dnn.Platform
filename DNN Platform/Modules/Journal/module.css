@@ -89,6 +89,7 @@
 .journalrow {border-bottom:1px solid #e4e1e1;margin-bottom:20px;padding-bottom:10px;}
 .journalrow div.author{overflow:hidden;float:left;}
 .journalrow div.author img{width:32px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+.journalrow div.journalitem .jlink img {max-width: 25%;width: auto;}
 .journalrow div.journalitem{margin-left:44px;overflow: hidden;word-break: break-all;}
 .journalitem p{margin-bottom: 5px;word-break: break-word;}
 .journalrow div.journalitem p.journalfooter span{padding:0px 4px 0px 4px; font-weight:bold;}
