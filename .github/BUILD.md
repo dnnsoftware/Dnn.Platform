@@ -7,7 +7,7 @@ There are three supported build scenarios:
 2. **Build to create a local DNN development website**. You'd typically not do this all the time, but only when you wish to set up a new development site or revert your development website to the current DNN repository state.
 3. **Debug build**. You'd use this when changing code and testing your changes on your (previously created) development site. Note you can also "rebuild" just a part of the platform and not the entire solution for this which will speed things up for you.
 
-When constributing to DNN, you'd typically go through steps 2 and 3 at least and maybe 1 if you wish to run more encompassing tests. But before you delve into code, please familiarize yourself with [How to Contribute](CONTRIBUTING.md) first.
+When constibuting to DNN, you'd typically go through steps 2 and 3 at least and maybe 1 if you wish to run more encompassing tests. But before you delve into code, please familiarize yourself with [How to Contribute](CONTRIBUTING.md) first.
 
 ## External sources
 
