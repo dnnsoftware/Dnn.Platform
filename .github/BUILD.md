@@ -7,7 +7,7 @@ There are three supported build scenarios:
 2. **Build to create a local DNN development website**. You'd typically not do this all the time, but only when you wish to set up a new development site or revert your development website to the current DNN repository state.
 3. **Debug build**. You'd use this when changing code and testing your changes on your (previously created) development site. Note you can also "rebuild" just a part of the platform and not the entire solution for this which will speed things up for you.
 
-When constibuting to DNN, you'd typically go through steps 2 and 3 at least and maybe 1 if you wish to run more encompassing tests. But before you delve into code, please familiarize yourself with [How to Contribute](CONTRIBUTING.md) first.
+When contributing to DNN, you'd typically go through steps 2 and 3 at least and maybe 1 if you wish to run more encompassing tests. But before you delve into code, please familiarize yourself with [How to Contribute](CONTRIBUTING.md) first.
 
 ## External sources
 
@@ -129,4 +129,3 @@ If you encounter PowerShell security issues, please read [Cake - PowerShell Secu
 ### Git branching strategy
 
 Our default branch is called **develop**, this is the branch most pull requests should target in order to be merged into the very next release (bug fixes, minor improvements that are not breaking changes). If you know your change will be a breaking change or more risky, then you should submit it targeting the **future/xx** branch (where xx is the next major release). **release/x.x.x** branches are temporary, they get created at code-freeze to built an alpha release for the testing team, when initial testing is done, we publish one or more release candiate versions (RC1, RC2) as needed until we find the version stable for release, at which point we release that new version and close the release/x.x.x branch. The only pull requests that will be accepted for release/x.x.x branches are for regression issues (the problem was introduced in this very version) or showstopper issues (can't use Dnn with this bug in).
-
