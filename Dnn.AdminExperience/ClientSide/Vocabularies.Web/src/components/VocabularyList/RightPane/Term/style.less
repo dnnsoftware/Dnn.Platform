@@ -1,0 +1,47 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.termLi) {
+    cursor: pointer;
+    &.selected > div > div > span {
+        color: @cerulean;
+        * {
+            color: #333;
+        }
+    }
+    > div {
+        &:first-child {
+            display: inline-block;
+            position: relative;
+            padding-right: 25px;
+            &:hover .edit-button {
+                display: block;
+            }
+        }
+    }
+    .edit-svg {
+        margin-right: 5px;
+        position: absolute;
+        left: -17px;
+        top: 3px;
+        svg {
+            width: 12px;
+            height: 12px;
+            fill: @rollingStone;
+        }
+    }
+    span {
+        font-size: 15px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: @rollingStone;
+    }
+    .edit-button {
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-left: 10px;
+        display: none;
+    }
+}
