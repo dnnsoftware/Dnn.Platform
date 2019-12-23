@@ -186,6 +186,54 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         }
 
+        [Test]
+        [ExpectedException(typeof(InvalidFolderPathException))]
+        public void AddFolder_Throws_When_FolderPath_Is_Invalid()
+        {
+            // arrange
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = Constants.CONTENT_ValidPortalId
+            };
+
+            _mockFolderManager
+                .Setup(mfm => mfm.FolderExists(It.IsAny<int>(), It.IsAny<string>()))
+                .Returns(false);
+
+            _mockFolderManager
+                .Setup(mfm => mfm.IsValidFolderPath(It.IsAny<string>()))
+                .Returns(false);
+
+            // act
+            _mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath);
+
+            // assert (implicit)
+        }
+
+        [Test]
+        public void IsValidFolderPath_Returns_True_When_FolderPath_Is_Valid()
+        {
+            // arrange (implicit)
+
+            // act
+            var result = _mockFolderManager.Object.IsValidFolderPath(Constants.FOLDER_ValidSubFolderRelativePath);
+
+            // assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsValidFolderPath_Returns_False_When_FolderPath_Is_Invalid()
+        {
+            // arrange (implicit)
+
+            // act
+            var result = _mockFolderManager.Object.IsValidFolderPath(Constants.FOLDER_InvalidSubFolderRelativePath);
+
+            // assert
+            Assert.IsFalse(result);
+        }
+
         #endregion
 
         #region DeleteFolder
