@@ -974,6 +974,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 dnnPage.CanViewPage = TabPermissionController.CanViewPage(tabInfo);
                 dnnPage.LocalResourceFile = LocalResourceFile;
                 dnnPage.PageUrl = NavigationManager.NavigateURL(localTabInfo.TabID, false, PortalSettings, "", localTabInfo.CultureCode);
+                dnnPage.IsSpecial = TabController.IsSpecialTab(localTabInfo.TabID, localTabInfo.PortalID);
 
                 // calculate position in the form of 1.3.2...
                 var siblingTabs = tabInfos.Where(t => t.ParentId == localTabInfo.ParentId && t.CultureCode == localTabInfo.CultureCode || t.CultureCode == null).OrderBy(t => t.TabOrder).ToList();

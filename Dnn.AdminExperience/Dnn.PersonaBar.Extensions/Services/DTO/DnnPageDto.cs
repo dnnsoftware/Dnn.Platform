@@ -25,6 +25,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public string Path { get; set; }
         public bool HasChildren { get; set; }
         public string PageUrl { get; set; }
+        public bool IsSpecial { get; set; }
 
         [JsonIgnore]
         public bool CanViewPage { get; set; }
