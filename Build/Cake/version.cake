@@ -64,8 +64,8 @@ Task("GenerateChecksum")
   var destFile = "./Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/Resources/sums.resources";
   var hash = CalculateSha(sourceFile);
   var content = $@"<checksums>
-      <sum name=""Default.aspx"" version=""{version.MajorMinorPatch}"" type=""Platform"" sum=""{hash}"" />
-    </checksums>";
+  <sum name=""Default.aspx"" version=""{version.MajorMinorPatch}"" type=""Platform"" sum=""{hash}"" />
+</checksums>";
   System.IO.File.WriteAllText(destFile, content);
 });
 
