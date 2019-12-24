@@ -113,7 +113,6 @@ Task("CreateSymbols")
 
 Task("GenerateSqlDataProvider")
 	.IsDependentOn("SetVersion")
-	.IsDependentOn("CopyWebsite")
 	.Does(() => {
 		var fileName = GetTwoDigitsVersionNumber() + ".SqlDataProvider";
 		var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
