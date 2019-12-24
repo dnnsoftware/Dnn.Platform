@@ -8,7 +8,6 @@ Task("Build")
 	{
 		var buildSettings = new MSBuildSettings()
 			.SetConfiguration(configuration)
-			.UseToolVersion(MSBuildToolVersion.VS2017)
 			.SetPlatformTarget(PlatformTarget.MSIL)
 			.WithTarget("Rebuild")
 			.SetMaxCpuCount(4);
