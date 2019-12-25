@@ -87,6 +87,7 @@ class PageLanguage extends Component {
         const page = this.props.page || {};
         const modules = this.props.modules || [];
         const isCurrentPage = page.TabId === utils.getCurrentPageId();
+        const isSpecialPage = page && page.IsSpecial ? true : false;
         const moduleComponents = modules.map((module, index) => {
             return <Module
                 key={module.id}
@@ -104,7 +105,7 @@ class PageLanguage extends Component {
                 <div className="page-language-row">
                     <img src={iconSrc} alt={cultureCode} />
                     <span>{cultureCode}</span>
-                    {!this.props.isDefault && <a className="icon" 
+                    {!this.props.isDefault && !isSpecialPage && <a className="icon"
                         onClick={this.onDeletePage.bind(this, page)} 
                         dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} 
                         aria-label="Delete">
