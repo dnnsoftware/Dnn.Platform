@@ -14,7 +14,7 @@
   <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
 
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;Package">
+  <Target Name="AfterBuild" DependsOnTargets="GetFiles;Package">
   </Target>
 
   <Target Name="CopyBin">

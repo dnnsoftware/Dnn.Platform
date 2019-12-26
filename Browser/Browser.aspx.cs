@@ -20,7 +20,7 @@ using DNNConnect.CKEditorProvider.Controls;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -40,7 +40,6 @@ using DNNConnect.CKEditorProvider.Helper;
 
 namespace DNNConnect.CKEditorProvider.Browser
 {
-
     /// <summary>
     /// The browser.
     /// </summary>
@@ -57,14 +56,14 @@ namespace DNNConnect.CKEditorProvider.Browser
         private static string ckFileUrl;
 
         /// <summary>
-        ///   The allowed flash ext.
+        ///   The allowed flash extensions.
         /// </summary>
-        private readonly string[] allowedFlashExt = { "swf", "flv", "mp3" };
+        private static readonly ISet<string> AllowedFlashExtensions = new HashSet<string>(new[] { "swf", "flv", "mp3" }, StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        ///   The allowed image ext.
+        ///   The allowed image extensions.
         /// </summary>
-        private readonly string[] allowedImageExt = { "bmp", "gif", "jpeg", "jpg", "png", "svg" };
+        private static readonly ISet<string> AllowedImageExtensions = new HashSet<string>(new[] { "bmp", "gif", "jpeg", "jpg", "png", "svg" }, StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         ///   The request.
@@ -84,7 +83,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>
         ///   The extension white list.
         /// </summary>
-        private string extensionWhiteList;
+        private FileExtensionWhitelist extensionWhiteList;
 
         /// <summary>
         /// The browser modus
@@ -253,6 +252,9 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         public DataTable GetFiles(IFolderInfo currentFolderInfo)
         {
+            var sizeResx = Localization.GetString("Size.Text", ResXFile, LanguageCode);
+            var createdResx = Localization.GetString("Created.Text", ResXFile, LanguageCode);
+
             var filesTable = new DataTable();
 
             filesTable.Columns.Add(new DataColumn("FileName", typeof(string)));
@@ -294,19 +296,18 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     case "Image":
                         {
-                            foreach (DataRow dr in
-                                from sAllowExt in allowedImageExt
-                                where name.ToLower().EndsWith(sAllowExt)
-                                select filesTable.NewRow())
+                            if (AllowedImageExtensions.Contains(extension))
                             {
+                                var dr = filesTable.NewRow();
+
                                 dr["PictureURL"] = FileManager.Instance.GetUrl(fileItem);
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
 
                                 dr["Info"] =
                                     string.Format(fileItemDisplayFormat,
-                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            sizeResx,
+                                            createdResx,
                                             name,
                                             fileItem.Size,
                                             fileItem.LastModificationTime);
@@ -318,17 +319,16 @@ namespace DNNConnect.CKEditorProvider.Browser
                         break;
                     case "Flash":
                         {
-                            foreach (DataRow dr in
-                                from sAllowExt in allowedFlashExt
-                                where name.ToLower().EndsWith(sAllowExt)
-                                select filesTable.NewRow())
+                            if (AllowedFlashExtensions.Contains(extension))
                             {
+                                var dr = filesTable.NewRow();
+
                                 dr["PictureURL"] = "images/types/swf.png";
 
                                 dr["Info"] =
                                     string.Format(fileItemDisplayFormat,
-                                            Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                            Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                            sizeResx,
+                                            createdResx,
                                             name,
                                             fileItem.Size,
                                             fileItem.LastModificationTime);
@@ -349,7 +349,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 extension = extension.Replace(".", string.Empty);
                             }
 
-                            if (extension.Count() <= 1 || !extensionWhiteList.Contains(extension.ToLower()))
+                            if (extension.Count() <= 1 || !extensionWhiteList.IsAllowedExtension(extension))
                             {
                                 continue;
                             }
@@ -367,7 +367,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 dr["PictureURL"] = "images/types/unknown.png";
                             }
 
-                            if (allowedImageExt.Any(sAllowImgExt => name.ToLower().EndsWith(sAllowImgExt)))
+                            if (AllowedImageExtensions.Any(sAllowImgExt => name.EndsWith(sAllowImgExt, StringComparison.OrdinalIgnoreCase)))
                             {
                                 dr["PictureUrl"] = FileManager.Instance.GetUrl(fileItem);
                             }
@@ -377,8 +377,8 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                             dr["Info"] =
                                 string.Format(fileItemDisplayFormat,
-                                        Localization.GetString("Size.Text", ResXFile, LanguageCode),
-                                        Localization.GetString("Created.Text", ResXFile, LanguageCode),
+                                        sizeResx,
+                                        createdResx,
                                         name,
                                         fileItem.Size,
                                         fileItem.LastModificationTime);
@@ -761,7 +761,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             SortAscending.CssClass = SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
             SortDescending.CssClass = !SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
 
-            extensionWhiteList = HostController.Instance.GetString("FileExtensions").ToLower();
+            extensionWhiteList = Host.AllowedExtensionWhitelist;
 
             if (!string.IsNullOrEmpty(request.QueryString["mode"]))
             {
@@ -855,7 +855,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                         if (!IsPostBack)
                         {
-                            GetAcceptedFileTypes();
+                            AcceptFileTypes = GetAcceptedFileTypes();
 
                             title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", lblModus.Text);
 
@@ -1149,10 +1149,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             txtThumbName.Text = string.Format("{0}_resized", sFileNameNoExt);
 
-            string sExtension = fileInfo.Extension;
-            bool bEnable = allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension, StringComparison.OrdinalIgnoreCase));
-
-            if (!bEnable)
+            if (!AllowedImageExtensions.Contains(fileInfo.Extension))
             {
                 return;
             }
@@ -1474,10 +1471,22 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             FoldersTree.Nodes.Add(folderNode);
 
-            var folders = FolderManager.Instance.GetFolders(currentFolderInfo);
+            // gets the list of folders the specified user has read permissions and transfrom into dictionary:
+            //      Key = parrent folder id 
+            //      Value = list of child folders
+            // this will let us possible to create folders tree much faster on a recursion below
+            var readableFolders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
+                .GroupBy(folder => folder.ParentID)
+                .ToDictionary(key => key.Key, value => value?.Select(folder => folder) ?? Enumerable.Empty<IFolderInfo>());
+
+            // get all folders where parrent folder is current one
+            if (!readableFolders.TryGetValue(currentFolderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            {
+                return;
+            }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(RenderFolder).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 folderNode.ChildNodes.Add(node);
             }
@@ -1705,16 +1714,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Render all Directories and sub directories recursive
         /// </summary>
         /// <param name="folderInfo">The folder Info.</param>
+        /// <param name="readableFolders">The list of folders that the current user has READ access</param>
         /// <returns>
         /// TreeNode List
         /// </returns>
-        private TreeNode RenderFolder(FolderInfo folderInfo)
+        private TreeNode RenderFolder(FolderInfo folderInfo, IDictionary<int, IEnumerable<IFolderInfo>> readableFolders)
         {
-            if (!FolderPermissionController.CanViewFolder(folderInfo))
-            {
-                return null;
-            }
-
             TreeNode tnFolder = new TreeNode
             {
                 Text = folderInfo.FolderName,
@@ -1722,15 +1727,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                 ImageUrl = GetFolderIcon(folderInfo)
             };
 
-            var folders = FolderManager.Instance.GetFolders(folderInfo).ToList();
-
-            if (!folders.Any())
+            if (!readableFolders.TryGetValue(folderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
             {
                 return tnFolder;
             }
 
             foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(RenderFolder).Where(node => node != null))
+                folders.Cast<FolderInfo>().Select(folder => RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 tnFolder.ChildNodes.Add(node);
             }
@@ -2136,11 +2139,8 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 rblLinkType.Items[0].Selected = true;
 
-                var extension = Path.GetExtension(fileName);
-                extension = extension.TrimStart('.');
+                var isAllowedExtension = AllowedImageExtensions.Contains(Path.GetExtension(fileName).TrimStart('.'));
 
-                var isAllowedExtension =
-                    allowedImageExt.Any(sAllowExt => sAllowExt.Equals(extension, StringComparison.OrdinalIgnoreCase));
 
                 cmdResizer.Enabled = cmdResizer.Enabled && isAllowedExtension;
                 cmdResizer.CssClass = cmdResizer.Enabled ? "LinkNormal" : "LinkDisabled";
@@ -2290,21 +2290,21 @@ namespace DNNConnect.CKEditorProvider.Browser
             switch (command)
             {
                 case "FlashUpload":
-                    if (allowedFlashExt.Any(sAllowExt => sAllowExt.Equals(sExtension.ToLower())))
+                    if (AllowedFlashExtensions.Contains(sExtension))
                     {
                         bAllowUpl = true;
                     }
 
                     break;
                 case "ImageUpload":
-                    if (allowedImageExt.Any(sAllowExt => sAllowExt.Equals(sExtension, StringComparison.OrdinalIgnoreCase)))
+                    if (AllowedImageExtensions.Contains(sExtension))
                     {
                         bAllowUpl = true;
                     }
 
                     break;
                 case "FileUpload":
-                    if (extensionWhiteList.Contains(sExtension.ToLower()))
+                    if (extensionWhiteList.IsAllowedExtension(sExtension))
                     {
                         bAllowUpl = true;
                     }
@@ -3056,24 +3056,17 @@ namespace DNNConnect.CKEditorProvider.Browser
                     spaceAvailable);
         }
 
-        /// <summary>
-        /// Gets the accepted file types.
-        /// </summary>
-        private void GetAcceptedFileTypes()
+        /// <summary>Gets the accepted file types.</summary>
+        private string GetAcceptedFileTypes()
         {
             switch (browserModus)
             {
                 case "Flash":
-                    AcceptFileTypes = string.Join("|", allowedFlashExt);
-
-                    break;
+                    return string.Join("|", AllowedFlashExtensions);
                 case "Image":
-                    AcceptFileTypes = string.Join("|", allowedImageExt);
-
-                    break;
+                    return string.Join("|", AllowedImageExtensions);
                 default:
-                    AcceptFileTypes = extensionWhiteList.Replace(",", "|");
-                    break;
+                    return extensionWhiteList.ToStorageString().Replace(",", "|");
             }
         }
 
