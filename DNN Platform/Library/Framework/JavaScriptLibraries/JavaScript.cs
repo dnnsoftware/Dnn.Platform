@@ -288,7 +288,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static string GetScriptPath(JavaScriptLibrary js)
+        private static string GetScriptPath(JavaScriptLibrary js, Page page)
         {
             if (Host.CdnEnabled)
             {
@@ -302,7 +302,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 //cdn enabled but jsl does not have one defined
                 if (!String.IsNullOrEmpty(js.CDNPath))
                 {
-                    return js.CDNPath;
+                    var cdnPath = js.CDNPath;
+                    if (cdnPath.StartsWith("//"))
+                    {
+                        cdnPath = $"{(UrlUtils.IsSecureConnectionOrSslOffload(page.Request) ? "https" : "http")}:{cdnPath}";
+                    }
+                    return cdnPath;
                 }
             }
             return ("~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName);
@@ -388,7 +393,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 return;
             }
 
-            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
+            ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, page), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
 
             //workaround to support IE specific script until we move to IE version that no longer requires this
             if (jsl.LibraryName == CommonJs.jQueryFileUpload)
