@@ -93,7 +93,7 @@ class App extends Component {
         window.dnn.utility.setConfirmationDialogPosition();
         window.dnn.utility.closeSocialTasks();
         this.props.getPageList().then(() => {
-            const selectedPageId = utils.getCurrentPageId();
+            const selectedPageId = utils.getSelectedPageId() || utils.getCurrentPageId();
             selectedPageId && !utils.getIsAdminHostSystemPage() && this.onLoadPage(selectedPageId);
         
             if (viewName === "edit") {
