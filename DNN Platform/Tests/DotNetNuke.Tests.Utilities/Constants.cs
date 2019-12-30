@@ -343,6 +343,7 @@ namespace DotNetNuke.Tests.Utilities
         public const string FOLDER_ValidSubFolderName = "subfolder";
         public const string FOLDER_ValidSubFolderPath = "C:\\folder\\subfolder";
         public const string FOLDER_ValidSubFolderRelativePath = "folder/subfolder/";
+        public const string FOLDER_InvalidSubFolderRelativePath = "folder/subfolder/../";
         public const string FOLDER_ValidUNCFolderPath = @"\\SERVER\folder";
         public const string FOLDER_ValidUNCSubFolderPath = @"\\SERVER\folder\subfolder";
         public const string FOLDER_ValidZipFileName = "file.zip";
