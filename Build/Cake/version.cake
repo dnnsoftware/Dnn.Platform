@@ -47,12 +47,26 @@ Task("SetVersion")
 
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
+  .IsDependentOn("GenerateChecksum")
   .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 
     Information("Transforming: " + file);
     var transformFile = File(System.IO.Path.GetTempFileName());
     FileAppendText(transformFile, GetXdtTransformation());
     XdtTransformConfig(file, transformFile, file);
+});
+
+Task("GenerateChecksum")
+.IsDependentOn("SetVersion")
+.Does(() => {
+  Information("Generating default.aspx checksum...");
+  var sourceFile = "./Dnn Platform/Website/Default.aspx";
+  var destFile = "./Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/Resources/sums.resources";
+  var hash = CalculateSha(sourceFile);
+  var content = $@"<checksums>
+  <sum name=""Default.aspx"" version=""{version.MajorMinorPatch}"" type=""Platform"" sum=""{hash}"" />
+</checksums>";
+  System.IO.File.WriteAllText(destFile, content);
 });
 
 public string GetBuildNumber()
@@ -78,15 +92,30 @@ public string GetProductVersion()
     return productVersion;
 }
 
+private string GetVersionString()
+{
+  return $"{version.Major.ToString("00")}.{version.Minor.ToString("00")}.{version.Patch.ToString("00")}";
+}
+
 public string GetXdtTransformation()
 {
-    var versionString = $"{version.Major.ToString("00")}.{version.Minor.ToString("00")}.{version.Patch.ToString("00")}";
-
     return $@"<?xml version=""1.0""?>
 <dotnetnuke xmlns:xdt=""http://schemas.microsoft.com/XML-Document-Transform"">
   <packages>
-    <package version=""{versionString}"" 
+    <package version=""{GetVersionString()}"" 
              xdt:Transform=""SetAttributes(version)"" />
   </packages>
 </dotnetnuke>";
+}
+
+static string CalculateSha(string filename)
+{
+    using (var sha = System.Security.Cryptography.SHA256.Create())
+    {
+        using (var stream = System.IO.File.OpenRead(filename))
+        {
+            var hash = sha.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+    }
 }
