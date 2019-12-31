@@ -60,6 +60,19 @@ public string GetBuildNumber()
     return buildNumber;
 }
 
+public string GetTwoDigitsVersionNumber(){
+    var fullVer = GetBuildNumber().Split('-')[0]; // Gets rid of the -unstable, -beta, etc.
+    var numbers = fullVer.Split('.');
+    for (int i=0; i < numbers.Length; i++)
+    {
+      if (numbers[i].Length < 2)
+      {
+        numbers[i] = "0" + numbers[i];
+      }
+    }
+    return String.Join(".", numbers);
+  }
+
 public string GetProductVersion()
 {
     return productVersion;

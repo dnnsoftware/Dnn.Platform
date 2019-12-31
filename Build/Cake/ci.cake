@@ -8,4 +8,5 @@ Task("BuildAll")
     .IsDependentOn("CreateNugetPackages")
     .Does(() =>
 	{
+        RevertSqlDataProvider();
 	});
