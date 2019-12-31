@@ -660,7 +660,7 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 var plartformVersion = System.Reflection.Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\DotNetNuke.dll").GetName().Version;
-                string sRequest = string.Format("http://update.dotnetnuke.com/security.aspx?type={0}&name={1}&version={2}",
+                string sRequest = string.Format("https://dnnplatform.io/security.aspx?type={0}&name={1}&version={2}",
                     DotNetNukeContext.Current.Application.Type,
                     "DNNCORP.CE",
                     Globals.FormatVersion(plartformVersion, "00", 3, ""));
