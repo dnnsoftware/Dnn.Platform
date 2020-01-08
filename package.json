@@ -28,7 +28,6 @@
     "lerna": "^3.16.4"
   },
   "scripts": {
-    "start": "gulp debug",
     "build": "lerna run build",
     "package": "lerna run package",
     "clean": "lerna run clean",
