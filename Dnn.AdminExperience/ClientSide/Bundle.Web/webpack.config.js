@@ -4,7 +4,13 @@ const webpack = require("webpack");
 const path = require("path");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
-const settings = require("../../../settings.local.json");
+let settings = null;
+try {
+    settings = require("../../../settings.local.json");
+} catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+}
 
 module.exports = {
     entry: "./src/main.jsx",
@@ -12,9 +18,9 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: isProduction || settings.WebsitePath == ""
-        ? path.resolve("../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/")
-        : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\",
+        path: isProduction || (settings && settings.WebsitePath === "")
+            ? path.resolve("../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/")
+            : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\",
         filename: "export-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8070/dist/"
     },
@@ -36,7 +42,8 @@ module.exports = {
         modules: [
             "node_modules",
             path.resolve("../../../node_modules"),
-            path.resolve(__dirname, "src")
+            path.resolve(__dirname, "src"),
+            path.resolve(__dirname), "../Dnn.React.Common/src"
         ]
     },
     plugins: isProduction ? [
