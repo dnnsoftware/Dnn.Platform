@@ -17,9 +17,6 @@
     "Persona Bar"
   ],
   "scripts": {
-    "preversion": "yarn run test",
-    "version": "yarn run build && git add -A dist",
-    "postversion": "git push && git push --tags",
     "eslint": "eslint ./src/**/*.jsx --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",
