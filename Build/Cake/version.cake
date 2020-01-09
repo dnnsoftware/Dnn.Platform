@@ -48,6 +48,7 @@ Task("SetVersion")
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
   .IsDependentOn("GenerateChecksum")
+  .IsDependentOn("SetPackageVersions")
   .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 
     Information("Transforming: " + file);
@@ -55,6 +56,20 @@ Task("UpdateDnnManifests")
     FileAppendText(transformFile, GetXdtTransformation());
     XdtTransformConfig(file, transformFile, file);
 });
+
+Task("SetPackageVersions")
+  .IsDependentOn("SetVersion")
+  .Does(() => {
+    var packages = GetFiles("./Dnn.AdminExperience/ClientSide/*.Web/package.json");
+    packages.Add(GetFiles("./Dnn.AdminExperience/ClientSide/*.Web/**/_exportables/package.json"));
+
+    // Set all package.json in Admin Experience to the current version and to consume the current (local) version of dnn-react-common.
+    foreach(var file in packages){
+      Information($"Updating {file.ToString()} to version {version.FullSemVer}");
+      ReplaceRegexInFiles(file.ToString(), @"""version"": "".*""", $@"""version"": ""{version.FullSemVer}""");
+      ReplaceRegexInFiles(file.ToString(), @"""@dnnsoftware\/dnn-react-common"": "".*""", $@"""@dnnsoftware/dnn-react-common"": ""{version.FullSemVer}""");
+    }
+  });
 
 Task("GenerateChecksum")
 .IsDependentOn("SetVersion")
