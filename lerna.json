@@ -1,26 +1,4 @@
 {
-  "packages": [
-    "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
-    "Dnn.AdminExperience/ClientSide/Bundle.Web",
-    "Dnn.AdminExperience/ClientSide/Dnn.React.Common",
-    "Dnn.AdminExperience/ClientSide/Extensions.Web",
-    "Dnn.AdminExperience/ClientSide/Licensing.Web",
-    "Dnn.AdminExperience/ClientSide/Pages.Web",
-    "Dnn.AdminExperience/ClientSide/Prompt.Web",
-    "Dnn.AdminExperience/ClientSide/Roles.Web",
-    "Dnn.AdminExperience/ClientSide/Security.Web",
-    "Dnn.AdminExperience/ClientSide/Seo.Web",
-    "Dnn.AdminExperience/ClientSide/Servers.Web",
-    "Dnn.AdminExperience/ClientSide/SiteImportExport.Web",
-    "Dnn.AdminExperience/ClientSide/Sites.Web",
-    "Dnn.AdminExperience/ClientSide/Sites.Web/src/_exportables",
-    "Dnn.AdminExperience/ClientSide/SiteSettings.Web",
-    "Dnn.AdminExperience/ClientSide/TaskScheduler.Web",
-    "Dnn.AdminExperience/ClientSide/Themes.Web",
-    "Dnn.AdminExperience/ClientSide/Users.Web",
-    "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
-    "Dnn.AdminExperience/ClientSide/Vocabularies.Web"
-  ],
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true
