@@ -4,13 +4,7 @@ const webpack = require("webpack");
 const path = require("path");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
-let settings = null;
-try {
-    settings = require("../../../settings.local.json");
-} catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-}
+const settings = require("../../../settings.local.json");
 
 module.exports = {
     entry: "./src/main.jsx",
@@ -18,7 +12,7 @@ module.exports = {
         minimize: isProduction
     },
     output: {
-        path: isProduction || (settings && settings.WebsitePath === "")
+        path: isProduction || settings.WebsitePath == ""
             ? path.resolve("../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/")
             : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\",
         filename: "export-bundle.js",
