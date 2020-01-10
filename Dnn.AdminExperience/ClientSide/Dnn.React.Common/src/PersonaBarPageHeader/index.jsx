@@ -26,7 +26,7 @@ const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCh
             case title.length > titleCharLimit:
                 return (
                     <span className="title">
-                        <h3>{title.substring(0, titleCharLimit) + "..."} - working</h3>
+                        <h3>{title.substring(0, titleCharLimit) + "..."}</h3>
                         <TextOverflowWrapperNew text={title} hotspotStyles={hotspotStyles} />
                     </span>
                 );
