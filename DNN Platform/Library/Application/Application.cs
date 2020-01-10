@@ -181,7 +181,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Gets the upgrade URL.
         /// </summary>
-        /// <value>Fixed value: http://update.dotnetnuke.com </value>
+        /// <value>Fixed value: https://dnnplatform.io </value>
         public string UpgradeUrl
         {
             get
@@ -189,7 +189,7 @@ namespace DotNetNuke.Application
 	            var url = Config.GetSetting("UpdateServiceUrl");
 				if (string.IsNullOrEmpty(url))
 				{
-					return "http://update.dotnetnuke.com";
+					return "https://dnnplatform.io";
 				}
 	            return url;
             }

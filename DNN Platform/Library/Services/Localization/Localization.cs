@@ -459,7 +459,13 @@ namespace DotNetNuke.Services.Localization
                 var portalAliasInfos = portalAliasses as IList<PortalAliasInfo> ?? portalAliasses.ToList();
                 if (portalAliasses != null && portalAliasInfos.Any())
                 {
-                    currentAlias = portalAliasInfos.First();
+                    currentAlias = currentAlias
+                        ?? portalAliasInfos
+                            .Where(a => string.IsNullOrWhiteSpace(a.CultureCode))
+                            .OrderByDescending(a => a.IsPrimary)
+                            .FirstOrDefault()
+                        ?? portalAliasInfos.First();
+
                     httpAlias = currentAlias.HTTPAlias;
                 }
 

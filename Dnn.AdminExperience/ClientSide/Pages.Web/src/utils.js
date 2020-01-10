@@ -99,6 +99,11 @@ function getCurrentPageId() {
     return parseInt(config.tabId);
 }
 
+function getSelectedPageId() {
+    checkInit();
+    return viewParams && viewParams.pageId ? parseInt(viewParams.pageId) : null;
+}
+
 function getViewName() {
     checkInit();
     return viewName;
@@ -211,6 +216,7 @@ const utils = {
     getUtilities,
     getModuleName,
     getCurrentPageId,
+    getSelectedPageId,
     getViewName,
     closePersonaBar,
     getViewParams,

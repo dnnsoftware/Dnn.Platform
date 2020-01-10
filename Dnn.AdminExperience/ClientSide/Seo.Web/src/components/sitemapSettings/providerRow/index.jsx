@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Collapsible as Collapse, SvgIcons } from "@dnnsoftware/dnn-react-common";
+import resx from "../../../resources";
 import "./style.less";
 
 class ProviderRow extends Component {
@@ -56,7 +57,7 @@ class ProviderRow extends Component {
                                 {this.getEnabledDisplay()}
                             </div>
                             <div className="provider-item item-row-priority">
-                                {props.priority}
+                                {props.overridePriority ? props.priority : resx.get("None")}
                             </div>
                             <div className="provider-item item-row-editButton">
                                 <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
