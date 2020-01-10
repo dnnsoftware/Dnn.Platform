@@ -1008,32 +1008,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@dnnsoftware/dnn-react-common@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@dnnsoftware/dnn-react-common/-/dnn-react-common-2.1.2.tgz#8af42e5f4fe8075fb80b7f62d2b1f0893fe397d3"
-  integrity sha512-OvPmcaMGZbSnlxweT0jmhDe9lSiJYxNtHHht+mj8XHKts9g6/41RIP9EnCCbdaOt+bieuu15yG9EHI5aWHS++g==
-  dependencies:
-    interact.js "^1.2.8"
-    moment "^2.22.2"
-    raw-loader "0.5.1"
-    react-accessible-tooltip "^2.0.3"
-    react-collapse "^4.0.3"
-    react-custom-scrollbars "^4.2.1"
-    react-day-picker "^7.1.10"
-    react-height "^3.0.0"
-    react-modal "^3.5.1"
-    react-motion "^0.5.2"
-    react-scrollbar "^0.5.4"
-    react-slider "0.11.2"
-    react-tabs "2.3.0"
-    react-test-utils "0.0.1"
-    react-tooltip "^3.8.4"
-    react-widgets "^4.4.4"
-    redux-undo "^1.0.0-beta9"
-    scroll "^2.0.3"
-    shortid "^2.2.13"
-    throttle-debounce "^2.0.1"
-
 "@emotion/cache@^10.0.9":
   version "10.0.9"
   resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-10.0.9.tgz#e0c7b7a289f7530edcfad4dcf3858bd2e5700a6f"
@@ -7822,7 +7796,7 @@ global-prefix@^3.0.0:
     kind-of "^6.0.2"
     which "^1.3.1"
 
-global@^4.3.0, global@^4.3.2, global@~4.3.0:
+global@^4.3.0, global@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/global/-/global-4.3.2.tgz#e76989268a6c74c38908b1305b10fc0e394e9d0f"
   integrity sha1-52mJJopsdMOJCLEwWxD8DjlOnQ8=
@@ -12416,13 +12390,6 @@ raf@^3.1.0, raf@^3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
-rafl@~1.2.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/rafl/-/rafl-1.2.2.tgz#fe930f758211020d47e38815f5196a8be4150740"
-  integrity sha1-/pMPdYIRAg1H44gV9Rlqi+QVB0A=
-  dependencies:
-    global "~4.3.0"
-
 railroad-diagrams@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
@@ -12470,11 +12437,6 @@ raw-body@2.3.3:
     http-errors "1.6.3"
     iconv-lite "0.4.23"
     unpipe "1.0.0"
-
-raw-loader@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
-  integrity sha1-DD0L6u2KAclm2Xh793goElKpeao=
 
 raw-loader@2.0.0, raw-loader@^2.0.0:
   version "2.0.0"
@@ -12887,14 +12849,6 @@ react-syntax-highlighter@^8.0.1:
     lowlight "~1.9.1"
     prismjs "^1.8.4"
     refractor "^2.4.1"
-
-react-tabs@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-2.3.0.tgz#0c37e786f288d369824acd06a96bd1818ab8b0dc"
-  integrity sha512-pYaefgVy76/36AMEP+B8YuVVzDHa3C5UFZ3REU78zolk0qMxEhKvUFofvDCXyLZwf0RZjxIfiwok1BEb18nHyA==
-  dependencies:
-    classnames "^2.2.0"
-    prop-types "^15.5.0"
 
 react-tabs@3.0.0:
   version "3.0.0"
@@ -13853,13 +13807,6 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
-
-scroll@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/scroll/-/scroll-2.0.3.tgz#0951b785544205fd17753bc3d294738ba16fc2ab"
-  integrity sha512-3ncZzf8gUW739h3LeS68nSssO60O+GGjT3SxzgofQmT8PIoyHzebql9HHPJopZX8iT6TKOdwaWFMqL6LzUN3DQ==
-  dependencies:
-    rafl "~1.2.1"
 
 scroll@^3.0.1:
   version "3.0.1"
