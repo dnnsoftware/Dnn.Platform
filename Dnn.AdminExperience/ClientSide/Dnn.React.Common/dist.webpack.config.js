@@ -28,7 +28,6 @@ module.exports = {
             { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" }
         ]
     },
-    target: "node", // in order to ignore built-in modules like path, fs, etc.
     externals: ["react", "prop-types", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
         extensions: [".js", ".json", ".jsx"],

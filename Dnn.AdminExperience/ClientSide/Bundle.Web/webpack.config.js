@@ -34,10 +34,9 @@ module.exports = {
     resolve: {
         extensions: [".js", ".json", ".jsx"],
         modules: [
-            "node_modules",
+            path.resolve("./node_modules"),
             path.resolve("../../../node_modules"),
-            path.resolve(__dirname, "src"),
-            path.resolve(__dirname), "../Dnn.React.Common/src"
+            path.resolve(__dirname, "src")
         ]
     },
     plugins: isProduction ? [
