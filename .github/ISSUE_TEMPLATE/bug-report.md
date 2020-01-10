@@ -42,7 +42,7 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 -->
 * [ ] 10.0.0 alpha build
 * [ ] 9.5.0 alpha build
-* [ ] 9.4.3 latest supported release
+* [ ] 9.4.4 latest supported release
 
 ## Affected browser
 <!-- 
