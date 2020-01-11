@@ -51,5 +51,6 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 * [ ] Chrome
 * [ ] Firefox
 * [ ] Safari
-* [ ] Internet Explorer
-* [ ] Edge
+* [ ] Internet Explorer 11
+* [ ] Microsoft Edge (Classic)
+* [ ] Microsoft Edge Chromium
