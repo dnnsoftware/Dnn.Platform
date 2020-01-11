@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
+    "Dnn.AdminExperience/ClientSide/Dnn.React.Common",
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
     "Dnn.AdminExperience/ClientSide/Bundle.Web",
-    "Dnn.AdminExperience/ClientSide/Dnn.React.Common",
     "Dnn.AdminExperience/ClientSide/Extensions.Web",
     "Dnn.AdminExperience/ClientSide/Licensing.Web",
     "Dnn.AdminExperience/ClientSide/Pages.Web",
@@ -26,5 +26,12 @@
   ],
   "devDependencies": {
     "lerna": "^3.16.4"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "package": "lerna run package",
+    "clean": "lerna run clean",
+    "lint": "lerna run lint",
+    "test": "lerna run test"
   }
 }
