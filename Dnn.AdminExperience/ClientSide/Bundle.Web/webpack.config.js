@@ -34,7 +34,7 @@ module.exports = {
     resolve: {
         extensions: [".js", ".json", ".jsx"],
         modules: [
-            path.resolve("./node_modules"),
+            path.resolve("./node_modules"), // Try local node_modules
             path.resolve("../../../node_modules"),
             path.resolve(__dirname, "src")
         ]

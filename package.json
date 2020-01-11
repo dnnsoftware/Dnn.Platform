@@ -26,5 +26,12 @@
   ],
   "devDependencies": {
     "lerna": "^3.16.4"
+  },
+  "scripts": {
+    "build": "lerna run build --stream",
+    "package": "lerna run package",
+    "clean": "lerna run clean",
+    "lint": "lerna run lint",
+    "test": "lerna run test"
   }
 }

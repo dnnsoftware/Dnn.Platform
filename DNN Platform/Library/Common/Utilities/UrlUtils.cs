@@ -161,7 +161,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
-            return request.IsSecureConnection || IsSslOffloadEnabled(request);
+            var isSecureTab = PortalController.Instance.GetCurrentPortalSettings()?.ActiveTab.IsSecure ?? false;
+            return request.IsSecureConnection || (IsSslOffloadEnabled(request) && isSecureTab);
         }
 
         public static bool IsSslOffloadEnabled(HttpRequest request)
