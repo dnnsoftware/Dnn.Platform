@@ -1,6 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "2.1.2",
+  "version": "9.4.5-unstable.73",
   "private": false,
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
@@ -17,9 +17,6 @@
     "Persona Bar"
   ],
   "scripts": {
-    "preversion": "yarn run test",
-    "version": "yarn run build && git add -A dist",
-    "postversion": "git push && git push --tags",
     "eslint": "eslint ./src/**/*.jsx --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",

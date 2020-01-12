@@ -13,8 +13,8 @@ module.exports = {
     },
     output: {
         path: isProduction || settings.WebsitePath == ""
-        ? path.resolve("../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/")
-        : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\",
+            ? path.resolve("../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/")
+            : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\scripts\\exports\\",
         filename: "export-bundle.js",
         publicPath: isProduction ? "" : "http://localhost:8070/dist/"
     },
