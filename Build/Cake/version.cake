@@ -35,6 +35,7 @@ Task("SetVersion")
         version.CommitsSinceVersionSource = requestedVersion.Revision;
         version.InformationalVersion = requestedVersion.ToString(4) + " Custom build";
       }
+      buildNumber = Settings.Version;
     }
     Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
     Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");

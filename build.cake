@@ -48,18 +48,22 @@ var websiteDir = Directory(websiteFolder);
 // Executed BEFORE the first task.
 Setup(context =>
 {
-	// Temporarelly commit all changes to prevent checking in scripted changes like versioning.
-	StartPowershellScript("git add .");
-	StartPowershellScript("git commit -m 'backup'");	
+	if(Settings.Version == "auto"){
+		// Temporarelly commit all changes to prevent checking in scripted changes like versioning.
+		StartPowershellScript("git add .");
+		StartPowershellScript("git commit -m 'backup'");	
+	}
 });
 
 // Executed AFTER the last task even if any task fails.
 Teardown(context =>
 {
-	// Undoes the script changes to all tracked files.
-	StartPowershellScript("git reset --hard");
-	// Undoes the setup commit keeping file states as before this build script ran.
-	StartPowershellScript("git reset HEAD^");
+	if(Settings.Version == "auto"){
+		// Undoes the script changes to all tracked files.
+		StartPowershellScript("git reset --hard");
+		// Undoes the setup commit keeping file states as before this build script ran.
+		StartPowershellScript("git reset HEAD^");
+	}
 });
 
 //////////////////////////////////////////////////////////////////////
