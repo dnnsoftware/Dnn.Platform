@@ -19,5 +19,5 @@ using System.Reflection;
 [assembly: AssemblyCopyright("DNN Platform is copyright 2002-2019 by .NET Foundation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
 [assembly: AssemblyVersion("9.4.4")]
-[assembly: AssemblyFileVersion("9.4.4.0")]
+[assembly: AssemblyFileVersion("9.4.4.5")]
 [assembly: AssemblyInformationalVersion("9.4.4 Custom build")]
