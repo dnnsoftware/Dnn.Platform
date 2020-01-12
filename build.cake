@@ -41,9 +41,26 @@ var artifactsDir = Directory(artifactsFolder);
 var websiteFolder = "./Website/";
 var websiteDir = Directory(websiteFolder);
 
-// Define versioned files (manifests) to backup and revert on build
-var manifestFiles = GetFiles("./**/*.dnn");
-manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
+//////////////////////////////////////////////////////////////////////
+// SETUP/TEARDOWN
+//////////////////////////////////////////////////////////////////////
+
+// Executed BEFORE the first task.
+Setup(context =>
+{
+	// Temporarelly commit all changes to prevent checking in scripted changes like versioning.
+	StartPowershellScript("git add .");
+	StartPowershellScript("git commit -m 'backup'");	
+});
+
+// Executed AFTER the last task even if any task fails.
+Teardown(context =>
+{
+	// Undoes the script changes to all tracked files.
+	StartPowershellScript("git reset --hard");
+	// Undoes the setup commit keeping file states as before this build script ran.
+	StartPowershellScript("git reset HEAD^");
+});
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
