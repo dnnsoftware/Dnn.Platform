@@ -1,3 +1,6 @@
+// Tasks to help you create and maintain a local DNN development site.
+// Note these tasks depend on the correct settings in your settings file.
+
 Task("ResetDevSite")
     .IsDependentOn("ResetDatabase")
     .IsDependentOn("PreparePackaging")
