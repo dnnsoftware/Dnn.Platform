@@ -49,7 +49,6 @@ Task("SetVersion")
 
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
-  .IsDependentOn("GenerateChecksum")
   .IsDependentOn("SetPackageVersions")
   .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 
