@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI;
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -115,12 +116,19 @@ namespace DotNetNuke.Web.Mvc
 
             RouteData routeData;
 
+            var queryString = httpContext.Request.QueryString;
+
             if (String.IsNullOrEmpty(_controlKey))
             {
-                _controlKey = httpContext.Request.QueryString.GetValueOrDefault("ctl", String.Empty);
+                _controlKey = queryString.GetValueOrDefault("ctl", String.Empty);
             }
 
-            var moduleId = httpContext.Request.QueryString.GetValueOrDefault("moduleId", -1);
+            var moduleId = Null.NullInteger;
+            if (queryString["moduleid"] != null)
+            {
+                int.TryParse(queryString["moduleid"], out moduleId);
+            }
+
             if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
