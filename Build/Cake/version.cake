@@ -31,10 +31,12 @@ Task("SetVersion")
       version.Patch = requestedVersion.Build;
       version.InformationalVersion = requestedVersion.ToString(3) + " Custom build";
       version.MajorMinorPatch = requestedVersion.ToString(3);
+      version.FullSemVer = requestedVersion.ToString(3);
       if (requestedVersion.Revision != -1) {
         version.CommitsSinceVersionSource = requestedVersion.Revision;
         version.InformationalVersion = requestedVersion.ToString(4) + " Custom build";
       }
+      buildNumber = Settings.Version;
     }
     Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
     Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
