@@ -98,7 +98,12 @@ Task("CleanArtifacts")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("BuildAll");
+    .IsDependentOn("CleanArtifacts")
+    .IsDependentOn("UpdateDnnManifests")
+	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
+    .IsDependentOn("CreateDeploy")
+    .IsDependentOn("CreateSymbols");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
