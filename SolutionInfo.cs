@@ -20,4 +20,4 @@ using System.Reflection;
 [assembly: AssemblyTrademark("DNN")]
 [assembly: AssemblyVersion("9.4.4")]
 [assembly: AssemblyFileVersion("9.4.4.5")]
-[assembly: AssemblyInformationalVersion("9.4.4 Custom build")]
+[assembly: AssemblyInformationalVersion("9.4.4.5 Custom build")]
