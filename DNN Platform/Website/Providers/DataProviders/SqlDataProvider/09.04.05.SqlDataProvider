@@ -1,0 +1,17 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes
+			   WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]')
+			   AND name = N'IX_{objectQualifier}CoreMessaging_MessageRecipients_Read')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_MessageRecipients_Read]
+		ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] ([Read], [Archived], [EmailSent], [EmailSentDate], [EmailSchedulerInstance])
+		INCLUDE ([RecipientID], [MessageID], [UserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SendToast]);
+GO
