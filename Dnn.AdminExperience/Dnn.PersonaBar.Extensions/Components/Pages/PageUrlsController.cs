@@ -382,7 +382,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 if (url.PortalAliasUsage == PortalAliasUsageType.Default)
                 {
                     var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-                    var alias = aliases.FirstOrDefault(primary => primary.IsPrimary == true);
+                    var alias = aliases.FirstOrDefault(p => p.CultureCode == url.CultureCode);
                     if (alias == null)
                     {
                         //if no primary alias just get first in list, need to use something
