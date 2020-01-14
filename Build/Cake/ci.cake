@@ -2,6 +2,7 @@
 
 Task("BuildAll")
     .IsDependentOn("CleanArtifacts")
+    .IsDependentOn("UpdateDnnManifests")
     .IsDependentOn("GenerateChecksum")
     .IsDependentOn("SetPackageVersions")
 	.IsDependentOn("CreateInstall")
