@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../resources";
 import { Scrollbars } from "react-custom-scrollbars";
-import { InputGroup, Switch, Label, PersonaBarPageBody, TranslationProgressBars, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
+import { InputGroup, Switch, Label, PersonaBarPageBody, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
+import TranslationProgressBars from "../languageSettings/TranslationProgressBars";
 import {
     languages as LanguagesActions,
     siteInfo as SiteInfoActions,
@@ -62,7 +63,7 @@ class TranslatePageContent extends Component {
             this.setState(data);
             this.getPageList();
             if (data.InProgress && !data.Error) {
-                return this.getProgressData();
+                return setTimeout(this.getProgressData, 1000);
             }
             if (data.Error) {
                 return;
