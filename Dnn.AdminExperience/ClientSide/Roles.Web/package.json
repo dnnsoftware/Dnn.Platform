@@ -1,6 +1,6 @@
 {
   "name": "roles",
-  "version": "1.0.0",
+  "version": "9.4.4",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
@@ -12,7 +12,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "^2.1.2",
+    "@dnnsoftware/dnn-react-common": "9.4.4",
     "array.prototype.find": "^2.0.0",
     "array.prototype.findindex": "^2.0.0",
     "babel-loader": "^8.0.6",

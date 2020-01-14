@@ -362,7 +362,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                     newConfigurations[key] = "";
                 }
             });
-            var displayName = e === true ? item.name : getNewName(item);
+            var displayName = e === true ? item.displayName : getNewName(item);
             closeAllSubConnectors();
             var newConnection = Object.assign(connections[0].initialObject, { id: null, configurations: newConfigurations, displayName: displayName, open: true });
             var newConn = wrapConnection(newConnection);
@@ -377,9 +377,9 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
         var getNewName = function (item) {
             var connections = item.connections();
             var index = connections.length;
-            var newName = item.name + " - " + index;
+            var newName = item.displayName + " - " + index;
             while (connections.some(function (conn) { return conn.displayName() === newName })) {
-                newName = item.name + " - " + ++index;
+                newName = item.displayName + " - " + ++index;
             }
             return newName;
         }
@@ -491,6 +491,7 @@ define(['jquery', 'knockout', 'main/pager', 'main/validator', 'main/config', 'ma
                     connections: ko.observable(_connections),
                     supportsMultiple: ko.observable(_connections[0].supportsMultiple),
                     name: _connections[0].name,
+                    displayName: _connections[0].displayName(),
                     isOpen: ko.observable(false),
                     height: ko.observable(0),
 

@@ -114,7 +114,7 @@ Task("CreateSymbols")
 Task("GenerateSqlDataProvider")
 	.IsDependentOn("SetVersion")
 	.Does(() => {
-		var fileName = GetTwoDigitsVersionNumber() + ".SqlDataProvider";
+		var fileName = GetTwoDigitsVersionNumber().Substring(0,8) + ".SqlDataProvider";
 		var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
 		if (System.IO.File.Exists(filePath))
 		{
