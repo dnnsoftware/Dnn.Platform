@@ -603,6 +603,16 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string DocType { get; set; }
 
         /// <summary>
+        /// Gets or sets the keystrokes.
+        /// </summary>
+        /// <value>
+        /// The keystrokes.
+        /// </value>
+        [XmlAttribute("keystrokes")]
+        [Description("A list associating keystrokes to editor commands. Each element in the list is an array where the first item is the keystroke, and the second is the name of the command to be executed.")]
+        public string EditorKeystrokes { get; set; }
+
+        /// <summary>
         /// Gets or sets the email protection.
         /// </summary>
         /// <value>
@@ -1191,16 +1201,6 @@ namespace DNNConnect.CKEditorProvider.Objects
         [XmlAttribute("justifyClasses")]
         [Description("List of classes to use for aligning the contents. If it's null, no classes will be used and instead the corresponding CSS values will be used.")]
         public string JustifyClasses { get; set; }
-
-        /// <summary>
-        /// Gets or sets the keystrokes.
-        /// </summary>
-        /// <value>
-        /// The keystrokes.
-        /// </value>
-        [XmlAttribute("keystrokes")]
-        [Description("A list associating keystrokes to editor commands. Each element in the list is an array where the first item is the keystroke, and the second is the name of the command to be executed.")]
-        public string Keystrokes { get; set; }
 
         /// <summary>
         /// Gets or sets the language.
