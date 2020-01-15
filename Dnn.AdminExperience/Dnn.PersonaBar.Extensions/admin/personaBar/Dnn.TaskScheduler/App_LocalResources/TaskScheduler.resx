@@ -660,7 +660,7 @@
       &lt;td&gt;11&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;FreindlyName&lt;/td&gt;
+      &lt;td&gt;FriendlyName&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
       &lt;td&gt;Messaging Dispatch&lt;/td&gt;
     &lt;/tr&gt;
@@ -948,7 +948,7 @@
       &lt;td&gt;3&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;FreindlyName&lt;/td&gt;
+      &lt;td&gt;FriendlyName&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
       &lt;td&gt;Purge Schedule History&lt;/td&gt;
     &lt;/tr&gt;
