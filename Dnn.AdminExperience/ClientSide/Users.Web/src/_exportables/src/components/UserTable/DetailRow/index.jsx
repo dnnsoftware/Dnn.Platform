@@ -116,7 +116,7 @@ class DetailsRow extends Component {
                 hoverText = Localization.get("Deleted");
             } else if (!user.authorized) {
                 statusClass = "grey";
-                statusIcon = SvgIcons.ShieldIcon;
+                statusIcon = SvgIcons.Ban;
                 hoverText = Localization.get("UnAuthorized");
             } else if (!user.hasAgreedToTerms) {
                 statusClass = "grey";
