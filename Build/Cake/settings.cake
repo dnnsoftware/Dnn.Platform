@@ -1,3 +1,6 @@
+// This file loads or creates the local settings file you can use to influence the build process
+// and/or maintain a local DNN development site
+
 public class LocalSettings {
     public string WebsitePath {get; set;} = "";
     public string WebsiteUrl {get; set;} = "";

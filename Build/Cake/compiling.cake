@@ -1,4 +1,5 @@
-// Main solution
+// This tasks kicks off MS Build (just as in Visual Studio)
+
 var dnnSolutionPath = "./DNN_Platform.sln";
 
 Task("Build")

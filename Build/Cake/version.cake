@@ -1,4 +1,5 @@
-// These tasks are meant for our CI build process. They set the versions of the assemblies and manifests to the version found on Github.
+// These tasks will set the right version for manifests and assemblies. Note you can
+// control this by using custom settings
 
 GitVersion version;
 var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
@@ -53,7 +54,6 @@ Task("SetVersion")
 
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
-  .IsDependentOn("GenerateChecksum")
   .IsDependentOn("SetPackageVersions")
   .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 

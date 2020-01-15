@@ -1,3 +1,5 @@
+// The tasks create the various DNN release packages (Install, Upgrade, Deploy and Symbols)
+
 using Dnn.CakeUtils;
 
 public class PackagingPatterns {
