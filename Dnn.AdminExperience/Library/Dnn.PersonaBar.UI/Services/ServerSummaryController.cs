@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.UI.Services
                     var webRequest = WebRequest.CreateHttp(imageUrl);
                     webRequest.Timeout = Host.WebRequestTimeout;
                     webRequest.UserAgent = request.UserAgent;
-                    webRequest.Referer = request.RawUrl;
+                    webRequest.Referer = request.Url.AbsoluteUri;
 
                     using (var stream = ((HttpWebResponse) webRequest.GetResponse()).GetResponseStream())
                     {
