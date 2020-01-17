@@ -2,7 +2,6 @@
 const ActivityIcon = require("./svg/activity.svg").default;
 const AddIcon = require("./svg/add.svg").default;
 const AddCircleIcon = require("./svg/add_circle.svg").default;
-const Ban = require("./svg/ban.svg").default;
 const EditIcon = require("./svg/edit.svg").default;
 const CardViewIcon = require("./svg/card_view.svg").default;
 const ListViewIcon = require("./svg/list_view.svg").default;
@@ -86,7 +85,6 @@ export {
     ActivityIcon,
     AddIcon,
     AddCircleIcon,
-    Ban,
     EditIcon,
     CardViewIcon,
     ListViewIcon,

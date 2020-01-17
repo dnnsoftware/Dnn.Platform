@@ -8,7 +8,6 @@ storiesOf("SvgIcons", module).add("with content", () => (
         <div>ActivityIcon <div style={{width: "24px" }} dangerouslySetInnerHTML={{ __html: SvgIcons.ActivityIcon }}></div></div>
         <div>AddIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}></div></div>
         <div>AddCircleIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.AddCircleIcon }}></div></div>
-        <div>Ban <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.Ban }}></div></div>
         <div>EditIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div></div>
         <div>CardViewIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.CardViewIcon }}></div></div>
         <div>ListViewIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.ListViewIcon }}></div></div>
