@@ -1,0 +1,8 @@
+version: 2
+mergeable:
+  - when: pull_request.*
+    validate:
+      - do: milestone
+        no_empty:
+           enabled: true # Cannot be empty when true.
+           message: 'A milestone must be assigned to this pull request'
