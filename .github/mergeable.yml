@@ -4,5 +4,16 @@ mergeable:
     validate:
       - do: milestone
         no_empty:
-           enabled: true # Cannot be empty when true.
-           message: 'A milestone must be assigned to this pull request'
+          enabled: true # Cannot be empty when true.
+          message: 'A milestone must be assigned to this pull request'
+      - do: label
+        begins_with:
+          match: 'Type:' # or array of strings
+          message: 'A `Type:` label must be assigned to this pull request'
+    fail:
+      - do: comment
+        payload:
+          body: >
+            The following problems were found with this pull request:
+              - A milestone must be assigned
+              - A `Type` label must be assigned
