@@ -1,8 +1,10 @@
+// Main Cake Build entry points. Note most Cake scripts are located under Build/Cake.
+
 #addin nuget:?package=Cake.XdtTransform&version=0.18.1&loaddependencies=true
 #addin nuget:?package=Cake.FileHelpers&version=3.2.0
 #addin nuget:?package=Cake.Powershell&version=0.4.8
 
-#addin nuget:?package=Dnn.CakeUtils&version=1.1.1
+#addin nuget:?package=Dnn.CakeUtils&version=1.1.6
 #tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
@@ -98,7 +100,12 @@ Task("CleanArtifacts")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("BuildAll");
+    .IsDependentOn("CleanArtifacts")
+    .IsDependentOn("UpdateDnnManifests")
+	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
+    .IsDependentOn("CreateDeploy")
+    .IsDependentOn("CreateSymbols");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

@@ -155,6 +155,44 @@ namespace Dnn.ExportImport.Components.Services
             return new ExportPackage { PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version };
         }
 
+        private void ProcessImportModulePackage(ExportPackage exportPackage, String tempFolder, CollisionResolution collisionResolution)
+        {
+            try
+            {
+                var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
+                if (!File.Exists(filePath))
+                {
+                    return;
+                }
+
+                var packageType = exportPackage.PackageType;
+                var packageName = exportPackage.PackageName;
+                var version = exportPackage.Version;
+
+                var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
+                    p => p.PackageType == packageType && p.Name == packageName);
+                if (existPackage != null &&
+                    (existPackage.Version > version ||
+                     (existPackage.Version == version &&
+                      collisionResolution == CollisionResolution.Ignore)))
+                {
+                    Result.AddLogEntry("Import Package ignores",
+                        $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
+                    return;
+                }
+
+                InstallPackage(filePath);
+                Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
+
+            }
+            catch (Exception ex)
+            {
+                Result.AddLogEntry("Import Package error",
+                    $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
+                Logger.Error(ex);
+            }
+        }
+
         private void ProcessImportModulePackages(ImportDto importDto)
         {
             var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
@@ -173,42 +211,13 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var exportPackage in exportPackages)
                         {
-                            try
-                            {
-                                var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
-                                if (!File.Exists(filePath))
-                                {
-                                    continue;
-                                }
 
-                                var packageType = exportPackage.PackageType;
-                                var packageName = exportPackage.PackageName;
-                                var version = exportPackage.Version;
+                            ProcessImportModulePackage(exportPackage, tempFolder, importDto.CollisionResolution);
 
-                                var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
-                                    p => p.PackageType == packageType && p.Name == packageName);
-                                if (existPackage != null &&
-                                    (existPackage.Version > version ||
-                                     (existPackage.Version == version &&
-                                      importDto.CollisionResolution == CollisionResolution.Ignore)))
-                                {
-                                    Result.AddLogEntry("Import Package ignores",
-                                        $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
-                                    continue;
-                                }
+                            CheckPoint.ProcessedItems++;
+                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
+                            if (CheckPointStageCallback(this)) break;
 
-                                InstallPackage(filePath);
-                                Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
-                                CheckPoint.ProcessedItems++;
-                                CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
-                                CheckPointStageCallback(this); // just to update the counts without exit logic
-                            }
-                            catch (Exception ex)
-                            {
-                                Result.AddLogEntry("Import Package error",
-                                    $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
-                                Logger.Error(ex);
-                            }
                         }
                         CheckPoint.Stage++;
                         CheckPoint.Completed = true;

@@ -1,4 +1,5 @@
-// These tasks are meant for our CI build process. They set the versions of the assemblies and manifests to the version found on Github.
+// These tasks will set the right version for manifests and assemblies. Note you can
+// control this by using custom settings
 
 GitVersion version;
 var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
@@ -25,7 +26,10 @@ Task("SetVersion")
       buildNumber = version.LegacySemVerPadded;
     } else {
       version = new GitVersion();
-      var requestedVersion = new System.Version(Settings.Version);
+      var assemblyInfo = new AssemblyInfo("SolutionInfo.cs");
+      var requestedVersion = Settings.Version == "off" ? 
+        assemblyInfo.GetVersion():
+        new System.Version(Settings.Version);
       version.Major = requestedVersion.Major;
       version.Minor = requestedVersion.Minor;
       version.Patch = requestedVersion.Build;
@@ -36,10 +40,11 @@ Task("SetVersion")
         version.CommitsSinceVersionSource = requestedVersion.Revision;
         version.InformationalVersion = requestedVersion.ToString(4) + " Custom build";
       }
-      buildNumber = Settings.Version;
+      buildNumber = requestedVersion.ToString(3);
     }
     Information(Newtonsoft.Json.JsonConvert.SerializeObject(version));
-    Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
+    if (Settings.Version != "off")
+      Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(new System.Version(version.Major, version.Minor, version.Patch, version.CommitsSinceVersionSource != null ? (int)version.CommitsSinceVersionSource : 0), version.InformationalVersion, "SolutionInfo.cs");
     Information("Informational Version : " + version.InformationalVersion);
     productVersion = version.MajorMinorPatch;
     Information("Product Version : " + productVersion);
@@ -49,10 +54,10 @@ Task("SetVersion")
 
 Task("UpdateDnnManifests")
   .IsDependentOn("SetVersion")
-  .IsDependentOn("GenerateChecksum")
   .IsDependentOn("SetPackageVersions")
   .DoesForEach(GetFilesByPatterns(".", new string[] {"**/*.dnn"}, unversionedManifests), (file) => 
   { 
+    if (Settings.Version == "off") return;
     Information("Transforming: " + file);
     var transformFile = File(System.IO.Path.GetTempFileName());
     FileAppendText(transformFile, GetXdtTransformation());
@@ -62,6 +67,7 @@ Task("UpdateDnnManifests")
 Task("SetPackageVersions")
   .IsDependentOn("SetVersion")
   .Does(() => {
+    if (Settings.Version == "off") return;
     var packages = GetFiles("./Dnn.AdminExperience/ClientSide/*.Web/package.json");
     packages.Add(GetFiles("./Dnn.AdminExperience/ClientSide/Dnn.React.Common/package.json"));
     packages.Add(GetFiles("./Dnn.AdminExperience/ClientSide/*.Web/**/_exportables/package.json"));
