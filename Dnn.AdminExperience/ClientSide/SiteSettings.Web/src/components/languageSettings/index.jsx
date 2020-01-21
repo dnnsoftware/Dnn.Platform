@@ -383,7 +383,6 @@ function mapStateToProps(state) {
         languageDisplayModes: state.languages.languageDisplayModes,
         languageSettingsClientModified: state.languages.languageSettingsClientModified,
         languageList: state.languages.languageList,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined
     };
 }
 

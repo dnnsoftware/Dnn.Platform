@@ -356,7 +356,6 @@ function mapStateToProps(state) {
         tabIndex: state.pagination.tabIndex,
         defaultPagesSettings: state.siteBehavior.defaultPagesSettings,
         defaultPagesSettingsClientModified: state.siteBehavior.defaultPagesSettingsClientModified,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

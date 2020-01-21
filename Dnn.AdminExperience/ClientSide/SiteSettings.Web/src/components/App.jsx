@@ -127,16 +127,6 @@ class App extends Component {
             this.changePortalIdCultureCode(e.portalId, e.cultureCode);
             this.updateReferrerInfo(e);
         }, false);
-
-        if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
-            this.changePortalIdCultureCode(props.portalId, props.cultureCode);
-        }
-        else if (state.portalId !== props.portalId) {
-            this.changePortalId(props.portalId);
-        }
-        else if (state.cultureCode !== props.cultureCode) {
-            this.changeCultureCode(props.cultureCode);
-        }
     }
 
     openPersonaBarPage(pageNumber) {

@@ -284,7 +284,6 @@ function mapStateToProps(state) {
         synonymsGroups: state.search.synonymsGroups,
         cultures: state.search.cultures,
         tabIndex: state.pagination.tabIndex,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

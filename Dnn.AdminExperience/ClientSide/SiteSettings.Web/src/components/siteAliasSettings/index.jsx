@@ -173,7 +173,6 @@ function mapStateToProps(state) {
         urlMappingSettings: state.siteBehavior.urlMappingSettings,
         portalAliasMappingModes: state.siteBehavior.portalAliasMappingModes,
         urlMappingSettingsClientModified: state.siteBehavior.urlMappingSettingsClientModified,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 
