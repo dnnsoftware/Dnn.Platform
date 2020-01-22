@@ -6,11 +6,13 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 #endregion
 
@@ -29,6 +31,7 @@ namespace DotNetNuke.Services.Installer.Installers
 		#region "Private Members"
 
         private string _fileName;
+        private string _glob;
 
 		#endregion
 
@@ -62,6 +65,31 @@ namespace DotNetNuke.Services.Installer.Installers
                 Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
                 //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 //return false;
+            }
+            Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
+            return true;
+        }
+
+        private bool ProcessGlob()
+        {
+            Log.AddInfo(string.Format(Util.CLEANUP_Processing, Version.ToString(3)));
+            try
+            {
+                if (_glob.Contains(".."))
+                {
+                    Log.AddWarning(Util.EXCEPTION + " - " + Util.EXCEPTION_GlobDotDotNotSupportedInCleanup);
+                }
+                else
+                {
+                    var globs = new Matcher(StringComparison.InvariantCultureIgnoreCase);
+                    globs.AddIncludePatterns(_glob.Split(';'));
+                    var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
+                    FileSystemUtils.DeleteFiles(files);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
             }
             Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
             return true;
@@ -160,7 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(_fileName))
+                if (string.IsNullOrEmpty(_fileName) && string.IsNullOrEmpty(_glob)) // No attribute: use the xml files definition.
                 {
                     foreach (InstallFile file in Files)
                     {
@@ -171,9 +199,13 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
                 }
-                else
+                else if (!string.IsNullOrEmpty(_fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
                 {
                     bSuccess = ProcessCleanupFile();
+                }
+                else if (!string.IsNullOrEmpty(_glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                {
+                    bSuccess = ProcessGlob();
                 }
                 Completed = bSuccess;
             }
@@ -186,6 +218,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             _fileName = Util.ReadAttribute(manifestNav, "fileName");
+            _glob = Util.ReadAttribute(manifestNav, "glob");
             base.ReadManifest(manifestNav);
         }
 
