@@ -15,3 +15,8 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes
 		ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] ([Read], [Archived], [EmailSent], [EmailSentDate], [EmailSchedulerInstance])
 		INCLUDE ([RecipientID], [MessageID], [UserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SendToast]);
 GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+/************************************************************/
