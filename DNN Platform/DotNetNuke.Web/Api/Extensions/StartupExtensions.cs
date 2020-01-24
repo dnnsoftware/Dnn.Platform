@@ -25,14 +25,14 @@ namespace DotNetNuke.Web.Extensions
         /// </param>
         public static void AddWebApi(this IServiceCollection services)
         {
-            var startuptypes = AppDomain.CurrentDomain.GetAssemblies()
+            var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.SafeGetTypes())
                 .Where(x => typeof(DnnApiController).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);
-            foreach (var controller in startuptypes)
+            foreach (var controller in controllerTypes)
             {
-                services.AddTransient(controller);
+                services.AddScoped(controller);
             }
         }
     }

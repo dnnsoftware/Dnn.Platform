@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
+using DotNetNuke.Common.Extensions;
 
 namespace DotNetNuke.Web.Api.Internal
 {
@@ -25,7 +26,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </param>
         public DnnDependencyResolver(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IDependencyScope BeginScope()
         {
-            return new DnnDependencyResolver(_serviceProvider.CreateScope().ServiceProvider);
+            var scope = System.Web.HttpContext.Current.GetScope();
+            return new DnnDependencyResolver(scope.ServiceProvider);
         }
 
         /// <summary>
