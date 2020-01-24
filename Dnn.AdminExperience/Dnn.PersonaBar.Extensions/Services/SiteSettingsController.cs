@@ -1902,8 +1902,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
-                var language = string.IsNullOrEmpty(cultureCode)
-                    ? LocaleController.Instance.GetCurrentLocale(pid) : LocaleController.Instance.GetLocale(pid, cultureCode);
+                var language = LocaleController.Instance.GetLocaleOrCurrent(pid, cultureCode);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -2095,8 +2094,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
-                var language = string.IsNullOrEmpty(cultureCode)
-                    ? LocaleController.Instance.GetCurrentLocale(pid) : LocaleController.Instance.GetLocale(pid, cultureCode);
+                var language = LocaleController.Instance.GetLocaleOrCurrent(pid, cultureCode);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,

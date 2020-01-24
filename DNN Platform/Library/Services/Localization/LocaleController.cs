@@ -142,6 +142,19 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
+        /// Gets the locale included in the portal if culture code is not null or empty
+        /// or else gets the current locale for current request to the portal.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="code">The code.</param>
+        /// <returns></returns>
+        public Locale GetLocaleOrCurrent(int portalID, string code)
+        {
+            return string.IsNullOrEmpty(code)
+                       ? LocaleController.Instance.GetCurrentLocale(portalID) : LocaleController.Instance.GetLocale(portalID, code);
+        }
+
+        /// <summary>
         /// Gets the locale.
         /// </summary>
         /// <param name="languageID">The language ID.</param>
