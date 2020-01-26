@@ -247,20 +247,6 @@ namespace DotNetNuke.Framework
                     break;
             }
 
-            //page comment
-            if (Host.DisplayCopyright)
-            {
-                Comment += string.Concat(Environment.NewLine,
-                                         "<!--*********************************************-->",
-                                         Environment.NewLine,
-                                         "<!-- DNN Platform - https://dnncommunity.org      -->",
-                                         Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2019, by .NET Foundation -->",
-                                         Environment.NewLine,
-                                         "<!--*********************************************-->",
-                                         Environment.NewLine);
-            }
-
             //Only insert the header control if a comment is needed
             if(!String.IsNullOrWhiteSpace(Comment))
                 Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
@@ -379,10 +365,6 @@ namespace DotNetNuke.Framework
             {
                 KeyWords = PortalSettings.KeyWords;
             }
-            if (Host.DisplayCopyright)
-            {
-                KeyWords += ",DotNetNuke,DNN";
-            }
 
             //META copyright
             if (!string.IsNullOrEmpty(PortalSettings.FooterText))
@@ -395,14 +377,9 @@ namespace DotNetNuke.Framework
             }
 
             //META generator
-            if (Host.DisplayCopyright)
-            {
-                Generator = "DotNetNuke ";
-            }
-            else
-            {
-                Generator = "";
-            }
+
+            Generator = "";
+            
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
             if (!UrlUtils.InPopUp() &&

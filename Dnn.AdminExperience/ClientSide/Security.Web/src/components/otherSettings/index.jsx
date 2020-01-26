@@ -175,25 +175,6 @@ class OtherSettingsPanelBody extends Component {
                         <div className="otherSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("plDisplayCopyright.Help")}
-                                label={resx.get("plDisplayCopyright")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }} />
-                                } />
-                            <Switch
-                                onText={resx.get("SwitchOn")}
-                                offText={resx.get("SwitchOff")}
-                                value={state.otherSettings.DisplayCopyright}
-                                onChange={this.onSettingChange.bind(this, "DisplayCopyright")} />
-                        </div>
-                    </InputGroup>
-                    <InputGroup>
-                        <div className="otherSettings-row_switch">
-                            <Label
-                                labelType="inline"
                                 tooltipMessage={resx.get("plShowCriticalErrors.Help")}
                                 label={resx.get("plShowCriticalErrors")}
                                 extra={
@@ -209,7 +190,7 @@ class OtherSettingsPanelBody extends Component {
                                 onChange={this.onSettingChange.bind(this, "ShowCriticalErrors")} />
                         </div>
                     </InputGroup>
-                    <InputGroup>
+                    <InputGroup> 
                         <div className="otherSettings-row_switch">
                             <Label
                                 labelType="inline"
