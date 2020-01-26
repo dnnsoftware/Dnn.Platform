@@ -1571,7 +1571,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         portalSettings.CookieMoreLink,
                         CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
                         DnnImprovementProgram = HostController.Instance.GetBoolean("DnnImprovementProgram", true),
-                        DisplayCopyright = HostController.Instance.GetBoolean("Copyright", true),
                         portalSettings.DataConsentActive,
                         DataConsentResetTerms = false,
                         DataConsentConsentRedirect = TabSanitizer(portalSettings.DataConsentConsentRedirect, pid)?.TabID,
@@ -1611,8 +1610,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(pid, "ShowCookieConsent", request.ShowCookieConsent.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "CookieMoreLink", request.CookieMoreLink, false, request.CultureCode);
                 HostController.Instance.Update("CheckUpgrade", request.CheckUpgrade ? "Y" : "N", false);
-                HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false);
-                HostController.Instance.Update("Copyright", request.DisplayCopyright ? "Y" : "N", false);
+                HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false)
                 PortalController.UpdatePortalSetting(pid, "DataConsentActive", request.DataConsentActive.ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "DataConsentConsentRedirect", ValidateTabId(request.DataConsentConsentRedirect, pid).ToString(), false);
                 PortalController.UpdatePortalSetting(pid, "DataConsentUserDeleteAction", request.DataConsentUserDeleteAction.ToString(), false);

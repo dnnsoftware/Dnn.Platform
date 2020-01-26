@@ -1362,12 +1362,6 @@
   <data name="PrivacyCookieConsentSettings.Text" xml:space="preserve">
     <value>Cookie Consent Settings</value>
   </data>
-  <data name="plDisplayCopyright.Help" xml:space="preserve">
-    <value>Include DNN Platform Copyright statement in page HTML source. Users will not see this rendered in their browser.</value>
-  </data>
-  <data name="plDisplayCopyright.Text" xml:space="preserve">
-    <value>Display Copyright</value>
-  </data>
   <data name="DataConsentActive.Help" xml:space="preserve">
     <value>When switched on, registered users will be forced to consent to the terms and conditions of this site</value>
   </data>

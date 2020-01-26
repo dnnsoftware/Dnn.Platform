@@ -749,7 +749,6 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
-                            Host.DisplayCopyright,
                             Host.ShowCriticalErrors,
                             Host.DebugMode,
                             Host.RememberCheckbox,
@@ -784,7 +783,6 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                HostController.Instance.Update("Copyright", request.DisplayCopyright ? "Y" : "N", false);
                 HostController.Instance.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
                 HostController.Instance.Update("DebugMode", request.DebugMode ? "True" : "False", false);
                 HostController.Instance.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
