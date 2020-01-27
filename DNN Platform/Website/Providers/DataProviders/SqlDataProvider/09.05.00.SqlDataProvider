@@ -10,10 +10,11 @@
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes
 			   WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]')
-			   AND name = N'IX_{objectQualifier}CoreMessaging_MessageRecipients_Read')
-	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_MessageRecipients_Read]
-		ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] ([Read], [Archived], [EmailSent], [EmailSentDate], [EmailSchedulerInstance])
-		INCLUDE ([RecipientID], [MessageID], [UserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SendToast]);
+			   AND name = N'IX_{objectQualifier}CoreMessaging_MessageRecipients_ForDispatch')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_MessageRecipients_ForDispatch]
+		ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] ([EmailSchedulerInstance])
+        INCLUDE ([EmailSent], [Read], [Archived], [EmailSentDate], [RecipientID], [MessageID], [UserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SendToast])
+        WHERE EmailSent = 0 AND [Read] = 0 AND Archived = 0;
 GO
 
 /************************************************************/
