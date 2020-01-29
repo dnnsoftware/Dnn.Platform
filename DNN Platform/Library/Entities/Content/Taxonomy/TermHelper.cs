@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
 
-namespace Dnn.PersonaBar.Pages.Components
+namespace DotNetNuke.Entities.Content.Taxonomy
 {
     public class TermHelper
     {
@@ -77,7 +72,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     terms.Add(term);
                 }
             }
-
 
             return terms;
         }

@@ -33,7 +33,7 @@ using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
-using TermHelper = Dnn.PersonaBar.Pages.Components.TermHelper;
+using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 
 // ReSharper disable SuggestBaseTypeForParameter
 

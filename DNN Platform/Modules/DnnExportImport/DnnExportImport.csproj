@@ -134,10 +134,6 @@
     <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Dnn.AdminExperience\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
-      <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
-      <Name>Dnn.PersonaBar.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
