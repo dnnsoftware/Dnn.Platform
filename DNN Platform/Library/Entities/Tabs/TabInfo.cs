@@ -1001,12 +1001,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public string GetTags()
         {
-            List<string> tags = new List<string>();
-            foreach (Term term in Terms)
-            {
-                tags.Add(term.Name);
-            }
-            return string.Join(",", tags);
+            return string.Join(",", Terms.Select(t => t.Name));
         }
 
         #endregion
