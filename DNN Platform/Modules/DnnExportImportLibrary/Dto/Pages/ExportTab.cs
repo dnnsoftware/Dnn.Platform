@@ -49,5 +49,6 @@ namespace Dnn.ExportImport.Dto.Pages
         public int StateID { get; set; }
         public string CreatedByUserName { get; set; }
         public string LastModifiedByUserName { get; set; }
+        public string Tags { get; set; }
     }
 }

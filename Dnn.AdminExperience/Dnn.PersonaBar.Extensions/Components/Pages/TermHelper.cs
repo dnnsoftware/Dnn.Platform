@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var vocabularyController = Util.GetVocabularyController();
             var vocabulary = (vocabularyController.GetVocabularies()
                                 .Cast<Vocabulary>()
-                                .Where(v => v.Name == PageTagsVocabulary))
+                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId))
                                 .SingleOrDefault();
 
             var vocabularyId = Null.NullInteger;
