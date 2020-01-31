@@ -35,7 +35,7 @@ using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Installer.Blocker;
-using Microsoft.Extensions.DependencyInjection;
+using DotNetNuke.HttpModules.DependencyInjection;
 
 #endregion
 
@@ -67,8 +67,10 @@ namespace DotNetNuke.Web.Common.Internal
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = String.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
+            Globals.DependencyProvider = new LazyServiceProvider();
             var startup = new Startup();
-            Globals.DependencyProvider = startup.DependencyProvider;
+            (Globals.DependencyProvider as LazyServiceProvider).SetProvider(startup.DependencyProvider);
+            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
 
             ComponentFactory.Container = new SimpleContainer();
 

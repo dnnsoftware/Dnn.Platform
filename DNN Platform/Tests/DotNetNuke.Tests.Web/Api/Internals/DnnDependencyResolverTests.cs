@@ -2,6 +2,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
+using DotNetNuke.Services.DependencyInjection;
 using DotNetNuke.Web.Api.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         public void FixtureSetUp()
         {
             var services = new ServiceCollection();
+            services.AddSingleton<IScopeAccessor>(sp => new FakeScopeAccessor(sp.CreateScope()));
             services.AddScoped(typeof(ITestService), typeof(TestService));
 
             _serviceProvider = services.BuildServiceProvider();
@@ -107,5 +109,20 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
         private interface ITestService { }
         private class TestService : ITestService { }
+
+        private class FakeScopeAccessor : IScopeAccessor
+        {
+            private IServiceScope fakeScope;
+
+            public FakeScopeAccessor(IServiceScope fakeScope)
+            {
+                this.fakeScope = fakeScope;
+            }
+
+            public IServiceScope GetScope()
+            {
+                return fakeScope;
+            }
+        }
     }
 }
