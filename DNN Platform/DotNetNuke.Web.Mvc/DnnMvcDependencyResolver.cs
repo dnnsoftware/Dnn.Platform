@@ -5,9 +5,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.Mvc;
-using DotNetNuke.Common.Extensions;
+using DotNetNuke.Services.DependencyInjection;
 
 namespace DotNetNuke.Web.Mvc
 {
@@ -17,6 +16,12 @@ namespace DotNetNuke.Web.Mvc
     /// </summary>
     internal class DnnMvcDependencyResolver : IDependencyResolver
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        public DnnMvcDependencyResolver(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        }
 
         /// <summary>
         /// Returns the specified service from the scope
@@ -29,7 +34,8 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public object GetService(Type serviceType)
         {
-            var scope = HttpContext.Current?.GetScope();
+            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var scope = accessor.GetScope();
             if (scope != null)
                 return scope.ServiceProvider.GetService(serviceType);
 
@@ -47,7 +53,8 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            var scope = HttpContext.Current?.GetScope();
+            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var scope = accessor.GetScope();
             if (scope != null)
                 return scope.ServiceProvider.GetServices(serviceType);
 

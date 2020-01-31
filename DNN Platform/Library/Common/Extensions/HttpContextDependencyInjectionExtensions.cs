@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Extensions
             return GetScope(httpContext.Items);
         }
 
-        private static IServiceScope GetScope(System.Collections.IDictionary contextItems)
+        internal static IServiceScope GetScope(System.Collections.IDictionary contextItems)
         {
             if (!contextItems.Contains(typeof(IServiceScope)))
                 return null;

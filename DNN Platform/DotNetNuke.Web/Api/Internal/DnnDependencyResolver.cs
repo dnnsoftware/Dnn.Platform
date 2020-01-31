@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
 using DotNetNuke.Common.Extensions;
+using DotNetNuke.Services.DependencyInjection;
 
 namespace DotNetNuke.Web.Api.Internal
 {
@@ -37,7 +38,8 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IDependencyScope BeginScope()
         {
-            var scope = System.Web.HttpContext.Current.GetScope();
+            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var scope = accessor.GetScope();
             return new DnnDependencyResolver(scope.ServiceProvider);
         }
 

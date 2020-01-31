@@ -6,6 +6,7 @@ using DotNetNuke.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Web.Mvc.Extensions;
 using System.Web.Mvc;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Web.Mvc
 {
@@ -18,7 +19,7 @@ namespace DotNetNuke.Web.Mvc
 
             services.AddWebApiControllers();
 
-            DependencyResolver.SetResolver(new DnnMvcDependencyResolver());
+            DependencyResolver.SetResolver(new DnnMvcDependencyResolver(Globals.DependencyProvider));
         }
     }
 }

@@ -701,6 +701,7 @@
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
+    <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />

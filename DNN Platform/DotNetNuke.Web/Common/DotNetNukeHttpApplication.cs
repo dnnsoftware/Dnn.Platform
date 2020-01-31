@@ -67,8 +67,9 @@ namespace DotNetNuke.Web.Common.Internal
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = String.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
+            Globals.DependencyProvider = new LazyServiceProvider();
             var startup = new Startup();
-            Globals.DependencyProvider = startup.DependencyProvider;
+            (Globals.DependencyProvider as LazyServiceProvider).SetProvider(startup.DependencyProvider);
             ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
 
             ComponentFactory.Container = new SimpleContainer();
