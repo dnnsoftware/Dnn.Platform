@@ -33,6 +33,7 @@ using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
+using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -307,7 +308,6 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.TotalTabs++;
                 UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                 AddTabRelatedItems(localTab, otherTab, true);
-
                 TriggerImportEvent(localTab);
             }
             var portalSettings = new PortalSettings(portalId);
@@ -1402,6 +1402,8 @@ namespace Dnn.ExportImport.Components.Services
             localTab.TabPath = otherTab.TabPath;
             localTab.HasBeenPublished = otherTab.HasBeenPublished;
             localTab.IsSystem = otherTab.IsSystem;
+            localTab.Terms.Clear();
+            localTab.Terms.AddRange(TermHelper.ToTabTerms(otherTab.Tags, localTab.PortalID));
         }
 
         private void RepairReferenceTabs(IList<int> referenceTabs, IList<TabInfo> localTabs, IList<ExportTab> exportTabs)
@@ -1752,6 +1754,7 @@ namespace Dnn.ExportImport.Components.Services
                 IconFile = tab.IconFile,
                 DisableLink = tab.DisableLink,
                 Title = tab.Title,
+                Tags = tab.GetTags(),
                 Description = tab.Description,
                 KeyWords = tab.KeyWords,
                 IsDeleted = tab.IsDeleted,

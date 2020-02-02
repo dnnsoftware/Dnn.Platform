@@ -146,7 +146,6 @@
     <Compile Include="Components\Pages\Security\ISecurityService.cs" />
     <Compile Include="Components\Pages\Security\SecurityService.cs" />
     <Compile Include="Components\Pages\TemplateController.cs" />
-    <Compile Include="Components\Pages\TermHelper.cs" />
     <Compile Include="Components\Pages\UrlRewriterUtilsWrapper.cs" />
     <Compile Include="Components\Pages\WorkflowHelper.cs" />
     <Compile Include="Components\Pages\XssCleaner.cs" />

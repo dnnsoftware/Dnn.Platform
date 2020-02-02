@@ -22,6 +22,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -996,6 +997,11 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
             return url ?? ("");
+        }
+
+        public string GetTags()
+        {
+            return string.Join(",", Terms.Select(t => t.Name));
         }
 
         #endregion

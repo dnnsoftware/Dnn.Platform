@@ -18,6 +18,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.UI;
+using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 
 namespace Dnn.PersonaBar.Pages.Components
 {

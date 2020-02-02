@@ -8,9 +8,8 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
 
-namespace Dnn.PersonaBar.Pages.Components
+namespace DotNetNuke.Entities.Content.Taxonomy
 {
     public class TermHelper
     {
@@ -29,7 +28,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var vocabularyController = Util.GetVocabularyController();
             var vocabulary = (vocabularyController.GetVocabularies()
                                 .Cast<Vocabulary>()
-                                .Where(v => v.Name == PageTagsVocabulary))
+                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId))
                                 .SingleOrDefault();
 
             var vocabularyId = Null.NullInteger;
@@ -77,7 +76,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     terms.Add(term);
                 }
             }
-
 
             return terms;
         }
