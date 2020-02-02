@@ -124,12 +124,14 @@ class PersonaBarPageTreeviewInteractor extends Component {
             initialCollapse: false
         });
         let listPageItems = undefined;
+        let updateReduxStore = null;
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id) ? item.isOpen = !item.isOpen : null;
-            updateStore(listItem);
+            updateReduxStore = updateStore;
             listPageItems = listItem;
         });
 
+        updateReduxStore ? updateReduxStore(listPageItems) : null;
         this._countTreeOpenDeepParent(listPageItems);
     }
 
