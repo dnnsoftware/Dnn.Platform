@@ -134,12 +134,16 @@ class PersonaBarPageTreeviewInteractor extends Component {
     }
 
     onSelection({ id }) {
+        let listPageItems = undefined;
+        let updateReduxStore = null;
         this.props._traverse((item, listItem, updateStore) => {
             (item.id === id && item.canManagePage) ? item.selected = true : item.selected = false;
             item.selected ? this.props.onSelection(id) : null;
             delete item.showInContextMenu;
-            updateStore(listItem);
+            updateReduxStore = updateStore;
+            listPageItems = listItem;
         });
+        updateReduxStore ? updateReduxStore(listPageItems) : null;
     }
 
     onNoPermissionSelection({ id }) {
