@@ -1,6 +1,7 @@
 ﻿using DotNetNuke.DependencyInjection.Extensions;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
 {
     public static class StartupExtensions
     {
-        public static void AddWebApiControllers(this IServiceCollection services)
+        public static void AddMvcControllers(this IServiceCollection services)
         {
             var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(TypeExtensions.SafeGetTypes)
@@ -21,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
                 );
             foreach (var controller in controllerTypes)
             {
-                services.AddScoped(controller);
+                services.TryAddScoped(controller);
             }
         }
     }
