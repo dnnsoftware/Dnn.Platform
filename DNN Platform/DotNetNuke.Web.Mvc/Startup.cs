@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Web.Mvc.Extensions;
 using System.Web.Mvc;
 using DotNetNuke.Common;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DotNetNuke.Web.Mvc
 {
@@ -14,10 +15,10 @@ namespace DotNetNuke.Web.Mvc
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IControllerFactory, DefaultControllerFactory>();
+            services.TryAddSingleton<IControllerFactory, DefaultControllerFactory>();
             services.AddSingleton<MvcModuleControlFactory>();
 
-            services.AddWebApiControllers();
+            services.AddMvcControllers();
 
             DependencyResolver.SetResolver(new DnnMvcDependencyResolver(Globals.DependencyProvider));
         }

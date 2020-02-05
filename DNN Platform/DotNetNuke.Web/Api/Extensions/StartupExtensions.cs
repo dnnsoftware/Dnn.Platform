@@ -5,6 +5,7 @@
 using DotNetNuke.DependencyInjection.Extensions;
 using DotNetNuke.Web.Api;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Linq;
 
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.Extensions
                             !x.IsAbstract);
             foreach (var controller in controllerTypes)
             {
-                services.AddScoped(controller);
+                services.TryAddScoped(controller);
             }
         }
     }
