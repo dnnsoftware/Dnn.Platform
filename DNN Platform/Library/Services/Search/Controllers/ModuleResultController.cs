@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
+                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
                         if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
