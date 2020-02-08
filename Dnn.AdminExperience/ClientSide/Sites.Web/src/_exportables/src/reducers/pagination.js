@@ -16,7 +16,7 @@ const switchCase = [{
 export default function getReducer(initialState, additionalCases) {
     return function common(state = Object.assign({
         pageIndex: 0,
-        pageSize: 10,
+        pageSize: 100,
         portalGroupId: -1,
         filter: ""
     }, initialState), action) {
