@@ -356,6 +356,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 ZipEntry entry = unzip.GetNextEntry();
                 while (entry != null)
                 {
+                    entry.CheckZipEntry();
                     if (!entry.IsDirectory)
                     {
                         var fileName = entry.Name;

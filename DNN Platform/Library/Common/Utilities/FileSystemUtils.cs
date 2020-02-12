@@ -324,6 +324,7 @@ namespace DotNetNuke.Common.Utilities
                 var zipEntry = zipStream.GetNextEntry();
                 while (zipEntry != null)
                 {
+                    zipEntry.CheckZipEntry();
                     HtmlUtils.WriteKeepAlive();
                     var localFileName = zipEntry.Name;
                     var relativeDir = Path.GetDirectoryName(zipEntry.Name);

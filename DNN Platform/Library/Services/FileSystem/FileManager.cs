@@ -1616,6 +1616,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
 
                     while (zipEntry != null)
                     {
+                        zipEntry.CheckZipEntry();
                         if (!zipEntry.IsDirectory)
                         {
                             exactFilesCount++;
