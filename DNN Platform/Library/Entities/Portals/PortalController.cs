@@ -1472,6 +1472,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
             }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", "")))
+            {
+                UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", ""));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", "")))
+            {
+                UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", ""));
+            }
         }
 
         private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
