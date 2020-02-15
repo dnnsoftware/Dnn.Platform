@@ -451,6 +451,7 @@ namespace DotNetNuke.UI.Skins
             objZipEntry = objZipInputStream.GetNextEntry();
             while (objZipEntry != null)
             {
+                objZipEntry.CheckZipEntry();
                 if (!objZipEntry.IsDirectory)
                 {
 					//validate file extension
