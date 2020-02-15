@@ -214,6 +214,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var vocabulary = otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.VocabularyID);
                 var vocabularyId = vocabulary?.LocalId ?? 0;
+                var isHierarchical = vocabulary != null && vocabulary.VocabularyTypeID == (int)VocabularyType.Hierarchy;
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name && t.VocabularyID == vocabularyId);
 
                 if (local != null)
@@ -235,7 +236,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Weight = other.Weight,
                             };
 
-                            if (term.ParentTermId.HasValue)
+                            if (isHierarchical)
                             {
                                 dataService.UpdateHeirarchicalTerm(term, modifiedBy);
                             }
@@ -262,7 +263,7 @@ namespace Dnn.ExportImport.Components.Services
                     };
 
 
-                    other.LocalId = term.ParentTermId.HasValue
+                    other.LocalId = isHierarchical
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);
                     Result.AddLogEntry("Added taxonomy", other.Name);
