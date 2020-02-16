@@ -140,7 +140,7 @@ export class PersonaBarPageTreeview extends Component {
             const onDragLeave = e => e.target.classList.remove("list-item-dragover");
             index++;
 
-            const style = item.canManagePage ? { "whiteSpace": "nowrap", height: "28px", lineHeight: "35px", marginLeft: "15px" } : { height: "28px", marginLeft: "15px" };
+            const style = item.canManagePage ? { "whiteSpace": "nowrap", height: "28px", lineHeight: "35px" } : { height: "28px" };
             const itemNameHidden = item.status === "Hidden" ? "item-name-hidden" : "";
             return (
                 <li key={"list-item-key-" + index} id={`list-item-${item.name}-${item.id}`} title={item.name}>
