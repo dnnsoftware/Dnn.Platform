@@ -13,23 +13,6 @@ export class PersonaBarPageTreeview extends Component {
         this.state = {};
     }
 
-    trimName(item) {
-        if (item.name){
-            let tabPath = "";
-            if (item.tabpath) {
-                tabPath = item.tabpath;
-            }
-            let maxLength = 18;
-            let { name } = item;
-            let newLength = tabPath.split(/\//).length * 2 + 1;
-            newLength--;
-            let depth = (newLength < maxLength) ? newLength : 1;
-            return (name.length > maxLength - depth) ? `${item.name.slice(0, maxLength - depth)}...` : item.name;
-        } else {
-            return item.name;
-        }
-    }
-
     render_tree(item, childListItems) {
         const {
             draggedItem,
@@ -148,7 +131,6 @@ export class PersonaBarPageTreeview extends Component {
         let index = 0;
         let total = listItems.length;
         return listItems.map((item) => {
-            const name = this.trimName(item);
             const canManagePage = (e, item, fn) => {
                 const whenCanManage = () => e ? fn(e, item) : fn(item);
                 const whenCannotManage = () => this.props.setEmptyPageMessage(Localization.get("NoPermissionManagePage"));
@@ -190,9 +172,9 @@ export class PersonaBarPageTreeview extends Component {
                                         <SingleLineInput 
                                             style={{ marginBottom: "0px", width:"80%", height:"100%"}}
                                             onChange={() => void(0)}
-                                            value={name}/>
+                                            value={item.name}/>
                                     ):
-                                    name
+                                    item.name
                                 }
                             </span>
                             <div className="draft-pencil">
