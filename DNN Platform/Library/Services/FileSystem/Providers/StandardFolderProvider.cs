@@ -216,7 +216,9 @@ namespace DotNetNuke.Services.FileSystem
             // Does site management want the cachebuster parameter?
             if (portalSettings.AddCachebusterToResourceUris)
             {
-                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + file.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff"));
+                var cachebusterToken = UrlUtils.EncryptParameter(file.LastModificationTime.GetHashCode().ToString());
+
+                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cachebusterToken);
             }
 
             return TestableGlobals.Instance.ResolveUrl(fullPath);
