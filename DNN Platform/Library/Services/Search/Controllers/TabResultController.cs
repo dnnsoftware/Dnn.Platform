@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchResult.TabId > 0)
             {
                 var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
-                viewable = tab != null && !tab.IsDeleted && TabPermissionController.CanViewPage(tab);
+                viewable = tab != null && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab);
             }
 
             return viewable;
