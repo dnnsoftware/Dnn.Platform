@@ -434,7 +434,6 @@ function mapStateToProps(state) {
     privacySettings: state.siteBehavior.privacySettings,
     privacySettingsClientModified:
       state.siteBehavior.privacySettingsClientModified,
-    portalId: state.siteInfo ? state.siteInfo.portalId : undefined
   };
 }
 

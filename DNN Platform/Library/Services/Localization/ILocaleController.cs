@@ -27,6 +27,8 @@ namespace DotNetNuke.Services.Localization
 
         Locale GetLocale(int languageID);
 
+        Locale GetLocaleOrCurrent(int portalID, string code);
+
         Dictionary<string, Locale> GetLocales(int portalID);
 
         Dictionary<string, Locale> GetPublishedLocales(int portalID);

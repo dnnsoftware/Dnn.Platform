@@ -1900,8 +1900,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
-
-                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                var language = LocaleController.Instance.GetLocaleOrCurrent(pid, cultureCode);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -1913,7 +1912,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var response = new
                 {
                     PortalId = pid,
-                    CultureCode = cultureCode,
+                    CultureCode = language.Code,
                     SynonymsGroups = groups.Select(g => new
                     {
                         g.SynonymsGroupId,
@@ -2093,8 +2092,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
-
-                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                var language = LocaleController.Instance.GetLocaleOrCurrent(pid, cultureCode);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -2106,7 +2104,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var response = new
                 {
                     PortalId = pid,
-                    CultureCode = cultureCode,
+                    CultureCode = language.Code,
                     StopWordsId = words?.StopWordsId ?? Null.NullInteger,
                     StopWords = words?.StopWords
                 };

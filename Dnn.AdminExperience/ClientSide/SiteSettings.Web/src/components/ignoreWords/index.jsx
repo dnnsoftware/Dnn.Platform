@@ -266,7 +266,6 @@ function mapStateToProps(state) {
         ignoreWords: state.search.ignoreWords,
         tabIndex: state.pagination.tabIndex,
         cultures: state.search.cultures,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 

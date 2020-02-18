@@ -423,7 +423,6 @@ function mapStateToProps(state) {
         fullLanguageList: state.languages.fullLanguageList,
         languageDisplayModes: state.languages.languageDisplayModes,
         languageClientModified: state.languages.languageClientModified,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 
