@@ -1,7 +1,6 @@
-﻿// DotNetNuke® - https://www.dnnsoftware.com
-//
-// Copyright (c) 2002-2018 DotNetNuke Corporation
-// All rights reserved.
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 
 (function ($) {
 

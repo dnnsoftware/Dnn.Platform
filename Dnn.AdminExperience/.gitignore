@@ -111,11 +111,14 @@ packages/DotNetNuke*
 node_modules
 npm-debug.log
 
+!ClientSide/**/*
+ClientSide/**/node_modules
 [Ww]ebsite/
 .idea
 /**/yarn-error.log
 /**/*-bundle.js
-/Extensions/Content/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users/UsersCommon.js
-/Extensions/Content/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/exportables/Sites/SitesListView.js
-/Extensions/Content/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/rw-widgets.svg
-Extensions/**/*.js.map
+/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users/UsersCommon.js
+/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/exportables/Sites/SitesListView.js
+/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/rw-widgets.svg
+/Dnn.PersonaBar.Extensions/**/*.js.map
+

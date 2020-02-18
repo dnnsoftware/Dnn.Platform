@@ -1,0 +1,135 @@
+﻿<!-- connections panel -->
+<div class="socialpanelheader">
+    <h3 data-bind="html: $root.resx.nav_Connectors"></h3>
+</div>
+<div class="socialpanelbody">
+    <div>
+        <h3 data-bind="html: $root.resx.title_Connections"></h3>
+        <div class="dnnFormMessage dnnFormError" data-bind="visible: errorMessage().length > 0, html: errorMessage"></div>
+        <div class="normalPanel">
+            <div class="searchpanel">
+                <p data-bind="html: $root.resx.txt_SetupConnections"></p>
+            </div>
+            <table class="common-table" id="connectionstbl">
+                <colgroup>
+                    <col class="connections-col-checkmark" />
+                    <col class="connections-col-favicon" />
+                    <col class="connections-col-name" />
+                    <col class="connections-col-actions" />
+                </colgroup>
+                <tbody data-bind="foreach: connections">
+                    <!-- ko if: connections().length < 2 -->
+                    <!-- ko foreach: connections -->
+
+                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1, 'in-edit': inEdit()}" class="edit-title">
+                        <td><span class="socialnetwork-connection" data-bind="css: { verified: connected }"></span></td>
+                        <td>
+                            <span data-bind="attr: { 'class': faviconCss, 'style': 'background-image: url(' + icon + ');' }, css: { connected: connected() }"></span>
+                        </td>
+                        <td><span class="socialnetwork-name" data-bind="html: displayName"></span></td>
+                        <td>
+                            <a class='primarybtn' data-bind="click: edit, html: $root.resx.btn_Edit, visible: connected() && !inEdit()"></a>
+                            <a class='plainbtn' data-bind="click: edit, html: $root.resx.btn_Connect, visible: !connected() && !inEdit()"></a>
+                            <!-- ko if:  inEdit() && supportsMultiple -->
+                            <a class='secondarybtn add-new-connection' data-bind="click: function() {$parent.onAddNew($parent)}, html: '<em>&#10010;</em>' +$root.resx.txt_AddNew"></a>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <tr class="edit-row" data-bind="css: {'in-edit': inEdit()}">
+                        <td colspan="4">
+                            <div data-bind="attr: {id: 'connector-' + name.replace(/ /g,''), class: 'edit-form '  + ($parent.isOpen() ? 'open' : '')}">
+                                <!-- ko if: componentInitialized -->
+                                <div class="edit-items edit-fields" data-bind="component: {name: uniqueNumber + 'component', params: $data}"></div>
+                                <!-- /ko -->
+                                <div class="edit-items edit-buttons">
+                                    <div>
+                                        <a class="secondarybtn" data-bind="click: cancel, html: $root.resx.btn_Cancel"></a>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <!-- ko foreach: buttons -->
+                                    <div>
+                                        <a data-bind="click: function (item, e) { action.apply(this, [$parent, e]); }, html: text, attr: {'class': className}"></a>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- /ko -->
+
+
+                    <!-- ko if: connections().length > 1 -->
+                    <tr data-bind="css: {'last-row':$index() == $parent.connections().length - 1, 'open': isOpen(), 'in-edit': isOpen()}" class="edit-title">
+                        <td><span class="socialnetwork-connection" data-bind="css: { verified: connected }"></span></td>
+                        <td>
+                            <span data-bind="attr: { 'class': 'socialnetwork-favicon ' + name, 'style': 'background-image: url(' + icon + ');' }, css: { connected: connected() }">
+                                <div class="number-connectors" data-bind="html: connections().length"></div>
+                            </span>
+                        </td>
+                        <td><span class="socialnetwork-name" data-bind="html: displayName"></span></td>
+                        <td>
+                            <!-- ko if:  !isOpen() -->
+                            <a class='primarybtn' data-bind="click: onOpen, html: $root.resx.btn_Edit"></a>
+                            <!-- /ko -->
+                            <!-- ko if:  isOpen() -->
+                            <a class='secondarybtn add-new-connection' data-bind="click: onAddNew, html: '<em>&#10010;</em>' + $root.resx.txt_AddNew"></a>
+                            <!-- /ko -->
+
+                        </td>
+                    </tr>
+                    <tr class="edit-row" data-bind="css: {'in-edit': isOpen()}">
+                        <td colspan="4">
+                            <div data-bind="css: 'parent-container ' + (isOpen() ? 'open' : '')">
+                                <div class="inner-container">
+                                    <!-- ko foreach: connections -->
+                                    <div data-bind="css: 'sub-connector ' + (open() ? 'open' : '')">
+                                        <span class="socialnetwork-connection" data-bind="css: { verified: connected }"></span>
+                                        <span data-bind="attr: { 'class': faviconCss, 'style': 'background-image: url(' + icon + ');' }, css: { connected: connected() }"></span>
+                                        <div class="connector-row-header">
+                                            <span class="socialnetwork-name" data-bind="html: displayName"></span>
+                                            <!-- ko if:open --> 
+                                            <input type="text" class="socialnetwork-name" style="opacity: 0" 
+                                                data-bind="attr: {title: $root.resx.txt_clickToEdit}, value: displayName"
+                                                onfocus="this.style.opacity = 1" onblur="this.style.opacity = 0" aria-label="Name"  />
+                                            <!-- /ko -->
+                                        </div>
+                                        <span class="icon trash" data-bind="click: onDelete"></span>
+                                        <span class="icon edit" data-bind="click: onOpenEdit"></span>
+                                    </div>
+                                    <div data-bind="css: 'sub-connector-row-edit ' + (open()? 'open': '')">
+
+                                        <div data-bind="attr: {class: 'edit-form-multiple ' + 'connector-' + name}">
+                                            <!-- ko if: componentInitialized -->
+                                            <div class="edit-items edit-fields" data-bind="component: {name: uniqueNumber + 'component', params: $data}"></div>
+                                            <!-- /ko -->
+
+                                            <div class="edit-items edit-buttons">
+                                                <div>
+                                                    <a class="secondarybtn" data-bind="click: onCancel, html: $root.resx.btn_Cancel"></a>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <!-- ko foreach: buttons -->
+                                                <div>
+                                                    <a data-bind="click: function (item, e) { action.apply(this, [$parent, e]); }, html: text, attr: {'class': className}"></a>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <!-- /ko -->
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.auditCheckResults) {
+    .auditcheck-topbar{
+        border-bottom: solid 1px @alto;
+        margin: 20px 25px 0 25px;
+        padding: 0 0 15px 0;
+        font-weight: bolder;
+        color: @thunder;
+     }   
+    .auditCheckItems {        
+        display: inline-block;
+        margin: 15px 25px 50px 25px;
+        border: solid 1px @alto;        
+        .auditCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .auditCheckHeader-SecurityCheck {
+                padding: 0 0 0 25px;
+                width: 34%;
+                float: left;
+            }
+            .auditCheckHeader-Result {
+                width: 31%;
+                float: left;
+            }
+            .auditCheckHeader-Notes {
+                width: 31%;
+                float: left;
+            }
+        }
+        .auditCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-name {
+                padding: 0 0 0 20px;
+                width: 34%;
+                float: left;
+            }
+            .label-result {
+                width: 31%;
+                float: left;
+            }
+            .label-notes {
+                width: 31%;
+                float: left;
+            }
+            .label-wrapper {
+                word-break: break-word;
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                .label-result-severity-fail {
+                    color: @alizarinCrimson;
+                    font-weight: bolder;
+                    margin: 0 0 10px 0;
+                    text-transform: uppercase;
+                }
+                .label-result-severity-alert{
+                    color: @curiousBlue;
+                    font-weight: bolder;
+                    margin: 0 0 10px 0;
+                    text-transform: uppercase;
+                }
+                .label-result-severity-pass{
+                    color: @amazon;
+                    font-weight: bolder;
+                    margin: 0 0 10px 0;
+                    text-transform: uppercase;
+                }
+                .label-result-severity-unverified{
+                    color: @curiousBlue;
+                    font-weight: bolder;
+                    margin: 0 0 10px 0;
+                    text-transform: uppercase;
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

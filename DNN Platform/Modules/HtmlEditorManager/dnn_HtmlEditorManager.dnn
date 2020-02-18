@@ -1,14 +1,14 @@
 ﻿<dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="09.04.02" >
+    <package name="DotNetNuke.HtmlEditorManager" type="Module" version="09.04.04" >
       <friendlyName>Html Editor Management</friendlyName>
       <iconFile>Images/HtmlEditorManager_Standard_32x32.png</iconFile>
       <description>A module used to configure toolbar items, behavior, and other options used in the DotNetNuke HtmlEditor Provider.</description>
       <owner>
           <name>DNN</name>
-          <organization>DNN Corp.</organization>
-          <url>http://www.dnnsoftware.com</url>
-          <email>support@dnnsoftware.com</email>
+          <organization>.NET Foundation</organization>
+          <url>https://dnncommunity.org</url>
+          <email>info@dnncommunity.org</email>
       </owner>
       <azureCompatible>true</azureCompatible>
       <dependencies>
@@ -36,7 +36,7 @@
                     <controlTitle>Html Editor Management</controlTitle>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
