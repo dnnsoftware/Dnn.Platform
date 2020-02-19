@@ -82,3 +82,15 @@
         <dnn:DataConsent id="ctlDataConsent" runat="server" />
     </asp:panel>
 </div>
+<script type="text/javascript">
+$('body').on('click', '#<%=pnlDataConsent.ClientID%> input[id$="Login_DataConsent_chkAgree"]', function (e) {
+    var checked = e.target.checked;
+    var cmdSubmit = $('#<%=pnlDataConsent.ClientID%> input[id$="Login_DataConsent_cmdSubmit"]');
+    if (checked) {
+        cmdSubmit.prop("disabled", "");
+    }
+    else {
+        cmdSubmit.prop("disabled", "disabled");
+    }
+});
+</script>

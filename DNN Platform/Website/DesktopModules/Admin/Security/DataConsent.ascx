@@ -19,14 +19,3 @@
    <asp:Button ID="cmdDeleteMe" CssClass="dnnSecondaryAction" runat="server" resourcekey="cmdDeleteMe" /></li>
  </ul>
 </div>
-
-<script type="text/javascript">
- document.getElementById('<%=chkAgree.ClientID%>').addEventListener("click", function (e) {
-  document.getElementById('<%=cmdSubmit.ClientID%>').disabled = !e.target.checked;
- });
- document.getElementById('<%=cmdDeleteMe.ClientID%>').addEventListener("click", function (e) {
-  if (!confirm('<%=DeleteMeConfirmString%>')) {
-   e.preventDefault();
-  };
- });
-</script>
