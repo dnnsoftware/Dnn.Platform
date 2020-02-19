@@ -497,8 +497,6 @@ namespace DotNetNuke.Entities.Modules
                 {
                     var portal = PortalController.Instance.GetPortal(PortalId);
 
-                    content = HttpContext.Current.Server.HtmlDecode(content);
-
                     //Determine if the Module is copmpletely installed 
                     //(ie are we running in the same request that installed the module).
                     if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
@@ -518,7 +516,8 @@ namespace DotNetNuke.Entities.Modules
                                 var controller = businessController as IPortable;
                                 if (controller != null)
                                 {
-                                    controller.ImportModule(module.ModuleID, content, version, portal.AdministratorId);
+                                    var decodedContent = HttpContext.Current.Server.HtmlDecode(content);
+                                    controller.ImportModule(module.ModuleID, decodedContent, version, portal.AdministratorId);
                                 }
                             }
                             catch
