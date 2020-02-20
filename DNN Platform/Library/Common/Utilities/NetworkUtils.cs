@@ -7,6 +7,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Web;
 
 #endregion
 
@@ -241,6 +242,24 @@ namespace DotNetNuke.Common.Utils
                 return false;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Get the Client IP Address.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetClientIpAddress(HttpRequest request)
+        {
+            var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+            // If there is no proxy, get the standard remote address
+            if ((string.IsNullOrWhiteSpace(ipAddress)) || ipAddress.Equals("unknown", StringComparison.OrdinalIgnoreCase))
+            {
+                ipAddress = request.UserHostAddress;
+            }
+
+            return ipAddress;
         }
     }
 
