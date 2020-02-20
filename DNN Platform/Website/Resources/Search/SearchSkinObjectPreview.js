@@ -36,6 +36,19 @@
                     return url;
                 };
 
+                var setPreviewHeight = function () {
+                    //check preview height versus window height
+                    var previewHeight = $(".searchSkinObjectPreview").height() + $(".searchSkinObjectPreview").offset().top;
+                    var windowHeight = $(window).height();
+                    if (previewHeight > 0 && windowHeight > 0 && previewHeight > windowHeight) {
+                        //remove data-url li's until preview fits window height
+                        while (previewHeight > windowHeight) {
+                            $(".searchSkinObjectPreview").find("li").last().prev().remove();
+                            previewHeight = $(".searchSkinObjectPreview").height() + $(".searchSkinObjectPreview").offset().top;
+                        }
+                    }
+                };
+
                 var generatePreviewTemplate = function (data, $wrap) {
                     var preview = $('.searchSkinObjectPreview', $wrap);
                     if (preview.length)
@@ -90,6 +103,8 @@
                         }
                         return false;
                     });
+
+                    setPreviewHeight();
 
                     //attach see more       
                     $('.searchSkinObjectPreview_more', $wrap).on('click', function () {
