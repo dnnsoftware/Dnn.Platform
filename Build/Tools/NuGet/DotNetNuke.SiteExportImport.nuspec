@@ -9,7 +9,6 @@
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <icon>images\logo-for-nuget.png</icon>
-    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       This package contains components required for developing extensiong to utilize site export/import features.

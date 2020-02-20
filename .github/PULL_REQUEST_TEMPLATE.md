@@ -1,5 +1,5 @@
 <!-- 
-  Please read contribution guideline first: https://github.com/dnnsoftware/Dnn.Platform/blob/development/CONTRIBUTING.md 
+  Please read contribution guideline first: https://github.com/dnnsoftware/Dnn.Platform/blob/develop/CONTRIBUTING.md 
 -->
 
 <!-- 

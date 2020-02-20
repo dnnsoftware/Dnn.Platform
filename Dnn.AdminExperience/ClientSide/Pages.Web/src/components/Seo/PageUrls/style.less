@@ -1,0 +1,88 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.urlRow) {
+    display: table;
+    border-bottom: 1px solid @alto;
+    color: @rollingStone;
+    width: 100%;
+    position: relative;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    cursor: auto;
+    &.false {
+        background-color: @alabaster;
+    }
+    .url-path {
+        word-break: break-all;
+    }
+    .extension-action {
+        width: 16px;
+        height: 16px;
+        float: right;
+        cursor: pointer;
+        margin-right: 5px;
+        &.selected {
+            svg {
+                fill: @curiousBlue;
+            }
+            svg:hover {
+                fill: @thunder;
+            }
+        }
+        &.active {
+            svg {
+                fill: @curiousBlue;
+            }
+        }
+    }
+    .url-settings {
+        width: 100%;
+        height: 450px;
+    }
+}
+
+:local(.AddItemRow) {
+    width: 100%;
+    margin: 0 0 15px 0;
+    font-weight: bolder;
+    border-bottom: 1px solid @alto;
+    overflow: hidden;
+    .sectionTitle {
+        font-weight: bolder;
+        float: left;
+        line-height: 25px;
+    }
+    .AddItemBox {
+        width: auto;
+        float: right;
+        color: @thunder;
+        cursor: pointer;
+        line-height: 25px;
+        &.active {
+            color: @curiousBlue;
+            cursor: inherit;
+        }
+        .add-icon {
+            margin-left: 20px;
+            margin-right: 5px;
+            margin-top: 4px;
+            float: left;
+            cursor: pointer;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+                fill: @thunder;
+            }
+            &.active {
+                svg {
+                    fill: @curiousBlue;
+                }
+                cursor: inherit;
+            }
+        }
+    }
+    .newUrlContainer {
+        width: 100%;
+        clear: both;
+    }
+}

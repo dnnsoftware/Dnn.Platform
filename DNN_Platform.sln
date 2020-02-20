@@ -470,7 +470,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.UI", "Dnn.Admin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{5E147FE4-58B5-4C27-98C3-8ED178E107B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Dnn.AdminExperience\Extensions\Content\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Extensions", "Dnn.AdminExperience\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj", "{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{5F3D7934-4DE3-4E9B-9AF8-789FDB7D2404}"
 EndProject
@@ -488,35 +488,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Security.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.Security.Tests\Dnn.PersonaBar.Security.Tests.csproj", "{A64708EF-4972-48A3-B7B9-6B65E47EFE27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Users.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.Users.Tests\Dnn.PersonaBar.Users.Tests.csproj", "{15506C01-A730-46B9-8571-99C20226AAE6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{10D11155-ED05-40CB-9644-AD861A6D7096}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{622791DE-3AE7-4D54-9E66-2FED9686AA9E}"
-	ProjectSection(SolutionItems) = preProject
-		Dnn.AdminExperience\Build\BuildScripts\CreateSourcePackage.build = Dnn.AdminExperience\Build\BuildScripts\CreateSourcePackage.build
-		Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.build = Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.build
-		Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll = Dnn.AdminExperience\Build\BuildScripts\DotNetNuke.MSBuild.Tasks.dll
-		Dnn.AdminExperience\Build\BuildScripts\Evoq_Package.build = Dnn.AdminExperience\Build\BuildScripts\Evoq_Package.build
-		Dnn.AdminExperience\Build\BuildScripts\ICSharpCode.SharpZipLib.dll = Dnn.AdminExperience\Build\BuildScripts\ICSharpCode.SharpZipLib.dll
-		Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.dll = Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.dll
-		Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll = Dnn.AdminExperience\Build\BuildScripts\Microsoft.Build.Utilities.v3.5.dll
-		Dnn.AdminExperience\Build\BuildScripts\Module.build = Dnn.AdminExperience\Build\BuildScripts\Module.build
-		Dnn.AdminExperience\Build\BuildScripts\ModulePackage.targets = Dnn.AdminExperience\Build\BuildScripts\ModulePackage.targets
-		Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.dll = Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.dll
-		Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.Targets = Dnn.AdminExperience\Build\BuildScripts\MSBuild.Community.Tasks.Targets
-		Dnn.AdminExperience\Build\BuildScripts\Package.targets = Dnn.AdminExperience\Build\BuildScripts\Package.targets
-		Dnn.AdminExperience\Build\BuildScripts\SharpZipLib.dll = Dnn.AdminExperience\Build\BuildScripts\SharpZipLib.dll
-		Dnn.AdminExperience\Build\BuildScripts\Variables.build = Dnn.AdminExperience\Build\BuildScripts\Variables.build
-		Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.dll = Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.dll
-		Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll = Dnn.AdminExperience\Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{8D99B9CD-004B-4237-8CFE-77CD327B4370}"
-	ProjectSection(SolutionItems) = preProject
-		Dnn.AdminExperience\Build\Symbols\license.txt = Dnn.AdminExperience\Build\Symbols\license.txt
-		Dnn.AdminExperience\Build\Symbols\releaseNotes.txt = Dnn.AdminExperience\Build\Symbols\releaseNotes.txt
-		Dnn.AdminExperience\Build\Symbols\Symbols.dnn = Dnn.AdminExperience\Build\Symbols\Symbols.dnn
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetNuke.Abstractions", "DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj", "{6928A9B1-F88A-4581-A132-D3EB38669BB0}"
 EndProject
@@ -2012,9 +1983,6 @@ Global
 		{05515510-9979-4424-8D0A-647F32A25FE7} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
 		{A64708EF-4972-48A3-B7B9-6B65E47EFE27} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
 		{15506C01-A730-46B9-8571-99C20226AAE6} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
-		{10D11155-ED05-40CB-9644-AD861A6D7096} = {392B91E8-C85D-4475-A169-1D4E33B06A4A}
-		{622791DE-3AE7-4D54-9E66-2FED9686AA9E} = {10D11155-ED05-40CB-9644-AD861A6D7096}
-		{8D99B9CD-004B-4237-8CFE-77CD327B4370} = {10D11155-ED05-40CB-9644-AD861A6D7096}
 		{6928A9B1-F88A-4581-A132-D3EB38669BB0} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

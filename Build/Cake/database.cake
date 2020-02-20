@@ -1,3 +1,5 @@
+// Database tasks for your local DNN development site
+
 Task("ResetDatabase")
   .Does(() => 
     {

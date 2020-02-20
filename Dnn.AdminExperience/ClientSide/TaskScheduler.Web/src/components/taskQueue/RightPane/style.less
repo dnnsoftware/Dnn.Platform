@@ -1,0 +1,45 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.taskStatusItemRightPane) {
+    padding: 5px 15px 15px 15px;
+    display: block;
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    height: auto;
+    margin-top: 0px;
+    .taskDetailRight {
+        float: left;       
+        width: 100%; 
+        > div {
+            padding: 0 0 10px 0;
+            float: left;
+            width: 100%;
+        }
+        .taskDetailRight-idWrapper {
+            float: right;
+            padding-bottom: 5px;
+            color: @thunder;
+            .taskDetailRight-id {
+                font-weight: bolder;
+                font-size: 15px;
+                float: left;
+                padding-left: 85%;
+            }
+            .taskDetailRight-id-value {
+                float: right;
+                padding-top: 2px;
+            }
+        }
+        .taskDetailRight-common {
+            padding: 0 0 10px 0;
+            color: @thunder;
+            .taskDetailRight-common-title {
+                font-weight: bolder;
+                float: left;
+            }
+            .taskDetailRight-common-value {
+                float: right;
+            }
+        }
+    }
+}

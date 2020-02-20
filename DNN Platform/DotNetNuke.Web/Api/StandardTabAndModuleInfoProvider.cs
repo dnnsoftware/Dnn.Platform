@@ -1,3 +1,7 @@
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -77,6 +81,7 @@ namespace DotNetNuke.Web.Api
             if (TryFindTabId(request, out tabId, false) && TryFindModuleId(request, out moduleId, false))
             {
                 moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                if (moduleInfo != null && moduleInfo.IsDeleted) moduleInfo = null;
                 return moduleInfo != null;
             }
 
@@ -111,6 +116,7 @@ namespace DotNetNuke.Web.Api
             }
 
             moduleInfo = id > Null.NullInteger ? ModuleController.Instance.GetTabModule(id) : null;
+            if (moduleInfo != null && moduleInfo.IsDeleted) moduleInfo = null;
             return moduleInfo != null;
         }
 

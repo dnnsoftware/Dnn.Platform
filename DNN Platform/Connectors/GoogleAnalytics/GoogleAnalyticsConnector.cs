@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Entities.Portals;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Analytics.Config;
 using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.Exceptions;

@@ -1,3 +1,5 @@
+// The tasks create the various DNN release packages (Install, Upgrade, Deploy and Symbols)
+
 using Dnn.CakeUtils;
 
 public class PackagingPatterns {
@@ -9,6 +11,8 @@ public class PackagingPatterns {
 }
 
 PackagingPatterns packagingPatterns;
+
+var sqlDataProviderExists = false;
 
 Task("PreparePackaging")
 	.IsDependentOn("CopyWebsite")
@@ -26,7 +30,8 @@ Task("PreparePackaging")
 
 Task("CopyWebsite")
 	.IsDependentOn("CleanWebsite")
-    .Does(() =>
+    .IsDependentOn("GenerateSqlDataProvider")
+	.Does(() =>
 	{
 		CopyFiles(GetFiles("./DNN Platform/Website/**/*"), websiteFolder, true);
 	});
@@ -107,3 +112,41 @@ Task("CreateSymbols")
 		var resFile = Dnn.CakeUtils.Compression.ZipToBytes(websiteFolder.TrimEnd('/'), files);
 		Dnn.CakeUtils.Compression.AddBinaryFileToZip(packageZip, resFile, "Resources.zip", true);
 	});
+
+Task("GenerateSqlDataProvider")
+	.IsDependentOn("SetVersion")
+	.Does(() => {
+		var fileName = GetTwoDigitsVersionNumber().Substring(0,8) + ".SqlDataProvider";
+		var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
+		if (System.IO.File.Exists(filePath))
+		{
+			sqlDataProviderExists = true;
+			return;
+		}
+		sqlDataProviderExists = false;
+		
+		using (System.IO.StreamWriter file = 
+            new System.IO.StreamWriter(filePath, true))
+        {
+			file.WriteLine("/************************************************************/");
+			file.WriteLine("/*****              SqlDataProvider                     *****/");
+			file.WriteLine("/*****                                                  *****/");
+			file.WriteLine("/*****                                                  *****/");
+			file.WriteLine("/***** Note: To manually execute this script you must   *****/");
+			file.WriteLine("/*****       perform a search and replace operation     *****/");
+			file.WriteLine("/*****       for {databaseOwner} and {objectQualifier}  *****/");
+			file.WriteLine("/*****                                                  *****/");
+			file.WriteLine("/************************************************************/");
+        }
+	});
+
+private void RevertSqlDataProvider(){
+	var fileName = GetTwoDigitsVersionNumber() + ".SqlDataProvider";
+	var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
+	if (!sqlDataProviderExists && System.IO.File.Exists(filePath))
+	{
+		System.IO.File.Delete(filePath);
+	}
+}
+
+
