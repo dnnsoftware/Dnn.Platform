@@ -26,7 +26,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.UserRequest;
 
 #endregion

@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.Security.Roles;
 using System.Collections;
-using DotNetNuke.Security.Roles.Internal;
 using System;
 
 #endregion

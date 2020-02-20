@@ -463,13 +463,6 @@
     <Compile Include="admin\Skins\Login.ascx.designer.cs">
       <DependentUpon>login.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Skins\Logo.ascx.cs">
       <DependentUpon>logo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -613,6 +606,7 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
+    <Content Include="Licenses\Dnn AdminExperience %28MIT%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
     <Content Include="Licenses\Microsoft Data Access Application Block %28Custom%29.txt.resources" />
     <Content Include="Licenses\Moment.js %28MIT%29.txt.resources" />
@@ -824,7 +818,6 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\DataConsent.ascx" />
@@ -3325,7 +3318,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.03.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.04.03.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\09.05.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

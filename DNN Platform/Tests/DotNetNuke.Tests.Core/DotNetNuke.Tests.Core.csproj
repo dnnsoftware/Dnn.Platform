@@ -90,9 +90,6 @@
       <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PetaPoco">
-      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -191,6 +188,7 @@
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
     <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
+    <Compile Include="Services\Mail\MailTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
     <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
