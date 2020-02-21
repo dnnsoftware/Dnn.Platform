@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Web.Api
             table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2018 DNN Corp.", null,
                 "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
                 "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
-                null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null,
+                null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
                 homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
                 "-1", "2011-08-25 07:34:29", culture);
 

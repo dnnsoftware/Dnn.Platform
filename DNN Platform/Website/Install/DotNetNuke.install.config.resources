@@ -12,7 +12,7 @@
     <lastname>Account</lastname>
     <username>host</username>
     <password>dnnhost</password>
-    <email>host@change.me</email>
+    <email>host@changeme.invalid</email>
     <locale>en-US</locale>
     <updatepassword>false</updatepassword>
   </superuser>
@@ -89,7 +89,7 @@
         <lastname>Account</lastname>
         <username>admin</username>
         <password>dnnadmin</password>
-        <email>admin@change.me</email>
+        <email>admin@changeme.invalid</email>
       </administrator>
       <description>My Website</description>
       <keywords>DotNetNuke, DNN, Content, Management, CMS</keywords>
