@@ -245,10 +245,10 @@ namespace DotNetNuke.Common.Utils
         }
 
         /// <summary>
-        /// Get the Client IP Address.
+        /// Gets the Client IP address of the current request, from server variables if available, otherwise returns Request.UserHostAddress.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">The current http request.</param>
+        /// <returns>The current client ip address.</returns>
         public static string GetClientIpAddress(HttpRequest request)
         {
             var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
