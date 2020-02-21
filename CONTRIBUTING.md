@@ -75,7 +75,7 @@ a ticket number.
     The first line is a real-life imperative statement with '(doc)' in place of what would have been the ticket number in a non-documentation related commit. The body describes the nature of the new documentation or comments added.
 ````
 
-## Submitting Changes
+## Submitting & Process of Pull Requests
 Once your change is completed you will want to follow the [Pull Request Process](https://github.com/dnnsoftware/Dnn.Platform/blob/develop/.github/PULL_REQUEST_PROCESS.md) to submit your changes for review & inclusion in the next release.
 
 # Additional Resources
