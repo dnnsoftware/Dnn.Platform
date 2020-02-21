@@ -1,0 +1,536 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.scannerCheckResults) {
+    min-height: 171px;
+    .scannerCheckItems-title {
+        margin: 0 0 0 25px;
+        color: @thunder;
+    }
+    .scannercheck-topbar {
+        border-bottom: solid 1px @alto;
+        height: 34px;
+        margin: 20px 25px 20px 25px;
+        padding: 0 0 10px 0;
+        font-weight: bolder;
+        .search-filter {
+            float: left;
+            width: 400px;
+            &:hover {
+                svg {
+                    fill: @curiousBlue;
+                }
+            }
+            > div {
+                display: block !important;
+                border-right: 1px solid @alto;
+                input {
+                    display: block;
+                    width: 100%;
+                    position: inherit !important;
+                    border: none;
+                    border-radius: none;
+                    background-color: transparent;
+                    outline: none;
+                    padding-right: 45px;
+                    padding: 9px 16px 9px 0 !important;
+                    &::-webkit-search-cancel-button {
+                        position: relative;
+                        right: 30px;
+                        cursor: pointer
+                    }
+                }
+            }
+        }
+        .search-filter-active {
+            float: left;
+            width: 400px;
+            > div {
+                display: block !important;
+                border-right: 1px solid @alto;
+                input {
+                    display: block;
+                    width: 100%;
+                    position: inherit !important;
+                    border: none;
+                    border-radius: none;
+                    background-color: transparent;
+                    outline: none;
+                    padding-right: 45px;
+                    color: @curiousBlue !important;
+                    padding: 9px 16px 9px 0 !important;
+                    &::-webkit-search-cancel-button {
+                        position: relative;
+                        right: 30px;
+                        cursor: pointer
+                    }
+                }
+            }
+            svg {
+                fill: @curiousBlue;
+            }
+        }
+        .files-filter {
+            float: right;
+            border-right: 1px solid @alto;
+            margin: 0px 20px 0 0;
+            padding: 9px 20px 4px 0px;
+            height: 21px;
+            color: @thunder;
+            &:hover {
+                cursor: pointer;
+                color: @curiousBlue;
+            }
+        }
+        .files-filter-active {
+            float: right;
+            border-right: 1px solid @alto;
+            margin: 0px 20px 0 0;
+            padding: 9px 20px 4px 0px;
+            height: 21px;
+            color: @curiousBlue;
+        }
+        .settings-filter {
+            float: right;
+            color: @thunder;
+            margin: 9px 0 0 0;
+            &:hover {
+                cursor: pointer;
+                color: @curiousBlue;
+            }
+        }
+        .settings-filter-active {
+            float: right;
+            color: @curiousBlue;
+            margin: 9px 0 0 0;
+        }
+    }
+    .scannerCheckItems {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-FileName {
+                padding: 0 0 0 25px;
+                width: 73%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 23%;
+                float: left;
+            }
+            .scannerCheckHeader-DatabaseInstance {
+                padding: 0 0 0 25px;
+                width: 40%;
+                float: left;
+            }
+            .scannerCheckHeader-DatabaseValue {
+                width: 54%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-name {
+                padding: 0 0 0 20px;
+                width: 73%;
+                float: left;
+            }
+            .label-date {
+                width: 23%;
+                float: left;
+            }
+            .label-columnname {
+                padding: 0 0 0 20px;
+                width: 40%;
+                float: left;
+            }
+            .label-columnvalue {
+                width: 54%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                max-width:500px;
+                width: 100%;
+            }
+        }
+    }
+    .scannerCheckItems-riskFiles {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-FileName {
+                padding: 0 0 0 25px;
+                width: 75%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 20%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-name {
+                padding: 0 0 0 20px;
+                width: 75%;
+                float: left;
+            }
+            .label-date {
+                width: 20%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                max-width:500px;
+                width: 100%;
+            }
+        }
+    }
+    .scannerCheckItems-portalSettings {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-PortalId {
+                padding: 0 0 0 25px;
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingName {
+                width: 35%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingValue {
+                width: 20%;
+                float: left;
+            }
+            .scannerCheckHeader-UserId {
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 18%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-id {
+                padding: 0 0 0 20px;
+                width: 10%;
+                float: left;
+            }
+            .label-name {
+                width: 35%;
+                float: left;
+            }
+            .label-value {
+                width: 20%;
+                float: left;
+            }
+            .label-user {
+                width: 10%;
+                float: left;
+            }
+            .label-date {
+                width: 18%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                width: 100%;
+                max-width:150px;
+            }
+        }
+    }
+    .scannerCheckItems-hostSettings {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-SettingName {
+                padding: 0 0 0 25px;
+                width: 35%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingValue {
+                width: 30%;
+                float: left;
+            }
+            .scannerCheckHeader-UserId {
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 18%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-name {
+                padding: 0 0 0 20px;
+                width: 35%;
+                float: left;
+            }
+            .label-value {
+                width: 30%;
+                float: left;
+            }
+            .label-user {
+                width: 10%;
+                float: left;
+            }
+            .label-date {
+                width: 18%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                width: 100%;
+                max-width:150px;
+            }
+        }
+    }
+    .scannerCheckItems-tabSettings {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-TabId {
+                padding: 0 0 0 25px;
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-PortalId {
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingName {
+                width: 25%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingValue {
+                width: 20%;
+                float: left;
+            }
+            .scannerCheckHeader-UserId {
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 18%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-tab {
+                padding: 0 0 0 20px;
+                width: 10%;
+                float: left;
+            }
+            .label-id {
+                width: 10%;
+                float: left;
+            }
+            .label-name {
+                width: 25%;
+                float: left;
+            }
+            .label-value {
+                width: 20%;
+                float: left;
+            }
+            .label-user {
+                width: 10%;
+                float: left;
+            }
+            .label-date {
+                width: 18%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                width: 100%;
+                max-width:150px;
+            }
+        }
+    }
+    .scannerCheckItems-moduleSettings {
+        display: inline-block;
+        margin: 15px 25px 30px 25px;
+        border: solid 1px @alto;
+        width: 746px;
+        .scannerCheckHeader-wrapper {
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            width: 100%;
+            float: left;
+            padding: 15px 0 15px 0;
+            text-transform: uppercase;
+            font-weight: bolder;
+            .scannerCheckHeader-Type {
+                padding: 0 0 0 25px;
+                width: 18%;
+                float: left;
+            }
+            .scannerCheckHeader-ModuleId {
+                width: 11%;
+                float: left;
+            }
+            .scannerCheckHeader-PortalId {
+                width: 10%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingName {
+                width: 15%;
+                float: left;
+            }
+            .scannerCheckHeader-SettingValue {
+                width: 15%;
+                float: left;
+            }
+            .scannerCheckHeader-UserId {
+                width: 8%;
+                float: left;
+            }
+            .scannerCheckHeader-LastWriteTime {
+                width: 18%;
+                float: left;
+            }
+        }
+        .scannerCheckItem {
+            display: table;
+            width: 100%;
+            padding: 15px 0;
+            color: @thunder;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
+            .label-type {
+                padding: 0 0 0 20px;
+                width: 18%;
+                float: left;
+            }
+            .label-module {
+                width: 11%;
+                float: left;
+            }
+            .label-id {
+                width: 10%;
+                float: left;
+            }
+            .label-name {
+                width: 15%;
+                float: left;
+            }
+            .label-value {
+                width: 15%;
+                float: left;
+            }
+            .label-user {
+                width: 8%;
+                float: left;
+            }
+            .label-date {
+                width: 18%;
+                float: left;
+            }
+            .label-wrapper {
+                padding: 0 5px 0 5px;
+                overflow-wrap: break-word;
+                word-break:break-all;
+                width: 100%;
+                max-width: 150px;
+            }
+        }
+    }
+}

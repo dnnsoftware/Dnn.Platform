@@ -108,7 +108,7 @@ img {
     background: rgba(2,139,255,0.15); /* blue */
     -webkit-border-radius: 3px;
     border-radius: 3px;
-    max-width: 980px;
+    max-width: 100%;
 }
 
     .dnnFormMessage.dnnFormError,

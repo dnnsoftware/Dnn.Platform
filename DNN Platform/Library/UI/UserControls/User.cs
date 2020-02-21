@@ -1,23 +1,7 @@
-#region Copyright
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-#endregion
 #region Usings
 
 using System;
@@ -279,21 +263,21 @@ namespace DotNetNuke.UI.UserControls
                     txtIM.TabIndex = Convert.ToInt16(_StartTabIndex + 7);
                     txtFirstName.Text = _FirstName;
                     txtLastName.Text = _LastName;
+                    txtEmail.Text = _Email;		    
                     txtUsername.Text = _UserName;
                     lblUsername.Text = _UserName;
                     txtPassword.Text = _Password;
                     txtConfirm.Text = _Confirm;
-                    txtEmail.Text = _Email;
                     txtWebsite.Text = _Website;
                     txtIM.Text = _IM;
                     if (!String.IsNullOrEmpty(_ControlColumnWidth))
                     {
                         txtFirstName.Width = Unit.Parse(_ControlColumnWidth);
                         txtLastName.Width = Unit.Parse(_ControlColumnWidth);
+                        txtEmail.Width = Unit.Parse(_ControlColumnWidth);			
                         txtUsername.Width = Unit.Parse(_ControlColumnWidth);
                         txtPassword.Width = Unit.Parse(_ControlColumnWidth);
                         txtConfirm.Width = Unit.Parse(_ControlColumnWidth);
-                        txtEmail.Width = Unit.Parse(_ControlColumnWidth);
                         txtWebsite.Width = Unit.Parse(_ControlColumnWidth);
                         txtIM.Width = Unit.Parse(_ControlColumnWidth);
                     }

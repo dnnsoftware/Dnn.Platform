@@ -1,0 +1,119 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.createPackage) {
+    .create-package-wizard {
+        .no-padding {
+            padding: 0;
+        }
+        .box-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .box-subtitle {
+            margin-bottom: 32px;
+        }
+        .package-manifest-step {
+            padding: 0;
+            .package-manifest-info {
+                .existing-manifest-dropdown {
+                    width: 50%;
+                    margin-bottom: 32px;
+                }
+                .package-manifest-header {
+                    margin-top: 25px;
+                }
+                .dnn-switch-container {
+                    width: 50%;
+                    margin-bottom: 16px;
+                    .dnn-switch {
+                        float: right;
+                    }
+                }
+            }
+        }
+        .review-files-step {
+            .create-package-folder {
+                padding: 0 15px 0 0;
+                .create-package-folder-input {
+                    width: 100%;
+                    margin: 0;
+                }
+                .refresh-file-list-button {
+                    padding: 0 0 0 15px;
+                    position: relative;
+                    height: 58px;
+                    .dnn-ui-common-button {
+                        position: absolute;
+                        width: 100%;
+                        bottom: 4px;
+                    }
+                }
+            }
+            .package-files-container {
+                margin-top: 32px;
+                .package-files {
+                    height: 250px;
+                }
+            }
+        }
+        .review-assemblies-step {
+            .package-assemblies-container {
+                .package-assemblies {
+                    height: 250px;
+                }
+            }
+        }
+        .review-manifest-step {
+            .package-manifest-container {
+                .package-manifest {
+                    width: 100%;
+                    height: 250px;
+                }
+            }
+        }
+        .create-package-step {
+            .using-existing-manifest {
+                margin-top: 25px;
+                margin-bottom: 40px;
+                .dnn-switch-container {
+                    width: 50%;
+                    margin-bottom: 16px;
+                    .dnn-switch {
+                        float: right;
+                    }
+                }
+            }
+            .with-right-border {
+                margin-top: 25px;
+                margin-bottom: 40px;
+                > div {
+                    &.dnn-grid-cell {
+                        padding: 0;
+                    }
+                    .left-side {
+                        padding: 25px 25px 0 0;
+                    }
+                    .right-side {
+                        padding: 25px 0 0 25px;
+                    }
+                    .dnn-switch-container {
+                        width: 100%;
+                        margin-bottom: 16px;
+                        .dnn-switch {
+                            float: right;
+                        }
+                    }
+                }
+            }
+        }
+        .review-logs-step {
+            .package-logs-container {
+                margin-top: 32px;
+                .package-creation-report {
+                    padding: 25px 45px;
+                }
+            }
+        }
+    }
+}

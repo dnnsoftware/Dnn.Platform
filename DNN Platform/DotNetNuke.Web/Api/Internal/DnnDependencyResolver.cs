@@ -1,7 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
+using DotNetNuke.Common.Extensions;
+using DotNetNuke.Services.DependencyInjection;
 
 namespace DotNetNuke.Web.Api.Internal
 {
@@ -21,7 +27,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </param>
         public DnnDependencyResolver(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -32,7 +38,9 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IDependencyScope BeginScope()
         {
-            return new DnnDependencyResolver(_serviceProvider.CreateScope().ServiceProvider);
+            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var scope = accessor.GetScope();
+            return new DnnDependencyResolver(scope.ServiceProvider);
         }
 
         /// <summary>

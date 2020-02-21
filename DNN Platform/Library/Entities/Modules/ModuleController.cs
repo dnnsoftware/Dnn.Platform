@@ -1,23 +1,7 @@
-#region Copyright
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-#endregion
 #region Usings
 
 using System;
@@ -814,30 +798,28 @@ namespace DotNetNuke.Entities.Modules
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
 
-	            var settingExist = false;
 	            string existValue = null;
                 if (dr.Read())
                 {
-					settingExist = true;
 	                existValue = dr.GetString(1);
                 }
 
 				dr.Close();
 
-				if (existValue != settingValue)
-	            {
-					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-														"ModuleId", moduleId, settingName, settingValue,
-														currentUser.UserID);
-				}
-				else if (!settingExist)
-				{
-					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
-													"ModuleId", moduleId, settingName, settingValue,
-													currentUser.UserID);
-				}
+                if (existValue == null)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
+                        "ModuleId", moduleId, settingName, settingValue,
+                        currentUser.UserID);
+                } 
+                else if (existValue != settingValue)
+                {
+                    dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                                                        "ModuleId", moduleId, settingName, settingValue,
+                                                        currentUser.UserID);
+                }
 
                 if (updateVersion)
                 {
@@ -1901,6 +1883,21 @@ namespace DotNetNuke.Entities.Modules
         {
             //Move the module to the Tab
             dataProvider.MoveTabModule(fromTabId, moduleId, toTabId, toPaneName, UserController.Instance.GetCurrentUserInfo().UserID);
+
+            //Update the Tab reference for the module's ContentItems
+            var contentController = Util.GetContentController();
+            var contentItems = contentController.GetContentItemsByModuleId(moduleId);
+            if (contentItems != null)
+            {
+                foreach (var item in contentItems)
+                {
+                    if (item.TabID != toTabId)
+                    {
+                        item.TabID = toTabId;
+                        contentController.UpdateContentItem(item);
+                    }
+                }
+            }
 
             //Update Module Order for source tab, also updates the tabmodule version guid
             UpdateTabModuleOrder(fromTabId);
