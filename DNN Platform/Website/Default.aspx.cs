@@ -411,13 +411,6 @@ namespace DotNetNuke.Framework
                 Title += versionString;
             }
 
-			//register the custom stylesheet of current page
-			if (PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
-			{
-				var customStylesheet = Path.Combine(PortalSettings.HomeDirectory, PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-				ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
-			}
-
             // Cookie Consent
             if (PortalSettings.ShowCookieConsent)
             {
@@ -674,6 +667,13 @@ namespace DotNetNuke.Framework
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
             ClientResourceManager.RegisterStyleSheet(this, string.Concat(PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
+
+			//register the custom stylesheet of current page
+			if (PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
+			{
+				var customStylesheet = Path.Combine(PortalSettings.HomeDirectory, PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
+				ClientResourceManager.RegisterStyleSheet(this, customStylesheet, FileOrder.Css.PageCss);
+			}
 
             //add Favicon
             ManageFavicon();
