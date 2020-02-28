@@ -92,9 +92,10 @@ namespace DotNetNuke.Web.Client
         public enum Css
         {
             /// <summary>
-            /// The default priority (100) indicates that the ordering will be done based on the order in which the registrations are made
+            /// The default priority (90) indicates that the ordering will be done based on the order in which the registrations are made.  
+			/// PortalCss then PageCss load after DefaultPriority has loaded all assigned css pages.
             /// </summary>
-            DefaultPriority = 100,
+            DefaultPriority = 90,
 
             /// <summary>
             /// The default.css file has a priority of 5
@@ -147,9 +148,14 @@ namespace DotNetNuke.Web.Client
             SpecificContainerCss = 30,
 
             /// <summary>
-            /// The portal.css file has a priority of 35
+            /// The portal.css file has a priority of 95
             /// </summary>
-            PortalCss = 35,
+            PortalCss = 95,
+			
+			/// <summary>
+            /// The Page.css file has a priority of 100 and will load last.
+            /// </summary>
+            PageCss = 100,
         }
     }
 }
