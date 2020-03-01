@@ -304,7 +304,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelay = int.Parse(setting);
             setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
             portalSettings.DataConsentDelayMeasurement = setting;
-
+            setting = settings.GetValueOrDefault("AllowedExtensionWhitelist", HostController.Instance.GetString("FileExtensions"));
+            portalSettings.AllowedExtensionWhitelist = new FileExtensionWhitelist(setting);
         }
 
         protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)

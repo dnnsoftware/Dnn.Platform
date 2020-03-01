@@ -673,6 +673,10 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public string DataConsentDelayMeasurement { get; internal set; }
 
+        /// <summary>
+        /// Whitelist of file extensions for end users
+        /// </summary>
+        public FileExtensionWhitelist AllowedExtensionWhitelist { get; internal set; }
         #endregion
 
         #region IPropertyAccess Members
