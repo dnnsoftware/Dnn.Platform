@@ -235,7 +235,7 @@ IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseO
     DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch];
 GO
 
-CREATE PROCEDURE [dbo].[CoreMessaging_GetNextMessagesForDigestDispatch]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
     @Frequency         INT,
     @SchedulerInstance UNIQUEIDENTIFIER,
     @BatchSize         INT
@@ -247,7 +247,7 @@ BEGIN
      FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
      JOIN  (SELECT TOP (@BatchSize)
                    UserID
-             FROM  dbo.[vw_MessagesForDispatch] 
+             FROM  {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] 
              WHERE [EmailSchedulerInstance] IS NULL
              AND   [EmailFrequency] = @Frequency
              GROUP BY UserID
