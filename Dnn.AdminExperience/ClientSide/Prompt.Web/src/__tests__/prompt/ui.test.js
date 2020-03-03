@@ -125,14 +125,14 @@ describe("UI snapshots for state change", () => {
 
         const rows = [
             {
-                Email: "host@change.me",
+                Email: "host@changeme.invalid",
                 IsAuthorized: true,
                 IsDeleted: false,
                 IsLockedOut: false,
                 LastLogin: "2018-01-04",
                 UserId: 1,
                 Username: "host",
-                __Email: "get-user 'host@change.me'",
+                __Email: "get-user 'host@changeme.invalid'",
                 __UserId: "get-user 1",
                 __Username: "get-user 'host'"
             }
