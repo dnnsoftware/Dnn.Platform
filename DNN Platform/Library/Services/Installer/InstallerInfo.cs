@@ -329,6 +329,7 @@ namespace DotNetNuke.Services.Installer
             ZipEntry entry = unzip.GetNextEntry();
             while (entry != null)
             {
+                entry.CheckZipEntry();
                 if (!entry.IsDirectory)
                 {
 					//Add file to list

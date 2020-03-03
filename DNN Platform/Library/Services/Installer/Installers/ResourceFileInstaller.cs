@@ -158,6 +158,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         ZipEntry entry = unzip.GetNextEntry();
                         while (entry != null)
                         {
+                            entry.CheckZipEntry();
                             if (!entry.IsDirectory)
                             {
                                 string fileName = Path.GetFileName(entry.Name);
@@ -256,6 +257,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 ZipEntry entry = unzip.GetNextEntry();
                 while (entry != null)
                 {
+                    entry.CheckZipEntry();
                     if (!entry.IsDirectory)
                     {
                         //Check for Backups
