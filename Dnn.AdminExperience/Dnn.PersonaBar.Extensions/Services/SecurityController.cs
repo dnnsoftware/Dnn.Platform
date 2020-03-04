@@ -793,9 +793,6 @@ namespace Dnn.PersonaBar.Security.Services
                 var defaultEndUserExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserExtensionWhitelist);
                 defaultEndUserExtensionWhitelist = defaultEndUserExtensionWhitelist.RestrictBy(fileExtensions);
                 HostController.Instance.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);
-                var defaultEndUserImageExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserImageExtensionWhitelist);
-                defaultEndUserImageExtensionWhitelist = defaultEndUserImageExtensionWhitelist.RestrictBy(defaultEndUserExtensionWhitelist);
-                HostController.Instance.Update("DefaultEndUserImageExtensionWhitelist", defaultEndUserImageExtensionWhitelist.ToStorageString(), false);
                 // todo: update portal specific settings based on this
 
                 var maxCurrentRequest = Config.GetMaxUploadSize();
