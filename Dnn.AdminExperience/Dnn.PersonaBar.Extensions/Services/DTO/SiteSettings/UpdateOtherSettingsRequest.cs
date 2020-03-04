@@ -12,5 +12,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
     public class UpdateOtherSettingsRequest
     {
+        public int? PortalId { get; set; }
+
+        public string CultureCode { get; set; }
+
+        public string AllowedExtensionsWhitelist { get; set; }
     }
 }

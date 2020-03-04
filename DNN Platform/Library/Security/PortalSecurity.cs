@@ -819,7 +819,7 @@ namespace DotNetNuke.Security
         public void CheckAllPortalFileExtensionWhitelists()
         {
             var masterList = Entities.Host.Host.AllowedExtensionWhitelist;
-            var portalSettings = Data.DataProvider.Instance().GetPortalSettingsBySetting("AllowedExtensionWhitelist", null);
+            var portalSettings = Data.DataProvider.Instance().GetPortalSettingsBySetting("AllowedExtensionsWhitelist", null);
             foreach (var portalId in portalSettings.Keys)
             {
                 if (!string.IsNullOrEmpty(portalSettings[portalId]))
@@ -828,7 +828,7 @@ namespace DotNetNuke.Security
                     var newValue = portalExts.RestrictBy(masterList).ToStorageString();
                     if (newValue != portalSettings[portalId])
                     {
-                        PortalController.UpdatePortalSetting(portalId, "AllowedExtensionWhitelist", newValue, false);
+                        PortalController.UpdatePortalSetting(portalId, "AllowedExtensionsWhitelist", newValue, false);
                     }
                 }
             }
