@@ -126,7 +126,7 @@ namespace DotNetNuke.Web.InternalServices
             // local references for use in closure
             var portalSettings = PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
-            var userInfo = UserInfo;    
+            var userInfo = UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
                     {
@@ -406,7 +406,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 var folderManager = FolderManager.Instance;
-                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;                
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
 
                 int userId;
@@ -545,6 +545,7 @@ namespace DotNetNuke.Web.InternalServices
                 portalId = PortalSettings.PortalId;
             }
 
+            var mod = this.ActiveModule;
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure

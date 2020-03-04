@@ -47,10 +47,10 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Properties
 
-		public virtual IDictionary<string, string> ContentTypes
-		{
-			get { return FileContentTypeManager.Instance.ContentTypes; }
-		}
+        public virtual IDictionary<string, string> ContentTypes
+        {
+            get { return FileContentTypeManager.Instance.ContentTypes; }
+        }
 
         #endregion
 
@@ -103,59 +103,59 @@ namespace DotNetNuke.Services.FileSystem
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
-                                                        {
-                                                            FileInfo = fileInfo,
-                                                            UserId = userId,
-                                                            IsCascadeDeleting = false
-                                                        });
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+                IsCascadeDeleting = false
+            });
         }
 
         private void OnFileRenamed(IFileInfo fileInfo, string oldFileName, int userId)
         {
             EventManager.Instance.OnFileRenamed(new FileRenamedEventArgs
-                                                        {
-                                                            FileInfo = fileInfo,
-                                                            UserId = userId,
-                                                            OldFileName = oldFileName
-                                                        });
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+                OldFileName = oldFileName
+            });
         }
 
         private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
         {
             EventManager.Instance.OnFileMoved(new FileMovedEventArgs
-                                                {
-                                                    FileInfo = fileInfo,
-                                                    UserId = userId,
-                                                    OldFilePath = oldFilePath
-                                                });
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+                OldFilePath = oldFilePath
+            });
         }
 
         private void OnFileOverwritten(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileOverwritten(new FileChangedEventArgs
-                                                        {
-                                                            FileInfo = fileInfo,
-                                                            UserId = userId
-                                                        });
+            {
+                FileInfo = fileInfo,
+                UserId = userId
+            });
         }
 
         private void OnFileMetadataChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileMetadataChanged(new FileChangedEventArgs
-                                                            {
-                                                                FileInfo = fileInfo,
-                                                                UserId = userId
-                                                            });
+            {
+                FileInfo = fileInfo,
+                UserId = userId
+            });
         }
 
         private void OnFileAdded(IFileInfo fileInfo, IFolderInfo folderInfo, int userId)
         {
             EventManager.Instance.OnFileAdded(new FileAddedEventArgs
-                                                    {
-                                                        FileInfo = fileInfo,
-                                                        UserId = userId,
-                                                        FolderInfo = folderInfo
-                                                    });
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+                FolderInfo = folderInfo
+            });
         }
         #endregion
 
@@ -248,18 +248,42 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        private FileExtensionWhitelist whiteList;
+        private FileExtensionWhitelist WhiteList
+        {
+            get
+            {
+                if (whiteList == null)
+                {
+                    var user = UserController.Instance.GetCurrentUserInfo();
+                    if (user != null)
+                    {
+                        if (!user.IsAdmin)
+                        {
+                            whiteList = PortalSettings.Current.AllowedExtensionWhitelist;
+                        }
+                    }
+                }
+                if (whiteList == null)
+                {
+                    whiteList = Host.AllowedExtensionWhitelist;
+                }
+                return whiteList;
+            }
+        }
+
         #endregion
 
-#region Public Methods
+        #region Public Methods
 
-/// <summary>
-/// Adds a file to the specified folder.
-/// </summary>
-/// <param name="folder">The folder where to add the file.</param>
-/// <param name="fileName">The name of the file.</param>
-/// <param name="fileContent">The content of the file.</param>
-/// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
-public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
+        /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
 
             return AddFile(folder, fileName, fileContent, true, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
@@ -346,7 +370,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!IsAllowedExtension(fileName) && ignoreWhiteList)
             {
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
                 LogController.Instance.AddLog(log);
             }
@@ -368,23 +392,23 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             var now = DateTime.Now;
             var extension = Path.GetExtension(fileName);
             var file = new FileInfo
-                                {
-                                    PortalId = folder.PortalID,
-                                    FileName = fileName,
-                                    Extension = (!String.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : String.Empty,
-                                    Width = Null.NullInteger,
-                                    Height = Null.NullInteger,
-                                    ContentType = contentType,
-                                    Folder = folder.FolderPath,
-                                    FolderId = folder.FolderID,
-                                    LastModificationTime = now,
-                                    StartDate = now,
-                                    EndDate = Null.NullDate,
-                                    EnablePublishPeriod = false,
-                                    ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
-                                    Title = oldFile != null ? oldFile.Title : Null.NullString,
-                                    SHA1Hash     = oldFile != null ? oldFile.SHA1Hash : String.Empty
-                                };
+            {
+                PortalId = folder.PortalID,
+                FileName = fileName,
+                Extension = (!String.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : String.Empty,
+                Width = Null.NullInteger,
+                Height = Null.NullInteger,
+                ContentType = contentType,
+                Folder = folder.FolderPath,
+                FolderId = folder.FolderID,
+                LastModificationTime = now,
+                StartDate = now,
+                EndDate = Null.NullDate,
+                EnablePublishPeriod = false,
+                ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
+                Title = oldFile != null ? oldFile.Title : Null.NullString,
+                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : String.Empty
+            };
 
             try
             {
@@ -402,7 +426,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
 
                     // Retrieve Metadata
                     SetInitialFileMetadata(ref fileContent, file, folderProvider);
-                    
+
                     // Workflow
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
                     if (folderWorkflow != null)
@@ -416,7 +440,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                             {
                                 AddFile(file, createdByUserID);
                                 fileExists = true;
-                            }  
+                            }
                             else
                             {
                                 //File Events for updating will be not fired. Only events for adding nust be fired
@@ -431,7 +455,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                             ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
-                        // Versioning
+                    // Versioning
                     else
                     {
                         contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
@@ -443,38 +467,38 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
-				var isDatabaseProvider = folderMapping.FolderProviderType == "DatabaseFolderProvider";
+                var isDatabaseProvider = folderMapping.FolderProviderType == "DatabaseFolderProvider";
 
                 try
                 {
-					//add file into database first if folder provider is default providers
-					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
-					if (isDatabaseProvider)
-	                {
-		                if(folderWorkflow == null || !fileExists)
-						{
+                    //add file into database first if folder provider is default providers
+                    //add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+                    if (isDatabaseProvider)
+                    {
+                        if (folderWorkflow == null || !fileExists)
+                        {
                             ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
 
                         if (needToWriteFile)
-						{
-							folderProvider.AddFile(folder, contentFileName, fileContent);
-						}
-	                }
-	                else
-	                {
-						if (needToWriteFile)
-						{
-							folderProvider.AddFile(folder, contentFileName, fileContent);
-						}
+                        {
+                            folderProvider.AddFile(folder, contentFileName, fileContent);
+                        }
+                    }
+                    else
+                    {
+                        if (needToWriteFile)
+                        {
+                            folderProvider.AddFile(folder, contentFileName, fileContent);
+                        }
 
-		                if(folderWorkflow == null || !fileExists)
-						{
+                        if (folderWorkflow == null || !fileExists)
+                        {
                             ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
 
-	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+                    var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
@@ -497,7 +521,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                     Logger.Error(ex);
 
                     if (!folderProvider.FileExists(folder, file.FileName))
-                    {                     
+                    {
                         FileDeletionController.Instance.DeleteFileData(file);
                     }
 
@@ -576,7 +600,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
 
         private void SetInitialFileMetadata(ref Stream fileContent, FileInfo file, FolderProvider folderProvider)
         {
-            file.Size = (int) fileContent.Length;
+            file.Size = (int)fileContent.Length;
             var fileHash = folderProvider.GetHashCode(file, fileContent);
             file.SHA1Hash = fileHash;
             fileContent.Position = 0;
@@ -642,7 +666,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             {
                 AddFile(file, createdByUserID);
             }
-            else 
+            else
             {
                 //File Events for updating will not be fired. Only events for adding nust be fired
                 UpdateFile(file, true, false);
@@ -653,7 +677,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 {
                     //Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
-                }                
+                }
             }
         }
 
@@ -678,7 +702,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                                                     file.StartDate,
                                                     file.EndDate,
                                                     file.EnablePublishPeriod,
-                                                    file.ContentItemID);          
+                                                    file.ContentItemID);
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -868,7 +892,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         public virtual string GetContentType(string extension)
         {
 
-	        return FileContentTypeManager.Instance.GetContentType(extension);
+            return FileContentTypeManager.Instance.GetContentType(extension);
         }
 
         /// <summary>
@@ -1357,7 +1381,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                         }
                     }
                 }
-                
+
                 file.SHA1Hash = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(file.FolderMappingID).FolderProviderType).GetHashCode(file, fileContent);
             }
 
@@ -1525,21 +1549,21 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         }
 
         private bool StartWorkflow(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
-        {      
+        {
             if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
             {
                 WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
                 return true;
-            }            
+            }
             return false;
         }
         private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
         {
-            var contentController = new ContentController();            
+            var contentController = new ContentController();
             bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
-            
+
             //If the file does not exist, then the field would not has value. 
             //Currently, first upload has not version file
             if (oldFile == null || !oldFile.HasBeenPublished)
@@ -1547,7 +1571,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 return file.FileName;
             }
             if (workflowCompleted) //We assume User can add content to folder
-            {               
+            {
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
@@ -1736,7 +1760,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
         {
             Requires.NotNull("stream", stream);
             var hashText = new StringBuilder();
-            using (var hasher= SHA1.Create())
+            using (var hasher = SHA1.Create())
             {
                 var hashData = hasher.ComputeHash(stream);
                 foreach (var b in hashData)
@@ -1785,7 +1809,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
             //regex is meant to block files like "foo.asp;.png" which can take advantage
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
-                   && Host.AllowedExtensionWhitelist.IsAllowedExtension(extension)
+                   && WhiteList.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 

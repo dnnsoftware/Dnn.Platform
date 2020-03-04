@@ -121,14 +121,14 @@ namespace DotNetNuke.Common.Utilities
 
         private IEnumerable<string> CombineLists(IEnumerable<string> additionalExtensions)
         {
-            if(additionalExtensions == null)
+            if (additionalExtensions == null)
             {
                 return _extensions;
             }
 
             //toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
-            if( !additionalExtensionsList.Any())
+            if (!additionalExtensionsList.Any())
             {
                 return _extensions;
             }
@@ -140,6 +140,20 @@ namespace DotNetNuke.Common.Utilities
         private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
         {
             return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
+        }
+
+        public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
+        {
+            var filter = parentList.AllowedExtensions.ToList();
+            var filteredList = new List<string>();
+            foreach (var ext in _extensions)
+            {
+                if (filter.Contains(ext))
+                {
+                    filteredList.Add(ext);
+                }
+            }
+            return new FileExtensionWhitelist(string.Join(",", filteredList));
         }
     }
 }
