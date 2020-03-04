@@ -756,7 +756,8 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.AsyncTimeout,
                             MaxUploadSize = Config.GetMaxUploadSize() / (1024 * 1024),
                             RangeUploadSize = Config.GetRequestFilterSize(),
-                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString()
+                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
+                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString()
                         }
                     }
                 };

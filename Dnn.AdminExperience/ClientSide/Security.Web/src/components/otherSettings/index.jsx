@@ -293,6 +293,20 @@ class OtherSettingsPanelBody extends Component {
                             value={state.otherSettings.AllowedExtensionWhitelist}
                             onChange={this.onSettingChange.bind(this, "AllowedExtensionWhitelist")} />
                     </InputGroup>
+                    <InputGroup>
+                        <Label
+                            tooltipMessage={resx.get("plDefaultEndUserExtensionWhitelist.Help")}
+                            label={resx.get("plDefaultEndUserExtensionWhitelist")}
+                            extra={
+                                <Tooltip
+                                    messages={[resx.get("GlobalSetting")]}
+                                    type="global"
+                                    style={{ float: "left", position: "static" }} />
+                            } />
+                        <MultiLineInputWithError
+                            value={state.otherSettings.DefaultEndUserExtensionWhitelist}
+                            onChange={this.onSettingChange.bind(this, "DefaultEndUserExtensionWhitelist")} />
+                    </InputGroup>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.otherSettingsClientModified}
