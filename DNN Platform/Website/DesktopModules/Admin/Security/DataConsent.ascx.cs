@@ -59,6 +59,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 cmdSubmit.Enabled = false;
                 pnlNoAgreement.Visible = false;
             }
+            chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", cmdSubmit.ClientID));
+            cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", DeleteMeConfirmString));
         }
         private void cmdCancel_Click(object sender, EventArgs e)
         {
