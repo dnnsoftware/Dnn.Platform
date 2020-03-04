@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!user.IsAdmin)
                         {
-                            whiteList = PortalSettings.Current.AllowedExtensionWhitelist;
+                            whiteList = PortalSettings.Current.AllowedExtensionsWhitelist;
                         }
                     }
                 }
