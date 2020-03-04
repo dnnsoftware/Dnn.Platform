@@ -559,7 +559,6 @@ namespace DotNetNuke.Web.InternalServices
                 portalId = PortalSettings.PortalId;
             }
 
-            var mod = this.ActiveModule;
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
