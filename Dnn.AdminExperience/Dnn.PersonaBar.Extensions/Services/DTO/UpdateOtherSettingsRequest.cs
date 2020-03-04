@@ -35,7 +35,5 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         public string AllowedExtensionWhitelist { get; set; }
 
         public string DefaultEndUserExtensionWhitelist { get; set; }
-
-        public string DefaultEndUserImageExtensionWhitelist { get; set; }
     }
 }

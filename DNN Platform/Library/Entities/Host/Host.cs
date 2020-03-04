@@ -631,17 +631,6 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// <summary>
-        ///   Default list of image extensions an end user is able to upload.
-        /// </summary>
-        public static FileExtensionWhitelist DefaultEndUserImageExtensionWhitelist
-        {
-            get
-            {
-                return new FileExtensionWhitelist(HostController.Instance.GetString("DefaultEndUserImageExtensionWhitelist"));
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the GUID

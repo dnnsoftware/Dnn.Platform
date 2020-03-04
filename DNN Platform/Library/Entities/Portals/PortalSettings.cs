@@ -677,11 +677,6 @@ namespace DotNetNuke.Entities.Portals
         /// Whitelist of file extensions for end users
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionWhitelist { get; internal set; }
-
-        /// <summary>
-        /// Whitelist of image extensions for end users
-        /// </summary>
-        public FileExtensionWhitelist AllowedImageExtensions { get; internal set; }
         #endregion
 
         #region IPropertyAccess Members
