@@ -150,7 +150,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (filter.Contains(ext))
                 {
-                    filteredList.Add(ext);
+                    filteredList.Add(ext.Substring(1));
                 }
             }
             return new FileExtensionWhitelist(string.Join(",", filteredList));
