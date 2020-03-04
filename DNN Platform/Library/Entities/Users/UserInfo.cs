@@ -114,6 +114,25 @@ namespace DotNetNuke.Entities.Users
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
 
+
+        /// <summary>
+        /// Gets whether the user is in the portal's administrators role
+        /// </summary>
+        private bool? isAdmin;
+        public bool IsAdmin
+        {
+            get
+            {
+                if (isAdmin == null)
+                {
+                    PortalInfo ps = PortalController.Instance.GetPortal(PortalID);
+                    _administratorRoleName = ps.AdministratorRoleName;
+                    isAdmin = IsInRole(_administratorRoleName) || IsSuperUser;
+                }
+                return (bool)isAdmin;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Last IP address used by user
@@ -238,7 +257,7 @@ namespace DotNetNuke.Entities.Users
                             (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
                             (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
                         select r.RoleName
-                        ).ToArray();    
+                        ).ToArray();
             }
             set { }
         }
