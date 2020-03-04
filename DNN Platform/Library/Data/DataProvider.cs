@@ -585,6 +585,20 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPortalSettings", PortalId, CultureCode);
         }
 
+        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
+        {
+            var result = new Dictionary<int, string>();
+            var sql = "SELECT ps.PortalID, ps.SettingValue FROM " + DatabaseOwner + ObjectQualifier + "PortalSettings ps WHERE ps.SettingName=@0 AND COALESCE(CultureCode, @1, N'') = IsNull(@1, N'')";
+            using (var reader = PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.Text, sql, settingName, cultureCode))
+            {
+                while (reader.Read())
+                {
+                    result[(int)reader.GetValue(0)] = (string)reader.GetValue(1);
+                }
+            }
+            return result;
+        }
+
         public virtual IDataReader GetPortalSpaceUsed(int PortalId)
         {
             return ExecuteReader("GetPortalSpaceUsed", GetNull(PortalId));
