@@ -248,27 +248,19 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private FileExtensionWhitelist whiteList;
         private FileExtensionWhitelist WhiteList
         {
             get
             {
-                if (whiteList == null)
+                var user = UserController.Instance.GetCurrentUserInfo();
+                if (user != null)
                 {
-                    var user = UserController.Instance.GetCurrentUserInfo();
-                    if (user != null)
+                    if (!user.IsAdmin)
                     {
-                        if (!user.IsAdmin)
-                        {
-                            whiteList = PortalSettings.Current.AllowedExtensionsWhitelist;
-                        }
+                        return PortalSettings.Current.AllowedExtensionsWhitelist;
                     }
                 }
-                if (whiteList == null)
-                {
-                    whiteList = Host.AllowedExtensionWhitelist;
-                }
-                return whiteList;
+                return Host.AllowedExtensionWhitelist;
             }
         }
 
