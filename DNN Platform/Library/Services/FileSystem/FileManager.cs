@@ -255,9 +255,17 @@ namespace DotNetNuke.Services.FileSystem
                 var user = UserController.Instance.GetCurrentUserInfo();
                 if (user != null)
                 {
+                    if (user.IsSuperUser)
+                    {
+                        return Host.AllowedExtensionWhitelist;
+                    }
                     if (!user.IsAdmin)
                     {
-                        return PortalSettings.Current.AllowedExtensionsWhitelist;
+                        var settings = PortalSettings.Current;
+                        if (settings != null)
+                        {
+                            return settings.AllowedExtensionsWhitelist;
+                        }
                     }
                 }
                 return Host.AllowedExtensionWhitelist;

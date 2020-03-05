@@ -123,11 +123,22 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
+                if (IsSuperUser)
+                {
+                    isAdmin = true;
+                }
                 if (isAdmin == null)
                 {
                     PortalInfo ps = PortalController.Instance.GetPortal(PortalID);
-                    _administratorRoleName = ps.AdministratorRoleName;
-                    isAdmin = IsInRole(_administratorRoleName) || IsSuperUser;
+                    if (ps == null)
+                    {
+                        isAdmin = false;
+                    }
+                    else
+                    {
+                        _administratorRoleName = ps.AdministratorRoleName;
+                        isAdmin = IsInRole(_administratorRoleName) || IsSuperUser;
+                    }
                 }
                 return (bool)isAdmin;
             }
