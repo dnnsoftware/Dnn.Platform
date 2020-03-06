@@ -37,7 +37,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             var lastActivityDate = DateTime.Now.AddHours(-1);
             var additionalServers = ServerController.GetEnabledServers()
                 .Where(s => !string.IsNullOrWhiteSpace(s.Url)
-                            && s.IISAppName == Globals.IISAppName
                             && s.LastActivityDate >= lastActivityDate
                             && s.ServerName != Globals.ServerName)
                 .ToList();

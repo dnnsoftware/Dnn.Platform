@@ -23,14 +23,6 @@
             </assembly>
           </assemblies>
         </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>Providers\CachingProviders\SimpleWebFarmCachingProvider</basePath>
-            <resourceFile>
-              <name>Resources.zip</name>
-            </resourceFile>
-          </resourceFiles>
-        </component>
         <component type="Config">
           <config>
             <configFile>web.config</configFile>
