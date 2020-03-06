@@ -5,6 +5,7 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Web;
@@ -251,10 +252,10 @@ namespace DotNetNuke.Common.Utils
         /// <returns>The current client ip address.</returns>
         public static string GetClientIpAddress(HttpRequest request)
         {
-            var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"]?.Split(',').FirstOrDefault();
 
             // If there is no proxy, get the standard remote address
-            if ((string.IsNullOrWhiteSpace(ipAddress)) || ipAddress.Equals("unknown", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(ipAddress) || ipAddress.Equals("unknown", StringComparison.OrdinalIgnoreCase))
             {
                 ipAddress = request.UserHostAddress;
             }
