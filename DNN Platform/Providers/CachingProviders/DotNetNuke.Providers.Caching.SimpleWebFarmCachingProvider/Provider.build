@@ -1,8 +1,8 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..</RootDirectory>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..\..</RootDirectory>
   </PropertyGroup>
-  <Import Project="..\..\..\DNN_Platform.build" />
+  <Import Project="..\..\..\..\DNN_Platform.build" />
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>SimpleWebFarmCachingProvider</DNNFileName>
