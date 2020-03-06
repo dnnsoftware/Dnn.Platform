@@ -40,6 +40,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 #endregion
@@ -866,7 +867,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         bool isAdminUser = objUser.IsSuperUser || objUser.IsInRole(PortalSettings.AdministratorRoleName);
                         if (isAdminUser)
                         {
-                            if (IPFilterController.Instance.IsIPBanned(Request.UserHostAddress))
+                            var clientIp = NetworkUtils.GetClientIpAddress(Request);
+                            if (IPFilterController.Instance.IsIPBanned(clientIp))
                             {
                                 PortalSecurity.Instance.SignOut();
                                 AddModuleMessage("IPAddressBanned", ModuleMessage.ModuleMessageType.RedError, true);
