@@ -58,7 +58,7 @@ Setup(context =>
 	if(Settings.Version == "auto" && !isRunningInCI){
 		// Temporarelly commit all changes to prevent checking in scripted changes like versioning.
 		StartPowershellScript("git add .");
-		StartPowershellScript("git commit -m 'backup'");	
+		StartPowershellScript("git commit --allow-empty -m 'backup'");	
 	}
 });
 
