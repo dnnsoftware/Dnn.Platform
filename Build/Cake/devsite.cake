@@ -3,6 +3,7 @@
 
 Task("ResetDevSite")
     .IsDependentOn("SetVersion")
+    .IsDependentOn("UpdateDnnManifests")
     .IsDependentOn("ResetDatabase")
     .IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")
