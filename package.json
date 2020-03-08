@@ -30,6 +30,7 @@
   "scripts": {
     "build": "lerna run build --stream",
     "debug": "lerna run debug --stream",
+    "watch": "lerna run watch --stream",
     "package": "lerna run package",
     "clean": "lerna run clean",
     "lint": "lerna run lint",
