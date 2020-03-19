@@ -593,7 +593,7 @@ namespace DotNetNuke.Data
             {
                 while (reader.Read())
                 {
-                    result[(int)reader.GetValue(0)] = (string)reader.GetValue(1);
+                    result[reader.GetInt32(0)] = reader.GetString(1);
                 }
             }
             return result;
