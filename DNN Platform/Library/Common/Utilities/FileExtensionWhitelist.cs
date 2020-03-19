@@ -144,7 +144,7 @@ namespace DotNetNuke.Common.Utilities
 
         public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
         {
-            var filter = parentList.AllowedExtensions.ToList();
+            var filter = parentList._extensions;
             var filteredList = new List<string>();
             foreach (var ext in _extensions)
             {
