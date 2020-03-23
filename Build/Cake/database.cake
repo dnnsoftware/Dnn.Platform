@@ -1,7 +1,8 @@
 // Database tasks for your local DNN development site
+using System.Data.SqlClient;
 
 Task("ResetDatabase")
-  .Does(() => 
+  .Does(() =>
     {
         var script = ReplaceScriptVariables(LoadScript("db-connections-drop"));
         ExecuteScript(script);
@@ -14,6 +15,13 @@ Task("ResetDatabase")
     });
 
 public const string ScriptsPath = @".\Build\Cake\sql\";
+
+private static readonly string[] GoStatement = {
+    "\r\nGO\r\n",
+    "\nGO\n",
+    "\nGO\r\n",
+    "\r\nGO\n",
+};
 
 public string LoadScript(string scriptName) {
     var script = scriptName + ".local.sql";
@@ -30,16 +38,16 @@ public string ReplaceScriptVariables(string script) {
         .Replace("{DBLogin}", Settings.DnnSqlUsername);
 }
 
-public bool ExecuteScript(string ScriptStatement)
+public bool ExecuteScript(string scriptStatement)
 {
     try
     {
-        using (var connection = new System.Data.SqlClient.SqlConnection(Settings.SaConnectionString))
+        using (var connection = new SqlConnection(Settings.SaConnectionString))
         {
             connection.Open();
-            foreach (var cmd in ScriptStatement.Split(new string[] {"\r\nGO\r\n"}, StringSplitOptions.RemoveEmptyEntries)) {
-                var command = new System.Data.SqlClient.SqlCommand(cmd, connection);
-                command.ExecuteNonQuery();          
+            foreach (var cmd in scriptStatement.Split(GoStatement, StringSplitOptions.RemoveEmptyEntries)) {
+                var command = new SqlCommand(cmd, connection);
+                command.ExecuteNonQuery();
             }
             connection.Close();
         }
