@@ -163,19 +163,12 @@ namespace DotNetNuke.Services.Personalization
 
         private static string EncryptData(string profileData)
         {
-            return PortalSecurity.Instance.Encrypt(GetDecryptionkey(), profileData);
+            return PortalSecurity.Instance.Encrypt(ValidationUtils.GetDecryptionKey(), profileData);
         }
 
         private static string DecryptData(string profileData)
         {
-            return PortalSecurity.Instance.Decrypt(GetDecryptionkey(), profileData);
-        }
-
-        private static string GetDecryptionkey()
-        {
-            var machineKey = Config.GetDecryptionkey();
-            var key = $"{machineKey ?? ""}{Host.GUID.Replace("-", string.Empty)}";
-            return FIPSCompliant.EncryptAES(key, key, Host.GUID);
+            return PortalSecurity.Instance.Decrypt(ValidationUtils.GetDecryptionKey(), profileData);
         }
     }
 }

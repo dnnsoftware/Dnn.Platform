@@ -137,6 +137,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "folderPath")]
         public string FolderPath;
 
+        [DataMember(Name = "validationCode")]
+        public string ValidationCode => ValidationUtils.ComputeValidationCode(Extensions);
+
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();

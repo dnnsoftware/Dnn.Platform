@@ -363,6 +363,7 @@ namespace DotNetNuke.Web.InternalServices
             public string Filter { get; set; }
             public bool IsHostMenu { get; set; }
             public int PortalId { get; set; } = -1;
+            public string ValidationCode { get; set; }
         }
 
         [DataContract]
@@ -408,13 +409,19 @@ namespace DotNetNuke.Web.InternalServices
                 string fileName,
                 bool overwrite,
                 bool isHostPortal,
-                bool extract)
+                bool extract,
+                string validationCode)
         {
             var result = new FileUploadDto();
             BinaryReader reader = null;
             Stream fileContent = null;
             try
             {
+                if (!ValidationUtils.ValidationCodeMatched(filter, validationCode))
+                {
+                    throw new InvalidOperationException("Bad Request");
+                }
+
                 var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
@@ -575,6 +582,7 @@ namespace DotNetNuke.Web.InternalServices
                     var folder = string.Empty;
                     var filter = string.Empty;
                     var fileName = string.Empty;
+                    var validationCode = string.Empty;
                     var overwrite = false;
                     var isHostPortal = false;
                     var extract = false;
@@ -611,7 +619,9 @@ namespace DotNetNuke.Web.InternalServices
                                     int.TryParse(item.ReadAsStringAsync().Result, out portalId);
                                 }
                                 break;
-
+                            case "\"VALIDATIONCODE\"":
+                                validationCode = item.ReadAsStringAsync().Result ?? "";
+                                break;
                             case "\"POSTFILE\"":
                                 fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
                                 if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
@@ -632,7 +642,7 @@ namespace DotNetNuke.Web.InternalServices
                         currentSynchronizationContext.Send(
                             delegate
                             {
-                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract);
+                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
                             null
                         );
@@ -699,7 +709,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
-                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
+                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
 
                 /* Response Content Type cannot be application/json 
                     * because IE9 with iframe-transport manages the response 
