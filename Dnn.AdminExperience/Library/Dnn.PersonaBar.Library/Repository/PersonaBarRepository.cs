@@ -50,12 +50,12 @@ namespace Dnn.PersonaBar.Library.Repository
 
         public MenuItem GetMenuItem(string identifier)
         {
-            return GetMenu().AllItems.FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
+            return GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public MenuItem GetMenuItem(int menuId)
         {
-            return GetMenu().AllItems.FirstOrDefault(m => m.MenuId == menuId);
+            return GetMenu().AllItems.ToList().FirstOrDefault(m => m.MenuId == menuId);
         }
 
         public void SaveMenuItem(MenuItem item)
