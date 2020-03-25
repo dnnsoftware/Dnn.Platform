@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
                 );
             foreach (var controller in controllerTypes)
             {
-                services.TryAddScoped(controller);
+                services.TryAddTransient(controller);
             }
         }
     }
