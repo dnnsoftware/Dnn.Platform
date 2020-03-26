@@ -33,7 +33,7 @@ BEGIN
              WHERE [EmailSchedulerInstance] IS NULL
              AND   [EmailFrequency] = @Frequency
              GROUP BY UserID
-             ORDER BY UserID) D ON R.UserID = R.UserID 
+             ORDER BY UserID) D ON R.UserID = D.UserID 
 
     SELECT M.[PortalID],
            M.[NotificationTypeID],
