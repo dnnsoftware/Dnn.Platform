@@ -2209,9 +2209,10 @@ namespace DNNConnect.CKEditorProvider.Browser
             SortByDateAscending.ToolTip = Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode);
 
             SortByDateDescending.Text = string.Format(
-                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />Date",
+                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
                  Localization.GetString("SortByDateDescending.Text", ResXFile, LanguageCode),
-                 Localization.GetString("SortByDateDescending.Help", ResXFile, LanguageCode));
+                 Localization.GetString("SortByDateDescending.Help", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDate.Text", ResXFile, LanguageCode));
             SortByDateDescending.ToolTip = Localization.GetString("SortByDateDescending.Help", ResXFile, LanguageCode);
 
             ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("AreYouSure.Text", ResXFile, LanguageCode));

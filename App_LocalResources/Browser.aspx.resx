@@ -419,6 +419,9 @@
   <data name="Size.Text" xml:space="preserve">
     <value>Size</value>
   </data>
+  <data name="SortByDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="SortByDateAscending.Help" xml:space="preserve">
     <value>Sort file list by file create date in ascending order.</value>
   </data>
