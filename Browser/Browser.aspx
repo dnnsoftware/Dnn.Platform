@@ -295,7 +295,9 @@
             <asp:Label runat="server" id="SwitchListView">ListView</asp:Label>&nbsp;
             <asp:Label runat="server" id="SwitchIconsView">IconsView</asp:Label>&nbsp;|
             <asp:LinkButton runat="server" id="SortAscending" OnClick="SortAscendingClick">Sort Ascending</asp:LinkButton>&nbsp;
-            <asp:LinkButton runat="server" id="SortDescending" OnClick="SortDescendingClick">Sort Descending</asp:LinkButton>
+            <asp:LinkButton runat="server" id="SortDescending" OnClick="SortDescendingClick">Sort Descending</asp:LinkButton>&nbsp;
+            <asp:LinkButton runat="server" id="SortByDateAscending" OnClick="SortByDateAscendingClick">Sort By Date Ascending</asp:LinkButton>&nbsp;
+            <asp:LinkButton runat="server" ID="SortByDateDescending" OnClick="SortByDateDescendingClick">Sort By Date Descending</asp:LinkButton>
             <br />
             <asp:HiddenField runat="server" ID="ListViewState"/>
             <div id="FilesBox">
