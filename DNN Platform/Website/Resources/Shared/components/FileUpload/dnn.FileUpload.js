@@ -191,7 +191,15 @@
                 success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
                 error: $.onAjaxError
             };
-            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "", IsHostMenu: this.options.parameters.isHostPortal };
+            serviceSettings.data = {
+                 Url: status.fileName, 
+                 Folder: this._selectedPath(), 
+                 Overwrite: status.overwrite, 
+                 Unzip: this._extract(), 
+                 Filter: this.options.extensions.join(","), 
+                 IsHostMenu: this.options.parameters.isHostPortal,
+                 ValidationCode: this.options.validationCode
+            };
             $.extend(serviceSettings.data, this.options.parameters);
             $.ajax(serviceSettings);
         },
@@ -437,9 +445,10 @@
             var statusData = this._getFileUploadStatusElement(data.files[0].name).data("status");
             data.formData = {
                 folder: this._selectedPath(),
-                filter: "",
+                filter: this.options.extensions.join(","),
                 extract: this._extract(),
-                overwrite: statusData.overwrite
+                overwrite: statusData.overwrite,
+                validationCode: this.options.validationCode
             };
             $.extend(data.formData, this.options.parameters);
             return true;
