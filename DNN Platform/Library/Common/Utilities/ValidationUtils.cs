@@ -17,28 +17,31 @@ namespace DotNetNuke.Common.Utilities
             return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 
-        internal static string ComputeValidationCode(IList<string> extensions)
+        internal static string ComputeValidationCode(IList<object> parameters)
         {
-            if (extensions != null)
+            if (parameters != null && parameters.Any())
             {
-                var checkString = extensions.Select(i => i.ToLowerInvariant())
-                    .OrderBy(i => i)
-                    .Aggregate(string.Empty, (current, extension) => current.Append(extension, ", "));
+                var checkString = string.Join("_", parameters.Select(p =>
+                {
+                    if (p is IList<string> list)
+                    {
+                        return list.Select(i => i.ToLowerInvariant())
+                            .OrderBy(i => i)
+                            .Aggregate(string.Empty, (current, extension) => current.Append(extension, ", "));
+                    }
+
+                    return p.ToString();
+                }));
+
                 return PortalSecurity.Instance.Encrypt(GetDecryptionKey(), checkString);
             }
 
             return string.Empty;
         }
 
-        internal static bool ValidationCodeMatched(string extensions, string validationCode)
+        internal static bool ValidationCodeMatched(IList<object> parameters, string validationCode)
         {
-            var extensionList = new List<string>();
-            if (!string.IsNullOrWhiteSpace(extensions))
-            {
-                extensionList = extensions.Split(',').Select(i => i.Trim()).ToList();
-            }
-
-            return validationCode.Equals(ComputeValidationCode(extensionList));
+            return validationCode.Equals(ComputeValidationCode(parameters));
         }
     }
 }

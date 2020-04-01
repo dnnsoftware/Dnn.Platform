@@ -417,7 +417,14 @@ namespace DotNetNuke.Web.InternalServices
             Stream fileContent = null;
             try
             {
-                if (!ValidationUtils.ValidationCodeMatched(filter, validationCode))
+                var extensionList = new List<string>();
+                if (!string.IsNullOrWhiteSpace(filter))
+                {
+                    extensionList = filter.Split(',').Select(i => i.Trim()).ToList();
+                }
+
+                var validateParams = new List<object>{ extensionList, portalId, userInfo.UserID};
+                if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");
                 }
