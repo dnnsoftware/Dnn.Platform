@@ -400,7 +400,8 @@
   </data>
   <data name="StartUploads.Text" xml:space="preserve">
     <value>Start upload(s)</value>
-  </data>  <data name="RootFolder.Text" xml:space="preserve">
+  </data>
+  <data name="RootFolder.Text" xml:space="preserve">
     <value>Root Folder</value>
   </data>
   <data name="BrowserModus.Image.Text" xml:space="preserve">
@@ -417,5 +418,20 @@
   </data>
   <data name="Size.Text" xml:space="preserve">
     <value>Size</value>
+  </data>
+  <data name="SortByDate.Text" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SortByDateAscending.Help" xml:space="preserve">
+    <value>Sort file list by file create date in ascending order.</value>
+  </data>
+  <data name="SortByDateAscending.Text" xml:space="preserve">
+    <value>Sort By Ascending Date</value>
+  </data>
+  <data name="SortByDateDescending.Help" xml:space="preserve">
+    <value>Sort file list by file create date in descending order.</value>
+  </data>
+  <data name="SortByDateDescending.Text" xml:space="preserve">
+    <value>Sort By Descending Date</value>
   </data>
 </root>

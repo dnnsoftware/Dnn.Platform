@@ -208,10 +208,30 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [sort files Ascending].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [sort files Ascending].
+        /// </value>
+        private bool SortFilesAscending
+        {
+            get
+            {
+                return ViewState["SortFilesAscending"] != null && (bool)ViewState["SortFilesAscending"];
+            }
+
+            set
+            {
+                ViewState["SortFilesAscending"] = value;
+                FilesTable = null;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether [sort files descending].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [sort files descending]; otherwise sort ascending.
+        ///   <c>true</c> if [sort files descending].
         /// </value>
         private bool SortFilesDescending
         {
@@ -223,6 +243,46 @@ namespace DNNConnect.CKEditorProvider.Browser
             set
             {
                 ViewState["SortFilesDescending"] = value;
+                FilesTable = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [sort files by Ascending Date].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [sort files by ascending date].
+        /// </value>
+        private bool SortFilesDateAscending
+        {
+            get
+            {
+                return ViewState["SortFilesDateAscending"] != null && (bool)ViewState["SortFilesDateAscending"];
+            }
+
+            set
+            {
+                ViewState["SortFilesDateAscending"] = value;
+                FilesTable = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [sort files by descending Date].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [sort files by descending date]; otherwise sort by ascending Date.
+        /// </value>
+        private bool SortFilesDateDescending
+        {
+            get
+            {
+                return ViewState["SortFilesDateDescending"] != null && (bool)ViewState["SortFilesDateDescending"];
+            }
+
+            set
+            {
+                ViewState["SortFilesDateDescending"] = value;
                 FilesTable = null;
             }
         }
@@ -274,9 +334,24 @@ namespace DNNConnect.CKEditorProvider.Browser
             //Get the files
             var files = FolderManager.Instance.GetFiles(currentFolderInfo).ToList();
 
+            if(SortFilesAscending)
+            {
+                Utility.SortAscending(files, item => item.FileName);
+            }
+
             if (SortFilesDescending)
             {
                 Utility.SortDescending(files, item => item.FileName);
+            }
+
+            if (SortFilesDateAscending)
+            {
+                Utility.SortAscending(files, item => item.CreatedOnDate);
+            }
+
+            if (SortFilesDateDescending)
+            {
+                Utility.SortDescending(files, item => item.CreatedOnDate);
             }
 
             foreach (var fileItem in files)
@@ -703,10 +778,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void SortAscendingClick(object sender, EventArgs e)
         {
+            SortFilesAscending = true;
             SortFilesDescending = false;
+            SortFilesDateAscending = false;
+            SortFilesDateDescending = false;
 
-            SortAscending.CssClass = SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
-            SortDescending.CssClass = !SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            SetSortButtonClasses();
 
             ShowFilesIn(GetCurrentFolder(), true);
 
@@ -724,10 +801,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void SortDescendingClick(object sender, EventArgs e)
         {
+            SortFilesAscending = false;
             SortFilesDescending = true;
+            SortFilesDateAscending = false;
+            SortFilesDateDescending = false;
 
-            SortAscending.CssClass = SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
-            SortDescending.CssClass = !SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            SetSortButtonClasses();
 
             ShowFilesIn(GetCurrentFolder(), true);
 
@@ -736,6 +815,63 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             FileId.Text = null;
             lblFileName.Text = null;
+        }
+
+        /// <summary>
+        /// Sorts the Files by Date in ascending order
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void SortByDateAscendingClick(object sender, EventArgs e)
+        {
+            SortFilesAscending = false;
+            SortFilesDescending = false;
+            SortFilesDateAscending = true;
+            SortFilesDateDescending = false;
+
+            SetSortButtonClasses();
+
+            ShowFilesIn(GetCurrentFolder(), true);
+
+            // Reset selected file
+            SetDefaultLinkTypeText();
+
+            FileId.Text = null;
+            lblFileName.Text = null;
+        }
+
+        /// <summary>
+        /// Sorts the Files by Date in descending order
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void SortByDateDescendingClick(object sender, EventArgs e)
+        {
+            SortFilesAscending = false;
+            SortFilesDescending = false;
+            SortFilesDateAscending = false;
+            SortFilesDateDescending = true;
+
+            SetSortButtonClasses();
+
+            ShowFilesIn(GetCurrentFolder(), true);
+
+            // Reset selected file
+            SetDefaultLinkTypeText();
+
+            FileId.Text = null;
+            lblFileName.Text = null;
+        }
+
+        /// <summary>
+        /// Sets the sort button classes.
+        /// </summary>
+        private void SetSortButtonClasses()
+        {
+            SortAscending.CssClass = !SortFilesAscending ? "ButtonNormal" : "ButtonSelected";
+            SortDescending.CssClass = !SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            SortByDateAscending.CssClass = !SortFilesDateAscending ? "ButtonNormal" : "ButtonSelected";
+            SortByDateDescending.CssClass = !SortFilesDateDescending ? "ButtonNormal" : "ButtonSelected";
         }
 
         /// <summary>
@@ -758,8 +894,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
-            SortAscending.CssClass = SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
-            SortDescending.CssClass = !SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            SetSortButtonClasses();
 
             extensionWhiteList = Host.AllowedExtensionWhitelist;
 
@@ -2066,6 +2201,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                  Localization.GetString("SortDescending.Text", ResXFile, LanguageCode),
                  Localization.GetString("SortDescending.Help", ResXFile, LanguageCode));
             SortDescending.ToolTip = Localization.GetString("SortDescending.Help", ResXFile, LanguageCode);
+
+            SortByDateAscending.Text = string.Format(
+                 "<img src=\"Images/AscendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
+                 Localization.GetString("SortByDateAscending.Text", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDate.Text", ResXFile, LanguageCode));
+            SortByDateAscending.ToolTip = Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode);
+
+            SortByDateDescending.Text = string.Format(
+                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
+                 Localization.GetString("SortByDateDescending.Text", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDateDescending.Help", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDate.Text", ResXFile, LanguageCode));
+            SortByDateDescending.ToolTip = Localization.GetString("SortByDateDescending.Help", ResXFile, LanguageCode);
 
             ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("AreYouSure.Text", ResXFile, LanguageCode));
 
