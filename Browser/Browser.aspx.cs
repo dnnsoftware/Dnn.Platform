@@ -2205,8 +2205,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             SortByDateAscending.Text = string.Format(
                  "<img src=\"Images/AscendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
                  Localization.GetString("SortByDateAscending.Text", ResXFile, LanguageCode),
-                 Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode));
-            Localization.GetString("SortByDate.Text", ResXFile, LanguageCode));
+                 Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode),
+                 Localization.GetString("SortByDate.Text", ResXFile, LanguageCode));
             SortByDateAscending.ToolTip = Localization.GetString("SortByDateAscending.Help", ResXFile, LanguageCode);
 
             SortByDateDescending.Text = string.Format(
