@@ -1,0 +1,28 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetSingleUserByEmail') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetSingleUserByEmail
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSingleUserByEmail
+@PortalId INT,
+	@Email nvarchar(255)
+AS 
+	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}{objectQualifier}Users U LEFT JOIN {databaseOwner}{objectQualifier}UserPortals UP on UP.[UserId] = U.[UserId] AND UP.[PortalId] = @PortalId WHERE U.Email = @Email AND (UP.[PortalId] = @PortalId OR U.IsSuperUser=1)), -1)
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
