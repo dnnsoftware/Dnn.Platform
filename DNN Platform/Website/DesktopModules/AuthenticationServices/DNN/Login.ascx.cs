@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalId, userName);                     
+                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(PortalId), userName);                     
 
                     if (userByEmail != null)
                     {
