@@ -723,7 +723,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 string.Format(
                     "var E = window.top.opener;E.CKEDITOR.tools.callFunction({0},'{1}','{2}') ;self.close();",
                     funcNum,
-                    fileUrl,
+                    fileUrl.Replace("'", "\\'"),
                     errorMsg.Replace("'", "\\'"));
         }
 
