@@ -692,9 +692,7 @@ namespace DotNetNuke.Entities.Users
         public static void UserAgreedToTerms(UserInfo user)
         {
             Requires.NotNull("user", user);
-            var u = user;
-            u.PortalID = PortalController.GetEffectivePortalId(u.PortalID);
-            MembershipProvider.Instance().UserAgreedToTerms(u);
+            MembershipProvider.Instance().UserAgreedToTerms(user.UserID, PortalController.GetEffectivePortalId(user.PortalID));
         }
 
         /// <summary>

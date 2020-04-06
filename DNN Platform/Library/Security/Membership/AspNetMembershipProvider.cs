@@ -1668,6 +1668,20 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// User has agreed to terms and conditions for the portal
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="userId">The agreeing user's ID.</param>
+        /// <param name="portalId">Portal ID of the portal that the user is agreeing to.</param>
+        /// -----------------------------------------------------------------------------
+        public override void UserAgreedToTerms(int userId, int portalId)
+        {
+            _dataProvider.UserAgreedToTerms(portalId, userId);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Reset all agreements on portal so all users need to agree again at next login
         /// </summary>
         /// <remarks>
