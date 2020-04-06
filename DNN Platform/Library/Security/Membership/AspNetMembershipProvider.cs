@@ -1663,21 +1663,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UserAgreedToTerms(UserInfo user)
         {
-            _dataProvider.UserAgreedToTerms(user.PortalID, user.UserID);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// User has agreed to terms and conditions for the portal
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="userId">The agreeing user's ID.</param>
-        /// <param name="portalId">Portal ID of the portal that the user is agreeing to.</param>
-        /// -----------------------------------------------------------------------------
-        public override void UserAgreedToTerms(int userId, int portalId)
-        {
-            _dataProvider.UserAgreedToTerms(portalId, userId);
+            _dataProvider.UserAgreedToTerms(PortalController.GetEffectivePortalId(user.PortalID), user.UserID);
         }
 
         /// -----------------------------------------------------------------------------

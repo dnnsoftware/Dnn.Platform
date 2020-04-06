@@ -60,7 +60,6 @@ namespace DotNetNuke.Security.Membership
         public abstract string ResetPassword(UserInfo user, string passwordAnswer);
         public abstract bool UnLockUser(UserInfo user);
         public abstract void UserAgreedToTerms(UserInfo user);
-        public abstract void UserAgreedToTerms(int userId, int portalId);
         public abstract void ResetTermsAgreement(int portalId);
         public abstract void UserRequestsRemoval(UserInfo user, bool remove);
         public abstract void UpdateUser(UserInfo user);
