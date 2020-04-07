@@ -64,7 +64,7 @@ namespace DotNetNuke.Security
             new Regex("</form[^><]*>", RxOptions),
             new Regex("onerror", RxOptions),
             new Regex("onload", RxOptions),
-            new Regex("onfocus", RxOptions),
+            new Regex("\bonfocus\b", RxOptions),
             new Regex("onblur", RxOptions),
             new Regex("onclick", RxOptions),
             new Regex("ondblclick", RxOptions),
