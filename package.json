@@ -17,6 +17,7 @@
     "Dnn.AdminExperience/ClientSide/SiteImportExport.Web",
     "Dnn.AdminExperience/ClientSide/Sites.Web",
     "Dnn.AdminExperience/ClientSide/Sites.Web/src/_exportables",
+    "Dnn.AdminExperience/ClientSide/SiteGroups.Web",
     "Dnn.AdminExperience/ClientSide/SiteSettings.Web",
     "Dnn.AdminExperience/ClientSide/TaskScheduler.Web",
     "Dnn.AdminExperience/ClientSide/Themes.Web",

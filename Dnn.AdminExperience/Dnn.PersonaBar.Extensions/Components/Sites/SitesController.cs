@@ -551,8 +551,6 @@ namespace Dnn.PersonaBar.Sites.Components
                         Logger.Error(exc);
                         message = string.Format(Localization.GetString("UnknownSendMail.Error", LocalResourcesFile), webUrl, closePopUpStr);
                     }
-                    EventLogController.Instance.AddLog(PortalController.Instance.GetPortal(intPortalId), PortalSettings, PortalSettings.UserId,
-                        "", EventLogController.EventLogType.PORTAL_CREATED);
 
                     // mark default language as published if content localization is enabled
                     var ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalSettings.PortalId,
