@@ -65,7 +65,6 @@ namespace Dnn.PersonaBar.SiteGroups
 
         public int Save(PortalGroupInfo portalGroup)
         {
-            Trace.TraceInformation("Save PortalGroup");
             if (portalGroup.PortalGroupId == -1)
             {
                 return AddPortalGroup(portalGroup);
@@ -127,7 +126,6 @@ namespace Dnn.PersonaBar.SiteGroups
 
         public void Delete(int portalGroupId)
         {
-            Trace.TraceInformation("Delete PortalGroup");
             var group = PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
             PortalGroupController.DeletePortalGroup(group);
         }
