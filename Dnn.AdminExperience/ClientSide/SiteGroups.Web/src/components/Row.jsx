@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Resx from "../localization";
-import { GridCell, Collapsible as Collapse } from "@dnnsoftware/dnn-react-common";
+import {
+  GridCell,
+  Collapsible as Collapse
+} from "@dnnsoftware/dnn-react-common";
 import SiteGroupEditor from "./Editor";
 import "./Row.less";
 import IconButton from "./common/IconButton";
@@ -200,34 +203,39 @@ export default class SiteGroupRow extends React.Component {
             />
           </GridCell>
         </div>
-        <Collapse isOpened={this.props.isOpened} fixedHeight={600}>
-          <SiteGroupEditor
-            group={this.props.group}
-            portalGroupName={this.state.PortalGroupName}
-            authenticationDomain={this.state.AuthenticationDomain}
-            description={this.state.Description}
-            errors={this.state.errors}
-            unassignedSites={this.state.UnassignedSites}
-            portals={this.state.Portals}
-            isNew={this.isNew()}
-            onCancel={() => this.cancel()}
-            onDeleteGroup={group => this.props.onDeleteGroup(group)}
-            onSave={() => this.save()}
-            onAuthenticationDomainChanged={value => {
-              this.setState({ AuthenticationDomain: value });
-            }}
-            onDescriptionChanged={value => {
-              this.setState({ Description: value });
-            }}
-            onGroupNameChanged={value => {
-              this.setState({ PortalGroupName: value });
-              this.isValid();
-            }}
-            onClickOnPortal={(i, t) => this.clickOnPortal(i, t)}
-            onMoveItemsLeft={() => this.moveItemsLeft()}
-            onMoveItemsRight={() => this.moveItemsRight()}
-            onMoveAll={d => this.moveAll(d)}
-          />
+        <Collapse
+          isOpened={this.props.isOpened}
+          style={{ width: "100%", height: "auto" }}
+        >
+          {this.props.isOpened && (
+            <SiteGroupEditor
+              group={this.props.group}
+              portalGroupName={this.state.PortalGroupName}
+              authenticationDomain={this.state.AuthenticationDomain}
+              description={this.state.Description}
+              errors={this.state.errors}
+              unassignedSites={this.state.UnassignedSites}
+              portals={this.state.Portals}
+              isNew={this.isNew()}
+              onCancel={() => this.cancel()}
+              onDeleteGroup={group => this.props.onDeleteGroup(group)}
+              onSave={() => this.save()}
+              onAuthenticationDomainChanged={value => {
+                this.setState({ AuthenticationDomain: value });
+              }}
+              onDescriptionChanged={value => {
+                this.setState({ Description: value });
+              }}
+              onGroupNameChanged={value => {
+                this.setState({ PortalGroupName: value });
+                this.isValid();
+              }}
+              onClickOnPortal={(i, t) => this.clickOnPortal(i, t)}
+              onMoveItemsLeft={() => this.moveItemsLeft()}
+              onMoveItemsRight={() => this.moveItemsRight()}
+              onMoveAll={d => this.moveAll(d)}
+            />
+          )}
         </Collapse>
       </div>
     );
