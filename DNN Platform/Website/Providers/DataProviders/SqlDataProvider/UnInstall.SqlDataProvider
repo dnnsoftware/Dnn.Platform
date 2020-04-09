@@ -1162,6 +1162,8 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}UserRequestsRemoval]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}SetCorePackageVersions]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettingsBySetting]
+GO
 
 /** Remove AspNet Data **/
 
