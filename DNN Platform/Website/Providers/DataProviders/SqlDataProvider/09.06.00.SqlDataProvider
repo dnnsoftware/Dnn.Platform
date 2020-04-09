@@ -23,24 +23,12 @@ AS
 	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}{objectQualifier}Users U LEFT JOIN {databaseOwner}{objectQualifier}UserPortals UP on UP.[UserId] = U.[UserId] AND UP.[PortalId] = @PortalId WHERE U.Email = @Email AND (UP.[PortalId] = @PortalId OR U.IsSuperUser=1)), -1)
 GO
 
-EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_CREATED', N'Portal group created', N'DotNetNuke.Logging.EventLogType', N'ItemCreated' ,0,-1,0
-EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_DELETED', N'Portal group deleted', N'DotNetNuke.Logging.EventLogType', N'ItemDeleted' ,0,-1,0
-EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_ADDEDTOPORTALGROUP', N'Portal added to portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation' ,0,-1,0
-EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_REMOVEDFROMPORTALGROUP', N'Portal removed from portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation' ,0,-1,0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_CREATED', N'Portal group created', N'DotNetNuke.Logging.EventLogType', N'ItemCreated', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_DELETED', N'Portal group deleted', N'DotNetNuke.Logging.EventLogType', N'ItemDeleted', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_ADDEDTOPORTALGROUP', N'Portal added to portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_REMOVEDFROMPORTALGROUP', N'Portal removed from portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation', 1, 10, 0
 GO
 
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTALGROUP_CREATED')
-	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'PORTALGROUP_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTALGROUP_DELETED')
-	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'PORTALGROUP_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTAL_ADDEDTOPORTALGROUP')
-	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'PORTAL_ADDEDTOPORTALGROUP', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTAL_REMOVEDFROMPORTALGROUP')
-	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
-	VALUES (N'PORTAL_REMOVEDFROMPORTALGROUP', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTAL_CREATED')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
 	VALUES (N'PORTAL_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
