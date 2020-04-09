@@ -23,26 +23,11 @@ class SiteAliasesPanel extends Component {
 
     loadData() {
         const {props} = this;
-        if (props.siteAliases) {
-            if (props.portalId === undefined || props.siteAliases.PortalId === props.portalId) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        else {
-            return true;
-        }
+        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
     }
 
     componentDidMount() {
-        const {props} = this;
-
-        if (!this.loadData()) {
-            return;
-        }
-        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
+        this.loadData();
     }
 
     componentDidUpdate(prevProps) {
@@ -59,6 +44,11 @@ class SiteAliasesPanel extends Component {
                 tableFields.push({ "name": resx.get("Primary.Header"), "id": "Primary" });
             }
             this.setState({tableFields});
+
+            if (!props.siteAliases ||
+                props.portalId !== undefined && props.siteAliases.PortalId !== props.portalId) {
+                this.loadData();
+            }
         }
     }
 
