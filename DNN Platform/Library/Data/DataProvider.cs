@@ -588,8 +588,7 @@ namespace DotNetNuke.Data
         internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
         {
             var result = new Dictionary<int, string>();
-            var sql = "SELECT ps.PortalID, ps.SettingValue FROM " + DatabaseOwner + ObjectQualifier + "PortalSettings ps WHERE ps.SettingName=@0 AND COALESCE(CultureCode, @1, N'') = IsNull(@1, N'')";
-            using (var reader = PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.Text, sql, settingName, cultureCode))
+            using (var reader = ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
             {
                 while (reader.Read())
                 {

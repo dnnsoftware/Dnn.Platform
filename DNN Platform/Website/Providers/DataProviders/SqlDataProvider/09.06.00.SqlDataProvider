@@ -37,6 +37,21 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WH
 	VALUES (N'PORTAL_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetPortalSettingsBySetting') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalSettingsBySetting
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalSettingsBySetting
+	@SettingName nvarchar(50),
+	@CultureCode nvarchar(10)
+AS 
+	SELECT ps.PortalID, ps.SettingValue FROM {databaseOwner}{objectQualifier}PortalSettings ps WHERE ps.SettingName=@SettingName AND COALESCE(CultureCode, @CultureCode, N'') = IsNull(@CultureCode, N'')
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

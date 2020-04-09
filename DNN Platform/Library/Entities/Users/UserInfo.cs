@@ -118,29 +118,16 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets whether the user is in the portal's administrators role
         /// </summary>
-        private bool? isAdmin;
         public bool IsAdmin
         {
             get
             {
                 if (IsSuperUser)
                 {
-                    isAdmin = true;
+                    return true;
                 }
-                if (isAdmin == null)
-                {
-                    PortalInfo ps = PortalController.Instance.GetPortal(PortalID);
-                    if (ps == null)
-                    {
-                        isAdmin = false;
-                    }
-                    else
-                    {
-                        _administratorRoleName = ps.AdministratorRoleName;
-                        isAdmin = IsInRole(_administratorRoleName) || IsSuperUser;
-                    }
-                }
-                return (bool)isAdmin;
+                PortalInfo ps = PortalController.Instance.GetPortal(PortalID);
+                return ps != null && IsInRole(ps.AdministratorRoleName);
             }
         }
 

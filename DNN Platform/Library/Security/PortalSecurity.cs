@@ -816,9 +816,10 @@ namespace DotNetNuke.Security
         /// 
         /// The only time we should call this is if the host allowed extensions list has changed
         /// </summary>
-        public void CheckAllPortalFileExtensionWhitelists()
+        /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation</param>
+        public void CheckAllPortalFileExtensionWhitelists(string newMasterList)
         {
-            var masterList = Entities.Host.Host.AllowedExtensionWhitelist;
+            var masterList = new FileExtensionWhitelist(newMasterList);
             var portalSettings = Data.DataProvider.Instance().GetPortalSettingsBySetting("AllowedExtensionsWhitelist", null);
             foreach (var portalId in portalSettings.Keys)
             {

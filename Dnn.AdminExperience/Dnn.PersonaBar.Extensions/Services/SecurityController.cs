@@ -794,7 +794,7 @@ namespace Dnn.PersonaBar.Security.Services
                 var newExtensionList = fileExtensions.ToStorageString();
                 HostController.Instance.Update("FileExtensions", newExtensionList, false);
                 if (oldExtensionList != newExtensionList)
-                    PortalSecurity.Instance.CheckAllPortalFileExtensionWhitelists();
+                    PortalSecurity.Instance.CheckAllPortalFileExtensionWhitelists(newExtensionList);
                 var defaultEndUserExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserExtensionWhitelist);
                 defaultEndUserExtensionWhitelist = defaultEndUserExtensionWhitelist.RestrictBy(fileExtensions);
                 HostController.Instance.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);

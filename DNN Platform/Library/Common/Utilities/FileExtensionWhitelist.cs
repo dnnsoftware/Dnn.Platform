@@ -145,15 +145,7 @@ namespace DotNetNuke.Common.Utilities
         public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
         {
             var filter = parentList._extensions;
-            var filteredList = new List<string>();
-            foreach (var ext in _extensions)
-            {
-                if (filter.Contains(ext))
-                {
-                    filteredList.Add(ext.Substring(1));
-                }
-            }
-            return new FileExtensionWhitelist(string.Join(",", filteredList));
+            return new FileExtensionWhitelist(string.Join(",", _extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
     }
 }
