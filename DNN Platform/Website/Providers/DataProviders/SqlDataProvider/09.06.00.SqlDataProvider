@@ -52,6 +52,14 @@ AS
 	SELECT ps.PortalID, ps.SettingValue FROM {databaseOwner}{objectQualifier}PortalSettings ps WHERE ps.SettingName=@SettingName AND COALESCE(CultureCode, @CultureCode, N'') = IsNull(@CultureCode, N'')
 GO
 
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='DefaultEndUserExtensionWhitelist')
+INSERT INTO {databaseOwner}{objectQualifier}HostSettings
+([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+VALUES
+('DefaultEndUserExtensionWhitelist', 'jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv', 0, -1, GETDATE(), -1, GETDATE())
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
