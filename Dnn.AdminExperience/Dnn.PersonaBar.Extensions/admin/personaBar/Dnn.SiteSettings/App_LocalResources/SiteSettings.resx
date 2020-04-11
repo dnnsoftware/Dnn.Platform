@@ -1434,4 +1434,28 @@
   <data name="DataConsentResetTerms.Confirm" xml:space="preserve">
     <value>Do you wish to reset the consent all users signed and ask them again?</value>
   </data>
+  <data name="Custom.Text" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="OnlyImages.Text" xml:space="preserve">
+    <value>Only Images</value>
+  </data>
+  <data name="plAllowedExtensionsWhitelist.Help" xml:space="preserve">
+    <value>A comma separated list of file extensions that end users are allowed to upload to the site. Note this can be through uploading a profile picture, content to the journal or from a file upload module. The extensions you enter are checked against a global permitted list and may be restricted as a result.</value>
+  </data>
+  <data name="plAllowedExtensionsWhitelist.Text" xml:space="preserve">
+    <value>Allowed File Extensions</value>
+  </data>
+  <data name="plWhitelistOption.Help" xml:space="preserve">
+    <value>This dropdown will populate the permitted file extension list</value>
+  </data>
+  <data name="plWhitelistOption.Text" xml:space="preserve">
+    <value>Choose file whitelist for end users</value>
+  </data>
+  <data name="WhitelistSettings.Text" xml:space="preserve">
+    <value>Permitted File Extension List</value>
+  </data>
 </root>

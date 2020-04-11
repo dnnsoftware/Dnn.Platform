@@ -33,5 +33,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         public long MaxUploadSize { get; set; }
 
         public string AllowedExtensionWhitelist { get; set; }
+
+        public string DefaultEndUserExtensionWhitelist { get; set; }
     }
 }

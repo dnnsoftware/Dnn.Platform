@@ -11,3 +11,4 @@ SearchIncludedTagInfoFilter,			a
 MaxSearchWordLength,					25
 MinSearchWordLength,					3
 CrmVersion, -1
+DefaultEndUserExtensionWhitelist, jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv
