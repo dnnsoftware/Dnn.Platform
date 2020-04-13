@@ -5,6 +5,7 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Abstractions;
@@ -259,7 +260,12 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(PortalId), userName);                     
+                    int totalRecords = 0;
+                    var effectivePortalId = PortalController.GetEffectivePortalId(PortalId);
+                    userByEmail = UserController
+                        .GetUsersByEmail(Null.NullInteger, userName, Null.NullInteger, Null.NullInteger, ref totalRecords)
+                        .Cast<UserInfo>()
+                        .FirstOrDefault(user => user.IsSuperUser || user.PortalID == effectivePortalId);
 
                     if (userByEmail != null)
                     {
