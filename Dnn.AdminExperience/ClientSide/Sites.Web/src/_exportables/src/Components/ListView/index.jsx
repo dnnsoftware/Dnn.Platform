@@ -112,6 +112,11 @@ class ListView extends Component {
                 icon: SvgIcons.DownloadIcon,
                 onClick: this.onImportExport.bind(this, portal, "Import", index),
                 title: Localization.get("SiteImport")
+            },
+            {
+                icon: SvgIcons.TreeCopy,
+                onClick: this.props.onExportPortal.bind(this, portal),
+                title: Localization.get("ExportTemplate")
             }
         ];
         if (portal.allowDelete) {
