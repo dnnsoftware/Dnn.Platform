@@ -19,7 +19,7 @@
             <libraryName>jQuery</libraryName>
             <fileName>jquery.js</fileName>
             <objectName>jQuery</objectName>
-            <CDNPath>https://code.jquery.com/jquery-3.4.1.min.js</CDNPath>
+            <CDNPath>https://code.jquery.com/jquery-3.5.0.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
