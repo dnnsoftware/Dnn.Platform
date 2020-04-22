@@ -1809,7 +1809,7 @@ namespace DotNetNuke.Services.FileSystem
             //regex is meant to block files like "foo.asp;.png" which can take advantage
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
-                   && WhiteList.IsAllowedExtension(extension)
+                   && (WhiteList.IsAllowedExtension(extension) || UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
