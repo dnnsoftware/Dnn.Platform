@@ -43,8 +43,8 @@
     <EnableStrengthMeter>Y</EnableStrengthMeter>
     <EncryptionKey Secure="True"></EncryptionKey>
     <EventLogBuffer>N</EventLogBuffer>
-    <FileExtensions>jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv</FileExtensions>
-    <DefaultEndUserExtensionWhitelist>jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv</DefaultEndUserExtensionWhitelist>
+    <FileExtensions>jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export</FileExtensions>
+    <DefaultEndUserExtensionWhitelist>jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export</DefaultEndUserExtensionWhitelist>
     <ForceLogoutAfterPasswordChanged>Y</ForceLogoutAfterPasswordChanged>
     <HelpURL>https://www.dnndocs.com/</HelpURL>
     <HostCurrency>USD</HostCurrency>

@@ -56,7 +56,7 @@ IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE 
 INSERT INTO {databaseOwner}{objectQualifier}HostSettings
 ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
 VALUES
-('DefaultEndUserExtensionWhitelist', 'jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv', 0, -1, GETDATE(), -1, GETDATE())
+('DefaultEndUserExtensionWhitelist', 'jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export', 0, -1, GETDATE(), -1, GETDATE())
 GO
 
 

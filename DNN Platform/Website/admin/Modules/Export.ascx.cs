@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                     if (folder != null)
                     {
-                        var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".xml";
+                        var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".export";
                         var strMessage = ExportModule(ModuleId, strFile, folder);
                         if (String.IsNullOrEmpty(strMessage))
                         {
