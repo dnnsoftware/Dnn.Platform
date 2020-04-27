@@ -220,7 +220,7 @@
     <value>End Date:</value>
   </data>
   <data name="plEndDate.Help" xml:space="preserve">
-    <value>Select the lnd date for displaying this module.  The module will only be visible to users with Manage permissions after this date.</value>
+    <value>Select the end date for displaying this module.  The module will only be visible to users with Manage permissions after this date.</value>
   </data>
   <data name="plMoniker.Text" xml:space="preserve">
     <value>Module Moniker:</value>
@@ -367,7 +367,7 @@
     <value>Clear Cache for All Tab Modules</value>
   </data>
   <data name="lblCachedItemCount.Text" xml:space="preserve">
-    <value>Current Cache Count: {0} item for this tab module.</value>
+    <value>Current Cache Count: {0} item(s) for this tab module.</value>
   </data>
   <data name="CacheDurationWarning.Text" xml:space="preserve">
     <value>This module has indicated a recommendation to disable caching (select NONE from the Output Cache Provider list above).  Enabling caching on this module is not recommended and may cause the module to display stale data.</value>
@@ -382,7 +382,7 @@
     <value>Tags:</value>
   </data>
   <data name="plAdminBorder.Help" xml:space="preserve">
-    <value>Check this box to display a red border around the module to Administrators when they are logged into the site.</value>
+    <value>Check this box to hide the red border that shows around the module when it is only visible to Administrators.</value>
   </data>
   <data name="plAdminBorder.Text" xml:space="preserve">
     <value>Hide Admin Border</value>
