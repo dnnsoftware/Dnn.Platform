@@ -5707,7 +5707,9 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion960()
         {
             // Set default end user upload extension whitelist - ensure we don't add extensions that were not in the master list before
-            var exts = new FileExtensionWhitelist("jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv");
+            var toAdd = new List<string> { ".export" };
+            HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
+            var exts = new FileExtensionWhitelist("jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export");
             exts.RestrictBy(Host.AllowedExtensionWhitelist);
             HostController.Instance.Update("DefaultEndUserExtensionWhitelist", exts.ToStorageString());
         }
