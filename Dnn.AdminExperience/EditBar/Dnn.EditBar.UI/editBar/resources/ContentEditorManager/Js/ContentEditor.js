@@ -321,11 +321,13 @@ dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
             var cookieModuleId = moduleDialog._getCookie('CEM_CallbackData');
             if (cookieModuleId && cookieModuleId.indexOf('module-') > -1) {
                 var moduleId = cookieModuleId.substr(7);
+                var existingModule = moduleDialog._getCookie('CEM_ExistingModule');
+                if (!existingModule) existingModule = false;
 
                 var module = $('div.DnnModule-' + moduleId);
                 var moduleManager = module.parent().data('dnnModuleManager');
 
-                moduleDialog.apply(moduleManager);
+                moduleDialog.apply(moduleManager, existingModule);
                 moduleDialog._processModuleForDrag(module);
                 $('#moduleActions-' + moduleId).addClass('floating');
                 moduleDialog._removeCookie('CEM_CallbackData');

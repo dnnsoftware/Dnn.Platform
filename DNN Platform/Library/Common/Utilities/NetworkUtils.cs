@@ -5,8 +5,10 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Web;
 
 #endregion
 
@@ -241,6 +243,24 @@ namespace DotNetNuke.Common.Utils
                 return false;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets the Client IP address of the current request, from server variables if available, otherwise returns Request.UserHostAddress.
+        /// </summary>
+        /// <param name="request">The current http request.</param>
+        /// <returns>The current client ip address.</returns>
+        public static string GetClientIpAddress(HttpRequest request)
+        {
+            var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"]?.Split(',').FirstOrDefault();
+
+            // If there is no proxy, get the standard remote address
+            if (string.IsNullOrWhiteSpace(ipAddress) || ipAddress.Equals("unknown", StringComparison.OrdinalIgnoreCase))
+            {
+                ipAddress = request.UserHostAddress;
+            }
+
+            return ipAddress;
         }
     }
 

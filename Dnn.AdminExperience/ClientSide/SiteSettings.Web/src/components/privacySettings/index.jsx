@@ -18,12 +18,15 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let isHost = false;
+
 class PrivacySettingsPanelBody extends Component {
   constructor() {
     super();
     this.state = {
       privacySettings: undefined
     };
+    isHost = util.settings.isHost;
   }
 
   loadData() {
@@ -380,14 +383,20 @@ class PrivacySettingsPanelBody extends Component {
       <div key="column-two-right" className="right-column" />
     );
 
-    return (
-      <div className={styles.privacySettings}>
+    var comSettings = isHost ? (
+      <div>
         <div className="sectionTitle">
           {resx.get("PrivacyCommunicationSettings")}
         </div>
         <GridSystem numberOfColumns={2}>
           {[columnOneLeft, columnOneRight]}
         </GridSystem>
+      </div>
+    ) : null;
+
+    return (
+      <div className={styles.privacySettings}>
+        {comSettings}
         <div className="sectionTitle">
           {resx.get("PrivacyCookieConsentSettings")}
         </div>
@@ -433,8 +442,7 @@ function mapStateToProps(state) {
     tabIndex: state.pagination.tabIndex,
     privacySettings: state.siteBehavior.privacySettings,
     privacySettingsClientModified:
-      state.siteBehavior.privacySettingsClientModified,
-    portalId: state.siteInfo ? state.siteInfo.portalId : undefined
+      state.siteBehavior.privacySettingsClientModified
   };
 }
 

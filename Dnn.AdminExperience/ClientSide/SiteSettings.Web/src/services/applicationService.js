@@ -278,9 +278,9 @@ class ApplicationService {
         sf.get("GetTranslatorRoles?portalId=" + portalId + "&groupId=" + groupId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
-    getOtherSettings(callback) {
+    getOtherSettings(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetOtherSettings", {}, callback);
+        sf.get("GetOtherSettings?portalId=" + portalId, {}, callback);
     }
 
     updateOtherSettings(payload, callback, failureCallback) {

@@ -2,6 +2,8 @@
 // Note these tasks depend on the correct settings in your settings file.
 
 Task("ResetDevSite")
+    .IsDependentOn("SetVersion")
+    .IsDependentOn("UpdateDnnManifests")
     .IsDependentOn("ResetDatabase")
     .IsDependentOn("PreparePackaging")
 	.IsDependentOn("OtherPackages")

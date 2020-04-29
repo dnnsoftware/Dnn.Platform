@@ -23,56 +23,19 @@
         padding: 10px 30px;
         display: inline-block;
     }
+    .dnn-multi-line-input-with-error {
+        display: block;
+    }
     .dnn-grid-system {
-        border-top: 1px solid @alto;
-        margin-top: 20px;
-        padding-top: 20px;
-        .dnn-grid-cell {
-            .left-column {
-                padding-right: 30px;
-                .dnn-ui-common-input-group {
-                    padding: 0 0 15px 0;
-                    label {
-                        font-weight: bolder;
-                        float: left;
-                    }
-                    input {
-                        width: auto;
-                    }
-                    .dnn-switch-container {
-                        float: right;
-                    }
-                    .dnn-label {
-                        width: 70%;
-                        label{
-                            width: 70%;
-                        }
-                    }
-                }
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 100%;
             }
-            .right-column {
-                padding-left: 30px;
-                border-left: 1px solid @alto;
-                .dnn-ui-common-input-group {
-                    padding: 0 0 15px 0;
-                    label {
-                        font-weight: bolder;
-                        float: left;
-                    }
-                    input {
-                        width: auto;
-                    }
-                    .dnn-switch-container {
-                        float: right;
-                    }
-                    .dnn-label {
-                        width: 70%;
-                        label{
-                            width: 70%;
-                        }
-                    }
-                }
-            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
         }
     }
     .buttons-box {

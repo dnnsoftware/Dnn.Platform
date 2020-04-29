@@ -32,7 +32,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api; 
+using DotNetNuke.Web.Api;
 using Dnn.PersonaBar.Security.Helper;
 
 namespace Dnn.PersonaBar.Security.Services
@@ -287,7 +287,7 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     IPFilterController.Instance.AddIPFilter(ipf);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (ArgumentException exc)
             {
@@ -756,7 +756,8 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.AsyncTimeout,
                             MaxUploadSize = Config.GetMaxUploadSize() / (1024 * 1024),
                             RangeUploadSize = Config.GetRequestFilterSize(),
-                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString()
+                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
+                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString()
                         }
                     }
                 };
@@ -788,7 +789,15 @@ namespace Dnn.PersonaBar.Security.Services
                 HostController.Instance.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
                 HostController.Instance.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(), false);
                 HostController.Instance.Update("AsyncTimeout", request.AsyncTimeout.ToString(), false);
-                HostController.Instance.Update("FileExtensions", request.AllowedExtensionWhitelist, false);
+                var oldExtensionList = Host.AllowedExtensionWhitelist.ToStorageString();
+                var fileExtensions = new FileExtensionWhitelist(request.AllowedExtensionWhitelist);
+                var newExtensionList = fileExtensions.ToStorageString();
+                HostController.Instance.Update("FileExtensions", newExtensionList, false);
+                if (oldExtensionList != newExtensionList)
+                    PortalSecurity.Instance.CheckAllPortalFileExtensionWhitelists(newExtensionList);
+                var defaultEndUserExtensionWhitelist = new FileExtensionWhitelist(request.DefaultEndUserExtensionWhitelist);
+                defaultEndUserExtensionWhitelist = defaultEndUserExtensionWhitelist.RestrictBy(fileExtensions);
+                HostController.Instance.Update("DefaultEndUserExtensionWhitelist", defaultEndUserExtensionWhitelist.ToStorageString(), false);
 
                 var maxCurrentRequest = Config.GetMaxUploadSize();
                 var maxUploadByMb = request.MaxUploadSize * 1024 * 1024;

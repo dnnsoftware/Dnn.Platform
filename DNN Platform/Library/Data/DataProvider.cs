@@ -585,6 +585,19 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPortalSettings", PortalId, CultureCode);
         }
 
+        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
+        {
+            var result = new Dictionary<int, string>();
+            using (var reader = ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
+            {
+                while (reader.Read())
+                {
+                    result[reader.GetInt32(0)] = reader.GetString(1);
+                }
+            }
+            return result;
+        }
+
         public virtual IDataReader GetPortalSpaceUsed(int PortalId)
         {
             return ExecuteReader("GetPortalSpaceUsed", GetNull(PortalId));

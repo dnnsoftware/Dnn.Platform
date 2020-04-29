@@ -58,18 +58,22 @@ export class Body extends Component {
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <PrivacySettings portalId={props.portalId} cultureCode={props.cultureCode} />
-                <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
+                <MoreSettings portalId={props.portalId} cultureCode={props.cultureCode} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
             </DnnTabs>;
         }
         else {
             return <DnnTabs onSelect={this.handleSelect.bind(this) }
                 tabHeaders={[resx.get("TabDefaultPages"),
                     resx.get("TabMessaging"),
-                    resx.get("TabUserProfiles")]}
+                    resx.get("TabUserProfiles"),
+                    resx.get("TabPrivacy"),
+                    resx.get("TabMore")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <PrivacySettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <MoreSettings portalId={props.portalId} cultureCode={props.cultureCode} openHtmlEditorManager={props.openHtmlEditorManager.bind(this) } />
             </DnnTabs>;
         }
     }

@@ -619,7 +619,18 @@ namespace DotNetNuke.Entities.Host
                 return new FileExtensionWhitelist(HostController.Instance.GetString("FileExtensions"));
             }
         }
-        
+
+        /// <summary>
+        ///   Default list of extensions an end user is allowed to upload.
+        /// </summary>
+        public static FileExtensionWhitelist DefaultEndUserExtensionWhitelist
+        {
+            get
+            {
+                return new FileExtensionWhitelist(HostController.Instance.GetString("DefaultEndUserExtensionWhitelist"));
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the GUID

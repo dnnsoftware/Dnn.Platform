@@ -591,12 +591,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     CreateStatus = UserCreateStatus.InvalidLastName;
                 }
-
-                var cleanDisplayName = PortalSecurity.Instance.InputFilter(User.DisplayName, filterFlags);
-                if (!cleanDisplayName.Equals(User.DisplayName))
-                {
-                    CreateStatus = UserCreateStatus.InvalidDisplayName;
-                }
+				if (string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+				{
+					var cleanDisplayName = PortalSecurity.Instance.InputFilter(User.DisplayName, filterFlags);
+					if (!cleanDisplayName.Equals(User.DisplayName))
+					{
+						CreateStatus = UserCreateStatus.InvalidDisplayName;
+					}
+				}
             }
 
             if (PortalSettings.Registration.RegistrationFormType == 0)

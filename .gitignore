@@ -44,7 +44,6 @@
 *.dotCover
 *.ldf
 Artifacts/
-[Ss]rc
 [Tt]emp
 [Bb]uild/**/*.zip
 

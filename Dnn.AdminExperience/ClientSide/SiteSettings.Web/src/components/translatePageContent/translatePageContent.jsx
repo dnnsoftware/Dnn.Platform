@@ -314,7 +314,6 @@ function mapStateToProps(state) {
         pageList: state.languages.pageList,
         languageBeingEdited: state.languageEditor.languageBeingEdited,
         languageDisplayMode: (state.languages.languageSettings && state.languages.languageSettings.LanguageDisplayMode) || "NATIVE",
-        portalId: state.siteInfo.settings ? state.siteInfo.portalId : undefined,
     };
 }
 

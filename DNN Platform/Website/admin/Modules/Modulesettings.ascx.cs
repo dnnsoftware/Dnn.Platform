@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 chkAllTabs.Checked = Module.AllTabs;
                 trnewPages.Visible = chkAllTabs.Checked;
                 allowIndexRow.Visible = desktopModule.IsSearchable;
-                chkAllowIndex.Checked = Settings["AllowIndex"] == null || Settings["AllowIndex"] != null && bool.Parse(Settings["AllowIndex"].ToString());
+                chkAllowIndex.Checked = GetBooleanSetting("AllowIndex", true);
                 txtMoniker.Text = (string)Settings["Moniker"] ?? "";
 
                 cboVisibility.SelectedIndex = (int)Module.Visibility;
@@ -237,6 +237,15 @@ namespace DotNetNuke.Modules.Admin.Modules
         private void ShowCacheRows()
         {
             divCacheDuration.Visible = !string.IsNullOrEmpty(cboCacheProvider.SelectedValue);
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            var value = Settings[settingName];
+
+            return value == null
+                ? defaultValue
+                : bool.Parse(value.ToString());
         }
 
         #endregion
@@ -555,7 +564,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     // collect these first as any settings update will clear the cache
                     var originalChecked = Settings["hideadminborder"] != null && bool.Parse(Settings["hideadminborder"].ToString());
-                    var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
+                    var allowIndex = GetBooleanSetting("AllowIndex", true);
                     var oldMoniker = ((string)Settings["Moniker"] ?? "").TrimToLength(100);
                     var newMoniker = txtMoniker.Text.TrimToLength(100);
                     if (!oldMoniker.Equals(txtMoniker.Text))

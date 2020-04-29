@@ -42,6 +42,8 @@
               <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="injectmodulehyperlink" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="addcompatiblehttpheader" type="xs:string" minOccurs="0" maxOccurs="1" />
+			  <xs:element name="allowuseruiculture" type="xs:string" minOccurs="0" maxOccurs="1" />
+			  <xs:element name="enablebrowserlanguage" type="xs:string" minOccurs="0" maxOccurs="1" />			  
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>

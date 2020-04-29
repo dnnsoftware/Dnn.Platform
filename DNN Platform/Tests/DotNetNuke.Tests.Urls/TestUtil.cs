@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Urls
                 {
                     PortalID = portalId,
                     Username = userName,
-                    Email = userName + "@change.me",
+                    Email = userName + "@changeme.invalid",
                     VanityUrl = vanityUrl,
                     Membership = { Password = password, Approved = true }
                 };

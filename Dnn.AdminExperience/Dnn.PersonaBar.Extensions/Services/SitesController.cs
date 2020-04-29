@@ -2,8 +2,8 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -138,8 +138,6 @@ namespace Dnn.PersonaBar.Sites.Services
                         var strMessage = PortalController.DeletePortal(portal, GetAbsoluteServerPath());
                         if (string.IsNullOrEmpty(strMessage))
                         {
-                            EventLogController.Instance.AddLog("PortalName", portal.PortalName, PortalSettings,
-                                UserInfo.UserID, EventLogController.EventLogType.PORTAL_DELETED);
                             return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                         }
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);

@@ -185,7 +185,8 @@ namespace DotNetNuke.Modules.Admin.Modules
             var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
             if (folder == null) return;
 
-            var files = Globals.GetFileList(PortalId, "xml", false, folder.FolderPath);
+            var files = Globals.GetFileList(PortalId, "export", false, folder.FolderPath);
+            files.AddRange(Globals.GetFileList(PortalId, "xml", false, folder.FolderPath));
             foreach (FileItem file in files)
             {
 				if (file.Text.IndexOf("content." + Globals.CleanName(Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)

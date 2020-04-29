@@ -521,9 +521,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getOtherSettings(callback) {
+    getOtherSettings(portalId, callback) {
         return (dispatch) => {
-            ApplicationService.getOtherSettings(data => {
+            ApplicationService.getOtherSettings(portalId, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_OTHER_SETTINGS,
                     data: {

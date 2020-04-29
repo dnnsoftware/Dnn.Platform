@@ -1,0 +1,67 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.04.04">
+      <friendlyName>DotNetNuke Simple Web Farm Caching Provider</friendlyName>
+      <description>DotNetNuke Simple Web Farm Caching Provider</description>
+      <dependencies />
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="license.txt" />
+      <releaseNotes src="releaseNotes.txt" /> 
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin\Providers</path>
+              <name>DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/caching/providers" action="update" key="name" collision="overwrite">
+                    <add name="SimpleWebFarmCachingProvider"
+                         type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmCachingProvider, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider"
+                         providerPath="~\Providers\CachingProviders\SimpleWebFarmCachingProvider\" />
+                  </node>
+				          <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
+                    <add name="SimpleWebFarmSynchronizationHandler"
+                         verb="*"
+                         path="SimpleWebFarmSync.aspx"
+                         type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider"
+                         preCondition="integratedMode" />
+                  </node>
+                  <node path="/configuration/system.web/httpHandlers" action="update" key="path" collision="overwrite">
+                    <add verb="*"
+                         path="SimpleWebFarmSync.aspx"
+                         type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/caching/providers/add[@name='SimpleWebFarmCachingProvider']" action="remove" />
+				          <node path="/configuration/system.webServer/handlers/add[@name='SimpleWebFarmSynchronizationHandler']" action="remove" />
+				          <node path="/configuration/system.web/httpHandlers/add[@path='SimpleWebFarmSync.aspx']" action="remove" />
+                  <!-- Clear any default to prevent issues loading the site -->
+                  <node path="/configuration/dotnetnuke/caching" action="updateattribute"  name="defaultProvider" value="" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
