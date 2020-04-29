@@ -27,7 +27,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>Dnn.Modules.ResourceManager.xml</DocumentationFile>
+    <DocumentationFile>bin\Dnn.Modules.ResourceManager.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7</LangVersion>
@@ -38,7 +38,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.ResourceManager.XML</DocumentationFile>
+    <DocumentationFile>bin\Dnn.Modules.ResourceManager.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7</LangVersion>

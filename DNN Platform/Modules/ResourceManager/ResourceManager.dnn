@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="ResourceManager" type="Module" version="00.00.01">
+    <package name="ResourceManager" type="Module">
       <friendlyName>Resource Manager</friendlyName>
       <description>DNN Software, Inc. ResourceManager module</description>
       <iconFile>~/Images/icon_extensions_32px.png</iconFile>
