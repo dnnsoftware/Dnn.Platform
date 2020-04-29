@@ -1,0 +1,181 @@
+.loading::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.7) url(/DesktopModules/ResourceManager/Images/loading.gif) no-repeat center center;
+    z-index: 99999;
+}
+
+.three-columns {
+    display: block;
+    width: 33%;
+    float: left;
+}
+
+.dnn-dropdown {
+    height: 31px;
+    background-color: white;
+
+    .collapsible-content {
+        margin: 0;
+        box-shadow: none;
+    }
+
+    ul, li {
+        margin: 0px;
+        list-style: none;
+        box-sizing: border-box;
+        height: 28px;
+    }
+}
+
+.rm-field .dnn-dropdown {
+    width: 100%
+}
+
+label.rm-error  {
+    color: red
+}
+
+.file-upload-container {
+    .file-upload-panel {
+        position: relative;
+        border: 1px solid rgb(102, 102, 102);
+        padding: 10px;
+        margin-bottom: 30px;
+        min-height: 163px;
+        color: #959695;
+        transition: 200ms linear;
+        cursor: pointer;
+
+        &:hover {
+            color: #FFF;
+            background-color: rgba(30,136,195,0.6);
+        }
+
+        span {
+            overflow: hidden !important;
+            width: 140px !important;
+            display: block !important;
+            position: relative;
+            text-transform: none;
+            font-size: 14px;
+            padding-top: 95px;
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+
+    .upload-file {
+        background-image: url(/DesktopModules/ResourceManager/Images/upload.svg);
+        height: 40px;
+        width: 40px;
+        display: block;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.progresses-container {
+    margin: 20px 0;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.uploading-container {
+    overflow: hidden;
+    border-bottom: 1px solid #c8c8c8;
+    padding: 6px 0;
+    color: #0a85c3;
+    font-weight: bold;
+    font-family: proxima_nova,Arial;
+    font-size: 13px;
+
+    .file-upload-thumbnail {
+        background: 0;
+        border-radius: 0;
+        border: 2px solid #0a85c3;
+        padding: 2px;
+        float: left;
+        position: relative;
+        height: 76px;
+        width: 76px;
+        line-height: 76px;
+        text-align: center;
+
+        img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+    }
+    .file-name-container, .progress-bar-container {
+        width: ~"calc(100% - 100px)";
+        float: right;        
+    }
+    .file-name-container {
+        span {
+            display: block;
+            width: 100%;
+        }
+    }
+    .progress-bar-container {
+        margin-top: 18px;
+        height: 5px;
+        background-color: #c7c7c7;
+
+        .progress-bar {
+            background-color: #0a85c3;
+            height: 100%;
+            transition: 0.5s;
+        }
+    }
+
+    &.rm-error {
+        color: red;
+
+        .file-upload-thumbnail {
+            border: 2px solid #c8c8c8;
+            background-image: url(/DesktopModules/ResourceManager/Images/loader_failed.svg);
+        }
+
+        .progress-bar {
+            background-color: red;
+        }
+    }
+
+    &.rm-uploading {
+        .file-upload-thumbnail {
+            border: 2px solid #c8c8c8;
+            background: url(/DesktopModules/ResourceManager/Images/dnnanim.gif) no-repeat center;
+        }
+    }
+
+    &.rm-stopped {
+        color: #777;
+
+        .file-upload-thumbnail {
+            border: 2px solid #c8c8c8;
+        }
+    }
+}
+
+.rm-error label {
+    color: red
+}
+
+.dnn-switch-container {
+    display: inline-block;
+    float: none;
+    padding: 0;
+}
+
+.dnn-dropdown .collapsible-label {
+	padding: 7px 15px;
+    box-sizing: border-box;
+}
