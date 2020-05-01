@@ -219,23 +219,24 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
+                IFolderInfo folder = null;
                 if (cboFolders.SelectedItem != null && !String.IsNullOrEmpty(txtFile.Text))
                 {
-                    var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
-                    if (folder != null)
-                    {
-                        var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".export";
-                        var strMessage = ExportModule(ModuleId, strFile, folder);
-                        if (String.IsNullOrEmpty(strMessage))
-                        {
-                            Response.Redirect(ReturnURL, true);
-                        }
-                        else
-                        {
-                            UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
-                        }
-                    }
+                    folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
+                }
 
+                if (folder != null)
+                {
+                    var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".export";
+                    var strMessage = ExportModule(ModuleId, strFile, folder);
+                    if (String.IsNullOrEmpty(strMessage))
+                    {
+                        Response.Redirect(ReturnURL, true);
+                    }
+                    else
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+                    }
                 }
                 else
                 {
