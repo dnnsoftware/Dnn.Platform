@@ -385,8 +385,13 @@ namespace Dnn.PersonaBar.Pages.Components
                     var alias = aliases.FirstOrDefault(p => p.CultureCode == url.CultureCode);
                     if (alias == null)
                     {
-                        //if no primary alias just get first in list, need to use something
-                        alias = aliases.FirstOrDefault(a => a.PortalID == portalId);
+                        // check primary when no culture code is defined
+                        alias = aliases.FirstOrDefault(primary => primary.IsPrimary == true);
+                        if (alias == null)
+                        {
+                            //if no primary alias just get first in list, need to use something
+                            alias = aliases.FirstOrDefault(a => a.PortalID == portalId);
+                        }
                     }
                     if (alias != null)
                     {
