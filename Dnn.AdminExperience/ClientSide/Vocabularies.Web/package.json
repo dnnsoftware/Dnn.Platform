@@ -1,6 +1,6 @@
 {
   "name": "taxonomy",
-  "version": "9.6.0-rc.3",
+  "version": "9.6.0",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",

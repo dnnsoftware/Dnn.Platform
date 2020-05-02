@@ -1,6 +1,6 @@
 {
   "name": "dnn-sites-list-view",
-  "version": "9.6.0-rc.3",
+  "version": "9.6.0",
   "description": "DNN Sites List View",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,6 +1,6 @@
 {
   "name": "dnn-users-exportables",
-  "version": "9.6.0-rc.3",
+  "version": "9.6.0",
   "description": "DNN Users Exportables",
   "scripts": {
     "start": "npm run webpack",
