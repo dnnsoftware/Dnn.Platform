@@ -1,7 +1,8 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import "./style.less";
 
-const folderIcon = require("!raw!./img/folder.svg");
+const folderIcon = require("./img/folder.svg");
 
 export default class Folders extends Component {
 
@@ -12,7 +13,7 @@ export default class Folders extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         if (!props.folders || !props.folders.children || !props.folders.children[0] || 
             !props.folders.children[0].data || !props.folders.children[0].data.key) {
             return;

@@ -156,5 +156,8 @@ module.exports = [
     "vnd",
     "noellipsis",
     "hostname",
-    "popstate"
+    "popstate",
+    "noopener",
+    "noreferrer",
+    "dnnsoftware"
 ];

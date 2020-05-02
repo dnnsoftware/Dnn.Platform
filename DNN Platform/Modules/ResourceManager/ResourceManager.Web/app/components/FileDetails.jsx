@@ -1,7 +1,7 @@
-import React, {PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import itemService from "../services/itemsService";
 import localizeService from "../services/localizeService";
-import Switch from "dnn-switch";
 
 const FileDetails = ({file, handlers, validationErrors}) => (
     <div className="item-details" >
@@ -24,7 +24,7 @@ const FileDetails = ({file, handlers, validationErrors}) => (
             <div className="line-break"></div>
             <div className="details-field rm-url">
                 <span className="details-label">{localizeService.getString("URL")}:</span>
-                <a target="_blank" href={itemService.getItemFullUrl(file.url)}>{itemService.getItemFullUrl(file.url)}</a>
+                <a target="_blank" rel="noopener noreferrer" href={itemService.getItemFullUrl(file.url)}>{itemService.getItemFullUrl(file.url)}</a>
             </div>
             
         </div>

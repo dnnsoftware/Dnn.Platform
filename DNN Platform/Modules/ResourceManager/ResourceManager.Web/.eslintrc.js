@@ -25,9 +25,9 @@ module.exports = {
     "rules": {
        "spellcheck/spell-checker": [1,
         {
-            "comments": "true",
-            "strings": "true",
-            "identifiers": "true",
+            "comments": true,
+            "strings": true,
+            "identifiers": true,
             "skipWords": require("./.eslintskipwords"),
             "skipIfMatch": [
                 "http://[^s]*",

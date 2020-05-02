@@ -1,8 +1,7 @@
-import React, {PropTypes} from "react";
-import Switch from "dnn-switch";
+import React from "react";
+import PropTypes from "prop-types";
 import localizeService from "../services/localizeService";
 import itemsService from "../services/itemsService";
-import DropDown from "dnn-dropdown";
 
 const FolderDetails = ({folder, handlers, validationErrors}) => (
     <div className="item-details">
@@ -25,7 +24,7 @@ const FolderDetails = ({folder, handlers, validationErrors}) => (
             <div className="line-break"></div>
             <div className="details-field rm-url">
                 <span className="details-label">{localizeService.getString("URL")}:</span>
-                <a target="_blank" href={itemsService.getFolderUrl(folder.folderId)}>{itemsService.getFolderUrl(folder.folderId)}</a>
+                <a target="_blank" rel="noopener noreferrer" href={itemsService.getFolderUrl(folder.folderId)}>{itemsService.getFolderUrl(folder.folderId)}</a>
             </div>
         </div>
         <div className="separator"></div>

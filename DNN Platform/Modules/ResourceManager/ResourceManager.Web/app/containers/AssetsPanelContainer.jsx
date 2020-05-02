@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AssetsHeader from "../components/AssetsHeader";
@@ -12,13 +13,18 @@ import localizeService from "../services/localizeService.js";
 import ReactCSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 
 class AssetsPanelContainer extends React.Component {
-    componentWillMount() {
+constructor() {
+    super();
+    this.mainContainer=React.createRef();
+}
+
+    UNSAFE_componentWillMount() {
         window.addEventListener("scroll", this.handleScroll.bind(this));
     }
 
     getDetailsPosition(i) {
         const itemWidth = this.props.itemWidth;
-        const container = this.refs.mainContainer;
+        const container = this.mainContainer;
         const containerWidth = container.clientWidth;
         const itemsPerRow = Math.floor(containerWidth / itemWidth);
         let position = Math.floor(i / itemsPerRow) * itemsPerRow + itemsPerRow - 1;
@@ -89,7 +95,7 @@ class AssetsPanelContainer extends React.Component {
                 <div className="assets-body">
                     <TopBarContainer />
 
-                    <div ref="mainContainer" className={"main-container" + (loading ? " loading" : "")}>
+                    <div ref={this.mainContainer} className={"main-container" + (loading ? " loading" : "")}>
                         <AddFolderPanelContainer />
                         <AddAssetPanelContainer />
                         

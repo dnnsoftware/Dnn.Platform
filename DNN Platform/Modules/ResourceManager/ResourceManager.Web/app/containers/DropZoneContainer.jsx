@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DropZone from "react-dropzone";
@@ -43,7 +44,7 @@ class DropZoneContainer extends React.Component {
 }
 
 DropZoneContainer.propTypes = {
-    children: React.PropTypes.node,
+    children: PropTypes.node,
     disableClick: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.any,
