@@ -15,6 +15,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
@@ -116,6 +117,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
 
 			JavaScript.RequestRegistration(CommonJs.jQueryUI);
+			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
 			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
