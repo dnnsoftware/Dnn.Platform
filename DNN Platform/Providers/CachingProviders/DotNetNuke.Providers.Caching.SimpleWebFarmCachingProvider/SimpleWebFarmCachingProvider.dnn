@@ -1,9 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.04.04">
+    <package name="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" type="Provider" isSystem="true" version="09.06.00">
       <friendlyName>DotNetNuke Simple Web Farm Caching Provider</friendlyName>
       <description>DotNetNuke Simple Web Farm Caching Provider</description>
-      <dependencies />
+      <dependencies/>
       <owner>
         <name>DNN</name>
         <organization>.NET Foundation</organization>
