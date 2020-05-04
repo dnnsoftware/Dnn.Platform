@@ -102,10 +102,6 @@ namespace Dnn.Modules.ResourceManager
         public View()
         {
             _bundleJsPath = Constants.ModulePath + "Scripts/resourceManager-bundle.js";
-
-            #if DEBUG
-            _bundleJsPath = "http://localhost:8088/resourceManager-bundle.js";
-            #endif
         }
 
         protected void Page_Load(object sender, EventArgs e)

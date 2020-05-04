@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="ResourceManager" type="Module">
+    <package name="ResourceManager" type="Module" version="09.06.00">
       <friendlyName>Resource Manager</friendlyName>
       <description>DNN Software, Inc. ResourceManager module</description>
       <iconFile>~/Images/icon_extensions_32px.png</iconFile>
@@ -44,20 +44,20 @@
           <desktopModule>
             <moduleName>ResourceManager</moduleName>
             <foldername>ResourceManager</foldername>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>ResourceManager</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/ResourceManager/View.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                   <moduleControl>
@@ -66,8 +66,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>ResourceManager Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
