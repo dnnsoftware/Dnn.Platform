@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private FileExtensionWhitelist WhiteList
+        public FileExtensionWhitelist WhiteList
         {
             get
             {

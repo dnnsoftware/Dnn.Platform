@@ -73,6 +73,9 @@ function uploadFile(file, folderPath, overwrite, trackProgress) {
     if (overwrite && typeof overwrite === "boolean") {
         formData.append("overwrite", overwrite);
     }
+    let {extensionWhitelist, validationCode} = api.getWhitelistObject();
+    formData.append("filter", extensionWhitelist);
+    formData.append("validationCode", validationCode);
     const url = getUrl(FILE_UPLOAD, true);
     
     return api.postFile(url, formData, trackProgress);

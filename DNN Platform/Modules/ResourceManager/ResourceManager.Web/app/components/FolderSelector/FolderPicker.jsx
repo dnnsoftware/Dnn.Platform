@@ -35,7 +35,7 @@ export default class FolderPicker extends React.Component {
         this.getFolders();
     }
 
-    componentWillUnmount(){   
+    componentWillUnmount() {   
         this.unmounted = true;
     }
 
@@ -54,7 +54,7 @@ export default class FolderPicker extends React.Component {
     }
 
     setFolders(result) {
-        if(this.unmounted){
+        if (this.unmounted) {
             return;
         }
         
@@ -68,14 +68,14 @@ export default class FolderPicker extends React.Component {
         this.setState({ folders: result.Tree });
     }
 
-    findNode(node, condition){
-        if(condition(node)){
+    findNode(node, condition) {
+        if (condition(node)) {
             return node;
         }
 
-        for(let i = 0; i < node.children.length; i++) {
+        for (let i = 0; i < node.children.length; i++) {
             let found = this.findNode(node.children[i], condition);
-            if(found !== null){
+            if (found !== null) {
                 return found;
             }
         }

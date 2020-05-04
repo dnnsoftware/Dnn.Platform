@@ -276,4 +276,7 @@
   <data name="GroupIconCantBeDeleted.Error" xml:space="preserve">
     <value>The Group Icon file can't be deleted.</value>
   </data>
+  <data name="InvalidExtensionMessage.Text" xml:space="preserve">
+    <value> is not of a type that is allowed to be uploaded</value>
+  </data>
 </root>

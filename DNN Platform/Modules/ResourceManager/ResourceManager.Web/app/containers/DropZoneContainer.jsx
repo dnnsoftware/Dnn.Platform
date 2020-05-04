@@ -3,13 +3,29 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DropZone from "react-dropzone";
 import addAssetPanelActions from "../actions/addAssetPanelActions";
+import api from "../globals/api";
 
 class DropZoneContainer extends React.Component {
     validateFile(file) {
-        const { maxUploadSize, maxFileUploadSizeHumanReadable, fileSizeError } = this.props;
+        const { maxUploadSize, maxFileUploadSizeHumanReadable, fileSizeError, invalidExtensionError } = this.props;
 
         if (file.size > maxUploadSize) {
             fileSizeError(file.name, maxFileUploadSizeHumanReadable);
+            return false;
+        }
+
+        const validExtensions = api.getWhitelistObject().extensionWhitelist.split(",");
+        const ext = file.name.substr(file.name.lastIndexOf(".") + 1);
+        let valid = false;
+        for (let i = 0; i < validExtensions.length; i++) {
+            const extension = validExtensions[i];
+            if (extension !== ext) continue;
+            valid = true;
+            break;
+        }
+
+        if (!valid) {
+            invalidExtensionError(file.name);
             return false;
         }
 
@@ -55,7 +71,8 @@ DropZoneContainer.propTypes = {
     trackProgress: PropTypes.func,
     maxUploadSize: PropTypes.number,
     maxFileUploadSizeHumanReadable: PropTypes.string,
-    fileSizeError: PropTypes.func
+    fileSizeError: PropTypes.func,
+    invalidExtensionError: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -76,7 +93,8 @@ function mapDispatchToProps(dispatch) {
             showPanel: addAssetPanelActions.showPanel,
             uploadFiles: addAssetPanelActions.uploadFiles,
             trackProgress: addAssetPanelActions.trackProgress,
-            fileSizeError: addAssetPanelActions.fileSizeError
+            fileSizeError: addAssetPanelActions.fileSizeError,
+            invalidExtensionError: addAssetPanelActions.invalidExtensionError
         }, dispatch)
     };
 }
