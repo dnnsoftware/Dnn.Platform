@@ -1,7 +1,6 @@
 import React, {PropTypes} from "react";
 import itemService from "../services/itemsService";
 import localizeService from "../services/localizeService";
-import Switch from "dnn-switch";
 
 const FileDetails = ({file, handlers, validationErrors}) => (
     <div className="item-details" >

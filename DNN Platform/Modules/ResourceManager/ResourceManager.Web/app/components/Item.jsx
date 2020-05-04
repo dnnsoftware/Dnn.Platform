@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 
-function truncateString(content, length){
-    if(typeof length === "undefined"){
+function truncateString(content, length) {
+    if (typeof length === "undefined") {
         length = 13;
     }
 

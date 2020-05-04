@@ -2,6 +2,8 @@ let tabId = -1;
 let moduleId = -1;
 let groupId = -1;
 let moduleName = "";
+let extensionWhitelist = "";
+let validationCode = "";
 
 const ANTIFORGERY_TOKEN_KEY = "__RequestVerificationToken";
 
@@ -135,6 +137,8 @@ const api = {
         moduleName = options.moduleName;
         tabId = options.tabId;
         groupId = options.groupId;
+        extensionWhitelist = options.extensionWhitelist;
+        validationCode = options.validationCode;
     },
 
     getAntiForgeryToken() {
@@ -234,8 +238,14 @@ const api = {
             tabId,
             groupId
         };
-
         return headersObject;
+    },
+    getWhitelistObject() {
+        const whitelistObject = {
+            extensionWhitelist,
+            validationCode
+        };
+        return whitelistObject;
     }
 };
 export default api;

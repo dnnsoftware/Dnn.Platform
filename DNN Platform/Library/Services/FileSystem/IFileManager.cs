@@ -2,6 +2,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
+using DotNetNuke.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -277,5 +278,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to download.</param>
         /// <param name="contentDisposition">Indicates how to display the document once downloaded.</param>
         void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition);
+
+        /// <summary>
+        /// Current user's file upload extension whitelist
+        /// </summary>
+        FileExtensionWhitelist WhiteList { get; }
     }
 }

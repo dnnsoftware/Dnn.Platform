@@ -19,6 +19,8 @@ using Dnn.Modules.ResourceManager.Components;
 using DnnExceptions = DotNetNuke.Services.Exceptions.Exceptions;
 using DotNetNuke.Common.Utilities;
 using Dnn.Modules.ResourceManager.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dnn.Modules.ResourceManager
 {
@@ -66,6 +68,33 @@ namespace Dnn.Modules.ResourceManager
                     id = Null.NullInteger;
                 _gid = id;
                 return _gid.Value;
+            }
+        }
+        private string _extensionWhitelist;
+        public string ExtensionWhitelist
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_extensionWhitelist))
+                {
+                    _extensionWhitelist = FileManager.Instance.WhiteList.ToStorageString();
+                }
+                return _extensionWhitelist;
+            }
+        }
+        private string _validationCode;
+        public string ValidationCode
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_validationCode))
+                {
+                    var parameters = new List<object>() { ExtensionWhitelist.Split(',').Select(i => i.Trim()).ToList() };
+                    parameters.Add(PortalSettings.PortalId);
+                    parameters.Add(PortalSettings.UserInfo.UserID);
+                    _validationCode = ValidationUtils.ComputeValidationCode(parameters);
+                }
+                return _validationCode;
             }
         }
 

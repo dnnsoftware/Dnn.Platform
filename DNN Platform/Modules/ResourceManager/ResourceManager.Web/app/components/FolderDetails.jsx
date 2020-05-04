@@ -1,8 +1,6 @@
 import React, {PropTypes} from "react";
-import Switch from "dnn-switch";
 import localizeService from "../services/localizeService";
 import itemsService from "../services/itemsService";
-import DropDown from "dnn-dropdown";
 
 const FolderDetails = ({folder, handlers, validationErrors}) => (
     <div className="item-details">

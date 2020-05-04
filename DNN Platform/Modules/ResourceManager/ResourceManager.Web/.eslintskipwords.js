@@ -156,5 +156,7 @@ module.exports = [
     "vnd",
     "noellipsis",
     "hostname",
-    "popstate"
+    "popstate",
+    "whitelist",
+    "substr"
 ];

@@ -114,6 +114,11 @@ const addAssetPanelActions = {
         const fileTooBigMessage = LocalizeService.getString("FileSizeErrorMessage");
         return dispatch =>
             dispatch(fileUploadError(fileName, fileName + fileTooBigMessage + maxSize));
+    },
+    invalidExtensionError(fileName) {
+        const invalidExtensionMessage = LocalizeService.getString("InvalidExtensionMessage");
+        return dispatch =>
+            dispatch(fileUploadError(fileName, fileName + invalidExtensionMessage));
     }
 /*,
     startUpload() {
