@@ -38,9 +38,9 @@
             var markup = '<div class="dnnSearchBox">';
             var advancedEnabled = this.options.showAdvanced && this.options.advancedId && $('#' + this.options.advancedId).length;
             if (advancedEnabled) {
-                markup += '<span class="dnnSearchBox_advanced_query" /><a class="dnnSearchBoxClearAdvanced"></a>';
+                markup += '<span class="dnnSearchBox_advanced_query"></span><a class="dnnSearchBoxClearAdvanced"></a>';
             }
-            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search" />' +
+            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search"></input>' +
                             '<a class="dnnSearchBoxClearText"></a>';
 
             markup += '<a class="dnnSearchButton"></a>';
