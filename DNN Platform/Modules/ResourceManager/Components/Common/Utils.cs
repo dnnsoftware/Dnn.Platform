@@ -4,19 +4,19 @@
 
 using System;
 using System.ComponentModel;
-using System.Reflection;
 using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.Modules.ResourceManager.Components.Common
 {
     public class Utils
     {
-        public static string GetEnumDescription(Enum clickBehaviour)
+        public static string GetEnumDescription(Enum enumValue)
         {
-            FieldInfo fi = clickBehaviour.GetType().GetField(clickBehaviour.ToString());
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            return attributes[0].Description;
+            var fi = enumValue.GetType().GetField(enumValue.ToString());
+            var descriptionAttributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            if (descriptionAttributes.Length > 0)
+                return descriptionAttributes[0].Description;
+            return enumValue.ToString();
         }
 
         public static int GetFolderGroupId(int folderId)
