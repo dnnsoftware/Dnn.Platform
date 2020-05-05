@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Web.Caching;
 using System.Xml;
-using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
@@ -20,14 +19,16 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
-        #region Overrides of ServiceLocator
 
+        /// <summary>
+        /// Provides a method to override Service Locator's GetFactory method
+        /// </summary>
+        /// <returns></returns>
         protected override Func<ILocalizationController> GetFactory()
         {
             return () => new LocalizationControllerImpl();
         }
 
-        #endregion
 
         public string CultureName => Instance.CultureName;
 
@@ -45,8 +46,8 @@ namespace Dnn.Modules.ResourceManager.Components
 
         class LocalizationControllerImpl : ILocalizationController
         {
-            public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
-            public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
+            private static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
+            private static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
             public string CultureName
             {

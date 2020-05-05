@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
@@ -17,22 +16,15 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class ThumbnailsManager : ServiceLocator<IThumbnailsManager, ThumbnailsManager>, IThumbnailsManager
     {
-        #region Members
-
         private const int DefaultMaxWidth = 320;
         private const int DefaultMaxHeight = 240;
         private readonly IFileManager _fileManager;
 
-        #endregion
-
-        #region Constructors
 
         public ThumbnailsManager()
         {
             _fileManager = FileManager.Instance;
         }
-
-        #endregion
 
 
         public string DefaultContentType => "image/png";
@@ -129,6 +121,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
         #region Private Methods
 
+        //TODO: Correct below to proper US English
         private int GetMinorSizeValue(int thumbnailMayorSize, int imageMayorSize, int imageMinorSize)
         {
             if (thumbnailMayorSize == imageMayorSize)

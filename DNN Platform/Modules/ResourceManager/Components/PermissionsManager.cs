@@ -15,15 +15,10 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class PermissionsManager : ServiceLocator<IPermissionsManager, PermissionsManager>, IPermissionsManager
     {
-        #region Private Members
 
         private readonly IFolderManager _folderManager;
         private readonly IRoleController _roleController;
         private readonly IUserController _userController;
-
-        #endregion
-
-        #region Constructors
 
         public PermissionsManager()
         {
@@ -32,7 +27,6 @@ namespace Dnn.Modules.ResourceManager.Components
             _userController = UserController.Instance;
         }
 
-        #endregion
 
         public bool HasFolderContentPermission(int folderId, int moduleMode)
         {

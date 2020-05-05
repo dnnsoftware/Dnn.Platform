@@ -35,7 +35,6 @@ namespace Dnn.Modules.ResourceManager.Components
         #region Localization
 
         internal const string LocalizationDataCacheKey = "LocalizationLocTable:{0}:{1}";
-        internal const string LocalizationDataModifiedDateCacheKey = "LocalizationDataModifiedDate:{0}";
 
         public const string GroupIconCantBeDeletedKey = "GroupIconCantBeDeleted.Error";
         public const string UserHasNoPermissionToDownloadKey = "UserHasNoPermissionToDownload.Error";
@@ -47,12 +46,12 @@ namespace Dnn.Modules.ResourceManager.Components
 
         #region Module settings
 
-        public const string AddFileContentType = "File";
         public const string HomeFolderSettingName = "RM_HomeFolder";
         public const string ModeSettingName = "RM_Mode";
 
         public const int ItemsPerPage = 20;
         public const int ItemWidth = 176;
+
         public enum ModuleModes
         {
             [Description("Normal")]

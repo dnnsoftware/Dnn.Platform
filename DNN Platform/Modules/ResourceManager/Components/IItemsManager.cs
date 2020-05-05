@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 using System.IO;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.FileSystem;
 using Dnn.Modules.ResourceManager.Services.Dto;

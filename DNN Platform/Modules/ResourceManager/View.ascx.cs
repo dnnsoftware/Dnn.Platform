@@ -16,19 +16,6 @@ using System.Linq;
 
 namespace Dnn.Modules.ResourceManager
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The View class displays the content
-    /// 
-    /// Typically your view control would be used to display content or functionality in your module.
-    /// 
-    /// View may be the only control you have in your project depending on the complexity of your module
-    /// 
-    /// Because the control inherits from ResourceManagerModuleBase you have access to any custom properties
-    /// defined there, as well as properties from DNN such as PortalId, ModuleId, TabId, UserId and many more.
-    /// 
-    /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class View : PortalModuleBase
     {
         private readonly string _bundleJsPath;
@@ -40,8 +27,7 @@ namespace Dnn.Modules.ResourceManager
             {
                 if (!_folderId.HasValue)
                 {
-                    int id;
-                    if (int.TryParse(Request.QueryString["folderId"], out id))
+                    if (int.TryParse(Request.QueryString["folderId"], out var id))
                     {
                         _folderId = id;
                     }
@@ -55,8 +41,7 @@ namespace Dnn.Modules.ResourceManager
             {
                 if (_gid.HasValue) return _gid.Value;
 
-                int id;
-                if (!int.TryParse(Request.QueryString["groupid"], out id))
+                if (!int.TryParse(Request.QueryString["groupid"], out var id))
                     id = Null.NullInteger;
                 _gid = id;
                 return _gid.Value;

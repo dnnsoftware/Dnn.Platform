@@ -14,26 +14,18 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class SettingsManager
     {
-        #region Private Properties
-
         private readonly Hashtable _moduleSettingsDictionary;
         private readonly int _groupId;
-
-        #endregion
-
-        #region Public Properties
 
         public int HomeFolderId { get; set; }
         public int Mode { get; set; }
 
-        #endregion
 
         public SettingsManager(int moduleId, int groupId)
         {
             _groupId = groupId;
             var moduleController = new ModuleController();
             var module = moduleController.GetModule(moduleId);
-
             _moduleSettingsDictionary = module.ModuleSettings;
 
             LoadSettings();
