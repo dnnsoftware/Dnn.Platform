@@ -36,7 +36,6 @@ namespace Dnn.Modules.ResourceManager.Services
     public class ItemsController : DnnApiController
     {
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
         {
             ContentPage p;
@@ -67,7 +66,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage ThumbnailDownLoad([FromUri] ThumbnailDownloadRequest item)
         {
             var file = FileManager.Instance.GetFile(item.FileId);
@@ -85,7 +83,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage Download(int fileId, bool forceDownload)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -227,7 +224,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage SaveFileDetails(FileDetailsRequest fileDetails)
         {
             var file = FileManager.Instance.GetFile(fileDetails.FileId);
@@ -249,7 +245,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetFolderDetails(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
@@ -278,7 +273,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage SaveFolderDetails(FolderDetailsRequest folderDetails)
         {
             var folder = FolderManager.Instance.GetFolder(folderDetails.FolderId);
@@ -299,7 +293,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetSortOptions()
         {
             var sortOptions = new []
