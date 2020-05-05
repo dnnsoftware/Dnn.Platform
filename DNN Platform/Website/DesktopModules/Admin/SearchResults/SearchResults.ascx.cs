@@ -210,9 +210,9 @@ namespace DotNetNuke.Modules.SearchResults
                     foreach (SearchContentSource contentSource in list)
                     {
                         if (configuredList == null ||
-                            configuredList.Any(l => l.Contains(contentSource.LocalizedName)))
+                            configuredList.Any(l => l.Equals(contentSource.LocalizedName)))
                         {
-                            if (!_searchContentSources.Contains(contentSource.LocalizedName))
+                            if (!_searchContentSources.Equals(contentSource.LocalizedName))
                             {
                                 _searchContentSources.Add(contentSource.LocalizedName);
                             }
