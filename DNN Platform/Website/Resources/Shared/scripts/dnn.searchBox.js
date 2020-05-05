@@ -40,7 +40,7 @@
             if (advancedEnabled) {
                 markup += '<span class="dnnSearchBox_advanced_query"></span><a class="dnnSearchBoxClearAdvanced"></a>';
             }
-            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search"></input>' +
+            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search" />' +
                             '<a class="dnnSearchBoxClearText"></a>';
 
             markup += '<a class="dnnSearchButton"></a>';
