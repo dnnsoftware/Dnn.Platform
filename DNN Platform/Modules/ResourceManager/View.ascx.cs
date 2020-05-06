@@ -1,14 +1,6 @@
-﻿/*
-' Copyright (c) 2017  DNN Software, Inc.
-'  All rights reserved.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-' 
-*/
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 using System;
 using DotNetNuke.Entities.Modules;
@@ -24,19 +16,6 @@ using System.Linq;
 
 namespace Dnn.Modules.ResourceManager
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The View class displays the content
-    /// 
-    /// Typically your view control would be used to display content or functionality in your module.
-    /// 
-    /// View may be the only control you have in your project depending on the complexity of your module
-    /// 
-    /// Because the control inherits from ResourceManagerModuleBase you have access to any custom properties
-    /// defined there, as well as properties from DNN such as PortalId, ModuleId, TabId, UserId and many more.
-    /// 
-    /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class View : PortalModuleBase
     {
         private readonly string _bundleJsPath;
@@ -48,8 +27,7 @@ namespace Dnn.Modules.ResourceManager
             {
                 if (!_folderId.HasValue)
                 {
-                    int id;
-                    if (int.TryParse(Request.QueryString["folderId"], out id))
+                    if (int.TryParse(Request.QueryString["folderId"], out var id))
                     {
                         _folderId = id;
                     }
@@ -63,8 +41,7 @@ namespace Dnn.Modules.ResourceManager
             {
                 if (_gid.HasValue) return _gid.Value;
 
-                int id;
-                if (!int.TryParse(Request.QueryString["groupid"], out id))
+                if (!int.TryParse(Request.QueryString["groupid"], out var id))
                     id = Null.NullInteger;
                 _gid = id;
                 return _gid.Value;

@@ -1,14 +1,6 @@
-﻿/*
-' Copyright (c) 2017 DNN Software, Inc.
-'  All rights reserved.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-' 
-*/
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 using System;
 using System.ComponentModel;
@@ -43,7 +35,6 @@ namespace Dnn.Modules.ResourceManager.Components
         #region Localization
 
         internal const string LocalizationDataCacheKey = "LocalizationLocTable:{0}:{1}";
-        internal const string LocalizationDataModifiedDateCacheKey = "LocalizationDataModifiedDate:{0}";
 
         public const string GroupIconCantBeDeletedKey = "GroupIconCantBeDeleted.Error";
         public const string UserHasNoPermissionToDownloadKey = "UserHasNoPermissionToDownload.Error";
@@ -55,12 +46,12 @@ namespace Dnn.Modules.ResourceManager.Components
 
         #region Module settings
 
-        public const string AddFileContentType = "File";
         public const string HomeFolderSettingName = "RM_HomeFolder";
         public const string ModeSettingName = "RM_Mode";
 
         public const int ItemsPerPage = 20;
         public const int ItemWidth = 176;
+
         public enum ModuleModes
         {
             [Description("Normal")]

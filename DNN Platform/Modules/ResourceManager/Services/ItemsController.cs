@@ -1,14 +1,6 @@
-﻿/*
-' Copyright (c) 2017  DNN Software, Inc.
-'  All rights reserved.
-' 
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-' TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-' THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-' DEALINGS IN THE SOFTWARE.
-' 
-*/
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 using System;
 using System.IO;
@@ -20,10 +12,7 @@ using System.Web;
 using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Web.Api;
@@ -47,7 +36,6 @@ namespace Dnn.Modules.ResourceManager.Services
     public class ItemsController : DnnApiController
     {
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
         {
             ContentPage p;
@@ -60,7 +48,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
-
                 folder = new
                 {
                     folderId = p.Folder.FolderID,
@@ -79,14 +66,14 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage ThumbnailDownLoad([FromUri] ThumbnailDownloadRequest item)
         {
             var file = FileManager.Instance.GetFile(item.FileId);
-            if (file == null)
+            if (file == null || !PermissionsManager.Instance.HasGetFileContentPermission(file.FolderId))
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, new {Message = "File doesn't exist."});
             }
+
             var thumbnailsManager = ThumbnailsManager.Instance;
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             var thumbnail = thumbnailsManager.GetThumbnailContent(file, item.Width, item.Height, true);
@@ -96,13 +83,10 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage Download(int fileId, bool forceDownload)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
-            string fileName;
-            string contentType;
-            var streamContent = ItemsManager.Instance.GetFileContent(fileId, out fileName, out contentType);
+            var streamContent = ItemsManager.Instance.GetFileContent(fileId, out var fileName, out var contentType);
             result.Content = new StreamContent(streamContent);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
             result.Content.Headers.ContentDisposition =
@@ -156,7 +140,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage DeleteFolder(DeleteFolderRequest request)
         {
             var groupId = FindGroupId(Request);
@@ -169,7 +152,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage DeleteFile(DeleteFileRequest request)
         {
             var groupId = FindGroupId(Request);
@@ -222,15 +204,8 @@ namespace Dnn.Modules.ResourceManager.Services
                     new {message = LocalizationHelper.GetString("UserHasNoPermissionToReadFileProperties.Error")});
             }
 
-            var termController = new TermController();
-            var terms = file.ContentItemID == Null.NullInteger ? new string[] {}
-                : termController.GetTermsByContent(file.ContentItemID).Select(t => HttpUtility.HtmlDecode(t.Name)).ToArray();
-
             var createdBy = file.CreatedByUser(PortalSettings.PortalId);
             var lastModifiedBy = file.LastModifiedByUser(PortalSettings.PortalId);
-
-            var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
-            var userId = currentUserInfo.UserID;
 
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -249,7 +224,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage SaveFileDetails(FileDetailsRequest fileDetails)
         {
             var file = FileManager.Instance.GetFile(fileDetails.FileId);
@@ -271,7 +245,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetFolderDetails(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
@@ -284,10 +257,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var createdBy = folder.CreatedByUser(PortalSettings.PortalId);
             var lastModifiedBy = folder.LastModifiedByUser(PortalSettings.PortalId);
-
-            var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
-            var userId = currentUserInfo.UserID;
-
+            
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 folderId = folder.FolderID,
@@ -303,7 +273,6 @@ namespace Dnn.Modules.ResourceManager.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public HttpResponseMessage SaveFolderDetails(FolderDetailsRequest folderDetails)
         {
             var folder = FolderManager.Instance.GetFolder(folderDetails.FolderId);
@@ -324,7 +293,6 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage GetSortOptions()
         {
             var sortOptions = new []

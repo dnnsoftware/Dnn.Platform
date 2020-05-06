@@ -1,10 +1,13 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -22,8 +25,6 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class ItemsManager : ServiceLocator<IItemsManager, ItemsManager>, IItemsManager
     {
-        #region Members
-
         private const int MaxDescriptionLength = 500;
         private readonly IContentController _contentController;
         private readonly IRoleController _roleController;
@@ -31,9 +32,6 @@ namespace Dnn.Modules.ResourceManager.Components
         private readonly IAssetManager _assetManager;
         private readonly IPermissionsManager _permissionsManager;
 
-        #endregion
-
-        #region Constructors
 
         public ItemsManager()
         {
@@ -43,8 +41,6 @@ namespace Dnn.Modules.ResourceManager.Components
             _assetManager = AssetManager.Instance;
             _permissionsManager = PermissionsManager.Instance;
         }
-
-        #endregion
 
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, int moduleMode)
         {
@@ -128,17 +124,13 @@ namespace Dnn.Modules.ResourceManager.Components
         public void SaveFolderDetails(IFolderInfo folder, FolderDetailsRequest folderDetails)
         {
             _assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
-
-            var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
         }
 
         public void DeleteFile(int fileId, int moduleMode, int groupId)
         {
             var file = FileManager.Instance.GetFile(fileId);
             if (file == null)
-            {
-                throw new NotFoundException("File doesn't exist.");
-            }
+                return;
 
             if (moduleMode == (int) Constants.ModuleModes.Group && IsGroupIcon(file))
             {
@@ -157,9 +149,7 @@ namespace Dnn.Modules.ResourceManager.Components
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
             if (folder == null)
-            {
-                throw new NotFoundException("Folder doesn't exist.");
-            }
+                return;
 
             if (!_permissionsManager.HasDeletePermission(moduleMode, folderId))
             {
@@ -183,27 +173,6 @@ namespace Dnn.Modules.ResourceManager.Components
             var portalId = PortalSettings.Current.PortalId;
             var role = _roleController.GetRoleById(portalId, groupId);
             return role?.IconFile?.Substring(7) == file.FileId.ToString();
-        }
-
-        private ContentItem CreateFileContentItem(string contentType)
-        {
-            var typeController = new ContentTypeController();
-            var contentTypeFile = (from t in typeController.GetContentTypes() where t.ContentType == contentType select t).SingleOrDefault();
-
-            if (contentTypeFile == null)
-            {
-                contentTypeFile = new ContentType { ContentType = contentType };
-                contentTypeFile.ContentTypeId = typeController.AddContentType(contentTypeFile);
-            }
-
-            var objContent = new ContentItem
-            {
-                ContentTypeId = contentTypeFile.ContentTypeId,
-                Indexed = false,
-            };
-
-            objContent.ContentItemId = _contentController.AddContentItem(objContent);
-            return objContent;
         }
 
         #endregion

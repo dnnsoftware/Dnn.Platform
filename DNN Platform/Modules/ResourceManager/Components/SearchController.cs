@@ -1,31 +1,20 @@
-﻿#region Copyright
-
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// All Rights Reserved
-
-#endregion
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.Modules.ResourceManager.Exceptions;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
 
 namespace Dnn.Modules.ResourceManager.Components
 {
     public class SearchController : ComponentBase<ISearchController, SearchController>, ISearchController
     {
-        private const string SearchSourceKey = "SearchSource";
-        private const string SearchSourceName = "DigitalAssets";
         private readonly IPermissionsManager _permissionsManager;
 
         public SearchController()
@@ -43,12 +32,11 @@ namespace Dnn.Modules.ResourceManager.Components
                 throw new FolderPermissionNotMetException(noPermissionMessage);
             }
 
-            string cleanedKeywords;
             search = (search ?? string.Empty).Trim();
 
             // Lucene does not support wildcards as the beginning of the search
             // For file names we can remove any existing wildcard at the beginning
-            cleanedKeywords = TrimStartWildCards(search);
+            var cleanedKeywords = TrimStartWildCards(search);
 
             var files = FolderManager.Instance.SearchFiles(folder, cleanedKeywords, recursive);
             var sortProperties = SortProperties.Parse(sorting);

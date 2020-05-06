@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+using System;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -11,15 +15,10 @@ namespace Dnn.Modules.ResourceManager.Components
 {
     public class PermissionsManager : ServiceLocator<IPermissionsManager, PermissionsManager>, IPermissionsManager
     {
-        #region Private Members
 
         private readonly IFolderManager _folderManager;
         private readonly IRoleController _roleController;
         private readonly IUserController _userController;
-
-        #endregion
-
-        #region Constructors
 
         public PermissionsManager()
         {
@@ -28,7 +27,6 @@ namespace Dnn.Modules.ResourceManager.Components
             _userController = UserController.Instance;
         }
 
-        #endregion
 
         public bool HasFolderContentPermission(int folderId, int moduleMode)
         {
