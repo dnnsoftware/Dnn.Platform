@@ -27,7 +27,7 @@ jobs:
       with:
         commit-message: Updates versions as per release candidate creation
         title: Updates versions as per release candidate creation
-        body: This is a release managemnt task and we are self-approving it for that reason.
+        body: This is a release management task and we are self-approving it for that reason.
         # A comma separated list of labels.
         labels: 'Type: Build/Release'
         # The pull request branch name.
