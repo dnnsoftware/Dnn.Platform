@@ -16,7 +16,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany(".NET Foundation")]
 [assembly: AssemblyProduct("https://dnncommunity.org")]
-[assembly: AssemblyCopyright("DNN Platform is copyright 2002-2019 by .NET Foundation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DNN Platform is copyright 2002-2020 by .NET Foundation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
 [assembly: AssemblyVersion("9.4.4")]
 [assembly: AssemblyFileVersion("9.4.4.5")]
