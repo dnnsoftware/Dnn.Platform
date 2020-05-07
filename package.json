@@ -1,6 +1,6 @@
 {
   "name": "dnn-platform",
-  "version": "1.0.0",
+  "version": "9.6.1",
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
