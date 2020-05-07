@@ -1,1 +1,1 @@
-There are no release notes for this version of DotNetNuke Professional Edition
+There are no release notes for this version of DNN Platform.
