@@ -5,11 +5,11 @@ on: create
 jobs:
   updateVersions:
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
     steps:
     - uses: actions/checkout@v2
 
     - name: Get the release branch version
-      if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
       uses: valadas/get-release-branch-version@v1
       id: branchVersion
       
