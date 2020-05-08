@@ -1,0 +1,4 @@
+DNN Platform/Components/Microsoft.*/**/*.dnn
+DNN Platform/Components/Newtonsoft/*.dnn
+DNN Platform/JavaScript Libraries/**/*.dnn
+Temp/**/*.dnn
