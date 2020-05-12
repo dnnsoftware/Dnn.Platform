@@ -68,10 +68,12 @@ namespace DotNetNuke.Entities.Modules.Settings
                     if (attribute is ModuleSettingAttribute)
                     {
                         _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                        moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is TabModuleSettingAttribute)
                     {
                         _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                        moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is PortalSettingAttribute)
                     {
