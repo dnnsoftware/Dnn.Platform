@@ -126,6 +126,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 ComplexProperty = complexValue,
             };
 
+            MockModuleSettings(moduleInfo, new Hashtable());
             MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "StringProperty", stringValue));
             MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "IntegerProperty", integerValue.ToString()));
             MockModuleController.Setup(mc => mc.UpdateModuleSetting(ModuleId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture)));
@@ -151,6 +152,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             var moduleInfo = GetModuleInfo;
             var settings = new ModulesSettings();
 
+            MockModuleSettings(moduleInfo, new Hashtable());
             MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new ModulesSettingsRepository();
 
