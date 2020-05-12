@@ -1,0 +1,42 @@
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databseOwner}.[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_MetaDataID')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_MetaData_MetaDataID] ON {databaseOwner}.[{objectQualifier}ContentItems_MetaData]
+(
+	[ContentItemID] ASC,
+	[MetaDataID] ASC
+)
+INCLUDE([MetaDataValue])
+GO
+
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}.[{objectQualifier}Files]') AND name = N'IX_{objectQualifier}Files_FolderId_FileName')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Files_FolderId_FileName] ON {databaseOwner}.[{objectQualifier}Files]
+(
+	[FolderID] ASC,
+	[FileName] ASC
+)
+INCLUDE([ContentItemID],[ContentType],[CreatedByUserID],[CreatedOnDate],[EnablePublishPeriod],[EndDate],[Extension],[FileId],[Height],[LastModificationTime],[LastModifiedByUserID],[LastModifiedOnDate],[PortalId],[PublishedVersion],[SHA1Hash],[Size],[StartDate],[Title],[UniqueId],[VersionGuid],[Width])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}.[{objectQualifier}ModulePermission]') AND name = N'IX_{objectQualifier}ModulePermission_Portal')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ModulePermission_Portal] ON {databaseOwner}.[{objectQualifier}ModulePermission]
+(
+	[PortalID] ASC
+)
+INCLUDE([AllowAccess],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate],[ModuleID],[ModulePermissionID],[PermissionID],[RoleID],[UserID])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}.[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_Status_EffectiveDate')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_Status_EffectiveDate] ON {databaseOwner}.[{objectQualifier}UserRoles]
+(
+	[Status] ASC,
+	[EffectiveDate] ASC
+)
+INCLUDE([ExpiryDate],[RoleID])
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}.[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_PasswordResetToken')
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_PasswordResetToken] ON {databaseOwner}.[{objectQualifier}Users]
+(
+	[PasswordResetToken] ASC
+)
+GO
