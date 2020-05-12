@@ -1,4 +1,4 @@
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databseOwner}[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_MetaDataID')
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_MetaDataID')
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_MetaData_MetaDataID] ON {databaseOwner}[{objectQualifier}ContentItems_MetaData]
 (
 	[ContentItemID] ASC,
