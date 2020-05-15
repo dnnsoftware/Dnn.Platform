@@ -29,6 +29,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.UI.WebControls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -139,6 +140,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         fileId = favIcon.FileId,
                         folderId = favIcon.FolderId
                     } : null,
+                    new DnnFileUploadOptions().ValidationCode,
                     IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, new
