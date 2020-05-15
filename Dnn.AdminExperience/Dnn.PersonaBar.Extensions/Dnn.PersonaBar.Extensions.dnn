@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="09.04.04">
+        <package name="Dnn.PersonaBar.Extensions" type="PersonaBar" version="09.06.01">
             <friendlyName>Dnn.PersonaBar.Extensions</friendlyName>
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
@@ -284,7 +284,18 @@
                     <order>40</order>
                   </menu>
                 </component>
-                <component type="PersonaBarMenu">
+              <component type="PersonaBarMenu">
+                <menu>
+                  <identifier>Dnn.SiteGroups</identifier>
+                  <moduleName>SiteGroups</moduleName>
+                  <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Extensions</controller>
+                  <resourceKey>nav_SiteGroups</resourceKey>
+                  <path>SiteGroups</path>
+                  <parent>Manage</parent>
+                  <order>45</order>
+                </menu>
+              </component>
+              <component type="PersonaBarMenu">
                   <menu>
                     <identifier>Dnn.Seo</identifier>
                     <moduleName>Seo</moduleName>

@@ -254,6 +254,11 @@
     <Compile Include="Components\Servers\Log\LogController.cs" />
     <Compile Include="Components\Servers\PerformanceSettings\PerformanceController.cs" />
     <Compile Include="Components\Servers\WebServer\ServerInfo.cs" />
+    <Compile Include="Components\SiteGroups\IManagePortalGroups.cs" />
+    <Compile Include="Components\SiteGroups\Models\PortalGroupInfo.cs" />
+    <Compile Include="Components\SiteGroups\Models\PortalInfo.cs" />
+    <Compile Include="Components\SiteGroups\PortalGroupAdapter.cs" />
+    <Compile Include="Components\SiteGroups\SiteGroups.cs" />
     <Compile Include="Components\SiteImportExport\Constants.cs" />
     <Compile Include="Components\SiteImportExport\SiteImportExportController.cs" />
     <Compile Include="Components\SiteSettings\Constants\Constants.cs" />
@@ -450,6 +455,7 @@
     <Compile Include="Services\ServerSettingsPerformanceController.cs" />
     <Compile Include="Services\ServerSettingsSmtpAdminController.cs" />
     <Compile Include="Services\ServerSettingsSmtpHostController.cs" />
+    <Compile Include="Services\SiteGroupsController.cs" />
     <Compile Include="Services\SiteImportExportController.cs" />
     <Compile Include="Services\SitesController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
@@ -520,6 +526,9 @@
     <Content Include="admin\personaBar\Dnn.Servers\scripts\bundles\servers-bundle.js" />
     <Content Include="admin\personaBar\Dnn.Servers\scripts\Servers.js" />
     <Content Include="admin\personaBar\Dnn.Servers\Servers.html" />
+    <Content Include="admin\personaBar\Dnn.SiteGroups\css\SiteGroups.css" />
+    <Content Include="admin\personaBar\Dnn.SiteGroups\scripts\SiteGroups.js" />
+    <Content Include="admin\personaBar\Dnn.SiteGroups\SiteGroups.html" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\css\SiteImportExport.css" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\bundles\siteimportexport-bundle.js" />
     <Content Include="admin\personaBar\Dnn.SiteImportExport\scripts\SiteImportExport.js" />
@@ -638,6 +647,7 @@
     <Content Include="admin\personaBar\Dnn.SqlConsole\App_LocalResources\SqlConsole.resx" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\App_LocalResources\TaskScheduler.resx" />
     <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
+    <Content Include="admin\personaBar\Dnn.SiteGroups\App_LocalResources\SiteGroups.resx" />
     <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
     <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
     <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />
@@ -722,6 +732,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="admin\personaBar\Dnn.SiteGroups\scripts\bundles\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

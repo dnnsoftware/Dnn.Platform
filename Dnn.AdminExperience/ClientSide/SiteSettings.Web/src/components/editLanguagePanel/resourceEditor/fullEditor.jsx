@@ -59,7 +59,7 @@ class FullEditor extends Component {
                                             data-role={button} 
                                             href='#'
                                             onClick={this.execCommand.bind(this, button)}
-                                            dangerouslySetInnerHTML={{ __html: require("./icons/" + button + ".svg") }}
+                                            dangerouslySetInnerHTML={{ __html: require("./icons/" + button + ".svg").default }}
                                             key={i}>
                                         </a>
                                     );

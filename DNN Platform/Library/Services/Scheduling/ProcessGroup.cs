@@ -8,8 +8,9 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Web.Compilation;
-
+using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
+using Microsoft.Extensions.DependencyInjection;
 
 #endregion
 
@@ -61,12 +62,14 @@ namespace DotNetNuke.Services.Scheduling
 
         public void Run(ScheduleHistoryItem objScheduleHistoryItem)
         {
+            IServiceScope serviceScope = null;
             SchedulerClient Process = null;
             try
             {
                 //This is called from RunPooledThread()
                 ticksElapsed = Environment.TickCount - ticksElapsed;
-                Process = GetSchedulerClient(objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
+                serviceScope = Globals.DependencyProvider.CreateScope();
+                Process = GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
                 
 				//Set up the handlers for the CoreScheduler
@@ -147,6 +150,8 @@ namespace DotNetNuke.Services.Scheduling
             }
             finally
             {
+                serviceScope?.Dispose();
+
                 //Track how many processes have completed for
                 //this instanciation of the ProcessGroup
                 numberOfProcessesInQueue -= 1;
@@ -154,22 +159,12 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        private SchedulerClient GetSchedulerClient(string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
+        private SchedulerClient GetSchedulerClient(IServiceProvider services, string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
         {
             //This is a method to encapsulate returning
             //an object whose class inherits SchedulerClient.
             Type t = BuildManager.GetType(strProcess, true, true);
-            var param = new ScheduleHistoryItem[1];
-            param[0] = objScheduleHistoryItem;
-            var types = new Type[1];
-            
-			//Get the constructor for the Class
-            types[0] = typeof (ScheduleHistoryItem);
-            ConstructorInfo objConstructor;
-            objConstructor = t.GetConstructor(types);
-            
-			//Return an instance of the class as an object
-            return (SchedulerClient) objConstructor.Invoke(param);
+            return (SchedulerClient)ActivatorUtilities.CreateInstance(services, t, objScheduleHistoryItem);
         }
 
         //This subroutine is callback for Threadpool.QueueWorkItem.  This is the necessary

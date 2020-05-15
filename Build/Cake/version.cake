@@ -6,12 +6,7 @@ var buildId = EnvironmentVariable("BUILD_BUILDID") ?? "0";
 var buildNumber = "";
 var productVersion = "";
 
-var unversionedManifests = new string[] {
-  "DNN Platform/Components/Microsoft.*/**/*.dnn",
-  "DNN Platform/Components/Newtonsoft/*.dnn",
-  "DNN Platform/JavaScript Libraries/**/*.dnn",
-  "Temp/**/*.dnn"
-};
+var unversionedManifests = FileReadLines("./Build/Cake/unversionedManifests.txt");
 
 Task("BuildServerSetVersion")
   .IsDependentOn("SetVersion")

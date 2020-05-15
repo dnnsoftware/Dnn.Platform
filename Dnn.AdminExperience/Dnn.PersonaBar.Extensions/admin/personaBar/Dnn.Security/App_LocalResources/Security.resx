@@ -679,7 +679,7 @@
     <value>Maximum upload size must be between 12 and {0}</value>
   </data>
   <data name="plFileExtensions.Help" xml:space="preserve">
-    <value>Enter the file extensions (separated by commas) that can be uploaded to the site.</value>
+    <value>Enter the file extensions (separated by commas) that can be uploaded to the site by site administrators.</value>
   </data>
   <data name="plFileExtensions.Text" xml:space="preserve">
     <value>Allowable File Extensions:</value>
@@ -814,7 +814,7 @@
     <value>Username</value>
   </data>
   <data name="CheckBiographyFailure.Text" xml:space="preserve">
-    <value>The field is richtext. Spammers may put links to their website in their biography field. The field type can be changed in Settings -> Site Settings -> Site Behavior -> User Profiles</value>
+    <value>The field is richtext. Spammers may put links to their website in their biography field. The field type can be changed in Settings -&gt; Site Settings -&gt; Site Behavior -&gt; User Profiles</value>
   </data>
   <data name="CheckBiographyReason.Text" xml:space="preserve">
     <value>The biography field is a common target for spammers as they can add links/html to it. In DNN 7.2.0 this was changed to a multiline textbox which removes this risk.</value>
@@ -1155,5 +1155,11 @@
   </data>
   <data name="plForceLogOutAfterPasswordChanged.Help" xml:space="preserve">
     <value>Force user logout in other browsers after the user's password has been changed.</value>
+  </data>
+  <data name="plDefaultEndUserExtensionWhitelist.Help" xml:space="preserve">
+    <value>Default list of file extensions end users are allowed to upload. Admin users can override this but they can never allow more file types than those set in the master list above. Note this list will be filtered by the list above when saving.</value>
+  </data>
+  <data name="plDefaultEndUserExtensionWhitelist.Text" xml:space="preserve">
+    <value>Default End User Extension Whitelist</value>
   </data>
 </root>

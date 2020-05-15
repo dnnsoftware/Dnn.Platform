@@ -7,7 +7,7 @@ assignees: dnnsoftware/triage
 <!-- 
   If you need community support or would like to solicit a Request for Comments (RFC), please post to the DNN Community forums at https://dnncommunity.org/forums for now.  In the future, we are planning to implement a more robust solution for cultivating new ideas and nuturing these from concept to creation.  We will update this template when this solution is generally available.  In the meantime, we appreciate your patience as we endeavor to streamline our GitHub focus and efforts.
   
-  Please read the CONTRIBUTING guidelines at https://github.com/dnnsoftware/Dnn.Platform/blob/development/CONTRIBUTING.md prior to submitting an issue.
+  Please read the CONTRIBUTING guidelines at https://github.com/dnnsoftware/Dnn.Platform/blob/develop/CONTRIBUTING.md prior to submitting an issue.
 
   Any potential security issues SHOULD NOT be posted on GitHub.  Instead, please send an email to security@dnnsoftware.com.
 -->
@@ -40,10 +40,9 @@ Provide any additional context that may be helpful in understanding and/or resol
 <!-- 
 Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
 -->
-* [ ] 10.0.0 alpha build
-* [ ]  9.5.1 alpha build
-* [ ]  9.5.0 latest supported release
-* [ ]  9.4.4 
+* [ ] 10.00.00 alpha build
+* [ ] 09.06.01 release candidate
+* [ ] 09.06.00 latest supported release
 
 ## Affected browser
 <!-- 

@@ -1663,7 +1663,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UserAgreedToTerms(UserInfo user)
         {
-            _dataProvider.UserAgreedToTerms(user.PortalID, user.UserID);
+            _dataProvider.UserAgreedToTerms(PortalController.GetEffectivePortalId(user.PortalID), user.UserID);
         }
 
         /// -----------------------------------------------------------------------------

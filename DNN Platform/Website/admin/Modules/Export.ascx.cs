@@ -82,8 +82,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         var objObject = Reflection.CreateObject(Module.DesktopModule.BusinessControllerClass, Module.DesktopModule.BusinessControllerClass);
 
-						//Double-check
-						if (objObject is IPortable)
+                        //Double-check
+                        if (objObject is IPortable)
                         {
                             XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
                             XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, Module, true);
@@ -104,9 +104,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                             var content = sw.ToString();
                             if (!String.IsNullOrEmpty(content))
                             {
-								//remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
-	                            //content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
-								//add attributes to XML document
+                                //remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
+                                //content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
+                                //add attributes to XML document
                                 //content = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + "<content type=\"" + CleanName(Module.DesktopModule.ModuleName) + "\" version=\"" +
                                 //          Module.DesktopModule.Version + "\">" + content + "</content>";
 
@@ -114,10 +114,10 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 if (PortalController.Instance.HasSpaceAvailable(PortalId, content.Length))
                                 {
                                     //add file to Files table
-									using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
-									{
+                                    using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+                                    {
                                         Services.FileSystem.FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
-									}
+                                    }
                                 }
                                 else
                                 {
@@ -134,9 +134,16 @@ namespace DotNetNuke.Modules.Admin.Modules
                             strMessage = Localization.GetString("ExportNotSupported", LocalResourceFile);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        strMessage = Localization.GetString("Error", LocalResourceFile);
+                        if (ex is InvalidFileExtensionException || ex is PermissionsNotMetException || ex is InvalidFilenameException)
+                        {
+                            strMessage = ex.Message;
+                        }
+                        else
+                        {
+                            strMessage = Localization.GetString("Error", LocalResourceFile);
+                        }
                     }
                 }
                 else
@@ -212,23 +219,24 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
+                IFolderInfo folder = null;
                 if (cboFolders.SelectedItem != null && !String.IsNullOrEmpty(txtFile.Text))
                 {
-                    var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
-                    if (folder != null)
-                    {
-                        var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".xml";
-                        var strMessage = ExportModule(ModuleId, strFile, folder);
-                        if (String.IsNullOrEmpty(strMessage))
-                        {
-                            Response.Redirect(ReturnURL, true);
-                        }
-                        else
-                        {
-                            UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
-                        }
-                        }
+                    folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
+                }
 
+                if (folder != null)
+                {
+                    var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".export";
+                    var strMessage = ExportModule(ModuleId, strFile, folder);
+                    if (String.IsNullOrEmpty(strMessage))
+                    {
+                        Response.Redirect(ReturnURL, true);
+                    }
+                    else
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, strMessage, ModuleMessage.ModuleMessageType.RedError);
+                    }
                 }
                 else
                 {
