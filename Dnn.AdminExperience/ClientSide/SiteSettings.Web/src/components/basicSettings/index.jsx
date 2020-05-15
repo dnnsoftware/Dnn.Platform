@@ -396,7 +396,6 @@ function mapStateToProps(state) {
         timeZones: state.siteInfo.timeZones,
         iconSets: state.siteInfo.iconSets,
         clientModified: state.siteInfo.clientModified,
-        portalId: state.siteInfo ? state.siteInfo.portalId : undefined,
     };
 }
 
