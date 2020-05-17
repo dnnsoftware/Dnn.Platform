@@ -25,24 +25,6 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
-        public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
-                              bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
-        {
-            return AddSchedule(TypeFullName,
-                               TimeLapse,
-                               TimeLapseMeasurement,
-                               RetryTimeLapse,
-                               RetryTimeLapseMeasurement,
-                               RetainHistoryNum,
-                               AttachToEvent,
-                               CatchUpEnabled,
-                               Enabled,
-                               ObjectDependencies,
-                               Servers,
-                               FriendlyName,
-                               DateTime.Now);
-        }
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
@@ -186,8 +168,7 @@ namespace DotNetNuke.Services.Scheduling
 							scheduleItem.Enabled,
 							scheduleItem.ObjectDependencies,
 							scheduleItem.Servers,
-							scheduleItem.FriendlyName,
-							scheduleItem.ScheduleStartDate);
+							scheduleItem.FriendlyName);
 #pragma warning restore 618
 		}
 
@@ -207,32 +188,9 @@ namespace DotNetNuke.Services.Scheduling
                             Enabled,
                             ObjectDependencies,
                             Servers,
-                            FriendlyName,
-                            DateTime.Now);
+                            FriendlyName);
 #pragma warning restore 618
 		}
-
-        [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]
-        public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
-                                          string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
-        {
-            DataProvider.Instance().UpdateSchedule(ScheduleID,
-                                                   TypeFullName,
-                                                   TimeLapse,
-                                                   TimeLapseMeasurement,
-                                                   RetryTimeLapse,
-                                                   RetryTimeLapseMeasurement,
-                                                   RetainHistoryNum,
-                                                   AttachToEvent,
-                                                   CatchUpEnabled,
-                                                   Enabled,
-                                                   ObjectDependencies,
-                                                   Servers,
-                                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                                   FriendlyName,
-                                                   ScheduleStartDate);
-            EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
-        }
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
         {

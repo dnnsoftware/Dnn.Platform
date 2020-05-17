@@ -17,7 +17,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -224,12 +223,5 @@ namespace DotNetNuke.Security.Permissions
 		
 		#endregion
 
-        [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int). Scheduled removal in v10.0.0.")]
-        public ArrayList GetPermissionsByModuleID(int moduleId)
-        {
-            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-
-            return GetPermissionsByModuleDefID(module.ModuleDefID);
-        }
     }
 }

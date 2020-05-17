@@ -1,59 +1,46 @@
-[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/DNN%20%5BCI%5D?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=27&branchName=develop)
-
+<div dir="rtl" align="right">
+    
 ![DNN Platform At A Glance](dnnplatform.png)
 
-# Project Description
 
-DNN® ( formerly DotNetNuke® ) is the leading open source web content management platform (CMS) in the Microsoft ecosystem. The product is used to build professional looking and easy-to-use commercial websites, social intranets, community portals, or partner extranets. Containing dynamic content of all types, DNN sites are easy to deploy and update. The DNN Platform has been downloaded more than 8 million times and powers more than 750,000 websites globally. A community of more than 1 million members forms a powerful support network. 
+# دی ان ان فارسی (DNN)
 
-Thousands of free and commercial extensions, apps and skins are available at the [DNN Store](http://store.dnnsoftware.com/) that make extending a DNN site fast and affordable.
 
-In addition to robust content management, the free, open source DNN Platform includes the following built-in features:
+دی ان ان ® (دات نت نیوک ® سابق) پیشرو سیستم مدیریت محتوا (CMS) به صورت اوپن سورس در اکوسیستم مایکروسافت است. از این محصول برای ساخت وب سایت های سازمانی ، شرکتی و وب سایت های تجاری حرفه ای با کاربرد آسان ، شبکه اینترانت و پورتال سازی با قابلیت توسعه استفاده می شود. وب سایت های دی ان ان با داشتن محتوای پویا از همه نوع داده و چند رسانه‌ای به راحتی بروز رسانی می شوند. پلتفرم دی ان ان بیش از 8 میلیون بار دانلود شده است و بیش از 750،000 وب سایت در سطح جهان از این پلتفرم قدرت گرفته اند. جامعه ای با بیش از 1 میلیون عضو یک شبکه پشتیبانی قدرتمند را تشکیل می دهد.
 
-* Single installation with multi-site capability
-* File and folder management
-* Static and dynamic Localization - 6 languages out-of-the-box (English, Dutch, French, German, Italian, and Spanish)
-* Customized web site templates and themes
-* Cloud-ready with MS Azure compatibility
-* 100's of REST API for site and content managment
-* Modern client-side Web tools like CSS 3, HTML 5, JQuery, and React
-* UI with drag and drop capability, and rich-text editor for in-place UI editing
-* Extensible through custom modules and many third party modules available in the DNN store
-* Robust security
-* Administration features like: security roles, protected content, SEO, scheduler, SSL support, taxonomy, site log, and many more.
 
-## Quick Links
+## ویژگی های نسخه دی ان ان فارسی
 
-* [Contribute](CONTRIBUTING.md)
-* [Build](.github/BUILD.md)
-* [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
-* [Versioning Policy](.github/VERSIONING_POLICY.md)
-* [Release Schedule](.github/RELEASE_SCHEDULE.md)
-* [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
-* [Questions & Answers](http://answers.dnnsoftware.com/)
-* [Showcase](http://www.dnnsoftware.com/community/participate/community-showcase)
-* [Discussion Forums](http://forums.dnnsoftware.com/)
-* [Video Library](http://www.dnnsoftware.com/videos)
-* [News](http://www.dnnsoftware.com/About/In-The-News/Press-Releases)
-* [Community Blogs](http://www.dnnsoftware.com/community-blog)
-* [DNN on Facebook](http://www.facebook.com/DNNsoftware)
-* [DNN on Twitter](http://www.Twitter.com/DNN)
-* [DNN Store](http://store.dnnsoftware.com/)
+اولین  مخزن دی ان ان فارسی با بالاترین سطح کیفی بومی سازی استاندارد 
 
-## How to Contribute
+با افتخار تنها مخزن بومی کننده محیط مدیریت دی ان ان
 
-We encourage everyone to contribute.
-All the details on contributing with Git and on our working methods can be found on the [Contribute Page](CONTRIBUTING.md)
 
-In addition, since DNN is part of the .NET Foundation, we require our contributors to abide by their [Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct) rules and requirements also.
+* راستچین سازی استاندارد
+* ترجمه فارسی (شفاف و با بالاترین سطح کیفی) 
+* شمسی سازی استاندارد (تنها مخزن دارای محیط مدیریت شمسی سازی شده)
+* فقط انتشار نسخه های پایدار دی ان ان
 
-Pull requests are reviewed and accepted by the Approvers Group. Read more about the process and this group here: [Approvers](.github/APPROVERS.md)
 
-## .NET Foundation
 
-This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
+## اعضای اصلی بومی کننده
+* سهیل خیری ملتخواه
+* منصور نظیفی
 
-## NDepend
 
-We monitor code quality of the DNN Platform using [NDepend](https://www.ndepend.com).
-![NDepend](.github/images/PoweredByNDepend.png)
+
+## لینک های مفید
+
+* [مستندات فارسی](https://www.dnndocs.ir/)
+* [دی ان ان پلاس](https://dnnplus.ir)
+
+
+
+
+## دانلود نسخه های پایدار بومی دی ان ان
+
+* [دانلود دی ان ان 9.4.1 دی ان ان فارسی](/941)
+
+
+
+</div>
