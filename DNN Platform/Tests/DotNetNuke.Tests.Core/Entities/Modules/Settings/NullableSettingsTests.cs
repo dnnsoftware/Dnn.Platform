@@ -108,6 +108,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 TimeSpanProperty = timeSpanValue,
             };
 
+            MockModuleSettings(moduleInfo, new Hashtable());
+            MockTabModuleSettings(moduleInfo, new Hashtable());
             var expectedStringValue = stringValue ?? string.Empty;
             MockModuleController.Setup(pc => pc.UpdateModuleSetting(ModuleId, "StringProperty", expectedStringValue));
             var integerString = integerValue?.ToString() ?? string.Empty;
@@ -133,6 +135,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             var moduleInfo = GetModuleInfo;
             var settings = new MyNullableSettings();
 
+            MockModuleSettings(moduleInfo, new Hashtable());
+            MockTabModuleSettings(moduleInfo, new Hashtable());
             MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new MyNullableSettingsRepository();
 
