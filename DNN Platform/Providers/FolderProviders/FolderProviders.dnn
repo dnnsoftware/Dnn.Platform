@@ -1,14 +1,14 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" isSystem="true">
+    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" isSystem="true" version="09.06.01">
       <friendlyName>DotNetNuke Folder Providers</friendlyName>
       <description>Azure Folder Providers for DotNetNuke.</description>
-      <dependencies />
+      <dependencies/>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releaseNotes.txt" /> 

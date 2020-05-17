@@ -1,0 +1,74 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.vocabulariesRightPane) {
+    .term-list-label {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .add-term-button {
+        float: right;
+        font-weight: bold;
+        cursor: pointer;
+        color: @alto;
+        &:hover{
+            color: @rollingStone;
+            svg{
+                fill: @rollingStone;
+            }
+        }
+        &:active{
+            color: @curiousBlue;
+            svg{
+                fill: @curiousBlue;
+            }
+        }
+        svg {
+            width: 16px;
+            height: 16px;
+            float: left;
+            margin-right: 5px;
+        }
+    }
+    .term-list {
+        padding: 0 30px 15px;
+        position: relative;
+        .term-list-content {
+            transition: .5s;
+            ul.root-level {
+                list-style: none;
+                padding: 5px 15px;
+                min-height: 285px;
+                margin-top: 5px;
+                &.Hierarchy{
+                    padding: 5px 25px
+                }
+                ul {
+                    padding: 0 15px;
+                    list-style: none;
+                }
+            }
+            &.closed {
+                opacity: 0;
+                z-index: -1;
+            }
+            &.open {
+                opacity: 1;
+                z-index: 10;
+                transition-delay: .5s;
+            }
+        }
+        .term-ul {
+            padding: 0 15px;
+            list-style: none;
+            &.root-level {
+                padding: 5px 25px;
+            }
+            &.term-list-level {
+                li {
+                    &.selected > div > div > span {
+                        color: @rollingStone;
+                    }
+                }
+            }
+        }
+    }
+}

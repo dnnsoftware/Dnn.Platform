@@ -1,0 +1,56 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.pages-app {
+    * {
+        box-sizing: border-box;
+    }
+    
+    .dnn-persona-bar-page-header {
+        min-height: 103px;
+        max-height: 103px;
+
+        button {
+            margin-left: 12px;
+        }
+        .heading-buttons {
+            float: right;
+        }
+        h3{
+            max-width: 450px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+            margin: 8px 0 -9px 0;
+        } 
+    }
+    .dnn-persona-bar-page, .persona-bar-page{
+        width: 1156px !important;
+    }
+    .dnn-persona-bar-page.hidden {
+        display: none;
+    }
+    .title {
+      
+        font-weight: bold;
+        margin-bottom: 20px;
+        float: left;
+    }
+    .dnn-label {
+        padding-top: 7px;
+        label {
+            float: left;
+            font-weight: 700;
+        }
+    }
+
+    .dnn-workspace-tray {
+        border: none;
+        margin-bottom: 0;
+        height: 34px;
+    }
+
+    .tooltip-text {
+        max-width: 260px;
+        word-break: normal;
+    }
+}

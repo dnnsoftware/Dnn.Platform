@@ -56,6 +56,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -67,6 +71,7 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="DependencyInjection\ServiceRequestScopeModule.cs" />
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
     <Compile Include="OutputCaching\OutputCacheModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -114,6 +119,9 @@
   <ItemGroup>
     <Folder Include="UrlRewrite\Config\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -121,11 +129,15 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.dll" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.pdb" DestinationFolder="..\..\Website\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.xml" DestinationFolder="..\..\Website\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.HttpModules.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
 </Project>

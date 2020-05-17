@@ -8,7 +8,7 @@
     <owners>DNN Corp</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides common abstraction API references for the DNN Platform.
@@ -18,5 +18,6 @@
   <files>
     <file src="..\..\..\Website\bin\DotNetNuke.Abstractions.dll" target="lib\netstandard2.0" />
     <file src="..\..\..\Website\bin\DotNetNuke.Abstractions.pdb" target="lib\netstandard2.0" />
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

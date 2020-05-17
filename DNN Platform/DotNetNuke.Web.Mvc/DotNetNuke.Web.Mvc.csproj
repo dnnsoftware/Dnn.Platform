@@ -116,7 +116,7 @@
     <Compile Include="Common\ModuleControlControllerAdapter.cs" />
     <Compile Include="Common\PropertyHelper.cs" />
     <Compile Include="Common\TypeHelper.cs" />
-    <Compile Include="DnnMvcControllerFactory.cs" />
+    <Compile Include="DnnMvcDependencyResolver.cs" />
     <Compile Include="Extensions\StartupExtensions.cs" />
     <Compile Include="Framework\ActionFilters\AuthFilterContext.cs" />
     <Compile Include="Framework\ActionFilters\AuthorizeAttributeBase.cs" />

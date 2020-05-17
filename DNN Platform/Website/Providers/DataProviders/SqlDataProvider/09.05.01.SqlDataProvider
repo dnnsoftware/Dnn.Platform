@@ -1,0 +1,64 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch];
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'[dbo].[CoreMessaging_GetNextMessagesForDigestDispatch]'))
+    DROP PROCEDURE [dbo].[CoreMessaging_GetNextMessagesForDigestDispatch];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
+    @Frequency         INT,
+    @SchedulerInstance UNIQUEIDENTIFIER,
+    @BatchSize         INT
+AS 
+BEGIN
+    UPDATE R
+     SET   [EmailSchedulerInstance] = @SchedulerInstance,
+           [LastModifiedOnDate]     = GetDate()
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
+     JOIN  (SELECT TOP (@BatchSize)
+                   UserID
+             FROM  {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] 
+             WHERE [EmailSchedulerInstance] IS NULL
+             AND   [EmailFrequency] = @Frequency
+             GROUP BY UserID
+             ORDER BY UserID) D ON R.UserID = D.UserID 
+
+    SELECT M.[PortalID],
+           M.[NotificationTypeID],
+           M.[To],
+           M.[From],
+           M.[Subject],
+           M.[Body],
+           M.[SenderUserID],
+           M.[ExpirationDate],
+           M.[Context],
+           R.[RecipientID],
+           R.[MessageID],
+           R.[UserID]
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
+     JOIN  {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          M ON R.MessageID = M.MessageID
+     WHERE [EmailSent] = 0 -- Filter these 4 columms to use proper index
+       AND [Read]      = 0
+       AND [Archived]  = 0
+       AND [EmailSchedulerInstance] = @SchedulerInstance
+     ORDER BY --[PortalID],
+              [UserID],
+              [RecipientID] DESC
+END; -- Procedure
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

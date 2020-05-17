@@ -168,7 +168,6 @@
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
     <Compile Include="Api\DnnAuthorizeAttribute.cs" />
     <Compile Include="Api\DnnExceptionAttribute.cs" />
-    <Compile Include="Api\DnnHttpControllerActivator.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
     <Compile Include="Api\Extensions\StartupExtensions.cs" />
@@ -176,6 +175,7 @@
     <Compile Include="Api\HttpStatusCodeAdditions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnDependencyResolver.cs" />
     <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
@@ -203,6 +203,7 @@
     <Compile Include="Common\DynamicSharedConstants.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
     <Compile Include="Api\WebApiException.cs" />
+    <Compile Include="Common\LazyServiceProvider.cs" />
     <Compile Include="Components\Controllers\ControlBarController.cs" />
     <Compile Include="Components\Controllers\IControlBarController.cs" />
     <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />

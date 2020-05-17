@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -136,6 +141,23 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "folderPath")]
         public string FolderPath;
+
+        [DataMember(Name = "validationCode")]
+        public string ValidationCode
+        {
+            get
+            {
+                var portalSettings = PortalSettings.Current;
+                var parameters = new List<object>(){Extensions};
+                if (portalSettings != null)
+                {
+                    parameters.Add(portalSettings.PortalId);
+                    parameters.Add(portalSettings.UserInfo.UserID);
+                }
+
+                return ValidationUtils.ComputeValidationCode(parameters);
+            }
+        }
 
         public DnnFileUploadOptions()
         {

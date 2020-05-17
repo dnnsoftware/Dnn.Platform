@@ -8,7 +8,7 @@
     <owners>DNN Corp.</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides API references needed to develop custom folder providers, or to consume folder providers
@@ -21,5 +21,6 @@
   <files>
     <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.dll" target="lib\net45\"/>
     <file src="..\..\..\DNN Platform\Providers\FolderProviders\bin\Providers\DotNetNuke.Providers.FolderProviders.pdb" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

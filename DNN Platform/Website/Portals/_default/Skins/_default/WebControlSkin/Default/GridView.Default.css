@@ -1,0 +1,63 @@
+﻿.dnn-grid {
+    width: 100%;
+    table-layout: auto;
+    empty-cells: show;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    font-size: 12px;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    color: #333;
+}
+
+.dnn-grid tr th, .dnn-grid tr td {
+    padding: 6px 12px 6px 12px;
+    text-align: left;
+}
+
+.dnn-grid tr th {
+    border: 0;
+    border-bottom: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    background: #f0f2f1;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1));
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%);
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%);
+}
+.dnn-grid tr td {
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    vertical-align: middle;
+    border-color: #fff;
+    cursor: pointer;
+}
+.dnn-grid tr.alter-row {
+    background: #f2f2f2;
+    border-color: #f2f2f2;
+}
+
+.dnn-grid tr:hover, .dnn-grid tr.alter-row:hover {
+    background-color: #e8f1fa;
+    color: #333;
+}
+
+.dnn-grid tr td a {
+    color: #000;
+    text-decoration: none;
+}
+
+.dnn-grid-pager tr td {
+    padding:0;
+    border:none;
+}
+.dnn-grid-pager tr td a, .dnn-grid-pager tr td span {
+    padding: 6px;
+}
+.dnn-grid-pager tr td span {
+    color:#1e88c3
+}
+.dnn-grid-pager tr:hover {
+    background-color:transparent;
+
+}

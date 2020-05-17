@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="jQuery-Migrate" type="JavaScript_Library" version="03.00.00" isSystem="true">
+    <package name="jQuery-Migrate" type="JavaScript_Library" version="03.02.00" isSystem="true">
       <friendlyName>jQuery Migrate JavaScript Library</friendlyName>
-      <description>jQuery Migrate is a JavaScript library that is used to mintain jQuery backwards compatability.</description>
+      <description>A development tool to help migrate away from APIs and features that have been or will be removed from jQuery core</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="jQuery (MIT).txt" />
       <releaseNotes src="releaseNotes.txt" />
@@ -21,7 +21,7 @@
           <javaScriptLibrary>
             <libraryName>jQuery-Migrate</libraryName>
             <fileName>jquery-migrate.js</fileName>
-            <CDNPath>//code.jquery.com/jquery-migrate-3.0.0.min.js</CDNPath>
+            <CDNPath>https://code.jquery.com/jquery-migrate-3.2.0.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

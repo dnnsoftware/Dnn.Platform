@@ -1,6 +1,11 @@
-﻿using DotNetNuke.DependencyInjection.Extensions;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.DependencyInjection.Extensions;
 using DotNetNuke.Web.Api;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Linq;
 
@@ -21,14 +26,14 @@ namespace DotNetNuke.Web.Extensions
         /// </param>
         public static void AddWebApi(this IServiceCollection services)
         {
-            var startuptypes = AppDomain.CurrentDomain.GetAssemblies()
+            var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.SafeGetTypes())
                 .Where(x => typeof(DnnApiController).IsAssignableFrom(x) &&
                             x.IsClass &&
                             !x.IsAbstract);
-            foreach (var controller in startuptypes)
+            foreach (var controller in controllerTypes)
             {
-                services.AddTransient(controller);
+                services.TryAddScoped(controller);
             }
         }
     }

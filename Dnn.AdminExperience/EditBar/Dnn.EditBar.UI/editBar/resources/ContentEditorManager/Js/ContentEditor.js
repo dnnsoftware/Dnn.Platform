@@ -1,10 +1,8 @@
-﻿// DotNetNuke® - http://www.dnnsoftware.com
-//
-// Copyright (c) 2002-2018, DNN Corp.
-// All rights reserved.
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
-﻿if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager === null) { dnn.ContentEditorManager = {}; };
+if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager === null) { dnn.ContentEditorManager = {}; };
 
 dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
     init: function (options) {
@@ -323,11 +321,13 @@ dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
             var cookieModuleId = moduleDialog._getCookie('CEM_CallbackData');
             if (cookieModuleId && cookieModuleId.indexOf('module-') > -1) {
                 var moduleId = cookieModuleId.substr(7);
+                var existingModule = moduleDialog._getCookie('CEM_ExistingModule');
+                if (!existingModule) existingModule = false;
 
                 var module = $('div.DnnModule-' + moduleId);
                 var moduleManager = module.parent().data('dnnModuleManager');
 
-                moduleDialog.apply(moduleManager);
+                moduleDialog.apply(moduleManager, existingModule);
                 moduleDialog._processModuleForDrag(module);
                 $('#moduleActions-' + moduleId).addClass('floating');
                 moduleDialog._removeCookie('CEM_CallbackData');

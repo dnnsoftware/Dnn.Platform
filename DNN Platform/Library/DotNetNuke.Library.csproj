@@ -126,6 +126,9 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.FileSystemGlobbing.3.1.1\lib\netstandard2.0\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -189,15 +192,19 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
+    <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
+    <Compile Include="Common\Utilities\ValidationUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\DatabaseConnectionProvider.cs" />
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
+    <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
@@ -668,6 +675,7 @@
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
+    <Compile Include="Services\DependencyInjection\IScopeAccessor.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
@@ -683,6 +691,7 @@
     <Compile Include="Services\FileSystem\EventArgs\FolderMovedEventArgs.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileLockedException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidFileContentException.cs" />
+    <Compile Include="Services\FileSystem\Exceptions\InvalidFolderPathException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidFilenameException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\InvalidMetadataValuesException.cs">
       <SubType>Code</SubType>
@@ -1677,7 +1686,7 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
-    <None Include="Module.build">
+    <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
@@ -1805,12 +1814,15 @@
       <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="Module.build" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  <PropertyGroup>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+  </PropertyGroup>
+  <Import Project="..\..\DNN_Platform.build" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin">
+  </Target>
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
 </Project>

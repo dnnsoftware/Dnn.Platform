@@ -1,0 +1,41 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.newExtensionModal) {
+    box-sizing: border-box;
+    .dnn-grid-cell {
+        > hr {
+            border: none;
+            height: 1px;
+            color: @alto;
+            background-color: @alto;
+        }
+        .extension-type {
+            margin-bottom: 32px;
+        }
+        .version-dropdown {
+            width: 30%;
+            box-sizing: border-box;
+            margin-right: 5%;
+            vertical-align: bottom;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    .dnn-grid-cell.add-mode {
+        padding: 0;
+    }
+    .new-extension-box {
+        padding: 25px 45px;
+    }
+    .box-title-container {
+        padding-top: 0;
+        padding-bottom: 0;
+        .box-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+    }
+}

@@ -1,26 +1,7 @@
-﻿#region Copyright
-
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-
-#endregion
-
 #region Usings
 
 using System;
@@ -510,13 +491,33 @@ namespace DotNetNuke.Data
 
         #region Portal Methods
 
+        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode. Scheduled removal in v10.0.0.")]
+        public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
+                                        double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
+                                         string HomeDirectory, int CreatedByUserID)
+        {
+            return
+                CreatePortal(
+                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
+                                            currency,
+                                            ExpiryDate,
+                                            HostFee,
+                                            HostSpace,
+                                            PageQuota,
+                                            UserQuota,
+                                            SiteLogHistory,
+                                            HomeDirectory,
+                                            "en-US",
+                                            CreatedByUserID);
+        }
+
         public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
                                         double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
                                          string HomeDirectory, string CultureCode, int CreatedByUserID)
         {
             return
                 ExecuteScalar<int>("AddPortalInfo",
-                                            portalname,
+                                            PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
                                             currency,
                                             GetNull(ExpiryDate),
                                             HostFee,
@@ -584,6 +585,19 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPortalSettings", PortalId, CultureCode);
         }
 
+        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
+        {
+            var result = new Dictionary<int, string>();
+            using (var reader = ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
+            {
+                while (reader.Read())
+                {
+                    result[reader.GetInt32(0)] = reader.GetString(1);
+                }
+            }
+            return result;
+        }
+
         public virtual IDataReader GetPortalSpaceUsed(int PortalId)
         {
             return ExecuteReader("GetPortalSpaceUsed", GetNull(PortalId));
@@ -633,14 +647,14 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, 
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId,
                                              int termsTabId, int privacyTabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
                                       portalId,
                                       portalGroupId,
-                                      portalName,
+                                      PortalSecurity.Instance.InputFilter(portalName, PortalSecurity.FilterFlag.NoMarkup),
                                       GetNull(logoFile),
                                       GetNull(footerText),
                                       GetNull(expiryDate),
@@ -3159,6 +3173,11 @@ namespace DotNetNuke.Data
                                       iconFile);
         }
 
+        public virtual void SetCorePackageVersions()
+        {
+            ExecuteNonQuery("SetCorePackageVersions");
+        }
+
         #endregion
 
         #region Languages/Localization
@@ -3961,7 +3980,126 @@ namespace DotNetNuke.Data
         {
             return ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
         }
-        
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
+        {
+            return ExecuteScalar<int>("AddContentWorkflow",
+                GetNull(portalId),
+                workflowName,
+                description,
+                isDeleted,
+                startAfterCreating,
+                startAfterEditing,
+                dispositionEnabled);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflow(int workflowId)
+        {
+            return ExecuteReader("GetContentWorkflow", workflowId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflows(int portalId)
+        {
+            return ExecuteReader("GetContentWorkflows", portalId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
+        {
+            ExecuteNonQuery("UpdateContentWorkflow",
+                workflowId,
+                workflowName,
+                description,
+                isDeleted,
+                startAfterCreating,
+                startAfterEditing,
+                dispositionEnabled);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual int AddContentWorkflowState(int workflowId, string stateName, int order,
+            bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
+            string onCompleteMessageSubject, string onCompleteMessageBody,
+            string onDiscardMessageSubject, string onDiscardMessageBody)
+        {
+            return ExecuteScalar<int>("AddContentWorkflowState",
+                workflowId,
+                stateName,
+                order,
+                isActive,
+                sendEmail,
+                sendMessage,
+                isDisposalState,
+                onCompleteMessageSubject,
+                onCompleteMessageBody,
+                onDiscardMessageSubject,
+                onDiscardMessageBody);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual void DeleteContentWorkflowState(int stateId)
+        {
+            ExecuteNonQuery("DeleteContentWorkflowState", stateId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual void UpdateContentWorkflowState(int stateId, string stateName, int order,
+            bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
+            string onCompleteMessageSubject, string onCompleteMessageBody,
+            string onDiscardMessageSubject, string onDiscardMessageBody)
+        {
+            ExecuteNonQuery("UpdateContentWorkflowState",
+                stateId,
+                stateName,
+                order,
+                isActive,
+                sendEmail,
+                sendMessage,
+                isDisposalState,
+                onCompleteMessageSubject,
+                onCompleteMessageBody,
+                onDiscardMessageSubject,
+                onDiscardMessageBody);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflowState(int stateId)
+        {
+            return ExecuteReader("GetContentWorkflowState", stateId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflowStates(int workflowId)
+        {
+            return ExecuteReader("GetContentWorkflowStates", workflowId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog. Scheduled removal in v10.0.0.")]
+        public virtual int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
+        {
+            return ExecuteScalar<int>("AddContentWorkflowLog",
+                action,
+                comment,
+                user,
+                workflowId,
+                contentItemId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
+        {
+            return ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
+        {
+            return ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
+        }
+
         public virtual int AddContentWorkflowStatePermission(int stateId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
         {
             return ExecuteScalar<int>("AddContentWorkflowStatePermission",
@@ -4005,6 +4143,17 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
 
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
+        {
+            return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
+        }
+
+        [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+        public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
+        {
+            return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
+        }
 
         #endregion
 
@@ -4075,7 +4224,7 @@ namespace DotNetNuke.Data
         {
             try
             {
-                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToString());
+                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToJsonString());
             }
             catch (SqlException ex)
             {
@@ -4202,7 +4351,43 @@ namespace DotNetNuke.Data
 
         #region Obsolete Methods
 
-        [Obsolete("Obsoleted in 9.3.0, please use GetFiles(int, bool, boo) instead. schedule to remove in v11.0.0.")]
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet. Scheduled removal in v10.0.0.")]
+        public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
+        {
+            return Globals.ConvertDataReaderToDataSet(ExecuteReader(procedureName, commandParameters));
+        }
+
+        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  Use the generic version ExecuteScalar<T>.. Scheduled removal in v10.0.0.")]
+        public virtual object ExecuteScalar(string procedureName, params object[] commandParameters)
+        {
+            return ExecuteScalar<object>(procedureName, commandParameters);
+        }
+
+        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.. Scheduled removal in v10.0.0.")]
+        public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
+        {
+            SqlParameter[] sqlCommandParameters = null;
+            if (commandParameters != null)
+            {
+                sqlCommandParameters = new SqlParameter[commandParameters.Length];
+                for (int intIndex = 0; intIndex <= commandParameters.Length - 1; intIndex++)
+                {
+                    sqlCommandParameters[intIndex] = (SqlParameter)commandParameters[intIndex];
+                }
+            }
+            sql = DataUtil.ReplaceTokens(sql);
+            try
+            {
+                return SqlHelper.ExecuteReader(ConnectionString, CommandType.Text, sql, sqlCommandParameters);
+            }
+            catch
+            {
+                //error in SQL query
+                return null;
+            }
+        }
+
+        [Obsolete("Obsoleted in 9.3.0, please use GetFiles(int, bool, boo) instead. schedule to remove in 11.0.0.")]
         public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
         {
             return GetFiles(folderId, retrieveUnpublishedFiles, false);

@@ -1,23 +1,7 @@
-﻿#region Copyright
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-// DotNetNuke® - https://www.dnnsoftware.com
-// Copyright (c) 2002-2018
-// by DotNetNuke Corporation
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-#endregion
 #region Usings
 
 using System;
@@ -29,10 +13,14 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals.Data;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
@@ -42,6 +30,7 @@ namespace DotNetNuke.Entities.Portals
     {
         private readonly IDataService _dataService;
         private readonly IPortalController _portalController;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalGroupController));
 
         #region Constructors
 
@@ -79,27 +68,27 @@ namespace DotNetNuke.Entities.Portals
             if (callback == null) return;
 
             var args = new UserCopiedEventArgs
-                           {
-                               TotalUsers = 0,
-                               UserNo = 0,
-                               UserName = "",
-                               PortalName = portal.PortalName,
-                               Stage = "starting"
-                           };
+            {
+                TotalUsers = 0,
+                UserNo = 0,
+                UserName = "",
+                PortalName = portal.PortalName,
+                Stage = "starting"
+            };
             callback(args);
         }
 
-        private void OnUserAddedToSiteGroup(UserCopiedCallback callback, PortalInfo portal,  UserInfo currentUser, int totalUsers, int currentUserNumber)
+        private void OnUserAddedToSiteGroup(UserCopiedCallback callback, PortalInfo portal, UserInfo currentUser, int totalUsers, int currentUserNumber)
         {
             if (callback == null) return;
 
             var args = new UserCopiedEventArgs
-                    {
-                        TotalUsers = totalUsers,
-                        UserNo = currentUserNumber,
-                        UserName = currentUser.Username,
-                        PortalName = portal.PortalName
-                    };
+            {
+                TotalUsers = totalUsers,
+                UserNo = currentUserNumber,
+                UserName = currentUser.Username,
+                PortalName = portal.PortalName
+            };
             callback(args);
         }
 
@@ -134,6 +123,30 @@ namespace DotNetNuke.Entities.Portals
             callback(args);
         }
 
+        private void LogEvent(EventLogController.EventLogType eventType, PortalGroupInfo portalGroup, PortalInfo portal)
+        {
+            try
+            {
+                var log = new LogInfo
+                {
+                    BypassBuffering = true,
+                    LogTypeKey = eventType.ToString()
+                };
+                log.LogProperties.Add(new LogDetailInfo("PortalGroup:", portalGroup.PortalGroupName));
+                log.LogProperties.Add(new LogDetailInfo("PortalGroupID:", portalGroup.PortalGroupId.ToString()));
+                if (portal != null)
+                {
+                    log.LogProperties.Add(new LogDetailInfo("Portal:", portal.PortalName));
+                    log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
+                }
+                LogController.Instance.AddLog(log);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+        }
+
         #endregion
 
         #region IPortalGroupController Members
@@ -147,12 +160,12 @@ namespace DotNetNuke.Entities.Portals
             Requires.PropertyNotNegative("portalGroup", "MasterPortalId", portalGroup.MasterPortalId);
 
             OnAddPortalToGroupStart(callback, portal);
-            
+
             var users = UserController.GetUsers(portal.PortalID);
             var masterUsers = UserController.GetUsers(portalGroup.MasterPortalId);
             var totalUsers = users.Count + masterUsers.Count;
             var userNo = 0;
-            
+
             if (users.Count > 0)
             {
                 var masterPortal = _portalController.GetPortal(portalGroup.MasterPortalId);
@@ -191,10 +204,11 @@ namespace DotNetNuke.Entities.Portals
             //Add portal to group
             portal.PortalGroupID = portalGroup.PortalGroupId;
             PortalController.Instance.UpdatePortalInfo(portal);
+            LogEvent(EventLogController.EventLogType.PORTAL_ADDEDTOPORTALGROUP, portalGroup, portal);
 
             OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
         }
-        
+
         private void RemoveProfileDefinitions(PortalInfo portal)
         {
             foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID))
@@ -219,7 +233,7 @@ namespace DotNetNuke.Entities.Portals
             var sharedModules = GetSharedModulesWithPortal(portal);
             foreach (var sharedModule in sharedModules)
             {
-                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);                
+                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);
             }
 
             sharedModules = GetSharedModulesByPortal(portal);
@@ -245,7 +259,7 @@ namespace DotNetNuke.Entities.Portals
                                                                                 DataCache.SharedModulesByPortalCachePriority,
                                                                                 portal),
             (p) => CBO.FillCollection<ModuleInfo>(_dataService.GetSharedModulesByPortal(portal)));
-        } 
+        }
 
         public int AddPortalGroup(PortalGroupInfo portalGroup)
         {
@@ -261,6 +275,7 @@ namespace DotNetNuke.Entities.Portals
                 portal.PortalGroupID = portalGroup.PortalGroupId;
                 _portalController.UpdatePortalInfo(portal);
             }
+            LogEvent(EventLogController.EventLogType.PORTALGROUP_CREATED, portalGroup, null);
 
             ClearCache();
 
@@ -283,6 +298,7 @@ namespace DotNetNuke.Entities.Portals
             }
 
             _dataService.DeletePortalGroup(portalGroup);
+            LogEvent(EventLogController.EventLogType.PORTALGROUP_DELETED, portalGroup, null);
 
             ClearCache();
         }
@@ -328,6 +344,7 @@ namespace DotNetNuke.Entities.Portals
             DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
             PortalController.Instance.UpdatePortalInfo(portal);
+            LogEvent(EventLogController.EventLogType.PORTAL_REMOVEDFROMPORTALGROUP, portalGroup, portal);
 
             CopyPropertyDefinitions(portal.PortalID, portalGroup.MasterPortalId);
 
@@ -398,7 +415,7 @@ namespace DotNetNuke.Entities.Portals
 
             ClearCache();
         }
-        
+
         public bool IsModuleShared(int moduleId, PortalInfo portal)
         {
             if (portal == null) return false;

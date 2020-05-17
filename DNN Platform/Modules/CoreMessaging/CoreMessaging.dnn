@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" isSystem="true">
+    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" isSystem="true" version="09.06.01">
       <friendlyName>Message Center</friendlyName>      
       <description>Core Messaging module allows users to message each other.</description>
       <iconFile>~/DesktopModules/CoreMessaging/Images/messaging_32X32.png</iconFile>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
@@ -22,7 +22,7 @@
             <moduleName>DotNetNuke.Modules.CoreMessaging</moduleName>
             <foldername>CoreMessaging</foldername>
             <businessControllerClass>DotNetNuke.Modules.CoreMessaging.Components.CoreMessagingBusinessController, DotNetNuke.Modules.CoreMessaging</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Message Center</friendlyName>
@@ -35,8 +35,8 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Core Messaging View</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <iconFile/>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

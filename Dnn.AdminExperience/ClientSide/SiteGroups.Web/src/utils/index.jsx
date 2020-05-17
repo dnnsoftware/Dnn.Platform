@@ -1,0 +1,1 @@
+export default Object.assign({}, window.dnn.utility);

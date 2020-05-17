@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Entities.Portals;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Analytics.Config;
 using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.Exceptions;
@@ -189,7 +193,7 @@ namespace DNN.Connectors.GoogleAnalytics
                 }
                 else
                 {
-                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToLowerInvariant().Trim() : string.Empty;
+                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
                     urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;

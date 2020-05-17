@@ -1,21 +1,20 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\Dnn.AdminExperience\Build\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\Website</WebsitePath>
-    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
-    <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..</RootDirectory>
   </PropertyGroup>
   
-  <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Import Project="$(BuildScriptsPath)\Module.Build"/>
-  
+  <Import Project="..\..\..\DNN_Platform.build" />
+  <Import Project="..\..\..\Build\BuildScripts\AEModule.build" />
+  <Import Project="..\..\..\Build\BuildScripts\AEPackage.targets"/>
+
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>Dnn.EditBar.UI</DNNFileName>
     <PackageName>Dnn.EditBar.UI</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.EditBar</ModuleFolderName>
+    <InstallPath>$(WebsiteInstallPath)\Module</InstallPath>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\editBar</ResourceZipWorkingDirectory>
   </PropertyGroup>
 

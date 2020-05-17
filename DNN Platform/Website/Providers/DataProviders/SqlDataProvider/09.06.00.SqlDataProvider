@@ -1,0 +1,65 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetSingleUserByEmail') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetSingleUserByEmail
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSingleUserByEmail
+	@PortalId INT,
+	@Email nvarchar(255)
+AS 
+	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}{objectQualifier}Users U LEFT JOIN {databaseOwner}{objectQualifier}UserPortals UP on UP.[UserId] = U.[UserId] AND UP.[PortalId] = @PortalId WHERE U.Email = @Email AND (UP.[PortalId] = @PortalId OR U.IsSuperUser=1)), -1)
+GO
+
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_CREATED', N'Portal group created', N'DotNetNuke.Logging.EventLogType', N'ItemCreated', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTALGROUP_DELETED', N'Portal group deleted', N'DotNetNuke.Logging.EventLogType', N'ItemDeleted', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_ADDEDTOPORTALGROUP', N'Portal added to portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation', 1, 10, 0
+EXEC {databaseOwner}{objectQualifier}SaveCoreAuditTypes N'PORTAL_REMOVEDFROMPORTALGROUP', N'Portal removed from portal group', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation', 1, 10, 0
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTAL_CREATED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'PORTAL_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'PORTAL_DELETED')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'PORTAL_DELETED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetPortalSettingsBySetting') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalSettingsBySetting
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalSettingsBySetting
+	@SettingName nvarchar(50),
+	@CultureCode nvarchar(10)
+AS 
+	SELECT ps.PortalID, ps.SettingValue FROM {databaseOwner}{objectQualifier}PortalSettings ps WHERE ps.SettingName=@SettingName AND COALESCE(CultureCode, @CultureCode, N'') = IsNull(@CultureCode, N'')
+GO
+
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='DefaultEndUserExtensionWhitelist')
+INSERT INTO {databaseOwner}{objectQualifier}HostSettings
+([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+VALUES
+('DefaultEndUserExtensionWhitelist', 'jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export', 0, -1, GETDATE(), -1, GETDATE())
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

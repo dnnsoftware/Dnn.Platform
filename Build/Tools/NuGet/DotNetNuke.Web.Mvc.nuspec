@@ -8,7 +8,7 @@
     <owners>DNN Corp</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       Provides API references needed to develop ASP.MVC extensions for DNN Platform
@@ -27,5 +27,6 @@
   <files>
     <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net45\"/>
     <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.pdb" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

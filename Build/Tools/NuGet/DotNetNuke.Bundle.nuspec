@@ -8,7 +8,7 @@
     <owners>DNN Corp</owners>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <icon>images\logo-for-nuget.png</icon>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       This package is a metapackage that automatically includes all other available DNN Packages, this should only be used in situations where support for ALL types of development are truly needed.
@@ -40,5 +40,6 @@
     <file src="..\..\..\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\net45\"/>
 
     <file src="..\..\..\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\net45\"/>
+    <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

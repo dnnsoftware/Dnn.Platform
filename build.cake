@@ -1,14 +1,27 @@
+// Main Cake Build entry points. Note most Cake scripts are located under Build/Cake.
+
 #addin nuget:?package=Cake.XdtTransform&version=0.18.1&loaddependencies=true
 #addin nuget:?package=Cake.FileHelpers&version=3.2.0
 #addin nuget:?package=Cake.Powershell&version=0.4.8
 
+#addin nuget:?package=Dnn.CakeUtils&version=1.1.6
 #tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
 #tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
 #tool "nuget:?package=NUnitTestAdapter&version=2.1.1"
 
-#load "local:?path=Build/Cake/version.cake"
+#load "local:?path=Build/Cake/ci.cake"
+#load "local:?path=Build/Cake/compiling.cake"
 #load "local:?path=Build/Cake/create-database.cake"
+#load "local:?path=Build/Cake/database.cake"
+#load "local:?path=Build/Cake/devsite.cake"
+#load "local:?path=Build/Cake/external.cake"
+#load "local:?path=Build/Cake/nuget.cake"
+#load "local:?path=Build/Cake/packaging.cake"
+#load "local:?path=Build/Cake/settings.cake"
+#load "local:?path=Build/Cake/testing.cake"
+#load "local:?path=Build/Cake/thirdparty.cake"
 #load "local:?path=Build/Cake/unit-tests.cake"
+#load "local:?path=Build/Cake/version.cake"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -16,295 +29,70 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-
-var createCommunityPackages = "./Build/BuildScripts/CreateCommunityPackages.build";
-
 var targetBranchCk = Argument("CkBranch", "development");
-var targetBranchCdf = Argument("CdfBranch", "dnn");
-
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var buildDir = Directory("./src/");
-var artifactDir = Directory("./Artifacts/");
-var tempDir = Directory("./Temp/");
-var buildDirFullPath = System.IO.Path.GetFullPath(buildDir.ToString()) + "\\";
+var tempFolder = "./Temp/";
+var tempDir = Directory(tempFolder);
+var artifactsFolder = "./Artifacts/";
+var artifactsDir = Directory(artifactsFolder);
+var websiteFolder = "./Website/";
+var websiteDir = Directory(websiteFolder);
 
-// Define versioned files (manifests) to backup and revert on build
-var manifestFiles = GetFiles("./**/*.dnn");
-manifestFiles.Add(GetFiles("./SolutionInfo.cs"));
+// Global information variables
+bool isRunningInCI = false;
+
+//////////////////////////////////////////////////////////////////////
+// SETUP/TEARDOWN
+//////////////////////////////////////////////////////////////////////
+
+// Executed BEFORE the first task.
+Setup(context =>
+{
+	isRunningInCI = context.HasEnvironmentVariable("TF_BUILD");
+	Information("Is Running in CI : {0}", isRunningInCI);
+	if(Settings.Version == "auto" && !isRunningInCI){
+		// Temporarelly commit all changes to prevent checking in scripted changes like versioning.
+		StartPowershellScript("git add .");
+		StartPowershellScript("git commit --allow-empty -m 'backup'");	
+	}
+});
+
+// Executed AFTER the last task even if any task fails.
+Teardown(context =>
+{
+	if(Settings.Version == "auto" && !isRunningInCI){
+		// Undoes the script changes to all tracked files.
+		StartPowershellScript("git reset --hard");
+		// Undoes the setup commit keeping file states as before this build script ran.
+		StartPowershellScript("git reset HEAD^");
+	}
+});
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Task("Clean")
+Task("CleanWebsite")
     .Does(() =>
 	{
-		CleanDirectory(buildDir);
+		CleanDirectory(websiteDir);
+	});
+
+Task("CleanTemp")
+    .Does(() =>
+	{
 		CleanDirectory(tempDir);
 	});
     
 Task("CleanArtifacts")
     .Does(() =>
 	{
-		CleanDirectory(artifactDir);
-	});
-
-Task("Restore-NuGet-Packages")
-    .IsDependentOn("Clean")
-    .Does(() =>
-	{
-		NuGetRestore("./DNN_Platform.sln");
-	});
-
-Task("Build")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CompileSource")
-    .Does(() =>
-	{
-	});
-    
-Task("BuildWithDatabase")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-	.IsDependentOn("CreateDeploy")
-    .IsDependentOn("CreateSymbols")
-    .IsDependentOn("CreateDatabase")
-    .Does(() =>
-	{
-	});
-    
-Task("BuildInstallUpgradeOnly")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-    .Does(() =>
-	{
-	});
-
-Task("BuildAll")
-    .IsDependentOn("CleanArtifacts")
-	.IsDependentOn("BackupManifests")
-	.IsDependentOn("CompileSource")
-	.IsDependentOn("ExternalExtensions")
-	.IsDependentOn("CreateInstall")
-	.IsDependentOn("CreateUpgrade")
-    .IsDependentOn("CreateDeploy")
-	.IsDependentOn("CreateSymbols")
-    .IsDependentOn("CreateNugetPackages")
-	.IsDependentOn("RestoreManifests")
-    .Does(() =>
-	{
-	});
-
-Task("BackupManifests")
-	.Does( () => {		
-		Zip("./", "manifestsBackup.zip", manifestFiles);
-	});
-
-Task("RestoreManifests")	
-	.Does( () => {
-		DeleteFiles(manifestFiles);
-		Unzip("./manifestsBackup.zip", "./");
-		DeleteFiles("./manifestsBackup.zip");
-	});
-
-Task("CompileSource")
-    .IsDependentOn("UpdateDnnManifests")
-	.IsDependentOn("Restore-NuGet-Packages")
-	.Does(() =>
-	{
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CompileSource");
-		});
-	});
-
-Task("CreateInstall")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateInstall");
-		});
-	});
-
-Task("CreateUpgrade")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateUpgrade");
-		});
-	});
-    
-Task("CreateSymbols")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-	
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateSymbols");
-		});
-	});
-
-Task("CreateDeploy")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		CreateDirectory("./Artifacts");
-		
-		MSBuild(createCommunityPackages, c =>
-		{
-			c.Configuration = configuration;
-			c.WithProperty("BUILD_NUMBER", GetProductVersion());
-			c.Targets.Add("CreateDeploy");
-		});
-	});
-
-Task("CreateNugetPackages")
-	.IsDependentOn("CompileSource")
-	.Does(() =>
-	{
-		//look for solutions and start building them
-		var nuspecFiles = GetFiles("./Build/Tools/NuGet/DotNetNuke.*.nuspec");
-	
-		Information("Found {0} nuspec files.", nuspecFiles.Count);
-
-		//basic nuget package configuration
-		var nuGetPackSettings = new NuGetPackSettings
-		{
-			Version = GetBuildNumber(),
-			OutputDirectory = @"./Artifacts/",
-			IncludeReferencedProjects = true,
-			Properties = new Dictionary<string, string>
-			{
-				{ "Configuration", "Release" }
-			}
-		};
-	
-		//loop through each nuspec file and create the package
-		foreach (var spec in nuspecFiles){
-			var specPath = spec.ToString();
-
-			Information("Starting to pack: {0}", specPath);
-			NuGetPack(specPath, nuGetPackSettings);
-		}
-
-
-	});
-
-Task("ExternalExtensions")
-.IsDependentOn("Clean")
-    .Does(() =>
-	{
-        Information("CK:'{0}', CDF:'{1}'", targetBranchCk, targetBranchCdf);
-		Information("Downloading External Extensions to {0}", buildDirFullPath);
-
-		//ck
-		DownloadFile("https://github.com/DNN-Connect/CKEditorProvider/archive/" + targetBranchCk + ".zip", buildDirFullPath + "ckeditor.zip");
-	
-		//cdf
-		DownloadFile("https://github.com/dnnsoftware/ClientDependency/archive/" + targetBranchCdf + ".zip", buildDirFullPath + "clientdependency.zip");
-
-		Information("Decompressing: {0}", "CK Editor");
-		Unzip(buildDirFullPath + "ckeditor.zip", buildDirFullPath + "Providers/");
-
-		Information("Decompressing: {0}", "CDF");
-		Unzip(buildDirFullPath + "clientdependency.zip", buildDirFullPath + "Modules");
-
-		//look for solutions and start building them
-		var externalSolutions = GetFiles("./src/**/*.sln");
-	
-		Information("Found {0} solutions.", externalSolutions.Count);
-	
-		foreach (var solution in externalSolutions){
-			var solutionPath = solution.ToString();
-		
-			//cdf contains two solutions, we only want the dnn solution
-			if (solutionPath.Contains("ClientDependency-dnn") && !solutionPath.EndsWith(".DNN.sln")) {
-				Information("Ignoring Solution File: {0}", solutionPath);
-				continue;
-			}
-			else {
-				Information("Processing Solution File: {0}", solutionPath);
-			}
-		
-			Information("Starting NuGetRestore: {0}", solutionPath);
-			NuGetRestore(solutionPath);
-
-			Information("Starting to Build: {0}", solutionPath);
-			MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
-		}
-
-		externalSolutions = GetFiles("./" + tempDir.ToString() + "/**/*.sln");
-
-		Information("Found {0} solutions.", externalSolutions.Count);
-	
-		foreach (var solution in externalSolutions){
-			var solutionPath = solution.ToString();
-		
-			Information("Processing Solution File: {0}", solutionPath);
-			Information("Starting NuGetRestore: {0}", solutionPath);
-			NuGetRestore(solutionPath);
-
-			Information("Starting to Build: {0}", solutionPath);
-			MSBuild(solutionPath, settings => settings.SetConfiguration(configuration));
-		}
-	
-	
-		//grab all install zips and copy to staging directory
-
-		var fileCounter = 0;
-
-		fileCounter = GetFiles("./src/Providers/**/*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "Providers", fileCounter);
-		CopyFiles("./src/Providers/**/*_Install.zip", "./Website/Install/Provider/");
-
-		fileCounter = GetFiles("./src/Modules/**/*_Install.zip").Count;
-		Information("Copying {1} Artifacts from {0}", "Modules", fileCounter);
-		CopyFiles("./src/Modules/**/*_Install.zip", "./Website/Install/Module/");
-
-		//CDF is handled with nuget, and because the version isn't updated in git this builds as an "older" version and fails.
-		//fileCounter = GetFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*").Count;
-		//Information("Copying {1} Artifacts from {0}", "CDF", fileCounter);
-		//CopyFiles("./src/Modules/ClientDependency-dnn/ClientDependency.Core/bin/Release/ClientDependency.Core.*", "./Website/bin");
-	
-		var files = GetFiles("./" + tempDir.ToString() + "/*/Website/Install/Module/*_Install.zip");
-		Information("Copying {1} Artifacts from {0}", "AdminExperience", files.Count);
-		CopyFiles(files, "./Website/Install/Module/");
-	});
-
-Task("Run-Unit-Tests")
-    .IsDependentOn("CompileSource")
-    .Does(() =>
-	{
-		NUnit3("./src/**/bin/" + configuration + "/*.Test*.dll", new NUnit3Settings {
-			NoResults = false
-			});
+		CleanDirectory(artifactsDir);
 	});
 
 //////////////////////////////////////////////////////////////////////
@@ -312,7 +100,12 @@ Task("Run-Unit-Tests")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("BuildAll");
+    .IsDependentOn("CleanArtifacts")
+    .IsDependentOn("UpdateDnnManifests")
+	.IsDependentOn("CreateInstall")
+	.IsDependentOn("CreateUpgrade")
+    .IsDependentOn("CreateDeploy")
+    .IsDependentOn("CreateSymbols");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

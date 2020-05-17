@@ -4,15 +4,26 @@ daysUntilStale: 90
 daysUntilClose: 14
 # Issues with these labels will never be considered stale
 exemptLabels:
+<<<<<<< HEAD
   - pinned
   - security
   - bug
   - noteworthy
   - pull request submitted
+=======
+  - "Alert: Noteworthy"
+  - "Alert: Pinned"
+  - "Type: Bug"
+  - "Type: Feature"
+  - "Status: Development"
+  - "Status: Review"
+  - "Status: Testing"
+>>>>>>> release/9.6.1
 # Label to use when marking an issue as stale
 staleLabel: stale
 # Comment to post when marking an issue as stale. Set to `false` to disable
 markComment: >
+<<<<<<< HEAD
   This issue has been automatically marked as 'stale' because no activity has 
   been detected in the last 90 days. The intent is to bring awareness to the 
   issue and to alert to the fact that the issue will be closed if no further 
@@ -25,3 +36,24 @@ closeComment: >
   This issue has been closed automatically due to the aforementioned detection 
   of activity. Feel free to re-open the issue if you believe it should not be 
   closed.
+=======
+  We have detected this issue has not had any activity during the last 90 
+  days. That could mean this issue is no longer relevant and/or nobody has 
+  found the necessary time to address the issue. We are trying to keep the 
+  list of open issues limited to those issues that are relevant to the 
+  majority and to close the ones that have become 'stale' (inactive). If no 
+  further activity is detected within the next 14 days, the issue will be 
+  closed automatically.
+  
+  If new comments are are posted and/or a solution (pull request) is 
+  submitted for review that references this issue, the issue will not be 
+  closed. Closed issues can be reopened at any time in the future. Please
+  remember those participating in this open source project are volunteers 
+  trying to help others and creating a better DNN Platform for all. Thank 
+  you for your continued involvement and contributions!
+# Comment to post when closing a stale issue. Set to `false` to disable
+closeComment: >
+  This issue has been closed automatically due to inactivity (as mentioned 
+  14 days ago). Feel free to re-open the issue if you believe it is still 
+  relevant.
+>>>>>>> release/9.6.1

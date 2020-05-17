@@ -1,0 +1,185 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.sitemapSettings) {
+    margin: 45px 30px;
+    * {
+        box-sizing: border-box;
+    }
+    .columnTitle {
+        font-weight: bolder;
+        padding: 0 0 25px 0;
+    }
+    .columnTitle2 {
+        float: left;
+        width: 100%;
+        font-weight: bolder;
+        border-bottom: 1px solid @alto;
+        padding: 45px 0 15px 0;
+    }
+    .columnTitle3 {
+        float: left;
+        width: 100%;
+        font-weight: bolder;
+        padding: 45px 0 20px 0;
+    }
+    .provider-items-grid {
+        border: solid 1px @alto;
+        margin: 15px 0;
+        float: left;
+        width: 735px;
+        .header-row {
+            border-bottom: 1px solid @alto;
+            padding: 10px 0 10px 0;
+            width: 100%;
+            float: left;
+            overflow: hidden;
+            text-transform: uppercase;
+            .header-Name {
+                width: 40%;
+                float: left;
+                font-weight: bolder;
+                padding-left: 15px;
+            }
+            .header-Enabled {
+                width: 20%;
+                float: left;
+                font-weight: bolder;
+                text-align: center;
+            }
+            .header-Priority {
+                width: 30%;
+                float: left;
+                font-weight: bolder;
+                text-align: center;
+            }
+        }
+    }
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-label.inline {
+            max-width: 70%;
+            label {
+                max-width: 85%;
+            }
+        }
+        .sitemapUrl {
+            float: left;
+            width: 100%;
+            background: @mercury;
+            border: @mercury;
+            padding: 8px;
+            box-sizing: border-box;
+            height: 34px;
+            margin-bottom: 3px;
+        }
+        .sitemapSettings-row_switch {
+            margin: 10px 0 0 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
+            .dnn-switch-container {
+                float: right;
+            }
+        }
+        .sitemapSettings-row-options {
+            .dnn-label {
+                padding-top: 0;
+            }
+            .dnn-radio-buttons {
+                margin-left: -15px;
+                padding: 7px 0 0 0;
+                label {
+                    margin-bottom: 8px;
+                }
+            }
+        }
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            label {
+                color: #000;
+            }
+        }
+        .dnn-dropdown {
+            width: 100%;
+        }
+        .daysToCache {
+            width: 100%;
+            .dnn-dropdown {
+                width: 62%;
+                box-sizing: border-box;
+                .collapsible-label {
+                    width: auto;
+                }
+            }
+            .clearCacheBtn {
+                margin-left: 10px;
+                float: right;
+                width: 35%;
+                overflow: hidden;
+            }
+            .dnn-ui-common-button {
+                padding: 0;
+            }
+        }
+        .searchEngineSubmit {
+            width: 100%;
+            .dnn-dropdown {
+                width: 62% !important;
+                box-sizing: border-box;
+                .collapsible-label {
+                    width: auto;
+                }
+            }
+            .searchEngineSubmitBtn {
+                margin-left: 10px;
+                float: right;
+                width: 35%;
+                overflow: hidden;
+            }
+        }
+        .createVerification {
+            width: 100%;
+            .dnn-single-line-input-with-error {
+                width: 62% !important;
+            }
+            .createVerificationBtn {
+                margin-left: 10px;
+                float: right;
+                width: 35%;
+                overflow: hidden;
+            }
+        }
+        input {
+            width: auto;
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 30px 0;
+        float: left;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            border-right: 1px solid @alto;
+            .dnn-dropdown {
+                width: 100%;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+        }
+    }
+}

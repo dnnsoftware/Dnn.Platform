@@ -1,34 +1,28 @@
-﻿using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.DependencyInjection.Extensions;
+﻿using DotNetNuke.DependencyInjection.Extensions;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DotNetNuke.Web.Mvc.Extensions
 {
-    /// <summary>
-    /// Adds DNN MVC Specific startup extensions to simplify the
-    /// <see cref="Startup"/> Class.
-    /// </summary>
-    internal static class StartupExtensions
+    public static class StartupExtensions
     {
-        /// <summary>
-        /// Configures all of the <see cref="IDnnController"/>'s to be used
-        /// with the Service Collection for Dependency Injection.
-        /// </summary>
-        /// <param name="services">
-        /// Service Collection used to registering services in the container.
-        /// </param>
-        public static void AddMvc(this IServiceCollection services)
+        public static void AddMvcControllers(this IServiceCollection services)
         {
-            var startuptypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.SafeGetTypes())
-                .Where(x => typeof(IDnnController).IsAssignableFrom(x) &&
-                            x.IsClass &&
-                            !x.IsAbstract);
-            foreach (var controller in startuptypes)
+            var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(TypeExtensions.SafeGetTypes)
+                .Where(x => typeof(IDnnController).IsAssignableFrom(x)
+                    && x.IsClass
+                    && !x.IsAbstract
+                );
+            foreach (var controller in controllerTypes)
             {
-                services.AddTransient(controller);
+                services.TryAddTransient(controller);
             }
         }
     }

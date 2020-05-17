@@ -1,4 +1,8 @@
-﻿using DotNetNuke.Abstractions;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
