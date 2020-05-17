@@ -1,6 +1,13 @@
+
+
+<div dir="rtl" align="right">
+    
+    
 [![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.Platform%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=83&branchName=development)
 
+
 ![DNN Platform At A Glance](dnnplatform.png)
+
 
 # دی ان ان فارسی (DNN)
 
@@ -18,3 +25,5 @@
 ## دانلود نسخه های پایدار بومی دی ان ان
 
 * [دانلود دی ان ان 9.4.1 دی ان ان فارسی](/941)
+
+</div>
