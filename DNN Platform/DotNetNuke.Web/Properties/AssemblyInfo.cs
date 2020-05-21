@@ -19,8 +19,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DotNetNuke.Web")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("99d0e26d-a924-41d2-a195-33496a3f48ad")]

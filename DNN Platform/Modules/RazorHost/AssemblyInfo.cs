@@ -17,7 +17,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DotNetNuke.Modules.RazorHostView")]
 [assembly: AssemblyDescription("Razor Host Module")]
-[assembly: ComVisible(false)]
 
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 

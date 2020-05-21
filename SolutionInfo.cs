@@ -4,7 +4,9 @@
 // 
 #region Usings
 
+using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 #endregion
 
@@ -13,7 +15,8 @@ using System.Reflection;
 // associated with an assembly.
 
 // Review the values of the assembly attributes
-
+[assembly: CLSCompliant(false)]
+[assembly: ComVisible(false)]
 [assembly: AssemblyCompany(".NET Foundation")]
 [assembly: AssemblyProduct("https://dnncommunity.org")]
 [assembly: AssemblyCopyright("DNN Platform is copyright 2002-2020 by .NET Foundation. All Rights Reserved.")]
