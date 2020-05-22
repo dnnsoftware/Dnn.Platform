@@ -2,6 +2,17 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
+using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Prompt.Common;
+using Dnn.PersonaBar.Prompt.Components;
+using Dnn.PersonaBar.Prompt.Components.Models;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
 using System;
 using System.Linq;
@@ -9,18 +20,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Components;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using Dnn.PersonaBar.Prompt.Components.Repositories;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
@@ -103,11 +102,21 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
                 var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
-                if (isHelpCmd && (isHelpSyntax || isHelpLearn))
+                if (isHelpSyntax)
                 {
-                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
+                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    {
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpSyntax", Constants.LocalResourcesFile)
+                    });
                 }
-                if (isHelpCmd && args.Length == 1)
+                else if (isHelpLearn)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    {
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpLearn", Constants.LocalResourcesFile)
+                    });
+                }
+                else if (isHelpCmd && args.Length == 1)
                     return AddLogAndReturnResponse(null, null, command, startTime,
                         string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
@@ -149,7 +158,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                if (isHelpCmd) return GetHelp(command, cmdObj);
+                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
                 // set env. data for command use
                 cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
                 return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
@@ -162,15 +171,11 @@ namespace Dnn.PersonaBar.Prompt.Services
         }
         private HttpResponseMessage TryRunNewCommand(CommandInputModel command, Type cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
         {
-            // Instantiate and run the command that uses the new interrfaces and base class
+            // Instantiate and run the command that uses the new interfaces and base class
             try
             {
                 var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(new DotNetNuke.Prompt.CommandInputModel()
-                {
-                    CmdLine = command.CmdLine,
-                    CurrentPage = command.CurrentPage
-                }, cmdObj, false, false));
+                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
                 // set env. data for command use
                 cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
                 return AddLogAndReturnResponseNewCommands(cmdObj, cmdTypeToRun, command, startTime);
@@ -332,11 +337,6 @@ namespace Dnn.PersonaBar.Prompt.Services
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
             return message;
-        }
-
-        private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
         }
 
         private static string FilterCommand(string command)

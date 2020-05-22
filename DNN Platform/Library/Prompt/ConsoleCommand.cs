@@ -6,6 +6,7 @@ using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Collections;
+using DotNetNuke.Prompt.Attributes;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using System;
@@ -15,7 +16,7 @@ using System.Web.Caching;
 
 namespace DotNetNuke.Prompt
 {
-    public abstract class ConsoleCommandBase : IConsoleCommand
+    public abstract class ConsoleCommand : IConsoleCommand
     {
         public abstract string LocalResourceFile { get; }
         protected IPortalSettings PortalSettings { get; private set; }

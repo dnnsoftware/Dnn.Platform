@@ -1,8 +1,8 @@
 ﻿using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
+using DotNetNuke.Prompt.Attributes;
 using DotNetNuke.Services.Localization;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
+using static DotNetNuke.Prompt.Common.Constants;
 
 namespace DotNetNuke.Prompt
 {
@@ -59,15 +60,14 @@ namespace DotNetNuke.Prompt
             return commands;
         }
 
-        public ICommandHelp GetCommandHelp(ICommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
-            var cacheKey = (string.Join("_", command.Args) + "_" + PortalController.Instance.GetCurrentSettings()?.DefaultLanguage).Replace("-", "_");
-            cacheKey = $"{cacheKey}_{(showSyntax ? "1" : "0")}_{(showLearn ? "1" : "0")}}}";
+            var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
+                c => GetCommandHelpInternal(consoleCommand));
         }
 
-        private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)
@@ -87,19 +87,11 @@ namespace DotNetNuke.Prompt
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         DescriptionKey =
-                               LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
+                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile)
                     }).ToList();
                     commandHelp.Options = options;
                 }
                 commandHelp.ResultHtml = consoleCommand.ResultHtml;
-            }
-            else if (showLearn)
-            {
-                commandHelp.ResultHtml = LocalizeString("Prompt_CommandHelpLearn");
-            }
-            else if (showSyntax)
-            {
-                commandHelp.ResultHtml = LocalizeString("Prompt_CommandHelpSyntax");
             }
             else
             {
@@ -108,7 +100,7 @@ namespace DotNetNuke.Prompt
             return commandHelp;
         }
 
-        private static string LocalizeString(string key, string resourcesFile = Common.DefaultPromptResourceFile)
+        private static string LocalizeString(string key, string resourcesFile = DefaultPromptResourceFile)
         {
             var localizedText = Localization.GetString(key, resourcesFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;

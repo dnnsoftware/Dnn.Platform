@@ -14,6 +14,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
     public interface ICommandRepository
     {
         SortedDictionary<string, Command> GetCommands();
-        CommandHelp GetCommandHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false);
+        CommandHelp GetCommandHelp(string[] args, IConsoleCommand consoleCommand);
     }
 }

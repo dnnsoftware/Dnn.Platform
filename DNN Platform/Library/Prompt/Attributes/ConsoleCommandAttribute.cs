@@ -1,10 +1,13 @@
 ﻿using System;
 
-namespace DotNetNuke.Prompt
+namespace DotNetNuke.Prompt.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ConsoleCommandAttribute : Attribute
     {
+        /// <summary>
+        /// Name used in the UI for the command. By convention we encourage you to use "verb-noun" as with Powershell (e.g. "add-module").
+        /// </summary>
         public string Name { get; set; }
         /// <summary>
         /// Resource key for the category of the command
@@ -15,11 +18,11 @@ namespace DotNetNuke.Prompt
         /// </summary>
         public string DescriptionKey { get; set; }
 
-        public ConsoleCommandAttribute(string name, string category, string description)
+        public ConsoleCommandAttribute(string name, string categoryKey, string descriptionKey)
         {
             Name = name;
-            CategoryKey = category;
-            DescriptionKey = description;
+            CategoryKey = categoryKey;
+            DescriptionKey = descriptionKey;
         }
     }
 }
