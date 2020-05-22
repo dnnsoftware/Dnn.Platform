@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="indexer"></param>
         /// -----------------------------------------------------------------------------
-        private int GetAndStoreSearchDocuments(IndexingProvider indexer)
+        private int GetAndStoreSearchDocuments(IndexingProviderBase indexer)
         {
             IList<SearchDocument> searchDocs;
             var portals = PortalController.Instance.GetPortals();
@@ -296,7 +296,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(IndexingProvider indexer)
+        protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
         {
             var searchItems = new SearchItemInfoCollection();
             var portals = PortalController.Instance.GetPortals();
