@@ -815,6 +815,7 @@
     <Compile Include="Services\Search\Entities\SortFields.cs" />
     <Compile Include="Services\Search\Entities\SearchStopWords.cs" />
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
+    <Compile Include="Services\Search\IndexingProviderBase.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
     <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\LuceneResults.cs" />
