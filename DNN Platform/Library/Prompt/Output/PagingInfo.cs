@@ -5,7 +5,7 @@
 using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Prompt.Common
+namespace DotNetNuke.Prompt.Ouput
 {
     public class PagingInfo: IPagingInfo
     {

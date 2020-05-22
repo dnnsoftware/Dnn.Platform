@@ -263,15 +263,6 @@ namespace Dnn.PersonaBar.Prompt.Services
             return message;
         }
 
-        /// <summary>
-        /// Log every command run by a users.
-        /// </summary>
-        /// <param name="consoleCommand"></param>
-        /// <param name="cmdTypeToRun"></param>
-        /// <param name="command"></param>
-        /// <param name="startTime"></param>
-        /// <param name="error"></param>
-        /// <returns></returns>
         private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command,
             DateTime startTime, string error = null)
         {

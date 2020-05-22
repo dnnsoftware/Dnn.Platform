@@ -210,7 +210,7 @@
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />
     <Compile Include="Entities\Modules\Prompt\ListModules.cs" />
-    <Compile Include="Entities\Modules\Prompt\PormptModuleInfo.cs" />
+    <Compile Include="Entities\Modules\Prompt\PromptModuleInfo.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\ISettingsSerializer.cs" />
     <Compile Include="Entities\Modules\Settings\ModuleSettingAttribute.cs" />
@@ -261,7 +261,7 @@
     <Compile Include="Prompt\ConsoleCommand.cs" />
     <Compile Include="Prompt\Output\ConsoleErrorResultModel.cs" />
     <Compile Include="Prompt\Output\ConsoleResultModel.cs" />
-    <Compile Include="Prompt\Common\PagingInfo.cs" />
+    <Compile Include="Prompt\Output\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />

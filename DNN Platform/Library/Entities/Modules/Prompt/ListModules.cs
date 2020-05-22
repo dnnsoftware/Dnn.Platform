@@ -9,6 +9,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Prompt;
 using DotNetNuke.Prompt.Attributes;
 using DotNetNuke.Prompt.Common;
+using DotNetNuke.Prompt.Ouput;
 using DotNetNuke.Prompt.Output;
 using DotNetNuke.Security.Permissions;
 using System;
