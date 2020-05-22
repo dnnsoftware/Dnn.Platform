@@ -5,7 +5,7 @@
 using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Prompt
+namespace DotNetNuke.Prompt.Output
 {
     public class ConsoleResultModel : IConsoleResultModel
     {

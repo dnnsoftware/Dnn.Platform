@@ -6,7 +6,7 @@ using System;
 using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
 
-namespace DotNetNuke.Prompt
+namespace DotNetNuke.Prompt.Output
 {
     [Serializable]
     [JsonObject]

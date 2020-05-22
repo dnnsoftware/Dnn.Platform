@@ -7,6 +7,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Prompt;
 using DotNetNuke.Prompt.Attributes;
+using DotNetNuke.Prompt.Output;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using System;
