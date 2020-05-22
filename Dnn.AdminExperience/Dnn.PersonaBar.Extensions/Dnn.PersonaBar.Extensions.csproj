@@ -160,7 +160,6 @@
     <Compile Include="Components\Prompt\Commands\Commands\ListCommands.cs" />
     <Compile Include="Components\Prompt\Commands\Host\ClearCache.cs" />
     <Compile Include="Components\Prompt\Commands\Host\GetHost.cs" />
-    <Compile Include="Components\Prompt\Commands\Module\AddModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\CopyModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\DeleteModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\GetModule.cs" />

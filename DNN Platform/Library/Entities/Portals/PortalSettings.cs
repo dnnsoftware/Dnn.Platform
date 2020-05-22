@@ -4,18 +4,18 @@
 // 
 #region Usings
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions.Portals;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Web;
 
 #endregion
 
@@ -155,67 +155,67 @@ namespace DotNetNuke.Entities.Portals
 
         public TabInfo ActiveTab { get; set; }
 
-		public int AdministratorId { get; set; }
+        public int AdministratorId { get; set; }
 
-		public int AdministratorRoleId { get; set; }
+        public int AdministratorRoleId { get; set; }
 
-		public string AdministratorRoleName { get; set; }
+        public string AdministratorRoleName { get; set; }
 
-		public int AdminTabId { get; set; }
+        public int AdminTabId { get; set; }
 
-		public string BackgroundFile { get; set; }
+        public string BackgroundFile { get; set; }
 
-		public int BannerAdvertising { get; set; }
+        public int BannerAdvertising { get; set; }
 
-		public string CultureCode { get; set; }
+        public string CultureCode { get; set; }
 
-		public string Currency { get; set; }
+        public string Currency { get; set; }
 
-		public string DefaultLanguage { get; set; }
+        public string DefaultLanguage { get; set; }
 
-		public string Description { get; set; }
+        public string Description { get; set; }
 
-		public string Email { get; set; }
+        public string Email { get; set; }
 
         public DateTime ExpiryDate { get; set; }
 
-		public string FooterText { get; set; }
+        public string FooterText { get; set; }
 
-		public Guid GUID { get; set; }
+        public Guid GUID { get; set; }
 
-		public string HomeDirectory { get; set; }
+        public string HomeDirectory { get; set; }
 
-		public string HomeSystemDirectory { get; set; }
+        public string HomeSystemDirectory { get; set; }
 
-		public int HomeTabId { get; set; }
+        public int HomeTabId { get; set; }
 
-		public float HostFee { get; set; }
+        public float HostFee { get; set; }
 
-		public int HostSpace { get; set; }
+        public int HostSpace { get; set; }
 
-		public string KeyWords { get; set; }
+        public string KeyWords { get; set; }
 
-		public int LoginTabId { get; set; }
+        public int LoginTabId { get; set; }
 
-		public string LogoFile { get; set; }
+        public string LogoFile { get; set; }
 
-		public int PageQuota { get; set; }
+        public int PageQuota { get; set; }
 
-		public int Pages { get; set; }
+        public int Pages { get; set; }
 
-		public int PortalId { get; set; }
+        public int PortalId { get; set; }
 
-		public PortalAliasInfo PortalAlias { get; set; }
+        public PortalAliasInfo PortalAlias { get; set; }
 
-		public PortalAliasInfo PrimaryAlias { get; set; }
+        public PortalAliasInfo PrimaryAlias { get; set; }
 
-		public string PortalName { get; set; }
+        public string PortalName { get; set; }
 
-		public int RegisteredRoleId { get; set; }
+        public int RegisteredRoleId { get; set; }
 
-		public string RegisteredRoleName { get; set; }
+        public string RegisteredRoleName { get; set; }
 
-		public int RegisterTabId { get; set; }
+        public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
 
@@ -224,22 +224,22 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
         public int SiteLogHistory { get; set; }
 
-		public int SplashTabId { get; set; }
+        public int SplashTabId { get; set; }
 
-		public int SuperTabId { get; set; }
+        public int SuperTabId { get; set; }
 
-		public int UserQuota { get; set; }
+        public int UserQuota { get; set; }
 
-		public int UserRegistration { get; set; }
+        public int UserRegistration { get; set; }
 
-		public int Users { get; set; }
+        public int Users { get; set; }
 
-		public int UserTabId { get; set; }
+        public int UserTabId { get; set; }
 
         public int TermsTabId { get; set; }
 
-		public int PrivacyTabId { get; set; }
-        
+        public int PrivacyTabId { get; set; }
+
         #endregion
 
         #region Read-Only Properties
