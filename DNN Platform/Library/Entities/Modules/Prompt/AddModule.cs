@@ -16,7 +16,7 @@ using System.Linq;
 using System.Net;
 using static DotNetNuke.Prompt.Common.Constants;
 
-namespace DotNetNuke.Entities.Modules
+namespace DotNetNuke.Entities.Modules.Prompt
 {
     [ConsoleCommand("add-module", CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand

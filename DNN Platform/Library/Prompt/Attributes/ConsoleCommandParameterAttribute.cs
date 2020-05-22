@@ -25,15 +25,15 @@ namespace DotNetNuke.Prompt.Attributes
         /// The resource key for the description of this parameter
         /// </summary>
         public string DescriptionKey { get; set; }
-        public ConsoleCommandParameterAttribute(string name, string description, bool required, string defaultValue)
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required, string defaultValue)
         {
             Name = name;
             Required = required;
             DefaultValue = defaultValue;
-            DescriptionKey = description;
+            DescriptionKey = descriptionKey;
         }
-        public ConsoleCommandParameterAttribute(string name, string description, bool required) : this(name, description, required, string.Empty) { }
-        public ConsoleCommandParameterAttribute(string name, string description, string defaultValue) : this(name, description, false, defaultValue) { }
-        public ConsoleCommandParameterAttribute(string name, string description) : this(name, description, false, string.Empty) { }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required) : this(name, descriptionKey, required, string.Empty) { }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue) : this(name, descriptionKey, false, defaultValue) { }
+        public ConsoleCommandParameterAttribute(string name, string descriptionKey) : this(name, descriptionKey, false, string.Empty) { }
     }
 }

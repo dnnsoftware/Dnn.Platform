@@ -163,7 +163,6 @@
     <Compile Include="Components\Prompt\Commands\Module\CopyModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\DeleteModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\GetModule.cs" />
-    <Compile Include="Components\Prompt\Commands\Module\ListModules.cs" />
     <Compile Include="Components\Prompt\Commands\Module\MoveModule.cs" />
     <Compile Include="Components\Prompt\Commands\Portal\ClearLog.cs" />
     <Compile Include="Components\Prompt\Commands\Portal\GetPortal.cs" />
