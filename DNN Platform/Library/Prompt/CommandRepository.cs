@@ -30,7 +30,7 @@ namespace DotNetNuke.Prompt
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
-                    new CacheItemArgs("DnnPromptCommands", CacheItemPriority.Default),
+                    new CacheItemArgs("NewDnnPromptCommands", CacheItemPriority.Default),
                     c => GetCommandsInternal());
         }
 

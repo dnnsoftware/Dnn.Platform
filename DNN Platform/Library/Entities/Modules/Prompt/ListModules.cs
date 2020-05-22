@@ -23,22 +23,22 @@ namespace DotNetNuke.Entities.Modules.Prompt
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         [ConsoleCommandParameter("pageid", "Prompt_ListModules_FlagPageId")]
-        private int? PageId { get; set; } = -1;
+        public int? PageId { get; set; } = -1;
 
         [ConsoleCommandParameter("page", "Prompt_ListModules_FlagPage", "1")]
-        private int Page { get; set; } = 1;
+        public int Page { get; set; } = 1;
 
         [ConsoleCommandParameter("max", "Prompt_ListModules_FlagMax", "10")]
-        private int Max { get; set; } = 10;
+        public int Max { get; set; } = 10;
 
         [ConsoleCommandParameter("name", "Prompt_ListModules_FlagModuleName")]
-        private string ModuleName { get; set; }
+        public string ModuleName { get; set; }
 
         [ConsoleCommandParameter("title", "Prompt_ListModules_FlagModuleTitle")]
-        private string ModuleTitle { get; set; }
+        public string ModuleTitle { get; set; }
 
         [ConsoleCommandParameter("deleted", "Prompt_ListModules_FlagDeleted")]
-        private bool? Deleted { get; set; }
+        public bool? Deleted { get; set; }
         
 
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)

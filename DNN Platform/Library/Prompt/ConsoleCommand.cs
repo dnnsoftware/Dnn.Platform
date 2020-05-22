@@ -7,12 +7,9 @@ using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Collections;
 using DotNetNuke.Prompt.Attributes;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web.Caching;
 
 namespace DotNetNuke.Prompt
 {
@@ -25,7 +22,6 @@ namespace DotNetNuke.Prompt
         protected int TabId { get; private set; }
         protected string[] Args { get; private set; }
         protected IDictionary<string, string> Flags { get; private set; }
-        private IList<ParameterMapping> Mapping { get; }
 
         #region Protected Methods
         protected string LocalizeString(string key)
@@ -39,7 +35,9 @@ namespace DotNetNuke.Prompt
         }
         protected void ParseParameters<T>(T myCommand) where T : class, new()
         {
-            Mapping.ForEach(mapping =>
+            //LoadMapping();
+            var mpg = CreateMapping();
+            mpg.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
@@ -70,7 +68,7 @@ namespace DotNetNuke.Prompt
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(ValidationMessage);
-        }       
+        }
         #endregion
 
         #region Private Methods
@@ -132,43 +130,15 @@ namespace DotNetNuke.Prompt
             public ConsoleCommandParameterAttribute Attribute { get; set; }
             public PropertyInfo Property { get; set; }
         }
-        protected IList<ParameterMapping> LoadMapping()
-        {
-            var cacheKey = MappingCacheKey;
-            var mapping = CachingProvider.Instance().GetItem(cacheKey) as IList<ParameterMapping>;
-            if (mapping == null)
-            {
-                mapping = CreateMapping();
-                // HARDCODED: 2 hour expiration. 
-                // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
-                CachingProvider.Instance().Insert(cacheKey, mapping, null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
-            }
-
-            return mapping;
-        }
-
-        public const string CachePrefix = "ConsoleCommandPersister_";
-        protected virtual string MappingCacheKey
-        {
-            get
-            {
-                var type = GetType();
-                return CachePrefix + type.FullName.Replace(".", "_");
-            }
-        }
 
         protected virtual IList<ParameterMapping> CreateMapping()
         {
             var mapping = new List<ParameterMapping>();
-            var type = GetType();
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty);
-
-            properties.ForEach(property =>
+            GetType().GetProperties().ForEach(property =>
             {
                 var attributes = property.GetCustomAttributes<ConsoleCommandParameterAttribute>(true);
                 attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
             });
-
             return mapping;
         }
         #endregion
