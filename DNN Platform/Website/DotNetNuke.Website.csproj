@@ -3055,12 +3055,10 @@
     <Content Include="admin\Users\App_LocalResources\ViewProfile.ascx.resx" />
     <Content Include="App_GlobalResources\Exceptions.resx" />
     <Content Include="App_GlobalResources\FileUpload.resx" />
-    <Content Include="App_GlobalResources\GlobalResources.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\SharedResources.resx">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="App_GlobalResources\GlobalResources.resx" />
+    <Content Include="App_GlobalResources\List_Country.resx" />
+    <Content Include="App_GlobalResources\Prompt.resx" />
+    <Content Include="App_GlobalResources\SharedResources.resx" />
     <Content Include="App_GlobalResources\WebControls.resx" />
     <Content Include="controls\App_LocalResources\Address.ascx.resx" />
     <Content Include="controls\App_LocalResources\DualListControl.ascx.resx" />
