@@ -7,13 +7,18 @@ using Newtonsoft.Json;
 
 namespace DotNetNuke.Prompt.Ouput
 {
-    public class PagingInfo: IPagingInfo
+    public class PagingInfo : IPagingInfo
     {
         [JsonProperty(PropertyName = "pageNo")]
         public int PageNo { get; set; }
+
         [JsonProperty(PropertyName = "pageSize")]
         public int PageSize { get; set; }
+
         [JsonProperty(PropertyName = "totalPages")]
         public int TotalPages { get; set; }
+
+        [JsonProperty(PropertyName = "totalRecords")]
+        public int TotalRecords { get; set; }
     }
 }

@@ -101,6 +101,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
+                    TotalRecords = total,
                     PageSize = max
                 },
                 Records = results.Count(),

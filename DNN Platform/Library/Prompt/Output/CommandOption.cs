@@ -30,6 +30,6 @@ namespace DotNetNuke.Prompt.Output
         /// <summary>
         /// Resource key of the description of flag
         /// </summary>
-        public string DescriptionKey { get; set; }
+        public string Description { get; set; }
     }
 }

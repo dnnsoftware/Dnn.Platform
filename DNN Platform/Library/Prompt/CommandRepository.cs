@@ -91,7 +91,7 @@ namespace DotNetNuke.Prompt
                         Name = attribute.Name,
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
-                        DescriptionKey =
+                        Description =
                                LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile)
                     }).ToList();
                     commandHelp.Options = options;
