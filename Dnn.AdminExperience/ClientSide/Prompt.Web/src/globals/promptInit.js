@@ -11,7 +11,6 @@ const promptInit = {
         util.init(options.utility);
         util.moduleName = options.moduleName;
         util.settings = options.settings;
-        util.version = options.version;
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
         //require("../less/style.less");

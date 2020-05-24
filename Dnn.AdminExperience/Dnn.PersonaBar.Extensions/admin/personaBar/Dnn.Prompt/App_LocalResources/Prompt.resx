@@ -120,4 +120,7 @@
   <data name="nav_Prompt.Text" xml:space="preserve">
     <value>Prompt</value>
   </data>
+  <data name="PromptGreeting.Text" xml:space="preserve">
+    <value>Welcome to Prompt. Type 'help' to get a list of commands</value>
+  </data>
 </root>

@@ -1011,15 +1011,6 @@
   <data name="Help_Type.Text" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="PromptGreeting.Text" xml:space="preserve">
-    <value>Prompt {0} Type \'help\' to get a list of commands</value>
-  </data>
-  <data name="ReloadingText.Text" xml:space="preserve">
-    <value>Reloading in 3 seconds</value>
-  </data>
-  <data name="SessionHisotryCleared.Text" xml:space="preserve">
-    <value>Session command history cleared.</value>
-  </data>
   <data name="Prompt_GeneralCategory.Text" xml:space="preserve">
     <value>General Commands</value>
   </data>
@@ -1208,8 +1199,5 @@
       &lt;tr&gt;&lt;td&gt;Application restarted&lt;/td&gt;&lt;/tr&gt;
       &lt;tr&gt;&lt;td&gt;Reloading in 3 seconds&lt;/td&gt;&lt;/tr&gt;
     &lt;/table&gt;</value>
-  </data>
-  <data name="InValidPortalId.Text" xml:space="preserve">
-    <value>Portal Id {0} does not belong to Site Group.</value>
   </data>
 </root>
