@@ -6,13 +6,36 @@ using System;
 
 namespace DotNetNuke.Abstractions.Prompt
 {
+    /// <summary>
+    /// This is used to internally retrieve and keep a list of all commands found in the installation
+    /// </summary>
     public interface ICommand
     {
-        string Category { get; set; }
-        Type CommandType { get; set; }
-        string Description { get; set; }
-        string Key { get; set; }
+        /// <summary>
+        /// Name of the command
+        /// </summary>
         string Name { get; set; }
+        /// <summary>
+        /// Description of the command
+        /// </summary>
+        string Description { get; set; }
+        /// <summary>
+        /// Category to which this command belongs. This is used to 
+        /// group the list of commands when a user requests this.
+        /// </summary>
+        string Category { get; set; }
+        /// <summary>
+        /// Key that is used to lookup the command internally 
+        /// (= upper cased command name)
+        /// </summary>
+        string Key { get; set; }
+        /// <summary>
+        /// Assembly version of the assembly containing the command
+        /// </summary>
         string Version { get; set; }
+        /// <summary>
+        /// The command class
+        /// </summary>
+        Type CommandType { get; set; }
     }
 }

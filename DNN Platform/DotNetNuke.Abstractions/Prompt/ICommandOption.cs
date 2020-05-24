@@ -4,11 +4,26 @@
 // 
 namespace DotNetNuke.Abstractions.Prompt
 {
+    /// <summary>
+    /// This is used in the ICommandHelp to send a list of command parameters to the client for explanatory help
+    /// </summary>
     public interface ICommandOption
     {
-        string DefaultValue { get; set; }
-        string DescriptionKey { get; set; }
+        /// <summary>
+        /// Name of the parameter
+        /// </summary>
         string Name { get; set; }
+        /// <summary>
+        /// Description of what this parameter is for
+        /// </summary>
+        string Description { get; set; }
+        /// <summary>
+        /// Default serialized value if it is specified
+        /// </summary>
+        string DefaultValue { get; set; }
+        /// <summary>
+        /// Whether the parameter is required
+        /// </summary>
         bool Required { get; set; }
     }
 }
