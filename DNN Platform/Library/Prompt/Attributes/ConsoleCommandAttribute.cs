@@ -4,7 +4,7 @@
 // 
 using System;
 
-namespace DotNetNuke.Prompt.Attributes
+namespace DotNetNuke.Prompt
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ConsoleCommandAttribute : Attribute

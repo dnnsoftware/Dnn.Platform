@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace DotNetNuke.Prompt.Output
+namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]

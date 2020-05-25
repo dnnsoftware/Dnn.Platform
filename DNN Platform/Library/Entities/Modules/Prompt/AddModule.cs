@@ -6,22 +6,19 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Prompt;
-using DotNetNuke.Prompt.Attributes;
-using DotNetNuke.Prompt.Output;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using static DotNetNuke.Prompt.Common.Constants;
 
 namespace DotNetNuke.Entities.Modules.Prompt
 {
-    [ConsoleCommand("add-module", CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
+    [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
-        public override string LocalResourceFile => DefaultPromptResourceFile;
+        public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 

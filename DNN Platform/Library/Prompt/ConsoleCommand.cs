@@ -6,7 +6,6 @@ using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Collections;
-using DotNetNuke.Prompt.Attributes;
 using DotNetNuke.Services.Localization;
 using System.Collections.Generic;
 using System.Reflection;

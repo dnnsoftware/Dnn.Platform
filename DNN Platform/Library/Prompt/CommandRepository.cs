@@ -6,8 +6,6 @@ using DotNetNuke.Abstractions.Prompt;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Prompt.Attributes;
-using DotNetNuke.Prompt.Output;
 using DotNetNuke.Services.Localization;
 using System;
 using System.Collections.Generic;
@@ -15,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
-using static DotNetNuke.Prompt.Common.Constants;
 
 namespace DotNetNuke.Prompt
 {
@@ -46,7 +43,7 @@ namespace DotNetNuke.Prompt
                      typeof(IConsoleCommand).IsAssignableFrom(t));
             foreach (var cmd in allCommandTypes)
             {
-                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
                 var assemblyName = cmd.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
@@ -78,7 +75,7 @@ namespace DotNetNuke.Prompt
             if (consoleCommand != null)
             {
                 var cmd = consoleCommand.GetType();
-                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as ConsoleCommandAttribute ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
+                var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault() as ConsoleCommandAttribute ?? new ConsoleCommandAttribute(CreateCommandFromClass(cmd.Name), Constants.CommandCategoryKeys.General, $"Prompt_{cmd.Name}_Description");
                 commandHelp.Name = attr.Name;
                 commandHelp.Description = LocalizeString(attr.DescriptionKey, consoleCommand.LocalResourceFile);
                 var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
@@ -105,7 +102,7 @@ namespace DotNetNuke.Prompt
             return commandHelp;
         }
 
-        private static string LocalizeString(string key, string resourcesFile = DefaultPromptResourceFile)
+        private static string LocalizeString(string key, string resourcesFile = Constants.DefaultPromptResourceFile)
         {
             var localizedText = Localization.GetString(key, resourcesFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;

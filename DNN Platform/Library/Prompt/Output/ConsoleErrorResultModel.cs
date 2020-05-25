@@ -4,14 +4,14 @@
 // 
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Prompt.Output
+namespace DotNetNuke.Prompt
 {
     public class ConsoleErrorResultModel : ConsoleResultModel
     {
         public ConsoleErrorResultModel()
         {
             IsError = true;
-            Output = Localization.GetString("Prompt_InvalidSyntax", Common.Constants.DefaultPromptResourceFile, true);
+            Output = Localization.GetString("Prompt_InvalidSyntax", Constants.DefaultPromptResourceFile, true);
         }
 
         public ConsoleErrorResultModel(string errMessage)
