@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Library
 {
     public static class Constants
     {
-        public const string LocalResourcesFile = DotNetNuke.Prompt.Common.Constants.DefaultPromptResourceFile;
+        public const string LocalResourcesFile = DotNetNuke.Prompt.Constants.DefaultPromptResourceFile;
         public const string PersonaBarRelativePath = "~/DesktopModules/admin/Dnn.PersonaBar/";
         public const string PersonaBarModulesPath = PersonaBarRelativePath + "Modules/";
 
