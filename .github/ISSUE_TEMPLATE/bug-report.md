@@ -41,8 +41,8 @@ Provide any additional context that may be helpful in understanding and/or resol
 Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
 -->
 * [ ] 10.00.00 alpha build
-* [ ] 09.06.01 release candidate
-* [ ] 09.06.00 latest supported release
+* [ ] 09.06.02 release candidate
+* [ ] 09.06.01 latest supported release
 
 ## Affected browser
 <!-- 
