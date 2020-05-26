@@ -1,14 +1,14 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Module Creator" type="Module" version="09.04.02">
+        <package name="DotNetNuke.Module Creator" type="Module" version="09.04.04">
             <friendlyName>Module Creator</friendlyName>
             <description>Development of modules.</description>
             <iconFile>~/Icons/Sigma/ModuleCreator_32x32.png</iconFile>
             <owner>
                 <name>DNN</name>
-                <organization>DNN Corp.</organization>
-                <url>http://www.dnnsoftware.com</url>
-                <email>support@dnnsoftware.com</email>
+                <organization>.NET Foundation</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />

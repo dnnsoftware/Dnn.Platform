@@ -1,14 +1,14 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Console" type="Module" version="09.04.02">
+        <package name="DotNetNuke.Console" type="Module" version="09.04.04">
             <friendlyName>Console</friendlyName>
             <description>Display children pages as icon links for navigation.</description>
             <iconFile>~/DesktopModules/Admin/Console/console.png</iconFile>
             <owner>
                 <name>DNN</name>
-                <organization>DNN Corp.</organization>
-                <url>http://www.dnnsoftware.com</url>
-                <email>support@dnnsoftware.com</email>
+                <organization>.NET Foundation</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />

@@ -1,0 +1,47 @@
+﻿<!-- panel -->
+<div class="socialpanelheader" id="configConsole-headerPanel">
+    <h3 data-bind="html: resx.ConfigConsole" class="title-small"></h3>
+</div>
+<div class="socialpanelbody configConsolePanelContainer configConsolePanel" id="configConsole-bodyPanel">
+    <div class="body">
+        <ul class="tabs-nav">
+            <li><a href="#configConsole-files" data-bind="html: resx.ConfigFilesTab"></a></li>
+            <li><a href="#configConsole-merge" data-bind="html: resx.MergeScriptsTab"></a></li>
+        </ul>
+        <div id="configConsole-files">
+            <div class="configForm">
+                <div class="form-item">
+                    <div>
+                        <select data-bind="options: configs, value: config" aria-label="Files"></select>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <textarea class="config-xml" data-bind="value: configxml" aria-label="Content"></textarea>
+                </div>
+                <div class="actions">
+                    <button class="create-page dnn-ui-common-button" role="primary" data-bind="html: resx.cmdSave, click: saveConfig"></button>
+                </div>
+            </div>
+        </div>
+        <div id="configConsole-merge">
+            <div class="configForm">
+                <div class="form-item">
+                    <span class="fileupload-wrapper">
+                        <button class="dnn-ui-common-button uploadbtn" role="secondary" data-bind="html: resx.cmdUpload"></button>
+                        <input type="file" aria-label="File" />
+                    </span>
+                    <div class="note">
+                        <span class="caption" data-bind="html: resx.plScriptNote"></span>
+                        <span class="description" data-bind="html: resx.plScriptNoteDesc"></span>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <textarea class="script-xml" data-bind="value: mergexml" aria-label="Scripts"></textarea>
+                </div>
+                <div class="actions">
+                    <button class="create-page dnn-ui-common-button" role="primary" href="#" data-bind="html: resx.cmdExecute, click: mergeConfig"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

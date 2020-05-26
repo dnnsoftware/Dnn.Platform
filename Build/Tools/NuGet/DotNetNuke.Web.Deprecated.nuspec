@@ -9,7 +9,6 @@
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <icon>images\logo-for-nuget.png</icon>
-    <iconUrl>https://dnncommunity.org/favicon.ico</iconUrl>
     <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       	Provides API references for deprecated items removed from the primary API's, such as DNN's Telerik component.  These elements may not be distributed with DNN in the future

@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DigitalAssetsManagement" type="Module" isSystem="true" version="09.04.02">
+    <package name="DigitalAssetsManagement" type="Module" isSystem="true" version="09.04.04">
       <friendlyName>Digital Asset Management</friendlyName>
       <description>DotNetNuke Corporation Digital Asset Management module</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
       <owner>
         <name>DNN</name>
-        <organization>DNN Corp.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>support@dnnsoftware.com</email>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
@@ -38,7 +38,7 @@
                     <controlTitle/>
                     <controlType>View</controlType>
                     <iconFile/>
-                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
+                    <helpUrl>https://dnndocs.com</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>                  
                   <moduleControl>

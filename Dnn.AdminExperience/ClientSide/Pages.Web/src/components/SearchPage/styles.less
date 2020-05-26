@@ -1,0 +1,419 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+
+.advancedCollapsibleComponent {
+    display: table;
+    width: 100%;
+    border: 1px solid #c8c8c8;
+    &.open {
+        border-top: 2px solid @curiousBlue;
+        border-bottom: 2px solid @curiousBlue;
+        position: relative;
+        top: -1px;
+    }
+    &.false {
+        border-top: 2px solid @curiousBlue;
+        border-bottom: 2px solid @curiousBlue;
+        position: relative;
+        top: -1px;
+    }
+    &:not(:last-child) {
+        div.collapsible-header {
+            border-bottom: 1px solid @alto;
+        }
+    }
+    div.collapsible-header {
+        text-transform: uppercase;
+        color: rgb(178, 189, 195);
+        width: 100%;
+        position: relative;
+        padding: 22px 22px 16px;
+        box-sizing: border-box;
+        cursor: pointer;
+        * {
+            pointer-events: none;
+        }
+        &.false {
+            border-bottom: none;
+        }
+        
+    
+        .collapse-icon {
+            position: absolute;
+            right: 20px;
+            top: 21px;
+            font-size: 30px;
+            line-height: 16px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Chrome/Safari/Opera */
+            -khtml-user-select: none;
+            /* Konqueror */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE/Edge */
+            user-select: none;
+            &:after {
+                border: 6px solid transparent;
+                border-bottom: 6px solid @thunder;
+                content: "";
+                position: absolute;
+                left: -15px;
+                top: 0;
+            }
+            &.collapsed {
+                &:after {
+                    border-top: 6px solid @thunder;
+                    border-bottom: 6px solid transparent;
+                    top: 5px;
+                }
+            }
+        }
+    }
+    
+        
+    .search-advanced-header {
+        .search-advanced-icon {
+            svg {
+                width: 25px;
+                float: left;
+                height: 25px;
+                margin-right: 15px;
+                margin-top: -5px;
+                fill: @rollingStone;
+            }
+        }
+        .search-advanced-label {
+            color: @bulgarianRose;
+            .dnn-text-overflow-wrapper {
+                font-size: 10pt;
+            }
+            * {
+                pointer-events: all !important;
+            }
+        }
+    }
+    .dnn-uicommon-tags-field-input .dnn-uicommon-tag-input {
+        max-width: 80%;
+        
+    }
+}
+
+
+
+.search-advanced-header {
+    .search-advanced-icon {
+        svg {
+            width: 25px;
+            float: left;
+            height: 25px;
+            margin-right: 15px;
+            margin-top: -5px;
+            fill: @rollingStone;
+        }
+    }
+    .search-advanced-label {
+        color: @bulgarianRose;
+        .dnn-text-overflow-wrapper {
+            font-size: 10pt;
+        }
+        * {
+            pointer-events: all !important;
+        }
+    }
+}
+
+
+.pages-app {
+    .search-more-flyout {
+        position: relative;
+        padding: 20px;
+        background-color: white;
+        height: 200px;
+        transition: all .25s;
+        animation: fadeIn .25s ease-in forwards;
+        z-index: 9999;
+        .more-dropdown {
+            width: 100%;
+        }
+        textarea {
+            resize: none;
+            width: 100%;
+            min-height: 82px;
+            overflow: auto;
+        }
+        .date-picker {    
+            border: 1px solid #959695;
+            width: 100%;
+            display: inline-block;
+        }
+        .calendar-dropdown-container {
+            position: relative;
+        }
+        .calendar-icon {
+            width: 15px;
+            height: 35px;
+            padding: 0;
+            margin-left: 5px;
+            cursor: pointer;
+            line-height: 35px;
+        }
+        .calendar-dropdown {
+            position: absolute;
+            top: 31px;
+            left: -1px;
+            width: 550px;
+            height: 0;
+            border: 1px solid @alto;
+            overflow: hidden;
+            display: none;
+
+            z-index: 9999;
+            -webkit-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 2px 26px -6px rgba(0, 0, 0, 0.75);
+            background-color: white;
+
+        }
+        .calendar-dropdown-content {
+            background-color: white;
+            overflow: auto;
+            padding-bottom: 100px;
+            margin-top: 0px;
+            height: 100%;
+        }
+        .selected-date {
+            margin-top: 2px;
+            padding: 5px;
+        }
+        .calendar {
+            height: 270px;
+            width: 300px;
+        }
+    }
+    .search-item-card {
+        margin: 10px 0;
+        padding: 0;
+        border: 1px solid @alto;
+        height: 107px;
+        animation: fadeIn .25s ease-in forwards;
+        .search-item-thumbnail {
+            float: left;
+            width: 16%;
+            img {
+                height: 105px;
+                width: 100%;
+            }
+        }
+        .search-item-details {
+
+            float: left;
+            width: 83%;
+            height: 100%;
+            padding: 10px 0px 10px 35px;
+            display: block;
+
+            &.full {
+                width: 99%;
+            }
+            .search-item-details-left {
+                float: left;
+                width: 100%;
+                h1 {
+                    color: @curiousBlue;
+                    cursor: pointer;
+                }
+
+                >div {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow-x: hidden;
+                    max-width: ~"calc(100% - 120px)";
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 3px 0;
+                }
+                color: @rollingStone;
+            }
+            .search-item-details-right {
+                float: right;
+                height: 32px;
+                position: absolute;
+                right: 90px;
+
+                height: 32px;
+                div {
+                    height: 32px;
+                }
+                ul {
+                    float: right;
+                    transition: opacity .25s ease-in;
+                    opacity: 0;
+                    padding: 0;
+                    margin: 0;
+                    li {
+                        list-style: none;
+                        padding: 0 10px;
+                        float: left;
+                        div {
+                            width: 20px;
+                            cursor: pointer;
+                            svg {
+                                width: 20px;
+                                fill: @alto;
+                                stroke: @alto;
+                            }
+                            svg:hover {
+                                width: 20px;
+                                fill: @curiousBlue;
+                                stroke: @curiousBlue;
+                            }
+                        }
+                    }
+                }
+            }
+            &:hover {
+                ul {
+                    opacity: 1;
+                }
+            }
+        }
+        .search-item-details-list {
+            padding: 3px 0px;
+            clear: both;
+            float: left;
+            width: 100%;
+            ul {
+                width: 100%;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            li {
+                width: 30%;
+                float: left;
+                margin: 0 10px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                p {
+                    display: inline;
+                    font-weight: bold;
+                }
+                p:not(:first-child) {
+                    margin: 0px 10px;
+                    color: @curiousBlue;
+                    cursor: pointer;
+                }
+            }
+            li:first-child {
+                float: left;
+                margin: 0;
+            }
+            p {
+                text-transform: capitalize;
+            }
+        }
+    }
+    .search-container {
+        border-bottom: 1px solid @alto;
+        height:54px;
+        margin-top: 73px;
+
+        .btn{
+            float:left;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            padding-top: 5px;
+            svg {
+                width: 100%;
+                fill: #000;
+            }
+        }
+        div {
+            display: block;
+        }
+        .back-to-page {
+            float: left;
+            width: 200px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            div {
+                float: left;
+                width: 20px;
+                margin-right: 10px;
+                svg {
+                    fill: #000;
+                }
+            }
+            p {
+                padding-top: 3px;
+                text-transform: uppercase;
+            }
+        }
+        .dnn-back-to-link {
+            float: left;
+            width: 200px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px;
+            > span {
+                position: relative;
+                float: left;
+            }
+            .dnn-back-to-arrow {
+                > svg {
+                    width: 16px;
+                    height: 16px;
+                    fill: @thunder;
+                }
+                float: left;
+                position: relative;
+            }
+            &:hover {
+                float: left;
+                color: @mountainMist;
+                .dnn-back-to-arrow {
+                    > svg {
+                        fill: @mountainMist;
+                    }
+                }
+            }
+        }
+
+        .search-box{
+            margin-top: 10px;
+            float:right;
+            border-left: 1px solid @alto;
+            width: 261px;
+            .search-input {
+                width: 200px;
+                float: left;
+                input {
+                    border: none;
+                    background-color: transparent;
+                    width: 100%;
+                    outline: none;
+                }
+                input::-ms-clear {
+                    display: none;
+                }
+            }
+        }
+        .search-btn {
+            padding: 0 5px;
+            line-height: 42px;
+        }
+        .clear-search {
+            padding: 8px;
+            line-height: 22px;
+            svg {
+                fill: @alto;
+            }
+        }
+    }
+}

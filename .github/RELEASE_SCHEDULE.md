@@ -2,7 +2,7 @@
 To ensure adequate time for release planning by the community, partners, and vendors a specific release process will be followed for all releases.  
 
 ## Release Candidates
-For a period of two-weeks (Minor & Revision) or four-weeks (Major) before any release, a Release Candidate (RC) version will be made available to the public.  At present these release candidates will be for testing only. After version 10.x efforts will be made to support upgrading from RC to Production releases.
+For a period of one week (Revision), two weeks (Minor) or four-weeks (Major) before any release, a Release Candidate (RC) version will be made available to the public.  At present these release candidates will be for testing only. After version 10.x efforts will be made to support upgrading from RC to Production releases.
 
 The goal of these release candidates is to give the community time to adjust their existing environments for any breaking changes, as well as to identify any issues with the changes.  If necessary, changes will be incorporated an additional RC release could be made if significant problems are identified.  If a revised Release Candidate is necessary the Production Release schedule will be impacted.  The exact impact will vary on a case-by-case basis depending on the nature of the issue(s) identified during RC review, however, will be clearly communicated during the release.
 

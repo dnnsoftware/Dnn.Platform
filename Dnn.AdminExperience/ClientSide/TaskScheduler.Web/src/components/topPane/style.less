@@ -1,0 +1,137 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+:local(.topPaneWrapper) {
+    .topPane-time {
+        float: right;
+        padding: 0 0 10px 0;
+        color: @thunder;
+        .topPane-time-name {
+            float: left;
+        }
+        .topPane-time-value {
+            float: right;
+            width: 150px;
+            text-align: right;
+        }
+    }
+    .topPane {
+        background-color: #fff;
+        padding: 15px 15px 15px 15px;
+        display: block;
+        box-sizing: border-box;
+        float: left;
+        width: 100%;
+        height: auto;
+        border: 1px solid @alto;
+        margin-bottom: 15px;
+        .topPane-left {
+            float: left;
+            margin-right: 30px;
+            font-weight: bolder;
+            font-size: 14px;
+            width: 40px;
+        }
+        .topPane-middle {
+            float: left;
+            padding-right: 50px;
+            width: 35%;
+            .topPane-middle-name {
+                font-weight: bolder;
+                font-size: 14px;
+                padding: 0 0 9px 0;
+                color: @curiousBlue;
+            }
+            .topPane-middle-name-stopped {
+                font-weight: bolder;
+                font-size: 14px;
+                padding: 0 0 9px 0;
+                color: @alizarinCrimson;
+            }
+            .topPane-middle-common {
+                color: @thunder;
+                width: 100%;
+                float: left;
+                padding: 0 0 10px 0;
+                .topPane-middle-common-title {
+                    font-weight: bolder;
+                    float: left;
+                    max-width: 90%;
+                }
+                .topPane-middle-common-value {
+                    float: right;
+                }
+                .editIcon {
+                    width: 16px;
+                    height: 16px;
+                    float: right;
+                    padding-left: 3px;
+                    margin-right: -20px;
+                    cursor: pointer;
+                    > svg {
+                        &:hover {
+                            fill: @thunder;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .editIconDisabled {
+                    width: 16px;
+                    height: 16px;
+                    float: right;
+                    padding-left: 3px;
+                    margin-right: -20px;
+                    > svg {
+                        fill: @alto;
+                    }
+                }
+                .collapsible-content {
+                    z-index: 1000;
+                    background-color: @white;
+                    position: absolute;
+                    width: 420px;
+                    margin: -45px 0 0 -92px;
+                    text-align: left;
+                    .collapsible-content-mode {
+                        > div {
+                            border: solid 1px @alto;
+                        }
+                    }
+                }
+            }
+        }
+        .topPane-right {
+            float: left;
+            border-right: solid 1px @alto;
+            padding-right: 30px;
+            width: 20%;
+            .topPane-right-common {
+                color: @thunder;
+                width: 100%;
+                float: left;
+                padding: 0 0 10px 0;
+                .topPane-right-common-title {
+                    font-weight: bolder;
+                    float: left;
+                    max-width: 90%;
+                }
+                .topPane-right-common-value {
+                    float: right;
+                }
+            }
+        }
+        .topPane-button {
+            float: right;
+            padding-top: 15px;
+            margin-right: 10px;
+            max-width: 155px;
+            .dnn-ui-common-button {
+                height: auto;
+                padding-top: 6px;
+                padding-bottom: 6px;
+            }
+            .topPane-button-start {
+                border: 2px solid @alizarinCrimson;
+                color: @alizarinCrimson;
+            }
+        }
+    }
+}

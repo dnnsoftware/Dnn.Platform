@@ -1,4 +1,4 @@
-[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.Platform%20%5BCI%5D?branchName=development)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=83&branchName=development)
+[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.Platform%20%5BCI%5D?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=83&branchName=develop)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 

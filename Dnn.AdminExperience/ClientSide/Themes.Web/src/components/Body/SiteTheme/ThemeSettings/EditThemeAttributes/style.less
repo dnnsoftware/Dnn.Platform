@@ -1,0 +1,67 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.edit-theme-attributes{
+    & > .dnn-ui-common-button{
+        display: block;
+        margin: 0 auto;
+    }
+    .edit-popup{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 565px;
+        border: 1px solid @alto;
+        border-radius: 3px;
+        z-index: 50;
+        background: white;
+        -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        
+        & > div {
+            margin: 35px 30px;
+        }
+
+        .dnn-grid-cell > .dnn-grid-cell{
+            margin-bottom: 20px;
+            padding-right: 25px;
+        }
+        
+        h3 {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .dnn-grid-cell > .dnn-grid-cell.right-column{
+            padding-right: 0;
+            padding-left: 25px;
+            border-left: none;
+
+            .dnn-radio-buttons{
+                margin-top: 28px;
+                ul li label{
+                    margin-bottom: 10px;
+                    line-height: 20px;
+                }
+            }
+        }
+
+        .split{
+            margin-bottom: 20px;
+            border-top: 1px solid @alto;
+        }
+
+        .dnn-dropdown-with-error, .dnn-single-line-input-with-error  {
+            display: block;
+        }
+
+        .dnn-grid-cell.actions-cell {
+            padding: 0;
+            text-align: center;
+
+            button:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+}

@@ -1,6 +1,8 @@
 ---
 name: Bug Report
 about: Report a bug in DNN Platform
+labels: "Status: New"
+assignees: dnnsoftware/triage
 ---
 <!-- 
   If you need community support or would like to solicit a Request for Comments (RFC), please post to the DNN Community forums at https://dnncommunity.org/forums for now.  In the future, we are planning to implement a more robust solution for cultivating new ideas and nuturing these from concept to creation.  We will update this template when this solution is generally available.  In the meantime, we appreciate your patience as we endeavor to streamline our GitHub focus and efforts.
@@ -39,8 +41,8 @@ Provide any additional context that may be helpful in understanding and/or resol
 Please add X in at least one of the boxes as appropriate. In order for an issue to be accepted, a developer needs to be able to reproduce the issue on a currently supported version. If you are looking for a workaround for an issue with an older version, please visit the forums at https://dnncommunity.org/forums
 -->
 * [ ] 10.0.0 alpha build
-* [ ] 9.4.3 alpha build
-* [ ] 9.4.2 latest supported release
+* [ ] 9.5.0 alpha build
+* [ ] 9.4.4 latest supported release
 
 ## Affected browser
 <!-- 
@@ -49,5 +51,6 @@ Please add X in at least one of the boxes as appropriate. In order for an issue 
 * [ ] Chrome
 * [ ] Firefox
 * [ ] Safari
-* [ ] Internet Explorer
-* [ ] Edge
+* [ ] Internet Explorer 11
+* [ ] Microsoft Edge (Classic)
+* [ ] Microsoft Edge Chromium

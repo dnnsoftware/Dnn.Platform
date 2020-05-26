@@ -1,4 +1,8 @@
-﻿using Moq;
+﻿// 
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+// 
+using Moq;
 using NUnit.Framework;
 using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Users.Components.Prompt.Commands;
