@@ -2144,7 +2144,6 @@
     <Content Include="images\bottom.gif" />
     <Content Include="images\Branding\DNN_logo.png" />
     <Content Include="images\Branding\iconbar_logo.png" />
-    <Content Include="images\Branding\logo.gif" />
     <Content Include="images\Branding\Logo.png" />
     <Content Include="images\breadcrumb.gif" />
     <Content Include="images\calendar.png" />
