@@ -122,8 +122,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                             cmdName.ToLower()));
 
                 // first look in new commands, then in the old commands
-                var newCommands = DotNetNuke.Prompt.CommandRepository.Instance.GetCommands();
-                if (!newCommands.ContainsKey(cmdName))
+                var newCommand = DotNetNuke.Prompt.CommandRepository.Instance.GetCommand(cmdName);
+                if (newCommand == null)
                 {
                     var allCommands = Components.Repositories.CommandRepository.Instance.GetCommands();
                     // if no command found notify
@@ -142,7 +142,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 else
                 {
-                    return TryRunNewCommand(command, newCommands[cmdName].CommandType, args, isHelpCmd, startTime);
+                    return TryRunNewCommand(command, newCommand, args, isHelpCmd, startTime);
                 }
             }
             catch (Exception ex)
@@ -169,16 +169,16 @@ namespace Dnn.PersonaBar.Prompt.Services
                 return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
-        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, Type cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
+        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, DotNetNuke.Abstractions.Prompt.IConsoleCommand cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
         {
             // Instantiate and run the command that uses the new interfaces and base class
             try
             {
-                var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun.GetType());
                 if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
                 // set env. data for command use
                 cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                return AddLogAndReturnResponseNewCommands(cmdObj, cmdTypeToRun, command, startTime);
+                return AddLogAndReturnResponseNewCommands(cmdObj, command, startTime);
             }
             catch (Exception ex)
             {
@@ -263,7 +263,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             return message;
         }
 
-        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command,
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command,
             DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
@@ -277,8 +277,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
             try
             {
-                if (cmdTypeToRun != null)
-                    logInfo.LogProperties.Add(new LogDetailInfo("TypeFullName", cmdTypeToRun.FullName));
+                logInfo.LogProperties.Add(new LogDetailInfo("TypeFullName", consoleCommand.GetType().FullName));
                 if (isValid)
                 {
                     var result = consoleCommand.Run();

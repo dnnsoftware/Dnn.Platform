@@ -4,12 +4,12 @@
 // 
 using System;
 
-namespace DotNetNuke.Abstractions.Prompt
+namespace DotNetNuke.Prompt
 {
     /// <summary>
     /// This is used to internally retrieve and keep a list of all commands found in the installation
     /// </summary>
-    public interface ICommand
+    internal interface ICommand
     {
         /// <summary>
         /// Name of the command
@@ -34,8 +34,8 @@ namespace DotNetNuke.Abstractions.Prompt
         /// </summary>
         string Version { get; set; }
         /// <summary>
-        /// The command class
+        /// Full name of the class of the command
         /// </summary>
-        Type CommandType { get; set; }
+        string TypeFullName { get; set; }
     }
 }

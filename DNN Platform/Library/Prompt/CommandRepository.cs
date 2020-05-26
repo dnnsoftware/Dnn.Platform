@@ -23,12 +23,23 @@ namespace DotNetNuke.Prompt
             return () => new CommandRepository();
         }
 
-        public SortedDictionary<string, ICommand> GetCommands()
+        internal SortedDictionary<string, ICommand> GetCommands()
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
                     new CacheItemArgs("NewDnnPromptCommands", CacheItemPriority.Default),
                     c => GetCommandsInternal());
+        }
+
+        public IConsoleCommand GetCommand(string commandName)
+        {
+            commandName = commandName.ToUpper();
+            var allCommands = GetCommands();
+            if (allCommands.ContainsKey(commandName))
+            {
+                return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
+            }
+            return null;
         }
 
         private static SortedDictionary<string, ICommand> GetCommandsInternal()
@@ -56,7 +67,7 @@ namespace DotNetNuke.Prompt
                     Key = key,
                     Name = commandAttribute.Name,
                     Version = version,
-                    CommandType = cmd
+                    TypeFullName = cmd.AssemblyQualifiedName
                 });
             }
             return commands;
@@ -117,5 +128,6 @@ namespace DotNetNuke.Prompt
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
+
     }
 }
