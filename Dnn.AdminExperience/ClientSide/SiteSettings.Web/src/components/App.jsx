@@ -141,7 +141,6 @@ class App extends Component {
 
     render() {
         const {props, state} = this;
-        const localeTitleCharLimit = 50;
         return (
             <div className="siteSettings-app">
                 <SiteLanguageSelector
@@ -152,7 +151,7 @@ class App extends Component {
                     backToReferrerFunc={state.backToReferrerFunc}
                 />
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")} titleCharLimit={localeTitleCharLimit}>
+                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
                     </PersonaBarPageHeader>
                     <Body
                         portalId={state.portalId}
@@ -169,7 +168,7 @@ class App extends Component {
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
-                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")} titleCharLimit={localeTitleCharLimit}>
+                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
                     </PersonaBarPageHeader>
                     {props.selectedPage === Pages.HtmlEditorManager &&
                         <HtmlEditorManager portalId={state.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this)} />
