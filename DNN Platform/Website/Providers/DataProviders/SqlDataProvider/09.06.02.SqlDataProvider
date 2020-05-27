@@ -40,3 +40,58 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_PasswordResetToken] ON {dat
 	[PasswordResetToken] ASC
 )
 GO
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseowner}[{objectqualifier}PurgeScheduleHistory]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	CREATE TABLE #ScheduleHistoryIDsToDelete (ScheduleHistoryID int NOT NULL);
+
+	;WITH ScheduleHistoryWithRowNumber (ScheduleID, ScheduleHistoryID, StartDate, RowNumber) AS (
+		SELECT
+			ScheduleID,
+			ScheduleHistoryID,
+			StartDate,
+			ROW_NUMBER() OVER (
+				PARTITION BY ScheduleID
+				ORDER BY StartDate
+			)
+		FROM {databaseowner}[{objectqualifier}ScheduleHistory]
+	)
+	INSERT INTO #ScheduleHistoryIDsToDelete (ScheduleHistoryID)
+	SELECT ScheduleHistoryID FROM (
+		   SELECT s.ScheduleID, COUNT(*) - s.RetainHistoryNum AS ItemsToDelete
+		   FROM {databaseowner}[{objectqualifier}Schedule] s
+		   INNER JOIN {databaseowner}[{objectqualifier}ScheduleHistory] sh ON s.ScheduleID = sh.ScheduleID
+		   WHERE s.Enabled = 1 AND s.RetainHistoryNum <> -1
+		   GROUP BY s.ScheduleID, s.RetainHistoryNum
+		   HAVING COUNT(*) > s.RetainHistoryNum
+	) s
+	INNER JOIN ScheduleHistoryWithRowNumber sh ON s.ScheduleID = sh.ScheduleID
+	WHERE sh.RowNumber <= s.ItemsToDelete
+	ORDER BY ScheduleHistoryID;
+
+	DECLARE @rowsDeleted int = 1;
+
+	WHILE @rowsDeleted > 0
+	BEGIN
+		BEGIN TRANSACTION;
+
+		DELETE FROM {databaseowner}[{objectqualifier}ScheduleHistory]
+		WHERE ScheduleHistoryID IN (SELECT TOP (1000) ScheduleHistoryID FROM #ScheduleHistoryIDsToDelete);
+
+		DELETE TOP (1000) FROM #ScheduleHistoryIDsToDelete;
+
+		SET @rowsDeleted = @@ROWCOUNT;
+
+		COMMIT TRANSACTION;
+	END
+
+	DROP TABLE #ScheduleHistoryIDsToDelete
+END
+GO
