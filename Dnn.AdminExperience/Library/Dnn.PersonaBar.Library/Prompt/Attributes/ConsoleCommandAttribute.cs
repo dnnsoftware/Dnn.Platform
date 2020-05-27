@@ -6,6 +6,7 @@ using System;
 
 namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     [AttributeUsage(AttributeTargets.Class)]
 #pragma warning disable CS3015 // Type has no accessible constructors which use only CLS-compliant types
     public class ConsoleCommandAttribute : Attribute

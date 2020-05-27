@@ -3,12 +3,14 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
 using Newtonsoft.Json;
+using System;
 
 namespace Dnn.PersonaBar.Library.Prompt.Models
 {
     /// <summary>
     /// Standard response object sent to client
     /// </summary>
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class ConsoleResultModel
     {
         // the returned result - text or HTML
