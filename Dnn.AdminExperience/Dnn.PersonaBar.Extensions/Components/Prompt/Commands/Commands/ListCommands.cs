@@ -7,6 +7,7 @@ using System.Linq;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Library.Prompt.Attributes;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Prompt.Components.Models;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
 using DotNetNuke.Instrumentation;
 
@@ -20,10 +21,17 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 
         public override ConsoleResultModel Run()
         {
-
             try
             {
-                var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name).ToList();
+                var lstNewCommands = DotNetNuke.Prompt.CommandRepository.Instance.GetCommands().Select(c => new Command
+                {
+                    Name = c.Name,
+                    Category = c.Category,
+                    Description = c.Description,
+                    Key = c.Key,
+                    Version = c.Version
+                });
+                var lstOut = CommandRepository.Instance.GetCommands().Values.Concat(lstNewCommands).OrderBy(c => c.Name + '.' + c.Name).ToList();
                 return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
                 {
                     Records = lstOut.Count,

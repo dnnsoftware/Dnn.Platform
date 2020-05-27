@@ -2,14 +2,13 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-using System;
 
-namespace DotNetNuke.Prompt
+namespace DotNetNuke.Abstractions.Prompt
 {
     /// <summary>
-    /// This is used to internally retrieve and keep a list of all commands found in the installation
+    /// This is used to retrieve and keep a list of all commands found in the installation
     /// </summary>
-    internal interface ICommand
+    public interface ICommand
     {
         /// <summary>
         /// Name of the command

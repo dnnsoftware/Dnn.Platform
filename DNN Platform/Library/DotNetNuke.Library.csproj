@@ -252,7 +252,6 @@
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
     <Compile Include="Obsolete\PortalSettings.cs" />
     <Compile Include="Prompt\Command.cs" />
-    <Compile Include="Prompt\ICommand.cs" />
     <Compile Include="Prompt\Output\CommandHelp.cs" />
     <Compile Include="Prompt\Output\CommandOption.cs" />
     <Compile Include="Prompt\CommandRepository.cs" />

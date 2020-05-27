@@ -17,6 +17,7 @@ namespace DotNetNuke.Prompt
         public string Category { get; set; }
         public string Description { get; set; }
         public string Version { get; set; }
+        [JsonIgnore]
         public string TypeFullName { get; set; }
     }
 }
