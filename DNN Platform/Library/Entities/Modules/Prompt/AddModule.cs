@@ -15,6 +15,9 @@ using System.Net;
 
 namespace DotNetNuke.Entities.Modules.Prompt
 {
+    /// <summary>
+    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
+    /// </summary>
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {

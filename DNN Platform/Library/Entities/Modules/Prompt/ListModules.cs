@@ -14,6 +14,9 @@ using System.Linq;
 
 namespace DotNetNuke.Entities.Modules.Prompt
 {
+    /// <summary>
+    /// This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.
+    /// </summary>
     [ConsoleCommand("list-modules", Constants.CommandCategoryKeys.Modules, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommand
     {
