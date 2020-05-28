@@ -55,6 +55,9 @@
     <Compile Include="..\..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <AdditionalFiles Include="..\..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="SimpleWebFarmCachingProvider.dnn" />
   </ItemGroup>
   <ItemGroup>

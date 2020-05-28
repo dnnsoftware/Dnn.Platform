@@ -181,6 +181,9 @@
     <Content Include="02.00.03.txt" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DDRMenu.dnn">
       <SubType>Designer</SubType>
     </None>

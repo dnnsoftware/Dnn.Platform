@@ -97,6 +97,9 @@
     <Compile Include="Components\AzureConnector.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\ServicesController.cs" />
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="AzureConnector.dnn" />
     <Content Include="connector.css" />
     <Content Include="connector.htm" />
