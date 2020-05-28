@@ -174,7 +174,6 @@
       <Link>stylecop.json</Link>
     </AdditionalFiles>
     <None Include="DotNetNuke.ClientAPI.dnn" />
-    <None Include="packages.config" />
     <None Include="WebUtilityDeploy.targets" />
   </ItemGroup>
   <ItemGroup>
