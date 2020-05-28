@@ -13,4 +13,3 @@ using System.Reflection;
 [assembly: AssemblyDescription("")]
 
 [assembly: AssemblyDelaySign(false)]
-[assembly: CLSCompliant(true)]

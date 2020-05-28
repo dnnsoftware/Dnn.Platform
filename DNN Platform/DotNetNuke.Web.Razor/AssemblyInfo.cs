@@ -17,7 +17,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DotNetNuke.Web.Razor")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: ComVisible(false)]
 
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 

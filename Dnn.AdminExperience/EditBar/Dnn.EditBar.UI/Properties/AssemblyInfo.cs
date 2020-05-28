@@ -2,7 +2,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -14,9 +14,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Dnn.EditBar.UI")]
 [assembly: AssemblyDescription("Dnn.EditBar.UI")]
-[assembly: CLSCompliant(true)]
-
-[assembly: ComVisible(false)]
 
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 

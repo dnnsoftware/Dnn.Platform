@@ -13,5 +13,3 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyTitle("DotNetNuke Corporation Social Groups")]
 [assembly: AssemblyDescription("A DotNetNuke Module from DotNetNuke Corporation Software")]
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(true)]

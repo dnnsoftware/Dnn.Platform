@@ -8,5 +8,3 @@ using System.Reflection;
 #endregion
 
 [assembly: AssemblyTitle("DotNetNuke")]
-
-[assembly: CLSCompliant(false)]

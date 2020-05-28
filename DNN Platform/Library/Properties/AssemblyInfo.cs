@@ -19,8 +19,6 @@ using DotNetNuke.Application;
 
 [assembly: AssemblyTitle("DotNetNuke")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: CLSCompliant(true)]
-
 [assembly: AssemblyStatus(ReleaseMode.Alpha)]
 
 // Allow internal variables to be visible to testing projects

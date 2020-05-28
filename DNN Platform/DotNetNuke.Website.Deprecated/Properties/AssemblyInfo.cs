@@ -20,8 +20,6 @@ using System.Web.UI;
 
 [assembly: AssemblyTitle("DotNetNuke.Website.Deprecated")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: CLSCompliant(false)]
-[assembly: ComVisible(false)]
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("4B693EF0-E5D9-4647-B9F1-CD057D8DC011")]
