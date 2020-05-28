@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     objModule.Initialize(PortalSettings.PortalId);
 
                     objModule.PortalID = PortalSettings.PortalId;
-                    objModule.TabID = TabId;
+                    objModule.TabID = PageId;
                     objModule.ModuleOrder = 0;
                     objModule.ModuleTitle = string.IsNullOrEmpty(ModuleTitle) ? objModuleDefinition.FriendlyName : ModuleTitle;
                     objModule.PaneName = Pane;
