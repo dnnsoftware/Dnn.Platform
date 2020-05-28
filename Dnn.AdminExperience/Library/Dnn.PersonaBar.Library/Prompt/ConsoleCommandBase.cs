@@ -12,6 +12,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Library.Prompt
 {
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public abstract class ConsoleCommandBase : IConsoleCommand
     {
         public abstract string LocalResourceFile { get; }

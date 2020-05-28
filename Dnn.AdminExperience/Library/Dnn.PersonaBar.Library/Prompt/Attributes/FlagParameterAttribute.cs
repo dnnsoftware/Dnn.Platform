@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     /// Attribute to define the help for the flag parameter.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
+    [Obsolete("Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter. Will be removed in DNN 11.", false)]
     public class FlagParameterAttribute : Attribute
     {
         /// <summary>

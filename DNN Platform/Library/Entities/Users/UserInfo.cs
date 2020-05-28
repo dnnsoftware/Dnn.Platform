@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using DotNetNuke.Abstractions.Users;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -36,7 +37,7 @@ namespace DotNetNuke.Entities.Users
     /// </remarks>
     /// -----------------------------------------------------------------------------
     [Serializable]
-    public class UserInfo : BaseEntityInfo, IPropertyAccess
+    public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
     {
         #region Private Members
 

@@ -9,7 +9,7 @@ using System.Data;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Urls;
@@ -19,9 +19,9 @@ using DotNetNuke.Entities.Urls;
 namespace DotNetNuke.Entities.Portals
 {
     [Serializable]
-    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable
+    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
     {
-        public PortalAliasInfo() {}
+        public PortalAliasInfo() { }
 
         public PortalAliasInfo(PortalAliasInfo alias)
         {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Portals
                         IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
                     default:
-                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }

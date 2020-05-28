@@ -160,11 +160,9 @@
     <Compile Include="Components\Prompt\Commands\Commands\ListCommands.cs" />
     <Compile Include="Components\Prompt\Commands\Host\ClearCache.cs" />
     <Compile Include="Components\Prompt\Commands\Host\GetHost.cs" />
-    <Compile Include="Components\Prompt\Commands\Module\AddModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\CopyModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\DeleteModule.cs" />
     <Compile Include="Components\Prompt\Commands\Module\GetModule.cs" />
-    <Compile Include="Components\Prompt\Commands\Module\ListModules.cs" />
     <Compile Include="Components\Prompt\Commands\Module\MoveModule.cs" />
     <Compile Include="Components\Prompt\Commands\Portal\ClearLog.cs" />
     <Compile Include="Components\Prompt\Commands\Portal\GetPortal.cs" />
@@ -638,7 +636,6 @@
     <Content Include="admin\personaBar\Dnn.Themes\App_LocalResources\Themes.resx" />
     <Content Include="admin\personaBar\Dnn.Users\App_LocalResources\Users.resx" />
     <Content Include="admin\personaBar\Dnn.Licensing\App_LocalResources\Licensing.resx" />
-    <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
     <Content Include="admin\personaBar\Dnn.Security\App_LocalResources\Security.resx" />
     <Content Include="admin\personaBar\Dnn.Seo\App_LocalResources\Seo.resx" />
     <Content Include="admin\personaBar\Dnn.Servers\App_LocalResources\Servers.resx" />
@@ -648,6 +645,7 @@
     <Content Include="admin\personaBar\Dnn.TaskScheduler\App_LocalResources\TaskScheduler.resx" />
     <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
     <Content Include="admin\personaBar\Dnn.SiteGroups\App_LocalResources\SiteGroups.resx" />
+    <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
     <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
     <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
     <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />

@@ -2,23 +2,22 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
-using System;
+using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
+using System;
 
-namespace Dnn.PersonaBar.Prompt.Components.Models
+namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
-    public class Command
+    public class Command : ICommand
     {
         public string Key { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
         public string Version { get; set; }
-
         [JsonIgnore]
-        public Type CommandType { get; set; }
+        public string TypeFullName { get; set; }
     }
 }

@@ -2,6 +2,17 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
+using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Prompt.Common;
+using Dnn.PersonaBar.Prompt.Components;
+using Dnn.PersonaBar.Prompt.Components.Models;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
 using System;
 using System.Linq;
@@ -9,18 +20,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Components;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using Dnn.PersonaBar.Prompt.Components.Repositories;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
@@ -103,44 +102,83 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
                 var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
-                if (isHelpCmd && (isHelpSyntax || isHelpLearn))
+                if (isHelpSyntax)
                 {
-                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
+                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    {
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpSyntax", Constants.LocalResourcesFile)
+                    });
                 }
-                if (isHelpCmd && args.Length == 1)
+                else if (isHelpLearn)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    {
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpLearn", Constants.LocalResourcesFile)
+                    });
+                }
+                else if (isHelpCmd && args.Length == 1)
                     return AddLogAndReturnResponse(null, null, command, startTime,
                         string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
 
-                var allCommands = CommandRepository.Instance.GetCommands();
-                // if no command found notify
-                if (!allCommands.ContainsKey(cmdName))
+                // first look in new commands, then in the old commands
+                var newCommand = DotNetNuke.Prompt.CommandRepository.Instance.GetCommand(cmdName);
+                if (newCommand == null)
                 {
-                    var sbError = new StringBuilder();
-                    var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                    sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
-                    if (!string.IsNullOrEmpty(suggestion))
+                    var allCommands = Components.Repositories.CommandRepository.Instance.GetCommands();
+                    // if no command found notify
+                    if (!allCommands.ContainsKey(cmdName))
                     {
-                        sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
+                        var sbError = new StringBuilder();
+                        var suggestion = Utilities.GetSuggestedCommand(cmdName);
+                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
+                        if (!string.IsNullOrEmpty(suggestion))
+                        {
+                            sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
+                        }
+                        return AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                     }
-                    return AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
+                    return TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
                 }
-                var cmdTypeToRun = allCommands[cmdName].CommandType;
+                else
+                {
+                    return TryRunNewCommand(command, newCommand, args, isHelpCmd, startTime);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+            }
+        }
 
-                // Instantiate and run the command
-                try
-                {
-                    var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                    if (isHelpCmd) return GetHelp(command, cmdObj);
-                    // set env. data for command use
-                    cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                    return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
-                }
+        private HttpResponseMessage TryRunOldCommand(CommandInputModel command, Type cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
+        {
+            // Instantiate and run the command
+            try
+            {
+                var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
+                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
+                // set env. data for command use
+                cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
+                return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+            }
+        }
+        private HttpResponseMessage TryRunNewCommand(CommandInputModel command, DotNetNuke.Abstractions.Prompt.IConsoleCommand cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
+        {
+            // Instantiate and run the command that uses the new interfaces and base class
+            try
+            {
+                var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun.GetType());
+                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
+                // set env. data for command use
+                cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
+                return AddLogAndReturnResponseNewCommands(cmdObj, command, startTime);
             }
             catch (Exception ex)
             {
@@ -225,9 +263,70 @@ namespace Dnn.PersonaBar.Prompt.Services
             return message;
         }
 
-        private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command,
+            DateTime startTime, string error = null)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
+            HttpResponseMessage message;
+            var isValid = consoleCommand?.IsValid() ?? false;
+            var logInfo = new LogInfo
+            {
+                LogTypeKey = "PROMPT_ALERT"
+            };
+            logInfo.LogProperties.Add(new LogDetailInfo("Command", FilterCommand(command.CmdLine)));
+            logInfo.LogProperties.Add(new LogDetailInfo("IsValid", isValid.ToString()));
+
+            try
+            {
+                logInfo.LogProperties.Add(new LogDetailInfo("TypeFullName", consoleCommand.GetType().FullName));
+                if (isValid)
+                {
+                    var result = consoleCommand.Run();
+                    if (result.PagingInfo != null)
+                    {
+                        if (result.PagingInfo.PageNo < result.PagingInfo.TotalPages)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+
+                            var args = command.Args;
+                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
+                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                                : -1;
+                            if (indexOfPage > -1)
+                            {
+                                args[indexOfPage + 1] = (result.PagingInfo.PageNo + 1).ToString();
+                            }
+                            var nextPageCommand = string.Join(" ", args);
+                            if (indexOfPage == -1)
+                            {
+                                nextPageCommand += " --page " + (result.PagingInfo.PageNo + 1);
+                            }
+                            result.NextPageCommand = nextPageCommand;
+                        }
+                        else if (result.Records > 0)
+                        {
+                            result.Output = string.Format(Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
+                                    result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                        }
+                    }
+                    message = Request.CreateResponse(HttpStatusCode.OK, result);
+                    logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
+                    logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
+                }
+                else
+                {
+                    logInfo.LogProperties.Add(new LogDetailInfo("Output", consoleCommand?.ValidationMessage ?? error));
+                    message = BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
+                }
+            }
+            catch (Exception ex)
+            {
+                logInfo.Exception = new ExceptionInfo(ex);
+                message = BadRequestResponse(ex.Message);
+            }
+            logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
+            LogController.Instance.AddLog(logInfo);
+            return message;
         }
 
         private static string FilterCommand(string command)

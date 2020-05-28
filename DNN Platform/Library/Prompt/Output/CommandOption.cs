@@ -3,24 +3,19 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
 using System;
+using DotNetNuke.Abstractions.Prompt;
 using Newtonsoft.Json;
 
-namespace Dnn.PersonaBar.Prompt.Components.Models
+namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]
-    [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
-    public class CommandOption
+    public class CommandOption : ICommandOption
     {
         /// <summary>
-        /// Name of the flag
+        /// Name of the parameter
         /// </summary>
-        public string Flag { get; set; }
-
-        /// <summary>
-        /// Type of the flag value expected.
-        /// </summary>
-        public string Type { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Is flag required or not
@@ -33,7 +28,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// Description of flag
+        /// Resource key of the description of flag
         /// </summary>
         public string Description { get; set; }
     }
