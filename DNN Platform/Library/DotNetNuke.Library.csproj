@@ -1745,6 +1745,9 @@
     <Compile Include="UI\WebControls\PropertyEditor\SettingsEditorControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\VisibilityControl.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>

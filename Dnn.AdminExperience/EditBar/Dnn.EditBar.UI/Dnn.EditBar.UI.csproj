@@ -102,6 +102,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="Dnn.EditBar.UI.dnn" />
     <None Include="editBar\css\RobotoSlab-Regular.ttf" />

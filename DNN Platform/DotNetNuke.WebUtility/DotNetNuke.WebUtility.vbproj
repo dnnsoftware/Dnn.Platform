@@ -170,6 +170,9 @@
     <Content Include="version.txt" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="DotNetNuke.ClientAPI.dnn" />
     <None Include="WebUtilityDeploy.targets" />
   </ItemGroup>
