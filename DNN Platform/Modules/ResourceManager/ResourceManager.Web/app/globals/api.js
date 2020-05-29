@@ -69,7 +69,7 @@ function SAHttpRequest(url, options) {
     }
 
     return request(method, url).set(headersObject).send(body).on("progress", progressTracker)
-            .then(response => JSON.parse(response.text), handleSAHttpRequestFailure);
+        .then(response => JSON.parse(response.text), handleSAHttpRequestFailure);
 }
 
 function handleSAHttpRequestFailure(response) {

@@ -6,20 +6,20 @@ const itemDetailsActions = {
     editItem(item) {
         const itemData = {isFolder: item.isFolder, iconUrl: item.iconUrl, thumbnailAvailable: item.thumbnailAvailable, thumbnailUrl: item.thumbnailUrl};
         let getItemDetails = () => item.isFolder
-                                    ? itemsService.getFolderDetails(item.itemId)
-                                    : itemsService.getFileDetails(item.itemId);
+            ? itemsService.getFolderDetails(item.itemId)
+            : itemsService.getFileDetails(item.itemId);
         return dispatch => {
             getItemDetails()
-            .then(
-                response => dispatch({
-                    type: actionTypes.EDIT_ITEM,
-                    data: {...response, ...itemData}
-                }),
-                reason => dispatch({
-                    type: actionTypes.EDIT_ITEM_ERROR,
-                    data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
-                })
-            );
+                .then(
+                    response => dispatch({
+                        type: actionTypes.EDIT_ITEM,
+                        data: {...response, ...itemData}
+                    }),
+                    reason => dispatch({
+                        type: actionTypes.EDIT_ITEM_ERROR,
+                        data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                    })
+                );
         };
     },
     cancelEditItem() {
@@ -53,24 +53,24 @@ const itemDetailsActions = {
     },
     saveItem(item) {
         let saveFunction = () => item.isFolder
-                                    ? itemsService.saveFolderDetails(item)
-                                    : itemsService.saveFileDetails(item);
+            ? itemsService.saveFolderDetails(item)
+            : itemsService.saveFileDetails(item);
         return dispatch => {
             saveFunction()
-            .then(
-                () => dispatch({
-                    type: actionTypes.ITEM_SAVED,
-                    data: {
-                        isFolder: item.isFolder,
-                        itemId: item.isFolder ? item.folderId : item.fileId,
-                        itemName: item.isFolder ? item.folderName : item.fileName
-                    }
-                }),
-                reason => dispatch({
-                    type: actionTypes.SAVE_ITEM_ERROR,
-                    data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
-                })
-            );
+                .then(
+                    () => dispatch({
+                        type: actionTypes.ITEM_SAVED,
+                        data: {
+                            isFolder: item.isFolder,
+                            itemId: item.isFolder ? item.folderId : item.fileId,
+                            itemName: item.isFolder ? item.folderName : item.fileName
+                        }
+                    }),
+                    reason => dispatch({
+                        type: actionTypes.SAVE_ITEM_ERROR,
+                        data: reason.data && reason.data.message ? reason.data.message : localizeService.getString("GenericErrorMessage")
+                    })
+                );
         };
     }
 };

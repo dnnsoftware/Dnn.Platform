@@ -1,9 +1,10 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import dialogModalActions from "../actions/dialogModalActions";
-import Modal from "dnn-modal";
-import Label from "dnn-label";
+import Modal from "@dnnsoftware/dnn-react-common";
+import Label from "@dnnsoftware/dnn-react-common";
 
 class DialogModalContainer extends React.Component {
     render() {

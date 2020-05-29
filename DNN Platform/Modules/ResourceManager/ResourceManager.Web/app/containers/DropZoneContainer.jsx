@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DropZone from "react-dropzone";
@@ -50,7 +51,7 @@ class DropZoneContainer extends React.Component {
         return  (
             hasPermission ?
                 <DropZone disableClick={disableClick} style={style} activeStyle={activeStyle}
-                className={className} onDrop={this.uploadFilesHandler.bind(this)}>
+                    className={className} onDrop={this.uploadFilesHandler.bind(this)}>
                     {this.props.children}
                 </DropZone>
                 : <div>{this.props.children}</div>
@@ -59,7 +60,7 @@ class DropZoneContainer extends React.Component {
 }
 
 DropZoneContainer.propTypes = {
-    children: React.PropTypes.node,
+    children: PropTypes.node,
     disableClick: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.any,

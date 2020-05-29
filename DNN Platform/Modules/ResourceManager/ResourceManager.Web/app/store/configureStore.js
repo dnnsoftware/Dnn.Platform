@@ -4,6 +4,7 @@ import rootReducer from "../reducers/rootReducer";
 
 export default function configureStore(initialState) {
 
+    // eslint-disable-next-line no-undef
     const middleware = process.env.NODE_ENV !== "production" ?
         [require("redux-immutable-state-invariant")(), thunk] :
         [thunk];

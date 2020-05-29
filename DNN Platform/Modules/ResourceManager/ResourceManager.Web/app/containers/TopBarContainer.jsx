@@ -1,10 +1,11 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import folderPanelActions from "../actions/folderPanelActions";
 import topBarActions from "../actions/topBarActions";
 import localizeService from "../services/localizeService";
-import DropDown from "dnn-dropdown";
+import DropDown from "@dnnsoftware/dnn-react-common";
 import FolderPicker from "../components/FolderSelector/FolderPicker";
 import debounce from "lodash/debounce";
 
