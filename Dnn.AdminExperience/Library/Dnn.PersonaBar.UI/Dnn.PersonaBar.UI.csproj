@@ -180,9 +180,6 @@
     <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.js" />
     <Content Include="admin\personaBar\scripts\loader.js" />
     <Content Include="admin\personaBar\scripts\gateway.js" />
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="admin\personaBar\css\open-sans.semibold.ttf" />
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="Dnn.PersonaBar.UI.dnn" />

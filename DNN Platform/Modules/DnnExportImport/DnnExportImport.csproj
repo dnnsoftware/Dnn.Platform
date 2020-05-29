@@ -152,9 +152,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.01.SqlDataProvider" />

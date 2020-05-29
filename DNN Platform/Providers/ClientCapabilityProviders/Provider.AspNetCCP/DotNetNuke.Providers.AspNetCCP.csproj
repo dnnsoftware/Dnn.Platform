@@ -104,9 +104,6 @@
     <Compile Include="Properties\RetailerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="AspNetClientCapabilityProvider.dnn">
       <SubType>Designer</SubType>
     </None>

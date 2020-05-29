@@ -102,9 +102,6 @@
     <Content Include="09.02.00.txt" />
     <Content Include="AzureFolderProvider\images\FolderAzure_16x16_Standard.png" />
     <Content Include="AzureFolderProvider\images\FolderAzure_32x32_Standard.png" />
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="app.config" />
     <None Include="FolderProviders.dnn">
       <SubType>Designer</SubType>

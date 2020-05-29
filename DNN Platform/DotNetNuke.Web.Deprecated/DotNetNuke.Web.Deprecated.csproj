@@ -283,9 +283,6 @@
     <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="dnn_Web_Deprecated.dnn">
       <SubType>Designer</SubType>
     </None>

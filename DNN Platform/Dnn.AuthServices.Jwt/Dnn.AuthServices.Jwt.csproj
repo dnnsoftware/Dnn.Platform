@@ -81,9 +81,6 @@
     <Compile Include="Services\ServiceRouteMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="Dnn.Jwt.dnn">
       <SubType>Designer</SubType>
     </None>

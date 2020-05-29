@@ -103,9 +103,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="DNN.Integration.Test.Framework.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

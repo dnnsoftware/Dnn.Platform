@@ -113,9 +113,6 @@
     <Compile Include="Api\TypeLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

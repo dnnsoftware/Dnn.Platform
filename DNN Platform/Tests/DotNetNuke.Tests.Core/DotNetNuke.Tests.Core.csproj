@@ -227,9 +227,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
     <None Include="..\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>
