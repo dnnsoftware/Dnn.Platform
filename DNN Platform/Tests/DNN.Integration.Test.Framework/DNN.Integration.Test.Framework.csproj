@@ -106,7 +106,6 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <None Include="app.config" />
     <None Include="DNN.Integration.Test.Framework.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

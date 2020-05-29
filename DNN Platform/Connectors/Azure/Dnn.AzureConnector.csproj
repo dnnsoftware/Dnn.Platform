@@ -100,7 +100,6 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <None Include="app.config" />
     <None Include="AzureConnector.dnn" />
     <Content Include="connector.css" />
     <Content Include="connector.htm" />
