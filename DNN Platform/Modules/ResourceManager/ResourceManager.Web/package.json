@@ -44,7 +44,7 @@
     "raw-loader": "2.0.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-dropzone": "^11.0.1",
+    "react-dropzone": "^8.2.0",
     "react-height": "^3.0.1",
     "react-hot-loader": "4.8.5",
     "react-modal": "^3.5.1",
