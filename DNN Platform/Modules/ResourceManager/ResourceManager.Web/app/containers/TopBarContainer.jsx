@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import folderPanelActions from "../actions/folderPanelActions";
 import topBarActions from "../actions/topBarActions";
 import localizeService from "../services/localizeService";
-import DropDown from "@dnnsoftware/dnn-react-common";
+import DropDown from "../../../../../../Dnn.AdminExperience/ClientSide/Dnn.React.Common/src/Dropdown";
 import FolderPicker from "../components/FolderSelector/FolderPicker";
 import debounce from "lodash/debounce";
 

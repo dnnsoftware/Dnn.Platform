@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import messageModalActions from "../actions/messageModalActions";
-import { Modal } from "@dnnsoftware/dnn-react-common";
+import Modal from "../../../../../../Dnn.AdminExperience/ClientSide/Dnn.React.Common/src/Modal";
 
 
 class MessageModalContainer extends React.Component {

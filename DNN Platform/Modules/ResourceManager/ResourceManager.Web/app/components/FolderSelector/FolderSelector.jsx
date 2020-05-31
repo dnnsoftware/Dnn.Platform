@@ -77,7 +77,7 @@ export default class FolderSelector extends Component {
         const searchIcon = this.getSearchIcon();
 
         return ( 
-            <div ref={this.folderSelector} className="dnn-folder-selector">
+            <div ref={(fs) => this.folderSelector = fs} className="dnn-folder-selector">
                 <div className="selected-item" onClick={this.onFoldersClick.bind(this) }>
                     {selectedFolderText}
                 </div>

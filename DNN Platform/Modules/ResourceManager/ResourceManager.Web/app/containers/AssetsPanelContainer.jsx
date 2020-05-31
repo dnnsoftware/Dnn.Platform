@@ -94,7 +94,7 @@ class AssetsPanelContainer extends React.Component {
                 <div className="assets-body">
                     <TopBarContainer />
 
-                    <div ref={this.mainContainer} className={"main-container" + (loading ? " loading" : "")}>
+                    <div ref={c => this.mainContainer = c} className={"main-container" + (loading ? " loading" : "")}>
                         <AddFolderPanelContainer />
                         <AddAssetPanelContainer />
                         
