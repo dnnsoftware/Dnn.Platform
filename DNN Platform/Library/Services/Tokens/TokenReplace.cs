@@ -4,15 +4,7 @@
 
 namespace DotNetNuke.Services.Tokens
 {
-    using System.Collections;
-    using System.Data;
-    using System.Web;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
+using System.Collections;
 
     /// <summary>
     /// The TokenReplace class provides the option to replace tokens formatted
@@ -25,7 +17,6 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public class TokenReplace : BaseCustomTokenReplace
     {
-        private ModuleInfo _moduleInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenReplace"/> class.
@@ -91,53 +82,13 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="moduleID">ID of the current module.</param>
         public TokenReplace(Scope accessLevel, string language, PortalSettings portalSettings, UserInfo user, int moduleID)
         {
-            this.ModuleId = int.MinValue;
             this.CurrentAccessLevel = accessLevel;
-            if (accessLevel != Scope.NoSettings)
-            {
-                if (portalSettings == null)
-                {
-                    if (HttpContext.Current != null)
-                    {
-                        this.PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    }
-                }
-                else
-                {
-                    this.PortalSettings = portalSettings;
-                }
 
-                if (user == null)
-                {
-                    if (HttpContext.Current != null)
-                    {
-                        this.User = (UserInfo)HttpContext.Current.Items["UserInfo"];
-                    }
-                    else
-                    {
-                        this.User = new UserInfo();
-                    }
-
-                    this.AccessingUser = this.User;
-                }
-                else
-                {
-                    this.User = user;
-                    if (HttpContext.Current != null)
-                    {
-                        this.AccessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
-                    }
-                    else
-                    {
-                        this.AccessingUser = new UserInfo();
-                    }
-                }
-
-                this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
-                if (moduleID != Null.NullInteger)
-                {
-                    this.ModuleId = moduleID;
-                }
+            if (accessLevel != Scope.NoSettings) {
+                DeterminePortal(portalSettings);
+                DetermineUser(user);
+                DetermineLanguage(language);
+                DetermineModule(moduleID);
             }
 
             this.PropertySource["date"] = new DateTimePropertyAccess();
@@ -146,51 +97,79 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["culture"] = new CulturePropertyAccess();
         }
 
+        private void DeterminePortal(PortalSettings portalSettings)
+        {
+            PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+        }
+
+        private void DetermineUser(UserInfo user)
+        {
+            AccessingUser = HttpContext.Current != null ? (UserInfo)HttpContext.Current.Items["UserInfo"] : new UserInfo();
+            User = user ?? AccessingUser;
+        }
+
+        private void DetermineLanguage(string language)
+        {
+            Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
+            TokenContext.Language = new System.Globalization.CultureInfo(Language);
+        }
+
+        private void DetermineModule(int moduleID)
+        {
+            if (moduleID != Null.NullInteger)
+                ModuleId = moduleID;
+        }
+
         /// <summary>
         /// Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.
         /// </summary>
         /// <value>ModuleID (Integer).</value>
-        public int ModuleId { get; set; }
+        public int ModuleId {
+            get => TokenContext.Module?.ModuleID ?? Null.NullInteger;
+            set => TokenContext.Module = GetModule(value);
+        }
+
+        private ModuleInfo GetModule(int moduleId)
+        {
+            if (moduleId == TokenContext.Module?.ModuleID)
+                return TokenContext.Module;
+
+            if (moduleId <= 0)
+                return null;
+
+            var tab = TokenContext.Tab ?? PortalSettings?.ActiveTab;
+            if (tab != null && tab.TabID > 0)
+                return ModuleController.Instance.GetModule(ModuleId, tab.TabID, false);
+
+            return ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, true);
+        }
 
         /// <summary>
-        /// Gets or sets /sets the module settings object to use for 'Module:' token replacement.
+        /// Gets or sets the module settings object to use for 'Module:' token replacement.
         /// </summary>
         public ModuleInfo ModuleInfo
         {
-            get
-            {
-                if (this.ModuleId > int.MinValue && (this._moduleInfo == null || this._moduleInfo.ModuleID != this.ModuleId))
-                {
-                    if (this.PortalSettings != null && this.PortalSettings.ActiveTab != null)
-                    {
-                        this._moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, this.PortalSettings.ActiveTab.TabID, false);
-                    }
-                    else
-                    {
-                        this._moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
-                    }
-                }
-
-                return this._moduleInfo;
-            }
-
-            set
-            {
-                this._moduleInfo = value;
-            }
+            get => TokenContext.Module;
+            set => TokenContext.Module = value;
         }
 
         /// <summary>
         /// Gets or sets /sets the portal settings object to use for 'Portal:' token replacement.
         /// </summary>
         /// <value>PortalSettings oject.</value>
-        public PortalSettings PortalSettings { get; set; }
+        public PortalSettings PortalSettings {
+            get => TokenContext.Portal;
+            set => TokenContext.Portal = value;
+        }
 
         /// <summary>
         /// Gets or sets /sets the user object to use for 'User:' token replacement.
         /// </summary>
         /// <value>UserInfo oject.</value>
-        public UserInfo User { get; set; }
+        public UserInfo User {
+            get => TokenContext.User;
+            set => TokenContext.User = value;
+        }
 
         /// <summary>
         /// Replaces tokens in sourceText parameter with the property values.
@@ -329,4 +308,11 @@ namespace DotNetNuke.Services.Tokens
             }
         }
     }
+using System.Data;
+using System.Web;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 }

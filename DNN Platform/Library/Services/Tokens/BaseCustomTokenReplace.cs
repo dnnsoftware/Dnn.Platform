@@ -1,17 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿using DotNetNuke.ComponentModel;
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-
-    using DotNetNuke.Entities.Users;
-
-    using Localization = DotNetNuke.Services.Localization.Localization;
+using System;
 
     /// <summary>
     /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
@@ -19,13 +13,23 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
-        protected Dictionary<string, IPropertyAccess> PropertySource = new Dictionary<string, IPropertyAccess>();
+        protected IEnumerable<TokenProvider> Providers {
+            get => ComponentFactory.GetComponents<TokenProvider>().Values;
+        }
+
+        public TokenContext TokenContext { get; private set; } = new TokenContext();
+
+        protected Dictionary<string, IPropertyAccess> PropertySource;
 
         /// <summary>
         /// Gets or sets /sets the user object representing the currently accessing user (permission).
         /// </summary>
         /// <value>UserInfo oject.</value>
-        public UserInfo AccessingUser { get; set; }
+        public UserInfo AccessingUser
+        {
+            get => TokenContext.AccessingUser;
+            set => TokenContext.AccessingUser = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
@@ -35,13 +39,25 @@ namespace DotNetNuke.Services.Tokens
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool DebugMessages { get; set; }
+        public bool DebugMessages
+        {
+            get => TokenContext.DebugMessages;
+            set => TokenContext.DebugMessages = value;
+        }
 
         /// <summary>
         /// Gets or sets /sets the current Access Level controlling access to critical user settings.
         /// </summary>
         /// <value>A TokenAccessLevel as defined above.</value>
-        protected Scope CurrentAccessLevel { get; set; }
+        protected Scope CurrentAccessLevel
+        {
+            get => TokenContext.CurrentAccessLevel;
+            set => TokenContext.CurrentAccessLevel = value;
+        }
+
+        public BaseCustomTokenReplace() {
+            PropertySource = TokenContext.PropertySource;
+        }
 
         /// <summary>
         /// returns cacheability of the passed text regarding all contained tokens.
@@ -91,12 +107,14 @@ namespace DotNetNuke.Services.Tokens
         /// <returns></returns>
         public bool ContainsTokens(string strSourceText)
         {
-            if (!string.IsNullOrEmpty(strSourceText))
-            {
-                return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0);
-            }
+            if (string.IsNullOrEmpty(strSourceText))
+			{
+                return false;
+			}
 
-            return false;
+            // also check providers, since they might support different syntax than square brackets
+            return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0)
+                || Providers.Any(it => it.ContainsTokens(strSourceText, TokenContext));
         }
 
         protected override string replacedTokenValue(string objectName, string propertyName, string format)
@@ -143,5 +161,20 @@ namespace DotNetNuke.Services.Tokens
 
             return result;
         }
+
+        protected override string ReplaceTokens(string sourceText)
+        {
+            // call all providers to do token replacement, in the order they are listed in web.config provider configuration
+            foreach (var provider in Providers) {
+                sourceText = provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : provider.Tokenize(sourceText, TokenContext);
+            }
+            return sourceText;
+        }
     }
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using DotNetNuke.Entities.Users;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
 }
