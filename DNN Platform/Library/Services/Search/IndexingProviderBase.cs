@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Search
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         public virtual SearchItemInfoCollection GetSearchIndexItems(int portalId)
         {
-            return null;
+            return new SearchItemInfoCollection();
         }
 
         /// <summary>
