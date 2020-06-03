@@ -699,15 +699,19 @@ namespace DotNetNuke.Entities.Portals
             var isPublic = true;
             switch (lowerPropertyName)
             {
+                case "scheme":
+                    propertyNotFound = false;
+                    result = SSLEnabled ? "https" : "http";
+                    break;
                 case "url":
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
                     break;
-                case "fullurl": //return portal alias with protocol
+                case "fullurl": //return portal alias with protocol - note this depends on HttpContext
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(Globals.AddHTTP(PortalAlias.HTTPAlias), format);
                     break;
-                case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page.
+                case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page. - note this depends on HttpContext
                     propertyNotFound = false;
                     var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
                     if (RegisterTabId > Null.NullInteger)
