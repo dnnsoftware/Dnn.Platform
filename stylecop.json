@@ -29,7 +29,7 @@
       "topLevelTypes": ["class"]
     },
     "layoutRules": {
-      "newlineAtEndOfFile": "allow",
+      "newlineAtEndOfFile": "require",
       "allowConsecutiveUsings": true
     },
     "documentationRules": {
