@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return Util.INSTALL_Package + " - " + PackageName;
+                return Util.INSTALL_Package + " - " + this.PackageName;
             }
         }
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 bool _IsValid = true;
 
                 //Get Package from DataStore
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name.Equals(PackageName, StringComparison.OrdinalIgnoreCase));
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name.Equals(this.PackageName, StringComparison.OrdinalIgnoreCase));
                 if (package == null)
                 {
                     _IsValid = false;
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            PackageName = dependencyNav.Value;
+            this.PackageName = dependencyNav.Value;
         }
     }
 }

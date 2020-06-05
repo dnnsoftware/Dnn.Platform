@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.UI.UserControls
 
         #region Properties
 
-        public string PersonaBarSettings => JsonConvert.SerializeObject(_personaBarContainer.GetConfiguration());
+        public string PersonaBarSettings => JsonConvert.SerializeObject(this._personaBarContainer.GetConfiguration());
 
         public string AppPath => Globals.ApplicationPath;
 
@@ -45,26 +45,26 @@ namespace Dnn.PersonaBar.UI.UserControls
         {
             base.OnInit(e);
 
-            if (_personaBarContainer.Visible)
+            if (this._personaBarContainer.Visible)
             {
-                _personaBarContainer.Initialize(this);
+                this._personaBarContainer.Initialize(this);
             }
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            PersonaBarPanel.Visible = InjectPersonaBar();
+            this.PersonaBarPanel.Visible = this.InjectPersonaBar();
 
-            if (!PersonaBarPanel.Visible)
+            if (!this.PersonaBarPanel.Visible)
             {
-                RemovedAdminStyleSheet();
+                this.RemovedAdminStyleSheet();
             }
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            Visible = Response.StatusCode == (int)HttpStatusCode.OK;
+            this.Visible = this.Response.StatusCode == (int)HttpStatusCode.OK;
 
             base.OnPreRender(e);
         }
@@ -75,43 +75,43 @@ namespace Dnn.PersonaBar.UI.UserControls
 
         private bool InjectPersonaBar()
         {
-            if (!_personaBarContainer.Visible)
+            if (!this._personaBarContainer.Visible)
             {
                 return false;
             }
 
             //copied this logic from DotNetNuke.UI.Skins.Skin.InjectControlPanel
-            if (Request.QueryString["dnnprintmode"] == "true" || Request.QueryString["popUp"] == "true")
+            if (this.Request.QueryString["dnnprintmode"] == "true" || this.Request.QueryString["popUp"] == "true")
                 return false;
 
-            var menuStructure = PersonaBarController.Instance.GetMenu(PortalSettings, UserController.Instance.GetCurrentUserInfo());
+            var menuStructure = PersonaBarController.Instance.GetMenu(this.PortalSettings, UserController.Instance.GetCurrentUserInfo());
             if (menuStructure.MenuItems == null || !menuStructure.MenuItems.Any())
             {
                 return false;
             }
 
-            RegisterPersonaBarStyleSheet();
+            this.RegisterPersonaBarStyleSheet();
 
-            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins); //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
 
             return true;
         }
 
         private void RegisterPersonaBarStyleSheet()
         {
-            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
         }
 
         private void RemovedAdminStyleSheet()
         {
-            var loader = Page.FindControl("ClientResourceIncludes");
+            var loader = this.Page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
                 for (var i = 0; i < loader.Controls.Count; i++)

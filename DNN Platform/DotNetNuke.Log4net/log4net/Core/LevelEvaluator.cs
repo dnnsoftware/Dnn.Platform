@@ -86,7 +86,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("threshold");
 			}
 
-			m_threshold = threshold;
+			this.m_threshold = threshold;
 		}
 
 		/// <summary>
@@ -105,8 +105,8 @@ namespace log4net.Core
 		/// </remarks>
 		public Level Threshold
 		{
-			get { return m_threshold; }
-			set { m_threshold = value; }
+			get { return this.m_threshold; }
+			set { this.m_threshold = value; }
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			return (loggingEvent.Level >= m_threshold); 
+			return (loggingEvent.Level >= this.m_threshold); 
 		}
 	}
 }

@@ -19,59 +19,59 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void BindList()
         {
-            if (_radioButtonList != null)
+            if (this._radioButtonList != null)
             {
-                string selectedValue = !_radioButtonList.Page.IsPostBack ? Convert.ToString(Value) : _radioButtonList.Page.Request.Form[_radioButtonList.UniqueID];
+                string selectedValue = !this._radioButtonList.Page.IsPostBack ? Convert.ToString(this.Value) : this._radioButtonList.Page.Request.Form[this._radioButtonList.UniqueID];
 
-                if (ListSource is Dictionary<string, string>)
+                if (this.ListSource is Dictionary<string, string>)
                 {
-                    var items = ListSource as Dictionary<string, string>;
+                    var items = this.ListSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
                         var listItem = new ListItem(item.Key, item.Value);
-                        listItem.Attributes.Add("onClick", OnClientClicked);
+                        listItem.Attributes.Add("onClick", this.OnClientClicked);
 
-                        _radioButtonList.Items.Add(listItem);
+                        this._radioButtonList.Items.Add(listItem);
                     }
                 }
                 else
                 {
-                    _radioButtonList.DataTextField = ListTextField;
-                    _radioButtonList.DataValueField = ListValueField;
-                    _radioButtonList.DataSource = ListSource;
+                    this._radioButtonList.DataTextField = this.ListTextField;
+                    this._radioButtonList.DataValueField = this.ListValueField;
+                    this._radioButtonList.DataSource = this.ListSource;
 
-                    _radioButtonList.DataBind();
+                    this._radioButtonList.DataBind();
                 }
                 if (String.IsNullOrEmpty(selectedValue))
                 {
-                    selectedValue = DefaultValue;
+                    selectedValue = this.DefaultValue;
                 }
 
                 //Reset SelectedValue
-                if (_radioButtonList.Items.FindByValue(selectedValue) != null)
+                if (this._radioButtonList.Items.FindByValue(selectedValue) != null)
                 {
-                    _radioButtonList.Items.FindByValue(selectedValue).Selected = true;
+                    this._radioButtonList.Items.FindByValue(selectedValue).Selected = true;
                 }
 
-                if (selectedValue != Convert.ToString(Value))
+                if (selectedValue != Convert.ToString(this.Value))
                 {
-                    UpdateDataSource(Value, selectedValue, DataField);
+                    this.UpdateDataSource(this.Value, selectedValue, this.DataField);
                 }
             }
         }
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            _radioButtonList = new RadioButtonList  { ID = ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow};
+            this._radioButtonList = new RadioButtonList  { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow};
 
-            container.Controls.Add(_radioButtonList);
+            container.Controls.Add(this._radioButtonList);
 
-            if (ListSource != null)
+            if (this.ListSource != null)
             {
-                BindList();
+                this.BindList();
             }
 
-            return _radioButtonList;
+            return this._radioButtonList;
         }
     }
 }

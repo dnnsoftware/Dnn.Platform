@@ -59,11 +59,11 @@ namespace log4net.Util
 				throw SystemInfo.CreateArgumentOutOfRangeException("maxSize", (object)maxSize, "Parameter: maxSize, Value: [" + maxSize + "] out of range. Non zero positive integer required");
 			}
 
-			m_maxSize = maxSize;
-			m_events = new LoggingEvent[maxSize];
-			m_first = 0;
-			m_last = 0;
-			m_numElems = 0;
+			this.m_maxSize = maxSize;
+			this.m_events = new LoggingEvent[maxSize];
+			this.m_first = 0;
+			this.m_last = 0;
+			this.m_numElems = 0;
 		}
 
 		#endregion Public Instance Constructors
@@ -92,25 +92,25 @@ namespace log4net.Util
 			lock(this)
 			{
 				// save the discarded event
-				LoggingEvent discardedLoggingEvent = m_events[m_last];
+				LoggingEvent discardedLoggingEvent = this.m_events[this.m_last];
 
 				// overwrite the last event position
-				m_events[m_last] = loggingEvent;	
-				if (++m_last == m_maxSize)
+				this.m_events[this.m_last] = loggingEvent;	
+				if (++this.m_last == this.m_maxSize)
 				{
-					m_last = 0;
+					this.m_last = 0;
 				}
 
-				if (m_numElems < m_maxSize)
+				if (this.m_numElems < this.m_maxSize)
 				{
-					m_numElems++;
+					this.m_numElems++;
 				}
-				else if (++m_first == m_maxSize)
+				else if (++this.m_first == this.m_maxSize)
 				{
-					m_first = 0;
+					this.m_first = 0;
 				}
 
-				if (m_numElems < m_maxSize)
+				if (this.m_numElems < this.m_maxSize)
 				{
 					// Space remaining
 					return null;
@@ -138,14 +138,14 @@ namespace log4net.Util
 			lock(this)
 			{
 				LoggingEvent ret = null;
-				if (m_numElems > 0) 
+				if (this.m_numElems > 0) 
 				{
-					m_numElems--;
-					ret = m_events[m_first];
-					m_events[m_first] = null;
-					if (++m_first == m_maxSize)
+					this.m_numElems--;
+					ret = this.m_events[this.m_first];
+					this.m_events[this.m_first] = null;
+					if (++this.m_first == this.m_maxSize)
 					{
-						m_first = 0;
+						this.m_first = 0;
 					}
 				} 
 				return ret;
@@ -165,22 +165,22 @@ namespace log4net.Util
 		{
 			lock(this)
 			{
-				LoggingEvent[] ret = new LoggingEvent[m_numElems];
+				LoggingEvent[] ret = new LoggingEvent[this.m_numElems];
 
-				if (m_numElems > 0)
+				if (this.m_numElems > 0)
 				{
-					if (m_first < m_last)
+					if (this.m_first < this.m_last)
 					{
-						Array.Copy(m_events, m_first, ret, 0, m_numElems);
+						Array.Copy(this.m_events, this.m_first, ret, 0, this.m_numElems);
 					}
 					else
 					{
-						Array.Copy(m_events, m_first, ret, 0, m_maxSize - m_first);
-						Array.Copy(m_events, 0, ret, m_maxSize - m_first, m_last);
+						Array.Copy(this.m_events, this.m_first, ret, 0, this.m_maxSize - this.m_first);
+						Array.Copy(this.m_events, 0, ret, this.m_maxSize - this.m_first, this.m_last);
 					}
 				}
 
-				Clear();
+				this.Clear();
 
 				return ret;
 			}
@@ -199,11 +199,11 @@ namespace log4net.Util
 			lock(this)
 			{
 				// Set all the elements to null
-				Array.Clear(m_events, 0, m_events.Length);
+				Array.Clear(this.m_events, 0, this.m_events.Length);
 
-				m_first = 0;
-				m_last = 0;
-				m_numElems = 0;
+				this.m_first = 0;
+				this.m_last = 0;
+				this.m_numElems = 0;
 			}
 		}
 
@@ -286,12 +286,12 @@ namespace log4net.Util
 			{
 				lock(this)
 				{
-					if (i < 0 || i >= m_numElems)
+					if (i < 0 || i >= this.m_numElems)
 					{
 						return null;
 					}
 
-					return m_events[(m_first + i) % m_maxSize];
+					return this.m_events[(this.m_first + i) % this.m_maxSize];
 				}
 			}
 		}
@@ -311,7 +311,7 @@ namespace log4net.Util
 			{ 
 				lock(this)
 				{
-					return m_maxSize; 
+					return this.m_maxSize; 
 				}
 			}
 #if RESIZABLE_CYCLIC_BUFFER
@@ -339,7 +339,7 @@ namespace log4net.Util
 			{ 
 				lock(this) 
 				{ 
-					return m_numElems; 
+					return this.m_numElems; 
 				}
 			}									
 		}

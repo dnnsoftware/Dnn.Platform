@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private readonly INavigationManager _navigationManager;
         public SendPassword()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -66,21 +66,21 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 var _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
+                object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 
                 if (Convert.ToInt32(setting) > 0) //redirect to after registration page
                 {
-                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
                 {
 
                 if (Convert.ToInt32(setting) <= 0)
                 {
-                    if (Request.QueryString["returnurl"] != null)
+                    if (this.Request.QueryString["returnurl"] != null)
                     {
                         //return to the url passed to register
-                        _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+                        _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
                         //clean the return url to avoid possible XSS attack.
                         _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
@@ -98,12 +98,12 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
                         //redirect to current page
-                        _RedirectURL = _navigationManager.NavigateURL();
+                        _RedirectURL = this._navigationManager.NavigateURL();
                     }
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = _navigationManager.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                var setting = GetSetting(PortalId, "Security_CaptchaRetrivePassword");
+                var setting = GetSetting(this.PortalId, "Security_CaptchaRetrivePassword");
                 return Convert.ToBoolean(setting);
             }
         }
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.Admin.Security
 	    {
 		    get
 		    {
-				return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+				return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
 		    }
 	    }
 
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Security
 	    {
 		    get
 		    {
-			    return MembershipProviderConfig.RequiresUniqueEmail || UsernameDisabled;
+			    return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
 		    }
 	    }
 
@@ -147,17 +147,17 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-			if (ShowEmailField && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
+			if (this.ShowEmailField && !String.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (String.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
-                arrUsers = UserController.GetUsersByEmail(PortalSettings.PortalId, txtEmail.Text, 0, Int32.MaxValue, ref _userCount);
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, Int32.MaxValue, ref this._userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
                 {
-                    _user = (UserInfo)arrUsers[0];
+                    this._user = (UserInfo)arrUsers[0];
                 }
             }
             else
             {
-                _user = UserController.GetUserByName(PortalSettings.PortalId, txtUsername.Text);
+                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 
@@ -174,31 +174,31 @@ namespace DotNetNuke.Modules.Admin.Security
             //both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                lblHelp.Text = Localization.GetString("ResetTokenHelp", LocalResourceFile);
-                cmdSendPassword.Text = Localization.GetString("ResetToken", LocalResourceFile);
+                this.lblHelp.Text = Localization.GetString("ResetTokenHelp", this.LocalResourceFile);
+                this.cmdSendPassword.Text = Localization.GetString("ResetToken", this.LocalResourceFile);
             }
             else
             {
                 isEnabled = false;
-                lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
-                divPassword.Visible = false;
+                this.lblHelp.Text = Localization.GetString("DisabledPasswordHelp", this.LocalResourceFile);
+                this.divPassword.Visible = false;
             }
 
 			if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 isEnabled = false;
-                lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
-                divPassword.Visible = false;
+                this.lblHelp.Text = Localization.GetString("DisabledPasswordHelp", this.LocalResourceFile);
+                this.divPassword.Visible = false;
             }
 
-            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false))
             {
-                lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
+                this.lblHelp.Text += Localization.GetString("RequiresUniqueEmail", this.LocalResourceFile);
             }
 
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && isEnabled)
             {
-                lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", LocalResourceFile);
+                this.lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", this.LocalResourceFile);
             }
 
 
@@ -213,19 +213,19 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnLoad(e);
 
-            cmdSendPassword.Click += OnSendPasswordClick;
-            lnkCancel.NavigateUrl = _navigationManager.NavigateURL();
+            this.cmdSendPassword.Click += this.OnSendPasswordClick;
+            this.lnkCancel.NavigateUrl = this._navigationManager.NavigateURL();
 
-            _ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(Request));
+            this._ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
-			divEmail.Visible = ShowEmailField;
-			divUsername.Visible = !UsernameDisabled;
-            divCaptcha.Visible = UseCaptcha;
+			this.divEmail.Visible = this.ShowEmailField;
+			this.divUsername.Visible = !this.UsernameDisabled;
+            this.divCaptcha.Visible = this.UseCaptcha;
 
-            if (UseCaptcha)
+            if (this.UseCaptcha)
             {
-                ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", LocalResourceFile);
-                ctlCaptcha.Text = Localization.GetString("CaptchaText", LocalResourceFile);
+                this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
+                this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
             }
         }
 
@@ -237,22 +237,22 @@ namespace DotNetNuke.Modules.Admin.Security
         protected void OnSendPasswordClick(Object sender, EventArgs e)
         {
             //pretty much alwasy display the same message to avoid hinting on the existance of a user name
-            var message = Localization.GetString("PasswordSent", LocalResourceFile);
+            var message = Localization.GetString("PasswordSent", this.LocalResourceFile);
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
             var canSend = true;
 
-            if ((UseCaptcha && ctlCaptcha.IsValid) || (!UseCaptcha))
+            if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
             {
-                if (String.IsNullOrEmpty(txtUsername.Text.Trim()))
+                if (String.IsNullOrEmpty(this.txtUsername.Text.Trim()))
                 {
                     //No UserName provided
-                    if (ShowEmailField)
+                    if (this.ShowEmailField)
                     {
-                        if (String.IsNullOrEmpty(txtEmail.Text.Trim()))
+                        if (String.IsNullOrEmpty(this.txtEmail.Text.Trim()))
                         {
                             //No email address either (cannot retrieve password)
                             canSend = false;
-                            message = Localization.GetString("EnterUsernameEmail", LocalResourceFile);
+                            message = Localization.GetString("EnterUsernameEmail", this.LocalResourceFile);
                             moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
                         }
                     }
@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         //Cannot retrieve password
                         canSend = false;
-                        message = Localization.GetString("EnterUsername", LocalResourceFile);
+                        message = Localization.GetString("EnterUsername", this.LocalResourceFile);
                         moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
                     }
                 }
@@ -269,37 +269,37 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     //SMTP Server is not configured
                     canSend = false;
-                    message = Localization.GetString("OptionUnavailable", LocalResourceFile);
+                    message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
                     moduleMessageType = ModuleMessage.ModuleMessageType.YellowWarning;
 
-                    var logMessage = Localization.GetString("SMTPNotConfigured", LocalResourceFile);
+                    var logMessage = Localization.GetString("SMTPNotConfigured", this.LocalResourceFile);
 
-                    LogResult(logMessage);
+                    this.LogResult(logMessage);
                 }
 
                 if (canSend)
                 {
-                    GetUser();
-                    if (_user != null)
+                    this.GetUser();
+                    if (this._user != null)
                     {
-                        if (_user.IsDeleted)
+                        if (this._user.IsDeleted)
                         {
                             canSend = false;
                         }
                         else
                         {
-                            if (_user.Membership.Approved == false)
+                            if (this._user.Membership.Approved == false)
                             {
-                                Mail.SendMail(_user, MessageType.PasswordReminderUserIsNotApproved, PortalSettings);
+                                Mail.SendMail(this._user, MessageType.PasswordReminderUserIsNotApproved, this.PortalSettings);
                                 canSend = false;
                             }
                             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                             {
-                                UserController.ResetPasswordToken(_user);
+                                UserController.ResetPasswordToken(this._user);
                             }
                             if (canSend)
                             {
-                                if (Mail.SendMail(_user, MessageType.PasswordReminder, PortalSettings) != string.Empty)
+                                if (Mail.SendMail(this._user, MessageType.PasswordReminder, this.PortalSettings) != string.Empty)
                                 {
                                     canSend = false;
                                 }
@@ -308,9 +308,9 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        if (_userCount > 1)
+                        if (this._userCount > 1)
                         {
-                            message = Localization.GetString("MultipleUsers", LocalResourceFile);
+                            message = Localization.GetString("MultipleUsers", this.LocalResourceFile);
                         }
 
                         canSend = false;
@@ -318,19 +318,19 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (canSend)
                     {
-                        LogSuccess();
-                        lnkCancel.Attributes["resourcekey"] = "cmdClose";
+                        this.LogSuccess();
+                        this.lnkCancel.Attributes["resourcekey"] = "cmdClose";
                     }
                     else
                     {
-                        LogFailure(message);
+                        this.LogFailure(message);
                     }
 
 					//always hide panel so as to not reveal if username exists.
-                    pnlRecover.Visible = false;
+                    this.pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
-                    liSend.Visible = false;
-                    liCancel.Visible = true;
+                    this.liSend.Visible = false;
+                    this.liCancel.Visible = true;
                 }
                 else
                 {
@@ -341,12 +341,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogSuccess()
         {
-            LogResult(string.Empty);
+            this.LogResult(string.Empty);
         }
 
         private void LogFailure(string reason)
         {
-            LogResult(reason);
+            this.LogResult(reason);
         }
 
         private void LogResult(string message)
@@ -355,10 +355,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
 			var log = new LogInfo
             {
-                LogPortalID = PortalSettings.PortalId,
-                LogPortalName = PortalSettings.PortalName,
-                LogUserID = UserId,
-                LogUserName = portalSecurity.InputFilter(txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
+                LogPortalID = this.PortalSettings.PortalId,
+                LogPortalName = this.PortalSettings.PortalName,
+                LogUserID = this.UserId,
+                LogUserName = portalSecurity.InputFilter(this.txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
             };
 
             if (string.IsNullOrEmpty(message))
@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-			log.AddProperty("IP", _ipAddress);
+			log.AddProperty("IP", this._ipAddress);
 
             LogController.Instance.AddLog(log);
 

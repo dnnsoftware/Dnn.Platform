@@ -44,28 +44,28 @@ namespace DotNetNuke.UI.Containers
             try
             {
 				//public attributes
-                if (!String.IsNullOrEmpty(BorderWidth))
+                if (!String.IsNullOrEmpty(this.BorderWidth))
                 {
-                    imgIcon.BorderWidth = Unit.Parse(BorderWidth);
+                    this.imgIcon.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    imgIcon.CssClass = CssClass;
+                    this.imgIcon.CssClass = this.CssClass;
                 }
-                Visible = false;
-                if ((ModuleControl != null) && (ModuleControl.ModuleContext.Configuration != null))
+                this.Visible = false;
+                if ((this.ModuleControl != null) && (this.ModuleControl.ModuleContext.Configuration != null))
                 {
-                    var iconFile = GetIconFileUrl();
+                    var iconFile = this.GetIconFileUrl();
                     if (!string.IsNullOrEmpty(iconFile))
                     {
                         if (Globals.IsAdminControl())
                         {
-                            iconFile = $"~/DesktopModules/{ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
+                            iconFile = $"~/DesktopModules/{this.ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
                         }
 
-                        imgIcon.ImageUrl = iconFile;
-                        imgIcon.AlternateText = ModuleControl.ModuleContext.Configuration.ModuleTitle;
-                        Visible = true;
+                        this.imgIcon.ImageUrl = iconFile;
+                        this.imgIcon.AlternateText = this.ModuleControl.ModuleContext.Configuration.ModuleTitle;
+                        this.Visible = true;
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.Containers
 
         private string GetIconFileUrl()
         {
-            var iconFile = ModuleControl.ModuleContext.Configuration.IconFile;
+            var iconFile = this.ModuleControl.ModuleContext.Configuration.IconFile;
             if ((string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~")))
             {
                 return iconFile;
@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.Containers
             }
             else
             {
-                fileInfo = FileManager.Instance.GetFile(PortalSettings.PortalId, iconFile);
+                fileInfo = FileManager.Instance.GetFile(this.PortalSettings.PortalId, iconFile);
             }
 
             return fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconFile;

@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                                         : new ModulePackagePermissionsDto(portalId, package);
 
             detail.DesktopModuleId = desktopModule.DesktopModuleID;
-            detail.Permissions = GetPermissionsData(portalId, desktopModule.DesktopModuleID);
+            detail.Permissions = this.GetPermissionsData(portalId, desktopModule.DesktopModuleID);
 
             return detail;
         }
@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-                UpdatePermissions(desktopModule, packageSettings);
+                this.UpdatePermissions(desktopModule, packageSettings);
 
                 if(isHostUser)
                 {

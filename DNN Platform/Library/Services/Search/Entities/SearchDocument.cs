@@ -79,8 +79,8 @@ namespace DotNetNuke.Services.Search.Entities
 
         public SearchDocument()
         {
-            Tags = new string[0];
-            IsActive = true;
+            this.Tags = new string[0];
+            this.IsActive = true;
         }
 
         #endregion
@@ -89,15 +89,15 @@ namespace DotNetNuke.Services.Search.Entities
         {
             return string.Join(", ", new[]
             {
-                "Portal ID: " + PortalId,
-                "Tab ID: " + TabId,
-                "Module ID: " + ModuleId,
-                "Mod. Def.ID: " + ModuleDefId,
-                "Url: " + Url,
-                "Unique Key: " + UniqueKey,
-                "Last Modified: " + ModifiedTimeUtc.ToString("O"),
-                "Culture: " + CultureCode,
-                "Search Type: " + SearchTypeId
+                "Portal ID: " + this.PortalId,
+                "Tab ID: " + this.TabId,
+                "Module ID: " + this.ModuleId,
+                "Mod. Def.ID: " + this.ModuleDefId,
+                "Url: " + this.Url,
+                "Unique Key: " + this.UniqueKey,
+                "Last Modified: " + this.ModifiedTimeUtc.ToString("O"),
+                "Culture: " + this.CultureCode,
+                "Search Type: " + this.SearchTypeId
             });
         }
     }

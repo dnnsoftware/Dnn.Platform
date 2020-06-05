@@ -29,12 +29,12 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(NeedsAuthentication(request))
+            if(this.NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
                 {
-                    TryToAuthenticate(request, portalSettings.PortalId);
+                    this.TryToAuthenticate(request, portalSettings.PortalId);
                 }
             }
 
@@ -43,9 +43,9 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsBasicAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsBasicAuth(response.RequestMessage))
             {
-                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthScheme, "realm=\"DNNAPI\""));
+                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, "realm=\"DNNAPI\""));
             }
 
             return base.OnOutboundResponse(response, cancellationToken);
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Api.Auth
 
         private void TryToAuthenticate(HttpRequestMessage request, int portalId)
         {
-            UserCredentials credentials = GetCredentials(request);
+            UserCredentials credentials = this.GetCredentials(request);
 
             if (credentials == null)
             {
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Api.Auth
 
             if (user != null)
             {
-                SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(credentials.UserName, AuthScheme), null), request);
+                SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(credentials.UserName, this.AuthScheme), null), request);
             }
         }
 
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            if (request?.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
+            if (request?.Headers.Authorization.Scheme.ToLower() != this.AuthScheme.ToLower())
             {
                 return null;
             }
@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            string decoded = _encoding.GetString(Convert.FromBase64String(authorization));
+            string decoded = this._encoding.GetString(Convert.FromBase64String(authorization));
 
             string[] parts = decoded.Split(new[] {':'}, 2);
             if (parts.Length < 2)
@@ -112,8 +112,8 @@ namespace DotNetNuke.Web.Api.Auth
         {
             public UserCredentials(string userName, string password)
             {
-                UserName = userName;
-                Password = password;
+                this.UserName = userName;
+                this.Password = password;
             }
 
             public string Password { get; set; }

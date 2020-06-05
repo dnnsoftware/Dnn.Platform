@@ -32,20 +32,20 @@ namespace DotNetNuke.Modules.Groups
         private readonly INavigationManager _navigationManager;
         public View()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
         }
 
         private void InitializeComponent()
         {
-            Load += Page_Load;
+            this.Load += this.Page_Load;
         }
 
 
@@ -59,15 +59,15 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                if (GroupId < 0) {
-                    if (TabId != GroupListTabId && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) {
-                       Response.Redirect(_navigationManager.NavigateURL(GroupListTabId));
+                if (this.GroupId < 0) {
+                    if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName)) {
+                       this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }
-                GroupsModuleBase ctl = (GroupsModuleBase)LoadControl(ControlPath);
+                GroupsModuleBase ctl = (GroupsModuleBase)this.LoadControl(this.ControlPath);
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
-                plhContent.Controls.Clear();
-                plhContent.Controls.Add(ctl);
+                this.plhContent.Controls.Clear();
+                this.plhContent.Controls.Add(ctl);
 
             }
             catch (Exception exc) //Module failed to load

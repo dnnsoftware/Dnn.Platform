@@ -32,26 +32,26 @@ namespace DotNetNuke.Entities.Urls
             : base(attributes)
         {
             //Read the attributes for this provider
-            _includePageName = String.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
-            _regexMatch = !String.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
-            _fileExtension = !String.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
+            this._includePageName = String.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
+            this._regexMatch = !String.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
+            this._fileExtension = !String.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
         }
 
         #region Public Properties
 
         public string FileExtension
         {
-            get { return _fileExtension; }
+            get { return this._fileExtension; }
         }
 
         public bool IncludePageName
         {
-            get { return _includePageName; }
+            get { return this._includePageName; }
         }
 
         public string RegexMatch
         {
-            get { return _regexMatch; }
+            get { return this._regexMatch; }
         }
 
         #endregion
@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if ((!String.IsNullOrEmpty(pair[1])))
                         {
-                            if ((Regex.IsMatch(pair[1], _regexMatch) == false))
+                            if ((Regex.IsMatch(pair[1], this._regexMatch) == false))
                             {
                                 //Contains Non-AlphaNumeric Characters
                                 if ((pair[0].ToLowerInvariant() == "tabid"))
@@ -231,7 +231,7 @@ namespace DotNetNuke.Entities.Urls
                                             int tabId = Convert.ToInt32(pair[1]);
                                             if ((tab.TabID == tabId))
                                             {
-                                                if ((string.IsNullOrEmpty(tab.TabPath) == false) && IncludePageName)
+                                                if ((string.IsNullOrEmpty(tab.TabPath) == false) && this.IncludePageName)
                                                 {
                                                     pathToAppend = tab.TabPath.Replace("//", "/").TrimStart('/') + "/" + pathToAppend;
                                                 }
@@ -265,9 +265,9 @@ namespace DotNetNuke.Entities.Urls
             }
             if ((!String.IsNullOrEmpty(queryStringSpecialChars)))
             {
-                return AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
+                return this.AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
             }
-            return AddPage(friendlyPath, pageName);
+            return this.AddPage(friendlyPath, pageName);
         }
 
         private Dictionary<string, string> GetQueryStringDictionary(string path)
@@ -296,23 +296,23 @@ namespace DotNetNuke.Entities.Urls
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return FriendlyUrl(tab, path, pageName, _portalSettings);
+            return this.FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
-            return FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
+            return this.FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return FriendlyUrl(tab, path, pageName, portalAlias, null);
+            return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
         }
 
         private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, IPortalSettings portalSettings)
@@ -320,27 +320,27 @@ namespace DotNetNuke.Entities.Urls
             string friendlyPath = path;
             bool isPagePath = (tab != null);
 
-            if ((UrlFormat == UrlFormatType.HumanFriendly))
+            if ((this.UrlFormat == UrlFormatType.HumanFriendly))
             {
                 if ((tab != null))
                 {
-                    Dictionary<string, string> queryStringDic = GetQueryStringDictionary(path);
+                    Dictionary<string, string> queryStringDic = this.GetQueryStringDictionary(path);
                     if ((queryStringDic.Count == 0 || (queryStringDic.Count == 1 && queryStringDic.ContainsKey("tabid"))))
                     {
-                        friendlyPath = GetFriendlyAlias("~/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", portalAlias, true);
+                        friendlyPath = this.GetFriendlyAlias("~/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", portalAlias, true);
                     }
                     else if ((queryStringDic.Count == 2 && queryStringDic.ContainsKey("tabid") && queryStringDic.ContainsKey("language")))
                     {
                         if (!tab.IsNeutralCulture)
                         {
-                            friendlyPath = GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
+                            friendlyPath = this.GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
                                                 portalAlias, 
                                                 true)
                                                 .ToLowerInvariant();
                         }
                         else
                         {
-                            friendlyPath = GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
+                            friendlyPath = this.GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
                                                 portalAlias, 
                                                 true)
                                             .ToLowerInvariant();
@@ -353,30 +353,30 @@ namespace DotNetNuke.Entities.Urls
                             switch (queryStringDic["ctl"].ToLowerInvariant())
                             {
                                 case "terms":
-                                    friendlyPath = GetFriendlyAlias("~/terms.aspx", portalAlias, true);
+                                    friendlyPath = this.GetFriendlyAlias("~/terms.aspx", portalAlias, true);
                                     break;
                                 case "privacy":
-                                    friendlyPath = GetFriendlyAlias("~/privacy.aspx", portalAlias, true);
+                                    friendlyPath = this.GetFriendlyAlias("~/privacy.aspx", portalAlias, true);
                                     break;
                                 case "login":
                                     friendlyPath = (queryStringDic.ContainsKey("returnurl")) 
-                                                    ? GetFriendlyAlias("~/login.aspx?ReturnUrl=" + queryStringDic["returnurl"], portalAlias, true) 
-                                                    : GetFriendlyAlias("~/login.aspx", portalAlias, true);
+                                                    ? this.GetFriendlyAlias("~/login.aspx?ReturnUrl=" + queryStringDic["returnurl"], portalAlias, true) 
+                                                    : this.GetFriendlyAlias("~/login.aspx", portalAlias, true);
                                     break;
                                 case "register":
                                     friendlyPath = (queryStringDic.ContainsKey("returnurl")) 
-                                                    ? GetFriendlyAlias("~/register.aspx?returnurl=" + queryStringDic["returnurl"], portalAlias, true) 
-                                                    : GetFriendlyAlias("~/register.aspx", portalAlias, true);
+                                                    ? this.GetFriendlyAlias("~/register.aspx?returnurl=" + queryStringDic["returnurl"], portalAlias, true) 
+                                                    : this.GetFriendlyAlias("~/register.aspx", portalAlias, true);
                                     break;
                                 default:
                                     //Return Search engine friendly version
-                                    return GetFriendlyQueryString(tab, GetFriendlyAlias(path, portalAlias, true), pageName);
+                                    return this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, true), pageName);
                             }
                         }
                         else
                         {
                             //Return Search engine friendly version
-                            return GetFriendlyQueryString(tab, GetFriendlyAlias(path, portalAlias, true), pageName);
+                            return this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, true), pageName);
                         }
                     }
                 }
@@ -384,10 +384,10 @@ namespace DotNetNuke.Entities.Urls
             else
             {
                 //Return Search engine friendly version
-                friendlyPath = GetFriendlyQueryString(tab, GetFriendlyAlias(path, portalAlias, isPagePath), pageName);
+                friendlyPath = this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, isPagePath), pageName);
             }
 
-            friendlyPath = CheckPathLength(Globals.ResolveUrl(friendlyPath), path);
+            friendlyPath = this.CheckPathLength(Globals.ResolveUrl(friendlyPath), path);
 
             // Replace http:// by https:// if SSL is enabled and site is marked as secure
             // (i.e. requests to http://... will be redirected to https://...)

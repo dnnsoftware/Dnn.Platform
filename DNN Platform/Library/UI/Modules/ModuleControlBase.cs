@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return TemplateSourceDirectory + "/";
+                return this.TemplateSourceDirectory + "/";
             }
         }
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return GetType().Name.Replace("_", ".");
+                return this.GetType().Name.Replace("_", ".");
             }
         }
 
@@ -83,19 +83,19 @@ namespace DotNetNuke.UI.Modules
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(_localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = ControlPath + "/" + Localization.LocalResourceDirectory + "/" + ID;
+                    fileRoot = this.ControlPath + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -109,11 +109,11 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                if (_moduleContext == null)
+                if (this._moduleContext == null)
                 {
-                    _moduleContext = new ModuleInstanceContext(this);
+                    this._moduleContext = new ModuleInstanceContext(this);
                 }
-                return _moduleContext;
+                return this._moduleContext;
             }
         }
 

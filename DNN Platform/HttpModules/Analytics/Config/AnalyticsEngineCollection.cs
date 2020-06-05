@@ -28,7 +28,7 @@ namespace DotNetNuke.HttpModules.Config
 
         public void Add(AnalyticsEngine a)
         {
-            InnerList.Add(a);
+            this.InnerList.Add(a);
         }
     }
 }

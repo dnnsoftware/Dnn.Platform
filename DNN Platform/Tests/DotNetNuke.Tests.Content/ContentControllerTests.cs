@@ -39,13 +39,13 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
-            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
-            _mockDataProvider = MockComponentProvider.CreateDataProvider();
-            _mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
+            this._mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
+            this._mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
 
-            Services.Search.Internals.SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
+            Services.Search.Internals.SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
 
-            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
+            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
 
         }

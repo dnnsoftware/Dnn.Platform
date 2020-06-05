@@ -22,26 +22,26 @@ namespace DotNetNuke.UI.Modules.Html5
         public Html5ModuleTokenReplace(Page page, string html5File, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
             : base(page)
         {
-            AccessingUser = moduleContext.PortalSettings.UserInfo;
-            DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
-            ModuleId = moduleContext.ModuleId;
-            PortalSettings = moduleContext.PortalSettings;
+            this.AccessingUser = moduleContext.PortalSettings.UserInfo;
+            this.DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
+            this.ModuleId = moduleContext.ModuleId;
+            this.PortalSettings = moduleContext.PortalSettings;
 
-            PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
-            PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
-            PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
-            PropertySource["request"] = new RequestPropertyAccess(page.Request);
+            this.PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
+            this.PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
+            this.PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
+            this.PropertySource["request"] = new RequestPropertyAccess(page.Request);
 
             // DNN-7750
             var bizClass = moduleContext.Configuration.DesktopModule.BusinessControllerClass;
             
-            var businessController = GetBusinessController(bizClass);
+            var businessController = this.GetBusinessController(bizClass);
             if (businessController != null)
             {
                 var tokens = businessController.GetTokens(page, moduleContext);
                 foreach (var token in tokens)
                 {
-                    PropertySource.Add(token.Key, token.Value);
+                    this.PropertySource.Add(token.Key, token.Value);
                 }
             }
         }

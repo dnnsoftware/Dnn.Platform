@@ -63,11 +63,11 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 notificationRequest.UseDefaultCredentials = true;
                 
                 // Start the asynchronous request
-                var result = (notificationRequest.BeginGetResponse(OnServerNotificationCompleteCallback, notificationRequest));
+                var result = (notificationRequest.BeginGetResponse(this.OnServerNotificationCompleteCallback, notificationRequest));
 
                 //Register timeout
                 // TODO: Review possible use of async/await C# 7 implementation
-                ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, HandleNotificationTimeout, notificationRequest, executionTimeout, true);
+                ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, HandleNotificationTimeout, notificationRequest, this.executionTimeout, true);
             }
         }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             //Handle basic removal
             if (command.StartsWith("remove", StringComparison.OrdinalIgnoreCase))
             {
-                RemoveInternal(detail);
+                this.RemoveInternal(detail);
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             if (command.StartsWith("clear~", StringComparison.InvariantCultureIgnoreCase))
             {
                 var commandParts = command.Split('~');
-                ClearCacheInternal(commandParts[1], detail, true);
+                this.ClearCacheInternal(commandParts[1], detail, true);
             }
         }
         #endregion
@@ -144,27 +144,27 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         public override void Clear(string type, string data)
         {
             //Clear the local cache
-            ClearCacheInternal(type, data, true);
+            this.ClearCacheInternal(type, data, true);
 
             //Per API implementation standards only notify others if expiration has not been desabled
             if (CacheExpirationDisable)
                 return;
 
             //Notify other servers
-            NotifyOtherServers("Clear~" + type, data);
+            this.NotifyOtherServers("Clear~" + type, data);
         }
 
         public override void Remove(string key)
         {
             //Remove from local cache
-            RemoveInternal(key);
+            this.RemoveInternal(key);
 
             //Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
                 return;
 
             //Notify Other Servers
-            NotifyOtherServers("Remove", key);
+            this.NotifyOtherServers("Remove", key);
         }
 
         #endregion

@@ -32,8 +32,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            ModuleId = GetFlagValue(FlagId, "Module Id", -1, true, true, true);
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
+            this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }
 
         public override ConsoleResultModel Run()
@@ -41,9 +41,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             var lst = new List<ModuleInfoModel>();
             KeyValuePair<HttpStatusCode, string> message;
             var moduleInfo = ModulesControllerLibrary.Instance.GetModule(
-                PortalSettings, 
-                ModuleId, 
-                PageId,
+                this.PortalSettings, 
+                this.ModuleId, 
+                this.PageId,
                 out message
                 );
             if (moduleInfo == null && !string.IsNullOrEmpty(message.Value))
@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 return new ConsoleErrorResultModel(message.Value);
             }
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(moduleInfo));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_GetModule_Result"), ModuleId, PageId)};
+            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetModule_Result"), this.ModuleId, this.PageId)};
         }
     }
 }

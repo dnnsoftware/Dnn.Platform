@@ -16,8 +16,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public DnnJsIncludeFallback(string objectName, string fileName)
         {
-            ObjectName = objectName;
-            FileName = fileName;
+            this.ObjectName = objectName;
+            this.FileName = fileName;
         }
 
         public string ObjectName { get; set; }
@@ -29,18 +29,18 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
             writer.RenderBeginTag(HtmlTextWriterTag.Script);
 
-            if (ObjectName.Contains("."))
+            if (this.ObjectName.Contains("."))
             {
                 //generate function check
-                writer.Write("if (typeof " + ObjectName + " != 'function') {");
+                writer.Write("if (typeof " + this.ObjectName + " != 'function') {");
             }
             else
             {
                 //generate object check
-                writer.Write("if (typeof " + ObjectName + " == 'undefined') {");
+                writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
             }
 
-            writer.Write("document.write('<script src=\"" + FileName + "\" type=\"text/javascript\"></' + 'script>');");
+            writer.Write("document.write('<script src=\"" + this.FileName + "\" type=\"text/javascript\"></' + 'script>');");
             writer.Write("}");
             writer.RenderEndTag();
         }

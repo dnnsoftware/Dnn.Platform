@@ -101,10 +101,10 @@ namespace log4net.Util.PatternStringConverters
         override protected void Convert(TextWriter writer, object state)
         {
 
-            if (Option != null)
+            if (this.Option != null)
             {
                 // Write the value for the specified key
-                WriteObject(writer, null, System.Configuration.ConfigurationManager.AppSettings[Option]);
+                WriteObject(writer, null, System.Configuration.ConfigurationManager.AppSettings[this.Option]);
             }
             else
             {

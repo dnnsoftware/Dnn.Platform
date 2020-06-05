@@ -24,20 +24,20 @@ namespace DotNetNuke.Web.Api.Auth
 
         protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)
         {
-            DefaultInclude = includeByDefault;
-            ForceSsl = forceSsl;
+            this.DefaultInclude = includeByDefault;
+            this.ForceSsl = forceSsl;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var response = OnInboundRequest(request, cancellationToken);
+            var response = this.OnInboundRequest(request, cancellationToken);
             if(response != null)
             {
                 response.RequestMessage = response.RequestMessage ?? request; //if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
                 return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
             }
 
-            return base.SendAsync(request, cancellationToken).ContinueWith(x => OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
+            return base.SendAsync(request, cancellationToken).ContinueWith(x => this.OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
         }
 
         /// <summary>
@@ -64,14 +64,14 @@ namespace DotNetNuke.Web.Api.Auth
 
         protected bool NeedsAuthentication(HttpRequestMessage request)
         {
-            if (MustEnforceSslInRequest(request))
+            if (this.MustEnforceSslInRequest(request))
             {
                 return !Thread.CurrentPrincipal.Identity.IsAuthenticated;
             }
 
             if (Logger.IsTraceEnabled)
             {
-                Logger.Trace($"{AuthScheme}: Validating request vs. SSL mode ({ForceSsl}) failed. ");
+                Logger.Trace($"{this.AuthScheme}: Validating request vs. SSL mode ({this.ForceSsl}) failed. ");
             }
 
             // will let callers to return without authenticating the user
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <returns>True if <see cref="ForceSsl"/> matcher the request scheme; false otherwise.</returns>
         private bool MustEnforceSslInRequest(HttpRequestMessage request)
         {
-            return !ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.InvariantCultureIgnoreCase);
+            return !this.ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected static void SetCurrentPrincipal(IPrincipal principal, HttpRequestMessage request)

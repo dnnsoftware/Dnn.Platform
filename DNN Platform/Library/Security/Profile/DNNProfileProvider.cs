@@ -58,7 +58,7 @@ namespace DotNetNuke.Security.Profile
                     int.TryParse(oldTimeZone.PropertyValue, out oldOffset);
                     TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset);
                     newTimeZone.PropertyValue = timeZoneInfo.Id;
-                    UpdateUserProfile(user);
+                    this.UpdateUserProfile(user);
                 }
                 //It's also possible that the new value is set but not the old value. We need to make them backwards compatible
                 else if (!string.IsNullOrEmpty(newTimeZone.PropertyValue) && string.IsNullOrEmpty(oldTimeZone.PropertyValue))
@@ -108,7 +108,7 @@ namespace DotNetNuke.Security.Profile
             //Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
-                var key = GetProfileCacheKey(user);
+                var key = this.GetProfileCacheKey(user);
                 var cachedProperties = (ProfilePropertyDefinitionCollection)DataCache.GetCache(key);
                 if (cachedProperties != null)
                 {
@@ -116,7 +116,7 @@ namespace DotNetNuke.Security.Profile
                 }
                 else
                 {
-                    using (var dr = _dataProvider.GetUserProfile(user.UserID))
+                    using (var dr = this._dataProvider.GetUserProfile(user.UserID))
                     {
                         while (dr.Read())
                         {
@@ -169,7 +169,7 @@ namespace DotNetNuke.Security.Profile
             user.Profile.ClearIsDirty();
 
             //Ensure old and new TimeZone properties are in synch
-            UpdateTimeZoneInfo(user, properties);
+            this.UpdateTimeZoneInfo(user, properties);
         }
 
         /// -----------------------------------------------------------------------------
@@ -182,7 +182,7 @@ namespace DotNetNuke.Security.Profile
         /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
-            var key = GetProfileCacheKey(user);
+            var key = this.GetProfileCacheKey(user);
             DataCache.ClearCache(key);
 
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
@@ -213,7 +213,7 @@ namespace DotNetNuke.Security.Profile
                 {
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
-                    _dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId, 
+                    this._dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId, 
                                                 propertyValue, (int) profProperty.ProfileVisibility.VisibilityMode, 
                                                 profProperty.ProfileVisibility.ExtendedVisibilityString(), DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", "USERPROFILE_UPDATED");

@@ -21,13 +21,13 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         [SetUp]
         public void Setup()
         {
-            _actionInvoker = new ResultCapturingActionInvoker();
+            this._actionInvoker = new ResultCapturingActionInvoker();
         }
 
         [TearDown]
         public void TearDown()
         {
-            _actionInvoker = null;
+            this._actionInvoker = null;
         }
 
         [Test]
@@ -40,11 +40,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
 
             //Act
-            _actionInvoker.InvokeAction(controller.ControllerContext, "Index");
+            this._actionInvoker.InvokeAction(controller.ControllerContext, "Index");
 
             //Assert
-            Assert.IsNotNull(_actionInvoker.ResultOfLastInvoke);
-            Assert.IsInstanceOf<ViewResult>(_actionInvoker.ResultOfLastInvoke);
+            Assert.IsNotNull(this._actionInvoker.ResultOfLastInvoke);
+            Assert.IsInstanceOf<ViewResult>(this._actionInvoker.ResultOfLastInvoke);
         }        
 
         [Test]
@@ -52,15 +52,15 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             //Arrange
             var httpContextBase = MockHelper.CreateMockHttpContext();
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             FakeHandleExceptionRedirectAttribute.IsExceptionHandled = true;
             var expectedResult = FakeHandleExceptionRedirectAttribute.Result;
 
             //Act
-            _actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter));
+            this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter));
 
             //Assert
-            Assert.AreEqual(expectedResult, _actionInvoker.ResultOfLastInvoke);
+            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
         }
 
         [Test]
@@ -68,15 +68,15 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             //Arrange
             var httpContextBase = MockHelper.CreateMockHttpContext();
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             FakeHandleExceptionRedirectAttribute.IsExceptionHandled = false;
             var expectedResult = FakeRedirectAttribute.Result;
 
             //Act
-            Assert.Throws<Exception>(() => _actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter)));
+            Assert.Throws<Exception>(() => this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithExceptionFilter)));
 
             //Assert
-            Assert.AreEqual(expectedResult, _actionInvoker.ResultOfLastInvoke);
+            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
         }
 
         [Test]
@@ -84,14 +84,14 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             //Arrange
             var httpContextBase = MockHelper.CreateMockHttpContext();
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var expectedResult = FakeRedirectAttribute.Result;
 
             //Act
-            _actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutingFilter));
+            this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutingFilter));
 
             //Assert
-            Assert.AreEqual(expectedResult, _actionInvoker.ResultOfLastInvoke);
+            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
         }
 
         [Test]
@@ -99,14 +99,14 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             //Arrange
             var httpContextBase = MockHelper.CreateMockHttpContext();
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var expectedResult = FakeRedirectAttribute.Result;
 
             //Act
-            _actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutedFilter));
+            this._actionInvoker.InvokeAction(controller.ControllerContext, nameof(FakeDnnController.ActionWithOnExecutedFilter));
 
             //Assert
-            Assert.AreEqual(expectedResult, _actionInvoker.ResultOfLastInvoke);
+            Assert.AreEqual(expectedResult, this._actionInvoker.ResultOfLastInvoke);
         }
 
         private FakeDnnController SetupController(HttpContextBase context)

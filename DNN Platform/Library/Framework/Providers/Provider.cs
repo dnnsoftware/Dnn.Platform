@@ -20,17 +20,17 @@ namespace DotNetNuke.Framework.Providers
         public Provider(XmlAttributeCollection Attributes)
         {
             //Set the name of the provider
-            _ProviderName = Attributes["name"].Value;
+            this._ProviderName = Attributes["name"].Value;
 
             //Set the type of the provider
-            _ProviderType = Attributes["type"].Value;
+            this._ProviderType = Attributes["type"].Value;
 
             //Store all the attributes in the attributes bucket
             foreach (XmlAttribute Attribute in Attributes)
             {
                 if (Attribute.Name != "name" && Attribute.Name != "type")
                 {
-                    _ProviderAttributes.Add(Attribute.Name, Attribute.Value);
+                    this._ProviderAttributes.Add(Attribute.Name, Attribute.Value);
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderName;
+                return this._ProviderName;
             }
         }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderType;
+                return this._ProviderType;
             }
         }
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderAttributes;
+                return this._ProviderAttributes;
             }
         }
     }

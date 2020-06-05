@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         protected INavigationManager NavigationManager { get; }
         public ExtensionsController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public IDictionary<string, PackageType> GetPackageTypes()
@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             var packages = new List<AvailablePackagesDto>();
             string packagePath;
-            if (HasAvailablePackage(packageType, out packagePath))
+            if (this.HasAvailablePackage(packageType, out packagePath))
             {
                 var validpackages = new Dictionary<string, PackageInfo>();
                 var invalidPackages = new List<string>();
@@ -139,7 +139,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (packageType.ToLowerInvariant() == "corelanguagepack")
                 {
-                    GetAvaialableLanguagePacks(validpackages);
+                    this.GetAvaialableLanguagePacks(validpackages);
                 }
 
                 packages.Add(new AvailablePackagesDto()
@@ -260,7 +260,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                     : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
-                    var url = NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
+                    var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
                     returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
                 index = index + 1;

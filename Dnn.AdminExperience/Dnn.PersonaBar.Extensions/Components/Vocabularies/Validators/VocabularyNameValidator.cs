@@ -21,8 +21,8 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
 
         public VocabularyNameValidator(IVocabularyController vocabularyController, ITermController termController)
         {
-            _vocabularyController = vocabularyController;
-            _termController = termController;
+            this._vocabularyController = vocabularyController;
+            this._termController = termController;
         }
 
         public override ValidationResult ValidateObject(object target)
@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             {
                 var vocabulary = target as Vocabulary;
                 var existVocabulary =
-                    _vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
+                    this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.Name == vocabulary.Name && v.ScopeId == vocabulary.ScopeId);
 
                 if (existVocabulary != null && (vocabulary.VocabularyId == Null.NullInteger || existVocabulary.VocabularyId != vocabulary.VocabularyId))
                 {
@@ -41,8 +41,8 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
             else if (target is Term)
             {
                 var term = target as Term;
-                var vocabulary = _vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
-                var terms = _termController.GetTermsByVocabulary(term.VocabularyId);
+                var vocabulary = this._vocabularyController.GetVocabularies().FirstOrDefault(v => v.VocabularyId == term.VocabularyId);
+                var terms = this._termController.GetTermsByVocabulary(term.VocabularyId);
 
                 if (vocabulary != null)
                 {

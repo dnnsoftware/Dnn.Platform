@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Modules
     {
         protected ControlInfo()
         {
-            SupportsPartialRendering = Null.NullBoolean;
+            this.SupportsPartialRendering = Null.NullBoolean;
         }
 
         /// -----------------------------------------------------------------------------
@@ -66,9 +66,9 @@ namespace DotNetNuke.Entities.Modules
         {
 			//Call EntityBaseInfo's implementation
             base.FillInternal(dr);
-            ControlKey = Null.SetNullString(dr["ControlKey"]);
-            ControlSrc = Null.SetNullString(dr["ControlSrc"]);
-            SupportsPartialRendering = Null.SetNullBoolean(dr["SupportsPartialRendering"]);
+            this.ControlKey = Null.SetNullString(dr["ControlKey"]);
+            this.ControlSrc = Null.SetNullString(dr["ControlSrc"]);
+            this.SupportsPartialRendering = Null.SetNullBoolean(dr["SupportsPartialRendering"]);
         }
 
         protected void ReadXmlInternal(XmlReader reader)
@@ -76,16 +76,16 @@ namespace DotNetNuke.Entities.Modules
             switch (reader.Name)
             {
                 case "controlKey":
-                    ControlKey = reader.ReadElementContentAsString();
+                    this.ControlKey = reader.ReadElementContentAsString();
                     break;
                 case "controlSrc":
-                    ControlSrc = reader.ReadElementContentAsString();
+                    this.ControlSrc = reader.ReadElementContentAsString();
                     break;
                 case "supportsPartialRendering":
                     string elementvalue = reader.ReadElementContentAsString();
                     if (!string.IsNullOrEmpty(elementvalue))
                     {
-                        SupportsPartialRendering = bool.Parse(elementvalue);
+                        this.SupportsPartialRendering = bool.Parse(elementvalue);
                     }
                     break;
             }
@@ -94,9 +94,9 @@ namespace DotNetNuke.Entities.Modules
         protected void WriteXmlInternal(XmlWriter writer)
         {
 			//write out properties
-            writer.WriteElementString("controlKey", ControlKey);
-            writer.WriteElementString("controlSrc", ControlSrc);
-            writer.WriteElementString("supportsPartialRendering", SupportsPartialRendering.ToString());
+            writer.WriteElementString("controlKey", this.ControlKey);
+            writer.WriteElementString("controlSrc", this.ControlSrc);
+            writer.WriteElementString("supportsPartialRendering", this.SupportsPartialRendering.ToString());
         }
     }
 }

@@ -29,8 +29,8 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (string.IsNullOrEmpty(ImageUrl))
-                ImageUrl = Entities.Icons.IconController.IconURL(IconKey, IconSize, IconStyle);            
+            if (string.IsNullOrEmpty(this.ImageUrl))
+                this.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);            
         }
 
         #endregion

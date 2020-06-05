@@ -22,11 +22,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _engineType;
+                return this._engineType;
             }
             set
             {
-                _engineType = value;
+                this._engineType = value;
             }
         }
 
@@ -34,11 +34,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _scriptTemplate;
+                return this._scriptTemplate;
             }
             set
             {
-                _scriptTemplate = value;
+                this._scriptTemplate = value;
             }
         }
 
@@ -46,11 +46,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _elementId;
+                return this._elementId;
             }
             set
             {
-                _elementId = value;
+                this._elementId = value;
             }
         }
 
@@ -58,11 +58,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _injectTop;
+                return this._injectTop;
             }
             set
             {
-                _injectTop = value;
+                this._injectTop = value;
             }
         }
     }

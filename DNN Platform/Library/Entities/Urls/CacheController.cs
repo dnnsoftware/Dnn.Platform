@@ -515,16 +515,16 @@ namespace DotNetNuke.Entities.Urls
         {
             if (settings.LogCacheMessages)
             {
-                onRemovePageIndex = RemovedPageIndexCallBack;
+                this.onRemovePageIndex = this.RemovedPageIndexCallBack;
             }
             else
             {
-                onRemovePageIndex = null;
+                this.onRemovePageIndex = null;
             }
 
             LogRemovedReason = settings.LogCacheMessages;
 
-            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(GetTabsCacheDependency(urlPortals)), settings, onRemovePageIndex);
+            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
             SetPageCache(UrlPortalsKey, urlPortals, settings);
             SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
 
@@ -704,7 +704,7 @@ namespace DotNetNuke.Entities.Urls
                                              FriendlyUrlSettings settings,
                                              string reason)
         {
-            onRemovePageIndex = settings.LogCacheMessages ? (CacheItemRemovedCallback) RemovedPageIndexCallBack : null;
+            this.onRemovePageIndex = settings.LogCacheMessages ? (CacheItemRemovedCallback) this.RemovedPageIndexCallBack : null;
 
             //get list of portal ids for the portals we are storing in the page index
             var portalIds = new List<int>();
@@ -714,7 +714,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //783 : use cache dependency to manage page index instead of triggerDictionaryRebuild regex.
-            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(GetTabsCacheDependency(portalIds)), settings, onRemovePageIndex);
+            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(this.GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
 
             SetPageCache(PageIndexDepthKey, portalDepthInfo, settings);
 
@@ -750,7 +750,7 @@ namespace DotNetNuke.Entities.Urls
         {
             SetPageCache(string.Format(TabPathsKey, portalId), 
                         tabPathDictionary, 
-                        new DNNCacheDependency(GetTabsCacheDependency(new List<int> { portalId })), 
+                        new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })), 
                         settings, 
                         null);
         }

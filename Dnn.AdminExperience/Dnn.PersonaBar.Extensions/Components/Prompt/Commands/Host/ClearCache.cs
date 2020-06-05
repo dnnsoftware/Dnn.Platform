@@ -28,9 +28,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_ClearCache_Error"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearCache_Error"));
             }
-            return new ConsoleResultModel(LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
+            return new ConsoleResultModel(this.LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
         }
     }
 }

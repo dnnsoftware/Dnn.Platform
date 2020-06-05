@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Mobile
 
 			if (profile.Id == Null.NullInteger || profile.SortOrder == 0)
 			{
-				profile.SortOrder = GetProfilesByPortal(profile.PortalId, false).Count + 1;
+				profile.SortOrder = this.GetProfilesByPortal(profile.PortalId, false).Count + 1;
 			}
 
 			int id = DataProvider.Instance().SavePreviewProfile(profile.Id,
@@ -54,9 +54,9 @@ namespace DotNetNuke.Services.Mobile
 			profile.Id = id;
 
 			var logContent = string.Format("{0} Mobile Preview Profile '{1}'", profile.Id == Null.NullInteger ? "Add" : "Update", profile.Name);
-			AddLog(logContent);
+			this.AddLog(logContent);
 
-			ClearCache(profile.PortalId);
+			this.ClearCache(profile.PortalId);
 		}
 
 		/// <summary>
@@ -66,21 +66,21 @@ namespace DotNetNuke.Services.Mobile
 		/// <param name="id">the profile's id.</param>
 		public void Delete(int portalId, int id)
 		{
-			var delProfile = GetProfileById(portalId, id);
+			var delProfile = this.GetProfileById(portalId, id);
 			if (delProfile != null)
 			{
 				//update the list order
-				GetProfilesByPortal(portalId).Where(p => p.SortOrder > delProfile.SortOrder).ToList().ForEach(p =>
+				this.GetProfilesByPortal(portalId).Where(p => p.SortOrder > delProfile.SortOrder).ToList().ForEach(p =>
 																												{
 																													p.SortOrder--;
-																													Save(p);
+																													this.Save(p);
 																												});
 				DataProvider.Instance().DeletePreviewProfile(id);
 
 				var logContent = string.Format("Delete Mobile Preview Profile '{0}'", id);
-				AddLog(logContent);
+				this.AddLog(logContent);
 
-				ClearCache(portalId);
+				this.ClearCache(portalId);
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Mobile
 		/// <returns>List of preview profile.</returns>
 		public IList<IPreviewProfile> GetProfilesByPortal(int portalId)
 		{
-			return GetProfilesByPortal(portalId, true);
+			return this.GetProfilesByPortal(portalId, true);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Mobile
 		/// <returns>profile object.</returns>
 		public IPreviewProfile GetProfileById(int portalId, int id)
 		{
-			return GetProfilesByPortal(portalId).Where(r => r.Id == id).FirstOrDefault();
+			return this.GetProfilesByPortal(portalId).Where(r => r.Id == id).FirstOrDefault();
 		}
 
 		#endregion
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Mobile
 		{
 			string cacheKey = string.Format(DataCache.PreviewProfilesCacheKey, portalId);
 			var cacheArg = new CacheItemArgs(cacheKey, DataCache.PreviewProfilesCacheTimeOut, DataCache.PreviewProfilesCachePriority, portalId, addDefault);
-			return CBO.GetCachedObject<IList<IPreviewProfile>>(cacheArg, GetProfilesByPortalIdCallBack);
+			return CBO.GetCachedObject<IList<IPreviewProfile>>(cacheArg, this.GetProfilesByPortalIdCallBack);
 		}
 
 		private IList<IPreviewProfile> GetProfilesByPortalIdCallBack(CacheItemArgs cacheItemArgs)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Mobile
 			var profiles = CBO.FillCollection<PreviewProfile>(DataProvider.Instance().GetPreviewProfiles(portalId));
 			if (profiles.Count == 0 && addDefault)
 			{
-				profiles = CreateDefaultDevices(portalId);
+				profiles = this.CreateDefaultDevices(portalId);
 			}
 
 			return profiles.Cast<IPreviewProfile>().ToList();
@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Mobile
                                                      {
                                                          p.PortalId = portalId;
 
-                                                         Save(p);
+                                                         this.Save(p);
                                                      });
                             }
                         }

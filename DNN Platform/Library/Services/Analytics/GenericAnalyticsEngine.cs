@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Analytics
 
         public override string RenderScript(string scriptTemplate)
         {
-            return ReplaceTokens(scriptTemplate);
+            return this.ReplaceTokens(scriptTemplate);
         }
     }
 }

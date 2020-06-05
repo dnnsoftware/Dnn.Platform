@@ -17,19 +17,19 @@ namespace DotNetNuke.Web.Api
 
         public TraceWriter(bool isTracingEnabled)
         {
-            _enabled = isTracingEnabled;
+            this._enabled = isTracingEnabled;
         }
 
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
-            if(!_enabled || level == TraceLevel.Off)
+            if(!this._enabled || level == TraceLevel.Off)
             {
                 return;
             }
 
             var rec = new TraceRecord(request, category, level);
             traceAction(rec);
-            Log(rec);
+            this.Log(rec);
         }
 
         private void Log(TraceRecord rec)

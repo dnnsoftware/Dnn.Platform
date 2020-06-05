@@ -58,7 +58,7 @@ namespace log4net.Util
 		/// </remarks>
 		public OnlyOnceErrorHandler()
 		{
-			m_prefix = "";
+			this.m_prefix = "";
 		}
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace log4net.Util
 		/// </remarks>
 		public OnlyOnceErrorHandler(string prefix)
 		{
-			m_prefix = prefix;
+			this.m_prefix = prefix;
 		}
 
 		#endregion Public Instance Constructors
@@ -85,11 +85,11 @@ namespace log4net.Util
 		/// </summary>
 		public void Reset()
 		{
-			m_enabledDateUtc = DateTime.MinValue;
-			m_errorCode = ErrorCode.GenericFailure;
-			m_exception = null;
-			m_message = null;
-			m_firstTime = true;
+			this.m_enabledDateUtc = DateTime.MinValue;
+			this.m_errorCode = ErrorCode.GenericFailure;
+			this.m_exception = null;
+			this.m_message = null;
+			this.m_firstTime = true;
 		}
 
 		#region Implementation of IErrorHandler
@@ -107,9 +107,9 @@ namespace log4net.Util
 		/// </remarks>
 		public void Error(string message, Exception e, ErrorCode errorCode) 
 		{
-			if (m_firstTime)
+			if (this.m_firstTime)
 			{
-                FirstError(message, e, errorCode);
+                this.FirstError(message, e, errorCode);
 			}
 		}
 
@@ -125,14 +125,14 @@ namespace log4net.Util
         /// </para>
         /// </remarks>
         public virtual void FirstError(string message, Exception e, ErrorCode errorCode) {
-            m_enabledDateUtc = DateTime.UtcNow;
-            m_errorCode = errorCode;
-            m_exception = e;
-            m_message = message;
-            m_firstTime = false;
+            this.m_enabledDateUtc = DateTime.UtcNow;
+            this.m_errorCode = errorCode;
+            this.m_exception = e;
+            this.m_message = message;
+            this.m_firstTime = false;
 
             if (LogLog.InternalDebugging && !LogLog.QuietMode) {
-                LogLog.Error(declaringType, "[" + m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
+                LogLog.Error(declaringType, "[" + this.m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
             }
         }
 
@@ -148,7 +148,7 @@ namespace log4net.Util
         /// </remarks>
 		public void Error(string message, Exception e) 
 		{
-			Error(message, e, ErrorCode.GenericFailure);
+			this.Error(message, e, ErrorCode.GenericFailure);
 		}
 
 		/// <summary>
@@ -162,7 +162,7 @@ namespace log4net.Util
         /// </remarks>
 		public void Error(string message) 
 		{
-			Error(message, null, ErrorCode.GenericFailure);
+			this.Error(message, null, ErrorCode.GenericFailure);
 		}
 
 		#endregion Implementation of IErrorHandler
@@ -182,7 +182,7 @@ namespace log4net.Util
 		/// </remarks>
 		public bool IsEnabled
 		{
-			get { return m_firstTime; }
+			get { return this.m_firstTime; }
 		}
 
 		/// <summary>
@@ -192,8 +192,8 @@ namespace log4net.Util
 		{
 			get 
             {
-                if (m_enabledDateUtc == DateTime.MinValue) return DateTime.MinValue;
-                return m_enabledDateUtc.ToLocalTime(); 
+                if (this.m_enabledDateUtc == DateTime.MinValue) return DateTime.MinValue;
+                return this.m_enabledDateUtc.ToLocalTime(); 
             }
 		}
 
@@ -202,7 +202,7 @@ namespace log4net.Util
         /// </summary>
         public DateTime EnabledDateUtc
         {
-            get { return m_enabledDateUtc; }
+            get { return this.m_enabledDateUtc; }
         }
 
 		/// <summary>
@@ -210,7 +210,7 @@ namespace log4net.Util
 		/// </summary>
 		public string ErrorMessage
 		{
-			get { return m_message; }
+			get { return this.m_message; }
 		}
 
 		/// <summary>
@@ -221,7 +221,7 @@ namespace log4net.Util
 		/// </remarks>
 		public Exception Exception
 		{
-			get { return m_exception; }
+			get { return this.m_exception; }
 		}
 
 		/// <summary>
@@ -232,7 +232,7 @@ namespace log4net.Util
 		/// </remarks>
 		public ErrorCode ErrorCode
 		{
-			get { return m_errorCode; }
+			get { return this.m_errorCode; }
 		}
 
 		#endregion

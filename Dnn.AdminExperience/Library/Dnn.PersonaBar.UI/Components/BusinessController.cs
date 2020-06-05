@@ -35,14 +35,14 @@ namespace Dnn.PersonaBar.UI.Components
             switch (version)
             {
                 case "01.00.00":
-                    UpdateControlPanel();
-                    CreateAdminLinks();
+                    this.UpdateControlPanel();
+                    this.CreateAdminLinks();
                     break;
                 case "01.04.00":
-                    UpdateEditPermissions();
+                    this.UpdateEditPermissions();
                     break;
                 case "03.00.00":
-                    RemovePersonaBarOldAssemblies();
+                    this.RemovePersonaBarOldAssemblies();
                     break;
             }
 
@@ -53,10 +53,10 @@ namespace Dnn.PersonaBar.UI.Components
         {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                CreatePageLinks(portal.PortalID, "Admin");
+                this.CreatePageLinks(portal.PortalID, "Admin");
             }
 
-            CreatePageLinks(Null.NullInteger, "Host");
+            this.CreatePageLinks(Null.NullInteger, "Host");
         }
 
         private void CreatePageLinks(int portalId, string parentPath)
@@ -87,7 +87,7 @@ namespace Dnn.PersonaBar.UI.Components
                 var portalId = portal.PortalID;
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    menuItems.ForEach(i => SaveEditPermission(portalId, i));
+                    menuItems.ForEach(i => this.SaveEditPermission(portalId, i));
                 }
             }
         }

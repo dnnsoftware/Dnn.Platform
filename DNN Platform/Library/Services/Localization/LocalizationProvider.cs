@@ -39,17 +39,17 @@ namespace DotNetNuke.Services.Localization
 
         public string GetString(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, null, PortalController.Instance.GetCurrentPortalSettings(), false);
+            return this.GetString(key, resourceFileRoot, null, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language)
         {
-            return GetString(key, resourceFileRoot, language, PortalController.Instance.GetCurrentPortalSettings(), false);
+            return this.GetString(key, resourceFileRoot, language, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings)
         {
-            return GetString(key, resourceFileRoot, language, portalSettings, false);
+            return this.GetString(key, resourceFileRoot, language, portalSettings, false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys)
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Localization
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
-            return string.IsNullOrEmpty(resourceValue) ? string.Empty : RemoveHttpUrlsIfSiteisSSLEnabled(portalSettings, resourceValue);
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : this.RemoveHttpUrlsIfSiteisSSLEnabled(portalSettings, resourceValue);
         }
 
         private string RemoveHttpUrlsIfSiteisSSLEnabled(PortalSettings portalSettings, string resourceValue)

@@ -44,21 +44,21 @@ namespace DotNetNuke.Services.Install
             Upgrade.Upgrade.StartTimer();
 
             //Write out Header
-            HtmlUtils.WriteHeader(Response, "executeScripts");
+            HtmlUtils.WriteHeader(this.Response, "executeScripts");
 
-            Response.Write("<h2>Execute Scripts Status Report</h2>");
-            Response.Flush();
+            this.Response.Write("<h2>Execute Scripts Status Report</h2>");
+            this.Response.Flush();
 
             string strProviderPath = DataProvider.Instance().GetProviderPath();
             if (!strProviderPath.StartsWith("ERROR:"))
             {
                 Upgrade.Upgrade.ExecuteScripts(strProviderPath);
             }
-            Response.Write("<h2>Execution Complete</h2>");
-            Response.Flush();
+            this.Response.Write("<h2>Execution Complete</h2>");
+            this.Response.Flush();
             
             //Write out Footer
-            HtmlUtils.WriteFooter(Response);
+            HtmlUtils.WriteFooter(this.Response);
         }
 
         private void InstallApplication()
@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Install
                 if (String.IsNullOrEmpty(strError))
                 {
                     //send a new request to the application to initiate step 2
-                    Response.Redirect(HttpContext.Current.Request.RawUrl, true);
+                    this.Response.Redirect(HttpContext.Current.Request.RawUrl, true);
                 }
                 else
                 {
@@ -96,20 +96,20 @@ namespace DotNetNuke.Services.Install
                     if (synchConnectionString.Status == StepStatus.AppRestart)
                     {
                         //send a new request to the application to initiate step 2
-                        Response.Redirect(HttpContext.Current.Request.RawUrl, true);
+                        this.Response.Redirect(HttpContext.Current.Request.RawUrl, true);
                     }
 
                     //Start Timer
                     Upgrade.Upgrade.StartTimer();
 
                     //Write out Header
-                    HtmlUtils.WriteHeader(Response, "install");
+                    HtmlUtils.WriteHeader(this.Response, "install");
 
                     //get path to script files
                     string strProviderPath = DataProvider.Instance().GetProviderPath();
                     if (!strProviderPath.StartsWith("ERROR:"))
                     {
-                        if (!CheckPermissions())
+                        if (!this.CheckPermissions())
                         {
                             return;
                         }
@@ -118,8 +118,8 @@ namespace DotNetNuke.Services.Install
                         {
                             if (InstallBlocker.Instance.IsInstallInProgress())
                             {
-                                WriteInstallationHeader();
-                                WriteInstallationInProgress();
+                                this.WriteInstallationHeader();
+                                this.WriteInstallationInProgress();
                                 return;
                             }
                             RegisterInstallBegining();
@@ -164,9 +164,9 @@ namespace DotNetNuke.Services.Install
                             Logger.Error(strError);
                         }
 
-                        Response.Write("<h2>Installation Complete</h2>");
-                        Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
-                        Response.Flush();
+                        this.Response.Write("<h2>Installation Complete</h2>");
+                        this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+                        this.Response.Flush();
 
                         //remove installwizard files
                         Upgrade.Upgrade.DeleteInstallerFiles();
@@ -180,12 +180,12 @@ namespace DotNetNuke.Services.Install
                     else
                     {
                         //upgrade error
-                        Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
-                        Response.Flush();
+                        this.Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
+                        this.Response.Flush();
                     }
 
                     //Write out Footer
-                    HtmlUtils.WriteFooter(Response);
+                    HtmlUtils.WriteFooter(this.Response);
                 }
                 finally
                 {
@@ -206,12 +206,12 @@ namespace DotNetNuke.Services.Install
         
         private void WriteInstallationHeader()
         {
-            Response.Write("<h2>Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
-            Response.Flush();
+            this.Response.Write("<h2>Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
+            this.Response.Flush();
 
-            Response.Write("<br><br>");
-            Response.Write("<h2>Installation Status Report</h2>");
-            Response.Flush();
+            this.Response.Write("<br><br>");
+            this.Response.Write("<h2>Installation Status Report</h2>");
+            this.Response.Flush();
         }
 
         private void WriteInstallationInProgress()
@@ -219,16 +219,16 @@ namespace DotNetNuke.Services.Install
             HtmlUtils.WriteFeedback(HttpContext.Current.Response,
                                     0,
                                     Localization.Localization.GetString("ThereIsAInstallationCurrentlyInProgress.Error", Localization.Localization.GlobalResourceFile) + "<br>");
-            Response.Flush();
+            this.Response.Flush();
         }
 
         private bool CheckPermissions()
         {
-            bool verified = new FileSystemPermissionVerifier(Server.MapPath("~")).VerifyAll();
+            bool verified = new FileSystemPermissionVerifier(this.Server.MapPath("~")).VerifyAll();
             HtmlUtils.WriteFeedback(HttpContext.Current.Response,
                                     0,
                                     "Checking File and Folder permissions " + (verified ? "<font color='green'>Success</font>" : "<font color='red'>Error!</font>") + "<br>");
-            Response.Flush();
+            this.Response.Flush();
 
             return verified;
         }
@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
                 {
-                    Response.Redirect(Request.RawUrl, true);
+                    this.Response.Redirect(this.Request.RawUrl, true);
                 }
 
                 var databaseVersion = DataProvider.Instance().GetVersion();
@@ -248,22 +248,22 @@ namespace DotNetNuke.Services.Install
                 Upgrade.Upgrade.StartTimer();
 
                 //Write out Header
-                HtmlUtils.WriteHeader(Response, "upgrade");
+                HtmlUtils.WriteHeader(this.Response, "upgrade");
 
                 //There could be an installation in progress
                 lock (installLocker)
                 {
                     if (InstallBlocker.Instance.IsInstallInProgress())
                     {
-                        WriteInstallationHeader();
-                        WriteInstallationInProgress();
+                        this.WriteInstallationHeader();
+                        this.WriteInstallationInProgress();
                         return;
                     }
                     RegisterInstallBegining();
                 }
 
-                Response.Write("<h2>Current Assembly Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
-                Response.Flush();
+                this.Response.Write("<h2>Current Assembly Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
+                this.Response.Flush();
 
                 //get path to script files
                 string strProviderPath = DataProvider.Instance().GetProviderPath();
@@ -272,8 +272,8 @@ namespace DotNetNuke.Services.Install
                     //get current database version
                     var strDatabaseVersion = Globals.FormatVersion(databaseVersion);
 
-                    Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
-                    Response.Flush();
+                    this.Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
+                    this.Response.Flush();
 
                     string ignoreWarning = Null.NullString;
                     string strWarning = Null.NullString;
@@ -286,9 +286,9 @@ namespace DotNetNuke.Services.Install
                         //Execute Special Script
                         Upgrade.Upgrade.ExecuteScript(strProviderPath + "Upgrade." + objProviderConfiguration.DefaultProvider);
 
-                        if ((Request.QueryString["ignoreWarning"] != null))
+                        if ((this.Request.QueryString["ignoreWarning"] != null))
                         {
-                            ignoreWarning = Request.QueryString["ignoreWarning"].ToLowerInvariant();
+                            ignoreWarning = this.Request.QueryString["ignoreWarning"].ToLowerInvariant();
                         }
                         strWarning = Upgrade.Upgrade.CheckUpgrade();
                     }
@@ -300,9 +300,9 @@ namespace DotNetNuke.Services.Install
                     //Check whether Upgrade is ok
                     if (strWarning == Null.NullString || ignoreWarning == "true")
                     {
-                        Response.Write("<br><br>");
-                        Response.Write("<h2>Upgrade Status Report</h2>");
-                        Response.Flush();
+                        this.Response.Write("<br><br>");
+                        this.Response.Write("<h2>Upgrade Status Report</h2>");
+                        this.Response.Flush();
 
                         //stop scheduler
                         SchedulingProvider.Instance().Halt("Stopped by Upgrade Process");
@@ -326,28 +326,28 @@ namespace DotNetNuke.Services.Install
                         {
                             Logger.Error(strError);
                         }
-                        Response.Write("<h2>Upgrade Complete</h2>");
-                        Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+                        this.Response.Write("<h2>Upgrade Complete</h2>");
+                        this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
 
                         //remove installwizard files
                         Upgrade.Upgrade.DeleteInstallerFiles();
                     }
                     else
                     {
-                        Response.Write("<h2>Warning:</h2>" + strWarning.Replace(Environment.NewLine, "<br />"));
+                        this.Response.Write("<h2>Warning:</h2>" + strWarning.Replace(Environment.NewLine, "<br />"));
 
-                        Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
+                        this.Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
                     }
-                    Response.Flush();
+                    this.Response.Flush();
                 }
                 else
                 {
-                    Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
-                    Response.Flush();
+                    this.Response.Write("<h2>Upgrade Error: " + strProviderPath + "</h2>");
+                    this.Response.Flush();
                 }
 
                 //Write out Footer
-                HtmlUtils.WriteFooter(Response);
+                HtmlUtils.WriteFooter(this.Response);
             }
             finally
             {
@@ -361,9 +361,9 @@ namespace DotNetNuke.Services.Install
             Upgrade.Upgrade.StartTimer();
 
             //Write out Header
-            HtmlUtils.WriteHeader(Response, "addPortal");
-            Response.Write("<h2>Add Site Status Report</h2>");
-            Response.Flush();
+            HtmlUtils.WriteHeader(this.Response, "addPortal");
+            this.Response.Write("<h2>Add Site Status Report</h2>");
+            this.Response.Flush();
 
             //install new portal(s)
             string strNewFile = Globals.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
@@ -397,13 +397,13 @@ namespace DotNetNuke.Services.Install
                     Logger.Error(ex);
                 }
 
-                Response.Write("<h2>Installation Complete</h2>");
-                Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
-                Response.Flush();
+                this.Response.Write("<h2>Installation Complete</h2>");
+                this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+                this.Response.Flush();
             }
 
             //Write out Footer
-            HtmlUtils.WriteFooter(Response);
+            HtmlUtils.WriteFooter(this.Response);
         }
 
         private void InstallResources()
@@ -412,10 +412,10 @@ namespace DotNetNuke.Services.Install
             Upgrade.Upgrade.StartTimer();
 
             //Write out Header
-            HtmlUtils.WriteHeader(Response, "installResources");
+            HtmlUtils.WriteHeader(this.Response, "installResources");
 
-            Response.Write("<h2>Install Resources Status Report</h2>");
-            Response.Flush();
+            this.Response.Write("<h2>Install Resources Status Report</h2>");
+            this.Response.Flush();
 
             //install new resources(s)
             var packages = Upgrade.Upgrade.GetInstallPackages();
@@ -424,12 +424,12 @@ namespace DotNetNuke.Services.Install
                 Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
             }
 
-            Response.Write("<h2>Installation Complete</h2>");
-            Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
-            Response.Flush();
+            this.Response.Write("<h2>Installation Complete</h2>");
+            this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+            this.Response.Flush();
 
             //Write out Footer
-            HtmlUtils.WriteFooter(Response);
+            HtmlUtils.WriteFooter(this.Response);
         }
 
         private void NoUpgrade()
@@ -446,35 +446,35 @@ namespace DotNetNuke.Services.Install
                         if (dr.Read())
                         {
                             //Write out Header
-                            HtmlUtils.WriteHeader(Response, "none");
+                            HtmlUtils.WriteHeader(this.Response, "none");
                             string currentAssembly = DotNetNukeContext.Current.Application.Version.ToString(3);
                             string currentDatabase = dr["Major"] + "." + dr["Minor"] + "." + dr["Build"];
                             //do not show versions if the same to stop information leakage
                             if (currentAssembly == currentDatabase)
                             {
-                                Response.Write("<h2>Current Assembly Version && current Database Version are identical.</h2>");
+                                this.Response.Write("<h2>Current Assembly Version && current Database Version are identical.</h2>");
                             }
                             else
                             {
-                                Response.Write("<h2>Current Assembly Version: " + currentAssembly + "</h2>");
+                                this.Response.Write("<h2>Current Assembly Version: " + currentAssembly + "</h2>");
                                 //Call Upgrade with the current DB Version to upgrade an
                                 //existing DNN installation
                                 var strDatabaseVersion = ((int)dr["Major"]).ToString("00") + "." + ((int)dr["Minor"]).ToString("00") + "." + ((int)dr["Build"]).ToString("00");
-                                Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
+                                this.Response.Write("<h2>Current Database Version: " + strDatabaseVersion + "</h2>");
                             }
 
-                            Response.Write("<br><br><a href='Install.aspx?mode=Install'>Click Here To Upgrade DotNetNuke</a>");
-                            Response.Flush();
+                            this.Response.Write("<br><br><a href='Install.aspx?mode=Install'>Click Here To Upgrade DotNetNuke</a>");
+                            this.Response.Flush();
                         }
                         else
                         {
                             //Write out Header
-                            HtmlUtils.WriteHeader(Response, "noDBVersion");
-                            Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
+                            HtmlUtils.WriteHeader(this.Response, "noDBVersion");
+                            this.Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
 
-                            Response.Write("<h2>Current Database Version: N/A</h2>");
-                            Response.Write("<br><br><h2><a href='Install.aspx?mode=Install'>Click Here To Install DotNetNuke</a></h2>");
-                            Response.Flush();
+                            this.Response.Write("<h2>Current Database Version: N/A</h2>");
+                            this.Response.Write("<br><br><h2><a href='Install.aspx?mode=Install'>Click Here To Install DotNetNuke</a></h2>");
+                            this.Response.Flush();
                         }
                         dr.Close();
                     }
@@ -483,25 +483,25 @@ namespace DotNetNuke.Services.Install
                 {
                     //Write out Header
                     Logger.Error(ex);
-                    HtmlUtils.WriteHeader(Response, "error");
-                    Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
+                    HtmlUtils.WriteHeader(this.Response, "error");
+                    this.Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
 
-                    Response.Write("<h2>" + ex.Message + "</h2>");
-                    Response.Flush();
+                    this.Response.Write("<h2>" + ex.Message + "</h2>");
+                    this.Response.Flush();
                 }
             }
             else
             {
                 //Write out Header
-                HtmlUtils.WriteHeader(Response, "error");
-                Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
+                HtmlUtils.WriteHeader(this.Response, "error");
+                this.Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
 
-                Response.Write("<h2>" + strProviderPath + "</h2>");
-                Response.Flush();
+                this.Response.Write("<h2>" + strProviderPath + "</h2>");
+                this.Response.Flush();
             }
 
             //Write out Footer
-            HtmlUtils.WriteFooter(Response);
+            HtmlUtils.WriteFooter(this.Response);
         }
 
         #endregion
@@ -514,7 +514,7 @@ namespace DotNetNuke.Services.Install
 
             if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
             {
-                Response.Redirect(Request.RawUrl, true);
+                this.Response.Redirect(this.Request.RawUrl, true);
             }
 
             //if previous config deleted create new empty one
@@ -530,37 +530,37 @@ namespace DotNetNuke.Services.Install
             base.OnLoad(e);
             Config.AddFCNMode(Config.FcnMode.Single);
             //Get current Script time-out
-            int scriptTimeOut = Server.ScriptTimeout;
+            int scriptTimeOut = this.Server.ScriptTimeout;
 
             string mode = "";
-            if ((Request.QueryString["mode"] != null))
+            if ((this.Request.QueryString["mode"] != null))
             {
-                mode = Request.QueryString["mode"].ToLowerInvariant();
+                mode = this.Request.QueryString["mode"].ToLowerInvariant();
             }
 
             //Disable Client side caching
-            Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+            this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
 
             //Check mode is not Nothing
             if (mode == "none")
             {
-                NoUpgrade();
+                this.NoUpgrade();
             }
             else
             {
                 //Set Script timeout to MAX value
-                Server.ScriptTimeout = int.MaxValue;
+                this.Server.ScriptTimeout = int.MaxValue;
 
                 switch (Globals.Status)
                 {
                     case Globals.UpgradeStatus.Install:
-                        InstallApplication();
+                        this.InstallApplication();
 
                         //Force an App Restart
                         Config.Touch();
                         break;
                     case Globals.UpgradeStatus.Upgrade:
-                        UpgradeApplication();
+                        this.UpgradeApplication();
 
                         //Force an App Restart
                         Config.Touch();
@@ -570,23 +570,23 @@ namespace DotNetNuke.Services.Install
                         switch (mode)
                         {
                             case "addportal":
-                                AddPortal();
+                                this.AddPortal();
                                 break;
                             case "installresources":
-                                InstallResources();
+                                this.InstallResources();
                                 break;
                             case "executescripts":
-                                ExecuteScripts();
+                                this.ExecuteScripts();
                                 break;
                         }
                         break;
                     case Globals.UpgradeStatus.Error:
-                        NoUpgrade();
+                        this.NoUpgrade();
                         break;
                 }
 
                 //restore Script timeout
-                Server.ScriptTimeout = scriptTimeOut;                
+                this.Server.ScriptTimeout = scriptTimeOut;                
             }
         }
         #endregion

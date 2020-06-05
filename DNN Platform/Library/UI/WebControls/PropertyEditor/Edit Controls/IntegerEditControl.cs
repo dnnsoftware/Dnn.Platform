@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public IntegerEditControl()
         {
-            SystemType = "System.Int32";
+            this.SystemType = "System.Int32";
         }
 
 		#endregion
@@ -56,12 +56,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return IntegerValue.ToString();
+                return this.IntegerValue.ToString();
             }
             set
             {
                 int setValue = Int32.Parse(value);
-                Value = setValue;
+                this.Value = setValue;
             }
         }
 
@@ -79,9 +79,9 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an Integer
-                    if(Value != null)
+                    if(this.Value != null)
                     {
-                        Int32.TryParse(Value.ToString(), out intValue);
+                        Int32.TryParse(this.Value.ToString(), out intValue);
                     }
                 }
                 catch (Exception exc)
@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an Integer
-                    int.TryParse(OldValue.ToString(), out intValue);
+                    int.TryParse(this.OldValue.ToString(), out intValue);
                 }
                 catch (Exception exc)
                 {
@@ -130,10 +130,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = IntegerValue;
-            args.OldValue = OldIntegerValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.IntegerValue;
+            args.OldValue = this.OldIntegerValue;
+            args.StringValue = this.StringValue;
             base.OnValueChanged(args);
         }
 
@@ -145,12 +145,12 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Size, "5");
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, StringValue);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }

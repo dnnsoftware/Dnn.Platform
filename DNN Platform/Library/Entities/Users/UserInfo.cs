@@ -51,11 +51,11 @@ namespace DotNetNuke.Entities.Users
 
         public UserInfo()
         {
-            IsDeleted = Null.NullBoolean;
-            UserID = Null.NullInteger;
-            PortalID = Null.NullInteger;
-            IsSuperUser = Null.NullBoolean;
-            AffiliateID = Null.NullInteger;
+            this.IsDeleted = Null.NullBoolean;
+            this.UserID = Null.NullInteger;
+            this.PortalID = Null.NullInteger;
+            this.IsSuperUser = Null.NullBoolean;
+            this.AffiliateID = Null.NullInteger;
         }
 
         #endregion
@@ -94,8 +94,8 @@ namespace DotNetNuke.Entities.Users
         [SortOrder(1), MaxLength(50)]
         public string FirstName
         {
-            get { return Profile.FirstName; }
-            set { Profile.FirstName = value; }
+            get { return this.Profile.FirstName; }
+            set { this.Profile.FirstName = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -122,12 +122,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (IsSuperUser)
+                if (this.IsSuperUser)
                 {
                     return true;
                 }
-                PortalInfo ps = PortalController.Instance.GetPortal(PortalID);
-                return ps != null && IsInRole(ps.AdministratorRoleName);
+                PortalInfo ps = PortalController.Instance.GetPortal(this.PortalID);
+                return ps != null && this.IsInRole(ps.AdministratorRoleName);
             }
         }
 
@@ -147,8 +147,8 @@ namespace DotNetNuke.Entities.Users
         [SortOrder(2), MaxLength(50)]
         public string LastName
         {
-            get { return Profile.LastName; }
-            set { Profile.LastName = value; }
+            get { return this.Profile.LastName; }
+            set { this.Profile.LastName = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -161,17 +161,17 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (_membership == null)
+                if (this._membership == null)
                 {
-                    _membership = new UserMembership(this);
-                    if ((Username != null) && (!String.IsNullOrEmpty(Username)))
+                    this._membership = new UserMembership(this);
+                    if ((this.Username != null) && (!String.IsNullOrEmpty(this.Username)))
                     {
                         UserController.GetUserMembership(this);
                     }
                 }
-                return _membership;
+                return this._membership;
             }
-            set { _membership = value; }
+            set { this._membership = value; }
         }
 
         /// <summary>
@@ -229,15 +229,15 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (_profile == null)
+                if (this._profile == null)
                 {
-                    _profile = new UserProfile(this);
+                    this._profile = new UserProfile(this);
                     UserInfo userInfo = this;
                     ProfileController.GetUserProfile(ref userInfo);
                 }
-                return _profile;
+                return this._profile;
             }
-            set { _profile = value; }
+            set { this._profile = value; }
         }
 
         [Browsable(false)]
@@ -245,11 +245,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                var socialRoles = Social.Roles;
+                var socialRoles = this.Social.Roles;
                 if (socialRoles.Count == 0)
                     return new string[0];
 
-                return (from r in Social.Roles
+                return (from r in this.Social.Roles
                         where
                             r.Status == RoleStatus.Approved &&
                             (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
@@ -270,7 +270,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _social.GetOrAdd(PortalID, i => new UserSocial(this));
+                return this._social.GetOrAdd(this.PortalID, i => new UserSocial(this));
             }
         }
 
@@ -308,11 +308,11 @@ namespace DotNetNuke.Entities.Users
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             Scope internScope;
-            if (UserID == -1 && currentScope > Scope.Configuration)
+            if (this.UserID == -1 && currentScope > Scope.Configuration)
             {
                 internScope = Scope.Configuration; //anonymous users only get access to displayname
             }
-            else if (UserID != accessingUser.UserID && !isAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
+            else if (this.UserID != accessingUser.UserID && !this.isAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
                 internScope = Scope.DefaultSettings; //registerd users can access username and userID as well
             }
@@ -330,7 +330,7 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
                     var ps = PortalSecurity.Instance;
-                    var code = ps.Encrypt(Config.GetDecryptionkey(), PortalID + "-" + GetMembershipUserId());
+                    var code = ps.Encrypt(Config.GetDecryptionkey(), this.PortalID + "-" + this.GetMembershipUserId());
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
                 case "affiliateid":
                     if (internScope < Scope.SystemMessages)
@@ -338,77 +338,77 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (AffiliateID.ToString(outputFormat, formatProvider));
+                    return (this.AffiliateID.ToString(outputFormat, formatProvider));
                 case "displayname":
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return PropertyAccess.FormatString(DisplayName, format);
+                    return PropertyAccess.FormatString(this.DisplayName, format);
                 case "email":
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(Email, format));
+                    return (PropertyAccess.FormatString(this.Email, format));
                 case "firstname": //using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(FirstName, format));
+                    return (PropertyAccess.FormatString(this.FirstName, format));
                 case "issuperuser":
                     if (internScope < Scope.Debug)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (IsSuperUser.ToString(formatProvider));
+                    return (this.IsSuperUser.ToString(formatProvider));
                 case "lastname": //using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(LastName, format));
+                    return (PropertyAccess.FormatString(this.LastName, format));
                 case "portalid":
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PortalID.ToString(outputFormat, formatProvider));
+                    return (this.PortalID.ToString(outputFormat, formatProvider));
                 case "userid":
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (UserID.ToString(outputFormat, formatProvider));
+                    return (this.UserID.ToString(outputFormat, formatProvider));
                 case "username":
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(Username, format));
+                    return (PropertyAccess.FormatString(this.Username, format));
                 case "fullname": //fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(DisplayName, format));
+                    return (PropertyAccess.FormatString(this.DisplayName, format));
                 case "roles":
                     if (currentScope < Scope.SystemMessages)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(string.Join(", ", Roles), format));
+                    return (PropertyAccess.FormatString(string.Join(", ", this.Roles), format));
             }
             propertyNotFound = true;
             return string.Empty;
@@ -440,12 +440,12 @@ namespace DotNetNuke.Entities.Users
             {
                 return false;
             }
-            if (String.IsNullOrEmpty(_administratorRoleName))
+            if (String.IsNullOrEmpty(this._administratorRoleName))
             {
                 PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
-                _administratorRoleName = ps.AdministratorRoleName;
+                this._administratorRoleName = ps.AdministratorRoleName;
             }
-            return accessingUser.IsInRole(_administratorRoleName) || accessingUser.IsSuperUser;
+            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
         }
 
         private string GetMembershipUserId()
@@ -467,7 +467,7 @@ namespace DotNetNuke.Entities.Users
         public bool IsInRole(string role)
         {
             //super users should always be verified.
-            if (IsSuperUser)
+            if (this.IsSuperUser)
             {
                 return role != "Unverified Users";
             }
@@ -476,16 +476,16 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
-            if (UserID == Null.NullInteger && role == Globals.glbRoleUnauthUserName)
+            if (this.UserID == Null.NullInteger && role == Globals.glbRoleUnauthUserName)
             {
                 return true;
             }
-            if ("[" + UserID + "]" == role)
+            if ("[" + this.UserID + "]" == role)
             {
                 return true;
             }
 
-            var roles = Roles;
+            var roles = this.Roles;
             if (roles != null)
             {
                 return roles.Any(s => s == role);
@@ -500,7 +500,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------        
         public DateTime LocalTime()
         {
-            return LocalTime(DateUtils.GetDatabaseUtcTime());
+            return this.LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
         /// -----------------------------------------------------------------------------
@@ -511,9 +511,9 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------       
         public DateTime LocalTime(DateTime utcTime)
         {
-            if (UserID > Null.NullInteger)
+            if (this.UserID > Null.NullInteger)
             {
-                return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, Profile.PreferredTimeZone);
+                return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, this.Profile.PreferredTimeZone);
             }
             return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
@@ -527,11 +527,11 @@ namespace DotNetNuke.Entities.Users
         public void UpdateDisplayName(string format)
         {
             //Replace Tokens
-            format = format.Replace("[USERID]", UserID.ToString(CultureInfo.InvariantCulture));
-            format = format.Replace("[FIRSTNAME]", FirstName);
-            format = format.Replace("[LASTNAME]", LastName);
-            format = format.Replace("[USERNAME]", Username);
-            DisplayName = format;
+            format = format.Replace("[USERID]", this.UserID.ToString(CultureInfo.InvariantCulture));
+            format = format.Replace("[FIRSTNAME]", this.FirstName);
+            format = format.Replace("[LASTNAME]", this.LastName);
+            format = format.Replace("[USERNAME]", this.Username);
+            this.DisplayName = format;
         }
 
         #endregion

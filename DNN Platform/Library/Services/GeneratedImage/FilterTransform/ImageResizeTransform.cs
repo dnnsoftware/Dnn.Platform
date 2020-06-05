@@ -28,12 +28,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		public int Width {
 		    get
 		    {
-		        return _width;
+		        return this._width;
 		    }
 		    set
 		    {
 		        CheckValue(value);
-		        _width = value;
+		        this._width = value;
 		    }
 		}
 
@@ -44,12 +44,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return _maxWidth;
+                return this._maxWidth;
             }
             set
             {
                 CheckValue(value);
-                _maxWidth = value;
+                this._maxWidth = value;
             }
         }
 
@@ -58,11 +58,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		/// </summary>
 		public int Height {
 			get {
-				return _height;
+				return this._height;
 			}
 			set {
 				CheckValue(value);
-				_height = value;
+				this._height = value;
 			}
 		}
 
@@ -73,12 +73,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return _maxHeight;
+                return this._maxHeight;
             }
             set
             {
                 CheckValue(value);
-                _maxHeight = value;
+                this._maxHeight = value;
             }
         }
 
@@ -89,12 +89,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		{
 			get
 			{
-				return _border;
+				return this._border;
 			}
 			set
 			{
 				CheckValue(value);
-				_border = value;
+				this._border = value;
 			}
 		}
 
@@ -104,11 +104,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		public Color BackColor { get; set; } = Color.White;
 
         public ImageResizeTransform() {
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
-			Mode = ImageResizeMode.Fit;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+			this.Mode = ImageResizeMode.Fit;
 		}
 
         /// <summary>
@@ -121,32 +121,32 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             if (image == null)
                 return null;    
 
-            if (MaxWidth > 0)
+            if (this.MaxWidth > 0)
             {
-                Width = image.Width > MaxWidth ? MaxWidth : image.Width;
+                this.Width = image.Width > this.MaxWidth ? this.MaxWidth : image.Width;
             }
 
-            if (MaxHeight > 0)
+            if (this.MaxHeight > 0)
             {
-                Height = image.Height > MaxHeight ? MaxHeight : image.Height;
+                this.Height = image.Height > this.MaxHeight ? this.MaxHeight : image.Height;
             }
 
-            int scaledHeight = (int)(image.Height * ((float)Width / (float)image.Width));
-			int scaledWidth = (int)(image.Width * ((float)Height / (float)image.Height));
+            int scaledHeight = (int)(image.Height * ((float)this.Width / (float)image.Width));
+			int scaledWidth = (int)(image.Width * ((float)this.Height / (float)image.Height));
 
 			Image procImage;
-			switch (Mode) {
+			switch (this.Mode) {
 				case ImageResizeMode.Fit:
-					procImage = FitImage(image, scaledHeight, scaledWidth);
+					procImage = this.FitImage(image, scaledHeight, scaledWidth);
 					break;
 				case ImageResizeMode.Crop:
-					procImage = CropImage(image, scaledHeight, scaledWidth);
+					procImage = this.CropImage(image, scaledHeight, scaledWidth);
 					break;
 				case ImageResizeMode.FitSquare:
-					procImage = FitSquareImage(image);
+					procImage = this.FitSquareImage(image);
 					break;
 				case ImageResizeMode.Fill:
-                    procImage = FillImage(image);
+                    procImage = this.FillImage(image);
 					break;
                 default:
 					Debug.Fail("Should not reach this");
@@ -166,35 +166,35 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         private Image FitImage(Image img, int scaledHeight, int scaledWidth) {
 			int resizeWidth;
 			int resizeHeight;
-			if (Height == 0) {
-				resizeWidth = Width;
+			if (this.Height == 0) {
+				resizeWidth = this.Width;
 				resizeHeight = scaledHeight;
 			}
-			else if (Width == 0) {
+			else if (this.Width == 0) {
 				resizeWidth = scaledWidth;
-				resizeHeight = Height;
+				resizeHeight = this.Height;
 			}
 			else {
-				if (((float)Width / (float)img.Width < Height / (float)img.Height)) {
-					resizeWidth = Width;
+				if (((float)this.Width / (float)img.Width < this.Height / (float)img.Height)) {
+					resizeWidth = this.Width;
 					resizeHeight = scaledHeight;
 				}
 				else {
 					resizeWidth = scaledWidth;
-					resizeHeight = Height;
+					resizeHeight = this.Height;
 				}
 			}
 
-			var newimage = new Bitmap(resizeWidth + 2 * _border, resizeHeight + 2 * _border);
+			var newimage = new Bitmap(resizeWidth + 2 * this._border, resizeHeight + 2 * this._border);
 			var graphics = Graphics.FromImage(newimage);
 
 			graphics.CompositingMode = CompositingMode.SourceCopy;
-			graphics.CompositingQuality = CompositingQuality;
-			graphics.InterpolationMode = InterpolationMode;
-			graphics.SmoothingMode = SmoothingMode;
+			graphics.CompositingQuality = this.CompositingQuality;
+			graphics.InterpolationMode = this.InterpolationMode;
+			graphics.SmoothingMode = this.SmoothingMode;
 
-			graphics.FillRectangle(new SolidBrush(BackColor), new Rectangle(0, 0, resizeWidth + 2 * _border, resizeHeight + 2 * _border));
-			graphics.DrawImage(img, _border, _border, resizeWidth, resizeHeight);
+			graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + 2 * this._border, resizeHeight + 2 * this._border));
+			graphics.DrawImage(img, this._border, this._border, resizeWidth, resizeHeight);
             
 			return newimage;
 		}
@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 			int resizeWidth;
 			int resizeHeight;
 
-            int newDim = Width > 0 ? Width : Height;
+            int newDim = this.Width > 0 ? this.Width : this.Height;
 
 			if (img.Height > img.Width)
 			{
@@ -217,60 +217,60 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 				resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
 			}
 
-            var newimage = new Bitmap(newDim + 2 * _border, newDim + 2 * _border);
+            var newimage = new Bitmap(newDim + 2 * this._border, newDim + 2 * this._border);
 			var graphics = Graphics.FromImage(newimage);
 
 			graphics.CompositingMode = CompositingMode.SourceCopy;
-			graphics.CompositingQuality = CompositingQuality;
-			graphics.InterpolationMode = InterpolationMode;
-			graphics.SmoothingMode = SmoothingMode;
+			graphics.CompositingQuality = this.CompositingQuality;
+			graphics.InterpolationMode = this.InterpolationMode;
+			graphics.SmoothingMode = this.SmoothingMode;
 
-			graphics.FillRectangle(new SolidBrush(BackColor),new Rectangle(0,0,newDim + 2*_border ,newDim + 2*_border));
-			graphics.DrawImage(img, (newDim - resizeWidth) / 2 + _border, (newDim - resizeHeight) / 2 + _border, resizeWidth, resizeHeight);
+			graphics.FillRectangle(new SolidBrush(this.BackColor),new Rectangle(0,0,newDim + 2*this._border ,newDim + 2*this._border));
+			graphics.DrawImage(img, (newDim - resizeWidth) / 2 + this._border, (newDim - resizeHeight) / 2 + this._border, resizeWidth, resizeHeight);
 			return newimage;
 		}
 
 		private Image CropImage(Image img, int scaledHeight, int scaledWidth) {
 			int resizeWidth;
 			int resizeHeight;
-			if ((float)Width / (float)img.Width > Height / (float)img.Height) {
-				resizeWidth = Width;
+			if ((float)this.Width / (float)img.Width > this.Height / (float)img.Height) {
+				resizeWidth = this.Width;
 				resizeHeight = scaledHeight;
 			}
 			else 
 			{
 				resizeWidth = scaledWidth;
-				resizeHeight = Height;
+				resizeHeight = this.Height;
 			}
 
-			var newImage = new Bitmap(Width, Height);
+			var newImage = new Bitmap(this.Width, this.Height);
 			var graphics = Graphics.FromImage(newImage);
 
 			graphics.CompositingMode = CompositingMode.SourceCopy;
-			graphics.CompositingQuality = CompositingQuality;
-			graphics.InterpolationMode = InterpolationMode;
-			graphics.SmoothingMode = SmoothingMode;
-			graphics.PixelOffsetMode = PixelOffsetMode;
+			graphics.CompositingQuality = this.CompositingQuality;
+			graphics.InterpolationMode = this.InterpolationMode;
+			graphics.SmoothingMode = this.SmoothingMode;
+			graphics.PixelOffsetMode = this.PixelOffsetMode;
 
-			graphics.DrawImage(img, (Width - resizeWidth) / 2, (Height - resizeHeight) / 2, resizeWidth, resizeHeight);
+			graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
 			return newImage;
 		}
 
         private Image FillImage(Image img)
         {
-            int resizeHeight = Height;
-            int resizeWidth = Width;
+            int resizeHeight = this.Height;
+            int resizeWidth = this.Width;
             
-            var newImage = new Bitmap(Width, Height);
+            var newImage = new Bitmap(this.Width, this.Height);
             var graphics = Graphics.FromImage(newImage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = CompositingQuality;
-            graphics.InterpolationMode = InterpolationMode;
-            graphics.SmoothingMode = SmoothingMode;
-            graphics.PixelOffsetMode = PixelOffsetMode;
+            graphics.CompositingQuality = this.CompositingQuality;
+            graphics.InterpolationMode = this.InterpolationMode;
+            graphics.SmoothingMode = this.SmoothingMode;
+            graphics.PixelOffsetMode = this.PixelOffsetMode;
 
-            graphics.DrawImage(img, (Width - resizeWidth) / 2, (Height - resizeHeight) / 2, resizeWidth, resizeHeight);
+            graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
             return newImage;
         }
 
@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Provides an Unique String for this transformation
         /// </summary>
 		[Browsable(false)]
-		public override string UniqueString => base.UniqueString + Width + InterpolationMode + Height + Mode;
+		public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
 
         public override string ToString() {
 			return "ImageResizeTransform";

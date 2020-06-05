@@ -30,8 +30,8 @@ namespace DotNetNuke.Web.UI.WebControls
 	    {
 		    get
 		    {
-			    EnsureChildControls();
-			    return TimeZones.ClientID;
+			    this.EnsureChildControls();
+			    return this.TimeZones.ClientID;
 		    }
 	    }
 
@@ -39,11 +39,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            TimeZones = new DnnTimeZoneComboBox();
-            TimeZones.ViewStateMode = ViewStateMode.Disabled;
+            this.TimeZones = new DnnTimeZoneComboBox();
+            this.TimeZones.ViewStateMode = ViewStateMode.Disabled;
 
-            Controls.Clear();
-            Controls.Add(TimeZones);
+            this.Controls.Clear();
+            this.Controls.Add(this.TimeZones);
 
             base.CreateChildControls();
         }
@@ -51,11 +51,11 @@ namespace DotNetNuke.Web.UI.WebControls
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
-            string presentValue = StringValue;
-            string postedValue = TimeZones.SelectedValue;
+            string presentValue = this.StringValue;
+            string postedValue = this.TimeZones.SelectedValue;
             if (!presentValue.Equals(postedValue))
             {
-                Value = postedValue;
+                this.Value = postedValue;
                 dataChanged = true;
             }
 
@@ -64,10 +64,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = TimeZoneInfo.FindSystemTimeZoneById(StringValue);
-            args.OldValue = OldStringValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = TimeZoneInfo.FindSystemTimeZoneById(this.StringValue);
+            args.OldValue = this.OldStringValue;
+            args.StringValue = this.StringValue;
             base.OnValueChanged(args);
         }
 
@@ -81,9 +81,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            TimeZones.DataBind(StringValue);
+            this.TimeZones.DataBind(this.StringValue);
 
-            if ((Page != null) && this.EditMode == PropertyEditorMode.Edit)
+            if ((this.Page != null) && this.EditMode == PropertyEditorMode.Edit)
             {
                 this.Page.RegisterRequiresPostBack(this);
             }
@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void RenderViewMode(System.Web.UI.HtmlTextWriter writer)
         {
             string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(propValue);
             writer.RenderEndTag();

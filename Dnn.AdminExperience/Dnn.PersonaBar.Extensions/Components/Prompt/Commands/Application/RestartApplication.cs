@@ -25,16 +25,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
                     BypassBuffering = true,
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()
                 };
-                log.AddProperty("Message", LocalizeString("Prompt_UserRestart"));
+                log.AddProperty("Message", this.LocalizeString("Prompt_UserRestart"));
                 LogController.Instance.AddLog(log);
                 DotNetNuke.Common.Utilities.Config.Touch();
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_UserRestart_Error"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserRestart_Error"));
             }
-            return new ConsoleResultModel(LocalizeString("Prompt_UserRestart_Success")) { MustReload = true };
+            return new ConsoleResultModel(this.LocalizeString("Prompt_UserRestart_Success")) { MustReload = true };
         }
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;

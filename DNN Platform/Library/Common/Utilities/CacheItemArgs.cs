@@ -86,10 +86,10 @@ namespace DotNetNuke.Common.Utilities
         ///-----------------------------------------------------------------------------
         public CacheItemArgs(string key, int timeout, CacheItemPriority priority, params object[] parameters)
         {
-            CacheKey = key;
-            CacheTimeOut = timeout;
-            CachePriority = priority;
-            Params = parameters;
+            this.CacheKey = key;
+            this.CacheTimeOut = timeout;
+            this.CachePriority = priority;
+            this.Params = parameters;
         }
 
         ///-----------------------------------------------------------------------------
@@ -138,20 +138,20 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                if (_paramList == null)
+                if (this._paramList == null)
                 {
-                    _paramList = new ArrayList();
+                    this._paramList = new ArrayList();
 					//add additional params to this list if its not null
-					if (Params != null)
+					if (this.Params != null)
 					{
-						foreach (object param in Params)
+						foreach (object param in this.Params)
 						{
-							_paramList.Add(param);
+							this._paramList.Add(param);
 						}
 					}
                 }
 
-                return _paramList;
+                return this._paramList;
             }
         }
 

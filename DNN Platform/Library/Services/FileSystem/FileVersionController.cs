@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (removeOldestVersions)
             {
-                RemoveOldestsVersions(file);
+                this.RemoveOldestsVersions(file);
             }
 
             if (published)
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.FileName);
             
             // Notify File Changed
-            OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public int DeleteFileVersion(IFileInfo file, int version)
@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 // Notify File Changed
-                OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            foreach (var version in GetFileVersions(file))
+            foreach (var version in this.GetFileVersions(file))
             {
                 folderProvider.DeleteFile(new FileInfo { FileName = version.FileName, Folder = file.Folder, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID, FolderId = file.FolderId });
                 DataProvider.Instance().DeleteFileVersion(version.FileId, version.Version);
@@ -181,12 +181,12 @@ namespace DotNetNuke.Services.FileSystem
 
         public bool IsFolderVersioned(int folderId)
         {
-            return IsFolderVersioned(FolderManager.Instance.GetFolder(folderId));
+            return this.IsFolderVersioned(FolderManager.Instance.GetFolder(folderId));
         }
 
         public bool IsFolderVersioned(IFolderInfo folder)
         {
-            return IsFileVersionEnabled(folder.PortalID) && folder.IsVersioned;
+            return this.IsFileVersionEnabled(folder.PortalID) && folder.IsVersioned;
         }
 
         public bool IsFileVersionEnabled(int portalId)
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.FileSystem
             if (folderMapping == null) return null;
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            return GetVersionContent(folderProvider, folder, file, version);
+            return this.GetVersionContent(folderProvider, folder, file, version);
         }
 
         public void RollbackFileVersion(IFileInfo file, int version, int userId)
@@ -222,14 +222,14 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            using (var content = GetVersionContent(folderProvider, folder, file, version))
+            using (var content = this.GetVersionContent(folderProvider, folder, file, version))
             {
                 FileManager.Instance.AddFile(folder, file.FileName, content, true, true, file.ContentType, userId);
             }
 
             // We need to refresh the file object
             file = FileManager.Instance.GetFile(file.FileId);
-            var fileVersion = GetFileVersion(file, version);
+            var fileVersion = this.GetFileVersion(file, version);
             file.Extension = fileVersion.Extension;
             file.Size = fileVersion.Size;
             file.SHA1Hash = fileVersion.SHA1Hash;
@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.FileSystem
             file.Height = fileVersion.Height;
             FileManager.Instance.UpdateFile(file);
 
-            RemoveOldestsVersions(file);
+            this.RemoveOldestsVersions(file);
         }
         
         #endregion
@@ -261,13 +261,13 @@ namespace DotNetNuke.Services.FileSystem
         private void RemoveOldestsVersions(IFileInfo file)
         {
             var portalId = FolderManager.Instance.GetFolder(file.FolderId).PortalID;
-            var versions = GetFileVersions(file);
-            var maxVersions = MaxFileVersions(portalId) - 1; // The published version is not in the FileVersions collection            
+            var versions = this.GetFileVersions(file);
+            var maxVersions = this.MaxFileVersions(portalId) - 1; // The published version is not in the FileVersions collection            
             if (versions.Count() > maxVersions)
             {
                 foreach (var v in versions.OrderBy(v => v.Version).Take(versions.Count() - maxVersions))
                 {
-                    DeleteFileVersion(file, v.Version);
+                    this.DeleteFileVersion(file, v.Version);
                 }
             }
         }

@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 model.SkinPath = resolver.Resolve("/", PathResolver.RelativeTo.Skin);
                 var modelDictionary = model as IDictionary<string, object>;
                 liveDefinition.TemplateArguments.ForEach(a => modelDictionary.Add(a.Name, a.Value));
-                htmlWriter.Write(RenderTemplate(liveDefinition.TemplateVirtualPath, model));
+                htmlWriter.Write(this.RenderTemplate(liveDefinition.TemplateVirtualPath, model));
             }
         }
 

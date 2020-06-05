@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Api
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
-            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
+            return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
         private string GeneratePrefixString(int count)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Api
             Requires.NotNegative("count", count);
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-            return string.Format("{0}API/{1}/{2}", GeneratePrefixString(count), moduleFolderName, url);
+            return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
         //TODO: this method need remove after drop use old api format.
@@ -97,12 +97,12 @@ namespace DotNetNuke.Web.Api
 
         public void ClearCachedData()
         {
-            _prefixCounts = null;
+            this._prefixCounts = null;
         }
 
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (_prefixCounts == null)
+            if (this._prefixCounts == null)
             {
                 //prefixCounts are required for each route that is mapped but they only change
                 //when a new portal is added so cache them until that time
@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.Api
                 {
                     IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
 
-                    aliases = StripApplicationPath(aliases);
+                    aliases = this.StripApplicationPath(aliases);
 
                     foreach (string alias in aliases)
                     {
@@ -130,10 +130,10 @@ namespace DotNetNuke.Web.Api
                     }
                 }
                 IEnumerable<int> segmentCounts = segmentCounts1;
-                _prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
+                this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
 
-            return _prefixCounts;
+            return this._prefixCounts;
         }
 
         private static int CalcAliasPrefixCount(string alias)

@@ -12,8 +12,8 @@ namespace DotNetNuke.Entities.Users
     {
         internal RelationshipEventArgs(UserRelationship relationship, int portalId)
         {
-            Relationship = relationship;
-            PortalID = portalId;
+            this.Relationship = relationship;
+            this.PortalID = portalId;
         }
 
         public UserRelationship Relationship { get; private set; }

@@ -31,9 +31,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public ProfileVisibilityDto(ProfileVisibility visibility)
         {
-            VisibilityMode = visibility.VisibilityMode;
-            RoleVisibilities = visibility.RoleVisibilities.Select(r => r.RoleID).ToList();
-            RelationshipVisibilities = visibility.RelationshipVisibilities.Select(r => r.RelationshipId).ToList();
+            this.VisibilityMode = visibility.VisibilityMode;
+            this.RoleVisibilities = visibility.RoleVisibilities.Select(r => r.RoleID).ToList();
+            this.RelationshipVisibilities = visibility.RelationshipVisibilities.Select(r => r.RelationshipId).ToList();
         }
     }
 }

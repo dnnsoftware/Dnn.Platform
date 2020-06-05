@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.Html
         private readonly INavigationManager _navigationManager;
         public EditHtml()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -69,14 +69,14 @@ namespace DotNetNuke.Modules.Html
             {
                 int workflowID;
 
-                if (ViewState["WorkflowID"] == null)
+                if (this.ViewState["WorkflowID"] == null)
                 {
-                    workflowID = _htmlTextController.GetWorkflow(ModuleId, TabId, PortalId).Value;
-                    ViewState.Add("WorkflowID", workflowID);
+                    workflowID = this._htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+                    this.ViewState.Add("WorkflowID", workflowID);
                 }
                 else
                 {
-                    workflowID = int.Parse(ViewState["WorkflowID"].ToString());
+                    workflowID = int.Parse(this.ViewState["WorkflowID"].ToString());
                 }
 
                 return workflowID;
@@ -88,15 +88,15 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 var content = "";
-                if ((ViewState["TempContent"] != null))
+                if ((this.ViewState["TempContent"] != null))
                 {
-                    content = ViewState["TempContent"].ToString();
+                    content = this.ViewState["TempContent"].ToString();
                 }
                 return content;
             }
             set
             {
-                ViewState["TempContent"] = value;
+                this.ViewState["TempContent"] = value;
             }
         }
 
@@ -105,16 +105,16 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 var currentWorkflowType = default(WorkflowType);
-                if (ViewState["_currentWorkflowType"] != null)
+                if (this.ViewState["_currentWorkflowType"] != null)
                 {
-                    currentWorkflowType = (WorkflowType) Enum.Parse(typeof (WorkflowType), ViewState["_currentWorkflowType"].ToString());
+                    currentWorkflowType = (WorkflowType) Enum.Parse(typeof (WorkflowType), this.ViewState["_currentWorkflowType"].ToString());
                 }
 
                 return currentWorkflowType;
             }
             set
             {
-                ViewState["_currentWorkflowType"] = value;
+                this.ViewState["_currentWorkflowType"] = value;
             }
         }
 
@@ -122,11 +122,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                if (phEdit.Visible)
+                if (this.phEdit.Visible)
                     return "EditView";
-                else if (phPreview.Visible)
+                else if (this.phPreview.Visible)
                     return "PreviewView";
-                if (phHistory.Visible)
+                if (this.phHistory.Visible)
                     return "HistoryView";
                 else
                     return "";
@@ -143,19 +143,19 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayHistory(HtmlTextInfo htmlContent)
         {
-            dnnSitePanelEditHTMLHistory.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
-            fsEditHtmlHistory.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
+            this.dnnSitePanelEditHTMLHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
+            this.fsEditHtmlHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
 
-            if (((CurrentWorkflowType == WorkflowType.DirectPublish)))
+            if (((this.CurrentWorkflowType == WorkflowType.DirectPublish)))
             {
                 return;
             }
-            var htmlLogging = _htmlTextLogController.GetHtmlTextLog(htmlContent.ItemID);
-            dgHistory.DataSource = htmlLogging;
-            dgHistory.DataBind();
+            var htmlLogging = this._htmlTextLogController.GetHtmlTextLog(htmlContent.ItemID);
+            this.dgHistory.DataSource = htmlLogging;
+            this.dgHistory.DataBind();
 
-            dnnSitePanelEditHTMLHistory.Visible = htmlLogging.Count != 0;
-            fsEditHtmlHistory.Visible = htmlLogging.Count != 0;
+            this.dnnSitePanelEditHTMLHistory.Visible = htmlLogging.Count != 0;
+            this.fsEditHtmlHistory.Visible = htmlLogging.Count != 0;
         }
 
         /// <summary>
@@ -163,23 +163,23 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         private void DisplayVersions()
         {
-            var versions = _htmlTextController.GetAllHtmlText(ModuleId);
+            var versions = this._htmlTextController.GetAllHtmlText(this.ModuleId);
 
             foreach (var item in versions)
             {
-                item.StateName = GetLocalizedString(item.StateName);
+                item.StateName = this.GetLocalizedString(item.StateName);
             }
-            dgVersions.DataSource = versions;
-            dgVersions.DataBind();
+            this.dgVersions.DataSource = versions;
+            this.dgVersions.DataBind();
 
-            phEdit.Visible = false;
-            phPreview.Visible = false;
-            phHistory.Visible = true;
-            cmdEdit.Enabled = true;
-            cmdPreview.Enabled = true;
-            cmdHistory.Enabled = false;
-            cmdMasterContent.Visible = false;
-            ddlRender.Visible = false;
+            this.phEdit.Visible = false;
+            this.phPreview.Visible = false;
+            this.phHistory.Visible = true;
+            this.cmdEdit.Enabled = true;
+            this.cmdPreview.Enabled = true;
+            this.cmdHistory.Enabled = false;
+            this.cmdMasterContent.Visible = false;
+            this.ddlRender.Visible = false;
         }
 
         /// <summary>
@@ -188,13 +188,13 @@ namespace DotNetNuke.Modules.Html
         private void DisplayMasterLanguageContent()
         {
             //Get master language
-            var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var objModule = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
             if (objModule.DefaultLanguageModule != null)
             {
-                var masterContent = _htmlTextController.GetTopHtmlText(objModule.DefaultLanguageModule.ModuleID, false, WorkflowID);
+                var masterContent = this._htmlTextController.GetTopHtmlText(objModule.DefaultLanguageModule.ModuleID, false, this.WorkflowID);
                 if (masterContent != null)
                 {
-                    placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, FormatContent(masterContent.Content), Settings, PortalSettings, Page)));
+                    this.placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, this.FormatContent(masterContent.Content), this.Settings, this.PortalSettings, this.Page)));
                 }
             }
         }
@@ -205,32 +205,32 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayContent(HtmlTextInfo htmlContent)
         {
-            lblCurrentWorkflowInUse.Text = GetLocalizedString(htmlContent.WorkflowName);
-            lblCurrentWorkflowState.Text = GetLocalizedString(htmlContent.StateName);
-            lblCurrentVersion.Text = htmlContent.Version.ToString();
-            txtContent.Text = FormatContent(htmlContent.Content);
-            phEdit.Visible = true;
-            phPreview.Visible = false;
-            phHistory.Visible = false;
-            cmdEdit.Enabled = false;
-            cmdPreview.Enabled = true;
-            cmdHistory.Enabled = true;
+            this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
+            this.lblCurrentWorkflowState.Text = this.GetLocalizedString(htmlContent.StateName);
+            this.lblCurrentVersion.Text = htmlContent.Version.ToString();
+            this.txtContent.Text = this.FormatContent(htmlContent.Content);
+            this.phEdit.Visible = true;
+            this.phPreview.Visible = false;
+            this.phHistory.Visible = false;
+            this.cmdEdit.Enabled = false;
+            this.cmdPreview.Enabled = true;
+            this.cmdHistory.Enabled = true;
             //DisplayMasterLanguageContent();
-            DisplayMasterContentButton();
-            ddlRender.Visible = true;
+            this.DisplayMasterContentButton();
+            this.ddlRender.Visible = true;
         }
 
         private void DisplayMasterContentButton()
         {
-            var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+            var objModule = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
             if (objModule.DefaultLanguageModule != null)
             {
-                cmdMasterContent.Visible = true;
-                cmdMasterContent.Text = Localization.GetString("cmdShowMasterContent", LocalResourceFile);
+                this.cmdMasterContent.Visible = true;
+                this.cmdMasterContent.Text = Localization.GetString("cmdShowMasterContent", this.LocalResourceFile);
 
-                cmdMasterContent.Text = phMasterContent.Visible ?
-                    Localization.GetString("cmdHideMasterContent", LocalResourceFile) :
-                    Localization.GetString("cmdShowMasterContent", LocalResourceFile);
+                this.cmdMasterContent.Text = this.phMasterContent.Visible ?
+                    Localization.GetString("cmdHideMasterContent", this.LocalResourceFile) :
+                    Localization.GetString("cmdShowMasterContent", this.LocalResourceFile);
 
             }
         }
@@ -241,19 +241,19 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayPreview(HtmlTextInfo htmlContent)
         {
-            lblPreviewVersion.Text = htmlContent.Version.ToString();
-            lblPreviewWorkflowInUse.Text = GetLocalizedString(htmlContent.WorkflowName);
-            lblPreviewWorkflowState.Text = GetLocalizedString(htmlContent.StateName);
-            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings, PortalSettings, Page);
-            phEdit.Visible = false;
-            phPreview.Visible = true;
-            phHistory.Visible = false;
-            cmdEdit.Enabled = true;
-            cmdPreview.Enabled = false;
-            cmdHistory.Enabled = true;
-            DisplayHistory(htmlContent);
-            cmdMasterContent.Visible = false;
-            ddlRender.Visible = false;
+            this.lblPreviewVersion.Text = htmlContent.Version.ToString();
+            this.lblPreviewWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
+            this.lblPreviewWorkflowState.Text = this.GetLocalizedString(htmlContent.StateName);
+            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.Page);
+            this.phEdit.Visible = false;
+            this.phPreview.Visible = true;
+            this.phHistory.Visible = false;
+            this.cmdEdit.Enabled = true;
+            this.cmdPreview.Enabled = false;
+            this.cmdHistory.Enabled = true;
+            this.DisplayHistory(htmlContent);
+            this.cmdMasterContent.Visible = false;
+            this.ddlRender.Visible = false;
         }
 
         /// <summary>
@@ -262,34 +262,34 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayPreview(string htmlContent)
         {
-            litPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent, Settings, PortalSettings, Page);
-            divPreviewVersion.Visible = false;
-            divPreviewWorlflow.Visible = false;
+            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent, this.Settings, this.PortalSettings, this.Page);
+            this.divPreviewVersion.Visible = false;
+            this.divPreviewWorlflow.Visible = false;
 
-            divPreviewWorkflowState.Visible = true;
-            lblPreviewWorkflowState.Text = GetLocalizedString("EditPreviewState");
+            this.divPreviewWorkflowState.Visible = true;
+            this.lblPreviewWorkflowState.Text = this.GetLocalizedString("EditPreviewState");
 
-            phEdit.Visible = false;
-            phPreview.Visible = true;
-            phHistory.Visible = false;
-            cmdEdit.Enabled = true;
-            cmdPreview.Enabled = false;
-            cmdHistory.Enabled = true;
-            cmdMasterContent.Visible = false;
-            ddlRender.Visible = false;
+            this.phEdit.Visible = false;
+            this.phPreview.Visible = true;
+            this.phHistory.Visible = false;
+            this.cmdEdit.Enabled = true;
+            this.cmdPreview.Enabled = false;
+            this.cmdHistory.Enabled = true;
+            this.cmdMasterContent.Visible = false;
+            this.ddlRender.Visible = false;
         }
 
         private void DisplayEdit(string htmlContent)
         {
-            txtContent.Text = htmlContent;
-            phEdit.Visible = true;
-            phPreview.Visible = false;
-            phHistory.Visible = false;
-            cmdEdit.Enabled = false;
-            cmdPreview.Enabled = true;
-            cmdHistory.Enabled = true;
-            DisplayMasterContentButton();
-            ddlRender.Visible = true;
+            this.txtContent.Text = htmlContent;
+            this.phEdit.Visible = true;
+            this.phPreview.Visible = false;
+            this.phHistory.Visible = false;
+            this.cmdEdit.Enabled = false;
+            this.cmdPreview.Enabled = true;
+            this.cmdHistory.Enabled = true;
+            this.DisplayMasterContentButton();
+            this.ddlRender.Visible = true;
 
         }
 
@@ -300,30 +300,30 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "lastPublishedContent">Last content of the published.</param>
         private void DisplayLockedContent(HtmlTextInfo htmlContent, HtmlTextInfo lastPublishedContent)
         {
-            txtContent.Visible = false;
-            cmdSave.Visible = false;
+            this.txtContent.Visible = false;
+            this.cmdSave.Visible = false;
             //cmdPreview.Enabled = false;
-            divPublish.Visible = false;
+            this.divPublish.Visible = false;
 
-            divSubmittedContent.Visible = true;
+            this.divSubmittedContent.Visible = true;
 
-            lblCurrentWorkflowInUse.Text = GetLocalizedString(htmlContent.WorkflowName);
-            lblCurrentWorkflowState.Text = GetLocalizedString(htmlContent.StateName);
+            this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
+            this.lblCurrentWorkflowState.Text = this.GetLocalizedString(htmlContent.StateName);
 
-            litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(ModuleId, htmlContent.Content, Settings, PortalSettings, Page);
-            lblCurrentVersion.Text = htmlContent.Version.ToString();
-            DisplayVersions();
+            this.litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.Page);
+            this.lblCurrentVersion.Text = htmlContent.Version.ToString();
+            this.DisplayVersions();
 
             if ((lastPublishedContent != null))
             {
-                DisplayPreview(lastPublishedContent);
+                this.DisplayPreview(lastPublishedContent);
                 //DisplayHistory(lastPublishedContent);
             }
             else
             {
-                dnnSitePanelEditHTMLHistory.Visible = false;
-                fsEditHtmlHistory.Visible = false;
-                DisplayPreview(htmlContent.Content);
+                this.dnnSitePanelEditHTMLHistory.Visible = false;
+                this.fsEditHtmlHistory.Visible = false;
+                this.DisplayPreview(htmlContent.Content);
             }
         }
 
@@ -333,22 +333,22 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "firstState">The first state.</param>
         private void DisplayInitialContent(WorkflowStateInfo firstState)
         {
-            cmdHistory.Enabled = false;
+            this.cmdHistory.Enabled = false;
 
-            txtContent.Text = GetLocalizedString("AddContent");
-            litPreview.Text = GetLocalizedString("AddContent");
-            lblCurrentWorkflowInUse.Text = firstState.WorkflowName;
-            lblPreviewWorkflowInUse.Text = firstState.WorkflowName;
-            divPreviewVersion.Visible = false;
+            this.txtContent.Text = this.GetLocalizedString("AddContent");
+            this.litPreview.Text = this.GetLocalizedString("AddContent");
+            this.lblCurrentWorkflowInUse.Text = firstState.WorkflowName;
+            this.lblPreviewWorkflowInUse.Text = firstState.WorkflowName;
+            this.divPreviewVersion.Visible = false;
 
-            dnnSitePanelEditHTMLHistory.Visible = false;
-            fsEditHtmlHistory.Visible = false;
+            this.dnnSitePanelEditHTMLHistory.Visible = false;
+            this.fsEditHtmlHistory.Visible = false;
 
-            divCurrentWorkflowState.Visible = false;
-            phCurrentVersion.Visible = false;
-            divPreviewWorkflowState.Visible = false;
+            this.divCurrentWorkflowState.Visible = false;
+            this.phCurrentVersion.Visible = false;
+            this.divPreviewWorkflowState.Visible = false;
 
-            lblPreviewWorkflowState.Text = firstState.StateName;
+            this.lblPreviewWorkflowState.Text = firstState.StateName;
         }
 
         #endregion
@@ -363,8 +363,8 @@ namespace DotNetNuke.Modules.Html
         private string FormatContent(string htmlContent)
         {
             var strContent = HttpUtility.HtmlDecode(htmlContent);
-            strContent = HtmlTextController.ManageRelativePaths(strContent, PortalSettings.HomeDirectory, "src", PortalId);
-            strContent = HtmlTextController.ManageRelativePaths(strContent, PortalSettings.HomeDirectory, "background", PortalId);
+            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "src", this.PortalId);
+            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "background", this.PortalId);
             return HttpUtility.HtmlEncode(strContent);
         }
 
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.Html
         /// <returns></returns>
         private string GetLocalizedString(string str)
         {
-            var localizedString = Localization.GetString(str, LocalResourceFile);
+            var localizedString = Localization.GetString(str, this.LocalResourceFile);
             return (string.IsNullOrEmpty(localizedString) ? str : localizedString);
         }
 
@@ -385,14 +385,14 @@ namespace DotNetNuke.Modules.Html
         /// <returns></returns>
         private HtmlTextInfo GetLatestHTMLContent()
         {
-            var htmlContent = _htmlTextController.GetTopHtmlText(ModuleId, false, WorkflowID);
+            var htmlContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
             if (htmlContent == null)
             {
                 htmlContent = new HtmlTextInfo();
                 htmlContent.ItemID = -1;
-                htmlContent.StateID = _workflowStateController.GetFirstWorkflowStateID(WorkflowID);
-                htmlContent.WorkflowID = WorkflowID;
-                htmlContent.ModuleID = ModuleId;
+                htmlContent.StateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                htmlContent.WorkflowID = this.WorkflowID;
+                htmlContent.ModuleID = this.ModuleId;
             }
 
             return htmlContent;
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.Html
         /// <returns></returns>
         private HtmlTextInfo GetLastPublishedVersion(int publishedStateID)
         {
-            return (from version in _htmlTextController.GetAllHtmlText(ModuleId) where version.StateID == publishedStateID orderby version.Version descending select version).ToList()[0];
+            return (from version in this._htmlTextController.GetAllHtmlText(this.ModuleId) where version.StateID == publishedStateID orderby version.Version descending select version).ToList()[0];
         }
 
         #endregion
@@ -426,23 +426,23 @@ namespace DotNetNuke.Modules.Html
         {
             base.OnInit(e);
 
-            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
+            this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
 
-            cmdEdit.Click += OnEditClick;
-            cmdPreview.Click += OnPreviewClick;
-            cmdHistory.Click += OnHistoryClick;
-            cmdMasterContent.Click += OnMasterContentClick;
-            ddlRender.SelectedIndexChanged += OnRenderSelectedIndexChanged;
-            cmdSave.Click += OnSaveClick;
-            dgHistory.RowDataBound += OnHistoryGridItemDataBound;
-            dgVersions.RowCommand += OnVersionsGridItemCommand;
-            dgVersions.RowDataBound += OnVersionsGridItemDataBound;
-            dgVersions.PageIndexChanged += OnVersionsGridPageIndexChanged;
+            this.cmdEdit.Click += this.OnEditClick;
+            this.cmdPreview.Click += this.OnPreviewClick;
+            this.cmdHistory.Click += this.OnHistoryClick;
+            this.cmdMasterContent.Click += this.OnMasterContentClick;
+            this.ddlRender.SelectedIndexChanged += this.OnRenderSelectedIndexChanged;
+            this.cmdSave.Click += this.OnSaveClick;
+            this.dgHistory.RowDataBound += this.OnHistoryGridItemDataBound;
+            this.dgVersions.RowCommand += this.OnVersionsGridItemCommand;
+            this.dgVersions.RowDataBound += this.OnVersionsGridItemDataBound;
+            this.dgVersions.PageIndexChanged += this.OnVersionsGridPageIndexChanged;
         }
 
         private void OnRenderSelectedIndexChanged(object sender, EventArgs e)
         {
-            txtContent.ChangeMode(ddlRender.SelectedValue);
+            this.txtContent.ChangeMode(this.ddlRender.SelectedValue);
         }
         protected override void OnLoad(EventArgs e)
         {
@@ -451,50 +451,50 @@ namespace DotNetNuke.Modules.Html
             try
             {
                 var htmlContentItemID = -1;
-                var htmlContent = _htmlTextController.GetTopHtmlText(ModuleId, false, WorkflowID);
+                var htmlContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
 
                 if ((htmlContent != null))
                 {
                     htmlContentItemID = htmlContent.ItemID;
                 }
 
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    var workflowStates = _workflowStateController.GetWorkflowStates(WorkflowID);
-                    var maxVersions = _htmlTextController.GetMaximumVersionHistory(PortalId);
-                    var userCanEdit = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    var workflowStates = this._workflowStateController.GetWorkflowStates(this.WorkflowID);
+                    var maxVersions = this._htmlTextController.GetMaximumVersionHistory(this.PortalId);
+                    var userCanEdit = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-                    lblMaxVersions.Text = maxVersions.ToString();
-                    dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); //min 5, max 10
+                    this.lblMaxVersions.Text = maxVersions.ToString();
+                    this.dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); //min 5, max 10
 
                     switch (workflowStates.Count)
                     {
                         case 1:
-                            CurrentWorkflowType = WorkflowType.DirectPublish;
+                            this.CurrentWorkflowType = WorkflowType.DirectPublish;
                             break;
                         case 2:
-                            CurrentWorkflowType = WorkflowType.ContentStaging;
+                            this.CurrentWorkflowType = WorkflowType.ContentStaging;
                             break;
                     }
 
                     if (htmlContentItemID != -1)
                     {
-                        DisplayContent(htmlContent);
+                        this.DisplayContent(htmlContent);
                         //DisplayPreview(htmlContent);
-                        DisplayHistory(htmlContent);
+                        this.DisplayHistory(htmlContent);
                     }
                     else
                     {
-                        DisplayInitialContent(workflowStates[0] as WorkflowStateInfo);
+                        this.DisplayInitialContent(workflowStates[0] as WorkflowStateInfo);
                     }
 
-                    divPublish.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
-                    phCurrentVersion.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
-                    phPreviewVersion.Visible = CurrentWorkflowType != WorkflowType.DirectPublish;
+                    this.divPublish.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
+                    this.phCurrentVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
+                    this.phPreviewVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     //DisplayVersions();
 
-                    BindRenderItems();
-                    ddlRender.SelectedValue = txtContent.Mode;
+                    this.BindRenderItems();
+                    this.ddlRender.SelectedValue = this.txtContent.Mode;
                 }
 
             }
@@ -511,34 +511,34 @@ namespace DotNetNuke.Modules.Html
             try
             {
                 // get content
-                var htmlContent = GetLatestHTMLContent();
+                var htmlContent = this.GetLatestHTMLContent();
 
-                var aliases = from PortalAliasInfo pa in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalSettings.PortalId)
+                var aliases = from PortalAliasInfo pa in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalSettings.PortalId)
                               select pa.HTTPAlias;
                 string content;
-                if (phEdit.Visible)
-                    content = txtContent.Text;
+                if (this.phEdit.Visible)
+                    content = this.txtContent.Text;
                 else
-                    content = hfEditor.Value;
+                    content = this.hfEditor.Value;
 
 
-                if (Request.QueryString["nuru"] == null)
+                if (this.Request.QueryString["nuru"] == null)
                 {
                     content = HtmlUtils.AbsoluteToRelativeUrls(content, aliases);
                 }
                 htmlContent.Content = content;
 
-                var draftStateID = _workflowStateController.GetFirstWorkflowStateID(WorkflowID);
-                var publishedStateID = _workflowStateController.GetLastWorkflowStateID(WorkflowID);
+                var draftStateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                var publishedStateID = this._workflowStateController.GetLastWorkflowStateID(this.WorkflowID);
 
-                switch (CurrentWorkflowType)
+                switch (this.CurrentWorkflowType)
                 {
                     case WorkflowType.DirectPublish:
-                        _htmlTextController.UpdateHtmlText(htmlContent, _htmlTextController.GetMaximumVersionHistory(PortalId));
+                        this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                         break;
                     case WorkflowType.ContentStaging:
-                        if (chkPublish.Checked)
+                        if (this.chkPublish.Checked)
                         {
                             //if it's already published set it to draft
                             if (htmlContent.StateID == publishedStateID)
@@ -560,31 +560,31 @@ namespace DotNetNuke.Modules.Html
                             }
                         }
 
-                        _htmlTextController.UpdateHtmlText(htmlContent, _htmlTextController.GetMaximumVersionHistory(PortalId));
+                        this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
                         break;
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.LogException(exc);
-                UI.Skins.Skin.AddModuleMessage(Page, "Error occurred: ", exc.Message, ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this.Page, "Error occurred: ", exc.Message, ModuleMessage.ModuleMessageType.RedError);
                 return;
             }
 
             // redirect back to portal
             if (redirect)
             {
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
         protected void OnEditClick(object sender, EventArgs e)
         {
             try
             {
-                DisplayEdit(hfEditor.Value);
+                this.DisplayEdit(this.hfEditor.Value);
 
-                if (phMasterContent.Visible)
-                    DisplayMasterLanguageContent();
+                if (this.phMasterContent.Visible)
+                    this.DisplayMasterLanguageContent();
             }
             catch (Exception exc)
             {
@@ -595,9 +595,9 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                if (phEdit.Visible)
-                    hfEditor.Value = txtContent.Text;
-                DisplayPreview(phEdit.Visible ? txtContent.Text : hfEditor.Value);
+                if (this.phEdit.Visible)
+                    this.hfEditor.Value = this.txtContent.Text;
+                this.DisplayPreview(this.phEdit.Visible ? this.txtContent.Text : this.hfEditor.Value);
             }
             catch (Exception exc)
             {
@@ -608,9 +608,9 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                if (phEdit.Visible)
-                    hfEditor.Value = txtContent.Text;
-                DisplayVersions();
+                if (this.phEdit.Visible)
+                    this.hfEditor.Value = this.txtContent.Text;
+                this.DisplayVersions();
             }
             catch (Exception exc)
             {
@@ -623,13 +623,13 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                phMasterContent.Visible = !phMasterContent.Visible;
-                cmdMasterContent.Text = phMasterContent.Visible ?
-                    Localization.GetString("cmdHideMasterContent", LocalResourceFile) :
-                    Localization.GetString("cmdShowMasterContent", LocalResourceFile);
+                this.phMasterContent.Visible = !this.phMasterContent.Visible;
+                this.cmdMasterContent.Text = this.phMasterContent.Visible ?
+                    Localization.GetString("cmdHideMasterContent", this.LocalResourceFile) :
+                    Localization.GetString("cmdShowMasterContent", this.LocalResourceFile);
 
-                if (phMasterContent.Visible)
-                    DisplayMasterLanguageContent();
+                if (this.phMasterContent.Visible)
+                    this.DisplayMasterLanguageContent();
             }
             catch (Exception exc)
             {
@@ -644,8 +644,8 @@ namespace DotNetNuke.Modules.Html
             if (item.RowType == DataControlRowType.DataRow)
             {
                 //Localize columns
-                item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, LocalResourceFile);
-                item.Cells[3].Text = Localization.GetString(item.Cells[3].Text, LocalResourceFile);
+                item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, this.LocalResourceFile);
+                item.Cells[3].Text = Localization.GetString(item.Cells[3].Text, this.LocalResourceFile);
             }
         }
 
@@ -659,33 +659,33 @@ namespace DotNetNuke.Modules.Html
                 switch (e.CommandName.ToLowerInvariant())
                 {
                     case "remove":
-                        htmlContent = GetHTMLContent(e);
-                        _htmlTextController.DeleteHtmlText(ModuleId, htmlContent.ItemID);
+                        htmlContent = this.GetHTMLContent(e);
+                        this._htmlTextController.DeleteHtmlText(this.ModuleId, htmlContent.ItemID);
                         break;
                     case "rollback":
-                        htmlContent = GetHTMLContent(e);
+                        htmlContent = this.GetHTMLContent(e);
                         htmlContent.ItemID = -1;
-                        htmlContent.ModuleID = ModuleId;
-                        htmlContent.WorkflowID = WorkflowID;
-                        htmlContent.StateID = _workflowStateController.GetFirstWorkflowStateID(WorkflowID);
-                        _htmlTextController.UpdateHtmlText(htmlContent, _htmlTextController.GetMaximumVersionHistory(PortalId));
+                        htmlContent.ModuleID = this.ModuleId;
+                        htmlContent.WorkflowID = this.WorkflowID;
+                        htmlContent.StateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
+                        this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
                         break;
                     case "preview":
-                        htmlContent = GetHTMLContent(e);
-                        DisplayPreview(htmlContent);
+                        htmlContent = this.GetHTMLContent(e);
+                        this.DisplayPreview(htmlContent);
                         break;
                 }
 
                 if ((e.CommandName.ToLowerInvariant() != "preview"))
                 {
-                    var latestContent = _htmlTextController.GetTopHtmlText(ModuleId, false, WorkflowID);
+                    var latestContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                     if (latestContent == null)
                     {
-                        DisplayInitialContent(_workflowStateController.GetWorkflowStates(WorkflowID)[0] as WorkflowStateInfo);
+                        this.DisplayInitialContent(this._workflowStateController.GetWorkflowStates(this.WorkflowID)[0] as WorkflowStateInfo);
                     }
                     else
                     {
-                        DisplayContent(latestContent);
+                        this.DisplayContent(latestContent);
                         //DisplayPreview(latestContent);
                         //DisplayVersions();
                     }
@@ -701,7 +701,7 @@ namespace DotNetNuke.Modules.Html
 
         private HtmlTextInfo GetHTMLContent(GridViewCommandEventArgs e)
         {
-            return _htmlTextController.GetHtmlText(ModuleId, int.Parse(e.CommandArgument.ToString()));
+            return this._htmlTextController.GetHtmlText(this.ModuleId, int.Parse(e.CommandArgument.ToString()));
         }
 
         protected void OnVersionsGridItemDataBound(object sender, GridViewRowEventArgs e)
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.Html
 
                 if ((htmlContent.CreatedByUserID != -1))
                 {
-                    var createdByByUser = UserController.GetUserById(PortalId, htmlContent.CreatedByUserID);
+                    var createdByByUser = UserController.GetUserById(this.PortalId, htmlContent.CreatedByUserID);
                     if (createdByByUser != null)
                     {
                         createdBy = createdByByUser.DisplayName;
@@ -732,7 +732,7 @@ namespace DotNetNuke.Modules.Html
                             {
                                 case "rollback":
                                     //hide rollback for the first item
-                                    if (dgVersions.CurrentPageIndex == 0)
+                                    if (this.dgVersions.CurrentPageIndex == 0)
                                     {
                                         if ((e.Row.RowIndex == 0))
                                         {
@@ -745,13 +745,13 @@ namespace DotNetNuke.Modules.Html
 
                                     break;
                                 case "remove":
-                                    var msg = GetLocalizedString("DeleteVersion.Confirm");
+                                    var msg = this.GetLocalizedString("DeleteVersion.Confirm");
                                     msg =
                                         msg.Replace("[VERSION]", htmlContent.Version.ToString()).Replace("[STATE]", htmlContent.StateName).Replace("[DATECREATED]", htmlContent.CreatedOnDate.ToString())
                                             .Replace("[USERNAME]", createdBy);
                                     imageButton.OnClientClick = "return confirm(\"" + msg + "\");";
                                     //hide the delete button
-                                    var showDelete = UserInfo.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                                    var showDelete = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
                                     if (!showDelete)
                                     {
@@ -769,17 +769,17 @@ namespace DotNetNuke.Modules.Html
 
         protected void OnVersionsGridPageIndexChanged(object source, EventArgs e)
         {
-            DisplayVersions();
+            this.DisplayVersions();
         }
 
         private void BindRenderItems()
         {
-            if (txtContent.IsRichEditorAvailable)
+            if (this.txtContent.IsRichEditorAvailable)
             {
-                ddlRender.Items.Add(new ListItem(LocalizeString("liRichText"), "RICH"));
+                this.ddlRender.Items.Add(new ListItem(this.LocalizeString("liRichText"), "RICH"));
             }
 
-            ddlRender.Items.Add(new ListItem(LocalizeString("liBasicText"), "BASIC"));
+            this.ddlRender.Items.Add(new ListItem(this.LocalizeString("liBasicText"), "BASIC"));
         }
 
         #endregion

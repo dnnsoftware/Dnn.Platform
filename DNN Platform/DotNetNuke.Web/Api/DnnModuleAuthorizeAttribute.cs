@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.Api
     {
         public DnnModuleAuthorizeAttribute()
         {
-            AccessLevel = SecurityAccessLevel.Host;
+            this.AccessLevel = SecurityAccessLevel.Host;
         }
 
         public string PermissionKey { get; set; }
@@ -22,11 +22,11 @@ namespace DotNetNuke.Web.Api
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            var activeModule = FindModuleInfo(context.ActionContext.Request);
+            var activeModule = this.FindModuleInfo(context.ActionContext.Request);
 
             if (activeModule != null)
             {
-                return ModulePermissionController.HasModuleAccess(AccessLevel, PermissionKey, activeModule);
+                return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, activeModule);
             }
 
             return false;

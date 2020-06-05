@@ -64,7 +64,7 @@ namespace log4net.Layout
 		/// </remarks>
 		public Layout2RawLayoutAdapter(ILayout layout)
 		{
-			m_layout = layout;
+			this.m_layout = layout;
 		}
 
 		#endregion
@@ -88,7 +88,7 @@ namespace log4net.Layout
 		virtual public object Format(LoggingEvent loggingEvent)
 		{
 			StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-			m_layout.Format(writer, loggingEvent);
+			this.m_layout.Format(writer, loggingEvent);
 			return writer.ToString();
 		}
 

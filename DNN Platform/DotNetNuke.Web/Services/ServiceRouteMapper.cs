@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.Services
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute(
-                "web", "default", "{controller}/{action}", new[] { GetType().Namespace });
+                "web", "default", "{controller}/{action}", new[] { this.GetType().Namespace });
         }
     }
 }

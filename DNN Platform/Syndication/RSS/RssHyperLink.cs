@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Syndication
 
         public RssHyperLink()
         {
-            Text = "RSS";
+            this.Text = "RSS";
         }
 
         // passed to RssHttpHandler
@@ -30,11 +30,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _channelName;
+                return this._channelName;
             }
             set
             {
-                _channelName = value;
+                this._channelName = value;
             }
         }
 
@@ -43,27 +43,27 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _includeUserName;
+                return this._includeUserName;
             }
             set
             {
-                _includeUserName = value;
+                this._includeUserName = value;
             }
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             // modify the NavigateUrl to include optional user name and channel name
-            string channel = _channelName != null ? _channelName : string.Empty;
-            string user = _includeUserName ? Context.User.Identity.Name : string.Empty;
-            NavigateUrl = RssHttpHandlerHelper.GenerateChannelLink(NavigateUrl, channel, user);
+            string channel = this._channelName != null ? this._channelName : string.Empty;
+            string user = this._includeUserName ? this.Context.User.Identity.Name : string.Empty;
+            this.NavigateUrl = RssHttpHandlerHelper.GenerateChannelLink(this.NavigateUrl, channel, user);
 
             // add <link> to <head> tag (if <head runat=server> is present)
-            if (Page.Header != null)
+            if (this.Page.Header != null)
             {
-                string title = string.IsNullOrEmpty(channel) ? Text : channel;
+                string title = string.IsNullOrEmpty(channel) ? this.Text : channel;
 
-                Page.Header.Controls.Add(new LiteralControl(string.Format("\r\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"{0}\" href=\"{1}\" />", title, NavigateUrl)));
+                this.Page.Header.Controls.Add(new LiteralControl(string.Format("\r\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"{0}\" href=\"{1}\" />", title, this.NavigateUrl)));
             }
 
             base.OnPreRender(e);

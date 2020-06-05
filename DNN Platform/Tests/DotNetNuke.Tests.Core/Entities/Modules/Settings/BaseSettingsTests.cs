@@ -37,33 +37,33 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()
         {
-            MockRepository = new MockRepository(MockBehavior.Default);
-            MockHostController = MockRepository.Create<IHostController>();
+            this.MockRepository = new MockRepository(MockBehavior.Default);
+            this.MockHostController = this.MockRepository.Create<IHostController>();
         }
 
         [SetUp]
         public virtual  void SetUp()
         {
             //Mock Repository and component factory
-            MockRepository = new MockRepository(MockBehavior.Default);
+            this.MockRepository = new MockRepository(MockBehavior.Default);
             ComponentFactory.Container = new SimpleContainer();
 
             // Setup Mock
-            MockCache = MockComponentProvider.CreateNew<CachingProvider>();
-            HostController.RegisterInstance(MockHostController.Object);
+            this.MockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            HostController.RegisterInstance(this.MockHostController.Object);
 
-            MockPortalController = MockRepository.Create<IPortalController>();
-            PortalController.SetTestableInstance(MockPortalController.Object);
-            MockModuleController = MockRepository.Create<IModuleController>();
-            ModuleController.SetTestableInstance(MockModuleController.Object);
+            this.MockPortalController = this.MockRepository.Create<IPortalController>();
+            PortalController.SetTestableInstance(this.MockPortalController.Object);
+            this.MockModuleController = this.MockRepository.Create<IModuleController>();
+            ModuleController.SetTestableInstance(this.MockModuleController.Object);
 
             // Setup mock cache
-            MockCacheCollection = new Hashtable();
-            MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
-            MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>())).Callback((string cacheKey, object itemToCache) => MockCacheCollection[cacheKey] = itemToCache);
-            MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DNNCacheDependency>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>(), It.IsAny<CacheItemPriority>(), It.IsAny<CacheItemRemovedCallback>()))
-                     .Callback((string cacheKey, object itemToCache, DNNCacheDependency dcd, DateTime dt, TimeSpan ts, CacheItemPriority cip, CacheItemRemovedCallback circ) => MockCacheCollection[cacheKey] = itemToCache);
-            MockCache.Setup(c => c.GetItem(It.IsAny<string>())).Returns((string cacheKey) => MockCacheCollection[cacheKey]);
+            this.MockCacheCollection = new Hashtable();
+            this.MockHostController.Setup(hc => hc.GetString("PerformanceSetting")).Returns("3");
+            this.MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>())).Callback((string cacheKey, object itemToCache) => this.MockCacheCollection[cacheKey] = itemToCache);
+            this.MockCache.Setup(c => c.Insert(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DNNCacheDependency>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>(), It.IsAny<CacheItemPriority>(), It.IsAny<CacheItemRemovedCallback>()))
+                     .Callback((string cacheKey, object itemToCache, DNNCacheDependency dcd, DateTime dt, TimeSpan ts, CacheItemPriority cip, CacheItemRemovedCallback circ) => this.MockCacheCollection[cacheKey] = itemToCache);
+            this.MockCache.Setup(c => c.GetItem(It.IsAny<string>())).Returns((string cacheKey) => this.MockCacheCollection[cacheKey]);
         }
 
         [TearDown]

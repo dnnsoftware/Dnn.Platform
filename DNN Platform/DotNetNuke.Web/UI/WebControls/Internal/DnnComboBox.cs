@@ -45,10 +45,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.RequiresDataBinding)
                 {
-                    _initValue = value;
+                    this._initValue = value;
                 }
 
-                if (Items.Cast<ListItem>().Any(i => i.Value == value))
+                if (this.Items.Cast<ListItem>().Any(i => i.Value == value))
                 {
                     base.SelectedValue = value;
                 }
@@ -65,22 +65,22 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                if (TagKey == HtmlTextWriterTag.Input)
+                if (this.TagKey == HtmlTextWriterTag.Input)
                 {
-                    return _multipleValue ?? string.Empty;
+                    return this._multipleValue ?? string.Empty;
                 }
 
-                return SelectedValue ?? string.Empty;
+                return this.SelectedValue ?? string.Empty;
             }
             set
             {
-                if (TagKey == HtmlTextWriterTag.Input)
+                if (this.TagKey == HtmlTextWriterTag.Input)
                 {
-                    Attributes.Remove("value");
-                    Attributes.Add("value", value);
+                    this.Attributes.Remove("value");
+                    this.Attributes.Add("value", value);
                 }
 
-                SelectedValue = value;
+                this.SelectedValue = value;
             }
         }
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return MultipleSelect || CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
+                return this.MultipleSelect || this.CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
             }
         }
 
@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             var postData = postCollection[postDataKey];
             if (!string.IsNullOrEmpty(postData))
             {
-                _multipleValue = postData;
+                this._multipleValue = postData;
             }
 
             return base.LoadPostData(postDataKey, postCollection);
@@ -111,7 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            if (TagKey == HtmlTextWriterTag.Select)
+            if (this.TagKey == HtmlTextWriterTag.Select)
             {
                 base.RenderContents(writer);
             }
@@ -121,41 +121,41 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             Utilities.ApplySkin(this);
 
-            if (TagKey == HtmlTextWriterTag.Input)
+            if (this.TagKey == HtmlTextWriterTag.Input)
             {
-                Options.Items = Items.Cast<ListItem>();
-                Value = string.Join(",", Options.Items.Where(i => i.Selected).Select(i => i.Value));
+                this.Options.Items = this.Items.Cast<ListItem>();
+                this.Value = string.Join(",", this.Options.Items.Where(i => i.Selected).Select(i => i.Value));
             }
             else
             {
-                if (Items.Cast<ListItem>().Any(i => string.IsNullOrEmpty(i.Value)))
+                if (this.Items.Cast<ListItem>().Any(i => string.IsNullOrEmpty(i.Value)))
                 {
-                    Options.AllowEmptyOption = true;
+                    this.Options.AllowEmptyOption = true;
                 }
             }
 
-            if (!Options.Localization.ContainsKey("ItemsChecked"))
+            if (!this.Options.Localization.ContainsKey("ItemsChecked"))
             {
-                Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
+                this.Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
             }
-            if (!Options.Localization.ContainsKey("AllItemsChecked"))
+            if (!this.Options.Localization.ContainsKey("AllItemsChecked"))
             {
-                Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+                this.Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
             }
 
-            Options.Checkbox = CheckBoxes;
-            Options.OnChangeEvent = OnClientSelectedIndexChanged;
+            this.Options.Checkbox = this.CheckBoxes;
+            this.Options.OnChangeEvent = this.OnClientSelectedIndexChanged;
 
-            RegisterRequestResources();
+            this.RegisterRequestResources();
 
             base.OnPreRender(e);
         }
 
         public override void DataBind()
         {
-            if (!string.IsNullOrEmpty(_initValue))
+            if (!string.IsNullOrEmpty(this._initValue))
             {
-                DataBind(_initValue);
+                this.DataBind(this._initValue);
             }
             else
             {
@@ -169,57 +169,57 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public void AddItem(string text, string value)
         {
-            Items.Add(new ListItem(text, value));
+            this.Items.Add(new ListItem(text, value));
         }
 
         public void InsertItem(int index, string text, string value)
         {
-            Items.Insert(index, new ListItem(text, value));
+            this.Items.Insert(index, new ListItem(text, value));
         }
 
         public void DataBind(string initialValue)
         {
-            DataBind(initialValue, false);
+            this.DataBind(initialValue, false);
         }
 
         public void DataBind(string initial, bool findByText)
         {
             base.DataBind();
 
-            Select(initial, findByText);
+            this.Select(initial, findByText);
         }
 
         public void Select(string initial, bool findByText)
         {
             if (findByText)
             {
-                if (FindItemByText(initial, true) != null)
+                if (this.FindItemByText(initial, true) != null)
                 {
-					FindItemByText(initial, true).Selected = true;
+					this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (FindItemByValue(initial, true) != null)
+				if (this.FindItemByValue(initial, true) != null)
                 {
-					FindItemByValue(initial, true).Selected = true;
+					this.FindItemByValue(initial, true).Selected = true;
                 }
             } 
         }
 
         public ListItem FindItemByText(string text, bool ignoreCase = false)
         {
-            return ignoreCase ? Items.FindByText(text) : Items.FindByTextWithIgnoreCase(text);
+            return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
         }
 
         public ListItem FindItemByValue(string value, bool ignoreCase = false)
         {
-            return ignoreCase ? Items.FindByValue(value) : Items.FindByValueWithIgnoreCase(value);
+            return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
         }
 
         public int FindItemIndexByValue(string value)
         {
-            return Items.IndexOf(FindItemByValue(value));
+            return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
         #endregion
@@ -240,19 +240,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var libraryPath =
                         $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
 
-                    ClientResourceManager.RegisterScript(Page, $"{libraryPath}dnn.combobox.js");
-                    ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.css");
-                    ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.default.css");
+                    ClientResourceManager.RegisterScript(this.Page, $"{libraryPath}dnn.combobox.js");
+                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
+                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
 
-                    var options = JsonConvert.SerializeObject(Options, Formatting.None,
+                    var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
                                     new JsonSerializerSettings
                                     {
                                         NullValueHandling = NullValueHandling.Ignore
                                     });
 
-                    var initScripts = $"$('#{ClientID}').dnnComboBox({options});";
+                    var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";
 
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
+                    ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), $"{this.ClientID}Sctipts", initScripts, true);
                 }
             }
         }

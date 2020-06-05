@@ -80,39 +80,39 @@ namespace DotNetNuke.UI.Skins.Controls
 				
 				//check to see if a url
                 //was passed in for an icon
-                if (!String.IsNullOrEmpty(IconImage))
+                if (!String.IsNullOrEmpty(this.IconImage))
                 {
-                    strMessage += Text;
-                    dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
+                    strMessage += this.Text;
+                    this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
                 }
                 else
                 {
-                    switch (IconType)
+                    switch (this.IconType)
                     {
                         case ModuleMessageType.GreenSuccess:
-                            strMessage += Text;
-                            dnnSkinMessage.CssClass = "dnnFormMessage dnnFormSuccess";
+                            strMessage += this.Text;
+                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormSuccess";
                             break;
                         case ModuleMessageType.YellowWarning:
-                            strMessage += Text;
-                            dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
+                            strMessage += this.Text;
+                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
                             break;
                         case ModuleMessageType.BlueInfo:
-                            strMessage += Text;
-                            dnnSkinMessage.CssClass = "dnnFormMessage dnnFormInfo";
+                            strMessage += this.Text;
+                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormInfo";
                             break;
                         case ModuleMessageType.RedError:
-                            strMessage += Text;
-                            dnnSkinMessage.CssClass = "dnnFormMessage dnnFormValidationSummary";
+                            strMessage += this.Text;
+                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormValidationSummary";
                             break;
                     }
                 }
-                lblMessage.Text = strMessage;
+                this.lblMessage.Text = strMessage;
 
-                if (!String.IsNullOrEmpty(Heading))
+                if (!String.IsNullOrEmpty(this.Heading))
                 {
-                    lblHeading.Visible = true;
-                    lblHeading.Text = Heading;
+                    this.lblHeading.Visible = true;
+                    this.lblHeading.Text = this.Heading;
                 }
             }
             catch (Exception exc) //Control failed to load
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.Skins.Controls
 			base.OnPreRender(e);
 
 			//set the scroll js only shown for module message and in postback mode.
-			scrollScript.Visible = IsPostBack && IsModuleMessage;
+			this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
 		}
 		
 		#endregion

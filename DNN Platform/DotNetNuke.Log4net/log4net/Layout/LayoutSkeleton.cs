@@ -154,7 +154,7 @@ namespace log4net.Layout
         public string Format(LoggingEvent loggingEvent)
         {
             StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-            Format(writer, loggingEvent);
+            this.Format(writer, loggingEvent);
             return writer.ToString();
         }
 
@@ -189,8 +189,8 @@ namespace log4net.Layout
 	    /// </remarks>
 	    virtual public string Header
 	    {
-	        get { return m_header; }
-	        set { m_header = value; }
+	        get { return this.m_header; }
+	        set { this.m_header = value; }
 	    }
 
 	    /// <summary>
@@ -205,8 +205,8 @@ namespace log4net.Layout
 	    /// </remarks>
 	    virtual public string Footer
 	    {
-	        get { return m_footer; }
-	        set { m_footer = value; }
+	        get { return this.m_footer; }
+	        set { this.m_footer = value; }
 	    }
 
 	    /// <summary>
@@ -227,8 +227,8 @@ namespace log4net.Layout
 	    /// </remarks>
 	    virtual public bool IgnoresException 
 	    { 
-	        get { return m_ignoresException; }
-	        set { m_ignoresException = value; }
+	        get { return this.m_ignoresException; }
+	        set { this.m_ignoresException = value; }
 	    }
 
 	    #endregion

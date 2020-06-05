@@ -19,8 +19,8 @@ namespace DotNetNuke.Entities.Profile
     {
         public ProfileVisibility()
         {
-            RoleVisibilities = new List<RoleInfo>();
-            RelationshipVisibilities = new List<Relationship>();
+            this.RoleVisibilities = new List<RoleInfo>();
+            this.RelationshipVisibilities = new List<Relationship>();
         }
 
         public ProfileVisibility(int portalId, string extendedVisibility) : this()
@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Profile
                     {
                         int roleId = Int32.Parse(role);
                         RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
-                        RoleVisibilities.Add(userRole);
+                        this.RoleVisibilities.Add(userRole);
                     }
                 }
                 if (!String.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Profile
                     foreach (var relationship in relationships)
                     {
                         Relationship userRelationship = RelationshipController.Instance.GetRelationship(Int32.Parse(relationship));
-                        RelationshipVisibilities.Add(userRelationship);
+                        this.RelationshipVisibilities.Add(userRelationship);
                     }
                 }
             }
@@ -64,25 +64,25 @@ namespace DotNetNuke.Entities.Profile
         {
             var pv = new ProfileVisibility()
                          {
-                             VisibilityMode = VisibilityMode,
-                             RoleVisibilities = new List<RoleInfo>(RoleVisibilities),
-                             RelationshipVisibilities = new List<Relationship>(RelationshipVisibilities)
+                             VisibilityMode = this.VisibilityMode,
+                             RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
+                             RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities)
                          };
             return pv;
         }
 
         public string ExtendedVisibilityString()
         {
-            if (VisibilityMode == UserVisibilityMode.FriendsAndGroups)
+            if (this.VisibilityMode == UserVisibilityMode.FriendsAndGroups)
             {
                 var sb = new StringBuilder();
                 sb.Append("G:");
-                foreach (var role in RoleVisibilities)
+                foreach (var role in this.RoleVisibilities)
                 {
                     sb.Append(role.RoleID.ToString(CultureInfo.InvariantCulture) + ",");
                 }
                 sb.Append(";R:");
-                foreach (var relationship in RelationshipVisibilities)
+                foreach (var relationship in this.RelationshipVisibilities)
                 {
                     sb.Append(relationship.RelationshipId.ToString(CultureInfo.InvariantCulture) + ",");
                 }

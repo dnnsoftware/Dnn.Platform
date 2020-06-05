@@ -20,15 +20,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <summary>
         /// Provides an Unique String for this class
         /// </summary>
-		public override string UniqueString => base.UniqueString + "-" + Brightness;
+		public override string UniqueString => base.UniqueString + "-" + this.Brightness;
 
         public ImageBrightnessTransform()
 		{
-			InterpolationMode = InterpolationMode.HighQualityBicubic;
-			SmoothingMode = SmoothingMode.HighQuality;
-			PixelOffsetMode = PixelOffsetMode.HighQuality;
-			CompositingQuality = CompositingQuality.HighQuality;
-			Brightness = 0;
+			this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			this.SmoothingMode = SmoothingMode.HighQuality;
+			this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			this.CompositingQuality = CompositingQuality.HighQuality;
+			this.Brightness = 0;
 		}
 
         /// <summary>
@@ -40,17 +40,17 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		{
 			var temp = (Bitmap)image;
 			var bmap = (Bitmap)temp.Clone();
-			if (Brightness < -255) Brightness = -255;
-			if (Brightness > 255) Brightness = 255;
+			if (this.Brightness < -255) this.Brightness = -255;
+			if (this.Brightness > 255) this.Brightness = 255;
 			Color c;
 			for (int i = 0; i < bmap.Width; i++)
 			{
 				for (int j = 0; j < bmap.Height; j++)
 				{
 					c = bmap.GetPixel(i, j);
-					int cR = c.R + Brightness;
-					int cG = c.G + Brightness;
-					int cB = c.B + Brightness;
+					int cR = c.R + this.Brightness;
+					int cG = c.G + this.Brightness;
+					int cB = c.B + this.Brightness;
 
 					if (cR < 0) cR = 1;
 					if (cR > 255) cR = 255;

@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.DataStructures
     {
         public NTree()
         {
-            Children = new List<NTree<T>>();
+            this.Children = new List<NTree<T>>();
         }
 
         [DataMember(Name = "data")]
@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.DataStructures
 
         public bool HasChildren()
         {
-            return Children != null && Children.Count > 0;
+            return this.Children != null && this.Children.Count > 0;
         }
 
     }

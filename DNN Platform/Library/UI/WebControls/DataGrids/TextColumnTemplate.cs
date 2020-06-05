@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
 
         public TextColumnTemplate(ListItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 		
 		#endregion
@@ -72,11 +72,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mItemType;
+                return this.mItemType;
             }
             set
             {
-                mItemType = value;
+                this.mItemType = value;
             }
         }
 
@@ -110,25 +110,25 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            switch (ItemType)
+            switch (this.ItemType)
             {
                 case ListItemType.Item:
                 case ListItemType.AlternatingItem:
                 case ListItemType.SelectedItem:
                     var lblText = new Label();
-                    lblText.Width = Width;
-                    lblText.DataBinding += Item_DataBinding;
+                    lblText.Width = this.Width;
+                    lblText.DataBinding += this.Item_DataBinding;
                     container.Controls.Add(lblText);
                     break;
                 case ListItemType.EditItem:
                     var txtText = new TextBox();
-                    txtText.Width = Width;
-                    txtText.DataBinding += Item_DataBinding;
+                    txtText.Width = this.Width;
+                    txtText.DataBinding += this.Item_DataBinding;
                     container.Controls.Add(txtText);
                     break;
                 case ListItemType.Footer:
                 case ListItemType.Header:
-                    container.Controls.Add(new LiteralControl(Text));
+                    container.Controls.Add(new LiteralControl(this.Text));
                     break;
             }
         }
@@ -146,17 +146,17 @@ namespace DotNetNuke.UI.WebControls
         private string GetValue(DataGridItem container)
         {
             string itemValue = Null.NullString;
-            if (!String.IsNullOrEmpty(DataField))
+            if (!String.IsNullOrEmpty(this.DataField))
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
-                    itemValue = "DataBound to " + DataField;
+                    itemValue = "DataBound to " + this.DataField;
                 }
                 else
                 {
                     if (container.DataItem != null)
                     {
-                        object evaluation = DataBinder.Eval(container.DataItem, DataField);
+                        object evaluation = DataBinder.Eval(container.DataItem, this.DataField);
                         if ((evaluation != null))
                         {
                             itemValue = evaluation.ToString();
@@ -180,19 +180,19 @@ namespace DotNetNuke.UI.WebControls
         {
             DataGridItem container;
             int keyValue = Null.NullInteger;
-            switch (ItemType)
+            switch (this.ItemType)
             {
                 case ListItemType.Item:
                 case ListItemType.AlternatingItem:
                 case ListItemType.SelectedItem:
                     var lblText = (Label) sender;
                     container = (DataGridItem) lblText.NamingContainer;
-                    lblText.Text = GetValue(container);
+                    lblText.Text = this.GetValue(container);
                     break;
                 case ListItemType.EditItem:
                     var txtText = (TextBox) sender;
                     container = (DataGridItem) txtText.NamingContainer;
-                    txtText.Text = GetValue(container);
+                    txtText.Text = this.GetValue(container);
                     break;
             }
         }

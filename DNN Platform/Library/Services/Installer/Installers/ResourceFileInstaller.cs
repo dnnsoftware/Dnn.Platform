@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _Manifest;
+                return this._Manifest;
             }
         }
 
@@ -125,15 +125,15 @@ namespace DotNetNuke.Services.Installer.Installers
             bool retValue = true;
             try
             {
-                Log.AddInfo(Util.FILES_Expanding);
+                this.Log.AddInfo(Util.FILES_Expanding);
                 //Create the folder for destination            
-                _Manifest = insFile.Name + ".manifest";
-                if (!Directory.Exists(PhysicalBasePath))
+                this._Manifest = insFile.Name + ".manifest";
+                if (!Directory.Exists(this.PhysicalBasePath))
                 {
-                    Directory.CreateDirectory(PhysicalBasePath);
+                    Directory.CreateDirectory(this.PhysicalBasePath);
                 }
                 using (var unzip = new ZipInputStream(new FileStream(insFile.TempFileName, FileMode.Open)))
-                using (var manifestStream = new FileStream(Path.Combine(PhysicalBasePath, Manifest), FileMode.Create, FileAccess.Write))
+                using (var manifestStream = new FileStream(Path.Combine(this.PhysicalBasePath, this.Manifest), FileMode.Create, FileAccess.Write))
                 {
                     var settings = new XmlWriterSettings();
                     settings.ConformanceLevel = ConformanceLevel.Fragment;
@@ -169,12 +169,12 @@ namespace DotNetNuke.Services.Installer.Installers
                                 //Write name
                                 writer.WriteElementString("name", fileName);
 
-                                var physicalPath = Path.Combine(PhysicalBasePath, entry.Name);
+                                var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
                                 if (File.Exists(physicalPath))
                                 {
-                                    Util.BackupFile(new InstallFile(entry.Name, Package.InstallerInfo),
-                                        PhysicalBasePath,
-                                        Log);
+                                    Util.BackupFile(new InstallFile(entry.Name, this.Package.InstallerInfo),
+                                        this.PhysicalBasePath,
+                                        this.Log);
                                 }
 
                                 Util.WriteStream(unzip, physicalPath);
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                 //Close files Element
                                 writer.WriteEndElement();
 
-                                Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
+                                this.Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
                             }
 
                             entry = unzip.GetNextEntry();
@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         //Close files Element
                         writer.WriteEndElement();
 
-                        Log.AddInfo(Util.FILES_CreatedResources);
+                        this.Log.AddInfo(Util.FILES_CreatedResources);
                     }
                 }
 
@@ -227,11 +227,11 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             InstallFile insFile = base.ReadManifestItem(nav, checkFileExists);
 
-            _Manifest = Util.ReadElement(nav, "manifest");
+            this._Manifest = Util.ReadElement(nav, "manifest");
 
-            if (string.IsNullOrEmpty(_Manifest))
+            if (string.IsNullOrEmpty(this._Manifest))
             {
-                _Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
+                this._Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
             }
 
             //Call base method
@@ -260,12 +260,12 @@ namespace DotNetNuke.Services.Installer.Installers
                         if (File.Exists(insFile.BackupPath + entry.Name))
                         {
                             //Restore File
-                            Util.RestoreFile(new InstallFile(unzip, entry, Package.InstallerInfo), PhysicalBasePath, Log);
+                            Util.RestoreFile(new InstallFile(unzip, entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
                         }
                         else
                         {
                             //Delete File
-                            Util.DeleteFile(entry.Name, PhysicalBasePath, Log);
+                            Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
                         }
                     }
                     entry = unzip.GetNextEntry();
@@ -275,8 +275,8 @@ namespace DotNetNuke.Services.Installer.Installers
 
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-            _Manifest = unInstallFile.Name + ".manifest";
-            var doc = new XPathDocument(Path.Combine(PhysicalBasePath, Manifest));
+            this._Manifest = unInstallFile.Name + ".manifest";
+            var doc = new XPathDocument(Path.Combine(this.PhysicalBasePath, this.Manifest));
 
             foreach (XPathNavigator fileNavigator in doc.CreateNavigator().Select("dotnetnuke/files/file"))
             {
@@ -285,19 +285,19 @@ namespace DotNetNuke.Services.Installer.Installers
                 string filePath = Path.Combine(path, fileName);
                 try
                 {
-                    if (DeleteFiles)
+                    if (this.DeleteFiles)
                     {
-                        Util.DeleteFile(filePath, PhysicalBasePath, Log);
+                        Util.DeleteFile(filePath, this.PhysicalBasePath, this.Log);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.AddFailure(ex);
+                    this.Log.AddFailure(ex);
                 }
             }
-            if (DeleteFiles)
+            if (this.DeleteFiles)
             {
-                Util.DeleteFile(Manifest, PhysicalBasePath, Log);
+                Util.DeleteFile(this.Manifest, this.PhysicalBasePath, this.Log);
             }
         }
 

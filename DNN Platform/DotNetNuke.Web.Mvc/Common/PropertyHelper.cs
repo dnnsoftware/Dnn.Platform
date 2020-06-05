@@ -22,8 +22,8 @@ namespace DotNetNuke.Web.Mvc.Common
         {
             Requires.NotNull("property", property);
 
-            Name = property.Name;
-            _valueGetter = MakeFastPropertyGetter(property);
+            this.Name = property.Name;
+            this._valueGetter = MakeFastPropertyGetter(property);
         }
 
         // Implementation of the fast getter.
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.Mvc.Common
         {
             //Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
 
-            return _valueGetter(instance);
+            return this._valueGetter(instance);
         }
 
         /// <summary>

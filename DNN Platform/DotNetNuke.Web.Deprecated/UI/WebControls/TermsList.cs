@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _IsHeirarchical;
+                return this._IsHeirarchical;
             }
         }
 
@@ -46,10 +46,10 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 Term _SelectedTerm = null;
-                if (!string.IsNullOrEmpty(SelectedValue))
+                if (!string.IsNullOrEmpty(this.SelectedValue))
                 {
-                    int _TermId = int.Parse(SelectedValue);
-                    foreach (Term term in Terms)
+                    int _TermId = int.Parse(this.SelectedValue);
+                    foreach (Term term in this.Terms)
                     {
                         if (term.TermId == _TermId)
                         {
@@ -67,13 +67,13 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 string _SelectedValue = Null.NullString;
-                if (IsHeirarchical)
+                if (this.IsHeirarchical)
                 {
-                    _SelectedValue = _TreeView.SelectedValue;
+                    _SelectedValue = this._TreeView.SelectedValue;
                 }
                 else
                 {
-                    _SelectedValue = _ListBox.SelectedValue;
+                    _SelectedValue = this._ListBox.SelectedValue;
                 }
                 return _SelectedValue;
             }
@@ -84,13 +84,13 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 object _DataSource = null;
-                if (IsHeirarchical)
+                if (this.IsHeirarchical)
                 {
-                    _DataSource = _TreeView.DataSource;
+                    _DataSource = this._TreeView.DataSource;
                 }
                 else
                 {
-                    _DataSource = _ListBox.DataSource;
+                    _DataSource = this._ListBox.DataSource;
                 }
                 return _DataSource as List<Term>;
             }
@@ -102,43 +102,43 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
-            _ListBox = new DnnListBox();
-            _ListBox.ID = string.Concat(ID, "_List");
-            _ListBox.DataTextField = "Name";
-            _ListBox.DataValueField = "TermId";
-            _ListBox.AutoPostBack = true;
-            _ListBox.SelectedIndexChanged += ListBoxSelectedIndexChanged;
+            this._ListBox = new DnnListBox();
+            this._ListBox.ID = string.Concat(this.ID, "_List");
+            this._ListBox.DataTextField = "Name";
+            this._ListBox.DataValueField = "TermId";
+            this._ListBox.AutoPostBack = true;
+            this._ListBox.SelectedIndexChanged += this.ListBoxSelectedIndexChanged;
 
-            _TreeView = new DnnTreeView();
-            _TreeView.ID = string.Concat(ID, "_Tree");
-            _TreeView.DataTextField = "Name";
-            _TreeView.DataValueField = "TermId";
-            _TreeView.DataFieldID = "TermId";
-            _TreeView.DataFieldParentID = "ParentTermId";
-            _TreeView.NodeClick += TreeViewNodeClick;
+            this._TreeView = new DnnTreeView();
+            this._TreeView.ID = string.Concat(this.ID, "_Tree");
+            this._TreeView.DataTextField = "Name";
+            this._TreeView.DataValueField = "TermId";
+            this._TreeView.DataFieldID = "TermId";
+            this._TreeView.DataFieldParentID = "ParentTermId";
+            this._TreeView.NodeClick += this.TreeViewNodeClick;
 
-            Controls.Add(_ListBox);
-            Controls.Add(_TreeView);
+            this.Controls.Add(this._ListBox);
+            this.Controls.Add(this._TreeView);
         }
 
         protected override void OnInit(EventArgs e)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            _ListBox.Visible = !IsHeirarchical;
-            _TreeView.Visible = IsHeirarchical;
+            this._ListBox.Visible = !this.IsHeirarchical;
+            this._TreeView.Visible = this.IsHeirarchical;
 
-            _ListBox.Height = Height;
-            _ListBox.Width = Width;
-            _TreeView.Height = Height;
-            _TreeView.Width = Width;
+            this._ListBox.Height = this.Height;
+            this._ListBox.Width = this.Width;
+            this._TreeView.Height = this.Height;
+            this._TreeView.Width = this.Width;
 
-            _TreeView.ExpandAllNodes();
+            this._TreeView.ExpandAllNodes();
 
             base.OnPreRender(e);
         }
@@ -146,9 +146,9 @@ namespace DotNetNuke.Web.UI.WebControls
         protected virtual void OnSelectedTermChanged(TermsEventArgs e)
         {
             //Raise the SelectedTermChanged Event
-            if (SelectedTermChanged != null)
+            if (this.SelectedTermChanged != null)
             {
-                SelectedTermChanged(this, e);
+                this.SelectedTermChanged(this, e);
             }
         }
 
@@ -159,13 +159,13 @@ namespace DotNetNuke.Web.UI.WebControls
         private void ListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             //Raise the SelectedTermChanged Event
-            OnSelectedTermChanged(new TermsEventArgs(SelectedTerm));
+            this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
 
         private void TreeViewNodeClick(object sender, RadTreeNodeEventArgs e)
         {
             //Raise the SelectedTermChanged Event
-            OnSelectedTermChanged(new TermsEventArgs(SelectedTerm));
+            this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
 
         #endregion
@@ -174,22 +174,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void BindTerms(List<Term> terms, bool isHeirarchical, bool dataBind)
         {
-            _IsHeirarchical = isHeirarchical;
+            this._IsHeirarchical = isHeirarchical;
 
-            _ListBox.DataSource = terms;
-            _TreeView.DataSource = terms;
+            this._ListBox.DataSource = terms;
+            this._TreeView.DataSource = terms;
 
             if (dataBind)
             {
-                _ListBox.DataBind();
-                _TreeView.DataBind();
+                this._ListBox.DataBind();
+                this._TreeView.DataBind();
             }
         }
 
         public void ClearSelectedTerm()
         {
-            _ListBox.SelectedIndex = Null.NullInteger;
-            _TreeView.UnselectAllNodes();
+            this._ListBox.SelectedIndex = Null.NullInteger;
+            this._TreeView.UnselectAllNodes();
         }
 
         #endregion

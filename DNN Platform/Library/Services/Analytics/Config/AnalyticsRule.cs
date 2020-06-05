@@ -21,11 +21,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _roleId;
+                return this._roleId;
             }
             set
             {
-                _roleId = value;
+                this._roleId = value;
             }
         }
 
@@ -33,11 +33,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _tabId;
+                return this._tabId;
             }
             set
             {
-                _tabId = value;
+                this._tabId = value;
             }
         }
 
@@ -45,11 +45,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _label;
+                return this._label;
             }
             set
             {
-                _label = value;
+                this._label = value;
             }
         }
 

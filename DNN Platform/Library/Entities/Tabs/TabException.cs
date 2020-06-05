@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Tabs
     {
         public TabException(int tabId, string message) : base(message)
         {
-            TabId = tabId;
+            this.TabId = tabId;
         }
 
         public int TabId { get; private set; }

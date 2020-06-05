@@ -30,20 +30,20 @@ namespace DotNetNuke.Services.Exceptions
         //constructor with exception message
         public SecurityException(string message) : base(message)
         {
-            InitilizePrivateVariables();
+            this.InitilizePrivateVariables();
         }
 
         //constructor with message and inner exception
         public SecurityException(string message, Exception inner) : base(message, inner)
         {
-            InitilizePrivateVariables();
+            this.InitilizePrivateVariables();
         }
 
         protected SecurityException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            InitilizePrivateVariables();
-            m_IP = info.GetString("m_IP");
-            m_Querystring = info.GetString("m_Querystring");
+            this.InitilizePrivateVariables();
+            this.m_IP = info.GetString("m_IP");
+            this.m_Querystring = info.GetString("m_Querystring");
         }
 
         [XmlElement("IP")]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return m_IP;
+                return this.m_IP;
             }
         }
 
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return m_Querystring;
+                return this.m_Querystring;
             }
         }
 
@@ -71,14 +71,14 @@ namespace DotNetNuke.Services.Exceptions
             {
                 if (HttpContext.Current.Request.UserHostAddress != null)
                 {
-                    m_IP = HttpContext.Current.Request.UserHostAddress;
+                    this.m_IP = HttpContext.Current.Request.UserHostAddress;
                 }
-                m_Querystring = HttpContext.Current.Request.MapPath(Querystring, HttpContext.Current.Request.ApplicationPath, false);
+                this.m_Querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
             }
             catch (Exception exc)
             {
-                m_IP = "";
-                m_Querystring = "";
+                this.m_IP = "";
+                this.m_Querystring = "";
                 Logger.Error(exc);
 
             }

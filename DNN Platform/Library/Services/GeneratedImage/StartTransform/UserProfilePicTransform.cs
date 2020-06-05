@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + UserID;
+        public override string UniqueString => base.UniqueString + this.UserID;
 
         /// <summary>
         /// Is reusable
@@ -38,10 +38,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         public UserProfilePicTransform()
 		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
 		}
 
         /// <summary>
@@ -53,19 +53,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 		{
             IFileInfo photoFile;
 
-		    if (TryGetPhotoFile(out photoFile))
+		    if (this.TryGetPhotoFile(out photoFile))
 		    {
 		        if (!IsImageExtension(photoFile.Extension))
 		        {
-		            return GetNoAvatarImage();
+		            return this.GetNoAvatarImage();
 		        }
 
 		        using (var content = FileManager.Instance.GetFileContent(photoFile))
 		        {
-		            return CopyImage(content);
+		            return this.CopyImage(content);
 		        }
 		    }
-		    return GetNoAvatarImage();
+		    return this.GetNoAvatarImage();
 		}
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             var avatarAbsolutePath = Globals.ApplicationMapPath + @"\images\no_avatar.gif";
             using (var content = File.OpenRead(avatarAbsolutePath))
             {
-                return CopyImage(content);
+                return this.CopyImage(content);
             }
         }
 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             photoFile = null;
 
             var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var targetUser = UserController.Instance.GetUser(settings.PortalId, UserID);
+            var targetUser = UserController.Instance.GetUser(settings.PortalId, this.UserID);
             if (targetUser == null)
             {
                 return false;

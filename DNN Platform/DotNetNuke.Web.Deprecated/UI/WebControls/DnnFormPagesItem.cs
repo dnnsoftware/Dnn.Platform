@@ -12,9 +12,9 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnFormPagesItem()
         {
-            ListSource = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
-            ListTextField = "TabName";
-            ListValueField = "TabID";
+            this.ListSource = TabController.GetPortalTabs(this.PortalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
+            this.ListTextField = "TabName";
+            this.ListValueField = "TabID";
         }
     }
 }

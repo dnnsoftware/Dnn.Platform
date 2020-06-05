@@ -8,8 +8,8 @@ namespace DotNetNuke.UI.Skins.EventListeners
     {
         public SkinEventListener(SkinEventType type, SkinEventHandler e)
         {
-            EventType = type;
-            SkinEvent = e;
+            this.EventType = type;
+            this.SkinEvent = e;
         }
 
         public SkinEventType EventType { get; private set; }

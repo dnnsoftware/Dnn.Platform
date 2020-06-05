@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Users
 
         public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -52,23 +52,23 @@ namespace DotNetNuke.Services.Users
                                 if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
                                 {
                                     UserController.RemoveUser(user);
-                                    ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
+                                    this.ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
                                 }
                             }
                         }
                     }
                 }
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
 
-                ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
 
                 //notification that we have errored
-                Errored(ref exc); //REQUIRED
+                this.Errored(ref exc); //REQUIRED
 
                 //log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL

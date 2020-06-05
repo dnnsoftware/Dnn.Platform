@@ -19,19 +19,19 @@ namespace DotNetNuke.Authentication.Google.Components
 
         public override string FirstName
         {
-            get { return GivenName; }
+            get { return this.GivenName; }
             set { }
         }
 
         public override string LastName
         {
-            get { return FamilyName; }
+            get { return this.FamilyName; }
             set { }
         }
 
         public override string ProfileImage
         {
-            get { return Picture; }
+            get { return this.Picture; }
             set { }
         }
 

@@ -55,23 +55,23 @@ namespace DotNetNuke.Tests.Integration.Tests
         [Test]
         public void Friend_Request_Should_Match_Target_User_Culture()
         {
-            PrepareSecondLanguage();
+            this.PrepareSecondLanguage();
             int userId1, userId2, fileId1, fileId2;
             string userName1, userName2;
-            CreateNewUser(out userId1, out userName1, out fileId1);
-            CreateNewUser(out userId2, out userName2, out fileId2);
+            this.CreateNewUser(out userId1, out userName1, out fileId1);
+            this.CreateNewUser(out userId2, out userName2, out fileId2);
 
-            UpdateUserProfile(userId1, UserProfile.USERPROFILE_PreferredLocale, FirstLanguage);
-            UpdateUserProfile(userId2, UserProfile.USERPROFILE_PreferredLocale, SecondLanguage);
+            this.UpdateUserProfile(userId1, UserProfile.USERPROFILE_PreferredLocale, FirstLanguage);
+            this.UpdateUserProfile(userId2, UserProfile.USERPROFILE_PreferredLocale, SecondLanguage);
             WebApiTestHelper.ClearHostCache();
 
             var connector = WebApiTestHelper.LoginUser(userName1);
             connector.PostJson("API/MemberDirectory/MemberDirectory/AddFriend", new
             {
                 friendId = userId2
-            }, GetRequestHeaders());
+            }, this.GetRequestHeaders());
 
-            var notificationTitle = GetNotificationTitle(userId1);
+            var notificationTitle = this.GetNotificationTitle(userId1);
 
             //the notification should use french language: testuser8836 veut être amis avec vous
             Assert.AreEqual($"{userName1} veut être amis", notificationTitle);
@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Integration.Tests
 
         private void PrepareSecondLanguage()
         {
-            if (!LanguageEnabled(PortalId, SecondLanguage))
+            if (!this.LanguageEnabled(PortalId, SecondLanguage))
             {
 
             }

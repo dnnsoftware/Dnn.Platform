@@ -101,17 +101,17 @@ namespace log4net.Util
 		{
 			get 
 			{ 
-				return m_readOnlyProperties[key];
+				return this.m_readOnlyProperties[key];
 			}
 			set
 			{
-				lock(m_syncRoot)
+				lock(this.m_syncRoot)
 				{
-					PropertiesDictionary mutableProps = new PropertiesDictionary(m_readOnlyProperties);
+					PropertiesDictionary mutableProps = new PropertiesDictionary(this.m_readOnlyProperties);
 
 					mutableProps[key] = value;
 
-					m_readOnlyProperties = new ReadOnlyPropertiesDictionary(mutableProps);
+					this.m_readOnlyProperties = new ReadOnlyPropertiesDictionary(mutableProps);
 				}
 			}
 		}
@@ -132,15 +132,15 @@ namespace log4net.Util
 		/// </remarks>
 		public void Remove(string key)
 		{
-			lock(m_syncRoot)
+			lock(this.m_syncRoot)
 			{
-				if (m_readOnlyProperties.Contains(key))
+				if (this.m_readOnlyProperties.Contains(key))
 				{
-					PropertiesDictionary mutableProps = new PropertiesDictionary(m_readOnlyProperties);
+					PropertiesDictionary mutableProps = new PropertiesDictionary(this.m_readOnlyProperties);
 
 					mutableProps.Remove(key);
 
-					m_readOnlyProperties = new ReadOnlyPropertiesDictionary(mutableProps);
+					this.m_readOnlyProperties = new ReadOnlyPropertiesDictionary(mutableProps);
 				}
 			}
 		}
@@ -150,9 +150,9 @@ namespace log4net.Util
 		/// </summary>
 		public void Clear()
 		{
-			lock(m_syncRoot)
+			lock(this.m_syncRoot)
 			{
-				m_readOnlyProperties = new ReadOnlyPropertiesDictionary();
+				this.m_readOnlyProperties = new ReadOnlyPropertiesDictionary();
 			}
 		}
 
@@ -172,7 +172,7 @@ namespace log4net.Util
 		/// </remarks>
 		internal ReadOnlyPropertiesDictionary GetReadOnlyProperties()
 		{
-			return m_readOnlyProperties;
+			return this.m_readOnlyProperties;
 		}
 
 		#endregion Internal Instance Methods

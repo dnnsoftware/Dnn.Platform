@@ -24,28 +24,28 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
         public PortalModelBase(DotNetNuke.Entities.Portals.PortalInfo portal)
         {
-            PortalId = portal.PortalID;
-            PortalName = portal.PortalName;
-            PageCount = portal.Pages;
-            UserCount = portal.Users;
-            Language = portal.DefaultLanguage;
+            this.PortalId = portal.PortalID;
+            this.PortalName = portal.PortalName;
+            this.PageCount = portal.Pages;
+            this.UserCount = portal.Users;
+            this.Language = portal.DefaultLanguage;
 
             switch (portal.UserRegistration)
             {
                 case (int)Globals.PortalRegistrationType.NoRegistration:
-                    RegistrationMode = "None";
+                    this.RegistrationMode = "None";
                     break;
                 case (int)Globals.PortalRegistrationType.PrivateRegistration:
-                    RegistrationMode = "Private";
+                    this.RegistrationMode = "Private";
                     break;
                 case (int)Globals.PortalRegistrationType.PublicRegistration:
-                    RegistrationMode = "Public";
+                    this.RegistrationMode = "Public";
                     break;
                 case (int)Globals.PortalRegistrationType.VerifiedRegistration:
-                    RegistrationMode = "Verified";
+                    this.RegistrationMode = "Verified";
                     break;
                 default:
-                    RegistrationMode = "Unknown";
+                    this.RegistrationMode = "Unknown";
                     break;
             }
         }

@@ -45,8 +45,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
        public TabPermissionInfo()
         {
-            _TabPermissionID = Null.NullInteger;
-            _TabID = Null.NullInteger;
+            this._TabPermissionID = Null.NullInteger;
+            this._TabID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -57,11 +57,11 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public TabPermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 		
 		#endregion
@@ -79,11 +79,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _TabPermissionID;
+                return this._TabPermissionID;
             }
             set
             {
-                _TabPermissionID = value;
+                this._TabPermissionID = value;
             }
         }
 
@@ -98,11 +98,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _TabID;
+                return this._TabID;
             }
             set
             {
-                _TabID = value;
+                this._TabID = value;
             }
         }
 		
@@ -120,8 +120,8 @@ namespace DotNetNuke.Security.Permissions
         {
             //Call the base classes fill method to ppoulate base class proeprties
 			base.FillInternal(dr);
-            TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
-            TabID = Null.SetNullInteger(dr["TabID"]);
+            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
+            this.TabID = Null.SetNullInteger(dr["TabID"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -135,11 +135,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return TabPermissionID;
+                return this.TabPermissionID;
             }
             set
             {
-                TabPermissionID = value;
+                this.TabPermissionID = value;
             }
         }
 

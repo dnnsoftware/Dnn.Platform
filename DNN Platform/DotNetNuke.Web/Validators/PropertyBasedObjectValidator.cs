@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Validators
     {
         public override ValidationResult ValidateObject(object target)
         {
-            return target.GetType().GetProperties().Aggregate(ValidationResult.Successful, (result, member) => result.CombineWith(ValidateProperty(target, member) ?? ValidationResult.Successful));
+            return target.GetType().GetProperties().Aggregate(ValidationResult.Successful, (result, member) => result.CombineWith(this.ValidateProperty(target, member) ?? ValidationResult.Successful));
         }
 
         protected abstract ValidationResult ValidateProperty(object target, PropertyInfo targetProperty);

@@ -23,18 +23,18 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 //Attempt to get the Library
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == Package.PackageID);
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
 
                 if (library != null)
                 {
                     JavaScriptLibraryController.Instance.DeleteLibrary(library);
 
-                    Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
+                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
                 }
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
@@ -47,55 +47,55 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 //Attempt to get the JavaScript Library
-                _installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == _library.LibraryName && l.Version == _library.Version);
+                this._installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == this._library.LibraryName && l.Version == this._library.Version);
 
-                if (_installedLibrary != null)
+                if (this._installedLibrary != null)
                 {
-                    _library.JavaScriptLibraryID = _installedLibrary.JavaScriptLibraryID;
+                    this._library.JavaScriptLibraryID = this._installedLibrary.JavaScriptLibraryID;
                 }
                 //Save JavaScript Library  to database
-                _library.PackageID = Package.PackageID;
-                JavaScriptLibraryController.Instance.SaveLibrary(_library);
+                this._library.PackageID = this.Package.PackageID;
+                JavaScriptLibraryController.Instance.SaveLibrary(this._library);
 
-                Completed = true;
-                Log.AddInfo(string.Format(Util.LIBRARY_Registered, _library.LibraryName));
+                this.Completed = true;
+                this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this._library.LibraryName));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             //Load the JavaScript Library from the manifest
-            _library = CBO.DeserializeObject<JavaScriptLibrary>(new StringReader(manifestNav.InnerXml));
-            _library.Version = Package.Version;
+            this._library = CBO.DeserializeObject<JavaScriptLibrary>(new StringReader(manifestNav.InnerXml));
+            this._library.Version = this.Package.Version;
 
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.AddInfo(Util.LIBRARY_ReadSuccess);
+                this.Log.AddInfo(Util.LIBRARY_ReadSuccess);
             }
         }
 
         public override void Rollback()
         {
             //If Temp Library exists then we need to update the DataStore with this 
-            if (_installedLibrary == null)
+            if (this._installedLibrary == null)
             {
                 //No Temp Library - Delete newly added library
-                DeleteLibrary();
+                this.DeleteLibrary();
             }
             else
             {
                 //Temp Library - Rollback to Temp
-                JavaScriptLibraryController.Instance.SaveLibrary(_installedLibrary);
+                JavaScriptLibraryController.Instance.SaveLibrary(this._installedLibrary);
             }
         }
 
         public override void UnInstall()
         {
-            DeleteLibrary();
+            this.DeleteLibrary();
         }
 
         #endregion

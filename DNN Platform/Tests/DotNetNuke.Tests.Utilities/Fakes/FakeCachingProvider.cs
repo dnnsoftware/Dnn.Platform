@@ -17,18 +17,18 @@ namespace DotNetNuke.Tests.Utilities.Fakes
 
         public FakeCachingProvider(Dictionary<string, object> dictionary)
         {
-            _dictionary = dictionary;
+            this._dictionary = dictionary;
         }
 
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration,
             TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
-            _dictionary[cacheKey] = itemToCache;
+            this._dictionary[cacheKey] = itemToCache;
         }
 
         public override object GetItem(string cacheKey)
         {
-            return _dictionary.ContainsKey(cacheKey) ? _dictionary[cacheKey] : null;
+            return this._dictionary.ContainsKey(cacheKey) ? this._dictionary[cacheKey] : null;
         }
     }
 }

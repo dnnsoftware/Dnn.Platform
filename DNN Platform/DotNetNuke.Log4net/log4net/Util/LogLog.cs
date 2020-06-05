@@ -72,7 +72,7 @@ namespace log4net.Util
         /// </summary>
 	    public Type Source
 	    {
-	        get { return source; }
+	        get { return this.source; }
 	    }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace log4net.Util
         /// </summary>
 	    public DateTime TimeStamp
 	    {
-            get { return timeStampUtc.ToLocalTime(); }
+            get { return this.timeStampUtc.ToLocalTime(); }
 	    }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace log4net.Util
         /// </summary>
         public DateTime TimeStampUtc
         {
-            get { return timeStampUtc; }
+            get { return this.timeStampUtc; }
 	    }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace log4net.Util
         /// </remarks>
 	    public string Prefix
 	    {
-	        get { return prefix; }
+	        get { return this.prefix; }
 	    }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace log4net.Util
         /// </summary>
 	    public string Message
 	    {
-	        get { return message; }
+	        get { return this.message; }
 	    }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace log4net.Util
         /// </remarks>
 	    public Exception Exception
 	    {
-	        get { return exception; }
+	        get { return this.exception; }
 	    }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace log4net.Util
         /// <returns></returns>
 	    public override string ToString()
 	    {
-            return Prefix + Source.Name + ": " + Message;
+            return this.Prefix + this.Source.Name + ": " + this.Message;
 	    }
 
 	    #region Private Instance Constructors
@@ -144,7 +144,7 @@ namespace log4net.Util
         /// <param name="exception"></param>
 	    public LogLog(Type source, string prefix, string message, Exception exception)
 	    {
-            timeStampUtc = DateTime.UtcNow;
+            this.timeStampUtc = DateTime.UtcNow;
 	        
             this.source = source;
 	        this.prefix = prefix;
@@ -627,14 +627,14 @@ namespace log4net.Util
             {
                 this.items = items;
 
-                handler = new LogReceivedEventHandler(LogLog_LogReceived);
+                this.handler = new LogReceivedEventHandler(this.LogLog_LogReceived);
 
-                LogReceived += handler;
+                LogReceived += this.handler;
             }
 
             void LogLog_LogReceived(object source, LogReceivedEventArgs e)
             {
-                items.Add(e.LogLog);
+                this.items.Add(e.LogLog);
             }
 
             /// <summary>
@@ -642,7 +642,7 @@ namespace log4net.Util
             /// </summary>
             public IList Items
             {
-                get { return items; }
+                get { return this.items; }
             }
 
             /// <summary>
@@ -650,7 +650,7 @@ namespace log4net.Util
             /// </summary>
             public void Dispose()
             {
-                LogReceived -= handler;
+                LogReceived -= this.handler;
             }
         }
 	}
@@ -676,7 +676,7 @@ namespace log4net.Util
         /// </summary>
         public LogLog LogLog
         {
-            get { return loglog; }
+            get { return this.loglog; }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
         {
-            _SkinName = skinName;
+            this._SkinName = skinName;
         }
 		
 		#endregion
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
-            writer.WriteElementString(SkinNameNodeName, _SkinName);
+            writer.WriteElementString(this.SkinNameNodeName, this._SkinName);
         }
 		
 		#endregion

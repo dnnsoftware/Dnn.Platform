@@ -42,34 +42,34 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabCollection()
         {
-            _list = new List<TabInfo>();
-            _children = new Dictionary<int, List<TabInfo>>();
-            _localizedTabs = new Dictionary<string, List<TabInfo>>();
+            this._list = new List<TabInfo>();
+            this._children = new Dictionary<int, List<TabInfo>>();
+            this._localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
         // The special constructor is used to deserialize values.
         public TabCollection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _list = new List<TabInfo>();
-            _children = new Dictionary<int, List<TabInfo>>();
-            _localizedTabs = new Dictionary<string, List<TabInfo>>();
+            this._list = new List<TabInfo>();
+            this._children = new Dictionary<int, List<TabInfo>>();
+            this._localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);
 
-            foreach (var tab in Values)
+            foreach (var tab in this.Values)
             {
                 //Update all child collections
-                AddInternal(tab);
+                this.AddInternal(tab);
             }
         }
 
         public TabCollection(IEnumerable<TabInfo> tabs) : this()
         {
-            AddRange(tabs);
+            this.AddRange(tabs);
         }
 
         #endregion
@@ -81,40 +81,40 @@ namespace DotNetNuke.Entities.Tabs
             if (tab.ParentId == Null.NullInteger)
             {
                 //Add tab to Children collection
-                AddToChildren(tab);
+                this.AddToChildren(tab);
 
                 //Add to end of List as all zero-level tabs are returned in order first
-                _list.Add(tab);
+                this._list.Add(tab);
             }
             else
             {
                 //Find Parent in list
-                for (int index = 0; index <= _list.Count - 1; index++)
+                for (int index = 0; index <= this._list.Count - 1; index++)
                 {
-                    TabInfo parentTab = _list[index];
+                    TabInfo parentTab = this._list[index];
                     if (parentTab.TabID == tab.ParentId)
                     {
-                        int childCount = AddToChildren(tab);
+                        int childCount = this.AddToChildren(tab);
 
                         //Insert tab in master List
-                        _list.Insert(index + childCount, tab);
+                        this._list.Insert(index + childCount, tab);
                     }
                 }
             }
             //Add to localized tabs
             if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
             {
-                AddToLocalizedTabs(tab);
+                this.AddToLocalizedTabs(tab);
             }            
         }
 
         private int AddToChildren(TabInfo tab)
         {
             List<TabInfo> childList;
-            if (!_children.TryGetValue(tab.ParentId, out childList))
+            if (!this._children.TryGetValue(tab.ParentId, out childList))
             {
                 childList = new List<TabInfo>();
-                _children.Add(tab.ParentId, childList);
+                this._children.Add(tab.ParentId, childList);
             }
 			
             //Add tab to end of child list as children are returned in order
@@ -127,10 +127,10 @@ namespace DotNetNuke.Entities.Tabs
             List<TabInfo> localizedTabCollection;
 
             var key = cultureCode.ToLowerInvariant();
-            if (!_localizedTabs.TryGetValue(key, out localizedTabCollection))
+            if (!this._localizedTabs.TryGetValue(key, out localizedTabCollection))
             {
                 localizedTabCollection = new List<TabInfo>();
-                _localizedTabs.Add(key, localizedTabCollection);
+                this._localizedTabs.Add(key, localizedTabCollection);
             }
 
             //Add tab to end of localized tabs
@@ -144,27 +144,27 @@ namespace DotNetNuke.Entities.Tabs
                 //Add to all cultures
                 foreach (var locale in LocaleController.Instance.GetLocales(tab.PortalID).Values)
                 {
-                    AddToLocalizedTabCollection(tab, locale.Code);
+                    this.AddToLocalizedTabCollection(tab, locale.Code);
                 }
             }
             else
             {
-                AddToLocalizedTabCollection(tab, tab.CultureCode);
+                this.AddToLocalizedTabCollection(tab, tab.CultureCode);
             }
         }
 
         private List<TabInfo> GetDescendants(int tabId, int tabLevel)
         {
             var descendantTabs = new List<TabInfo>();
-            for (int index = 0; index <= _list.Count - 1; index++)
+            for (int index = 0; index <= this._list.Count - 1; index++)
             {
-                TabInfo parentTab = _list[index];
+                TabInfo parentTab = this._list[index];
                 if (parentTab.TabID == tabId)
                 {
                     //Found Parent - so add descendents
-                    for (int descendantIndex = index + 1; descendantIndex <= _list.Count - 1; descendantIndex++)
+                    for (int descendantIndex = index + 1; descendantIndex <= this._list.Count - 1; descendantIndex++)
                     {
-                        TabInfo descendantTab = _list[descendantIndex];
+                        TabInfo descendantTab = this._list[descendantIndex];
 
                         if ((tabLevel == Null.NullInteger))
                         {
@@ -205,48 +205,48 @@ namespace DotNetNuke.Entities.Tabs
         public void Add(TabInfo tab)
         {
 			//Call base class to add to base Dictionary
-            Add(tab.TabID, tab);
+            this.Add(tab.TabID, tab);
 
             //Update all child collections
-            AddInternal(tab);
+            this.AddInternal(tab);
         }
 
         public void AddRange(IEnumerable<TabInfo> tabs)
         {
             foreach (TabInfo tab in tabs)
             {
-                Add(tab);
+                this.Add(tab);
             }
         }
 
         public List<TabInfo> AsList()
         {
-            return _list;
+            return this._list;
         }
 
         public List<TabInfo> DescendentsOf(int tabId)
         {
-            return GetDescendants(tabId, Null.NullInteger);
+            return this.GetDescendants(tabId, Null.NullInteger);
         }
 
         public List<TabInfo> DescendentsOf(int tabId, int originalTabLevel)
         {
-            return GetDescendants(tabId, originalTabLevel);
+            return this.GetDescendants(tabId, originalTabLevel);
         }
 
         public bool IsDescendentOf(int ancestorId, int testTabId)
         {
-            return DescendentsOf(ancestorId).Any(tab => tab.TabID == testTabId);
+            return this.DescendentsOf(ancestorId).Any(tab => tab.TabID == testTabId);
         }
 
         public ArrayList ToArrayList()
         {
-            return new ArrayList(_list);
+            return new ArrayList(this._list);
         }
 
 		public TabCollection WithCulture(string cultureCode, bool includeNeutral)
 		{
-			return WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
+			return this.WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
 		}
         public TabCollection WithCulture(string cultureCode, bool includeNeutral, bool localizationEnabled)
         {
@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     cultureCode = cultureCode.ToLowerInvariant();
                     List<TabInfo> tabs;
-                    if (!_localizedTabs.TryGetValue(cultureCode, out tabs))
+                    if (!this._localizedTabs.TryGetValue(cultureCode, out tabs))
                     {
                         collection = new TabCollection(new List<TabInfo>());
                     }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Entities.Tabs
         public List<TabInfo> WithParentId(int parentId)
         {
             List<TabInfo> tabs;
-            if (!_children.TryGetValue(parentId, out tabs))
+            if (!this._children.TryGetValue(parentId, out tabs))
             {
                 tabs = new List<TabInfo>();
             }
@@ -297,7 +297,7 @@ namespace DotNetNuke.Entities.Tabs
         public TabInfo WithTabId(int tabId)
         {
             TabInfo t = null;
-            if (ContainsKey(tabId))
+            if (this.ContainsKey(tabId))
             {
                 t = this[tabId];
             }
@@ -306,38 +306,38 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabInfo WithTabNameAndParentId(string tabName, int parentId)
         {
-            return (from t in _list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
+            return (from t in this._list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
         }
 
         public TabInfo WithTabName(string tabName)
         {
-            return (from t in _list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+            return (from t in this._list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
         }
 
         internal void RefreshCache(int tabId, TabInfo updatedTab)
         {
-            if (ContainsKey(tabId))
+            if (this.ContainsKey(tabId))
             {
                 if (updatedTab == null) //the tab has been deleted
                 {
-                    Remove(tabId);
-                    _list.RemoveAll(t => t.TabID == tabId);
-                    _localizedTabs.ForEach(kvp =>
+                    this.Remove(tabId);
+                    this._list.RemoveAll(t => t.TabID == tabId);
+                    this._localizedTabs.ForEach(kvp =>
                     {
                         kvp.Value.RemoveAll(t => t.TabID == tabId);
                     });
-                    _children.Remove(tabId);
+                    this._children.Remove(tabId);
                 }
                 else
                 {
                     this[tabId] = updatedTab;
-                    var index = _list.FindIndex(t => t.TabID == tabId);
+                    var index = this._list.FindIndex(t => t.TabID == tabId);
                     if (index > Null.NullInteger)
                     {
-                        _list[index] = updatedTab;
+                        this._list[index] = updatedTab;
                     }
 
-                    _localizedTabs.ForEach(kvp =>
+                    this._localizedTabs.ForEach(kvp =>
                     {
                         var localizedIndex = kvp.Value.FindIndex(t => t.TabID == tabId);
                         if (localizedIndex > Null.NullInteger)

@@ -29,22 +29,22 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNull("configuration", configuration);
 
-            _configuration = configuration;
-            _descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(InitTypeCache,
+            this._configuration = configuration;
+            this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(this.InitTypeCache,
                                                                                                 isThreadSafe: true);
         }
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
         {
-            get { return _descriptorCache.Value; }
+            get { return this._descriptorCache.Value; }
         }
 
         public HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             Requires.NotNull("request", request);
 
-            string controllerName = GetControllerName(request);
-            IEnumerable<string> namespaces = GetNameSpaces(request);
+            string controllerName = this.GetControllerName(request);
+            IEnumerable<string> namespaces = this.GetNameSpaces(request);
             if (namespaces == null || !namespaces.Any() || String.IsNullOrEmpty(controllerName))
             {
                 throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound,
@@ -55,10 +55,10 @@ namespace DotNetNuke.Web.Api
             var matches = new List<HttpControllerDescriptor>();
             foreach (string ns in namespaces)
             {
-                string fullName = GetFullName(controllerName, ns);
+                string fullName = this.GetFullName(controllerName, ns);
 
                 HttpControllerDescriptor descriptor;
-                if (DescriptorCache.TryGetValue(fullName, out descriptor))
+                if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
                 {
                     matches.Add(descriptor);
                 }
@@ -80,7 +80,7 @@ namespace DotNetNuke.Web.Api
 
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
         {
-            return DescriptorCache;
+            return this.DescriptorCache;
         }
 
         private string GetFullName(string controllerName, string ns)
@@ -115,8 +115,8 @@ namespace DotNetNuke.Web.Api
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> InitTypeCache()
         {
-            IAssembliesResolver assembliesResolver = _configuration.Services.GetAssembliesResolver();
-            IHttpControllerTypeResolver controllersResolver = _configuration.Services.GetHttpControllerTypeResolver();
+            IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
+            IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
 
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.Api
                 if (type.FullName != null)
                 {
                     string controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
-                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(_configuration, controllerName, type));
+                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this._configuration, controllerName, type));
                 }
             }
 

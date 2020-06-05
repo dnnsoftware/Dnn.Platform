@@ -34,14 +34,14 @@ namespace DotNetNuke.UI.WebControls.Internal
             //kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
             //maintain statics for the paths but require a control instance to initialize them
             //and lazy load the text bits when the page instance (or localization) changes 
-            LookupScriptValues(this, out _grantImagePath, out _denyImagePath, out _nullImagePath, out _lockImagePath, out _grantAltText, out _denyAltText, out _nullAltText);
+            LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            RegisterScripts(Page, this);
+            RegisterScripts(this.Page, this);
         }
 
         public static void RegisterScripts(Page page, Control ctl)
@@ -100,50 +100,50 @@ namespace DotNetNuke.UI.WebControls.Internal
         {
             string imagePath;
             string altText;
-            switch (Value)
+            switch (this.Value)
             {
                 case "True":
-                    imagePath = _grantImagePath;
-                    altText = _grantAltText;
+                    imagePath = this._grantImagePath;
+                    altText = this._grantAltText;
                     break;
 
                 case "False":
-                    imagePath = _denyImagePath;
-                    altText = _denyAltText;
+                    imagePath = this._denyImagePath;
+                    altText = this._denyAltText;
                     break;
 
                 default:
-                    imagePath = _nullImagePath;
-                    altText = _nullAltText;
+                    imagePath = this._nullImagePath;
+                    altText = this._nullAltText;
                     break;
             }
 
             string cssClass = "tristate";
-            if (Locked)
+            if (this.Locked)
             {
-                imagePath = _lockImagePath;
+                imagePath = this._lockImagePath;
                 cssClass += " lockedPerm";
                 //altText is set based on Value
             }
 
-            if (!SupportsDenyMode)
+            if (!this.SupportsDenyMode)
             {
                 cssClass += " noDenyPerm";
             }
 
-            if (IsFullControl)
+            if (this.IsFullControl)
             {
                 cssClass += " fullControl";
             }
 
-            if (IsView && !Locked)
+            if (this.IsView && !this.Locked)
             {
                 cssClass += " view";
             }
 
-            if (!String.IsNullOrEmpty(PermissionKey) && !IsView && !IsFullControl)
+            if (!String.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
             {
-                cssClass += " " + PermissionKey.ToLowerInvariant();
+                cssClass += " " + this.PermissionKey.ToLowerInvariant();
             }
 
             writer.Write("<img src='{0}' alt='{1}' />", imagePath, altText);

@@ -20,8 +20,8 @@ namespace DotNetNuke.Common
 
         public SerializableKeyValuePair(TKey key, TValue value)
         {
-            Key = key;
-            Value = value;
+            this.Key = key;
+            this.Value = value;
         }
 
         public override string ToString()

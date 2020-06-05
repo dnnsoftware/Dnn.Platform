@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
 
-            _timeoutSeconds = GetTimeoutPerSlot();
+            this._timeoutSeconds = GetTimeoutPerSlot();
             var dbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
@@ -116,7 +116,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Preparing Check Points. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
-            PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
+            this.PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDateUtc ?? Constants.MinDbTime}] and [{exportDto.ToDateUtc:g}]");
@@ -152,7 +152,7 @@ namespace Dnn.ExportImport.Components.Engines
                             service.Result = result;
                             service.Repository = ctx;
                             service.CheckCancelled = CheckCancelledCallBack;
-                            service.CheckPointStageCallback = CheckpointCallback;
+                            service.CheckPointStageCallback = this.CheckpointCallback;
                             service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
 
                             if (service.CheckPoint == null)
@@ -166,7 +166,7 @@ namespace Dnn.ExportImport.Components.Engines
                                 };
 
                                 // persist the record in db
-                                CheckpointCallback(service);
+                                this.CheckpointCallback(service);
                             }
                             else if (service.CheckPoint.StartDate == Null.NullDate)
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
@@ -178,7 +178,7 @@ namespace Dnn.ExportImport.Components.Engines
                             }
                             finally
                             {
-                                AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
+                                this.AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
                             }
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
@@ -196,14 +196,14 @@ namespace Dnn.ExportImport.Components.Engines
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !TimeIsUp);
+                } while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(exportJob);
             }
 
-            if (TimeIsUp)
+            if (this.TimeIsUp)
             {
-                result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
+                result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
                     "Job will resume in the next scheduler iteration");
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
@@ -234,7 +234,7 @@ namespace Dnn.ExportImport.Components.Engines
         public void Import(ExportImportJob importJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
-            _timeoutSeconds = GetTimeoutPerSlot();
+            this._timeoutSeconds = GetTimeoutPerSlot();
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
@@ -301,7 +301,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
 
                 scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Preparing Check Points. JOB #{importJob.JobId}: {importJob.Name}</b>");
-                PrepareCheckPoints(importJob.JobId, parentServices, implementors, includedItems, checkpoints);
+                this.PrepareCheckPoints(importJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
                 var firstIteration = true;
                 AddJobToCache(importJob);
@@ -333,7 +333,7 @@ namespace Dnn.ExportImport.Components.Engines
                             service.Result = result;
                             service.Repository = ctx;
                             service.CheckCancelled = CheckCancelledCallBack;
-                            service.CheckPointStageCallback = CheckpointCallback;
+                            service.CheckPointStageCallback = this.CheckpointCallback;
                             service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly)
                                                  ?? new ExportImportChekpoint
                                                  {
@@ -345,7 +345,7 @@ namespace Dnn.ExportImport.Components.Engines
                                                  };
                             if (service.CheckPoint.StartDate == Null.NullDate)
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
-                            CheckpointCallback(service);
+                            this.CheckpointCallback(service);
 
                             try
                             {
@@ -353,7 +353,7 @@ namespace Dnn.ExportImport.Components.Engines
                             }
                             finally
                             {
-                                AddLogsToDatabase(importJob.JobId, result.CompleteLog);
+                                this.AddLogsToDatabase(importJob.JobId, result.CompleteLog);
                             }
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
@@ -371,12 +371,12 @@ namespace Dnn.ExportImport.Components.Engines
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !TimeIsUp);
+                } while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(importJob);
-                if (TimeIsUp)
+                if (this.TimeIsUp)
                 {
-                    result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
+                    result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress)
@@ -428,7 +428,7 @@ namespace Dnn.ExportImport.Components.Engines
                         };
 
                         // persist the record in db
-                        CheckpointCallback(service);
+                        this.CheckpointCallback(service);
                     }
                 }
 
@@ -459,10 +459,10 @@ namespace Dnn.ExportImport.Components.Engines
         private bool CheckpointCallback(BasePortableService service)
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
-            return TimeIsUp;
+            return this.TimeIsUp;
         }
 
-        private bool TimeIsUp => _stopWatch.Elapsed.TotalSeconds > _timeoutSeconds;
+        private bool TimeIsUp => this._stopWatch.Elapsed.TotalSeconds > this._timeoutSeconds;
 
         private static void AddJobToCache(ExportImportJob job)
         {

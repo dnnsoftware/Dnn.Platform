@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Journal
 
         public JournalControllerImpl()
         {
-            _dataService = JournalDataService.Instance;
+            this._dataService = JournalDataService.Instance;
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Journal
                 }
             }
 
-            using (IDataReader dr = _dataService.Journal_GetStatsForGroup(portalId, groupId))
+            using (IDataReader dr = this._dataService.Journal_GetStatsForGroup(portalId, groupId))
             {
                 while (dr.Read())
                 {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Journal
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
         {
-            var ji = GetJournalItem(portalId, currentUserId, journalId, !softDelete);
+            var ji = this.GetJournalItem(portalId, currentUserId, journalId, !softDelete);
             if (ji == null)
             {
                 return;
@@ -107,16 +107,16 @@ namespace DotNetNuke.Services.Journal
 
             if (softDelete)
             {
-                _dataService.Journal_SoftDelete(journalId);
+                this._dataService.Journal_SoftDelete(journalId);
             }
             else
             {
-                _dataService.Journal_Delete(journalId);
+                this._dataService.Journal_Delete(journalId);
             }
 
             if (groupId > 0)
             {
-                UpdateGroupStats(portalId, groupId);
+                this.UpdateGroupStats(portalId, groupId);
             }
 
             // queue remove journal from search index
@@ -140,8 +140,8 @@ namespace DotNetNuke.Services.Journal
             Image image = new Bitmap(fileContent);
             int thumbnailWidth = 400;
             int thumbnailHeight = 400;
-            GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
-            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
+            this.GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
+            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, this.ThumbnailCallback, IntPtr.Zero);
             var result = new MemoryStream();
             thumbnail.Save(result, image.RawFormat);
             return result;
@@ -152,12 +152,12 @@ namespace DotNetNuke.Services.Journal
             if (imageWidth >= imageHeight)
             {
                 thumbnailWidth = Math.Min(imageWidth, thumbnailWidth);
-                thumbnailHeight = GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
+                thumbnailHeight = this.GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
             }
             else
             {
                 thumbnailHeight = Math.Min(imageHeight, thumbnailHeight);
-                thumbnailWidth = GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
+                thumbnailWidth = this.GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
             }
         }
 
@@ -185,9 +185,9 @@ namespace DotNetNuke.Services.Journal
 
         private bool IsResizePhotosEnabled(ModuleInfo module)
         {
-            return GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
-                   GetBooleanSetting(AllowPhotosSetting, true, module) &&
-                   GetBooleanSetting(EditorEnabledSetting, true, module);
+            return this.GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
+                   this.GetBooleanSetting(AllowPhotosSetting, true, module) &&
+                   this.GetBooleanSetting(EditorEnabledSetting, true, module);
         }
         private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
         {            
@@ -315,8 +315,8 @@ namespace DotNetNuke.Services.Journal
                 var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
                 XmlElement xnode2 = xDoc.CreateElement("item");
-                xnode2.AppendChild(CreateElement(xDoc, "id", "-1"));
-                xnode2.AppendChild(CreateCDataElement(xDoc, "body", journalItem.Body));
+                xnode2.AppendChild(this.CreateElement(xDoc, "id", "-1"));
+                xnode2.AppendChild(this.CreateCDataElement(xDoc, "body", journalItem.Body));
                 xnode.AppendChild(xnode2);
                 xDoc.AppendChild(xnode);
                 XmlDeclaration xDec = xDoc.CreateXmlDeclaration("1.0", null, null);
@@ -352,9 +352,9 @@ namespace DotNetNuke.Services.Journal
                 journalData = null;
             }
 
-            PrepareSecuritySet(journalItem, currentUser);
+            this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = _dataService.Journal_Save(journalItem.PortalId,
+            journalItem.JournalId = this._dataService.Journal_Save(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
@@ -371,7 +371,7 @@ namespace DotNetNuke.Services.Journal
                                                      journalItem.CommentsDisabled,
                                                      journalItem.CommentsHidden);
 
-            var updatedJournalItem = GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
+            var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
             journalItem.DateCreated = updatedJournalItem.DateCreated;
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
             var cnt = new Content();
@@ -379,19 +379,19 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
-                _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
                 ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
-                _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
             if (journalItem.SocialGroupId > 0)
             {
                 try
                 {
-                    UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
+                    this.UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
                 }
                 catch (Exception exc)
                 {
@@ -430,8 +430,8 @@ namespace DotNetNuke.Services.Journal
                 var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
                 XmlElement xnode2 = xDoc.CreateElement("item");
-                xnode2.AppendChild(CreateElement(xDoc, "id", "-1"));
-                xnode2.AppendChild(CreateCDataElement(xDoc, "body", journalItem.Body));
+                xnode2.AppendChild(this.CreateElement(xDoc, "id", "-1"));
+                xnode2.AppendChild(this.CreateCDataElement(xDoc, "body", journalItem.Body));
                 xnode.AppendChild(xnode2);
                 xDoc.AppendChild(xnode);
                 XmlDeclaration xDec = xDoc.CreateXmlDeclaration("1.0", null, null);
@@ -468,9 +468,9 @@ namespace DotNetNuke.Services.Journal
                 journalData = null;
             }
 
-            PrepareSecuritySet(journalItem, currentUser);
+            this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = _dataService.Journal_Update(journalItem.PortalId,
+            journalItem.JournalId = this._dataService.Journal_Update(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
@@ -487,7 +487,7 @@ namespace DotNetNuke.Services.Journal
                                                      journalItem.CommentsDisabled,
                                                      journalItem.CommentsHidden);
 
-            var updatedJournalItem = GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
+            var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
             journalItem.DateCreated = updatedJournalItem.DateCreated;
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
 
@@ -495,19 +495,19 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.ContentItemId > 0)
             {
                 cnt.UpdateContentItem(journalItem, tabId, moduleId);
-                _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
                 ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
-                _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
             if (journalItem.SocialGroupId > 0)
             {
                 try
                 {
-                    UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
+                    this.UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
                 }
                 catch (Exception exc)
                 {
@@ -518,32 +518,32 @@ namespace DotNetNuke.Services.Journal
         
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
         {
-            return GetJournalItem(portalId, currentUserId, journalId, false, false);
+            return this.GetJournalItem(portalId, currentUserId, journalId, false, false);
         }
 
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
         {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
+            return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
         }
 
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
         {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
+            return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
         }
 
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
         {
-            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
+            return CBO.FillObject<JournalItem>(this._dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
         }
 
         public JournalItem GetJournalItemByKey(int portalId, string objectKey)
         {
-            return GetJournalItemByKey(portalId, objectKey, false, false);
+            return this.GetJournalItemByKey(portalId, objectKey, false, false);
         }
 
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
         {
-            return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
+            return this.GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
         }
 
         public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
@@ -552,16 +552,16 @@ namespace DotNetNuke.Services.Journal
             {
                 return null;
             }
-            return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
+            return CBO.FillObject<JournalItem>(this._dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
         public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
         {
             var userFolder = FolderManager.Instance.GetUserFolder(userInfo);
 
-            if (IsImageFile(fileName) && IsResizePhotosEnabled(module))
+            if (this.IsImageFile(fileName) && this.IsResizePhotosEnabled(module))
             {
-                using (var stream = GetJournalImageContent(fileContent))
+                using (var stream = this.GetJournalImageContent(fileContent))
                 {
                     return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
                 }
@@ -575,7 +575,7 @@ namespace DotNetNuke.Services.Journal
             var tabId = module == null ? Null.NullInteger : module.TabID;
             var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
 
-            SaveJournalItem(journalItem, tabId, tabModuleId);
+            this.SaveJournalItem(journalItem, tabId, tabModuleId);
         }
 
         public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
@@ -583,27 +583,27 @@ namespace DotNetNuke.Services.Journal
             var tabId = module == null ? Null.NullInteger : module.TabID;
             var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
 
-            UpdateJournalItem(journalItem, tabId, tabModuleId);
+            this.UpdateJournalItem(journalItem, tabId, tabModuleId);
         }
 
         public void DisableComments(int portalId, int journalId)
         {
-            _dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
+            this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
         }
 
         public void EnableComments(int portalId, int journalId)
         {
-            _dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
+            this._dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
         }
 
         public void HideComments(int portalId, int journalId)
         {
-            _dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
+            this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
         }
 
         public void ShowComments(int portalId, int journalId)
         {
-           _dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
+           this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
         }
 
         // Delete Journal Items
@@ -615,7 +615,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="journalId"></param>
         public void DeleteJournalItem(int portalId, int currentUserId, int journalId)
         {
-            DeleteJournalItem(portalId, currentUserId, journalId, false);
+            this.DeleteJournalItem(portalId, currentUserId, journalId, false);
         }
 
         /// <summary>
@@ -625,7 +625,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="objectKey"></param>
         public void DeleteJournalItemByKey(int portalId, string objectKey)
         {
-            _dataService.Journal_DeleteByKey(portalId, objectKey);
+            this._dataService.Journal_DeleteByKey(portalId, objectKey);
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="groupId"></param>
         public void DeleteJournalItemByGroupId(int portalId, int groupId)
         {
-            _dataService.Journal_DeleteByGroupId(portalId, groupId);
+            this._dataService.Journal_DeleteByGroupId(portalId, groupId);
         }
 
         /// <summary>
@@ -646,7 +646,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="journalId"></param>
         public void SoftDeleteJournalItem(int portalId, int currentUserId, int journalId)
         {
-            DeleteJournalItem(portalId, currentUserId, journalId, true);
+            this.DeleteJournalItem(portalId, currentUserId, journalId, true);
         }
 
         /// <summary>
@@ -656,7 +656,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="objectKey"></param>
         public void SoftDeleteJournalItemByKey(int portalId, string objectKey)
         {
-            _dataService.Journal_SoftDeleteByKey(portalId, objectKey);
+            this._dataService.Journal_SoftDeleteByKey(portalId, objectKey);
         }
 
         /// <summary>
@@ -666,19 +666,19 @@ namespace DotNetNuke.Services.Journal
         /// <param name="groupId"></param>
         public void SoftDeleteJournalItemByGroupId(int portalId, int groupId)
         {
-            _dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
+            this._dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
         }
 
         // Journal Comments
         public IList<CommentInfo> GetCommentsByJournalIds(List <int> journalIdList)
         {
             var journalIds = journalIdList.Aggregate("", (current, journalId) => current + journalId + ";");
-            return CBO.FillCollection<CommentInfo>(_dataService.Journal_Comment_ListByJournalIds(journalIds));
+            return CBO.FillCollection<CommentInfo>(this._dataService.Journal_Comment_ListByJournalIds(journalIds));
         }
 
         public void LikeJournalItem(int journalId, int userId, string displayName)
         {
-            _dataService.Journal_Like(journalId, userId, displayName);
+            this._dataService.Journal_Like(journalId, userId, displayName);
         }
 
         public void SaveComment(CommentInfo comment)
@@ -698,27 +698,27 @@ namespace DotNetNuke.Services.Journal
                 xml = comment.CommentXML.OuterXml;
             }
             
-            comment.CommentId = _dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
+            comment.CommentId = this._dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
             
-            var newComment = GetComment(comment.CommentId);
+            var newComment = this.GetComment(comment.CommentId);
             comment.DateCreated = newComment.DateCreated;
             comment.DateUpdated = newComment.DateUpdated;
         }
 
         public CommentInfo GetComment(int commentId)
         {
-            return CBO.FillObject<CommentInfo>(_dataService.Journal_Comment_Get(commentId));
+            return CBO.FillObject<CommentInfo>(this._dataService.Journal_Comment_Get(commentId));
         }
 
         public void DeleteComment(int journalId, int commentId)
         {
-            _dataService.Journal_Comment_Delete(journalId, commentId);
+            this._dataService.Journal_Comment_Delete(journalId, commentId);
             //UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
         public void LikeComment(int journalId, int commentId, int userId, string displayName)
         {
-            _dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
+            this._dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
         }
 
         #endregion
@@ -727,12 +727,12 @@ namespace DotNetNuke.Services.Journal
 
         public JournalTypeInfo GetJournalType(string journalType)
         {
-            return CBO.FillObject<JournalTypeInfo>(_dataService.Journal_Types_Get(journalType));
+            return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_Get(journalType));
         }
 
         public JournalTypeInfo GetJournalTypeById(int journalTypeId)
         {
-            return CBO.FillObject<JournalTypeInfo>(_dataService.Journal_Types_GetById(journalTypeId));
+            return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_GetById(journalTypeId));
         }
 
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
@@ -742,7 +742,7 @@ namespace DotNetNuke.Services.Journal
                                                                 DataCache.JournalTypesTimeOut, 
                                                                 DataCache.JournalTypesCachePriority, 
                                                                 portalId), 
-                                            c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
+                                            c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
         }
 
         #endregion
@@ -752,13 +752,13 @@ namespace DotNetNuke.Services.Journal
         [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void SaveJournalItem(JournalItem journalItem, int tabId)
         {
-            SaveJournalItem(journalItem, tabId, Null.NullInteger);
+            this.SaveJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
         [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void UpdateJournalItem(JournalItem journalItem, int tabId)
         {
-            UpdateJournalItem(journalItem, tabId, Null.NullInteger);
+            this.UpdateJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
         #endregion

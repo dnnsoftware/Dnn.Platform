@@ -101,7 +101,7 @@ namespace DotNetNuke.Entities.Host
         [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
         public void IsIPAddressBanned(string ipAddress)
         {
-            if (CheckIfBannedIPAddress(ipAddress))
+            if (this.CheckIfBannedIPAddress(ipAddress))
             {//should throw 403.6
             throw new HttpException(403, "");
             }
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Host
         public bool IsIPBanned(string ipAddress)
         {
 
-            return CheckIfBannedIPAddress(ipAddress);
+            return this.CheckIfBannedIPAddress(ipAddress);
         }
 
         private bool CheckIfBannedIPAddress(string ipAddress)
@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Host
                     if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
                     {
                         //log
-                        LogBannedIPAttempt(ipAddress);
+                        this.LogBannedIPAttempt(ipAddress);
                         return true;
 
                     }

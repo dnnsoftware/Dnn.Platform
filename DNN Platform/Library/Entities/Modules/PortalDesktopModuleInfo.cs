@@ -28,11 +28,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_desktopModule == null)
+                if (this._desktopModule == null)
                 {
-                    _desktopModule = DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(DesktopModuleID, PortalID) : new DesktopModuleInfo();
+                    this._desktopModule = this.DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID) : new DesktopModuleInfo();
                 }
-                return _desktopModule;
+                return this._desktopModule;
             }
         }
         [XmlIgnore]
@@ -44,11 +44,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_permissions == null)
+                if (this._permissions == null)
                 {
-                    _permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(PortalDesktopModuleID));
+                    this._permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
                 }
-                return _permissions;
+                return this._permissions;
             }
         }
 

@@ -25,14 +25,14 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalAliasInfo(PortalAliasInfo alias)
         {
-            HTTPAlias = alias.HTTPAlias;
-            PortalAliasID = alias.PortalAliasID;
-            PortalID = alias.PortalID;
-            IsPrimary = alias.IsPrimary;
-            Redirect = alias.Redirect;
-            BrowserType = alias.BrowserType;
-            CultureCode = alias.CultureCode;
-            Skin = alias.Skin;
+            this.HTTPAlias = alias.HTTPAlias;
+            this.PortalAliasID = alias.PortalAliasID;
+            this.PortalID = alias.PortalID;
+            this.IsPrimary = alias.IsPrimary;
+            this.Redirect = alias.Redirect;
+            this.BrowserType = alias.BrowserType;
+            this.CultureCode = alias.CultureCode;
+            this.Skin = alias.Skin;
         }
 
         #region Auto-Properties
@@ -53,24 +53,24 @@ namespace DotNetNuke.Entities.Portals
 
         public int KeyID
         {
-            get { return PortalAliasID; }
-            set { PortalAliasID = value; }
+            get { return this.PortalAliasID; }
+            set { this.PortalAliasID = value; }
         }
 
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
 
-            PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
-            IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
+            this.PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
+            this.IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
             var browserType = Null.SetNullString(dr["BrowserType"]);
-            BrowserType = String.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
+            this.BrowserType = String.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
                               ? BrowserTypes.Normal
                               : BrowserTypes.Mobile;
-            CultureCode = Null.SetNullString(dr["CultureCode"]);
-            Skin = Null.SetNullString(dr["Skin"]);
+            this.CultureCode = Null.SetNullString(dr["CultureCode"]);
+            this.Skin = Null.SetNullString(dr["Skin"]);
         }
 
         #endregion
@@ -99,26 +99,26 @@ namespace DotNetNuke.Entities.Portals
                     case "portalAlias":
                         break;
                     case "portalID":
-                        PortalID = reader.ReadElementContentAsInt();
+                        this.PortalID = reader.ReadElementContentAsInt();
                         break;
                     case "portalAliasID":
-                        PortalAliasID = reader.ReadElementContentAsInt();
+                        this.PortalAliasID = reader.ReadElementContentAsInt();
                         break;
                     case "HTTPAlias":
-                        HTTPAlias = reader.ReadElementContentAsString();
+                        this.HTTPAlias = reader.ReadElementContentAsString();
                         break;
                     case "skin":
-                        Skin = reader.ReadElementContentAsString();
+                        this.Skin = reader.ReadElementContentAsString();
                         break;
                     case "cultureCode":
-                        CultureCode = reader.ReadElementContentAsString();
+                        this.CultureCode = reader.ReadElementContentAsString();
                         break;
                     case "browserType":
                         string type = reader.ReadElementContentAsString();
-                        BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
+                        this.BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
                         break;
                     case "primary":
-                        IsPrimary = reader.ReadElementContentAsBoolean();
+                        this.IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
                     default:
                         if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
@@ -136,13 +136,13 @@ namespace DotNetNuke.Entities.Portals
             writer.WriteStartElement("portalAlias");
 
             //write out properties
-            writer.WriteElementString("portalID", PortalID.ToString());
-            writer.WriteElementString("portalAliasID", PortalAliasID.ToString());
-            writer.WriteElementString("HTTPAlias", HTTPAlias);
-            writer.WriteElementString("skin", Skin);
-            writer.WriteElementString("cultureCode", CultureCode);
-            writer.WriteElementString("browserType", BrowserType.ToString().ToLowerInvariant());
-            writer.WriteElementString("primary", IsPrimary.ToString().ToLowerInvariant());
+            writer.WriteElementString("portalID", this.PortalID.ToString());
+            writer.WriteElementString("portalAliasID", this.PortalAliasID.ToString());
+            writer.WriteElementString("HTTPAlias", this.HTTPAlias);
+            writer.WriteElementString("skin", this.Skin);
+            writer.WriteElementString("cultureCode", this.CultureCode);
+            writer.WriteElementString("browserType", this.BrowserType.ToString().ToLowerInvariant());
+            writer.WriteElementString("primary", this.IsPrimary.ToString().ToLowerInvariant());
 
             //Write end of main element
             writer.WriteEndElement();

@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Tabs
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             return existPermission != null && existPermission.AllowAccess;
         }
 
@@ -42,11 +42,11 @@ namespace DotNetNuke.Entities.Tabs
 
             if (publish)
             {
-                PublishTabInternal(tab);
+                this.PublishTabInternal(tab);
             }
             else
             {
-                UnpublishTabInternal(tab);
+                this.UnpublishTabInternal(tab);
             }
         }
 
@@ -77,15 +77,15 @@ namespace DotNetNuke.Entities.Tabs
         {
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             if (existPermission != null)
             {
                 tab.TabPermissions.Remove(existPermission);
             }
 
-            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
+            tab.TabPermissions.Add(this.GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
             TabPermissionController.SaveTabPermissions(tab);
-            ClearTabCache(tab);   
+            this.ClearTabCache(tab);   
         }
         
         private void UnpublishTabInternal(TabInfo tab)
@@ -98,7 +98,7 @@ namespace DotNetNuke.Entities.Tabs
                 tab.TabPermissions.Remove(tab.TabPermissions.Cast<TabPermissionInfo>().SingleOrDefault(p => p.TabPermissionID == tabPermissionId));
             }
             TabPermissionController.SaveTabPermissions(tab);
-            ClearTabCache(tab);
+            this.ClearTabCache(tab);
         }
 
         private void ClearTabCache(TabInfo tabInfo)

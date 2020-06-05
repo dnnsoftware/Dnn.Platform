@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Journal.Internal
 
         public InternalJournalControllerImpl()
         {
-            _dataService = JournalDataService.Instance;
+            this._dataService = JournalDataService.Instance;
         }
 
         #endregion
@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                            int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
                                                                                     profileId, rowIndex, maxRows));
         }
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                          int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
                                                                                   groupId, rowIndex, maxRows));
         }
 
@@ -48,18 +48,18 @@ namespace DotNetNuke.Services.Journal.Internal
                                                   int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(_dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
                                                                                     rowIndex, maxRows));
         }
         
         public void DeleteFilters(int portalId, int moduleId)
         {
-            _dataService.Journal_TypeFilters_Delete(portalId, moduleId);
+            this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);
         }
 
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
-            _dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
+            this._dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
         }
     }
 }

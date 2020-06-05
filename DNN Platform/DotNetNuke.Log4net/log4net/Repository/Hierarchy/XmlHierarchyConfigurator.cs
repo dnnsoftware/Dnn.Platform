@@ -66,8 +66,8 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public XmlHierarchyConfigurator(Hierarchy hierarchy) 
 		{
-			m_hierarchy = hierarchy;
-			m_appenderBag = new Hashtable();
+			this.m_hierarchy = hierarchy;
+			this.m_appenderBag = new Hashtable();
 		}
 
 		#endregion Public Instance Constructors
@@ -85,7 +85,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public void Configure(XmlElement element) 
 		{
-			if (element == null || m_hierarchy == null)
+			if (element == null || this.m_hierarchy == null)
 			{
                 return;
 			}
@@ -163,7 +163,7 @@ namespace log4net.Repository.Hierarchy
 			if (configUpdateMode == ConfigUpdateMode.Overwrite)
 			{
 				// Reset to original unset configuration
-				m_hierarchy.ResetConfiguration();
+				this.m_hierarchy.ResetConfiguration();
 				LogLog.Debug(declaringType, "Configuration reset before reading config.");
 			}
 
@@ -180,20 +180,20 @@ namespace log4net.Repository.Hierarchy
 
 					if (currentElement.LocalName == LOGGER_TAG)
 					{
-						ParseLogger(currentElement);
+						this.ParseLogger(currentElement);
 					} 
 					else if (currentElement.LocalName == CATEGORY_TAG)
 					{
 						// TODO: deprecated use of category
-						ParseLogger(currentElement);
+						this.ParseLogger(currentElement);
 					} 
 					else if (currentElement.LocalName == ROOT_TAG)
 					{
-						ParseRoot(currentElement);
+						this.ParseRoot(currentElement);
 					} 
 					else if (currentElement.LocalName == RENDERER_TAG)
 					{
-						ParseRenderer(currentElement);
+						this.ParseRenderer(currentElement);
 					}
 					else if (currentElement.LocalName == APPENDER_TAG)
 					{
@@ -203,7 +203,7 @@ namespace log4net.Repository.Hierarchy
 					else
 					{
 						// Read the param tags and set properties on the hierarchy
-						SetParameter(currentElement, m_hierarchy);
+						this.SetParameter(currentElement, this.m_hierarchy);
 					}
 				}
 			}
@@ -213,10 +213,10 @@ namespace log4net.Repository.Hierarchy
 			LogLog.Debug(declaringType, "Hierarchy Threshold [" + thresholdStr + "]");
 			if (thresholdStr.Length > 0 && thresholdStr != "null") 
 			{
-				Level thresholdLevel = (Level) ConvertStringTo(typeof(Level), thresholdStr);
+				Level thresholdLevel = (Level) this.ConvertStringTo(typeof(Level), thresholdStr);
 				if (thresholdLevel != null)
 				{
-					m_hierarchy.Threshold = thresholdLevel;
+					this.m_hierarchy.Threshold = thresholdLevel;
 				}
 				else
 				{
@@ -246,7 +246,7 @@ namespace log4net.Repository.Hierarchy
 		{	
 			string appenderName = appenderRef.GetAttribute(REF_ATTR);
 
-			IAppender appender = (IAppender)m_appenderBag[appenderName];
+			IAppender appender = (IAppender)this.m_appenderBag[appenderName];
 			if (appender != null) 
 			{
 				return appender;
@@ -275,10 +275,10 @@ namespace log4net.Repository.Hierarchy
 				} 
 				else
 				{
-					appender = ParseAppender(element);
+					appender = this.ParseAppender(element);
 					if (appender != null)
 					{
-						m_appenderBag[appenderName] = appender;
+						this.m_appenderBag[appenderName] = appender;
 					}
 					return appender;
 				}
@@ -328,7 +328,7 @@ namespace log4net.Repository.Hierarchy
 							{
 								LogLog.Debug(declaringType, "Attaching appender named [" + refName + "] to appender named [" + appender.Name + "].");
 
-								IAppender referencedAppender = FindAppenderByReference(currentElement);
+								IAppender referencedAppender = this.FindAppenderByReference(currentElement);
 								if (referencedAppender != null)
 								{
 									appenderContainer.AddAppender(referencedAppender);
@@ -342,7 +342,7 @@ namespace log4net.Repository.Hierarchy
 						else
 						{
 							// For all other tags we use standard set param method
-							SetParameter(currentElement, appender);
+							this.SetParameter(currentElement, appender);
 						}
 					}
 				}
@@ -380,7 +380,7 @@ namespace log4net.Repository.Hierarchy
 			string loggerName = loggerElement.GetAttribute(NAME_ATTR);
 
 			LogLog.Debug(declaringType, "Retrieving an instance of log4net.Repository.Logger for logger [" + loggerName + "].");
-			Logger log = m_hierarchy.GetLogger(loggerName) as Logger;
+			Logger log = this.m_hierarchy.GetLogger(loggerName) as Logger;
 
 			// Setting up a logger needs to be an atomic operation, in order
 			// to protect potential log operations while logger
@@ -391,7 +391,7 @@ namespace log4net.Repository.Hierarchy
 	
 				LogLog.Debug(declaringType, "Setting [" + log.Name + "] additivity to [" + additivity + "].");
 				log.Additivity = additivity;
-				ParseChildrenOfLoggerElement(loggerElement, log, false);
+				this.ParseChildrenOfLoggerElement(loggerElement, log, false);
 			}
 		}
 
@@ -406,11 +406,11 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		protected void ParseRoot(XmlElement rootElement) 
 		{
-			Logger root = m_hierarchy.Root;
+			Logger root = this.m_hierarchy.Root;
 			// logger configuration needs to be atomic
 			lock(root) 
 			{	
-				ParseChildrenOfLoggerElement(rootElement, root, true);
+				this.ParseChildrenOfLoggerElement(rootElement, root, true);
 			}
 		}
 
@@ -439,7 +439,7 @@ namespace log4net.Repository.Hierarchy
 	
 					if (currentElement.LocalName == APPENDER_REF_TAG)
 					{
-						IAppender appender = FindAppenderByReference(currentElement);
+						IAppender appender = this.FindAppenderByReference(currentElement);
 						string refName =  currentElement.GetAttribute(REF_ATTR);
 						if (appender != null)
 						{
@@ -453,11 +453,11 @@ namespace log4net.Repository.Hierarchy
 					} 
 					else if (currentElement.LocalName == LEVEL_TAG || currentElement.LocalName == PRIORITY_TAG) 
 					{
-						ParseLevel(currentElement, log, isRoot);	
+						this.ParseLevel(currentElement, log, isRoot);	
 					} 
 					else
 					{
-						SetParameter(currentElement, log);
+						this.SetParameter(currentElement, log);
 					}
 				}
 			}
@@ -497,7 +497,7 @@ namespace log4net.Repository.Hierarchy
 #if NETSTANDARD1_3
 					m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(this.GetType().GetTypeInfo().Assembly, renderedClassName, true, true), renderer);
 #else
-					m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(renderedClassName, true, true), renderer);
+					this.m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(renderedClassName, true, true), renderer);
 #endif
 				} 
 				catch(Exception e) 
@@ -601,7 +601,7 @@ namespace log4net.Repository.Hierarchy
 				propInfo = null;
 
 				// look for a method with the signature Add<property>(type)
-				methInfo = FindMethodInfo(targetType, name);
+				methInfo = this.FindMethodInfo(targetType, name);
 
 				if (methInfo != null)
 				{
@@ -647,8 +647,8 @@ namespace log4net.Repository.Hierarchy
 					{
 						// Expand environment variables in the string.
 					    IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-					    if (HasCaseInsensitiveEnvironment) {
-						environmentVariables = CreateCaseInsensitiveWrapper(environmentVariables);
+					    if (this.HasCaseInsensitiveEnvironment) {
+						environmentVariables = this.CreateCaseInsensitiveWrapper(environmentVariables);
 					    }
 						propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
 					}
@@ -710,7 +710,7 @@ namespace log4net.Repository.Hierarchy
 					// Now try to convert the string value to an acceptable type
 					// to pass to this property.
 
-					object convertedValue = ConvertStringTo(propertyType, propertyValue);
+					object convertedValue = this.ConvertStringTo(propertyType, propertyValue);
 					
 					// Check if we need to do an additional conversion
 					if (convertedValue != null && parsedObjectConversionTargetType != null)
@@ -769,7 +769,7 @@ namespace log4net.Repository.Hierarchy
 				{
 					object createdObject = null;
 
-					if (propertyType == typeof(string) && !HasAttributesOrElements(element))
+					if (propertyType == typeof(string) && !this.HasAttributesOrElements(element))
 					{
 						// If the property is a string and the element is empty (no attributes
 						// or child elements) then we special case the object value to an empty string.
@@ -787,7 +787,7 @@ namespace log4net.Repository.Hierarchy
 							defaultObjectType = propertyType;
 						}
 
-						createdObject = CreateObjectFromXml(element, defaultObjectType, propertyType);
+						createdObject = this.CreateObjectFromXml(element, defaultObjectType, propertyType);
 					}
 
 					if (createdObject == null)
@@ -939,7 +939,7 @@ namespace log4net.Repository.Hierarchy
 			if (typeof(Level) == type)
 			{
 				// Property wants a level
-				Level levelValue = m_hierarchy.LevelMap[value];
+				Level levelValue = this.m_hierarchy.LevelMap[value];
 
 				if (levelValue == null)
 				{
@@ -1043,7 +1043,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				if (currentNode.NodeType == XmlNodeType.Element) 
 				{
-					SetParameter((XmlElement)currentNode, createdObject);
+					this.SetParameter((XmlElement)currentNode, createdObject);
 				}
 			}
 

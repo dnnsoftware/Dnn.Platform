@@ -17,7 +17,7 @@ namespace DotNetNuke.HttpModules.Services
         {
             context.BeginRequest += InitDnn; 
 
-            context.PreSendRequestHeaders += OnPreSendRequestHeaders;
+            context.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
         private void OnPreSendRequestHeaders(object sender, EventArgs e)

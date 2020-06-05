@@ -11,19 +11,19 @@ namespace DotNetNuke.Web.Mvc
     {
         public MvcSettingsControl() : base("Settings")
         {
-            ExecuteModuleImmediately = false;
+            this.ExecuteModuleImmediately = false;
         }
 
         public void LoadSettings()
         {
-            ExecuteModule();
+            this.ExecuteModule();
         }
 
         public void UpdateSettings()
         {
-            ExecuteModule();
+            this.ExecuteModule();
 
-            ModuleController.Instance.UpdateModule(ModuleContext.Configuration);
+            ModuleController.Instance.UpdateModule(this.ModuleContext.Configuration);
         }
     }
 }

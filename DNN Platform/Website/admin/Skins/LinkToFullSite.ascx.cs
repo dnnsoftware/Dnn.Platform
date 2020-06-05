@@ -34,12 +34,12 @@ namespace DotNetNuke.UI.Skins.Controls
     	{
     		get
     		{
-    			if(string.IsNullOrEmpty(_localResourcesFile))
+    			if(string.IsNullOrEmpty(this._localResourcesFile))
     			{
-    				_localResourcesFile = Localization.GetResourceFile(this, MyFileName);
+    				this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
     			}
 
-    			return _localResourcesFile;
+    			return this._localResourcesFile;
     		}
     	}
 
@@ -52,8 +52,8 @@ namespace DotNetNuke.UI.Skins.Controls
             var redirectUrl = redirectionController.GetFullSiteUrl();
             if (!string.IsNullOrEmpty(redirectUrl))
             {                
-                lnkPortal.NavigateUrl = redirectUrl;
-                lnkPortal.Text = Localization.GetString("lnkPortal", LocalResourcesFile);
+                this.lnkPortal.NavigateUrl = redirectUrl;
+                this.lnkPortal.Text = Localization.GetString("lnkPortal", this.LocalResourcesFile);
             }
             else
             {

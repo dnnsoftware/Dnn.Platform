@@ -12,7 +12,7 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
 
         public BulkPagesException(string field, string message) : base(message)
         {
-            Field = field;
+            this.Field = field;
         }
     }
 }

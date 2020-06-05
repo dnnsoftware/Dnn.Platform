@@ -34,8 +34,8 @@ namespace DotNetNuke.UI.WebControls
 
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
         {
-            DataSource = dataSource;
-            FieldName = fieldName;
+            this.DataSource = dataSource;
+            this.FieldName = fieldName;
         }
 
         #region IEditorInfoAdapter Members
@@ -43,10 +43,10 @@ namespace DotNetNuke.UI.WebControls
         public EditorInfo CreateEditControl()
         {
             EditorInfo editInfo = null;
-            PropertyInfo objProperty = GetProperty(DataSource, FieldName);
+            PropertyInfo objProperty = this.GetProperty(this.DataSource, this.FieldName);
             if (objProperty != null)
             {
-                editInfo = GetEditorInfo(DataSource, objProperty);
+                editInfo = this.GetEditorInfo(this.DataSource, objProperty);
             }
             return editInfo;
         }
@@ -57,14 +57,14 @@ namespace DotNetNuke.UI.WebControls
             object oldValue = e.OldValue;
             object newValue = e.Value;
             bool _IsDirty = Null.NullBoolean;
-            if (DataSource != null)
+            if (this.DataSource != null)
             {
-                PropertyInfo objProperty = DataSource.GetType().GetProperty(e.Name);
+                PropertyInfo objProperty = this.DataSource.GetType().GetProperty(e.Name);
                 if (objProperty != null)
                 {
                     if ((!(ReferenceEquals(newValue, oldValue))) || changed)
                     {
-                        objProperty.SetValue(DataSource, newValue, null);
+                        objProperty.SetValue(this.DataSource, newValue, null);
                         _IsDirty = true;
                     }
                 }

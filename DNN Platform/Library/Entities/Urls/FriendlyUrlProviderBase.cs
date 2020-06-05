@@ -25,17 +25,17 @@ namespace DotNetNuke.Entities.Urls
                 switch (attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
-                        UrlFormat = UrlFormatType.SearchFriendly;
+                        this.UrlFormat = UrlFormatType.SearchFriendly;
                         break;
                     case "humanfriendly":
-                        UrlFormat = UrlFormatType.HumanFriendly;
+                        this.UrlFormat = UrlFormatType.HumanFriendly;
                         break;
                     case "advanced":
                     case "customonly":
-                        UrlFormat = UrlFormatType.Advanced;
+                        this.UrlFormat = UrlFormatType.Advanced;
                         break;
                     default:
-                        UrlFormat = UrlFormatType.SearchFriendly;
+                        this.UrlFormat = UrlFormatType.SearchFriendly;
                         break;
                 }
             }

@@ -68,7 +68,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
-            _localizedControls = new ArrayList();
+            this._localizedControls = new ArrayList();
         }
 
         #endregion
@@ -86,25 +86,25 @@ namespace DotNetNuke.Framework
             get
             {
                 //Set ViewState Persister to default (as defined in Base Class)
-                if (_persister == null)
+                if (this._persister == null)
                 {
-                    _persister = base.PageStatePersister;
+                    this._persister = base.PageStatePersister;
 
                     if (Globals.Status == Globals.UpgradeStatus.None)
                     {
                         switch (Host.PageStatePersister)
                         {
                             case "M":
-                                _persister = new CachePageStatePersister(this);
+                                this._persister = new CachePageStatePersister(this);
                                 break;
                             case "D":
-                                _persister = new DiskPageStatePersister(this);
+                                this._persister = new DiskPageStatePersister(this);
                                 break;
                         }
                     }
                 }
 
-                return _persister;
+                return this._persister;
             }
         }
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return _htmlAttributes;
+                return this._htmlAttributes;
             }
         }
 
@@ -132,7 +132,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return _pageCulture ?? (_pageCulture = Localization.GetPageLocale(PortalSettings));
+                return this._pageCulture ?? (this._pageCulture = Localization.GetPageLocale(this.PortalSettings));
             }
         }
 
@@ -141,20 +141,20 @@ namespace DotNetNuke.Framework
             get
             {
                 string fileRoot;
-                var page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
-                if (String.IsNullOrEmpty(_localResourceFile))
+                var page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
+                if (String.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = string.Concat(TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
+                    fileRoot = string.Concat(this.TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -171,7 +171,7 @@ namespace DotNetNuke.Framework
 
         private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
         {
-            if (Request.QueryString["error"] != null)
+            if (this.Request.QueryString["error"] != null)
             {
                 url += string.Concat((url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"), "error=terminate");
             }
@@ -180,7 +180,7 @@ namespace DotNetNuke.Framework
                 url += string.Concat(
                     (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"),
                     "error=",
-                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message))
+                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message))
                 );
                 if (!Globals.IsAdminControl() && hideContent)
                 {
@@ -193,27 +193,27 @@ namespace DotNetNuke.Framework
 
         private bool IsViewStateFailure(Exception e)
         {
-            return !User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
+            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
         }
 
         private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
         {
             foreach (Control c in controls)
             {
-                ProcessControl(c, affectedControls, true, resourceFileRoot);
-                LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
+                this.ProcessControl(c, affectedControls, true, resourceFileRoot);
+                this.LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
             }
         }
 
         private void LogDnnTrace(string origin, string action, string message)
         {
             var tabId = -1;
-            if (PortalSettings?.ActiveTab != null)
+            if (this.PortalSettings?.ActiveTab != null)
             {
-                tabId = PortalSettings.ActiveTab.TabID;
+                tabId = this.PortalSettings.ActiveTab.TabID;
             }
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
 
         #endregion
@@ -224,18 +224,18 @@ namespace DotNetNuke.Framework
         {
             if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
             {
-                ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
             }
         }
 
         protected override void OnError(EventArgs e)
         {
             base.OnError(e);
-            Exception exc = Server.GetLastError();
+            Exception exc = this.Server.GetLastError();
             Logger.Fatal("An error has occurred while loading page.", exc);
 
             string strURL = Globals.ApplicationURL();
-            if (exc is HttpException && !IsViewStateFailure(exc))
+            if (exc is HttpException && !this.IsViewStateFailure(exc))
             {
                 try
                 {
@@ -243,12 +243,12 @@ namespace DotNetNuke.Framework
                     var statusCode = (exc as HttpException).GetHttpCode();
                     if (statusCode == 404)
                     {
-                        UrlUtils.Handle404Exception(Response, PortalSettings);
+                        UrlUtils.Handle404Exception(this.Response, this.PortalSettings);
                     }
 
-                    if (PortalSettings?.ErrorPage500 != -1)
+                    if (this.PortalSettings?.ErrorPage500 != -1)
                     {
-                        var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc,
+                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
                             false);
                         HttpContext.Current.Response.Redirect(url);
                     }
@@ -266,7 +266,7 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            strURL = GetErrorUrl(strURL, exc);
+            strURL = this.GetErrorUrl(strURL, exc);
             Exceptions.ProcessPageLoadException(exc, strURL);
         }
 
@@ -275,7 +275,7 @@ namespace DotNetNuke.Framework
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
             if (!isInstallPage)
             {
-                Localization.SetThreadCultures(PageCulture, PortalSettings);
+                Localization.SetThreadCultures(this.PageCulture, this.PortalSettings);
             }
 
             if (ScriptManager.GetCurrent(this) == null)
@@ -319,22 +319,22 @@ namespace DotNetNuke.Framework
             
             if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
-                ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(Page);
+                ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
             }
 
-            RegisterAjaxScript();
+            this.RegisterAjaxScript();
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            LogDnnTrace("PageBase.Render", "Start", $"{Page.Request.Url.AbsoluteUri}");
+            this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
 
-            IterateControls(Controls, _localizedControls, LocalResourceFile);
-            RemoveKeyAttribute(_localizedControls);
+            this.IterateControls(this.Controls, this._localizedControls, this.LocalResourceFile);
+            RemoveKeyAttribute(this._localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
 
-            LogDnnTrace("PageBase.Render", "End", $"{Page.Request.Url.AbsoluteUri}");            
+            this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");            
         }
 
 
@@ -424,7 +424,7 @@ namespace DotNetNuke.Framework
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))
                         continue;
-                    var resolvedUrl = Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
+                    var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
                     value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
                 }
                 linkButton.Text = value;
@@ -502,7 +502,7 @@ namespace DotNetNuke.Framework
             {
                 //Translation starts here ....
                 var value = Localization.GetString(key, resourceFileRoot);
-                LocalizeControl(control, value);
+                this.LocalizeControl(control, value);
             }
 
             //Translate listcontrol items here 
@@ -536,7 +536,7 @@ namespace DotNetNuke.Framework
             {
                 if (image.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
-                    image.ImageUrl = Page.ResolveUrl(image.ImageUrl);
+                    image.ImageUrl = this.Page.ResolveUrl(image.ImageUrl);
                 }
 
                 //Check for IconKey
@@ -556,7 +556,7 @@ namespace DotNetNuke.Framework
             {
                 if (htmlImage.Src.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
-                    htmlImage.Src = Page.ResolveUrl(htmlImage.Src);
+                    htmlImage.Src = this.Page.ResolveUrl(htmlImage.Src);
                 }
 
                 //Check for IconKey
@@ -576,11 +576,11 @@ namespace DotNetNuke.Framework
             {
                 if ((ctrl.NavigateUrl.IndexOf("~", StringComparison.Ordinal) != -1))
                 {
-                    ctrl.NavigateUrl = Page.ResolveUrl(ctrl.NavigateUrl);
+                    ctrl.NavigateUrl = this.Page.ResolveUrl(ctrl.NavigateUrl);
                 }
                 if ((ctrl.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1))
                 {
-                    ctrl.ImageUrl = Page.ResolveUrl(ctrl.ImageUrl);
+                    ctrl.ImageUrl = this.Page.ResolveUrl(ctrl.ImageUrl);
                 }
 
                 //Check for IconKey
@@ -606,18 +606,18 @@ namespace DotNetNuke.Framework
                     var pv = pi.GetValue(control, null);
 
                     //If controls has a LocalResourceFile property use this, otherwise pass the resource file root
-                    IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
+                    this.IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
                 }
                 else
                 {
                     //Pass Resource File Root through
-                    IterateControls(control.Controls, affectedControls, resourceFileRoot);
+                    this.IterateControls(control.Controls, affectedControls, resourceFileRoot);
                 }
             }
             else
             {
                 //Get Resource File Root from Controls LocalResourceFile Property
-                IterateControls(control.Controls, affectedControls, objModuleControl.LocalResourceFile);
+                this.IterateControls(control.Controls, affectedControls, objModuleControl.LocalResourceFile);
             }
         }
 

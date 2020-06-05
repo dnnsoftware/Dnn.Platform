@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 			get
 			{
                 return string.Format("~/DesktopModules/{0}/App_LocalResources/",
-                    DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", PortalSettings.PortalId).FolderName);
+                    DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId).FolderName);
 			}
 		}
         #endregion
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var subscriptions = from s in SubscriptionController.Instance.GetUserSubscriptions(UserInfo, PortalSettings.PortalId)
+                var subscriptions = from s in SubscriptionController.Instance.GetUserSubscriptions(this.UserInfo, this.PortalSettings.PortalId)
                                     select GetSubscriptionViewModel(s);
 
                 List<SubscriptionViewModel> sortedList;
@@ -92,12 +92,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         TotalResults = sortedList.Count()
                     };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -110,19 +110,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var userPreferencesController = UserPreferencesController.Instance;
                 var userPreference = new UserPreference
                     {
-                        PortalId = UserInfo.PortalID,
-                        UserId = UserInfo.UserID,
+                        PortalId = this.UserInfo.PortalID,
+                        UserId = this.UserInfo.UserID,
                         MessagesEmailFrequency = (Frequency) post.MsgFreq,
                         NotificationsEmailFrequency = (Frequency) post.NotifyFreq
                     };
                 userPreferencesController.SetUserPreference(userPreference);
                 
-                return Request.CreateResponse(HttpStatusCode.OK, userPreferencesController.GetUserPreference(UserInfo));
+                return this.Request.CreateResponse(HttpStatusCode.OK, userPreferencesController.GetUserPreference(this.UserInfo));
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -132,19 +132,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var sub = SubscriptionController.Instance.GetUserSubscriptions(UserInfo, PortalSettings.PortalId)
+                var sub = SubscriptionController.Instance.GetUserSubscriptions(this.UserInfo, this.PortalSettings.PortalId)
                                           .SingleOrDefault(s => s.SubscriptionId == subscription.SubscriptionId);
                 if (sub != null)
                 {
                     SubscriptionController.Instance.DeleteSubscription(sub);                    
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
+                return this.Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -156,12 +156,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 			{
 				if (!string.IsNullOrEmpty(culture))
 				{
-					Localization.SetThreadCultures(new CultureInfo(culture), PortalSettings);
+					Localization.SetThreadCultures(new CultureInfo(culture), this.PortalSettings);
 				}
 
 				var dictionary = new Dictionary<string, string>();
                 				
-			    var resourcesPath = LocalizationFolder;
+			    var resourcesPath = this.LocalizationFolder;
 				var files =
 					Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();
 
@@ -175,13 +175,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 					dictionary.Add(kvp.Key, kvp.Value);
 				}
 
-				return Request.CreateResponse(HttpStatusCode.OK, new { Table = dictionary });
+				return this.Request.CreateResponse(HttpStatusCode.OK, new { Table = dictionary });
 			}
 			catch (Exception ex)
 			{
 				Exceptions.LogException(ex);
 
-				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+				return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
 			}
 		}
         #endregion

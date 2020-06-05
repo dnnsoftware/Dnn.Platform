@@ -165,7 +165,7 @@ namespace log4net.ObjectRenderer
 			Array objArray = obj as Array;
 			if (objArray != null)
 			{
-				RenderArray(rendererMap, objArray, writer);
+				this.RenderArray(rendererMap, objArray, writer);
 				return;
 			}
 
@@ -190,24 +190,24 @@ namespace log4net.ObjectRenderer
 				IDictionary objDictionary = obj as IDictionary;
 				if (objDictionary != null)
 				{
-					RenderEnumerator(rendererMap, objDictionary.GetEnumerator(), writer);
+					this.RenderEnumerator(rendererMap, objDictionary.GetEnumerator(), writer);
 					return;
 				}
 
-				RenderEnumerator(rendererMap, objEnumerable.GetEnumerator(), writer);
+				this.RenderEnumerator(rendererMap, objEnumerable.GetEnumerator(), writer);
 				return;
 			}
 
 			IEnumerator objEnumerator = obj as IEnumerator;
 			if (objEnumerator != null)
 			{
-				RenderEnumerator(rendererMap, objEnumerator, writer);
+				this.RenderEnumerator(rendererMap, objEnumerator, writer);
 				return;
 			}
 			
 			if (obj is DictionaryEntry)
 			{
-				RenderDictionaryEntry(rendererMap, (DictionaryEntry)obj, writer);
+				this.RenderDictionaryEntry(rendererMap, (DictionaryEntry)obj, writer);
 				return;
 			}
 

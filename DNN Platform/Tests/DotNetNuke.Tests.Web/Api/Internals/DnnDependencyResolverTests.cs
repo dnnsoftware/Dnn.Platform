@@ -25,38 +25,38 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             services.AddSingleton<IScopeAccessor>(sp => new FakeScopeAccessor(sp.CreateScope()));
             services.AddScoped(typeof(ITestService), typeof(TestService));
 
-            _serviceProvider = services.BuildServiceProvider();
-            _dependencyResolver = new DnnDependencyResolver(_serviceProvider);
+            this._serviceProvider = services.BuildServiceProvider();
+            this._dependencyResolver = new DnnDependencyResolver(this._serviceProvider);
         }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            _dependencyResolver = null;
+            this._dependencyResolver = null;
 
-            if (_serviceProvider is IDisposable disposable)
+            if (this._serviceProvider is IDisposable disposable)
                 disposable.Dispose();
 
-            _serviceProvider = null;
+            this._serviceProvider = null;
         }
 
         [Test]
         public void NotNull()
         {
-            Assert.NotNull(_dependencyResolver);
+            Assert.NotNull(this._dependencyResolver);
         }
 
         [Test]
         public void IsOfTypeDnnDependencyResolver()
         {
-            Assert.IsInstanceOf<DnnDependencyResolver>(_dependencyResolver);
+            Assert.IsInstanceOf<DnnDependencyResolver>(this._dependencyResolver);
         }
 
         [Test]
         public void GetTestService()
         {
             var expected = new TestService();
-            var actual = _dependencyResolver.GetService(typeof(ITestService));
+            var actual = this._dependencyResolver.GetService(typeof(ITestService));
 
             Assert.NotNull(actual);
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         public void GetTestServices()
         {
             var expected = new TestService();
-            var actual = _dependencyResolver.GetServices(typeof(ITestService)).ToArray();
+            var actual = this._dependencyResolver.GetServices(typeof(ITestService)).ToArray();
 
             Assert.NotNull(actual);
             Assert.AreEqual(1, actual.Length);
@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void BeginScope()
         {
-            var actual = _dependencyResolver.BeginScope();
+            var actual = this._dependencyResolver.BeginScope();
 
             Assert.NotNull(actual);
             Assert.IsInstanceOf<DnnDependencyResolver>(actual);
@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void BeginScope_GetService()
         {
-            var scope = _dependencyResolver.BeginScope();
+            var scope = this._dependencyResolver.BeginScope();
 
             var expected = new TestService();
             var actual = scope.GetService(typeof(ITestService));
@@ -97,7 +97,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         [Test]
         public void BeginScope_GetServices()
         {
-            var scope = _dependencyResolver.BeginScope();
+            var scope = this._dependencyResolver.BeginScope();
 
             var expected = new TestService();
             var actual = scope.GetServices(typeof(ITestService)).ToArray();
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
             public IServiceScope GetScope()
             {
-                return fakeScope;
+                return this.fakeScope;
             }
         }
     }

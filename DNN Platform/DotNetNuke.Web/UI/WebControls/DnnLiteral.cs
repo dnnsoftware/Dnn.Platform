@@ -23,12 +23,12 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            LocalizeStrings();
+            this.LocalizeStrings();
             base.Render(writer);
         }
 
@@ -40,11 +40,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _Localize;
+                return this._Localize;
             }
             set
             {
-                _Localize = value;
+                this._Localize = value;
             }
         }
 
@@ -52,11 +52,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if ((this.Localize))
             {
-                if ((!string.IsNullOrEmpty(Text)))
+                if ((!string.IsNullOrEmpty(this.Text)))
                 {
-                    Text = Localization.GetString(Text, LocalResourceFile);
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
                 }
             }
         }

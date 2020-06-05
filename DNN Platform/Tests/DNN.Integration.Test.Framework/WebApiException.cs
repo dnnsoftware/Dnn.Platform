@@ -23,13 +23,13 @@ namespace DNN.Integration.Test.Framework
         public WebApiException(Exception innerException, HttpResponseMessage result)
             : base(innerException.Message, innerException)
         {
-            Result = result;
+            this.Result = result;
         }
 
         public WebApiException(Exception innerException, HttpResponseMessage result, string body)
             : this(innerException, result)
         {
-            Body = body;
+            this.Body = body;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace DNN.Integration.Test.Framework
 
         public dynamic BodyAsJson()
         {
-            return JsonConvert.DeserializeObject<JContainer>(Body);
+            return JsonConvert.DeserializeObject<JContainer>(this.Body);
         }
     }
 }

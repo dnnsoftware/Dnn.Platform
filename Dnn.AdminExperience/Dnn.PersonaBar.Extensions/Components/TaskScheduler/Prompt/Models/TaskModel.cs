@@ -23,11 +23,11 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         }
         public TaskModel(ScheduleItem item):base(item)
         {
-            NextStart = item.NextStart.ToPromptLongDateString();
-            CatchUp = item.CatchUpEnabled;
-            Created = item.CreatedOnDate.ToPromptLongDateString();
-            StartDate = item.ScheduleStartDate.ToPromptLongDateString();
-            TypeName = item.TypeFullName;
+            this.NextStart = item.NextStart.ToPromptLongDateString();
+            this.CatchUp = item.CatchUpEnabled;
+            this.Created = item.CreatedOnDate.ToPromptLongDateString();
+            this.StartDate = item.ScheduleStartDate.ToPromptLongDateString();
+            this.TypeName = item.TypeFullName;
         }
         #endregion
     }

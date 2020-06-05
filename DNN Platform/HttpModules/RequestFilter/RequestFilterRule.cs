@@ -32,11 +32,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         /// <param name="location"></param>
         public RequestFilterRule(string serverVariable, string values, RequestFilterOperatorType op, RequestFilterRuleType action, string location)
         {
-            _ServerVariable = serverVariable;
-            SetValues(values, op);
-            _Operator = op;
-            _Action = action;
-            _Location = location;
+            this._ServerVariable = serverVariable;
+            this.SetValues(values, op);
+            this._Operator = op;
+            this._Action = action;
+            this._Location = location;
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _ServerVariable;
+                return this._ServerVariable;
             }
             set
             {
-                _ServerVariable = value;
+                this._ServerVariable = value;
             }
         }
 
@@ -62,11 +62,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Values;
+                return this._Values;
             }
             set
             {
-                _Values = value;
+                this._Values = value;
             }
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return string.Join(" ", _Values.ToArray());
+                return string.Join(" ", this._Values.ToArray());
             }
         }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Action;
+                return this._Action;
             }
             set
             {
-                _Action = value;
+                this._Action = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Operator;
+                return this._Operator;
             }
             set
             {
-                _Operator = value;
+                this._Operator = value;
             }
         }
 
@@ -106,41 +106,41 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Location;
+                return this._Location;
             }
             set
             {
-                _Location = value;
+                this._Location = value;
             }
         }
 
         public void SetValues(string values, RequestFilterOperatorType op)
         {
-            _Values.Clear();
+            this._Values.Clear();
             if ((op != RequestFilterOperatorType.Regex))
             {
                 string[] vals = values.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)
                 {
-                    _Values.Add(value.ToUpperInvariant());
+                    this._Values.Add(value.ToUpperInvariant());
                 }
             }
             else
             {
-                _Values.Add(values);
+                this._Values.Add(values);
             }
         }
 
         public bool Matches(string ServerVariableValue)
         {
-            switch (Operator)
+            switch (this.Operator)
             {
                 case RequestFilterOperatorType.Equal:
-                    return Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return this.Values.Contains(ServerVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.NotEqual:
-                    return !Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return !this.Values.Contains(ServerVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.Regex:
-                    return Regex.IsMatch(ServerVariableValue, Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    return Regex.IsMatch(ServerVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
             return false;
         }
@@ -148,15 +148,15 @@ namespace DotNetNuke.HttpModules.RequestFilter
         public void Execute()
         {
             HttpResponse response = HttpContext.Current.Response;
-            switch (Action)
+            switch (this.Action)
             {
                 case RequestFilterRuleType.Redirect:
-                    response.Redirect(Location, true);
+                    response.Redirect(this.Location, true);
                     break;
                 case RequestFilterRuleType.PermanentRedirect:
                     response.StatusCode = 301;
                     response.Status = "301 Moved Permanently";
-                    response.RedirectLocation = Location;
+                    response.RedirectLocation = this.Location;
                     response.End();
                     break;
                 case RequestFilterRuleType.NotFound:

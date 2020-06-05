@@ -21,16 +21,16 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
 
-            result.Severity = EnableTrace() ? SeverityEnum.Failure : SeverityEnum.Pass;
+            result.Severity = this.EnableTrace() ? SeverityEnum.Failure : SeverityEnum.Pass;
 
             return result;
         }
 
         private bool EnableTrace()
         {
-            return PageLevelTraceEnabled() || AppLevelTraceEnabled();
+            return this.PageLevelTraceEnabled() || this.AppLevelTraceEnabled();
         }
 
         private bool PageLevelTraceEnabled()

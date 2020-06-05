@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.UserProfile
 
         public void ProcessRequest(HttpContext context)
         {
-            SetupCulture();
+            this.SetupCulture();
 
             var userId = -1;
             var width = 55;
@@ -71,16 +71,16 @@ namespace DotNetNuke.Services.UserProfile
             if (width > 128) { width = 128; }
 
            
-            CalculateSize(ref height, ref width, ref size);
+            this.CalculateSize(ref height, ref width, ref size);
 
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
             IFileInfo photoFile = null;
             var photoLoaded = false;
-            if (user != null && TryGetPhotoFile(user, out photoFile))
+            if (user != null && this.TryGetPhotoFile(user, out photoFile))
             {
-                if (!IsImageExtension(photoFile.Extension))
+                if (!this.IsImageExtension(photoFile.Extension))
                 {
 	                try
 	                {

@@ -32,21 +32,21 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (this.CheckPoint.Stage >= 1)
                 return;
 
             //Create Zip File to hold files
-            var skip = GetCurrentSkip();
+            var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalTemplatesExported = 0;
             var portalId = exportJob.PortalId;
             try
             {
-                var templatesFile = string.Format(_templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var templatesFile = string.Format(this._templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
-                if (CheckPoint.Stage == 0)
+                if (this.CheckPoint.Stage == 0)
                 {
                     var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
                     var toDate = exportDto.ToDateUtc.ToLocalTime();
@@ -61,63 +61,63 @@ namespace Dnn.ExportImport.Components.Services
                     var totalTemplates = templates.Count;
 
                     //Update the total items count in the check points. This should be updated only once.
-                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalTemplates : CheckPoint.TotalItems;
-                    if (CheckPointStageCallback(this)) return;
+                    this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
+                    if (this.CheckPointStageCallback(this)) return;
 
                     foreach (var template in templates)
                     {
-                        Repository.CreateItem(template, null);
+                        this.Repository.CreateItem(template, null);
                         totalTemplatesExported += 1;
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
                                            (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(
-                            portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(template), templatesFile,
+                            portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(template), templatesFile,
                             folderOffset);
 
-                        CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalTemplates;
+                        this.CheckPoint.ProcessedItems++;
+                        this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalTemplates;
                         currentIndex++;
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                     }
-                    CheckPoint.Stage++;
+                    this.CheckPoint.Stage++;
                     currentIndex = 0;
-                    CheckPoint.Completed = true;
-                    CheckPoint.Progress = 100;
+                    this.CheckPoint.Completed = true;
+                    this.CheckPoint.Progress = 100;
                 }
             }
             finally
             {
-                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
-                CheckPointStageCallback(this);
-                Result.AddSummary("Exported Templates", totalTemplatesExported.ToString());
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPointStageCallback(this);
+                this.Result.AddSummary("Exported Templates", totalTemplatesExported.ToString());
             }
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 2 || CheckPoint.Completed)
+            if (this.CheckPoint.Stage >= 2 || this.CheckPoint.Completed)
                 return;
 
             var portalId = importJob.PortalId;
-            var templatesFile = string.Format(_templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
-            var totalTemplates = GetImportTotal();
+            var templatesFile = string.Format(this._templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var totalTemplates = this.GetImportTotal();
 
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalTemplates : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
+            if (this.CheckPointStageCallback(this)) return;
 
-            if (CheckPoint.Stage == 0)
+            if (this.CheckPoint.Stage == 0)
             {
                 if (!File.Exists(templatesFile))
                 {
-                    Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
+                    this.Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
                         ReportLevel.Warn);
-                    CheckPoint.Completed = true;
-                    CheckPointStageCallback(this);
+                    this.CheckPoint.Completed = true;
+                    this.CheckPointStageCallback(this);
                 }
                 else
                 {
@@ -126,30 +126,30 @@ namespace Dnn.ExportImport.Components.Services
                     CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
 
-                    Result.AddSummary("Imported templates", totalTemplates.ToString());
-                    CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
-                    CheckPoint.Progress = 90;
-                    CheckPoint.TotalItems = totalTemplates;
-                    CheckPoint.ProcessedItems = totalTemplates;
-                    if (CheckPointStageCallback(this)) return;
+                    this.Result.AddSummary("Imported templates", totalTemplates.ToString());
+                    this.CheckPoint.Stage++;
+                    this.CheckPoint.StageData = null;
+                    this.CheckPoint.Progress = 90;
+                    this.CheckPoint.TotalItems = totalTemplates;
+                    this.CheckPoint.ProcessedItems = totalTemplates;
+                    if (this.CheckPointStageCallback(this)) return;
                 }
             }
-            if (CheckPoint.Stage == 1)
+            if (this.CheckPoint.Stage == 1)
             {
                 Func<ExportPageTemplate, object> predicate = x => x.Folder;
-                var templates = Repository.GetAllItems(predicate).Select(x => x.Folder).Distinct();
+                var templates = this.Repository.GetAllItems(predicate).Select(x => x.Folder).Distinct();
                 templates.ForEach(x => FolderManager.Instance.Synchronize(importJob.PortalId, x));
-                CheckPoint.Stage++;
-                CheckPoint.Completed = true;
-                CheckPoint.Progress = 100;
-                CheckPointStageCallback(this);
+                this.CheckPoint.Stage++;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Progress = 100;
+                this.CheckPointStageCallback(this);
             }
         }
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportPageTemplate>();
+            return this.Repository.GetCount<ExportPageTemplate>();
         }
 
         private string GetActualFileName(ExportPageTemplate objFile)
@@ -161,9 +161,9 @@ namespace Dnn.ExportImport.Components.Services
 
         private int GetCurrentSkip()
         {
-            if (!string.IsNullOrEmpty(CheckPoint.StageData))
+            if (!string.IsNullOrEmpty(this.CheckPoint.StageData))
             {
-                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
+                dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;

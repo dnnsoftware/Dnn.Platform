@@ -30,11 +30,11 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             get
             {
-                return _rules;
+                return this._rules;
             }
             set
             {
-                _rules = value;
+                this._rules = value;
             }
         }
 

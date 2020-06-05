@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Packages
     {
         public PackageTypeMemberNameFixer()
         {
-            PackageType = string.Empty;
+            this.PackageType = string.Empty;
         }
 
         public string PackageType { get; set; }

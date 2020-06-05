@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Scheduling
                                                                           scheduleItem.FriendlyName,
                                                                           scheduleItem.ScheduleStartDate);
             //Add schedule to queue
-            RunScheduleItemNow(scheduleItem);
+            this.RunScheduleItemNow(scheduleItem);
 
             //Return Id
             return scheduleItem.ScheduleID;
@@ -166,8 +166,8 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void ReStart(string sourceOfRestart)
         {
-            Halt(sourceOfRestart);
-            StartAndWaitForResponse();
+            this.Halt(sourceOfRestart);
+            this.StartAndWaitForResponse();
         }
 
         public override void RunEventSchedule(EventName eventName)
@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void RunScheduleItemNow(ScheduleItem scheduleItem)
         {
-            RunScheduleItemNow(scheduleItem, false);
+            this.RunScheduleItemNow(scheduleItem, false);
         }
 
         public override void Start()
@@ -217,14 +217,14 @@ namespace DotNetNuke.Services.Scheduling
         {
             if (Enabled)
             {
-                var newThread = new Thread(Start) {IsBackground = true};
+                var newThread = new Thread(this.Start) {IsBackground = true};
                 newThread.Start();
 
                 //wait for up to 30 seconds for thread
                 //to start up
                 for (int i = 0; i <= 30; i++)
                 {
-                    if (GetScheduleStatus() != ScheduleStatus.STOPPED)
+                    if (this.GetScheduleStatus() != ScheduleStatus.STOPPED)
                     {
                         return;
                     }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Scheduling
             //save item
             SchedulingController.UpdateSchedule(scheduleItem);
             //Update items that are already scheduled
-            var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
+            var futureHistory = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 
             var scheduleItemStart = scheduleItem.ScheduleStartDate > DateTime.Now
                                         ? scheduleItem.ScheduleStartDate
@@ -258,14 +258,14 @@ namespace DotNetNuke.Services.Scheduling
 
 
             //Add schedule to queue
-            RunScheduleItemNow(scheduleItem);
+            this.RunScheduleItemNow(scheduleItem);
         }
 
         //DNN-5001 Possibility to stop already running tasks
         public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
         {
             //get ScheduleHistoryItem of the running task
-            var runningscheduleHistoryItem = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
+            var runningscheduleHistoryItem = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
             Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem, runningscheduleHistoryItem);
         }
 

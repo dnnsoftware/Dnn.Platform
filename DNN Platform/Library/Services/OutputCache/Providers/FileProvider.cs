@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             string cacheFolder = GetCacheFolder(portalId);
             if (!(string.IsNullOrEmpty(cacheFolder)))
             {
-                PurgeCache(cacheFolder);
+                this.PurgeCache(cacheFolder);
             }
         }
 
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
-                    if (IsFileExpired(file))
+                    if (this.IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                         if (!(FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200)))

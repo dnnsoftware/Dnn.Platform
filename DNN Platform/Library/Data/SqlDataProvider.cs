@@ -39,7 +39,7 @@ namespace DotNetNuke.Data
         {
             get
             {
-                return CanConnect(ConnectionString, DatabaseOwner, ObjectQualifier);
+                return CanConnect(this.ConnectionString, this.DatabaseOwner, this.ObjectQualifier);
             }
         }
 
@@ -109,7 +109,7 @@ namespace DotNetNuke.Data
         private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
         {
             string errorMessage;
-            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
         private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
@@ -145,7 +145,7 @@ namespace DotNetNuke.Data
 
             //If connection string does not use integrated security, then get user id.
             //Normalize to uppercase before all of the comparisons
-            var connectionStringUppercase = ConnectionString.ToUpper();
+            var connectionStringUppercase = this.ConnectionString.ToUpper();
             if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
                 string[] ConnSettings = connectionStringUppercase.Split(';');
@@ -177,7 +177,7 @@ namespace DotNetNuke.Data
                 + "    where ( OBJECTPROPERTY(o.id, N'IsProcedure') = 1 or OBJECTPROPERTY(o.id, N'IsExtendedProc') = 1 or OBJECTPROPERTY(o.id, N'IsReplProc') = 1 ) "
                 + "    and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 "
                 + "    and o.name not like N'#%%' "
-                + "    and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
+                + "    and (left(o.name,len('" + this.ObjectQualifier + "')) = '" + this.ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
                 + "    open sp_cursor "
                 + "    fetch sp_cursor into @name "
                 + "    while @@fetch_status >= 0 "
@@ -189,7 +189,7 @@ namespace DotNetNuke.Data
                 + "    deallocate sp_cursor"
                 + "  end ";
 
-            return ExecuteUpgradedConnectionQuery(sql);
+            return this.ExecuteUpgradedConnectionQuery(sql);
         }
 
         private string GrantUserDefinedFunctionsPermission(string ScalarPermission, string TablePermission, string LoginOrRole)
@@ -206,7 +206,7 @@ namespace DotNetNuke.Data
                 + "    where ( OBJECTPROPERTY(o.id, N'IsScalarFunction') = 1 OR OBJECTPROPERTY(o.id, N'IsTableFunction') = 1 ) "
                 + "      and OBJECTPROPERTY(o.id, N'IsMSShipped') = 0 "
                 + "      and o.name not like N'#%%' "
-                + "      and (left(o.name,len('" + ObjectQualifier + "')) = '" + ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
+                + "      and (left(o.name,len('" + this.ObjectQualifier + "')) = '" + this.ObjectQualifier + "' or left(o.name,7) = 'aspnet_') "
                 + "    open sp_cursor "
                 + "    fetch sp_cursor into @name, @isscalarfunction "
                 + "    while @@fetch_status >= 0 "
@@ -227,7 +227,7 @@ namespace DotNetNuke.Data
                 + "    deallocate sp_cursor"
                 + "  end ";
 
-            return ExecuteUpgradedConnectionQuery(sql);
+            return this.ExecuteUpgradedConnectionQuery(sql);
         }
 
         private string ExecuteUpgradedConnectionQuery(string sql)
@@ -236,7 +236,7 @@ namespace DotNetNuke.Data
 
             try
             {
-                _dbConnectionProvider.ExecuteNonQuery(UpgradeConnectionString, CommandType.Text, 0, sql);
+                _dbConnectionProvider.ExecuteNonQuery(this.UpgradeConnectionString, CommandType.Text, 0, sql);
             }
             catch (SqlException objException)
             {
@@ -253,65 +253,65 @@ namespace DotNetNuke.Data
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
-            _dbConnectionProvider.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            _dbConnectionProvider.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
-            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec)
         {
-            _dbConnectionProvider.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
         {
-            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
         {
-            _dbConnectionProvider.BulkInsert(ConnectionString, 0, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+            _dbConnectionProvider.BulkInsert(this.ConnectionString, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteReader(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteReader(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, 0, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
         {
-            return _dbConnectionProvider.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+            return _dbConnectionProvider.ExecuteScalar<T>(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override string ExecuteScript(string script)
         {
-            return ExecuteScript(script, 0);
+            return this.ExecuteScript(script, 0);
         }
 
         public override string ExecuteScript(string script, int timeoutSec)
         {
-            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeoutSec);
+            string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
-            if (UpgradeConnectionString != ConnectionString || !DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
+            if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
             {
                 try
                 {
@@ -319,7 +319,7 @@ namespace DotNetNuke.Data
                     //necesary because the UpgradeConnectionString will create stored procedures
                     //which restrict execute permissions for the ConnectionString user account. This is also
                     //necessary when db_owner is not set to "dbo" 
-                    exceptions += GrantStoredProceduresPermission("EXECUTE", GetConnectionStringUserID());
+                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
                 {
@@ -335,7 +335,7 @@ namespace DotNetNuke.Data
                     //necesary because the UpgradeConnectionString will create user defined functions
                     //which restrict execute permissions for the ConnectionString user account.  This is also
                     //necessary when db_owner is not set to "dbo" 
-                    exceptions += GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", GetConnectionStringUserID());
+                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
                 {
@@ -349,44 +349,44 @@ namespace DotNetNuke.Data
 
         public override string ExecuteScript(string connectionString, string script)
         {
-            return ExecuteScriptInternal(connectionString, script);
+            return this.ExecuteScriptInternal(connectionString, script);
         }
 
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
-            return ExecuteScriptInternal(connectionString, script, timeoutSec);
+            return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
         public override IDataReader ExecuteSQL(string sql)
         {
-            return ExecuteSQLInternal(ConnectionString, sql);
+            return this.ExecuteSQLInternal(this.ConnectionString, sql);
         }
 
         public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
-            return ExecuteSQLInternal(ConnectionString, sql, timeoutSec);
+            return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
         {
             string errorMessage;
-            return ExecuteSQLTemp(connectionString, sql, out errorMessage);
+            return this.ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec)
         {
             string errorMessage;
-            return ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
+            return this.ExecuteSQLTemp(connectionString, sql, timeoutSec, out errorMessage);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
         {
-            return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+            return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
-            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
         #endregion

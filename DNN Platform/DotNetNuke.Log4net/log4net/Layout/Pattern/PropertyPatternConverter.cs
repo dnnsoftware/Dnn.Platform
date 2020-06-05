@@ -66,10 +66,10 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			if (Option != null)
+			if (this.Option != null)
 			{
 				// Write the value for the specified key
-				WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty(Option));
+				WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty(this.Option));
 			}
 			else
 			{

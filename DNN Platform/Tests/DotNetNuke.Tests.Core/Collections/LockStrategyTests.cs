@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void DoubleDisposeAllowed()
         {
-            var strategy = GetLockStrategy();
+            var strategy = this.GetLockStrategy();
 
             strategy.Dispose();
             strategy.Dispose();
@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (LockRecursionException))]
         public virtual void DoubleReadLockThrows()
         {
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 using (var readLock1 = strategy.GetReadLock())
                 {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (LockRecursionException))]
         public void ReadAndWriteLockOnSameThreadThrows()
         {
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 using (var readLock1 = strategy.GetReadLock())
                 {
@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (LockRecursionException))]
         public void WriteAndReadLockOnSameThreadThrows()
         {
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 using (var readLock1 = strategy.GetWriteLock())
                 {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void DoubleReadLockOnDifferentThreads()
         {
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 if (strategy.SupportsConcurrentReads)
                 {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void DoubleWriteLockOnDifferentThreadsWaits()
         {
-            using (ILockStrategy strategy = GetLockStrategy())
+            using (ILockStrategy strategy = this.GetLockStrategy())
             {
                 Thread t;
                 using (var writeLock1 = strategy.GetWriteLock())
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (LockRecursionException))]
         public virtual void DoubleWriteLockThrows()
         {
-            using (ILockStrategy strategy = GetLockStrategy())
+            using (ILockStrategy strategy = this.GetLockStrategy())
             {
                 using (var writeLock1 = strategy.GetWriteLock())
                 {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCaseSource("GetObjectDisposedExceptionMethods")]
         public void MethodsThrowAfterDisposed(Action<ILockStrategy> methodCall)
         {
-            var strategy = GetLockStrategy();
+            var strategy = this.GetLockStrategy();
 
             strategy.Dispose();
             methodCall.Invoke(strategy);
@@ -149,7 +149,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             Thread t = null;
 
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 using (var readLock = strategy.GetReadLock())
                 {
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             Thread t = null;
 
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 using (var writeLock = strategy.GetWriteLock())
                 {
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             Thread t = null;
 
-            using (var strategy = GetLockStrategy())
+            using (var strategy = this.GetLockStrategy())
             {
                 if (strategy.SupportsConcurrentReads)
                 {

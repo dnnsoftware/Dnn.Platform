@@ -70,7 +70,7 @@ namespace log4net.Config
 		/// </remarks>
 		public AliasRepositoryAttribute(string name)
 		{
-			Name = name;
+			this.Name = name;
 		}
 
 		#endregion Public Instance Constructors
@@ -90,8 +90,8 @@ namespace log4net.Config
 		/// </remarks>
 		public string Name
 		{
-			get { return m_name; }
-			set { m_name = value ; }
+			get { return this.m_name; }
+			set { this.m_name = value ; }
 		}
 
 		#endregion Public Instance Properties

@@ -82,9 +82,9 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 							resolvedPath = Path.Combine("~/", path);
 							break;
 						case RelativeTo.Manifest:
-							if (!string.IsNullOrEmpty(manifestFolder))
+							if (!string.IsNullOrEmpty(this.manifestFolder))
 							{
-								resolvedPath = Path.Combine(manifestFolder + "/", path);
+								resolvedPath = Path.Combine(this.manifestFolder + "/", path);
 							}
 							break;
 						case RelativeTo.Module:

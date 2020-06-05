@@ -26,12 +26,12 @@ namespace DotNetNuke.Modules.RazorHost
 
         public AddScript()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void DisplayExtension()
         {
-            fileExtension.Text = "." + scriptFileType.SelectedValue.ToLowerInvariant();
+            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -39,9 +39,9 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnInit(e);
 
-            cmdCancel.Click += cmdCancel_Click;
-            cmdAdd.Click += cmdAdd_Click;
-            scriptFileType.SelectedIndexChanged += scriptFileType_SelectedIndexChanged;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.scriptFileType.SelectedIndexChanged += this.scriptFileType_SelectedIndexChanged;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnLoad(e);
 
-            DisplayExtension();
+            this.DisplayExtension();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(ModuleContext.EditUrl("Edit"), true);
+                this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -70,24 +70,24 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+                if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
                 }
 
-                if (Page.IsValid)
+                if (this.Page.IsValid)
                 {
-                    string scriptFileName = "_" + Path.GetFileNameWithoutExtension(fileName.Text) + "." + scriptFileType.SelectedValue.ToLowerInvariant();
+                    string scriptFileName = "_" + Path.GetFileNameWithoutExtension(this.fileName.Text) + "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
 
-                    string srcFile = Server.MapPath(string.Format(razorScriptFileFormatString, scriptFileName));
+                    string srcFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, scriptFileName));
 
                     // write file
                     StreamWriter objStream = null;
                     objStream = File.CreateText(srcFile);
-                    objStream.WriteLine(Localization.GetString("NewScript", LocalResourceFile));
+                    objStream.WriteLine(Localization.GetString("NewScript", this.LocalResourceFile));
                     objStream.Close();
 
-                    Response.Redirect(ModuleContext.EditUrl("Edit"), true);
+                    this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void scriptFileType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayExtension();
+            this.DisplayExtension();
         }
     }
 }

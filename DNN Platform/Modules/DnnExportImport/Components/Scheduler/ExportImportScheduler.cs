@@ -39,7 +39,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -51,15 +51,15 @@ namespace Dnn.ExportImport.Components.Scheduler
                 var job = EntitiesController.Instance.GetFirstActiveJob();
                 if (job == null)
                 {
-                    ScheduleHistoryItem.Succeeded = true;
-                    ScheduleHistoryItem.AddLogNote("<br/>No Site Export/Import jobs queued for processing.");
+                    this.ScheduleHistoryItem.Succeeded = true;
+                    this.ScheduleHistoryItem.AddLogNote("<br/>No Site Export/Import jobs queued for processing.");
                 }
                 else if (job.IsCancelled)
                 {
                     job.JobStatus = JobStatus.Cancelled;
                     EntitiesController.Instance.UpdateJobStatus(job);
-                    ScheduleHistoryItem.Succeeded = true;
-                    ScheduleHistoryItem.AddLogNote("<br/>Site Export/Import jobs was previously cancelled.");
+                    this.ScheduleHistoryItem.Succeeded = true;
+                    this.ScheduleHistoryItem.AddLogNote("<br/>Site Export/Import jobs was previously cancelled.");
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         case JobType.Export:
                             try
                             {
-                                engine.Export(job, result, ScheduleHistoryItem);
+                                engine.Export(job, result, this.ScheduleHistoryItem);
                             }
                             catch (Exception ex)
                             {
@@ -90,17 +90,17 @@ namespace Dnn.ExportImport.Components.Scheduler
                         case JobType.Import:
                             try
                             {
-                                engine.Import(job, result, ScheduleHistoryItem);
+                                engine.Import(job, result, this.ScheduleHistoryItem);
                             }
                             catch (ThreadAbortException)
                             {
-                                ScheduleHistoryItem.TimeLapse = EmergencyScheduleFrequency;
-                                ScheduleHistoryItem.TimeLapseMeasurement = EmergencyScheduleFrequencyUnit;
-                                ScheduleHistoryItem.RetryTimeLapse = EmergencyScheduleRetry;
-                                ScheduleHistoryItem.RetryTimeLapseMeasurement = EmergencyScheduleRetryUnit;
-                                ScheduleHistoryItem.RetainHistoryNum = EmergencyHistoryNumber;
+                                this.ScheduleHistoryItem.TimeLapse = EmergencyScheduleFrequency;
+                                this.ScheduleHistoryItem.TimeLapseMeasurement = EmergencyScheduleFrequencyUnit;
+                                this.ScheduleHistoryItem.RetryTimeLapse = EmergencyScheduleRetry;
+                                this.ScheduleHistoryItem.RetryTimeLapseMeasurement = EmergencyScheduleRetryUnit;
+                                this.ScheduleHistoryItem.RetainHistoryNum = EmergencyHistoryNumber;
 
-                                SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+                                SchedulingController.UpdateSchedule(this.ScheduleHistoryItem);
 
                                 SchedulingController.PurgeScheduleHistory();
 
@@ -124,20 +124,20 @@ namespace Dnn.ExportImport.Components.Scheduler
                             throw new Exception("Unknown job type: " + job.JobType);
                     }
 
-                    ScheduleHistoryItem.Succeeded = true;
+                    this.ScheduleHistoryItem.Succeeded = true;
 
                     //restore schedule item running timelapse to default.
                     if (succeeded
-                        && ScheduleHistoryItem.TimeLapse == EmergencyScheduleFrequency
-                        && ScheduleHistoryItem.TimeLapseMeasurement == EmergencyScheduleFrequencyUnit)
+                        && this.ScheduleHistoryItem.TimeLapse == EmergencyScheduleFrequency
+                        && this.ScheduleHistoryItem.TimeLapseMeasurement == EmergencyScheduleFrequencyUnit)
                     {
-                        ScheduleHistoryItem.TimeLapse = DefaultScheduleFrequency;
-                        ScheduleHistoryItem.TimeLapseMeasurement = DefaultScheduleFrequencyUnit;
-                        ScheduleHistoryItem.RetryTimeLapse = DefaultScheduleRetry;
-                        ScheduleHistoryItem.RetryTimeLapseMeasurement = DefaultScheduleRetryUnit;
-                        ScheduleHistoryItem.RetainHistoryNum = DefaultHistoryNumber;
+                        this.ScheduleHistoryItem.TimeLapse = DefaultScheduleFrequency;
+                        this.ScheduleHistoryItem.TimeLapseMeasurement = DefaultScheduleFrequencyUnit;
+                        this.ScheduleHistoryItem.RetryTimeLapse = DefaultScheduleRetry;
+                        this.ScheduleHistoryItem.RetryTimeLapseMeasurement = DefaultScheduleRetryUnit;
+                        this.ScheduleHistoryItem.RetainHistoryNum = DefaultHistoryNumber;
 
-                        SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+                        SchedulingController.UpdateSchedule(this.ScheduleHistoryItem);
                     }
 
                     var sb = new StringBuilder();
@@ -155,7 +155,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         sb.Append("</ul>");
                     }
 
-                    ScheduleHistoryItem.AddLogNote(sb.ToString());
+                    this.ScheduleHistoryItem.AddLogNote(sb.ToString());
                     engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
 
                     Logger.Trace("Site Export/Import: Job Finished");
@@ -164,9 +164,9 @@ namespace Dnn.ExportImport.Components.Scheduler
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
-                Errored(ref ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
+                this.Errored(ref ex);
                 // this duplicates the logging
                 //if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
                 //{

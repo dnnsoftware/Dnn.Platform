@@ -45,12 +45,12 @@ namespace DotNetNuke.Entities.Urls
 
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            return FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
+            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
@@ -59,12 +59,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new ArgumentNullException("portalSettings");
             }
-            return FriendlyUrlInternal(tab, path, pageName, String.Empty, (PortalSettings)portalSettings);
+            return this.FriendlyUrlInternal(tab, path, pageName, String.Empty, (PortalSettings)portalSettings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
+            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
 
         #endregion

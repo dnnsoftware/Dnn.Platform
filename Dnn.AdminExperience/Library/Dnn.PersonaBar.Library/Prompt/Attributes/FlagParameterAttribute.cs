@@ -39,11 +39,11 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 
         public FlagParameterAttribute(string flag, string description, string type, string defaultValue, bool required)
         {
-            Flag = flag;
-            Type = type;
-            Required = required;
-            DefaultValue = defaultValue;
-            Description = description;
+            this.Flag = flag;
+            this.Type = type;
+            this.Required = required;
+            this.DefaultValue = defaultValue;
+            this.Description = description;
         }
         public FlagParameterAttribute(string flag, string description, string type, string defaultValue) : this(flag, description, type, defaultValue, false) { }
         public FlagParameterAttribute(string flag, string description, string type) : this(flag, description, type, string.Empty, false) { }

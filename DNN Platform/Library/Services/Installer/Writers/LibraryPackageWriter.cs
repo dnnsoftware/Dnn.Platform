@@ -21,8 +21,8 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         public LibraryPackageWriter(PackageInfo package) : base(package)
         {
-            BasePath = "DesktopModules\\Libraries";
-            AssemblyPath = "bin";
+            this.BasePath = "DesktopModules\\Libraries";
+            this.AssemblyPath = "bin";
         }
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)

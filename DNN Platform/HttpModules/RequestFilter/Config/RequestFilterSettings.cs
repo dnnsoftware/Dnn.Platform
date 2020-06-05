@@ -39,11 +39,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _rules;
+                return this._rules;
             }
             set
             {
-                _rules = value;
+                this._rules = value;
             }
         }
 

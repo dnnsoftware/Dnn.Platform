@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 bool blnValid = true;
 //                string strTransactionID;
                 int intRoleID = 0;
-                int intPortalID = PortalSettings.PortalId;
+                int intPortalID = this.PortalSettings.PortalId;
                 int intUserID = 0;
 //                string strDescription;
                 double dblAmount = 0;
@@ -56,9 +56,9 @@ namespace DotNetNuke.Modules.Admin.Sales
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
                 string strPost = "cmd=_notify-validate";
-                foreach (string strName in Request.Form)
+                foreach (string strName in this.Request.Form)
                 {
-                    string strValue = Request.Form[strName];
+                    string strValue = this.Request.Form[strName];
                     switch (strName)
                     {
                         case "txn_type": //get the transaction type
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 				//postback to verify the source
 				if (blnValid)
                 {
-                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(PortalSettings.PortalId);
+                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                     string strPayPalURL;
 
                     // Sandbox mode
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             var log = new LogInfo
                             {
                                 LogPortalID = intPortalID,
-                                LogPortalName = PortalSettings.PortalName,
+                                LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
                                 LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
                             };
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             var log = new LogInfo
                             {
                                 LogPortalID = intPortalID,
-                                LogPortalName = PortalSettings.PortalName,
+                                LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
                                 LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
                             };

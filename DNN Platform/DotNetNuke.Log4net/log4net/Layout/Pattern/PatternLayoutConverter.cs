@@ -75,8 +75,8 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		virtual public bool IgnoresException 
 		{ 
-			get { return m_ignoresException; }
-			set { m_ignoresException = value; }
+			get { return this.m_ignoresException; }
+			set { this.m_ignoresException = value; }
 		}
 
 		#endregion Public Properties
@@ -106,7 +106,7 @@ namespace log4net.Layout.Pattern
 			LoggingEvent loggingEvent = state as LoggingEvent;
 			if (loggingEvent != null)
 			{
-				Convert(writer, loggingEvent);
+				this.Convert(writer, loggingEvent);
 			}
 			else
 			{

@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Api
 
             const string failureMessage = "Authorization has been denied for this request.";
             var authFilterContext = new AuthFilterContext(actionContext, failureMessage);
-            if (!IsAuthorized(authFilterContext))
+            if (!this.IsAuthorized(authFilterContext))
             {
                 authFilterContext.HandleUnauthorizedRequest();
             }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Api
 
             try
             {
-                OnAuthorization(actionContext);
+                this.OnAuthorization(actionContext);
             }
             catch (Exception e)
             {

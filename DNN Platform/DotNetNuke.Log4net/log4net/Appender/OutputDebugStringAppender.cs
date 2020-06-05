@@ -93,7 +93,7 @@ namespace log4net.Appender
 			}
 #endif
 
-			OutputDebugString(RenderLoggingEvent(loggingEvent));
+			OutputDebugString(this.RenderLoggingEvent(loggingEvent));
 		} 
 
 		/// <summary>

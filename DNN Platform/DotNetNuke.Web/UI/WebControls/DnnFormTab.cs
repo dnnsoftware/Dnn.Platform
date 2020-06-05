@@ -18,8 +18,8 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnFormTab()
         {
-            Sections = new List<DnnFormSection>();
-            Items = new List<DnnFormItemBase>();
+            this.Sections = new List<DnnFormSection>();
+            this.Items = new List<DnnFormItemBase>();
         }
 
         public bool IncludeExpandAll { get; set; }

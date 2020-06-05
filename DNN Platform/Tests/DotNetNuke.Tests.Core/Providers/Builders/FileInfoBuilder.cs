@@ -22,14 +22,14 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         
         internal FileInfoBuilder()
         {
-            fileId = Constants.FOLDER_ValidFileId;
-            portalId = Constants.CONTENT_ValidPortalId;
-            startDate = DateTime.Today;
-            endDate = DateTime.MaxValue;
-            enablePublishPeriod = false;
-            contentItemId = Null.NullInteger;
-            folderMappingID = Constants.FOLDER_ValidFolderMappingID;
-            folderId = Constants.FOLDER_ValidFolderId;
+            this.fileId = Constants.FOLDER_ValidFileId;
+            this.portalId = Constants.CONTENT_ValidPortalId;
+            this.startDate = DateTime.Today;
+            this.endDate = DateTime.MaxValue;
+            this.enablePublishPeriod = false;
+            this.contentItemId = Null.NullInteger;
+            this.folderMappingID = Constants.FOLDER_ValidFolderMappingID;
+            this.folderId = Constants.FOLDER_ValidFolderId;
         }
 
         internal FileInfoBuilder WithFileId(int fileId)
@@ -66,14 +66,14 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         {
             return new FileInfo
                 {
-                    FileId = fileId,
-                    PortalId = portalId,
-                    StartDate = startDate,
-                    EnablePublishPeriod = enablePublishPeriod,
-                    EndDate = endDate,
-                    ContentItemID = contentItemId,
-                    FolderMappingID = folderMappingID,
-                    FolderId = folderId
+                    FileId = this.fileId,
+                    PortalId = this.portalId,
+                    StartDate = this.startDate,
+                    EnablePublishPeriod = this.enablePublishPeriod,
+                    EndDate = this.endDate,
+                    ContentItemID = this.contentItemId,
+                    FolderMappingID = this.folderMappingID,
+                    FolderId = this.folderId
                 };
         }
     }

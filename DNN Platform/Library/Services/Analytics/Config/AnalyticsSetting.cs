@@ -20,11 +20,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _settingName;
+                return this._settingName;
             }
             set
             {
-                _settingName = value;
+                this._settingName = value;
             }
         }
 
@@ -32,11 +32,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _settingValue;
+                return this._settingValue;
             }
             set
             {
-                _settingValue = value;
+                this._settingValue = value;
             }
         }
     }

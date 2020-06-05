@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="cssClass">The css class to apply to the associated property</param>
         public ControlStyleAttribute(string cssClass)
         {
-            _CssClass = cssClass;
+            this._CssClass = cssClass;
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="width">control width.</param>
         public ControlStyleAttribute(string cssClass, string width)
         {
-            _CssClass = cssClass;
-            _Width = Unit.Parse(width);
+            this._CssClass = cssClass;
+            this._Width = Unit.Parse(width);
         }
 
         /// <summary>
@@ -46,16 +46,16 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="height">control height.</param>
         public ControlStyleAttribute(string cssClass, string width, string height)
         {
-            _CssClass = cssClass;
-            _Height = Unit.Parse(height);
-            _Width = Unit.Parse(width);
+            this._CssClass = cssClass;
+            this._Height = Unit.Parse(height);
+            this._Width = Unit.Parse(width);
         }
 
         public string CssClass
         {
             get
             {
-                return _CssClass;
+                return this._CssClass;
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _Height;
+                return this._Height;
             }
         }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _Width;
+                return this._Width;
             }
         }
     }

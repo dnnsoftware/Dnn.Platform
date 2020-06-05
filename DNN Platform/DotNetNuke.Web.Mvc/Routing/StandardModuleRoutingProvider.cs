@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         private const string ExcludedRouteValues = "mid,ctl,popup";
         public StandardModuleRoutingProvider()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             if (String.IsNullOrEmpty(controlKey))
             {
                 additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
-                url = NavigationManager.NavigateURL("", additionalParams.ToArray());
+                url = this.NavigationManager.NavigateURL("", additionalParams.ToArray());
             }
             else
             {

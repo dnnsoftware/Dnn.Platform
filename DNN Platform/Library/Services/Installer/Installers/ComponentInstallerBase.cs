@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         protected ComponentInstallerBase()
         {
-            Completed = Null.NullBoolean;
+            this.Completed = Null.NullBoolean;
         }
 
         /// -----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return Package.InstallMode;
+                return this.Package.InstallMode;
             }
         }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return Package.Log;
+                return this.Package.Log;
             }
         }
 
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return Package.Files;
+                return this.Package.Files;
             }
         }
 
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return Package.InstallerInfo.PhysicalSitePath;
+                return this.Package.InstallerInfo.PhysicalSitePath;
             }
         }
 
@@ -130,8 +130,8 @@ namespace DotNetNuke.Services.Installer.Installers
                                         ExpirationDate = DateTime.Now.AddYears(-1),
                                         SentDate = DateTime.Now,
                                         Body = "",
-                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
+                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing)
                                     };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {
@@ -148,13 +148,13 @@ namespace DotNetNuke.Services.Installer.Installers
                                 switch (version.ToLowerInvariant())
                                 {
                                     case "install":
-                                        if (Package.InstalledVersion == new Version(0, 0, 0))
+                                        if (this.Package.InstalledVersion == new Version(0, 0, 0))
                                         {
                                             attribValue += version + ",";
                                         }
                                         break;
                                     case "upgrade":
-                                        if (Package.InstalledVersion > new Version(0, 0, 0))
+                                        if (this.Package.InstalledVersion > new Version(0, 0, 0))
                                         {
                                             attribValue += version + ",";
                                         }
@@ -167,14 +167,14 @@ namespace DotNetNuke.Services.Installer.Installers
                                         }
                                         catch (FormatException)
                                         {
-                                            Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                            this.Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
                                         }
 
                                         if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
                                         {
                                             attribValue += version + ",";
                                         }
-                                        else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
+                                        else if (upgradeVersion != null && upgradeVersion > this.Package.InstalledVersion)
                                         {
                                             attribValue += version + ",";
                                         }

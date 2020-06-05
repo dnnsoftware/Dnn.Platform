@@ -42,14 +42,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         }
         public UserModel(UserInfo user) : base(user)
         {
-            LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
-            DisplayName = user.DisplayName;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            LastActivity = user.Membership.LastActivityDate.ToPromptLongDateString();
-            LastLockout = user.Membership.LastLockoutDate.ToPromptLongDateString();
-            LastPasswordChange = user.Membership.LastPasswordChangeDate.ToPromptLongDateString();
-            Created = user.CreatedOnDate.ToPromptLongDateString();
+            this.LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
+            this.DisplayName = user.DisplayName;
+            this.FirstName = user.FirstName;
+            this.LastName = user.LastName;
+            this.LastActivity = user.Membership.LastActivityDate.ToPromptLongDateString();
+            this.LastLockout = user.Membership.LastLockoutDate.ToPromptLongDateString();
+            this.LastPasswordChange = user.Membership.LastPasswordChangeDate.ToPromptLongDateString();
+            this.Created = user.CreatedOnDate.ToPromptLongDateString();
         }
         #endregion
 

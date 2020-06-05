@@ -22,14 +22,14 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
             string message = null;
             Guid messageGuid;
-            var guidText = Request.QueryString["message"];
+            var guidText = this.Request.QueryString["message"];
             if (!string.IsNullOrEmpty(guidText) && Guid.TryParse(guidText, out messageGuid))
             {
                 message = HttpUtility.HtmlEncode(DataProvider.Instance().GetRedirectMessage(messageGuid));
             }
 
             UI.Skins.Skin.AddModuleMessage(this,
-                !string.IsNullOrEmpty(message) ? message : Localization.GetString("AccessDenied", LocalResourceFile),
+                !string.IsNullOrEmpty(message) ? message : Localization.GetString("AccessDenied", this.LocalResourceFile),
                 ModuleMessage.ModuleMessageType.YellowWarning);
         }
     }

@@ -14,9 +14,9 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
     {
         public TabDto()
         {
-            CheckedState= NodeCheckedState.UnChecked;
-            IsOpen = false;
-            Selectable = true;
+            this.CheckedState= NodeCheckedState.UnChecked;
+            this.IsOpen = false;
+            this.Selectable = true;
         }
         public string Name { get; set; }
 

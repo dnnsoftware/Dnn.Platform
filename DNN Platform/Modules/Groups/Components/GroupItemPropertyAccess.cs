@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.Groups.Components {
     public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace {
         public GroupItemTokenReplace(RoleInfo groupInfo)
         {
-            PropertySource["groupitem"] = groupInfo;
+            this.PropertySource["groupitem"] = groupInfo;
         }
         public string ReplaceGroupItemTokens(string source) {
             return base.ReplaceTokens(source);

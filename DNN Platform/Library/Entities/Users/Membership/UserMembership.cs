@@ -37,8 +37,8 @@ namespace DotNetNuke.Entities.Users
 
         public UserMembership(UserInfo user)
         {
-            _approved = true;
-            _user = user;
+            this._approved = true;
+            this._user = user;
         }
 
         /// -----------------------------------------------------------------------------
@@ -50,16 +50,16 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _approved;
+                return this._approved;
             }
             set
             {
-                if (!_approved && value)
+                if (!this._approved && value)
                 {
-                    Approving = true;
+                    this.Approving = true;
                 }
 
-                _approved = value;
+                this._approved = value;
             } 
         }
 
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Users
 
         internal void ConfirmApproved()
         {
-            Approving = false;
+            this.Approving = false;
         }
 
         /// -----------------------------------------------------------------------------

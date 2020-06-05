@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Portals
 
 	    private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
 	    {
-            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
+            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
         }
 
         private PortalAliasInfo GetPortalAliasInternal(string httpAlias)
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Portals
             string strPortalAlias;
 
             //try the specified alias first
-            PortalAliasInfo portalAlias = GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
+            PortalAliasInfo portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
 
             //domain.com and www.domain.com should be synonymous
             if (portalAlias == null)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Portals
                     strPortalAlias = string.Concat("www.", httpAlias);
                 }
                 //perform the lookup
-                portalAlias = GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
+                portalAlias = this.GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
             }
             //allow domain wildcards 
             if (portalAlias == null)
@@ -97,13 +97,13 @@ namespace DotNetNuke.Entities.Portals
                     strPortalAlias = httpAlias;
                 }
                 //try an explicit lookup using the wildcard entry ( ie. *.domain.com )
-                portalAlias = GetPortalAliasLookupInternal("*." + strPortalAlias.ToLowerInvariant()) ??
-                              GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
+                portalAlias = this.GetPortalAliasLookupInternal("*." + strPortalAlias.ToLowerInvariant()) ??
+                              this.GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
 
                 if (portalAlias == null)
                 {
                     //try a lookup using "www." + raw domain
-                    portalAlias = GetPortalAliasLookupInternal("www." + strPortalAlias.ToLowerInvariant());
+                    portalAlias = this.GetPortalAliasLookupInternal("www." + strPortalAlias.ToLowerInvariant());
                 }
             }
             if (portalAlias == null)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Portals
                     //clear the cachekey "GetPortalByAlias" otherwise portalalias "_default" stays in cache after first install
                     DataCache.RemoveCache("GetPortalByAlias");
                     //try again
-                    portalAlias = GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
+                    portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
                 }
             }
             return portalAlias;
@@ -192,7 +192,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalAliasInfo GetPortalAlias(string alias)
         {
-            return GetPortalAliasInternal(alias);
+            return this.GetPortalAliasInternal(alias);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string alias, int portalId)
         {
-            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
+            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal alias info.</returns>
         public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId)
         {
-            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
+            return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
         }
 
 	    internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
@@ -233,7 +233,7 @@ namespace DotNetNuke.Entities.Portals
 	    public PortalAliasCollection GetPortalAliases()
 	    {
 	        var aliasCollection = new PortalAliasCollection();
-	        foreach (var alias in GetPortalAliasesInternal().Values)
+	        foreach (var alias in this.GetPortalAliasesInternal().Values)
 	        {
 	            aliasCollection.Add(alias.HTTPAlias, alias);
 	        }
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Portals
 
         public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
         {
-            return GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
+            return this.GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
 
         public bool Condition(IExtensionPointData m)
         {
-            return isAuthenticated || !m.DisableUnauthenticated;
+            return this.isAuthenticated || !m.DisableUnauthenticated;
         }
     }
 }

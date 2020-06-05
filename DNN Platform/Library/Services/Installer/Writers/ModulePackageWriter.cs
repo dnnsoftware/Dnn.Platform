@@ -37,51 +37,51 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            DesktopModule = new DesktopModuleInfo();
+            this.DesktopModule = new DesktopModuleInfo();
 
             //Create a Package
-            Package = new PackageInfo(installer);
+            this.Package = new PackageInfo(installer);
 
-            ReadLegacyManifest(manifestNav, true);
+            this.ReadLegacyManifest(manifestNav, true);
 
-            Package.Name = DesktopModule.ModuleName;
-            Package.FriendlyName = DesktopModule.FriendlyName;
-            Package.Description = DesktopModule.Description;
-            if (!string.IsNullOrEmpty(DesktopModule.Version))
+            this.Package.Name = this.DesktopModule.ModuleName;
+            this.Package.FriendlyName = this.DesktopModule.FriendlyName;
+            this.Package.Description = this.DesktopModule.Description;
+            if (!string.IsNullOrEmpty(this.DesktopModule.Version))
             {
-                Package.Version = new Version(DesktopModule.Version);
+                this.Package.Version = new Version(this.DesktopModule.Version);
             }
 
-            Package.PackageType = "Module";
+            this.Package.PackageType = "Module";
 
-            LegacyUtil.ParsePackageName(Package);
+            LegacyUtil.ParsePackageName(this.Package);
 
-            Initialize(DesktopModule.FolderName);
+            this.Initialize(this.DesktopModule.FolderName);
         }
 
         public ModulePackageWriter(DesktopModuleInfo desktopModule, XPathNavigator manifestNav, PackageInfo package) : base(package)
         {
-            DesktopModule = desktopModule;
+            this.DesktopModule = desktopModule;
 
-            Initialize(desktopModule.FolderName);
+            this.Initialize(desktopModule.FolderName);
             if (manifestNav != null)
             {
-                ReadLegacyManifest(manifestNav.SelectSingleNode("folders/folder"), false);
+                this.ReadLegacyManifest(manifestNav.SelectSingleNode("folders/folder"), false);
             }
-            string physicalFolderPath = Path.Combine(Globals.ApplicationMapPath, BasePath);
-            ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
+            string physicalFolderPath = Path.Combine(Globals.ApplicationMapPath, this.BasePath);
+            this.ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
         }
 
         public ModulePackageWriter(PackageInfo package) : base(package)
         {
-            DesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
-            Initialize(DesktopModule.FolderName);
+            this.DesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
+            this.Initialize(this.DesktopModule.FolderName);
         }
 
         public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package) : base(package)
         {
-            DesktopModule = desktopModule;
-            Initialize(desktopModule.FolderName);
+            this.DesktopModule = desktopModule;
+            this.Initialize(desktopModule.FolderName);
         }
 		
 		#endregion
@@ -93,13 +93,13 @@ namespace DotNetNuke.Services.Installer.Writers
             get
             {
                 var dependencies = new Dictionary<string, string>();
-                if (!string.IsNullOrEmpty(DesktopModule.Dependencies))
+                if (!string.IsNullOrEmpty(this.DesktopModule.Dependencies))
                 {
-                    dependencies["type"] = DesktopModule.Dependencies;
+                    dependencies["type"] = this.DesktopModule.Dependencies;
                 }
-                if (!string.IsNullOrEmpty(DesktopModule.Permissions))
+                if (!string.IsNullOrEmpty(this.DesktopModule.Permissions))
                 {
-                    dependencies["permission"] = DesktopModule.Permissions;
+                    dependencies["permission"] = this.DesktopModule.Permissions;
                 }
                 return dependencies;
             }
@@ -124,9 +124,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void Initialize(string folder)
         {
-            BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
-            AssemblyPath = "bin";
+            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
+            this.AssemblyPath = "bin";
         }
 
         private static void ProcessControls(XPathNavigator controlNav, string moduleFolder, ModuleDefinitionInfo definition)
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Installer.Writers
             foreach (string fileName in Directory.GetFiles(folder))
             {
                 string name = fileName.Replace(basePath + "\\", "");
-                AddFile(name, name);
+                this.AddFile(name, name);
             }
         }
 
@@ -199,11 +199,11 @@ namespace DotNetNuke.Services.Installer.Writers
 			//Process Folders recursively
             foreach (string directoryName in Directory.GetDirectories(folder))
             {
-                ProcessModuleFolders(directoryName, basePath);
+                this.ProcessModuleFolders(directoryName, basePath);
             }
 			
             //process files
-            ProcessModuleFiles(folder, basePath);
+            this.ProcessModuleFiles(folder, basePath);
         }
 
         private void ProcessModules(XPathNavigator moduleNav, string moduleFolder)
@@ -222,7 +222,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 ProcessControls(controlNav, moduleFolder, definition);
             }
-            DesktopModule.ModuleDefinitions[definition.FriendlyName] = definition;
+            this.DesktopModule.ModuleDefinitions[definition.FriendlyName] = definition;
         }
 
         private void ReadLegacyManifest(XPathNavigator folderNav, bool processModule)
@@ -231,52 +231,52 @@ namespace DotNetNuke.Services.Installer.Writers
             {
 				//Version 2 of legacy manifest
                 string name = Util.ReadElement(folderNav, "name");
-                DesktopModule.FolderName = name;
-                DesktopModule.ModuleName = name;
-                DesktopModule.FriendlyName = name;
+                this.DesktopModule.FolderName = name;
+                this.DesktopModule.ModuleName = name;
+                this.DesktopModule.FriendlyName = name;
                 string folderName = Util.ReadElement(folderNav, "foldername");
                 if (!string.IsNullOrEmpty(folderName))
                 {
-                    DesktopModule.FolderName = folderName;
+                    this.DesktopModule.FolderName = folderName;
                 }
-                if (string.IsNullOrEmpty(DesktopModule.FolderName))
+                if (string.IsNullOrEmpty(this.DesktopModule.FolderName))
                 {
-                    DesktopModule.FolderName = "MyModule";
+                    this.DesktopModule.FolderName = "MyModule";
                 }
                 string friendlyname = Util.ReadElement(folderNav, "friendlyname");
                 if (!string.IsNullOrEmpty(friendlyname))
                 {
-                    DesktopModule.FriendlyName = friendlyname;
-                    DesktopModule.ModuleName = friendlyname;
+                    this.DesktopModule.FriendlyName = friendlyname;
+                    this.DesktopModule.ModuleName = friendlyname;
                 }
                 string iconFile = Util.ReadElement(folderNav, "iconfile");
                 if (!string.IsNullOrEmpty(iconFile))
                 {
-                    Package.IconFile = iconFile;
+                    this.Package.IconFile = iconFile;
                 }
                 string modulename = Util.ReadElement(folderNav, "modulename");
                 if (!string.IsNullOrEmpty(modulename))
                 {
-                    DesktopModule.ModuleName = modulename;
+                    this.DesktopModule.ModuleName = modulename;
                 }
                 string permissions = Util.ReadElement(folderNav, "permissions");
                 if (!string.IsNullOrEmpty(permissions))
                 {
-                    DesktopModule.Permissions = permissions;
+                    this.DesktopModule.Permissions = permissions;
                 }
                 string dependencies = Util.ReadElement(folderNav, "dependencies");
                 if (!string.IsNullOrEmpty(dependencies))
                 {
-                    DesktopModule.Dependencies = dependencies;
+                    this.DesktopModule.Dependencies = dependencies;
                 }
-                DesktopModule.Version = Util.ReadElement(folderNav, "version", "01.00.00");
-                DesktopModule.Description = Util.ReadElement(folderNav, "description");
-                DesktopModule.BusinessControllerClass = Util.ReadElement(folderNav, "businesscontrollerclass");
+                this.DesktopModule.Version = Util.ReadElement(folderNav, "version", "01.00.00");
+                this.DesktopModule.Description = Util.ReadElement(folderNav, "description");
+                this.DesktopModule.BusinessControllerClass = Util.ReadElement(folderNav, "businesscontrollerclass");
 
                 //Process legacy modules Node
                 foreach (XPathNavigator moduleNav in folderNav.Select("modules/module"))
                 {
-                    ProcessModules(moduleNav, DesktopModule.FolderName);
+                    this.ProcessModules(moduleNav, this.DesktopModule.FolderName);
                 }
             }
 			
@@ -292,13 +292,13 @@ namespace DotNetNuke.Services.Installer.Writers
                 if (filePath.Contains("[app_code]"))
                 {
 					//Special case for App_code - files can be in App_Code\ModuleName or root
-                    sourceFileName = Path.Combine(filePath, fileName).Replace("[app_code]", "App_Code\\" + DesktopModule.FolderName);
+                    sourceFileName = Path.Combine(filePath, fileName).Replace("[app_code]", "App_Code\\" + this.DesktopModule.FolderName);
                 }
                 else
                 {
                     sourceFileName = Path.Combine(filePath, fileName);
                 }
-                string tempFolder = Package.InstallerInfo.TempInstallFolder;
+                string tempFolder = this.Package.InstallerInfo.TempInstallFolder;
                 if (!File.Exists(Path.Combine(tempFolder, sourceFileName)))
                 {
                     sourceFileName = fileName;
@@ -307,18 +307,18 @@ namespace DotNetNuke.Services.Installer.Writers
 				//In Legacy Modules the assembly is always in "bin" - ignore the path element
                 if (fileName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    AddFile("bin/" + fileName, sourceFileName);
+                    this.AddFile("bin/" + fileName, sourceFileName);
                 }
                 else
                 {
-                    AddFile(Path.Combine(filePath, fileName), sourceFileName);
+                    this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
 			
             //Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
-                AddResourceFile(new InstallFile(Util.ReadElement(folderNav, "resourcefile"), Package.InstallerInfo));
+                this.AddResourceFile(new InstallFile(Util.ReadElement(folderNav, "resourcefile"), this.Package.InstallerInfo));
             }
         }
 
@@ -337,15 +337,15 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteStartElement("attributes");
 
             //Write businessControllerClass Attribute
-            writer.WriteElementString("businessControllerClass", DesktopModule.BusinessControllerClass);
+            writer.WriteElementString("businessControllerClass", this.DesktopModule.BusinessControllerClass);
 
             //Write businessControllerClass Attribute
             writer.WriteElementString("desktopModuleID", "[DESKTOPMODULEID]");
 
             //Write upgradeVersionsList Attribute
             string upgradeVersions = Null.NullString;
-            Versions.Sort();
-            foreach (string version in Versions)
+            this.Versions.Sort();
+            foreach (string version in this.Versions)
             {
                 upgradeVersions += version + ",";
             }
@@ -369,16 +369,16 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteAttributeString("type", "Module");
 
             //Write Module Manifest
-            if (AppCodeFiles.Count > 0)
+            if (this.AppCodeFiles.Count > 0)
             {
-                DesktopModule.CodeSubDirectory = DesktopModule.FolderName;
+                this.DesktopModule.CodeSubDirectory = this.DesktopModule.FolderName;
             }
-            CBO.SerializeObject(DesktopModule, writer);
+            CBO.SerializeObject(this.DesktopModule, writer);
 
             //Write EventMessage
-            if (!string.IsNullOrEmpty(DesktopModule.BusinessControllerClass))
+            if (!string.IsNullOrEmpty(this.DesktopModule.BusinessControllerClass))
             {
-                WriteEventMessage(writer);
+                this.WriteEventMessage(writer);
             }
 			
             //End component Element
@@ -392,7 +392,7 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void WriteManifestComponent(XmlWriter writer)
         {
 			//Write Module Component
-            WriteModuleComponent(writer);
+            this.WriteModuleComponent(writer);
         }
 		
 		#endregion

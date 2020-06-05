@@ -29,23 +29,23 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                hypDotNetNuke.CssClass = CssClass;
+                this.hypDotNetNuke.CssClass = this.CssClass;
             }
 			
             //get Product Name and Legal Copyright from constants (Medium Trust)
-            hypDotNetNuke.Text = DotNetNukeContext.Current.Application.LegalCopyright;
-            hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
+            this.hypDotNetNuke.Text = DotNetNukeContext.Current.Application.LegalCopyright;
+            this.hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
             
 			//show copyright credits?
-			Visible = Host.DisplayCopyright;
+			this.Visible = Host.DisplayCopyright;
         }
     }
 }

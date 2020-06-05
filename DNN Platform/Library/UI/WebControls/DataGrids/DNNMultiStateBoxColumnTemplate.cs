@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
 
         public DNNMultiStateBoxColumnTemplate(ListItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 
 		/// -----------------------------------------------------------------------------
@@ -61,11 +61,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mSelectedStateKey;
+                return this.mSelectedStateKey;
             }
             set
             {
-                mSelectedStateKey = value;
+                this.mSelectedStateKey = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mDataField;
+                return this.mDataField;
             }
             set
             {
-                mDataField = value;
+                this.mDataField = value;
             }
         }
 
@@ -107,11 +107,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabled;
+                return this.mEnabled;
             }
             set
             {
-                mEnabled = value;
+                this.mEnabled = value;
             }
         }
 
@@ -126,11 +126,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabledField;
+                return this.mEnabledField;
             }
             set
             {
-                mEnabledField = value;
+                this.mEnabledField = value;
             }
         }
 
@@ -144,11 +144,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mItemType;
+                return this.mItemType;
             }
             set
             {
-                mItemType = value;
+                this.mItemType = value;
             }
         }
 
@@ -162,11 +162,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mText;
+                return this.mText;
             }
             set
             {
-                mText = value;
+                this.mText = value;
             }
         }
 
@@ -180,11 +180,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mImagePath;
+                return this.mImagePath;
             }
             set
             {
-                mImagePath = value;
+                this.mImagePath = value;
             }
         }
 
@@ -198,15 +198,15 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (mStates == null)
+                if (this.mStates == null)
                 {
-                    mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
+                    this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
                 }
-                return mStates;
+                return this.mStates;
             }
             set
             {
-                mStates = value;
+                this.mStates = value;
             }
         }
 
@@ -220,20 +220,20 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            if (!String.IsNullOrEmpty(Text))
+            if (!String.IsNullOrEmpty(this.Text))
             {
-                container.Controls.Add(new LiteralControl(Text + "<br/>"));
+                container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
-            if (ItemType != ListItemType.Header)
+            if (this.ItemType != ListItemType.Header)
             {
                 var box = new DNNMultiStateBox();
-                box.AutoPostBack = AutoPostBack;
-                box.ImagePath = ImagePath;
-                foreach (DNNMultiState objState in States)
+                box.AutoPostBack = this.AutoPostBack;
+                box.ImagePath = this.ImagePath;
+                foreach (DNNMultiState objState in this.States)
                 {
                     box.States.Add(objState);
                 }
-                box.DataBinding += Item_DataBinding;
+                box.DataBinding += this.Item_DataBinding;
                 container.Controls.Add(box);
             }
         }
@@ -249,35 +249,35 @@ namespace DotNetNuke.UI.WebControls
         {
             var box = (DNNMultiStateBox) sender;
             var container = (DataGridItem) box.NamingContainer;
-            if (!String.IsNullOrEmpty(DataField) && ItemType != ListItemType.Header)
+            if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
                     box.SelectedStateKey = "";
                 }
                 else
                 {
-                    box.SelectedStateKey = Convert.ToString(DataBinder.Eval(container.DataItem, DataField));
+                    box.SelectedStateKey = Convert.ToString(DataBinder.Eval(container.DataItem, this.DataField));
                 }
             }
             else
             {
-                box.SelectedStateKey = SelectedStateKey;
+                box.SelectedStateKey = this.SelectedStateKey;
             }
-            if (!String.IsNullOrEmpty(EnabledField))
+            if (!String.IsNullOrEmpty(this.EnabledField))
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
                     box.Enabled = false;
                 }
                 else
                 {
-                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, EnabledField));
+                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.EnabledField));
                 }
             }
             else
             {
-                box.Enabled = Enabled;
+                box.Enabled = this.Enabled;
             }
         }
     }

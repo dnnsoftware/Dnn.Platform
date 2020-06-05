@@ -14,7 +14,7 @@ namespace DotNetNuke.Modules.Groups {
     public partial class Loader : GroupsModuleBase {
         protected void Page_Load(object sender, EventArgs e) {
             string path = Constants.ModulePath;
-            switch (LoadView) {
+            switch (this.LoadView) {
                 case GroupMode.Setup:
                     path += "Setup.ascx";
                     break;
@@ -26,9 +26,9 @@ namespace DotNetNuke.Modules.Groups {
                     break;
             }
             GroupsModuleBase ctl = new GroupsModuleBase();
-            ctl = (GroupsModuleBase)LoadControl(path);
+            ctl = (GroupsModuleBase)this.LoadControl(path);
             ctl.ModuleConfiguration = this.ModuleConfiguration;
-            plhContent.Controls.Add(ctl);
+            this.plhContent.Controls.Add(ctl);
         }
     }
 }

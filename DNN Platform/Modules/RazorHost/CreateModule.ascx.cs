@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         public CreateModule()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             get
             {
-                return Path.GetFileNameWithoutExtension(scriptList.SelectedValue).TrimStart('_') + ".ascx";
+                return Path.GetFileNameWithoutExtension(this.scriptList.SelectedValue).TrimStart('_') + ".ascx";
             }
         }
 
@@ -57,10 +57,10 @@ namespace DotNetNuke.Modules.RazorHost
             get
             {
                 string m_RazorScriptFile = Null.NullString;
-                var scriptFileSetting = ModuleContext.Settings["ScriptFile"] as string;
+                var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
                 if (! (string.IsNullOrEmpty(scriptFileSetting)))
                 {
-                    m_RazorScriptFile = string.Format(razorScriptFileFormatString, scriptFileSetting);
+                    m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
                 return m_RazorScriptFile;
             }
@@ -69,10 +69,10 @@ namespace DotNetNuke.Modules.RazorHost
         private void Create()
         {
             //Create new Folder
-            string folderMapPath = Server.MapPath(string.Format("~/DesktopModules/RazorModules/{0}", txtFolder.Text));
+            string folderMapPath = this.Server.MapPath(string.Format("~/DesktopModules/RazorModules/{0}", this.txtFolder.Text));
             if (Directory.Exists(folderMapPath))
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("FolderExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("FolderExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 return;
             }
             else
@@ -82,25 +82,25 @@ namespace DotNetNuke.Modules.RazorHost
             }
 
             //Create new Module Control
-            string moduleControlMapPath = folderMapPath + "/" + ModuleControl;
+            string moduleControlMapPath = folderMapPath + "/" + this.ModuleControl;
             try
             {
                 using (var moduleControlWriter = new StreamWriter(moduleControlMapPath))
                 {
-                    moduleControlWriter.Write(Localization.GetString("ModuleControlText.Text", LocalResourceFile));
+                    moduleControlWriter.Write(Localization.GetString("ModuleControlText.Text", this.LocalResourceFile));
                     moduleControlWriter.Flush();
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ModuleControlCreationError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ModuleControlCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 return;
             }
 
             //Copy Script to new Folder
-            string scriptSourceFile = Server.MapPath(string.Format(razorScriptFileFormatString, scriptList.SelectedValue));
-            string scriptTargetFile = folderMapPath + "/" + scriptList.SelectedValue;
+            string scriptSourceFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
+            string scriptTargetFile = folderMapPath + "/" + this.scriptList.SelectedValue;
             try
             {
                 File.Copy(scriptSourceFile, scriptTargetFile);
@@ -108,18 +108,18 @@ namespace DotNetNuke.Modules.RazorHost
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ScriptCopyError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ScriptCopyError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 return;
             }
 
             //Create new Manifest in target folder
-			string manifestMapPath = folderMapPath + "/" + ModuleControl.Replace(".ascx", ".dnn");
+			string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
 			try
 			{
 				using (var manifestWriter = new StreamWriter(manifestMapPath))
 				{
-					string manifestTemplate = Localization.GetString("ManifestText.Text", LocalResourceFile);
-					string manifest = string.Format(manifestTemplate, txtName.Text, txtDescription.Text, txtFolder.Text, ModuleControl, scriptList.SelectedValue);
+					string manifestTemplate = Localization.GetString("ManifestText.Text", this.LocalResourceFile);
+					string manifest = string.Format(manifestTemplate, this.txtName.Text, this.txtDescription.Text, this.txtFolder.Text, this.ModuleControl, this.scriptList.SelectedValue);
 					manifestWriter.Write(manifest);
 					manifestWriter.Flush();
 				}
@@ -127,12 +127,12 @@ namespace DotNetNuke.Modules.RazorHost
 			catch (Exception ex)
 			{
 				Exceptions.LogException(ex);
-				UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+				UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
 				return;
 			}
 
             //Register Module
-            ModuleDefinitionInfo moduleDefinition = ImportManifest(manifestMapPath);
+            ModuleDefinitionInfo moduleDefinition = this.ImportManifest(manifestMapPath);
 
 			//remove the manifest file
 	        try
@@ -146,26 +146,26 @@ namespace DotNetNuke.Modules.RazorHost
 
 
             //Optionally goto new Page
-            if (chkAddPage.Checked)
+            if (this.chkAddPage.Checked)
             {
-                string tabName = "Test " + txtName.Text + " Page";
+                string tabName = "Test " + this.txtName.Text + " Page";
                 string tabPath = Globals.GenerateTabPath(Null.NullInteger, tabName);
-                int tabID = TabController.GetTabByTabPath(ModuleContext.PortalId, tabPath, ModuleContext.PortalSettings.CultureCode);
+                int tabID = TabController.GetTabByTabPath(this.ModuleContext.PortalId, tabPath, this.ModuleContext.PortalSettings.CultureCode);
 
                 if (tabID == Null.NullInteger)
                 {
                     //Create a new page
                     var newTab = new TabInfo();
-                    newTab.TabName = "Test " + txtName.Text + " Page";
+                    newTab.TabName = "Test " + this.txtName.Text + " Page";
                     newTab.ParentId = Null.NullInteger;
-                    newTab.PortalID = ModuleContext.PortalId;
+                    newTab.PortalID = this.ModuleContext.PortalId;
                     newTab.IsVisible = true;
-                    newTab.TabID = TabController.Instance.AddTabBefore(newTab, ModuleContext.PortalSettings.AdminTabId);
+                    newTab.TabID = TabController.Instance.AddTabBefore(newTab, this.ModuleContext.PortalSettings.AdminTabId);
 
                     var objModule = new ModuleInfo();
-                    objModule.Initialize(ModuleContext.PortalId);
+                    objModule.Initialize(this.ModuleContext.PortalId);
 
-                    objModule.PortalID = ModuleContext.PortalId;
+                    objModule.PortalID = this.ModuleContext.PortalId;
                     objModule.TabID = newTab.TabID;
                     objModule.ModuleOrder = Null.NullInteger;
                     objModule.ModuleTitle = moduleDefinition.FriendlyName;
@@ -175,17 +175,17 @@ namespace DotNetNuke.Modules.RazorHost
                     objModule.AllTabs = false;
                     ModuleController.Instance.AddModule(objModule);
 
-                    Response.Redirect(_navigationManager.NavigateURL(newTab.TabID), true);
+                    this.Response.Redirect(this._navigationManager.NavigateURL(newTab.TabID), true);
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabExists", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
                 //Redirect to main extensions page
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
 
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.RazorHost
             ModuleDefinitionInfo moduleDefinition = null;
             try
             {
-                var _Installer = new Installer(manifest, Request.MapPath("."), true);
+                var _Installer = new Installer(manifest, this.Request.MapPath("."), true);
 
                 if (_Installer.IsValid)
                 {
@@ -218,20 +218,20 @@ namespace DotNetNuke.Modules.RazorHost
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                        phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        this.phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
                     }
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                    phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InstallError.Text", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    this.phInstallLogs.Controls.Add(_Installer.InstallerInfo.Log.GetLogsTable());
                 }
             }
             catch (Exception exc)
             {
                 Exceptions.LogException(exc);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ImportControl.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ImportControl.ErrorMessage", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
             }
 
             return moduleDefinition;
@@ -239,10 +239,10 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void LoadScripts()
         {
-            string basePath = Server.MapPath(razorScriptFolder);
-            var scriptFileSetting = ModuleContext.Settings["ScriptFile"] as string;
+            string basePath = this.Server.MapPath(this.razorScriptFolder);
+            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
 
-            foreach (string script in Directory.GetFiles(Server.MapPath(razorScriptFolder), "*.??html"))
+            foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
                 string scriptPath = script.Replace(basePath, "");
                 var item = new ListItem(scriptPath, scriptPath);
@@ -250,16 +250,16 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     item.Selected = true;
                 }
-                scriptList.Items.Add(item);
+                this.scriptList.Items.Add(item);
             }
         }
 
         private void DisplayFile()
         {
-            string scriptFile = string.Format(razorScriptFileFormatString, scriptList.SelectedValue);
+            string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
 
-            lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", LocalResourceFile), scriptFile);
-            lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", LocalResourceFile), ModuleControl);
+            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
+            this.lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", this.LocalResourceFile), this.ModuleControl);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -267,9 +267,9 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnInit(e);
 
-            cmdCancel.Click += cmdCancel_Click;
-            cmdCreate.Click += cmdCreate_Click;
-            scriptList.SelectedIndexChanged += scriptList_SelectedIndexChanged;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdCreate.Click += this.cmdCreate_Click;
+            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -277,15 +277,15 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnLoad(e);
 
-            if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+            if (! this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
-                Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
 
-            if (! Page.IsPostBack)
+            if (! this.Page.IsPostBack)
             {
-                LoadScripts();
-                DisplayFile();
+                this.LoadScripts();
+                this.DisplayFile();
             }
         }
 
@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -305,14 +305,14 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                if (! ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+                if (! this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
                 }
 
-                if (Page.IsValid)
+                if (this.Page.IsValid)
                 {
-                    Create();
+                    this.Create();
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -323,7 +323,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayFile();
+            this.DisplayFile();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected OAuthConfigBase(string service, int portalId)
             : base(portalId)
         {
-            Service = service;
+            this.Service = service;
             
             var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
             var hostApiKey = "";
@@ -31,24 +31,24 @@ namespace DotNetNuke.Services.Authentication.OAuth
             if (string.IsNullOrEmpty(portalApiKey))
             {
                 hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", "");
-                HostConfig = !string.IsNullOrEmpty(hostApiKey);
+                this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
             }
             else
             {
-                HostConfig = false;
+                this.HostConfig = false;
             }
 
-            if (HostConfig)
+            if (this.HostConfig)
             {
-                APIKey = hostApiKey;
-                APISecret = HostController.Instance.GetString(Service + "_APISecret", "");
-                Enabled = HostController.Instance.GetBoolean(Service + "_Enabled", false);
+                this.APIKey = hostApiKey;
+                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", "");
+                this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
             }
             else
             {
-                APIKey = portalApiKey;
-                APISecret = PortalController.GetPortalSetting(Service + "_APISecret", portalId, "");
-                Enabled = PortalController.GetPortalSettingAsBoolean(Service + "_Enabled", portalId, false);
+                this.APIKey = portalApiKey;
+                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, "");
+                this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
             }
         }
 

@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             var tab = (node.TabId > 0) ? TabController.Instance.GetTab(node.TabId, Null.NullInteger, false) : null;
 			if (tab != null)
 			{
-				var localised = LocaliseTab(tab);
+				var localised = this.LocaliseTab(tab);
 				tab = localised ?? tab;
 
 				if (localised != null)
@@ -72,12 +72,12 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 				node.TabId = -1;
 			}
 
-			node.Children.ForEach(LocaliseNode);
+			node.Children.ForEach(this.LocaliseNode);
 		}
 
 		private TabInfo LocaliseTab(TabInfo tab)
 		{
-			return (LocalisationApi == null) ? null : LocalisationApi.LocaliseTab(tab, portalId);
+			return (LocalisationApi == null) ? null : LocalisationApi.LocaliseTab(tab, this.portalId);
 		}
 	}
 }

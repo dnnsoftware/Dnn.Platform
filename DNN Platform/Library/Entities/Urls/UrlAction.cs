@@ -24,9 +24,9 @@ namespace DotNetNuke.Entities.Urls
         //829 add in constructor that works around physical path length restriction
         public UrlAction(HttpRequest request)
         {
-            BrowserType = BrowserTypes.Normal;
-            CanRewrite = StateBoolean.NotSet;
-            Action = ActionType.Continue;
+            this.BrowserType = BrowserTypes.Normal;
+            this.CanRewrite = StateBoolean.NotSet;
+            this.Action = ActionType.Continue;
             string physicalPath = "";
             try
             {
@@ -36,52 +36,52 @@ namespace DotNetNuke.Entities.Urls
             {
                 //don't handle exception, but put something into the physical path
                 physicalPath = request.ApplicationPath; //will be no file for this location
-                VirtualPath = StateBoolean.True;
+                this.VirtualPath = StateBoolean.True;
             }
             catch (ArgumentException)
             {
                 //don't handle exception, but put something into the physical path
                 physicalPath = request.ApplicationPath; //will be no file for this location
-                VirtualPath = StateBoolean.True;
+                this.VirtualPath = StateBoolean.True;
             }
             finally
             {
-                Constructor(request.Url.Scheme, request.ApplicationPath, physicalPath);
+                this.Constructor(request.Url.Scheme, request.ApplicationPath, physicalPath);
             }
         }
 
         public UrlAction(string scheme, string applicationPath, string physicalPath)
         {
-            BrowserType = BrowserTypes.Normal;
-            CanRewrite = StateBoolean.NotSet;
-            Action = ActionType.Continue;
-            Constructor(scheme, applicationPath, physicalPath);
+            this.BrowserType = BrowserTypes.Normal;
+            this.CanRewrite = StateBoolean.NotSet;
+            this.Action = ActionType.Continue;
+            this.Constructor(scheme, applicationPath, physicalPath);
         }
 
         private void Constructor(string scheme, string applicationPath, string physicalPath)
         {
             if (scheme.EndsWith("://") == false)
             {
-                Scheme = scheme + "://";
+                this.Scheme = scheme + "://";
             }
             else
             {
-                Scheme = scheme;
+                this.Scheme = scheme;
             }
-            ApplicationPath = applicationPath;
+            this.ApplicationPath = applicationPath;
             string domainPath = applicationPath.Replace(scheme, "");
-            DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
-            PhysicalPath = physicalPath;
-            PortalId = -1;
-            TabId = -1;
-            Reason = RedirectReason.Not_Redirected;
-            FriendlyRewrite = false;
-            BypassCachedDictionary = false;
-            VirtualPath = StateBoolean.NotSet;
-            IsSecureConnection = false;
-            IsSSLOffloaded = false;
-            DebugMessages = new List<string>();
-            CultureCode = null;
+            this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
+            this.PhysicalPath = physicalPath;
+            this.PortalId = -1;
+            this.TabId = -1;
+            this.Reason = RedirectReason.Not_Redirected;
+            this.FriendlyRewrite = false;
+            this.BypassCachedDictionary = false;
+            this.VirtualPath = StateBoolean.NotSet;
+            this.IsSecureConnection = false;
+            this.IsSSLOffloaded = false;
+            this.DebugMessages = new List<string>();
+            this.CultureCode = null;
         }
 
         #region Private Members
@@ -138,15 +138,15 @@ namespace DotNetNuke.Entities.Urls
         //the alias for the current request
         public PortalAliasInfo PortalAlias
         {
-            get { return _portalAlias; }
+            get { return this._portalAlias; }
             set
             {
                 if (value != null)
                 {
-                    PortalId = value.PortalID;
-                    HttpAlias = value.HTTPAlias;
+                    this.PortalId = value.PortalID;
+                    this.HttpAlias = value.HTTPAlias;
                 }
-                _portalAlias = value;
+                this._portalAlias = value;
             }
         }
         //the primary alias, if different to the current alias
@@ -177,16 +177,16 @@ namespace DotNetNuke.Entities.Urls
             switch (newAction)
             {
                 case ActionType.CheckFor301:
-                    if (Action != ActionType.Redirect301
-                        && Action != ActionType.Redirect302
-                        && Action != ActionType.Redirect302Now
-                        && Action != ActionType.Output404)
+                    if (this.Action != ActionType.Redirect301
+                        && this.Action != ActionType.Redirect302
+                        && this.Action != ActionType.Redirect302Now
+                        && this.Action != ActionType.Output404)
                     {
-                        Action = newAction;
+                        this.Action = newAction;
                     }
                     break;
                 default:
-                    Action = newAction;
+                    this.Action = newAction;
                     break;
             }
         }
@@ -194,38 +194,38 @@ namespace DotNetNuke.Entities.Urls
 
         public void AddLicensedProviders(List<string> licensedProviders)
         {
-            if (_licensedProviders == null)
+            if (this._licensedProviders == null)
             {
-                _licensedProviders = new List<string>();
+                this._licensedProviders = new List<string>();
             }
             foreach (string lp in licensedProviders)
             {
-                if (_licensedProviders.Contains(lp.ToLowerInvariant()) == false)
+                if (this._licensedProviders.Contains(lp.ToLowerInvariant()) == false)
                 {
-                    _licensedProviders.Add(lp.ToLowerInvariant());
+                    this._licensedProviders.Add(lp.ToLowerInvariant());
                 }
             }
         }
 
         public void AddLicensedProvider(string providerName)
         {
-            if (_licensedProviders == null)
+            if (this._licensedProviders == null)
             {
-                _licensedProviders = new List<string>();
+                this._licensedProviders = new List<string>();
             }
-            if (_licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
+            if (this._licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
-                _licensedProviders.Add(providerName.ToLowerInvariant());
+                this._licensedProviders.Add(providerName.ToLowerInvariant());
             }
         }
 
         public bool IsProviderLicensed(string providerName)
         {
-            if (_licensedProviders == null)
+            if (this._licensedProviders == null)
             {
                 return false;
             }
-            return _licensedProviders.Contains(providerName.ToLowerInvariant());
+            return this._licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
         /// <summary>
@@ -235,11 +235,11 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         public void SetOriginalPath(string path, FriendlyUrlSettings settings)
         {
-            OriginalPath = path;
-            OriginalPathNoAlias = path;
-            if (!string.IsNullOrEmpty(HttpAlias) && path.Contains(HttpAlias))
+            this.OriginalPath = path;
+            this.OriginalPathNoAlias = path;
+            if (!string.IsNullOrEmpty(this.HttpAlias) && path.Contains(this.HttpAlias))
             {
-                OriginalPathNoAlias = path.Substring(path.IndexOf(HttpAlias, StringComparison.Ordinal) + HttpAlias.Length);
+                this.OriginalPathNoAlias = path.Substring(path.IndexOf(this.HttpAlias, StringComparison.Ordinal) + this.HttpAlias.Length);
             }
         }
 
@@ -248,7 +248,7 @@ namespace DotNetNuke.Entities.Urls
             //set the mobile browser type
             if (request != null && response != null && settings != null)
             {
-                BrowserType = FriendlyUrlController.GetBrowserType(request, response, settings);
+                this.BrowserType = FriendlyUrlController.GetBrowserType(request, response, settings);
             }
         }
 
@@ -260,20 +260,20 @@ namespace DotNetNuke.Entities.Urls
                 if (!string.IsNullOrEmpty(regexExpr))
                 {
                     //if a regex match, redirect Not allowed
-                    RedirectAllowed = !Regex.IsMatch(path, regexExpr, RegexOptions.IgnoreCase);
+                    this.RedirectAllowed = !Regex.IsMatch(path, regexExpr, RegexOptions.IgnoreCase);
                 }
                 else
                 {
-                    RedirectAllowed = true;
+                    this.RedirectAllowed = true;
                 }
             }
             catch (Exception ex)
             {
-                RedirectAllowed = true; //default : true, unless regex allows it.  So if regex causes an exception
+                this.RedirectAllowed = true; //default : true, unless regex allows it.  So if regex causes an exception
                 //then we should allow the redirect
 
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
-                Ex = ex;
+                this.Ex = ex;
             }
         }
 

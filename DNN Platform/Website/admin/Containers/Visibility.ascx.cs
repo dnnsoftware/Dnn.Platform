@@ -44,9 +44,9 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (!String.IsNullOrEmpty(minIcon))
+                if (!String.IsNullOrEmpty(this.minIcon))
                 {
-                    return ModulePath + minIcon;
+                    return this.ModulePath + this.minIcon;
                 }
                 
                 return Globals.ApplicationPath + "/images/min.gif"; //is ~/ the same as ApplicationPath in all cases?
@@ -57,9 +57,9 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (!String.IsNullOrEmpty(MaxIcon))
+                if (!String.IsNullOrEmpty(this.MaxIcon))
                 {
-                    return ModulePath + MaxIcon;
+                    return this.ModulePath + this.MaxIcon;
                 }
                 
                 return Globals.ApplicationPath + "/images/max.gif"; //is ~/ the same as ApplicationPath in all cases?
@@ -70,15 +70,15 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_pnlModuleContent == null)
+                if (this._pnlModuleContent == null)
                 {
-                    Control objCtl = Parent.FindControl("ModuleContent");
+                    Control objCtl = this.Parent.FindControl("ModuleContent");
                     if (objCtl != null)
                     {
-                        _pnlModuleContent = (Panel) objCtl;
+                        this._pnlModuleContent = (Panel) objCtl;
                     }
                 }
-                return _pnlModuleContent;
+                return this._pnlModuleContent;
             }
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
+                return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
             }
         }
 		
@@ -99,11 +99,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _animationFrames;
+                return this._animationFrames;
             }
             set
             {
-                _animationFrames = value;
+                this._animationFrames = value;
             }
         }
 
@@ -113,13 +113,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                switch (ModuleControl.ModuleContext.Configuration.Visibility)
+                switch (this.ModuleControl.ModuleContext.Configuration.Visibility)
                 {
                     case VisibilityState.Maximized:
                     case VisibilityState.Minimized:
-                        return DNNClientAPI.MinMaxContentVisibile(cmdVisibility,
-                                                                  ModuleControl.ModuleContext.ModuleId,
-                                                                  ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                        return DNNClientAPI.MinMaxContentVisibile(this.cmdVisibility,
+                                                                  this.ModuleControl.ModuleContext.ModuleId,
+                                                                  this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
                                                                   DNNClientAPI.MinMaxPersistanceType.Cookie);
                     default:
                         return true;
@@ -127,9 +127,9 @@ namespace DotNetNuke.UI.Containers
             }
             set
             {
-                DNNClientAPI.MinMaxContentVisibile(cmdVisibility,
-                                                   ModuleControl.ModuleContext.ModuleId,
-                                                   ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                DNNClientAPI.MinMaxContentVisibile(this.cmdVisibility,
+                                                   this.ModuleControl.ModuleContext.ModuleId,
+                                                   this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
                                                    DNNClientAPI.MinMaxPersistanceType.Cookie,
                                                    value);
             }
@@ -154,64 +154,64 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnLoad(e);
 
-            cmdVisibility.Click += cmdVisibility_Click;
+            this.cmdVisibility.Click += this.cmdVisibility_Click;
 
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
 					//public attributes
-                    if (!String.IsNullOrEmpty(BorderWidth))
+                    if (!String.IsNullOrEmpty(this.BorderWidth))
                     {
-                        cmdVisibility.BorderWidth = Unit.Parse(BorderWidth);
+                        this.cmdVisibility.BorderWidth = Unit.Parse(this.BorderWidth);
                     }
-                    if (ModuleControl.ModuleContext.Configuration != null)
+                    if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
 						//check if Personalization is allowed
-                        if (ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
+                        if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
                         {
-                            cmdVisibility.Enabled = false;
-                            cmdVisibility.Visible = false;
+                            this.cmdVisibility.Enabled = false;
+                            this.cmdVisibility.Visible = false;
                         }
-                        if (ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized)
+                        if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized)
                         {
 							//if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
                             //instead of the opposite.  We need to notify the client of this
-                            ClientAPI.RegisterClientVariable(Page, "__dnn_" + ModuleControl.ModuleContext.ModuleId + ":defminimized", "true", true);
+                            ClientAPI.RegisterClientVariable(this.Page, "__dnn_" + this.ModuleControl.ModuleContext.ModuleId + ":defminimized", "true", true);
                         }
                         if (!Globals.IsAdminControl())
                         {
-                            if (cmdVisibility.Enabled)
+                            if (this.cmdVisibility.Enabled)
                             {
-                                if (ModuleContent != null)
+                                if (this.ModuleContent != null)
                                 {
 									//EnableMinMax now done in prerender
                                 }
                                 else
                                 {
-                                    Visible = false;
+                                    this.Visible = false;
                                 }
                             }
                         }
                         else
                         {
-                            Visible = false;
+                            this.Visible = false;
                         }
                     }
                     else
                     {
-                        Visible = false;
+                        this.Visible = false;
                     }
                 }
                 else
                 {
                     //since we disabled viewstate on the cmdVisibility control we need to check to see if we need hide this on postbacks as well
-                    if (ModuleControl.ModuleContext.Configuration != null)
+                    if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
-                        if (ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
+                        if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
                         {
-                            cmdVisibility.Enabled = false;
-                            cmdVisibility.Visible = false;
+                            this.cmdVisibility.Enabled = false;
+                            this.cmdVisibility.Visible = false;
                         }
                     }
                 }
@@ -225,20 +225,20 @@ namespace DotNetNuke.UI.Containers
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (ModuleContent != null && ModuleControl != null && !Globals.IsAdminControl())
+            if (this.ModuleContent != null && this.ModuleControl != null && !Globals.IsAdminControl())
             {
-                switch (ModuleControl.ModuleContext.Configuration.Visibility)
+                switch (this.ModuleControl.ModuleContext.Configuration.Visibility)
                 {
                     case VisibilityState.Maximized:
                     case VisibilityState.Minimized:
-                        DNNClientAPI.EnableMinMax(cmdVisibility,
-                                                  ModuleContent,
-                                                  ModuleControl.ModuleContext.ModuleId,
-                                                  ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                                                  MinIconLoc,
-                                                  MaxIconLoc,
+                        DNNClientAPI.EnableMinMax(this.cmdVisibility,
+                                                  this.ModuleContent,
+                                                  this.ModuleControl.ModuleContext.ModuleId,
+                                                  this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                                                  this.MinIconLoc,
+                                                  this.MaxIconLoc,
                                                   DNNClientAPI.MinMaxPersistanceType.Cookie,
-                                                  AnimationFrames);
+                                                  this.AnimationFrames);
                         break;
                 }
             }
@@ -248,15 +248,15 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                if (ModuleContent != null)
+                if (this.ModuleContent != null)
                 {
-                    if (ModuleContent.Visible)
+                    if (this.ModuleContent.Visible)
                     {
-                        ContentVisible = false;
+                        this.ContentVisible = false;
                     }
                     else
                     {
-                        ContentVisible = true;
+                        this.ContentVisible = true;
                     }
                 }
             }

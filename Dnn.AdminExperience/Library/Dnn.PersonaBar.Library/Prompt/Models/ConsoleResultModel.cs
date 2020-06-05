@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
         public ConsoleResultModel(string output)
         {
-            Output = output;
+            this.Output = output;
         }
     }
 }

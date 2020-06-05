@@ -10,7 +10,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
     {
         public Field(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public string Name { get; private set; }

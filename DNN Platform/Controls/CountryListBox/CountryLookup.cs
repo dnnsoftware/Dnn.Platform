@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.WebControls
 
         public CountryLookup(MemoryStream ms)
         {
-            m_MemoryStream = ms;
+            this.m_MemoryStream = ms;
         }
 
         public CountryLookup(string FileLocation)
@@ -78,11 +78,11 @@ namespace DotNetNuke.UI.WebControls
             //------------------------------------------------------------------------------------------------
             using (var _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
             {
-                m_MemoryStream = new MemoryStream();
+                this.m_MemoryStream = new MemoryStream();
                 var _Byte = new byte[256];
                 while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
                 {
-                    m_MemoryStream.Write(_Byte, 0, _Byte.Length);
+                    this.m_MemoryStream.Write(_Byte, 0, _Byte.Length);
                 }
                 _FileStream.Close();
 
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.WebControls
         public string LookupCountryCode(IPAddress _IPAddress)
         {
             //Look up the country code, e.g. US, for the passed in IP Address
-            return CountryCode[Convert.ToInt32(SeekCountry(0, ConvertIPAddressToNumber(_IPAddress), 31))];
+            return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(_IPAddress), 31))];
         }
 
         public string LookupCountryCode(string _IPAddress)
@@ -156,13 +156,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 return "--";
             }
-            return LookupCountryCode(_Address);
+            return this.LookupCountryCode(_Address);
         }
 
         public string LookupCountryName(IPAddress addr)
         {
             //Look up the country name, e.g. United States, for the IP Address
-            return CountryName[Convert.ToInt32(SeekCountry(0, ConvertIPAddressToNumber(addr), 31))];
+            return CountryName[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(addr), 31))];
         }
 
         public string LookupCountryName(string _IPAddress)
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return "N/A";
             }
-            return LookupCountryName(_Address);
+            return this.LookupCountryName(_Address);
         }
 
         public int SeekCountry(int Offset, long Ipnum, short Depth)
@@ -193,8 +193,8 @@ namespace DotNetNuke.UI.WebControls
                 {
                     throw new Exception();
                 }
-                m_MemoryStream.Seek(6*Offset, 0);
-                var len = m_MemoryStream.Read(Buffer, 0, 6);
+                this.m_MemoryStream.Seek(6*Offset, 0);
+                var len = this.m_MemoryStream.Read(Buffer, 0, 6);
                 if (len == 6)
                 {
                     for (I = 0; I <= 1; I++)
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         return Convert.ToInt32(X[1] - CountryBegin);
                     }
-                    return SeekCountry(X[1], Ipnum, Convert.ToInt16(Depth - 1));
+                    return this.SeekCountry(X[1], Ipnum, Convert.ToInt16(Depth - 1));
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         return Convert.ToInt32(X[0] - CountryBegin);
                     }
-                    return SeekCountry(X[0], Ipnum, Convert.ToInt16(Depth - 1));
+                    return this.SeekCountry(X[0], Ipnum, Convert.ToInt16(Depth - 1));
                 }
             }
             catch (Exception exc)

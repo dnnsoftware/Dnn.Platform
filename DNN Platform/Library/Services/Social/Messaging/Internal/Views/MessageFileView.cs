@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// <value>The size.</value>
         public string Size
         {
-            get { return _size; }
+            get { return this._size; }
             set
             {
                 long bytes;
@@ -43,13 +43,13 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
                 {
                     if (bytes > max)
                     {
-                        _size = string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
+                        this._size = string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
                         return;
                     }
 
                     max /= scale;
                 }
-                _size = "0 B";
+                this._size = "0 B";
             }
         }
 

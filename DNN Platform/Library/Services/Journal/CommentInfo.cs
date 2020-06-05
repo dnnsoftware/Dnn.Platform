@@ -26,25 +26,25 @@ namespace DotNetNuke.Services.Journal {
 
         public int KeyID {
             get {
-                return CommentId;
+                return this.CommentId;
             }
             set {
-                CommentId = value;
+                this.CommentId = value;
             }
         }
        
         public void Fill(System.Data.IDataReader dr) {
-            CommentId = Null.SetNullInteger(dr["CommentId"]);
-            JournalId = Null.SetNullInteger(dr["JournalId"]);
-            Comment = Null.SetNullString(dr["Comment"]);
-            DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
-            DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
+            this.CommentId = Null.SetNullInteger(dr["CommentId"]);
+            this.JournalId = Null.SetNullInteger(dr["JournalId"]);
+            this.Comment = Null.SetNullString(dr["Comment"]);
+            this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
+            this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
             if (!String.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"]))) {
-                CommentXML = new XmlDocument { XmlResolver = null };
-                CommentXML.LoadXml(dr["CommentXML"].ToString());
+                this.CommentXML = new XmlDocument { XmlResolver = null };
+                this.CommentXML.LoadXml(dr["CommentXML"].ToString());
             }
-            UserId = Null.SetNullInteger(dr["UserId"]);
-            DisplayName = Null.SetNullString(dr["DisplayName"]);
+            this.UserId = Null.SetNullInteger(dr["UserId"]);
+            this.DisplayName = Null.SetNullString(dr["DisplayName"]);
 
 
         }

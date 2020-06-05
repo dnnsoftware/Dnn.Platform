@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public FormatAttribute(string format)
         {
-            _Format = format;
+            this._Format = format;
         }
 
         public string Format
         {
             get
             {
-                return _Format;
+                return this._Format;
             }
         }
     }

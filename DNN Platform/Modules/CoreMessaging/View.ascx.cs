@@ -38,9 +38,9 @@ namespace DotNetNuke.Modules.CoreMessaging
             get
             {
                 var userId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["UserId"]))
+                if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = Int32.Parse(Request.Params["UserId"]);
+                    userId = Int32.Parse(this.Request.Params["UserId"]);
                 }
                 return userId;
             }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             get
             {
-                var allowAttachments = PortalController.GetPortalSetting("MessagingAllowAttachments", PortalId, "NO");
+                var allowAttachments = PortalController.GetPortalSetting("MessagingAllowAttachments", this.PortalId, "NO");
                 return allowAttachments == "NO" ? "false" : "true";
             }
         }
@@ -59,8 +59,8 @@ namespace DotNetNuke.Modules.CoreMessaging
 	    {
 		    get
 		    {
-			    return !Settings.ContainsKey("ShowSubscriptionTab") ||
-			           Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+			    return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
+			           this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
 		    }
 	    }
 
@@ -68,8 +68,8 @@ namespace DotNetNuke.Modules.CoreMessaging
 	    {
 		    get
 		    {
-			    return PortalSettings.DisablePrivateMessage && !UserInfo.IsSuperUser 
-					&& !UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+			    return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser 
+					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
 		    }
 	    }
@@ -80,32 +80,32 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         override protected void OnInit(EventArgs e)
         {
-            if (!Request.IsAuthenticated)
+            if (!this.Request.IsAuthenticated)
             {
                 // Do not redirect but hide the content of the module and display a message.
-                CoreMessagingContainer.Visible = false;
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ContentNotAvailable", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                this.CoreMessagingContainer.Visible = false;
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ContentNotAvailable", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 return;
             }
-            if (UserId != ProfileUserId && (PortalSettings.ActiveTab.ParentId == PortalSettings.UserTabId || TabId == PortalSettings.UserTabId))
+            if (this.UserId != this.ProfileUserId && (this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId || this.TabId == this.PortalSettings.UserTabId))
             {
 				// Do not redirect but hide the content of the module.
-				CoreMessagingContainer.Visible = false;
+				this.CoreMessagingContainer.Visible = false;
 				return;
             }
             
-            if (IsEditable && PermissionsNotProperlySet())
+            if (this.IsEditable && this.PermissionsNotProperlySet())
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsNotProperlySet", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsNotProperlySet", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.Knockout);
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-            jQuery.RegisterFileUpload(Page);
-            AddIe7StyleSheet();
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
+            jQuery.RegisterFileUpload(this.Page);
+            this.AddIe7StyleSheet();
 
             base.OnInit(e);
         }
@@ -116,11 +116,11 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         private void AddIe7StyleSheet()
         {
-            var browser = Request.Browser;
+            var browser = this.Request.Browser;
             if (browser.Type == "IE" || browser.MajorVersion < 8)
             {
                 const string cssLink = "<link href=\"/ie-messages.css\" rel=\"stylesheet\" type=\"text/css\" />";
-                Page.Header.Controls.Add(new LiteralControl(cssLink));
+                this.Page.Header.Controls.Add(new LiteralControl(cssLink));
             }
         }
 
@@ -128,14 +128,14 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             List<PermissionInfoBase> permissions;
 
-            if (ModuleConfiguration.InheritViewPermissions)
+            if (this.ModuleConfiguration.InheritViewPermissions)
             {
-                var tabPermissionCollection = TabPermissionController.GetTabPermissions(TabId, PortalId);
+                var tabPermissionCollection = TabPermissionController.GetTabPermissions(this.TabId, this.PortalId);
                 permissions = tabPermissionCollection.ToList();
             }
             else
             {
-                permissions = ModuleConfiguration.ModulePermissions.ToList();
+                permissions = this.ModuleConfiguration.ModulePermissions.ToList();
             }
 
             return permissions.Find(PermissionPredicate) != null;

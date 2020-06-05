@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Users.Membership
         {
             using (HashAlgorithm ha = HashAlgorithm.Create())
             {
-                byte[] newSalt = GetRandomSaltValue();
+                byte[] newSalt = this.GetRandomSaltValue();
                 byte[] bytePassword = Encoding.Unicode.GetBytes(password);
                 var inputBuffer = new byte[bytePassword.Length + 16];
                 Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Users.Membership
                 byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
                 string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-                _dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
+                this._dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>list of PasswordHistory objects</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
-            return GetPasswordHistory(userId, Null.NullInteger);
+            return this.GetPasswordHistory(userId, Null.NullInteger);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Users.Membership
         {
             var settings = new MembershipPasswordSettings(portalId);
             List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(_dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
+                CBO.FillCollection<PasswordHistory>(this._dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
             return history;
         }
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>true if password has not been used in users history, false otherwise</returns>
         public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
-			return IsPasswordInHistory(userId, portalId, newPassword, true);
+			return this.IsPasswordInHistory(userId, portalId, newPassword, true);
         }
 
 		/// <summary>
@@ -100,11 +100,11 @@ namespace DotNetNuke.Entities.Users.Membership
 			var settings = new MembershipPasswordSettings(portalId);
 			if (settings.EnablePasswordHistory)
 			{
-				if (!IsPasswordPreviouslyUsed(userId, newPassword))
+				if (!this.IsPasswordPreviouslyUsed(userId, newPassword))
 				{
 					if (autoAdd)
 					{
-						AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
+						this.AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
 					}
 				}
 				else
@@ -126,7 +126,7 @@ namespace DotNetNuke.Entities.Users.Membership
             //use default algorithm (SHA1CryptoServiceProvider )
             using (HashAlgorithm ha = HashAlgorithm.Create())
             {
-                List<PasswordHistory> history = GetPasswordHistory(userId);
+                List<PasswordHistory> history = this.GetPasswordHistory(userId);
                 foreach (PasswordHistory ph in history)
                 {
                     string oldEncodedPassword = ph.Password;

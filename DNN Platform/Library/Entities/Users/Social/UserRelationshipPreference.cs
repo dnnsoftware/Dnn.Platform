@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Users.Social
     {
         public UserRelationshipPreference()
         {
-            PreferenceId = -1;
+            this.PreferenceId = -1;
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                return PreferenceId;
+                return this.PreferenceId;
             }
             set
             {
-                PreferenceId = value;
+                this.PreferenceId = value;
             }
         }
 
@@ -76,13 +76,13 @@ namespace DotNetNuke.Entities.Users.Social
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            PreferenceId = Convert.ToInt32(dr["PreferenceID"]);
-            UserId = Convert.ToInt32(dr["UserID"]);            
-            RelationshipId = Convert.ToInt32(dr["RelationshipID"]);
-            DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"]);
+            this.PreferenceId = Convert.ToInt32(dr["PreferenceID"]);
+            this.UserId = Convert.ToInt32(dr["UserID"]);            
+            this.RelationshipId = Convert.ToInt32(dr["RelationshipID"]);
+            this.DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"]);
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
     }
 }

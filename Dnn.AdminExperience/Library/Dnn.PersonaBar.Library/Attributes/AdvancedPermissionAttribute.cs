@@ -34,31 +34,31 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            var menuItem = GetMenuByIdentifier();
+            var menuItem = this.GetMenuByIdentifier();
             var portalSettings = PortalSettings.Current;
 
             if (menuItem == null || portalSettings == null)
             {
                 return false;
             }
-            if (!CheckPermissionForAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
+            if (!this.CheckPermissionForAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
             {
                 return true;
             }
             //Permissions seperated by & should be treated with AND operand.
             //Permissions seperated by , are internally treated with OR operand.
-            var allPermissionGroups = Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            var allPermissionGroups = this.Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, allPermissions));
         }
 
         private MenuItem GetMenuByIdentifier()
         {
-            if (string.IsNullOrEmpty(MenuName))
+            if (string.IsNullOrEmpty(this.MenuName))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(MenuName);
+            return PersonaBarRepository.Instance.GetMenuItem(this.MenuName);
         }
     }
 }

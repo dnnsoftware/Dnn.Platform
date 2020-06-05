@@ -32,12 +32,12 @@ namespace DotNetNuke.Tests.Integration.Executers
         {
             get
             {
-                return _loginAs;
+                return this._loginAs;
             }
             set
             {
-                _loginAs = value;
-                _connector = null;
+                this._loginAs = value;
+                this._connector = null;
             }
         }
 
@@ -49,46 +49,46 @@ namespace DotNetNuke.Tests.Integration.Executers
 
         protected WebApiExecuter()
         {
-            LoginAs = LoginAsUser.RegisteredUser;
-            Login = WebApiTestHelper.LoginRegisteredUser;
-            Anonymous = WebApiTestHelper.GetAnnonymousConnector;
+            this.LoginAs = LoginAsUser.RegisteredUser;
+            this.Login = WebApiTestHelper.LoginRegisteredUser;
+            this.Anonymous = WebApiTestHelper.GetAnnonymousConnector;
 
-            UserFirstName = Constants.RuFirstName;
-            UserLastName = Constants.RuLastName;
+            this.UserFirstName = Constants.RuFirstName;
+            this.UserLastName = Constants.RuLastName;
         }
 
         public IWebApiConnector Connector
         {
             get
             {
-                if (_connector == null)
+                if (this._connector == null)
                 {
-                    switch (LoginAs)
+                    switch (this.LoginAs)
                     {
                         case LoginAsUser.RegisteredUser:
-                            _connector = Login(UserFirstName, UserLastName, null);
+                            this._connector = this.Login(this.UserFirstName, this.UserLastName, null);
                             break;
                         case LoginAsUser.AnonymousUser:
-                            _connector = Anonymous(null);
+                            this._connector = this.Anonymous(null);
                             break;
                         case LoginAsUser.Host:
-                            _connector = WebApiTestHelper.LoginHost();
+                            this._connector = WebApiTestHelper.LoginHost();
                             break;
                         default:
-                            _connector = Login(UserFirstName, UserLastName, null);
+                            this._connector = this.Login(this.UserFirstName, this.UserLastName, null);
                             break;
                     }
                 }
-                return _connector;
+                return this._connector;
             }
             set
             {
-                _connector = value;
-                var userName = _connector.UserName.Split('.');
+                this._connector = value;
+                var userName = this._connector.UserName.Split('.');
                 if (userName.Length == 2)
                 {
-                    UserFirstName = userName[0];
-                    UserLastName = userName[1];
+                    this.UserFirstName = userName[0];
+                    this.UserLastName = userName[1];
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         {
             get
             {
-                return Connector.UserName;
+                return this.Connector.UserName;
             }
         }
 
@@ -105,7 +105,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         {
             get
             {
-                return string.Join(" ", UserFirstName, UserLastName);
+                return string.Join(" ", this.UserFirstName, this.UserLastName);
             }
         }
 
@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         {
             get
             {
-                return DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE UserName = '{UserName}'");
+                return DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE UserName = '{this.UserName}'");
             }
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Integration.Executers
 
         public HttpResponseMessage GetLastResponseMessage()
         {
-            return Responses.Last();
+            return this.Responses.Last();
         }
 
         /// <summary>
@@ -131,17 +131,17 @@ namespace DotNetNuke.Tests.Integration.Executers
         /// <returns></returns>
         public JContainer GetLastDeserializeResponseMessage()
         {
-            if (!Responses.Any())
+            if (!this.Responses.Any())
             {
                 throw new InvalidOperationException("GetLastDeserializeResponseMessage cannot be called when the Executer does not have any Responses");
             }
-            var data = Responses.Last().Content.ReadAsStringAsync().Result;
+            var data = this.Responses.Last().Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<JContainer>(data);
         }
 
         public IEnumerable<HttpResponseMessage> GetResponseMessages()
         {
-            return Responses.ToArray();
+            return this.Responses.ToArray();
         }
 
         /// <summary>
@@ -151,11 +151,11 @@ namespace DotNetNuke.Tests.Integration.Executers
         /// <returns></returns>
         public IEnumerable<JContainer> GetDeserializeResponseMessages()
         {
-            if (!Responses.Any())
+            if (!this.Responses.Any())
             {
                 throw new InvalidOperationException("GetDeserializeResponseMessages cannot be called when the Executer does not have any Responses");
             }
-            return GetResponseMessages().Select(r => JsonConvert.DeserializeObject<JContainer>(r.Content.ReadAsStringAsync().Result));
+            return this.GetResponseMessages().Select(r => JsonConvert.DeserializeObject<JContainer>(r.Content.ReadAsStringAsync().Result));
         }
     }
 }

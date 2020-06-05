@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Library.Containers
         protected INavigationManager NavigationManager { get; }
         public PersonaBarContainer(INavigationManager navigationManager)
         {
-            NavigationManager = navigationManager;
+            this.NavigationManager = navigationManager;
         }
 
         #region Instance Methods
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Library.Containers
         {
             var portalSettings = PortalSettings.Current;
 
-            return GetConfigration(portalSettings);
+            return this.GetConfigration(portalSettings);
         }
 
         public virtual void FilterMenu(PersonaBarMenu menu)
@@ -104,8 +104,8 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("userId", user.UserID);
             settings.Add("avatarUrl", Globals.ResolveUrl(Utilities.GetProfileAvatar(user)));
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
-            settings.Add("logOff", NavigationManager.NavigateURL("Logoff"));
-            settings.Add("visible", Visible);
+            settings.Add("logOff", this.NavigationManager.NavigateURL("Logoff"));
+            settings.Add("visible", this.Visible);
             settings.Add("userMode", portalSettings.UserMode.ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());
             settings.Add("menuStructure", JObject.FromObject(menuStructure));

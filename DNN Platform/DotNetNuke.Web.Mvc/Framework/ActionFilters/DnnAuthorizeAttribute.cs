@@ -25,11 +25,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public string StaticRoles
         {
-            get { return _staticRoles; }
+            get { return this._staticRoles; }
             set
             {
-                _staticRoles = value;
-                _staticRolesSplit = SplitString(_staticRoles);
+                this._staticRoles = value;
+                this._staticRolesSplit = this.SplitString(this._staticRoles);
             }
         }
 
@@ -38,11 +38,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public string DenyRoles
         {
-            get { return _denyRoles; }
+            get { return this._denyRoles; }
             set
             {
-                _denyRoles = value;
-                _denyRolesSplit = SplitString(_denyRoles);
+                this._denyRoles = value;
+                this._denyRolesSplit = this.SplitString(this._denyRoles);
             }
         }
 
@@ -58,24 +58,24 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (!IsAuthenticated())
+            if (!this.IsAuthenticated())
             {
                 return false;
             }
 
-            if (_denyRolesSplit.Any())
+            if (this._denyRolesSplit.Any())
             {
-                var currentUser = GetCurrentUser();
-                if (!currentUser.IsSuperUser && _denyRolesSplit.Any(currentUser.IsInRole))
+                var currentUser = this.GetCurrentUser();
+                if (!currentUser.IsSuperUser && this._denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
             }
 
-            if (_staticRolesSplit.Any())
+            if (this._staticRolesSplit.Any())
             {
-                var currentUser = GetCurrentUser();
-                if (!_staticRolesSplit.Any(currentUser.IsInRole))
+                var currentUser = this.GetCurrentUser();
+                if (!this._staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }

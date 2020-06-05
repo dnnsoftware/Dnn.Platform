@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         {
             if (string.IsNullOrEmpty(host))
                 throw new ArgumentNullException("host", "Host cannot be null nor empty.");
-            _host = host;
+            this._host = host;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <returns></returns>
         public override string GetServerName()
         {
-            return _host;
+            return this._host;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         public override string MapPath(string virtualPath)
         {
             var path = "";
-            var appPath = GetAppPath();
+            var appPath = this.GetAppPath();
 
             if (appPath != null)
                 path = Path.Combine(appPath, virtualPath);

@@ -62,23 +62,23 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
                 return null;
             }
 
-            var authorization = ValidateAuthHeader(request?.Headers.Authorization);
-            return string.IsNullOrEmpty(authorization) ? null : ValidateAuthorizationValue(authorization);
+            var authorization = this.ValidateAuthHeader(request?.Headers.Authorization);
+            return string.IsNullOrEmpty(authorization) ? null : this.ValidateAuthorizationValue(authorization);
         }
 
         public bool LogoutUser(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
                 return false;
             }
 
-            var rawToken = ValidateAuthHeader(request?.Headers.Authorization);
+            var rawToken = this.ValidateAuthHeader(request?.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
                 return false;
@@ -92,7 +92,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return false;
             }
 
-            DataProvider.DeleteToken(sessionId);
+            this.DataProvider.DeleteToken(sessionId);
             return true;
         }
 
@@ -103,7 +103,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
                 return EmptyWithError("disabled");
             }
 
@@ -155,7 +155,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var accessToken = jwt.RawData;
 
             ptoken.TokenHash = GetHashedStr(accessToken);
-            DataProvider.AddToken(ptoken);
+            this.DataProvider.AddToken(ptoken);
 
             return new LoginResultData
             {
@@ -170,11 +170,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(SchemeType + " is not registered/enabled in web.config file");
+                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
                 return EmptyWithError("disabled");
             }
 
-            var rawToken = ValidateAuthHeader(request?.Headers.Authorization);
+            var rawToken = this.ValidateAuthHeader(request?.Headers.Authorization);
             if (string.IsNullOrEmpty(rawToken))
             {
                 return EmptyWithError("bad-credentials");
@@ -193,7 +193,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-claims");
             }
 
-            var ptoken = DataProvider.GetTokenById(sessionId);
+            var ptoken = this.DataProvider.GetTokenById(sessionId);
             if (ptoken == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");
@@ -218,7 +218,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-token");
             }
 
-            var userInfo = TryGetUser(jwt, false);
+            var userInfo = this.TryGetUser(jwt, false);
             if (userInfo == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("User not found in DB");
@@ -231,7 +231,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("bad-token");
             }
 
-            return UpdateToken(renewalToken, ptoken, userInfo);
+            return this.UpdateToken(renewalToken, ptoken, userInfo);
         }
 
         private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
@@ -251,7 +251,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             // save hash values in DB so no one with access can create JWT header from existing data
             ptoken.TokenHash = GetHashedStr(accessToken);
-            DataProvider.UpdateToken(ptoken);
+            this.DataProvider.UpdateToken(ptoken);
 
             return new LoginResultData
             {
@@ -307,7 +307,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + SchemeType);
+                if (Logger.IsTraceEnabled) Logger.Trace("Authorization header scheme in the request is not equal to " + this.SchemeType);
                 return null;
             }
 
@@ -331,27 +331,27 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             var decoded = DecodeBase64(parts[0]);
-            if (decoded.IndexOf("\"" + SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (decoded.IndexOf("\"" + this.SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
-                if (Logger.IsTraceEnabled) Logger.Trace($"This is not a {SchemeType} autentication scheme.");
+                if (Logger.IsTraceEnabled) Logger.Trace($"This is not a {this.SchemeType} autentication scheme.");
                 return null;
             }
 
             var header = JsonConvert.DeserializeObject<JwtHeader>(decoded);
-            if (!IsValidSchemeType(header))
+            if (!this.IsValidSchemeType(header))
                 return null;
 
             var jwt = GetAndValidateJwt(authorization, true);
             if (jwt == null)
                 return null;
 
-            var userInfo = TryGetUser(jwt, true);
+            var userInfo = this.TryGetUser(jwt, true);
             return userInfo?.Username;
         }
 
         private bool IsValidSchemeType(JwtHeader header)
         {
-            if (!SchemeType.Equals(header["typ"] as string, StringComparison.OrdinalIgnoreCase))
+            if (!this.SchemeType.Equals(header["typ"] as string, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Unsupported authentication scheme type " + header.Typ);
                 return false;
@@ -397,7 +397,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             // validate against DB saved data
             var sessionId = GetJwtSessionValue(jwt);
-            var ptoken = DataProvider.GetTokenById(sessionId);
+            var ptoken = this.DataProvider.GetTokenById(sessionId);
             if (ptoken == null)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Token not found in DB");

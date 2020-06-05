@@ -23,9 +23,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 return false;
             }
             
-            if (_user != null)
+            if (this._user != null)
             {
-                return _user.IsSuperUser;
+                return this._user.IsSuperUser;
             }
 
             return false;
@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
 
-            _user = controller.ModuleContext.PortalSettings.UserInfo;
+            this._user = controller.ModuleContext.PortalSettings.UserInfo;
 
             base.OnAuthorization(filterContext);
         }

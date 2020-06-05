@@ -17,14 +17,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     {
         protected override void Render(HtmlTextWriter writer)
         {
-            if (!DesignMode)
+            if (!this.DesignMode)
             {
-                ScriptManager scriptManager = AJAX.GetScriptManager(Page);
+                ScriptManager scriptManager = AJAX.GetScriptManager(this.Page);
                 if (scriptManager.IsInAsyncPostBack)
                 {
                     StringBuilder scriBuilder = new StringBuilder();
                     base.Render(new HtmlTextWriter(new StringWriter(scriBuilder)));
-                    ScriptManager.RegisterClientScriptBlock(Page, typeof (Page), this.UniqueID, scriBuilder.ToString(),
+                    ScriptManager.RegisterClientScriptBlock(this.Page, typeof (Page), this.UniqueID, scriBuilder.ToString(),
                         false);
                 }
                 else

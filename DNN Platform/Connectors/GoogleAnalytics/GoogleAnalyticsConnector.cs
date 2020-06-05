@@ -30,10 +30,10 @@ namespace DNN.Connectors.GoogleAnalytics
             get
             {
                 return
-                    string.IsNullOrEmpty(_displayName) ? DefaultDisplayName : _displayName;
+                    string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
             }
 
-            set { _displayName = value; }
+            set { this._displayName = value; }
         }
 
         public string IconUrl
@@ -79,7 +79,7 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public bool HasConfig(int portalId)
         {
-            IDictionary<string, string> config = GetConfig(portalId);
+            IDictionary<string, string> config = this.GetConfig(portalId);
 
             return (config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]));
 
@@ -114,13 +114,13 @@ namespace DNN.Connectors.GoogleAnalytics
                             urlParameter = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
+                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "anonymizeip":
-                            anonymizeIp = HandleCustomBoolean(setting.SettingValue);
+                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "trackuserid":
-                            trackUserId = HandleCustomBoolean(setting.SettingValue);
+                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -138,8 +138,8 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackAdministrators", trackForAdmin},
                 { "AnonymizeIp", anonymizeIp},
                 { "TrackUserId", trackUserId},
-                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", HandleCustomBoolean("false") }
+                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+                { "isDeactivating", this.HandleCustomBoolean("false") }
             };
 
             return configItems;

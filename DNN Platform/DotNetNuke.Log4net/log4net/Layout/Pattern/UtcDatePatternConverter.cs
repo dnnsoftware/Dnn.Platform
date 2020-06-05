@@ -71,7 +71,7 @@ namespace log4net.Layout.Pattern
 		{
 			try 
 			{
-				m_dateFormatter.FormatDate(loggingEvent.TimeStampUtc, writer);
+				this.m_dateFormatter.FormatDate(loggingEvent.TimeStampUtc, writer);
 			}
 			catch (Exception ex) 
 			{

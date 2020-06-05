@@ -27,8 +27,8 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
-            var customUrls = GetSortedUrls(tab, portalId, locales, 1, true, false);
-            var automaticUrls = GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
+            var customUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, false);
+            var automaticUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
 
             automaticUrls.AddRange(customUrls);
             return automaticUrls.OrderBy(url => url.StatusCode, new KeyValuePairComparer()).ThenBy(url => url.Path);
@@ -339,7 +339,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     //AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
                     //27139 : only show primary aliases in the tab grid (gets too confusing otherwise)
                     if (alias.IsPrimary) //alias was provided to FriendlyUrlCall, so will always get the correct canonical Url back
-                        AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings, null);
+                        this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings, null);
 
                     //Add url with diacritics
                     isRedirected = friendlyUrlSettings.RedirectUnfriendly;
@@ -354,7 +354,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                 path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             }
                             path = path.Replace(asciiTabPath, tab.TabPath.Replace("//", "/"));
-                            AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
+                            this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                         }
                     }
                     else
@@ -365,7 +365,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             if (customPath != null && string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0)
                             {
-                                AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
+                                this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                             }
                         }
 
@@ -396,7 +396,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     if (alias != null)
                     {
                         var urlLocale = locales.Value.Values.FirstOrDefault(local => local.Code == alias.CultureCode);
-                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                        this.AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                     }
                 }
                 else
@@ -406,7 +406,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         .SingleOrDefault(p => p.PortalAliasID == url.PortalAliasId);
                     if (alias != null)
                     {
-                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                        this.AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                     }
                 }
             }
@@ -447,11 +447,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 Id = id,
                 SiteAlias = new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias),
                 Path = path,
-                PathWithNoExtension = GetCleanPath(path, friendlyUrlSettings),
+                PathWithNoExtension = this.GetCleanPath(path, friendlyUrlSettings),
                 QueryString = queryString,
                 Locale = (urlLocale != null) ? new KeyValuePair<int, string>(urlLocale.KeyID, urlLocale.EnglishName)
                                              : new KeyValuePair<int, string>(-1, ""),
-                StatusCode = StatusCodes.SingleOrDefault(kv => kv.Key == statusCode),
+                StatusCode = this.StatusCodes.SingleOrDefault(kv => kv.Key == statusCode),
                 SiteAliasUsage = (int)PortalAliasUsageType.ChildPagesInherit,
                 IsSystem = isSystem,
                 UserName = userName

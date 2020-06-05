@@ -37,11 +37,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return MModControllerType;
+                return this.MModControllerType;
             }
             set
             {
-                MModControllerType = value;
+                this.MModControllerType = value;
             }
         }
 #pragma warning restore 0618
@@ -50,11 +50,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return SearchBaseControllerType;
+                return this.SearchBaseControllerType;
             }
             set
             {
-                SearchBaseControllerType = value;
+                this.SearchBaseControllerType = value;
             }
         }
 
@@ -62,11 +62,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return MModInfo;
+                return this.MModInfo;
             }
             set
             {
-                MModInfo = value;
+                this.MModInfo = value;
             }
         }
     }

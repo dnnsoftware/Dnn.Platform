@@ -81,14 +81,14 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void WriteFileElement(XmlWriter writer, InstallFile file)
         {
-            Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
+            this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
             if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase)) //UnInstall.SqlDataprovider
             {
                 type = "UnInstall";
-                version = Package.Version.ToString(3);
+                version = this.Package.Version.ToString(3);
             }
             else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase)) //Install.SqlDataprovider
             {
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 			
             //Start file Element
-            writer.WriteStartElement(ItemNodeName);
+            writer.WriteStartElement(this.ItemNodeName);
             writer.WriteAttributeString("type", type);
 
             //Write path

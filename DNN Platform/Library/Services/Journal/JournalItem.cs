@@ -61,49 +61,49 @@ namespace DotNetNuke.Services.Journal {
         [XmlIgnore]
         public virtual int KeyID {
             get {
-                return JournalId;
+                return this.JournalId;
             }
             set {
-                JournalId = value;
+                this.JournalId = value;
             }
         }
 
         public void Fill(IDataReader dr) {
-            JournalId = Null.SetNullInteger(dr["JournalId"]);
-            JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-            UserId = Null.SetNullInteger(dr["UserId"]);
-            ProfileId = Null.SetNullInteger(dr["ProfileId"]);
-            SocialGroupId = Null.SetNullInteger(dr["GroupId"]);
+            this.JournalId = Null.SetNullInteger(dr["JournalId"]);
+            this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.UserId = Null.SetNullInteger(dr["UserId"]);
+            this.ProfileId = Null.SetNullInteger(dr["ProfileId"]);
+            this.SocialGroupId = Null.SetNullInteger(dr["GroupId"]);
             if (!String.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"]))) {
-                JournalXML = new XmlDocument { XmlResolver = null };
-                JournalXML.LoadXml(dr["JournalXML"].ToString());
-                XmlNode xRoot = JournalXML.DocumentElement;
+                this.JournalXML = new XmlDocument { XmlResolver = null };
+                this.JournalXML.LoadXml(dr["JournalXML"].ToString());
+                XmlNode xRoot = this.JournalXML.DocumentElement;
                 XmlNode xNode = xRoot.SelectSingleNode("//items/item/body");
                 if (xNode != null) {
-                    Body = xNode.InnerText;
+                    this.Body = xNode.InnerText;
                 }
             }
-            DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
-            DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
-            ObjectKey = Null.SetNullString(dr["ObjectKey"]);
-            AccessKey = Null.SetNullGuid(dr["AccessKey"]);
-            Title = Null.SetNullString(dr["Title"]);
-            Summary = Null.SetNullString(dr["Summary"]);
+            this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
+            this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
+            this.ObjectKey = Null.SetNullString(dr["ObjectKey"]);
+            this.AccessKey = Null.SetNullGuid(dr["AccessKey"]);
+            this.Title = Null.SetNullString(dr["Title"]);
+            this.Summary = Null.SetNullString(dr["Summary"]);
             string itemd = Null.SetNullString(dr["ItemData"]);
-            ItemData = new ItemData();
+            this.ItemData = new ItemData();
             if (!string.IsNullOrEmpty(itemd)) {
-                ItemData = itemd.FromJson<ItemData>();
+                this.ItemData = itemd.FromJson<ItemData>();
             }
-            ContentItemId = Null.SetNullInteger(dr["ContentItemId"]);
-            JournalAuthor = new JournalEntity(dr["JournalAuthor"].ToString());
-            JournalOwner = new JournalEntity(dr["JournalOwner"].ToString());
-            JournalType = Null.SetNullString(dr["JournalType"]);
+            this.ContentItemId = Null.SetNullInteger(dr["ContentItemId"]);
+            this.JournalAuthor = new JournalEntity(dr["JournalAuthor"].ToString());
+            this.JournalOwner = new JournalEntity(dr["JournalOwner"].ToString());
+            this.JournalType = Null.SetNullString(dr["JournalType"]);
 
-            IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
-            CommentsDisabled = Null.SetNullBoolean(dr["CommentsDisabled"]);
-            CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
-            SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
+            this.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
+            this.CommentsDisabled = Null.SetNullBoolean(dr["CommentsDisabled"]);
+            this.CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
+            this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
         public CacheLevel Cacheability {
             get {
@@ -121,25 +121,25 @@ namespace DotNetNuke.Services.Journal {
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName) {
                 case "journalid":
-                    return PropertyAccess.FormatString(JournalId.ToString(), format);
+                    return PropertyAccess.FormatString(this.JournalId.ToString(), format);
                 case "journaltypeid":
-                    return PropertyAccess.FormatString(JournalTypeId.ToString(), format);
+                    return PropertyAccess.FormatString(this.JournalTypeId.ToString(), format);
                 case "profileid":
-                    return PropertyAccess.FormatString(ProfileId.ToString(), format);
+                    return PropertyAccess.FormatString(this.ProfileId.ToString(), format);
                 case "socialgroupid":
-                    return PropertyAccess.FormatString(SocialGroupId.ToString(), format);
+                    return PropertyAccess.FormatString(this.SocialGroupId.ToString(), format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(DateCreated.ToString(), format);
+                    return PropertyAccess.FormatString(this.DateCreated.ToString(), format);
                 case "title":
-                    return PropertyAccess.FormatString(Title, format);
+                    return PropertyAccess.FormatString(this.Title, format);
                 case "summary":
-                    return PropertyAccess.FormatString(Summary, format);
+                    return PropertyAccess.FormatString(this.Summary, format);
                 case "body":
-                    return PropertyAccess.FormatString(Body, format);
+                    return PropertyAccess.FormatString(this.Body, format);
                 case "timeframe":
-                    return PropertyAccess.FormatString(TimeFrame, format);
+                    return PropertyAccess.FormatString(this.TimeFrame, format);
                 case "isdeleted":
-                    return IsDeleted.ToString();
+                    return this.IsDeleted.ToString();
             }
 
             propertyNotFound = true;

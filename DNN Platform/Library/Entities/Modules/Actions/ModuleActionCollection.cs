@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ModuleActionCollection(ModuleActionCollection value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ModuleActionCollection(ModuleAction[] value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         ///-----------------------------------------------------------------------------
@@ -81,11 +81,11 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return (ModuleAction) List[index];
+                return (ModuleAction) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public int Add(ModuleAction value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         ///-----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ModuleAction Add(int ID, string Title, string CmdName)
         {
-            return Add(ID, Title, CmdName, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false);
+            return this.Add(ID, Title, CmdName, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false);
         }
 
         ///-----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ModuleAction Add(int ID, string Title, string CmdName, string CmdArg, string Icon, string Url, bool UseActionEvent, SecurityAccessLevel Secure, bool Visible, bool NewWindow)
         {
-            return Add(ID, Title, CmdName, CmdArg, Icon, Url, "", UseActionEvent, Secure, Visible, NewWindow);
+            return this.Add(ID, Title, CmdName, CmdArg, Icon, Url, "", UseActionEvent, Secure, Visible, NewWindow);
         }
 
         /// -----------------------------------------------------------------------------
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                                 bool NewWindow)
         {
             var ModAction = new ModuleAction(ID, Title, CmdName, CmdArg, Icon, Url, ClientScript, UseActionEvent, Secure, Visible, NewWindow);
-            Add(ModAction);
+            this.Add(ModAction);
             return ModAction;
         }
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             int i;
             for (i = 0; i <= value.Length - 1; i++)
             {
-                Add(value[i]);
+                this.Add(value[i]);
             }
         }
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             foreach (ModuleAction mA in value)
             {
-                Add(mA);
+                this.Add(mA);
             }
         }
 
@@ -232,7 +232,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         public bool Contains(ModuleAction value)
         {
 			//If value is not of type ModuleAction, this will return false.
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         public ModuleAction GetActionByCommandName(string name)
@@ -240,7 +240,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             ModuleAction retAction = null;
 
             //Check each action in the List
-            foreach (ModuleAction modAction in List)
+            foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.CommandName == name)
                 {
@@ -266,7 +266,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             var retActions = new ModuleActionCollection();
 
             //Check each action in the List
-            foreach (ModuleAction modAction in List)
+            foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.CommandName == name)
                 {
@@ -286,7 +286,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             ModuleAction retAction = null;
 
             //Check each action in the List
-            foreach (ModuleAction modAction in List)
+            foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.ID == id)
                 {
@@ -327,7 +327,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public int IndexOf(ModuleAction value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         ///-----------------------------------------------------------------------------
@@ -346,7 +346,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public void Insert(int index, ModuleAction value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         ///----------------------------------------------------------------------------- 
@@ -364,7 +364,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public void Remove(ModuleAction value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
     }
 }

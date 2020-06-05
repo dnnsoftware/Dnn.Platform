@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
 
             // hack: force DNN to load the Telerik Combobox skin. Needed for the RadEditor provider
             //TODO: Remove as the included file path isn't distributed with installs
-            ClientResourceManager.RegisterStyleSheet(View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
+            ClientResourceManager.RegisterStyleSheet(this.View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
         }
 
         /// <summary>Loads the current editor.</summary>

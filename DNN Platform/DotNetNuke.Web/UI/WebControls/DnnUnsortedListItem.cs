@@ -26,21 +26,21 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (childControl != null)
                 {
-                    Controls.Add(childControl);
+                    this.Controls.Add(childControl);
                 }
             }
         }
 
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
-            if (!string.IsNullOrEmpty(CssClass))
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             }
-            if (!string.IsNullOrEmpty(ToolTip))
+            if (!string.IsNullOrEmpty(this.ToolTip))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Title, ToolTip);
+                writer.AddAttribute(HtmlTextWriterAttribute.Title, this.ToolTip);
             }
         }
 

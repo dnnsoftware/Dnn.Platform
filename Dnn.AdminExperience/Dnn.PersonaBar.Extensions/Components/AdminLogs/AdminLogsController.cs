@@ -31,8 +31,8 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             get
             {
-                _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return _portalSettings;
+                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                return this._portalSettings;
             }
         }
 
@@ -40,15 +40,15 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             get
             {
-                _logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
-                return _logTypeDictionary;
+                this._logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
+                return this._logTypeDictionary;
             }
         }
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {
             LogTypeInfo logType;
-            LogTypeDictionary.TryGetValue(logTypeKey, out logType);
+            this.LogTypeDictionary.TryGetValue(logTypeKey, out logType);
 
             if (logType == null)
             {
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             //add entry to log recording it was cleared
             EventLogController.Instance.AddLog(Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                                Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
-                               PortalSettings,
+                               this.PortalSettings,
                                -1,
                                EventLogController.EventLogType.ADMIN_ALERT);
         }
@@ -212,15 +212,15 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             if (string.IsNullOrEmpty(subject))
             {
-                subject = PortalSettings.PortalName + @" Exceptions";
+                subject = this.PortalSettings.PortalName + @" Exceptions";
             }
 
             string returnMsg;
             if (Globals.EmailValidatorRegex.IsMatch(fromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
-                var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;
-                var xmlDoc = GetExceptions(logItemIds);
+                var filePath = this.PortalSettings.HomeDirectoryMapPath + tempFileName;
+                var xmlDoc = this.GetExceptions(logItemIds);
                 xmlDoc.Save(filePath);
 
                 var attachments = new List<Attachment>();

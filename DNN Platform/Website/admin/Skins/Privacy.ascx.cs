@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Privacy()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -50,20 +50,20 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    hypPrivacy.CssClass = CssClass;
+                    this.hypPrivacy.CssClass = this.CssClass;
                 }
-                if (!String.IsNullOrEmpty(Text))
+                if (!String.IsNullOrEmpty(this.Text))
                 {
-                    hypPrivacy.Text = Text;
+                    this.hypPrivacy.Text = this.Text;
                 }
                 else
                 {
-                    hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
+                    this.hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypPrivacy.NavigateUrl = PortalSettings.PrivacyTabId == Null.NullInteger ? _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Privacy") : _navigationManager.NavigateURL(PortalSettings.PrivacyTabId);
-                hypPrivacy.Attributes["rel"] = "nofollow";
+                this.hypPrivacy.NavigateUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Privacy") : this._navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
+                this.hypPrivacy.Attributes["rel"] = "nofollow";
             }
             catch (Exception exc)
             {

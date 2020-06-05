@@ -34,10 +34,10 @@ namespace DotNetNuke.Services.Installer.Log
 
         public Logger()
         {
-            _logs = new List<LogEntry>();
+            this._logs = new List<LogEntry>();
             
-            _valid = true;
-            _hasWarnings = Null.NullBoolean;
+            this._valid = true;
+            this._hasWarnings = Null.NullBoolean;
         }
 
         /// -----------------------------------------------------------------------------
@@ -50,15 +50,15 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(_errorClass))
+                if (String.IsNullOrEmpty(this._errorClass))
                 {
-                    _errorClass = "NormalRed";
+                    this._errorClass = "NormalRed";
                 }
-                return _errorClass;
+                return this._errorClass;
             }
             set
             {
-                _errorClass = value;
+                this._errorClass = value;
             }
         }
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                return _hasWarnings;
+                return this._hasWarnings;
             }
         }
 
@@ -80,15 +80,15 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(_highlightClass))
+                if (String.IsNullOrEmpty(this._highlightClass))
                 {
-                    _highlightClass = "NormalBold";
+                    this._highlightClass = "NormalBold";
                 }
-                return _highlightClass;
+                return this._highlightClass;
             }
             set
             {
-                _highlightClass = value;
+                this._highlightClass = value;
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                return _logs;
+                return this._logs;
             }
         }
 
@@ -116,15 +116,15 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(_normalClass))
+                if (String.IsNullOrEmpty(this._normalClass))
                 {
-                    _normalClass = "Normal";
+                    this._normalClass = "Normal";
                 }
-                return _normalClass;
+                return this._normalClass;
             }
             set
             {
-                _normalClass = value;
+                this._normalClass = value;
             }
         }
 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                return _valid;
+                return this._valid;
             }
         }
 
@@ -151,14 +151,14 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public void AddFailure(string failure)
         {
-            _logs.Add(new LogEntry(LogType.Failure, failure));
+            this._logs.Add(new LogEntry(LogType.Failure, failure));
             DnnLogger.Error(failure);
-            _valid = false;
+            this._valid = false;
         }
 
         public void AddFailure(Exception ex)
         {
-            AddFailure((Util.EXCEPTION + ex));
+            this.AddFailure((Util.EXCEPTION + ex));
             Exceptions.Exceptions.LogException(ex);
         }
 
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public void AddInfo(string info)
         {            
-            _logs.Add(new LogEntry(LogType.Info, info));
+            this._logs.Add(new LogEntry(LogType.Info, info));
 			DnnLogger.Info(info);
         }
 
@@ -182,9 +182,9 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public void AddWarning(string warning)
         {
-            _logs.Add(new LogEntry(LogType.Warning, warning));
+            this._logs.Add(new LogEntry(LogType.Warning, warning));
 			DnnLogger.Warn(warning);
-            _hasWarnings = true;
+            this._hasWarnings = true;
         }
 
         /// -----------------------------------------------------------------------------
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public void EndJob(string job)
         {
-            _logs.Add(new LogEntry(LogType.EndJob, job));
+            this._logs.Add(new LogEntry(LogType.EndJob, job));
             DnnLogger.Info(job);
         }
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.Installer.Log
         public HtmlTable GetLogsTable()
         {
             var arrayTable = new HtmlTable();
-            foreach (LogEntry entry in Logs)
+            foreach (LogEntry entry in this.Logs)
             {
                 var tr = new HtmlTableRow();
                 var tdType = new HtmlTableCell();
@@ -220,17 +220,17 @@ namespace DotNetNuke.Services.Installer.Log
                 {
                     case LogType.Failure:
                     case LogType.Warning:
-                        tdType.Attributes.Add("class", ErrorClass);
-                        tdDescription.Attributes.Add("class", ErrorClass);
+                        tdType.Attributes.Add("class", this.ErrorClass);
+                        tdDescription.Attributes.Add("class", this.ErrorClass);
                         break;
                     case LogType.StartJob:
                     case LogType.EndJob:
-                        tdType.Attributes.Add("class", HighlightClass);
-                        tdDescription.Attributes.Add("class", HighlightClass);
+                        tdType.Attributes.Add("class", this.HighlightClass);
+                        tdDescription.Attributes.Add("class", this.HighlightClass);
                         break;
                     case LogType.Info:
-                        tdType.Attributes.Add("class", NormalClass);
-                        tdDescription.Attributes.Add("class", NormalClass);
+                        tdType.Attributes.Add("class", this.NormalClass);
+                        tdDescription.Attributes.Add("class", this.NormalClass);
                         break;
                 }
                 arrayTable.Rows.Add(tr);
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         public void ResetFlags()
         {
-            _valid = true;
+            this._valid = true;
         }
 
         /// -----------------------------------------------------------------------------
@@ -257,7 +257,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public void StartJob(string job)
         {
-            _logs.Add(new LogEntry(LogType.StartJob, job));
+            this._logs.Add(new LogEntry(LogType.StartJob, job));
             DnnLogger.Info(job);
         }
     }

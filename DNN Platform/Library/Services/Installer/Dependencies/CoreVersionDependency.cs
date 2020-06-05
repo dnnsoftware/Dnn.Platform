@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return string.Format(Util.INSTALL_Compatibility,minVersion);
+                return string.Format(Util.INSTALL_Compatibility,this.minVersion);
             }
         }
 
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool _IsValid = true;
-                if (Assembly.GetExecutingAssembly().GetName().Version < minVersion)
+                if (Assembly.GetExecutingAssembly().GetName().Version < this.minVersion)
                 {
                     _IsValid = false;
                 }
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            minVersion = new Version(dependencyNav.Value);
+            this.minVersion = new Version(dependencyNav.Value);
         }
     }
 }

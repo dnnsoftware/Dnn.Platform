@@ -45,8 +45,8 @@ namespace DNN.Integration.Test.Framework
 
         public string UserAgentValue
         {
-            get { return _userAgentValue ?? (_userAgentValue = ConfigurationManager.AppSettings["HttpUserAgent"] ?? DefaultUserAgent); }
-            set { _userAgentValue = value; }
+            get { return this._userAgentValue ?? (this._userAgentValue = ConfigurationManager.AppSettings["HttpUserAgent"] ?? DefaultUserAgent); }
+            set { this._userAgentValue = value; }
         }
 
         private const string LoginPath = "/Login";
@@ -64,7 +64,7 @@ namespace DNN.Integration.Test.Framework
 
         void ResetUserId()
         {
-            _userId = -1;
+            this._userId = -1;
         }
 
         /// <summary>
@@ -75,12 +75,12 @@ namespace DNN.Integration.Test.Framework
         {
             get
             {
-                if (_userId <= 0 && IsLoggedIn)
+                if (this._userId <= 0 && this.IsLoggedIn)
                 {
-                    _userId = UserController.GetUserId(UserName);
+                    this._userId = UserController.GetUserId(this.UserName);
                 }
 
-                return _userId;
+                return this._userId;
             }
         }
 
@@ -99,23 +99,23 @@ namespace DNN.Integration.Test.Framework
 
         private WebApiConnector(string siteUrl)
         {
-            Timeout = TimeSpan.FromMinutes(1);
-            Domain = new Uri(siteUrl);
-            IsLoggedIn = false;
-            ResetUserId();
-            _sessionCookiesContainer = new CookieContainer();
-            _cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", Domain.Host);
-            AvoidCaching = false;
+            this.Timeout = TimeSpan.FromMinutes(1);
+            this.Domain = new Uri(siteUrl);
+            this.IsLoggedIn = false;
+            this.ResetUserId();
+            this._sessionCookiesContainer = new CookieContainer();
+            this._cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", this.Domain.Host);
+            this.AvoidCaching = false;
         }
 
         public void Dispose()
         {
-            Logout();
+            this.Logout();
         }
 
         private void EnsureLoggedIn()
         {
-            if (!IsLoggedIn)
+            if (!this.IsLoggedIn)
             {
                 Console.WriteLine(@"User not logged in yet");
                 throw new WebApiException(new HttpRequestException("User not logged in yet."),
@@ -127,8 +127,8 @@ namespace DNN.Integration.Test.Framework
         {
             get
             {
-                EnsureLoggedIn();
-                return _sessionCookiesContainer;
+                this.EnsureLoggedIn();
+                return this._sessionCookiesContainer;
             }
         }
 
@@ -136,20 +136,20 @@ namespace DNN.Integration.Test.Framework
 
         public void Logout()
         {
-            if (IsLoggedIn)
+            if (this.IsLoggedIn)
             {
-                LoggedInAtTime = DateTime.MinValue;
-                IsLoggedIn = false;
-                ResetUserId();
+                this.LoggedInAtTime = DateTime.MinValue;
+                this.IsLoggedIn = false;
+                this.ResetUserId();
                 try
                 {
-                    var requestUriString = CombineUrlPath(Domain, LogoffPath);
+                    var requestUriString = CombineUrlPath(this.Domain, LogoffPath);
                     var httpWebRequest1 = (HttpWebRequest) WebRequest.Create(requestUriString);
                     httpWebRequest1.Method = "GET";
                     httpWebRequest1.KeepAlive = false;
-                    httpWebRequest1.CookieContainer = _sessionCookiesContainer;
+                    httpWebRequest1.CookieContainer = this._sessionCookiesContainer;
                     httpWebRequest1.ReadWriteTimeout = 90;
-                    httpWebRequest1.UserAgent = UserAgentValue;
+                    httpWebRequest1.UserAgent = this.UserAgentValue;
                     using (httpWebRequest1.GetResponse())
                     {
                         // no need to read the response stream after we logoff
@@ -157,25 +157,25 @@ namespace DNN.Integration.Test.Framework
                 }
                 finally
                 {
-                    _cookieVerificationToken = null;
-                    _sessionCookiesContainer = new CookieContainer();
+                    this._cookieVerificationToken = null;
+                    this._sessionCookiesContainer = new CookieContainer();
 
-                    var url = CombineUrlPath(Domain, "/");
+                    var url = CombineUrlPath(this.Domain, "/");
                     CachedWebPage cachedPage;
-                    if (!AvoidCaching && CachedPages.TryGetValue(url, out cachedPage) &&
+                    if (!this.AvoidCaching && CachedPages.TryGetValue(url, out cachedPage) &&
                         cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5))
                     {
-                        _inputFieldVerificationToken = cachedPage.VerificationToken;
+                        this._inputFieldVerificationToken = cachedPage.VerificationToken;
                     }
                     else
-                        _inputFieldVerificationToken = null;
+                        this._inputFieldVerificationToken = null;
                 }
             }
         }
 
         public bool Login(string password)
         {
-            if (IsLoggedIn) return true;
+            if (this.IsLoggedIn) return true;
 
             // This method uses multi-part parameters in the post body
             // the response is similar to this:
@@ -184,7 +184,7 @@ namespace DNN.Integration.Test.Framework
             const string fieldsPrefix = "dnn$ctr$Login$Login_DNN";
             var postData = new Dictionary<string, object>
                 {
-                    {fieldsPrefix + "$txtUsername", UserName},
+                    {fieldsPrefix + "$txtUsername", this.UserName},
                     {fieldsPrefix + "$txtPassword", password},
                     {"__EVENTTARGET", fieldsPrefix + "$cmdLogin"}, // most important field; button action
                     {"__EVENTARGUMENT", ""}
@@ -193,23 +193,23 @@ namespace DNN.Integration.Test.Framework
             var excludedInputPrefixes = new List<string>();
 
             //CombineUrlPath(_domain, LoginPath);
-            using (var httpResponse2 = PostUserForm(LoginPath, postData, excludedInputPrefixes, false))
+            using (var httpResponse2 = this.PostUserForm(LoginPath, postData, excludedInputPrefixes, false))
             {
                 if (httpResponse2 != null && httpResponse2.StatusCode < HttpStatusCode.BadRequest) // < 400
                 {
                     using (httpResponse2)
                     {
-                        VerifyLogInCookie(httpResponse2);
+                        this.VerifyLogInCookie(httpResponse2);
                     }
                 }
             }
 
-            if (IsLoggedIn)
+            if (this.IsLoggedIn)
             {
-                LoggedInAtTime = DateTime.Now;
+                this.LoggedInAtTime = DateTime.Now;
             }
 
-            return IsLoggedIn;
+            return this.IsLoggedIn;
         }
 
         private void VerifyLogInCookie(HttpWebResponse httpResponse)
@@ -218,8 +218,8 @@ namespace DNN.Integration.Test.Framework
             var loginCookie = httpResponse.Cookies[cookie];
             if (loginCookie != null)
             {
-                IsLoggedIn = true;
-                ExtractVerificationCookie(httpResponse.Headers["Set-Cookie"] ?? string.Empty);
+                this.IsLoggedIn = true;
+                this.ExtractVerificationCookie(httpResponse.Headers["Set-Cookie"] ?? string.Empty);
                 using (var rs = httpResponse.GetResponseStream())
                 {
                     if (rs != null && httpResponse.StatusCode == HttpStatusCode.OK)
@@ -228,7 +228,7 @@ namespace DNN.Integration.Test.Framework
                             var data = sr.ReadToEnd();
                             var token = GetVerificationToken(data);
                             if (!string.IsNullOrEmpty(token))
-                                _inputFieldVerificationToken = token;
+                                this._inputFieldVerificationToken = token;
                         }
                 }
             }
@@ -246,15 +246,15 @@ namespace DNN.Integration.Test.Framework
                     {
                         if (part2.Contains(RqVerifTokenName))
                         {
-                            _cookieVerificationToken.Value = part2.Split('=')[1];
+                            this._cookieVerificationToken.Value = part2.Split('=')[1];
                         }
                         else if (part2.Contains("path"))
                         {
-                            _cookieVerificationToken.Path = part2.Split('=')[1];
+                            this._cookieVerificationToken.Path = part2.Split('=')[1];
                         }
                         else if (part2.Contains("HttpOnly"))
                         {
-                            _cookieVerificationToken.HttpOnly = true;
+                            this._cookieVerificationToken.HttpOnly = true;
                         }
                     }
                     break;
@@ -296,7 +296,7 @@ namespace DNN.Integration.Test.Framework
 
         public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
         {
-            EnsureLoggedIn();
+            this.EnsureLoggedIn();
             
             var folder = "Users";
             if (userId > Null.NullInteger)
@@ -306,41 +306,41 @@ namespace DNN.Integration.Test.Framework
                 folder = $"Users/{rootFolder}/{subFolder}/{userId}/";
             }
 
-            return UploadFile(fileName, folder, waitHttpResponse);
+            return this.UploadFile(fileName, folder, waitHttpResponse);
         }
 
         public HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName)
         {
-            EnsureLoggedIn();
-            return ActivityStreamUploadFile(headers, fileName);
+            this.EnsureLoggedIn();
+            return this.ActivityStreamUploadFile(headers, fileName);
         }
 
         public bool UploadCmsFile(string fileName, string portalFolder)
         {
-            EnsureLoggedIn();
-            var result = UploadFile(fileName, portalFolder);
+            this.EnsureLoggedIn();
+            var result = this.UploadFile(fileName, portalFolder);
             return result.IsSuccessStatusCode;
         }
 
         private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
         {
-            using (var client = CreateHttpClient("/", true))
+            using (var client = this.CreateHttpClient("/", true))
             {
                
                 var headers = client.DefaultRequestHeaders;
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
-                headers.UserAgent.ParseAdd(UserAgentValue);
+                headers.UserAgent.ParseAdd(this.UserAgentValue);
 
-                if (string.IsNullOrEmpty(_inputFieldVerificationToken))
+                if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
                 {
                     var resultGet = client.GetAsync("/").Result;
                     var data = resultGet.Content.ReadAsStringAsync().Result;
-                    _inputFieldVerificationToken = GetVerificationToken(data);
+                    this._inputFieldVerificationToken = GetVerificationToken(data);
 
-                    if (!string.IsNullOrEmpty(_inputFieldVerificationToken))
+                    if (!string.IsNullOrEmpty(this._inputFieldVerificationToken))
                     {
-                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
                     }
                     else
                     {
@@ -371,7 +371,7 @@ namespace DNN.Integration.Test.Framework
 
                 content.Add(fileContent);
 
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgentValue);
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
                 var result = client.PostAsync(UploadFileRequestPath, content).Result;
                 return !waitHttpResponse
                     ? result
@@ -388,15 +388,15 @@ namespace DNN.Integration.Test.Framework
             })
             using (var client = new HttpClient(clientHandler))
             {
-                clientHandler.CookieContainer = _sessionCookiesContainer;
-                client.BaseAddress = Domain;
-                client.Timeout = Timeout;
+                clientHandler.CookieContainer = this._sessionCookiesContainer;
+                client.BaseAddress = this.Domain;
+                client.Timeout = this.Timeout;
 
                 var rqHeaders = client.DefaultRequestHeaders;
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
-                rqHeaders.UserAgent.ParseAdd(UserAgentValue);
+                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
 
                 var resultGet = client.GetAsync("/").Result;
                 var data = resultGet.Content.ReadAsStringAsync().Result;
@@ -439,16 +439,16 @@ namespace DNN.Integration.Test.Framework
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if(!ignoreLoggedIn)
-                EnsureLoggedIn();
+                this.EnsureLoggedIn();
 
-            using (var client = CreateHttpClient("/", true))
+            using (var client = this.CreateHttpClient("/", true))
             {
                 var rqHeaders = client.DefaultRequestHeaders;
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.5d));
                 rqHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 rqHeaders.UserAgent.Clear();
-                rqHeaders.UserAgent.ParseAdd(UserAgentValue);
+                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
 
                 if (contentHeaders != null)
                 {
@@ -463,7 +463,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(Domain, relativeUrl);
+                var requestUriString = CombineUrlPath(this.Domain, relativeUrl);
                 var result = client.PostAsJsonAsync(requestUriString, content).Result;
                 return !waitHttpResponse
                     ? result
@@ -475,16 +475,16 @@ namespace DNN.Integration.Test.Framework
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
-                EnsureLoggedIn();
+                this.EnsureLoggedIn();
 
-            using (var client = CreateHttpClient("/", true))
+            using (var client = this.CreateHttpClient("/", true))
             {
                 var rqHeaders = client.DefaultRequestHeaders;
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.5d));
                 rqHeaders.Add("X-Requested-With", "XMLHttpRequest");
                 rqHeaders.UserAgent.Clear();
-                rqHeaders.UserAgent.ParseAdd(UserAgentValue);
+                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
 
                 if (contentHeaders != null)
                 {
@@ -499,7 +499,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(Domain, relativeUrl);
+                var requestUriString = CombineUrlPath(this.Domain, relativeUrl);
                 var result = client.PutAsJsonAsync(requestUriString, content).Result;
                 return !waitHttpResponse
                     ? result
@@ -512,31 +512,31 @@ namespace DNN.Integration.Test.Framework
             var clientHandler = new HttpClientHandler
             {
                 AllowAutoRedirect = autoRedirect,
-                CookieContainer = _sessionCookiesContainer,
+                CookieContainer = this._sessionCookiesContainer,
             };
 
-            var url = CombineUrlPath(Domain, path);
+            var url = CombineUrlPath(this.Domain, path);
             var client = new HttpClient(clientHandler)
             {
-                BaseAddress = Domain,
-                Timeout = Timeout
+                BaseAddress = this.Domain,
+                Timeout = this.Timeout
             };
 
-            if (string.IsNullOrEmpty(_inputFieldVerificationToken))
+            if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgentValue);
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
                 var resultGet = client.GetAsync(url).Result;
                 var data = resultGet.Content.ReadAsStringAsync().Result;
-                _inputFieldVerificationToken = GetVerificationToken(data);
-                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+                this._inputFieldVerificationToken = GetVerificationToken(data);
+                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
 
-                _currentTabId = GetCurrentTabId(data);
-                client.DefaultRequestHeaders.Add("TabId", _currentTabId);
+                this._currentTabId = GetCurrentTabId(data);
+                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
             }
             else
             {
-                client.DefaultRequestHeaders.Add("TabId", _currentTabId);
-                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
+                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
             }
 
             return client;
@@ -545,15 +545,15 @@ namespace DNN.Integration.Test.Framework
         private string[] GetPageInputFields(HttpClient client, string path)
         {
             CachedWebPage cachedPage = null;
-            var url = CombineUrlPath(Domain, path);
-            if (!IsLoggedIn || AvoidCaching ||
+            var url = CombineUrlPath(this.Domain, path);
+            if (!this.IsLoggedIn || this.AvoidCaching ||
                 (!CachedPages.TryGetValue(url, out cachedPage) ||
                 cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5)))
             {
                 try
                 {
                     var requestVerificationToken = string.Empty;
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgentValue);
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
                     var resultGet = client.GetAsync(url).Result;
                     var data = resultGet.Content.ReadAsStringAsync().Result;
                     const string str1 = "<input name=\"" + RqVerifTokenName + "\" type=\"hidden\" value=\"";
@@ -599,22 +599,22 @@ namespace DNN.Integration.Test.Framework
             List<string> excludedInputPrefixes, bool checkUserLoggedIn = true, bool followRedirect = false)
         {
             if (checkUserLoggedIn)
-                EnsureLoggedIn();
+                this.EnsureLoggedIn();
 
             var clientHandler = new HttpClientHandler
             {
-                CookieContainer = _sessionCookiesContainer,
+                CookieContainer = this._sessionCookiesContainer,
             };
 
             var postParameters = new Dictionary<string, object>();
             string[] inputFields;
             using (var client = new HttpClient(clientHandler)
             {
-                BaseAddress = Domain,
-                Timeout = Timeout
+                BaseAddress = this.Domain,
+                Timeout = this.Timeout
             })
             {
-                inputFields = GetPageInputFields(client, relativeUrl);
+                inputFields = this.GetPageInputFields(client, relativeUrl);
             }
 
             var firstField = formFields.First().Key;
@@ -623,7 +623,7 @@ namespace DNN.Integration.Test.Framework
                 // the form doesn't have the proper input fields 
                 Console.WriteLine(
                     @"Either User '{0}' has no rights to post to this page {1} or " +
-                    @"this page does not contain correct form ", UserName, relativeUrl);
+                    @"this page does not contain correct form ", this.UserName, relativeUrl);
                 //return null;
             }
 
@@ -705,8 +705,8 @@ namespace DNN.Integration.Test.Framework
 
             if (postParameters.Count > 0)
             {
-                var url = CombineUrlPath(Domain, relativeUrl);
-                return MultipartFormDataPost(url, UserAgentValue, postParameters, null, followRedirect);
+                var url = CombineUrlPath(this.Domain, relativeUrl);
+                return this.MultipartFormDataPost(url, this.UserAgentValue, postParameters, null, followRedirect);
             }
 
             return null;
@@ -719,8 +719,8 @@ namespace DNN.Integration.Test.Framework
 
         public HttpWebResponse MultipartFormDataPost(string relativeUrl, IDictionary<string, object> postParameters, IDictionary<string, string> headers = null, bool followRedirect = false)
         {
-            var url = CombineUrlPath(Domain, relativeUrl);
-            return MultipartFormDataPost(url, UserAgentValue, postParameters, headers, followRedirect);
+            var url = CombineUrlPath(this.Domain, relativeUrl);
+            return this.MultipartFormDataPost(url, this.UserAgentValue, postParameters, headers, followRedirect);
         }
 
         private HttpWebResponse MultipartFormDataPost(
@@ -729,7 +729,7 @@ namespace DNN.Integration.Test.Framework
             var formDataBoundary = string.Format("----WebKitFormBoundary{0:X16}", DateTime.Now.Ticks);
             var contentType = "multipart/form-data; boundary=" + formDataBoundary;
             var formData = GetMultipartFormData(postParameters, formDataBoundary);
-            return PostForm(postUrl, userAgent, contentType, headers, formData, followRedirect);
+            return this.PostForm(postUrl, userAgent, contentType, headers, formData, followRedirect);
         }
 
         private HttpWebResponse PostForm(string postUrl, string userAgent, string contentType, IDictionary<string, string> headers, byte[] formData, bool followRedirect)
@@ -745,9 +745,9 @@ namespace DNN.Integration.Test.Framework
             request.Method = "POST";
             request.ContentType = contentType;
             request.UserAgent = userAgent;
-            request.CookieContainer = _sessionCookiesContainer;
+            request.CookieContainer = this._sessionCookiesContainer;
             request.ContentLength = formData.Length;
-            request.Headers.Add(RqVerifTokenNameNoUndescrores, _inputFieldVerificationToken);
+            request.Headers.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
             if (headers != null)
             {
                 foreach (var h in headers)
@@ -869,19 +869,19 @@ namespace DNN.Integration.Test.Framework
             bool waitHttpResponse = true, bool autoRedirect = true)
         {
             var url = relativeUrl + "?" + QueryStringFromObject(parameters);
-            return GetContent(url, contentHeaders, waitHttpResponse, autoRedirect);
+            return this.GetContent(url, contentHeaders, waitHttpResponse, autoRedirect);
         }
 
         public HttpResponseMessage GetContent(
             string relativeUrl, Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true)
         {
-            using (var client = CreateHttpClient("/", autoRedirect))
+            using (var client = this.CreateHttpClient("/", autoRedirect))
             {
                 var rqHeaders = client.DefaultRequestHeaders;
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.5d));
                 rqHeaders.Add("X-Requested-With", "XMLHttpRequest");
-                rqHeaders.UserAgent.ParseAdd(UserAgentValue);
+                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
 
                 if (contentHeaders != null)
                 {
@@ -891,7 +891,7 @@ namespace DNN.Integration.Test.Framework
                     }
                 }
 
-                var requestUriString = CombineUrlPath(Domain, relativeUrl);
+                var requestUriString = CombineUrlPath(this.Domain, relativeUrl);
                 var uri = new Uri(requestUriString);
                 var result = client.GetAsync(uri.AbsoluteUri).Result;
                 return !waitHttpResponse

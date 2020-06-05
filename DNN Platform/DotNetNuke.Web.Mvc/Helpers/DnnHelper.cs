@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         protected DnnHelper(HtmlHelper htmlHelper)
         {
-            HtmlHelper = htmlHelper;
+            this.HtmlHelper = htmlHelper;
 
             var controller = htmlHelper.ViewContext.Controller as IDnnController;
 
@@ -41,20 +41,20 @@ namespace DotNetNuke.Web.Mvc.Helpers
                 throw new InvalidOperationException("The DnnHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
 
-            DnnPage = controller.DnnPage;
+            this.DnnPage = controller.DnnPage;
 
-            ModuleContext = controller.ModuleContext;
-            LocalResourceFile = controller.LocalResourceFile;
+            this.ModuleContext = controller.ModuleContext;
+            this.LocalResourceFile = controller.LocalResourceFile;
         }
 
         public ModuleInfo ActiveModule
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
+            get { return (this.ModuleContext == null) ? null : this.ModuleContext.Configuration; }
         }
 
         public TabInfo ActivePage
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
+            get { return (this.PortalSettings == null) ? null : this.PortalSettings.ActiveTab; }
         }
 
         public Page DnnPage { get; set; }
@@ -65,29 +65,29 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }
 
         public PortalSettings PortalSettings
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
+            get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
-        public RouteCollection RouteCollection { get { return HtmlHelper.RouteCollection; } }
+        public RouteCollection RouteCollection { get { return this.HtmlHelper.RouteCollection; } }
 
         public UserInfo User
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
+            get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
-        public dynamic ViewBag { get { return HtmlHelper.ViewBag; } }
+        public dynamic ViewBag { get { return this.HtmlHelper.ViewBag; } }
 
-        public ViewContext ViewContext { get { return HtmlHelper.ViewContext; } }
+        public ViewContext ViewContext { get { return this.HtmlHelper.ViewContext; } }
 
-        public ViewDataDictionary ViewData { get { return HtmlHelper.ViewData; } }
+        public ViewDataDictionary ViewData { get { return this.HtmlHelper.ViewData; } }
 
-        public IViewDataContainer ViewDataContainer { get { return HtmlHelper.ViewDataContainer; } }
+        public IViewDataContainer ViewDataContainer { get { return this.HtmlHelper.ViewDataContainer; } }
     }
 }

@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.UserRequest
     {
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
-            return GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
+            return this.GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
         }
 
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.UserRequest
                 userIPAddress = string.Empty;
             }
             
-            if (!string.IsNullOrEmpty(userIPAddress) && !ValidateIP(userIPAddress, ipFamily))
+            if (!string.IsNullOrEmpty(userIPAddress) && !this.ValidateIP(userIPAddress, ipFamily))
             {
                 userIPAddress = string.Empty;
             }

@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         public ClientCapability()
         {
-            _capabilities = new Dictionary<string, string>();
+            this._capabilities = new Dictionary<string, string>();
         }
     
         #region Implementation of IClientCapability
@@ -85,12 +85,12 @@ namespace DotNetNuke.Services.ClientCapability
         {
             get
             {
-                return _capabilities;
+                return this._capabilities;
                 
             }
             set
             {
-                _capabilities = value;
+                this._capabilities = value;
                 
             }
         }

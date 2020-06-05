@@ -36,8 +36,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
 
             //Set Status to None
@@ -49,17 +49,17 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var counter = 0;
             foreach (var portal in installConfig.Portals)
             {
-                string description = Localization.Localization.GetString("CreatingSite", LocalInstallResourceFile);
-                Details = string.Format(description, portal.PortalName);
-                CreateSite(portal, installConfig);
+                string description = Localization.Localization.GetString("CreatingSite", this.LocalInstallResourceFile);
+                this.Details = string.Format(description, portal.PortalName);
+                this.CreateSite(portal, installConfig);
 
                 counter++;
-                Percentage = percentForEachStep * counter++;
+                this.Percentage = percentForEachStep * counter++;
             }
 
             Globals.ResetAppStartElapseTime();
 
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         #endregion
@@ -84,8 +84,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             //Verify that portal alias is not present
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
-                string description = Localization.Localization.GetString("SkipCreatingSite", LocalInstallResourceFile);
-                Details = string.Format(description, portalAlias);
+                string description = Localization.Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
+                this.Details = string.Format(description, portalAlias);
                 return;
             }
 

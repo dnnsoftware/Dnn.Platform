@@ -40,12 +40,12 @@ namespace DotNetNuke.Tests.Urls
         {
             base.SetUp();
 
-            UpdateTabName(_tabId, "About Us");
+            this.UpdateTabName(this._tabId, "About Us");
             CacheController.FlushPageIndexFromCache();
-            GetDefaultAlias();
-            _redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", PortalId, "CANONICALURL");
-            _primaryAlias = null;
-            _customLocale = null;
+            this.GetDefaultAlias();
+            this._redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");
+            this._primaryAlias = null;
+            this._customLocale = null;
         }
 
         [TestFixtureSetUp]
@@ -53,26 +53,26 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureSetUp();
 
-            var tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+            var tab = TabController.Instance.GetTabByName(_aboutUsPageName, this.PortalId);
             if (tab == null)
             {
-                CreateTab(_aboutUsPageName);
-                tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+                this.CreateTab(_aboutUsPageName);
+                tab = TabController.Instance.GetTabByName(_aboutUsPageName, this.PortalId);
             }
-            _tabId = tab.TabID;
+            this._tabId = tab.TabID;
 
             //Add Portal Aliases
             var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
-                            var alias = aliasController.GetPortalAlias(fields[0], PortalId);
+                            var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
                             if (alias == null)
                             {
                                 alias = new PortalAliasInfo
                                                 {
                                                     HTTPAlias = fields[0],
-                                                    PortalID = PortalId
+                                                    PortalID = this.PortalId
                                                 };
                                 PortalAliasController.Instance.AddPortalAlias(alias);
                             }
@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Urls
                         {
                             string[] fields = line.Split(',');
 
-                            TestUtil.AddUser(PortalId, fields[0].Trim(), fields[1].Trim(), fields[2].Trim());
+                            TestUtil.AddUser(this.PortalId, fields[0].Trim(), fields[1].Trim(), fields[2].Trim());
                         });
         }
 
@@ -90,24 +90,24 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TearDown();
 
-            UpdateTabName(_tabId, "About Us");
+            this.UpdateTabName(this._tabId, "About Us");
 
-            if (_customLocale != null)
+            if (this._customLocale != null)
             {
-                Localization.RemoveLanguageFromPortals(_customLocale.LanguageId, true);
-                Localization.DeleteLanguage(_customLocale, true);
+                Localization.RemoveLanguageFromPortals(this._customLocale.LanguageId, true);
+                Localization.DeleteLanguage(this._customLocale, true);
             }
-            if (_primaryAlias != null)
+            if (this._primaryAlias != null)
             {
-                PortalAliasController.Instance.DeletePortalAlias(_primaryAlias);
+                PortalAliasController.Instance.DeletePortalAlias(this._primaryAlias);
             }
 
-            SetDefaultAlias(DefaultAlias);
-            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", _redirectMode);
+            this.SetDefaultAlias(this.DefaultAlias);
+            PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", this._redirectMode);
 
-            foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(PortalId)))
+            foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(this.PortalId)))
             {
-                TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
+                TabController.Instance.DeleteTabUrl(tabUrl, this.PortalId, true);
             }
         }
 
@@ -120,14 +120,14 @@ namespace DotNetNuke.Tests.Urls
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
-                            var alias = aliasController.GetPortalAlias(fields[0], PortalId);
+                            var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
                             PortalAliasController.Instance.DeletePortalAlias(alias);
                         });
             TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
 
-                            TestUtil.DeleteUser(PortalId, fields[0]);
+                            TestUtil.DeleteUser(this.PortalId, fields[0]);
                         });
         }
 
@@ -137,21 +137,21 @@ namespace DotNetNuke.Tests.Urls
 
         private void ExecuteTest(string test, Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
-            SetDefaultAlias(testFields);
+            this.SetDefaultAlias(testFields);
 
-            ExecuteTest(test, settings, testFields);
+            this.ExecuteTest(test, settings, testFields);
         }
 
         private void ExecuteTest(string test, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
         {
             var tabName = testFields["Page Name"];
-            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
             if (tab == null)
                 Assert.Fail($"TAB with name [{tabName}] is not found!");
 
-            ExecuteTestForTab(test, tab, settings, testFields);            
+            this.ExecuteTestForTab(test, tab, settings, testFields);            
         }
 
         private void ExecuteTestForTab(string test, TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
@@ -182,7 +182,7 @@ namespace DotNetNuke.Tests.Urls
             var userName = testFields.GetValue("UserName", String.Empty);
             if (!String.IsNullOrEmpty(userName))
             {
-                var user = UserController.GetUserByName(PortalId, userName);
+                var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
                 {
                     expectedResult = expectedResult.Replace("{userId}", user.UserID.ToString());
@@ -217,7 +217,7 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTabName(int tabId, string newName)
         {
-            var tab = TabController.Instance.GetTab(tabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
             tab.TabName = newName;
             TabController.Instance.UpdateTab(tab);
         }
@@ -230,21 +230,21 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_BaseTestCases")]
         public void AdvancedUrlProvider_BaseFriendlyUrl(Dictionary<string, string> testFields)
         {
-            ExecuteTest("Base", testFields);
+            this.ExecuteTest("Base", testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ImprovedTestCases")]
         public void AdvancedUrlProvider_ImprovedFriendlyUrl(Dictionary<string, string> testFields)
         {
-            ExecuteTest("Improved", testFields);
+            this.ExecuteTest("Improved", testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_SpaceEncodingTestCases")]
         public void AdvancedUrlProvider_SpaceEncoding(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding", PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding", this.PortalId);
             settings.ReplaceSpaceWith = " ";
 
             string spaceEncoding = testFields.GetValue("SpaceEncoding");
@@ -254,14 +254,14 @@ namespace DotNetNuke.Tests.Urls
                 settings.SpaceEncodingValue = spaceEncoding;
             }
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_PageExtensionTestCases")]
         public void AdvancedUrlProvider_PageExtension(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PageExtension", PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PageExtension", this.PortalId);
 
             string pageExtensionUsageType = testFields.GetValue("PageExtensionUsageType");
             string pageExtension = testFields.GetValue("PageExtension");
@@ -283,7 +283,7 @@ namespace DotNetNuke.Tests.Urls
                     break;
             }
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
@@ -293,41 +293,41 @@ namespace DotNetNuke.Tests.Urls
             string defaultAlias = testFields["DefaultAlias"];
             string redirectMode = testFields["RedirectMode"];
 
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PrimaryPortalAlias", PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PrimaryPortalAlias", this.PortalId);
 
             string language = testFields["Language"].Trim();
             if (!String.IsNullOrEmpty(language))
             {
-                _customLocale = new Locale { Code = language, Fallback = "en-US" };
-                _customLocale.Text = CultureInfo.GetCultureInfo(_customLocale.Code).NativeName;
-                Localization.SaveLanguage(_customLocale);
-                Localization.AddLanguageToPortals(_customLocale.LanguageId);
+                this._customLocale = new Locale { Code = language, Fallback = "en-US" };
+                this._customLocale.Text = CultureInfo.GetCultureInfo(this._customLocale.Code).NativeName;
+                Localization.SaveLanguage(this._customLocale);
+                Localization.AddLanguageToPortals(this._customLocale.LanguageId);
 
                 //add new primary alias
-                _primaryAlias = new PortalAliasInfo
+                this._primaryAlias = new PortalAliasInfo
                 {
-                    PortalID = PortalId,
+                    PortalID = this.PortalId,
                     HTTPAlias = defaultAlias,
                     CultureCode = language,
                     IsPrimary = true
                 };
-                _primaryAlias.PortalAliasID = PortalAliasController.Instance.AddPortalAlias(_primaryAlias);
+                this._primaryAlias.PortalAliasID = PortalAliasController.Instance.AddPortalAlias(this._primaryAlias);
             }
             else
             {
-                SetDefaultAlias(defaultAlias);
+                this.SetDefaultAlias(defaultAlias);
             }
 
-            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", redirectMode);
+            PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", redirectMode);
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_RegexTestCases")]
         public void AdvancedUrlProvider_Regex(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             string regexSetting = testFields["Setting"];
             string regexValue = testFields["Value"];
@@ -368,21 +368,21 @@ namespace DotNetNuke.Tests.Urls
                 }
             }
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ReplaceCharsTestCases")]
         public void AdvancedUrlProvider_ReplaceChars(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             string testPageName = testFields.GetValue("TestPageName");
             TabInfo tab = null;
             if (!String.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
-                tab = TabController.Instance.GetTabByName(tabName, PortalId);
+                tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
                 tab.TabName = testPageName;
                 TabController.Instance.UpdateTab(tab);
 
@@ -399,14 +399,14 @@ namespace DotNetNuke.Tests.Urls
 
             TestUtil.GetReplaceCharDictionary(testFields, settings.ReplaceCharacterDictionary);
 
-            ExecuteTestForTab("Improved", tab, settings, testFields);
+            this.ExecuteTestForTab("Improved", tab, settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ReplaceSpaceTestCases")]
         public void AdvancedUrlProvider_ReplaceSpace(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             string replaceSpaceWith = testFields.GetValue("ReplaceSpaceWith");
             if (!String.IsNullOrEmpty(replaceSpaceWith))
@@ -414,14 +414,14 @@ namespace DotNetNuke.Tests.Urls
                 settings.ReplaceSpaceWith = replaceSpaceWith;
             }
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_VanityUrlTestCases")]
         public void AdvancedUrlProvider_VanityUrl(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
             var userName = testFields.GetValue("UserName", String.Empty);
@@ -433,21 +433,21 @@ namespace DotNetNuke.Tests.Urls
 
             if (!String.IsNullOrEmpty(userName))
             {
-                var user = UserController.GetUserByName(PortalId, userName);
+                var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
                 {
                     user.VanityUrl = vanityUrl;
-                    UserController.UpdateUser(PortalId, user);
+                    UserController.UpdateUser(this.PortalId, user);
                 }
             }
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ForceLowerCaseTestCases")]
         public void AdvancedUrlProvider_ForceLowerCase(Dictionary<string, string> testFields)
         {
-            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], PortalId);
+            var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             string forceLowerCaseRegex = testFields.GetValue("ForceLowerCaseRegex");
 
@@ -456,7 +456,7 @@ namespace DotNetNuke.Tests.Urls
                 settings.ForceLowerCaseRegex = forceLowerCaseRegex;
             }
 
-            ExecuteTest("Improved", settings, testFields);
+            this.ExecuteTest("Improved", settings, testFields);
         }
 
         #endregion

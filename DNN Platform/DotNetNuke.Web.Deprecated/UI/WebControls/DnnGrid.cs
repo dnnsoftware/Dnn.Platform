@@ -35,12 +35,12 @@ namespace DotNetNuke.Web.UI.WebControls
             base.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            if (string.IsNullOrEmpty(ClientSettings.ClientEvents.OnGridCreated))
+            if (string.IsNullOrEmpty(this.ClientSettings.ClientEvents.OnGridCreated))
             {
-                ClientSettings.ClientEvents.OnGridCreated = "$.dnnGridCreated";
+                this.ClientSettings.ClientEvents.OnGridCreated = "$.dnnGridCreated";
             }
 
-            this.PreRender += new EventHandler(DnnGrid_PreRender);
+            this.PreRender += new EventHandler(this.DnnGrid_PreRender);
 
             this.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", Localization.SharedResourceFile);
         }
@@ -48,19 +48,19 @@ namespace DotNetNuke.Web.UI.WebControls
         void DnnGrid_PreRender(object sender, EventArgs e)
         {
             var items = this.MasterTableView.Items;
-            if (ScreenRowNumber == 0)
-                ScreenRowNumber = 15;
+            if (this.ScreenRowNumber == 0)
+                this.ScreenRowNumber = 15;
 
-            if (items.Count > ScreenRowNumber)
+            if (items.Count > this.ScreenRowNumber)
             {
                 // need scroll
                 this.ClientSettings.Scrolling.AllowScroll = true;
                 this.ClientSettings.Scrolling.UseStaticHeaders = true;
 
-                if(RowHeight == 0)
-                    RowHeight = 25;
+                if(this.RowHeight == 0)
+                    this.RowHeight = 25;
 
-                this.ClientSettings.Scrolling.ScrollHeight = RowHeight * ScreenRowNumber;
+                this.ClientSettings.Scrolling.ScrollHeight = this.RowHeight * this.ScreenRowNumber;
             }
             else
             {

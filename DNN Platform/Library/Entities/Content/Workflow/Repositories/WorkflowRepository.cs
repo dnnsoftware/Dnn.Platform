@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         #region Constructor
         public WorkflowRepository()
         {
-            _stateRepository = WorkflowStateRepository.Instance;
+            this._stateRepository = WorkflowStateRepository.Instance;
         }
         #endregion
 
@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 // Worfklow States eager loading
                 foreach (var workflow in workflows)
                 {
-                    workflow.States = _stateRepository.GetWorkflowStates(workflow.WorkflowID);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflow.WorkflowID);
                 }
 
                 return workflows;
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 // Worfklow States eager loading
                 foreach (var workflow in workflows)
                 {
-                    workflow.States = _stateRepository.GetWorkflowStates(workflow.WorkflowID);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflow.WorkflowID);
                 }
 
                 return workflows;
@@ -80,15 +80,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                         return null;
                     }
 
-                    workflow.States = _stateRepository.GetWorkflowStates(workflowId);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflowId);
                     return workflow;
                 });
         }
 
         public Entities.Workflow GetWorkflow(ContentItem item)
         {
-            var state = _stateRepository.GetWorkflowStateByID(item.StateID);
-            return state == null ? null : GetWorkflow(state.WorkflowID);
+            var state = this._stateRepository.GetWorkflowStateByID(item.StateID);
+            return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }
 
         // TODO: validation

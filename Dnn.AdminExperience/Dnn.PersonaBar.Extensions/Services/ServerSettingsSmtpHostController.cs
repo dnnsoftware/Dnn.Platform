@@ -60,12 +60,12 @@ namespace Dnn.PersonaBar.Servers.Services
                     },
                     portalName = PortalSettings.Current.PortalName
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
+                return this.Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -105,12 +105,12 @@ namespace Dnn.PersonaBar.Servers.Services
                 }
 
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {success = true});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {success = true});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -127,14 +127,14 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var mailFrom = Host.HostEmail;
-                var mailTo = request.SmtpServerMode == "h" ? Host.HostEmail : PortalSettings.UserInfo.Email;
+                var mailTo = request.SmtpServerMode == "h" ? Host.HostEmail : this.PortalSettings.UserInfo.Email;
 
                 var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
                     "",
                     "",
                     MailPriority.Normal,
-                    Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
+                    Localization.GetSystemMessage(this.PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
                     MailFormat.Text,
                     Encoding.UTF8,
                     "",
@@ -146,7 +146,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     request.EnableSmtpSsl);
 
                 var success = string.IsNullOrEmpty(errMessage);
-                return Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
+                return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
                 {
                     success,
                     errMessage,
@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.Servers.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

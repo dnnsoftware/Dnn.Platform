@@ -23,11 +23,11 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _imageHandlerUrl ?? string.Empty;
+                return this._imageHandlerUrl ?? string.Empty;
             }
             set
             {
-                _imageHandlerUrl = value;
+                this._imageHandlerUrl = value;
             }
         }
 
@@ -35,37 +35,37 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _timestamp ?? string.Empty;
+                return this._timestamp ?? string.Empty;
             }
             set
             {
-                _timestamp = value;
+                this._timestamp = value;
             }
         }
 
         public List<ImageParameter> Parameters { get; }
 
-        private new HttpContextBase Context => _context ?? new HttpContextWrapper(HttpContext.Current);
+        private new HttpContextBase Context => this._context ?? new HttpContextWrapper(HttpContext.Current);
 
-        private new Control BindingContainer => _bindingContainer ?? base.BindingContainer;
+        private new Control BindingContainer => this._bindingContainer ?? base.BindingContainer;
 
         public GeneratedImage()
         {
-            Parameters = new List<ImageParameter>();
+            this.Parameters = new List<ImageParameter>();
         }
 
         internal GeneratedImage(HttpContextBase context, Control bindingContainer) : this()
         {
-            _context = context;
-            _bindingContainer = bindingContainer;
+            this._context = context;
+            this._bindingContainer = bindingContainer;
         }
 
         protected override void OnDataBinding(EventArgs e)
         {
             base.OnDataBinding(e);
 
-            Control bindingContainer = BindingContainer;
-            foreach (var parameter in Parameters)
+            Control bindingContainer = this.BindingContainer;
+            foreach (var parameter in this.Parameters)
             {
                 parameter.BindingContainer = bindingContainer;
                 parameter.DataBind();
@@ -76,28 +76,28 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             base.OnPreRender(e);
 
-            if (DesignMode)
+            if (this.DesignMode)
             {
                 return;
             }
 
-            ImageUrl = BuildImageUrl();
+            this.ImageUrl = this.BuildImageUrl();
         }
 
         private string BuildImageUrl()
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(ImageHandlerUrl);
+            stringBuilder.Append(this.ImageHandlerUrl);
 
             var paramAlreadyAdded = false;
 
-            foreach (var parameter in Parameters)
+            foreach (var parameter in this.Parameters)
             {
                 AddQueryStringParameter(stringBuilder, paramAlreadyAdded, parameter.Name, parameter.Value);
                 paramAlreadyAdded = true;
             }
 
-            string timeStamp = Timestamp?.Trim();
+            string timeStamp = this.Timestamp?.Trim();
             if (!string.IsNullOrEmpty(timeStamp))
             {
                 AddQueryStringParameter(stringBuilder, paramAlreadyAdded, TimestampField, timeStamp);

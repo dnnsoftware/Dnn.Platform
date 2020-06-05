@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public TrueFalseEditControl()
         {
-            SystemType = "System.Boolean";
+            this.SystemType = "System.Boolean";
         }
 
 		#endregion
@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(Value);
+                    boolValue = Convert.ToBoolean(this.Value);
                 }
                 catch (Exception exc)
                 {
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an Boolean
-                    boolValue = Convert.ToBoolean(OldValue);
+                    boolValue = Convert.ToBoolean(this.OldValue);
                 }
                 catch (Exception exc)
                 {
@@ -108,12 +108,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return BooleanValue.ToString();
+                return this.BooleanValue.ToString();
             }
             set
             {
                 bool setValue = bool.Parse(value);
-                Value = setValue;
+                this.Value = setValue;
             }
         }
 
@@ -129,10 +129,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = BooleanValue;
-            args.OldValue = OldBooleanValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.BooleanValue;
+            args.OldValue = this.OldBooleanValue;
+            args.StringValue = this.StringValue;
             base.OnValueChanged(args);
         }
 
@@ -145,28 +145,28 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            if ((BooleanValue))
+            if ((this.BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
             writer.AddAttribute(HtmlTextWriterAttribute.Value, "True");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(Localization.GetString("True", Localization.SharedResourceFile));
             writer.RenderEndTag();
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            if ((!BooleanValue))
+            if ((!this.BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
             writer.AddAttribute(HtmlTextWriterAttribute.Value, "False");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(Localization.GetString("False", Localization.SharedResourceFile));
             writer.RenderEndTag();

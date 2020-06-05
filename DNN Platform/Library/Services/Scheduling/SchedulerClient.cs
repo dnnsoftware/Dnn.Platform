@@ -21,10 +21,10 @@ namespace DotNetNuke.Services.Scheduling
     {
         public SchedulerClient()
         {
-            SchedulerEventGUID = Null.NullString;
-            aProcessMethod = Null.NullString;
-            Status = Null.NullString;
-            ScheduleHistoryItem = new ScheduleHistoryItem();
+            this.SchedulerEventGUID = Null.NullString;
+            this.aProcessMethod = Null.NullString;
+            this.Status = Null.NullString;
+            this.ScheduleHistoryItem = new ScheduleHistoryItem();
         }
 
         public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
@@ -50,33 +50,33 @@ namespace DotNetNuke.Services.Scheduling
 
         public void Started()
         {
-            if (ProcessStarted != null)
+            if (this.ProcessStarted != null)
             {
-                ProcessStarted(this);
+                this.ProcessStarted(this);
             }
         }
 
         public void Progressing()
         {
-            if (ProcessProgressing != null)
+            if (this.ProcessProgressing != null)
             {
-                ProcessProgressing(this);
+                this.ProcessProgressing(this);
             }
         }
 
         public void Completed()
         {
-            if (ProcessCompleted != null)
+            if (this.ProcessCompleted != null)
             {
-                ProcessCompleted(this);
+                this.ProcessCompleted(this);
             }
         }
 
         public void Errored(ref Exception objException)
         {
-            if (ProcessErrored != null)
+            if (this.ProcessErrored != null)
             {
-                ProcessErrored(this, objException);
+                this.ProcessErrored(this, objException);
             }
         }
 

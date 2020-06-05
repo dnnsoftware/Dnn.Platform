@@ -35,9 +35,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         public ModuleDefinitionInfo()
         {
-            Permissions = new Dictionary<string, PermissionInfo>();
-            DesktopModuleID = Null.NullInteger;
-            ModuleDefID = Null.NullInteger;
+            this.Permissions = new Dictionary<string, PermissionInfo>();
+            this.DesktopModuleID = Null.NullInteger;
+            this.ModuleDefID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -79,15 +79,15 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                if(String.IsNullOrEmpty(_definitionName))
+                if(String.IsNullOrEmpty(this._definitionName))
                 {
-                    return FriendlyName;
+                    return this.FriendlyName;
                 }
 
-                return _definitionName;
+                return this._definitionName;
             }
 
-            set { _definitionName = value; }
+            set { this._definitionName = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -100,11 +100,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                if (_ModuleControls == null)
+                if (this._ModuleControls == null)
                 {
-                    LoadControls();
+                    this.LoadControls();
                 }
-                return _ModuleControls;
+                return this._ModuleControls;
             }
         }
 
@@ -126,13 +126,13 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
-            DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
-            DefaultCacheTime = Null.SetNullInteger(dr["DefaultCacheTime"]);
-            FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.DefaultCacheTime = Null.SetNullInteger(dr["DefaultCacheTime"]);
+            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
 			if (dr.GetSchemaTable().Select("ColumnName = 'DefinitionName'").Length > 0)
 			{
-				DefinitionName = Null.SetNullString(dr["DefinitionName"]);
+				this.DefinitionName = Null.SetNullString(dr["DefinitionName"]);
 			}
         }
 
@@ -146,11 +146,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                return ModuleDefID;
+                return this.ModuleDefID;
             }
             set
             {
-                ModuleDefID = value;
+                this.ModuleDefID = value;
             }
         }
 
@@ -188,7 +188,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 }
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleControls")
                 {
-                    ReadModuleControls(reader);
+                    this.ReadModuleControls(reader);
                 }
                 else
                 {
@@ -197,20 +197,20 @@ namespace DotNetNuke.Entities.Modules.Definitions
                         case "moduleDefinition":
                             break;
                         case "friendlyName":
-                            FriendlyName = reader.ReadElementContentAsString();
+                            this.FriendlyName = reader.ReadElementContentAsString();
                             break;
                         case "defaultCacheTime":
                             string elementvalue = reader.ReadElementContentAsString();
                             if (!string.IsNullOrEmpty(elementvalue))
                             {
-                                DefaultCacheTime = int.Parse(elementvalue);
+                                this.DefaultCacheTime = int.Parse(elementvalue);
                             }
                             break;
                         case "permissions": //Ignore permissons node
                             reader.Skip();
                             break;
                         case "definitionName":
-                            DefinitionName = reader.ReadElementContentAsString();
+                            this.DefinitionName = reader.ReadElementContentAsString();
                             break;
                         default:
                             if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
@@ -235,14 +235,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
             writer.WriteStartElement("moduleDefinition");
 
             //write out properties
-            writer.WriteElementString("friendlyName", FriendlyName);
-            writer.WriteElementString("definitionName", DefinitionName);
-            writer.WriteElementString("defaultCacheTime", DefaultCacheTime.ToString());
+            writer.WriteElementString("friendlyName", this.FriendlyName);
+            writer.WriteElementString("definitionName", this.DefinitionName);
+            writer.WriteElementString("defaultCacheTime", this.DefaultCacheTime.ToString());
 
             //Write start of Module Controls
             writer.WriteStartElement("moduleControls");
             //Iterate through controls
-            foreach (ModuleControlInfo control in ModuleControls.Values)
+            foreach (ModuleControlInfo control in this.ModuleControls.Values)
             {
                 control.WriteXml(writer);
             }
@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         public void LoadControls()
         {
-            _ModuleControls = ModuleDefID > Null.NullInteger ? ModuleControlController.GetModuleControlsByModuleDefinitionID(ModuleDefID) : new Dictionary<string, ModuleControlInfo>();
+            this._ModuleControls = this.ModuleDefID > Null.NullInteger ? ModuleControlController.GetModuleControlsByModuleDefinitionID(this.ModuleDefID) : new Dictionary<string, ModuleControlInfo>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -274,7 +274,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 reader.ReadStartElement("moduleControl");
                 var moduleControl = new ModuleControlInfo();
                 moduleControl.ReadXml(reader);
-                ModuleControls.Add(moduleControl.ControlKey, moduleControl);
+                this.ModuleControls.Add(moduleControl.ControlKey, moduleControl);
             } while (reader.ReadToNextSibling("moduleControl"));
         }
     }

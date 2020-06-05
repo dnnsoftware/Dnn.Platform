@@ -23,7 +23,7 @@ namespace DotNetNuke.Collections.Internal
 
         public SharedList(ILockStrategy lockStrategy)
         {
-            _lockStrategy = lockStrategy;
+            this._lockStrategy = lockStrategy;
         }
 
         public SharedList(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
@@ -34,7 +34,7 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                return _list;
+                return this._list;
             }
         }
 
@@ -42,39 +42,39 @@ namespace DotNetNuke.Collections.Internal
 
         public void Add(T item)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Add(item);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Add(item);
         }
 
         public void Clear()
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Clear();
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Clear();
         }
 
         public bool Contains(T item)
         {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.Contains(item);
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            _list.CopyTo(array, arrayIndex);
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            this._list.CopyTo(array, arrayIndex);
         }
 
         public int Count
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list.Count;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list.Count;
             }
         }
 
@@ -82,66 +82,66 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return ((ICollection<T>) _list).IsReadOnly;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return ((ICollection<T>) this._list).IsReadOnly;
             }
         }
 
         public bool Remove(T item)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _list.Remove(item);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            return this._list.Remove(item);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.GetEnumerator();
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.GetEnumerator();
         }
 
         public int IndexOf(T item)
         {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.IndexOf(item);
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this._list.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Insert(index, item);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.Insert(index, item);
         }
 
         public T this[int index]
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list[index];
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list[index];
             }
             set
             {
-                EnsureNotDisposed();
-                EnsureWriteAccess();
-                _list[index] = value;
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this._list[index] = value;
             }
         }
 
         public void RemoveAt(int index)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.RemoveAt(index);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this._list.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator1();
+            return this.GetEnumerator1();
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace DotNetNuke.Collections.Internal
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -160,7 +160,7 @@ namespace DotNetNuke.Collections.Internal
 
         public void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 throw new ObjectDisposedException("SharedList");
             }
@@ -169,61 +169,61 @@ namespace DotNetNuke.Collections.Internal
         // IDisposable
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
                     // dispose managed state (managed objects).
                 }
 
-                _lockStrategy.Dispose();
-                _lockStrategy = null;
+                this._lockStrategy.Dispose();
+                this._lockStrategy = null;
             }
-            _isDisposed = true;
+            this._isDisposed = true;
         }
 
         ~SharedList()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
 
         public ISharedCollectionLock GetReadLock()
         {
-            return GetReadLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
         public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
         {
-            EnsureNotDisposed();
-            return _lockStrategy.GetReadLock(timeOut);
+            this.EnsureNotDisposed();
+            return this._lockStrategy.GetReadLock(timeOut);
         }
 
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
         {
-            return GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
         public ISharedCollectionLock GetWriteLock()
         {
-            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
         public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
         {
-            EnsureNotDisposed();
-            return _lockStrategy.GetWriteLock(timeOut);
+            this.EnsureNotDisposed();
+            return this._lockStrategy.GetWriteLock(timeOut);
         }
 
         public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
         {
-            return GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
         private void EnsureReadAccess()
         {
-            if (!(_lockStrategy.ThreadCanRead))
+            if (!(this._lockStrategy.ThreadCanRead))
             {
                 throw new ReadLockRequiredException();
             }
@@ -231,7 +231,7 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureWriteAccess()
         {
-            if (!_lockStrategy.ThreadCanWrite)
+            if (!this._lockStrategy.ThreadCanWrite)
             {
                 throw new WriteLockRequiredException();
             }
@@ -239,7 +239,7 @@ namespace DotNetNuke.Collections.Internal
 
         public IEnumerator GetEnumerator1()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
     }
 }

@@ -61,8 +61,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         public void Setup()
         {
             MockComponentProvider.ResetContainer();
-            SetupCBO();
-            SetupHostController();
+            this.SetupCBO();
+            this.SetupHostController();
         }
 
         [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
 
             // Arrange
-            SetupUserController(userPreferredTimeZone);
+            this.SetupUserController(userPreferredTimeZone);
 
             // Act
             var tabVersionController = new TabVersionControllerTestable();
@@ -87,23 +87,23 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private void SetupCBO()
         {
-            _mockCBO = new Mock<ICBO>();
-            _mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
-                .Returns(GetMockedTabVersions);
-            CBO.SetTestableInstance(_mockCBO.Object);
+            this._mockCBO = new Mock<ICBO>();
+            this._mockCBO.Setup(c => c.GetCachedObject<List<TabVersion>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+                .Returns(this.GetMockedTabVersions);
+            CBO.SetTestableInstance(this._mockCBO.Object);
         }
 
         private void SetupUserController(string timeZoneId)
         {
-            _mockUserController = new Mock<IUserController>();
-            _mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(GetMockedUser(timeZoneId));
-            UserController.SetTestableInstance(_mockUserController.Object);
+            this._mockUserController = new Mock<IUserController>();
+            this._mockUserController.Setup<UserInfo>(userController => userController.GetCurrentUserInfo()).Returns(this.GetMockedUser(timeZoneId));
+            UserController.SetTestableInstance(this._mockUserController.Object);
         }
 
         private UserInfo GetMockedUser(string timeZoneId)
         {
             var profile = new UserProfile() {
-                PreferredTimeZone = GetMockedUserTimeZone(timeZoneId)
+                PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId)
             };
 
             profile.ProfileProperties.Add(new Entities.Profile.ProfilePropertyDefinition(99)
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PropertyDefinitionId = 20,
                 PropertyCategory = "Preferences",
                 PropertyName = "PreferredTimeZone",
-                PropertyValue = GetMockedUserTimeZone(timeZoneId).Id
+                PropertyValue = this.GetMockedUserTimeZone(timeZoneId).Id
             });
             var user = new UserInfo()
             {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 Version = 1,
                 CreatedByUserID = UserID
             };
-            tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, ServerCreateOnDate, null);
+            tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, this.ServerCreateOnDate, null);
 
             return tabVersion;
         }
@@ -148,15 +148,15 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             return new List<TabVersion>()
             {
-                GetMockedTabVersion()
+                this.GetMockedTabVersion()
             };
         }
 
         private void SetupHostController()
         {
-            _mockHostController = new Mock<IHostController>();
-            _mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
-            HostController.RegisterInstance(_mockHostController.Object);
+            this._mockHostController = new Mock<IHostController>();
+            this._mockHostController.Setup(c => c.GetString(It.IsRegex("PerformanceSetting"))).Returns(Globals.PerformanceSettings.LightCaching.ToString());
+            HostController.RegisterInstance(this._mockHostController.Object);
         }
     }
 

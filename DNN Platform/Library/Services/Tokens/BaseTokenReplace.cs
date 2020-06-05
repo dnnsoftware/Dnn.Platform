@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Tokens
         /// <value>An CultureInfo</value>
         protected CultureInfo FormatProvider
         {
-            get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
+            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -56,12 +56,12 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                return _language;
+                return this._language;
             }
             set
             {
-                _language = value;
-                _formatProvider = new CultureInfo(_language);
+                this._language = value;
+                this._formatProvider = new CultureInfo(this._language);
             }
         }
 
@@ -73,11 +73,11 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                var cacheKey = (UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
+                var cacheKey = (this.UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
                 var tokenizer = DataCache.GetCache(cacheKey) as Regex;
                 if (tokenizer == null)
                 {
-                    tokenizer = RegexUtils.GetCachedRegex(UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
+                    tokenizer = RegexUtils.GetCachedRegex(this.UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
                     DataCache.SetCache(cacheKey, tokenizer);
                 }
                 return tokenizer;
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Tokens
                 return string.Empty;
             }
             var result = new StringBuilder();
-            foreach (Match currentMatch in TokenizerRegex.Matches(sourceText))
+            foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
             {
                 string objectName = currentMatch.Result("${object}");
                 if (!String.IsNullOrEmpty(objectName))
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Tokens
                     string propertyName = currentMatch.Result("${property}");
                     string format = currentMatch.Result("${format}");
                     string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
-                    string conversion = replacedTokenValue(objectName, propertyName, format);
+                    string conversion = this.replacedTokenValue(objectName, propertyName, format);
                     if (!String.IsNullOrEmpty(ifEmptyReplacment) && String.IsNullOrEmpty(conversion))
                     {
                         conversion = ifEmptyReplacment;

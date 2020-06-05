@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 
         public GroupedDetailView()
         {
-            Results = new List<DetailedView>();
+            this.Results = new List<DetailedView>();
         }
 
         #endregion

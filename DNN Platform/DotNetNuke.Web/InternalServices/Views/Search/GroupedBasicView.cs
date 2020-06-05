@@ -33,8 +33,8 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 
         public GroupedBasicView(BasicView basic)
         {
-            DocumentTypeName = basic.DocumentTypeName;
-            Results = new List<BasicView>
+            this.DocumentTypeName = basic.DocumentTypeName;
+            this.Results = new List<BasicView>
             {
                 new BasicView
                 {

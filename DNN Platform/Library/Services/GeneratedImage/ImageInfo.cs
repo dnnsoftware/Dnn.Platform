@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public ImageInfo(HttpStatusCode statusCode)
         {
-            HttpStatusCode = statusCode;
+            this.HttpStatusCode = statusCode;
         }
 
         public ImageInfo(Image image)
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(image));
             }
-            Image = image;
+            this.Image = image;
         }
 
         public ImageInfo(byte[] imageBuffer)
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(imageBuffer));
             }
-            ImageByteBuffer = imageBuffer;
+            this.ImageByteBuffer = imageBuffer;
         }
     }
 }

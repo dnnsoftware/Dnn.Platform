@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Analytics.Config
 
         public void Add(AnalyticsSetting r)
         {
-            InnerList.Add(r);
+            this.InnerList.Add(r);
         }
     }
 }

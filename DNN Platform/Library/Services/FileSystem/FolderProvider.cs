@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
         {
-            AddFolder(folderPath, folderMapping);
+            this.AddFolder(folderPath, folderMapping);
         }
 
         /// <summary>
@@ -196,18 +196,18 @@ namespace DotNetNuke.Services.FileSystem
 			Requires.NotNull("sourceFolder", sourceFolder);
 			Requires.NotNull("destinationFolder", destinationFolder);
 
-            using (var fileContent = GetFileStream(sourceFolder, fileName))
+            using (var fileContent = this.GetFileStream(sourceFolder, fileName))
             {
                 if (!fileContent.CanSeek)
                 {
                     using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
                     {
-                        AddFile(destinationFolder, fileName, seekableStream);
+                        this.AddFile(destinationFolder, fileName, seekableStream);
                     }
                 }
                 else
                 {
-                    AddFile(destinationFolder, fileName, fileContent);
+                    this.AddFile(destinationFolder, fileName, fileContent);
                 }
             }
         }
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public virtual Stream GetFileStream(IFolderInfo folder, IFileInfo file, int version)
         {
-            return GetFileStream(folder, FileVersionController.GetVersionedFilename(file, version));
+            return this.GetFileStream(folder, FileVersionController.GetVersionedFilename(file, version));
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </remarks>
         public virtual string GetSettingsControlVirtualPath()
         {
-            var provider = Config.GetProvider("folder", _providerName);
+            var provider = Config.GetProvider("folder", this._providerName);
 
             if (provider != null)
             {
@@ -306,9 +306,9 @@ namespace DotNetNuke.Services.FileSystem
         public virtual string GetHashCode(IFileInfo file)
         {
             var currentHashCode = String.Empty;
-            using (var fileContent = GetFileStream(file))
+            using (var fileContent = this.GetFileStream(file))
             {
-                currentHashCode = GetHashCode(file, fileContent);
+                currentHashCode = this.GetHashCode(file, fileContent);
             }
             return currentHashCode;
         }

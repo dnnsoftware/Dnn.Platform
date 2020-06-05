@@ -46,19 +46,19 @@ namespace DotNetNuke.UI.WebControls
 
         public PropertyEditorControl()
         {
-            VisibilityStyle = new Style();
-            ItemStyle = new Style();
-            LabelStyle = new Style();
-            HelpStyle = new Style();
-            GroupHeaderStyle = new Style();
-            ErrorStyle = new Style();
-            EditControlStyle = new Style();
-            Fields = new ArrayList();
-            ShowRequired = true;
-            LabelMode = LabelMode.Left;
-            HelpDisplayMode = HelpDisplayMode.Always;
-            Groups = Null.NullString;
-            AutoGenerate = true;
+            this.VisibilityStyle = new Style();
+            this.ItemStyle = new Style();
+            this.LabelStyle = new Style();
+            this.HelpStyle = new Style();
+            this.GroupHeaderStyle = new Style();
+            this.ErrorStyle = new Style();
+            this.EditControlStyle = new Style();
+            this.Fields = new ArrayList();
+            this.ShowRequired = true;
+            this.LabelMode = LabelMode.Left;
+            this.HelpDisplayMode = HelpDisplayMode.Always;
+            this.Groups = Null.NullString;
+            this.AutoGenerate = true;
         }
 		
 		#endregion
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual IEnumerable UnderlyingDataSource
         {
-            get { return GetProperties(); }
+            get { return this.GetProperties(); }
         }
 		
 		#endregion
@@ -164,7 +164,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
+                return this.Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
             }
         }
 
@@ -179,7 +179,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
+                return this.Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
             }
         }
 
@@ -353,15 +353,15 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private IEnumerable<PropertyInfo> GetProperties()
         {
-            if (DataSource != null)
+            if (this.DataSource != null)
             {
 				//TODO:  We need to add code to support using the cache in the future
                 const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
 
-                var properties = DataSource.GetType().GetProperties(bindings);
+                var properties = this.DataSource.GetType().GetProperties(bindings);
 
                 //Apply sort method
-                switch (SortMode)
+                switch (this.SortMode)
                 {
                     case PropertySortType.Alphabetical:
                         Array.Sort(properties, new PropertyNameComparer());
@@ -380,26 +380,26 @@ namespace DotNetNuke.UI.WebControls
 
         private void AddEditorRow(FieldEditorControl editor, WebControl container)
         {
-            editor.ControlStyle.CopyFrom(ItemStyle);
-            editor.LabelStyle.CopyFrom(LabelStyle);
-            editor.HelpStyle.CopyFrom(HelpStyle);
-            editor.ErrorStyle.CopyFrom(ErrorStyle);
-            editor.VisibilityStyle.CopyFrom(VisibilityStyle);
-            editor.EditControlStyle.CopyFrom(EditControlStyle);
+            editor.ControlStyle.CopyFrom(this.ItemStyle);
+            editor.LabelStyle.CopyFrom(this.LabelStyle);
+            editor.HelpStyle.CopyFrom(this.HelpStyle);
+            editor.ErrorStyle.CopyFrom(this.ErrorStyle);
+            editor.VisibilityStyle.CopyFrom(this.VisibilityStyle);
+            editor.EditControlStyle.CopyFrom(this.EditControlStyle);
             if (editor.EditControlWidth == Unit.Empty)
             {
-                editor.EditControlWidth = EditControlWidth;
+                editor.EditControlWidth = this.EditControlWidth;
             }
-            editor.LocalResourceFile = LocalResourceFile;
-            editor.RequiredUrl = RequiredUrl;
-            editor.ShowRequired = ShowRequired;
-            editor.ShowVisibility = ShowVisibility;
-            editor.User = User;
-            editor.Width = Width;
-            editor.ItemAdded += CollectionItemAdded;
-            editor.ItemChanged += ListItemChanged;
-            editor.ItemCreated += EditorItemCreated;
-            editor.ItemDeleted += CollectionItemDeleted;
+            editor.LocalResourceFile = this.LocalResourceFile;
+            editor.RequiredUrl = this.RequiredUrl;
+            editor.ShowRequired = this.ShowRequired;
+            editor.ShowVisibility = this.ShowVisibility;
+            editor.User = this.User;
+            editor.Width = this.Width;
+            editor.ItemAdded += this.CollectionItemAdded;
+            editor.ItemChanged += this.ListItemChanged;
+            editor.ItemCreated += this.EditorItemCreated;
+            editor.ItemDeleted += this.CollectionItemDeleted;
 
             editor.DataBind();
             container.Controls.Add(editor);
@@ -429,38 +429,38 @@ namespace DotNetNuke.UI.WebControls
             //Create a FieldEditor for this Row
             var editor = new FieldEditorControl
                              {
-                                 DataSource = DataSource,
+                                 DataSource = this.DataSource,
                                  EditorInfoAdapter = adapter,
                                  DataField = name,
-                                 EditorDisplayMode = DisplayMode,
-                                 EnableClientValidation = EnableClientValidation,
-                                 EditMode = EditMode,
-                                 HelpDisplayMode = HelpDisplayMode,
-                                 LabelMode = LabelMode,
-                                 LabelWidth = LabelWidth
+                                 EditorDisplayMode = this.DisplayMode,
+                                 EnableClientValidation = this.EnableClientValidation,
+                                 EditMode = this.EditMode,
+                                 HelpDisplayMode = this.HelpDisplayMode,
+                                 LabelMode = this.LabelMode,
+                                 LabelWidth = this.LabelWidth
                              };
-            AddEditorRow(editor, cell);
+            this.AddEditorRow(editor, cell);
 
-            Fields.Add(editor);
+            this.Fields.Add(editor);
         }
 
         protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
         {
             var editor = new FieldEditorControl
             {
-                DataSource = DataSource,
+                DataSource = this.DataSource,
                 EditorInfoAdapter = adapter,
                 DataField = name,
-                EditorDisplayMode = DisplayMode,
-                EnableClientValidation = EnableClientValidation,
-                EditMode = EditMode,
-                HelpDisplayMode = HelpDisplayMode,
-                LabelMode = LabelMode,
-                LabelWidth = LabelWidth
+                EditorDisplayMode = this.DisplayMode,
+                EnableClientValidation = this.EnableClientValidation,
+                EditMode = this.EditMode,
+                HelpDisplayMode = this.HelpDisplayMode,
+                LabelMode = this.LabelMode,
+                LabelWidth = this.LabelWidth
             };
-            AddEditorRow(editor, container);
+            this.AddEditorRow(editor, container);
 
-            Fields.Add(editor);
+            this.Fields.Add(editor);
         }
 
         /// -----------------------------------------------------------------------------
@@ -475,44 +475,44 @@ namespace DotNetNuke.UI.WebControls
         protected virtual void AddEditorRow(Table table, object obj)
         {
             var objProperty = (PropertyInfo) obj;
-            AddEditorRow(table, objProperty.Name, new StandardEditorInfoAdapter(DataSource, objProperty.Name));
+            this.AddEditorRow(table, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
         }
 
         protected virtual void AddEditorRow(Panel container, object obj)
         {
             var objProperty = (PropertyInfo)obj;
-            AddEditorRow(container, objProperty.Name, new StandardEditorInfoAdapter(DataSource, objProperty.Name));
+            this.AddEditorRow(container, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
         }
 
         protected virtual void AddEditorRow(object obj)
         {
             var objProperty = (PropertyInfo)obj;
-            AddEditorRow(this, objProperty.Name, new StandardEditorInfoAdapter(DataSource, objProperty.Name));
+            this.AddEditorRow(this, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
         }
 
         protected virtual void AddFields()
         {
-            foreach (FieldEditorControl editor in Fields)
+            foreach (FieldEditorControl editor in this.Fields)
             {
-                editor.DataSource = DataSource;
-                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(DataSource, editor.DataField);
-                editor.EditorDisplayMode = DisplayMode;
-                editor.EnableClientValidation = EnableClientValidation;
+                editor.DataSource = this.DataSource;
+                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
+                editor.EditorDisplayMode = this.DisplayMode;
+                editor.EnableClientValidation = this.EnableClientValidation;
                 if (editor.EditMode != PropertyEditorMode.View)
                 {
-                    editor.EditMode = EditMode;
+                    editor.EditMode = this.EditMode;
                 }
-                editor.HelpDisplayMode = HelpDisplayMode;
+                editor.HelpDisplayMode = this.HelpDisplayMode;
                 if (editor.LabelMode == LabelMode.None)
                 {
-                    editor.LabelMode = LabelMode;
+                    editor.LabelMode = this.LabelMode;
                 }
                 if (editor.LabelWidth == Unit.Empty)
                 {
-                    editor.LabelWidth = LabelWidth;
+                    editor.LabelWidth = this.LabelWidth;
                 }
 
-                AddEditorRow(editor, this);
+                this.AddEditorRow(editor, this);
             }
         }
 
@@ -524,32 +524,32 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void AddFields(Table tbl)
         {
-            foreach (FieldEditorControl editor in Fields)
+            foreach (FieldEditorControl editor in this.Fields)
             {
                 var row = new TableRow();
                 tbl.Rows.Add(row);
                 var cell = new TableCell();
                 row.Cells.Add(cell);
 
-                editor.DataSource = DataSource;
-                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(DataSource, editor.DataField);
-                editor.EditorDisplayMode = DisplayMode;
-                editor.EnableClientValidation = EnableClientValidation;
+                editor.DataSource = this.DataSource;
+                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
+                editor.EditorDisplayMode = this.DisplayMode;
+                editor.EnableClientValidation = this.EnableClientValidation;
                 if (editor.EditMode != PropertyEditorMode.View)
                 {
-                    editor.EditMode = EditMode;
+                    editor.EditMode = this.EditMode;
                 }
-                editor.HelpDisplayMode = HelpDisplayMode;
+                editor.HelpDisplayMode = this.HelpDisplayMode;
                 if (editor.LabelMode == LabelMode.None)
                 {
-                    editor.LabelMode = LabelMode;
+                    editor.LabelMode = this.LabelMode;
                 }
                 if (editor.LabelWidth == Unit.Empty)
                 {
-                    editor.LabelWidth = LabelWidth;
+                    editor.LabelWidth = this.LabelWidth;
                 }
 
-                AddEditorRow(editor, cell);
+                this.AddEditorRow(editor, cell);
             }
         }
 
@@ -570,27 +570,27 @@ namespace DotNetNuke.UI.WebControls
             var spacer = new Literal {Text = " ", EnableViewState = false};
 
             var label = new Label {ID = "lbl" + header};
-            label.Attributes["resourcekey"] = ID + "_" + header + ".Header";
+            label.Attributes["resourcekey"] = this.ID + "_" + header + ".Header";
             label.Text = header;
             label.EnableViewState = false;
-            label.ControlStyle.CopyFrom(GroupHeaderStyle);
+            label.ControlStyle.CopyFrom(this.GroupHeaderStyle);
 
             panel.Controls.Add(icon);
             panel.Controls.Add(spacer);
             panel.Controls.Add(label);
 
-            if (GroupHeaderIncludeRule)
+            if (this.GroupHeaderIncludeRule)
             {
                 panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
             }
-            Controls.Add(panel);
+            this.Controls.Add(panel);
 			
 			//Get the Hashtable
-            if (_sections == null)
+            if (this._sections == null)
             {
-                _sections = new Hashtable();
+                this._sections = new Hashtable();
             }
-            _sections[icon] = tbl;
+            this._sections[icon] = tbl;
         }
 
         /// -----------------------------------------------------------------------------
@@ -603,52 +603,52 @@ namespace DotNetNuke.UI.WebControls
             Table table;
             string[] arrGroups = null;
 
-            Controls.Clear();
-            if (!String.IsNullOrEmpty(Groups))
+            this.Controls.Clear();
+            if (!String.IsNullOrEmpty(this.Groups))
             {
-                arrGroups = Groups.Split(',');
+                arrGroups = this.Groups.Split(',');
             }
-            else if (GroupByMode != GroupByMode.None)
+            else if (this.GroupByMode != GroupByMode.None)
             {
-                arrGroups = GetGroups(UnderlyingDataSource);
+                arrGroups = this.GetGroups(this.UnderlyingDataSource);
             }
 
-            if (!AutoGenerate)
+            if (!this.AutoGenerate)
             {
 				//Create a new table
-                if (DisplayMode == EditorDisplayMode.Div)
+                if (this.DisplayMode == EditorDisplayMode.Div)
                 {
-                    AddFields();
+                    this.AddFields();
                 }
                 else
                 {
 					//Add the Table to the Controls Collection
                     table = new Table { ID = "tbl" };
-                    AddFields(table);
-                    Controls.Add(table);
+                    this.AddFields(table);
+                    this.Controls.Add(table);
                 }
             }
             else
             {
-                Fields.Clear();
+                this.Fields.Clear();
                 if (arrGroups != null && arrGroups.Length > 0)
                 {
                     foreach (string strGroup in arrGroups)
                     {
-                        if (GroupByMode == GroupByMode.Section)
+                        if (this.GroupByMode == GroupByMode.Section)
                         {
-                            if (DisplayMode == EditorDisplayMode.Div)
+                            if (this.DisplayMode == EditorDisplayMode.Div)
                             {
-								var groupData = UnderlyingDataSource.Cast<object>().Where(obj => GetCategory(obj) == strGroup.Trim() && GetRowVisibility(obj));
+								var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
 	                            if (groupData.Count() > 0)
 	                            {
 		                            //Add header
 		                            var header = new HtmlGenericControl("h2");
 		                            header.Attributes.Add("class", "dnnFormSectionHead");
 		                            header.Attributes.Add("id", strGroup);
-		                            Controls.Add(header);
+		                            this.Controls.Add(header);
 
-                                    var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", LocalResourceFile);
+                                    var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", this.LocalResourceFile);
 		                            if (string.IsNullOrEmpty(localizedGroupName))
 		                            {
 			                            localizedGroupName = strGroup;
@@ -663,29 +663,29 @@ namespace DotNetNuke.UI.WebControls
 
 		                            foreach (object obj in groupData)
 		                            {
-										AddEditorRow(container, obj);
+										this.AddEditorRow(container, obj);
 		                            }
-		                            Controls.Add(fieldset);
+		                            this.Controls.Add(fieldset);
 	                            }
                             }
                             else
                             {
                                 //Create a new table
                                 table = new Table { ID = "tbl" + strGroup };
-                                foreach (object obj in UnderlyingDataSource)
+                                foreach (object obj in this.UnderlyingDataSource)
                                 {
-                                    if (GetCategory(obj) == strGroup.Trim())
+                                    if (this.GetCategory(obj) == strGroup.Trim())
                                     {
                                         //Add the Editor Row to the Table
-                                        if (GetRowVisibility(obj))
+                                        if (this.GetRowVisibility(obj))
                                         {
                                             if (table.Rows.Count == 0)
                                             {
                                                 //Add a Header
-                                                AddHeader(table, strGroup);
+                                                this.AddHeader(table, strGroup);
                                             }
 
-                                            AddEditorRow(table, obj);
+                                            this.AddEditorRow(table, obj);
                                         }
                                     }
                                 }
@@ -693,7 +693,7 @@ namespace DotNetNuke.UI.WebControls
                                 //Add the Table to the Controls Collection (if it has any rows)
                                 if (table.Rows.Count > 0)
                                 {
-                                    Controls.Add(table);
+                                    this.Controls.Add(table);
                                 }
                             }
                         }
@@ -702,30 +702,30 @@ namespace DotNetNuke.UI.WebControls
                 else
                 {
 					//Create a new table
-                    if (DisplayMode == EditorDisplayMode.Div)
+                    if (this.DisplayMode == EditorDisplayMode.Div)
                     {
-                        foreach (object obj in UnderlyingDataSource)
+                        foreach (object obj in this.UnderlyingDataSource)
                         {
 							//Add the Editor Row to the Table
-                            if (GetRowVisibility(obj))
+                            if (this.GetRowVisibility(obj))
                             {
-                                AddEditorRow(obj);
+                                this.AddEditorRow(obj);
                             }
                         }
                     }
                     else
                     {
                         table = new Table { ID = "tbl" };
-                        foreach (object obj in UnderlyingDataSource)
+                        foreach (object obj in this.UnderlyingDataSource)
                         {
-                            if (GetRowVisibility(obj))
+                            if (this.GetRowVisibility(obj))
                             {
-                                AddEditorRow(table, obj);
+                                this.AddEditorRow(table, obj);
                             }
                         }
 						
 						//Add the Table to the Controls Collection
-                        Controls.Add(table);
+                        this.Controls.Add(table);
                     }
                 }
             }
@@ -801,7 +801,7 @@ namespace DotNetNuke.UI.WebControls
                     isVisible = false;
                 }
             }
-            if (!isVisible && EditMode == PropertyEditorMode.Edit)
+            if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
 				//Check if property is required - as this will need to override visibility
                 object[] requiredAttributes = objProperty.GetCustomAttributes(typeof (RequiredAttribute), true);
@@ -824,9 +824,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
-            if (ItemAdded != null)
+            if (this.ItemAdded != null)
             {
-                ItemAdded(this, e);
+                this.ItemAdded(this, e);
             }
         }
 
@@ -837,9 +837,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
         {
-            if (ItemCreated != null)
+            if (this.ItemCreated != null)
             {
-                ItemCreated(this, e);
+                this.ItemCreated(this, e);
             }
         }
 
@@ -850,9 +850,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
-            if (ItemDeleted != null)
+            if (this.ItemDeleted != null)
             {
-                ItemDeleted(this, e);
+                this.ItemDeleted(this, e);
             }
         }
 
@@ -863,21 +863,21 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
-            if (_itemChanged)
+            if (this._itemChanged)
             {
 				//Rebind the control to the DataSource to make sure that the dependent
                 //editors are updated
-                DataBind();
+                this.DataBind();
             }
-            if (String.IsNullOrEmpty(CssClass))
+            if (String.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = "dnnForm";
+                this.CssClass = "dnnForm";
             }
 			
 			//Find the Min/Max buttons
-            if (GroupByMode == GroupByMode.Section && (_sections != null))
+            if (this.GroupByMode == GroupByMode.Section && (this._sections != null))
             {
-                foreach (DictionaryEntry key in _sections)
+                foreach (DictionaryEntry key in this._sections)
                 {
                     var tbl = (Table) key.Value;
                     var icon = (Image) key.Key;
@@ -902,19 +902,19 @@ namespace DotNetNuke.UI.WebControls
             base.OnDataBinding(EventArgs.Empty);
 
             //Clear Existing Controls
-            Controls.Clear();
+            this.Controls.Clear();
 
             //Clear Child View State as controls will be loaded from DataSource
-            ClearChildViewState();
+            this.ClearChildViewState();
 
             //Start Tracking ViewState
-            TrackViewState();
+            this.TrackViewState();
 
             //Create the Editor
-            CreateEditor();
+            this.CreateEditor();
 
             //Set flag so CreateChildConrols should not be invoked later in control's lifecycle
-            ChildControlsCreated = true;
+            this.ChildControlsCreated = true;
         }
 
 		#endregion
@@ -928,7 +928,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
-            OnItemAdded(e);
+            this.OnItemAdded(e);
         }
 
         /// -----------------------------------------------------------------------------
@@ -938,7 +938,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
         {
-            OnItemDeleted(e);
+            this.OnItemDeleted(e);
         }
 
         /// -----------------------------------------------------------------------------
@@ -948,7 +948,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
         {
-            OnItemCreated(e);
+            this.OnItemCreated(e);
         }
 
         /// -----------------------------------------------------------------------------
@@ -958,7 +958,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
-            _itemChanged = true;
+            this._itemChanged = true;
         }
 		
 		#endregion

@@ -31,8 +31,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var counter = 0;
             const int totalSteps = 6;
@@ -51,32 +51,32 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 foreach (var script in installConfig.Scripts)
                 {
                     var scriptFile = providerPath + script + "." + defaultProvider;
-                    var description = Localization.Localization.GetString("InstallingDataBaseScriptStep", LocalInstallResourceFile);
-                    Details = description + Upgrade.GetFileNameWithoutExtension(scriptFile);
+                    var description = Localization.Localization.GetString("InstallingDataBaseScriptStep", this.LocalInstallResourceFile);
+                    this.Details = description + Upgrade.GetFileNameWithoutExtension(scriptFile);
                     var exception = Upgrade.ExecuteScript(scriptFile, false);
                     if (!string.IsNullOrEmpty(exception))
                     {
-	                    Errors.Add(exception);
-						Status = StepStatus.Retry;
+	                    this.Errors.Add(exception);
+						this.Status = StepStatus.Retry;
 						return;
                     }
-                    Percentage += percentForMiniStep;
+                    this.Percentage += percentForMiniStep;
                 }
 
                 // update the version
                 Globals.UpdateDataBaseVersion(new Version(installConfig.Version));
 
-                Details = Localization.Localization.GetString("InstallingMembershipDatabaseScriptStep", LocalInstallResourceFile);
+                this.Details = Localization.Localization.GetString("InstallingMembershipDatabaseScriptStep", this.LocalInstallResourceFile);
                 //Optionally Install the memberRoleProvider
                 var exceptions = Upgrade.InstallMemberRoleProvider(providerPath, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
-					Errors.Add(exceptions);
-					Status = StepStatus.Retry;
+					this.Errors.Add(exceptions);
+					this.Status = StepStatus.Retry;
 					return;
 				}
             }
-            Percentage = percentForEachStep * counter++;
+            this.Percentage = percentForEachStep * counter++;
 
             //Step 2 - Process the Upgrade Script files
             var versions = new List<Version>();
@@ -88,15 +88,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 {
                     var fileName = Upgrade.GetFileNameWithoutExtension(scriptFile);
                     var version = new Version(fileName);
-                    string description = Localization.Localization.GetString("ProcessingUpgradeScript", LocalInstallResourceFile);
-                    Details = description + fileName;
+                    string description = Localization.Localization.GetString("ProcessingUpgradeScript", this.LocalInstallResourceFile);
+                    this.Details = description + fileName;
 
                     bool scriptExecuted;
 					var exceptions = Upgrade.UpgradeVersion(scriptFile, false, out scriptExecuted);
 					if (!string.IsNullOrEmpty(exceptions))
 					{
-						Errors.Add(exceptions);
-						Status = StepStatus.Retry;
+						this.Errors.Add(exceptions);
+						this.Status = StepStatus.Retry;
 						return;
 					}
 
@@ -105,71 +105,71 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                         versions.Add(version);
                     }
 
-                    Percentage += percentForMiniStep;
+                    this.Percentage += percentForMiniStep;
                 }
             }
-            Percentage = percentForEachStep * counter++;
+            this.Percentage = percentForEachStep * counter++;
 
             //Step 3 - Perform version specific application upgrades
             foreach (Version ver in versions)
             {
-                string description = Localization.Localization.GetString("UpgradingVersionApplication", LocalInstallResourceFile);
-                Details = description + ver;
+                string description = Localization.Localization.GetString("UpgradingVersionApplication", this.LocalInstallResourceFile);
+                this.Details = description + ver;
                 var exceptions = Upgrade.UpgradeApplication(providerPath, ver, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
-					Errors.Add(exceptions);
-					Status = StepStatus.Retry;
+					this.Errors.Add(exceptions);
+					this.Status = StepStatus.Retry;
 					return;
 				}
-                Percentage += percentForMiniStep;
+                this.Percentage += percentForMiniStep;
             }
-            Percentage = percentForEachStep * counter++;
+            this.Percentage = percentForEachStep * counter++;
 
 
 			//Step 4 - Execute config file updates
 			foreach (Version ver in versions)
 			{
-				string description = Localization.Localization.GetString("UpdatingConfigFile", LocalInstallResourceFile);
-				Details = description + ver;
+				string description = Localization.Localization.GetString("UpdatingConfigFile", this.LocalInstallResourceFile);
+				this.Details = description + ver;
 				var exceptions = Upgrade.UpdateConfig(providerPath, ver, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
-					Errors.Add(exceptions);
-					Status = StepStatus.Retry;
+					this.Errors.Add(exceptions);
+					this.Status = StepStatus.Retry;
 					return;
 				}
-				Percentage += percentForMiniStep;
+				this.Percentage += percentForMiniStep;
 			}
-			Percentage = percentForEachStep * counter++;
+			this.Percentage = percentForEachStep * counter++;
 
             //Step 5 - Delete files which are no longer used
             foreach (Version ver in versions)
             {
-                string description = Localization.Localization.GetString("DeletingOldFiles", LocalInstallResourceFile);
-                Details = description + ver;
+                string description = Localization.Localization.GetString("DeletingOldFiles", this.LocalInstallResourceFile);
+                this.Details = description + ver;
                 var exceptions = Upgrade.DeleteFiles(providerPath, ver, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
-					Errors.Add(exceptions);
-					Status = StepStatus.Retry;
+					this.Errors.Add(exceptions);
+					this.Status = StepStatus.Retry;
 					return;
 				}
-                Percentage += percentForMiniStep;
+                this.Percentage += percentForMiniStep;
             }
-            Percentage = percentForEachStep * counter++;
+            this.Percentage = percentForEachStep * counter++;
 
             //Step 6 - Perform general application upgrades
-            Details = Localization.Localization.GetString("UpgradingNormalApplication", LocalInstallResourceFile);
+            this.Details = Localization.Localization.GetString("UpgradingNormalApplication", this.LocalInstallResourceFile);
             Upgrade.UpgradeApplication();
 
             //Step 7 - Save Accept DNN Terms flag
             HostController.Instance.Update("AcceptDnnTerms", "Y");
 
             DataCache.ClearHostCache(true);
-            Percentage = percentForEachStep * counter++;
+            this.Percentage = percentForEachStep * counter++;
             
-            Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
 
         #endregion

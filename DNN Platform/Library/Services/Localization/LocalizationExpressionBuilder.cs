@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Localization
                                       new CodePrimitiveExpression(context.VirtualPath)
                                   };
 
-            return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(GetType()), "GetLocalizedResource", inputParams);
+            return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(this.GetType()), "GetLocalizedResource", inputParams);
         }
 
         public static object GetLocalizedResource(string key, Type targetType, string propertyName, string virtualPath)

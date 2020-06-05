@@ -57,8 +57,8 @@ namespace DotNetNuke.Tests.Data
                     .Property(d => d.Age, "Age")
                     .Property(d => d.Name, "Name");
 
-            _mappers = new Dictionary<Type, IMapper> {{typeof (Dog), dogMapper}};
-            _mappers = new Dictionary<Type, IMapper> { { typeof(Cat), catMapper } };
+            this._mappers = new Dictionary<Type, IMapper> {{typeof (Dog), dogMapper}};
+            this._mappers = new Dictionary<Type, IMapper> { { typeof(Cat), catMapper } };
         }
 
         [TearDown]
@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_InsertDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_DeleteDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -293,7 +293,7 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             Dog dog;
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -358,7 +358,7 @@ namespace DotNetNuke.Tests.Data
                             };
 
             //Act
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, _mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 

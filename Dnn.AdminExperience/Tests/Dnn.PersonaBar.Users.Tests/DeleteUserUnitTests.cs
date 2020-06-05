@@ -21,13 +21,13 @@ namespace Dnn.PersonaBar.Users.Tests
 
         protected override DeleteUser CreateCommand()
         {
-            return new DeleteUser(_userValidatorMock.Object, _userControllerWrapperMock.Object);
+            return new DeleteUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
         }
 
         protected override void ChildSetup()
         {
-            _userValidatorMock = new Mock<IUserValidator>();
-            _userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
         }
 
         [Test]
@@ -36,24 +36,24 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange          
             int userId = 2;
 
-            UserInfo userInfo = GetUser(userId, false);
+            UserInfo userInfo = this.GetUser(userId, false);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(-1, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
-            _userControllerWrapperMock
+            this._userControllerWrapperMock
                 .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
                 .Returns(true);
-            _userControllerWrapperMock
-                .Setup(u => u.GetUserById(testPortalId, userId))
+            this._userControllerWrapperMock
+                .Setup(u => u.GetUserById(this.testPortalId, userId))
                 .Returns(userInfo);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -65,14 +65,14 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange          
             int userId = 2;
 
-            UserInfo userInfo = GetUser(userId, true);
+            UserInfo userInfo = this.GetUser(userId, true);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -84,21 +84,21 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange          
             int userId = 2;
 
-            UserInfo userInfo = GetUser(userId, false);
+            UserInfo userInfo = this.GetUser(userId, false);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(-1, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
 
-            _userControllerWrapperMock
+            this._userControllerWrapperMock
                 .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
                 .Returns(false);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -109,13 +109,13 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange        
             UserInfo userinfo;
-            errorResultModel = new ConsoleErrorResultModel();
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(-1, portalSettings, null, out userinfo))
-                .Returns(errorResultModel);
+            this.errorResultModel = new ConsoleErrorResultModel();
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userinfo))
+                .Returns(this.errorResultModel);
 
             // Act
-            var result = RunCommand();
+            var result = this.RunCommand();
 
             // Assert
             Assert.IsTrue(result.IsError);

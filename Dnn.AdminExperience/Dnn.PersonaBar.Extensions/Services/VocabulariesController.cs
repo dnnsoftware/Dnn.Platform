@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             try
             {
                 int total = 0;
-                var vocabularies = _controller.GetVocabularies(PortalId, pageIndex, pageSize, scopeTypeId, out total).Select(v => new
+                var vocabularies = this._controller.GetVocabularies(this.PortalId, pageIndex, pageSize, scopeTypeId, out total).Select(v => new
                 {
                     v.VocabularyId,
                     v.Name,
@@ -59,12 +59,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     Results = vocabularies,
                     TotalResults = total
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -87,17 +87,17 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     : VocabularyType.Hierarchy;
                 vocabulary.ScopeTypeId = vocabularyDto.ScopeTypeId;
 
-                int vocabularyId = _controller.AddVocabulary(vocabulary);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, VocabularyId = vocabularyId });
+                int vocabularyId = this._controller.AddVocabulary(vocabulary);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, VocabularyId = vocabularyId });
             }
             catch (VocabularyNameAlreadyExistsException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("VocabularyExists.Error", LocalResourcesFile), vocabularyDto.Name));
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("VocabularyExists.Error", LocalResourcesFile), vocabularyDto.Name));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -114,9 +114,9 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                if (_controller.IsSystemVocabulary(vocabularyDto.VocabularyId) && !UserInfo.IsSuperUser)
+                if (this._controller.IsSystemVocabulary(vocabularyDto.VocabularyId) && !this.UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
+                    return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
 
                 var vocabulary = new Vocabulary(vocabularyDto.Name, vocabularyDto.Description);
@@ -124,17 +124,17 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 vocabulary.ScopeTypeId = vocabularyDto.ScopeTypeId;
                 vocabulary.VocabularyId = vocabularyDto.VocabularyId;
 
-                _controller.UpdateVocabulary(vocabulary);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.UpdateVocabulary(vocabulary);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (VocabularyValidationException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -151,17 +151,17 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                if (_controller.IsSystemVocabulary(vocabularyId))
+                if (this._controller.IsSystemVocabulary(vocabularyId))
                 {
-                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
+                    return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
                 }
-                _controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                var terms = _controller.GetTermsByVocabulary(vocabularyId);
+                var terms = this._controller.GetTermsByVocabulary(vocabularyId);
 
                 var response = new
                 {
@@ -191,12 +191,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     }),
                     TotalResults = terms.Count
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -211,7 +211,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                var term = _controller.GetTerm(termId);
+                var term = this._controller.GetTerm(termId);
                 var response = new
                 {
                     term.TermId,
@@ -221,12 +221,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     term.Name,
                     term.Description
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -243,26 +243,26 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
+                if (this._controller.IsSystemVocabulary(termDto.VocabularyId) && !this.UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
+                    return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 if (termDto.ParentTermId != Null.NullInteger)
                 {
                     term.ParentTermId = termDto.ParentTermId;
                 }
-                int termId = _controller.AddTerm(term);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, TermId = termId });
+                int termId = this._controller.AddTerm(term);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, TermId = termId });
             }
             catch (TermValidationException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -279,9 +279,9 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
+                if (this._controller.IsSystemVocabulary(termDto.VocabularyId) && !this.UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
+                    return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 term.TermId = termDto.TermId;
@@ -289,17 +289,17 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 {
                     term.ParentTermId = termDto.ParentTermId;
                 }
-                _controller.UpdateTerm(term);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.UpdateTerm(term);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (TermValidationException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
@@ -316,18 +316,18 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                var term = _controller.GetTerm(termId);
-                if (_controller.IsSystemVocabulary(term.VocabularyId) && !UserInfo.IsSuperUser)
+                var term = this._controller.GetTerm(termId);
+                if (this._controller.IsSystemVocabulary(term.VocabularyId) && !this.UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
+                    return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
-                _controller.DeleteTerm(term);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.DeleteTerm(term);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
     }

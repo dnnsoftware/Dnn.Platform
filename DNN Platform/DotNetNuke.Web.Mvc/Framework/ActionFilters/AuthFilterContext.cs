@@ -16,8 +16,8 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     {
         public AuthFilterContext(AuthorizationContext filterContext, string authFailureMessage)
         {
-            ActionContext = filterContext;
-            AuthFailureMessage = authFailureMessage;
+            this.ActionContext = filterContext;
+            this.AuthFailureMessage = authFailureMessage;
         }
 
         public AuthorizationContext ActionContext { get; private set; }
@@ -29,10 +29,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            ActionContext.Result = new HttpUnauthorizedResult(AuthFailureMessage);
+            this.ActionContext.Result = new HttpUnauthorizedResult(this.AuthFailureMessage);
             if (!Host.DebugMode)
             {
-                ActionContext.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
+                this.ActionContext.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
             }
         }
     }

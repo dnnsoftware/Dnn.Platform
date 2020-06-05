@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
 		public void AddLog(Exception objException)
 		{
-			AddLog(objException, ExceptionLogType.GENERAL_EXCEPTION);
+			this.AddLog(objException, ExceptionLogType.GENERAL_EXCEPTION);
 		}
 
 		public void AddLog(BasePortalException objBasePortalException)
@@ -53,34 +53,34 @@ namespace DotNetNuke.Services.Log.EventLog
 			log.Exception.UserAgent = objBasePortalException.UserAgent;
 			if (objBasePortalException.GetType().Name == "ModuleLoadException")
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.MODULE_LOAD_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.MODULE_LOAD_EXCEPTION);
 			}
 			else if (objBasePortalException.GetType().Name == "PageLoadException")
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.PAGE_LOAD_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.PAGE_LOAD_EXCEPTION);
 			}
 			else if (objBasePortalException.GetType().Name == "SchedulerException")
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.SCHEDULER_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.SCHEDULER_EXCEPTION);
 			}
 			else if (objBasePortalException.GetType().Name == "SecurityException")
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.SECURITY_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.SECURITY_EXCEPTION);
 			}
 			else if (objBasePortalException.GetType().Name == "SearchException")
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.SEARCH_INDEXER_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.SEARCH_INDEXER_EXCEPTION);
 			}
 			else
 			{
-				AddLog(objBasePortalException, log, ExceptionLogType.GENERAL_EXCEPTION);
+				this.AddLog(objBasePortalException, log, ExceptionLogType.GENERAL_EXCEPTION);
 			}
 		}
 
 		public void AddLog(Exception objException, ExceptionLogType logType)
 		{
 			var log = new LogInfo { Exception = new ExceptionInfo(objException) };
-			AddLog(objException, log, logType);
+			this.AddLog(objException, log, logType);
 		}
 
 		public void AddLog(Exception objException, LogInfo log, ExceptionLogType logType)

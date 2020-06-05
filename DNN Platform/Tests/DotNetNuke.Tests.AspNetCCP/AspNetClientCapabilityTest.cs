@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         [SetUp]
         public void Setup()
         {
-            _clientCapabilityProvider = new Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider();
+            this._clientCapabilityProvider = new Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider();
 
 			ComponentFactory.Container = new SimpleContainer();
 			var dataProvider = MockComponentProvider.CreateDataProvider();
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_BlackBerry9105V1()
         {
             //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(blackBerry9105V1);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(blackBerry9105V1);
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_IPhone()
         {
             // Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);             
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(iphoneUserAgent);             
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
@@ -100,7 +100,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_WP7()
         {
             //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(wp7UserAgent);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(wp7UserAgent);
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_IPad()
         {
             //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
             // Act            
             var bIsMobile = clientCapability.IsMobile;
@@ -131,7 +131,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             //var capabilities = new HttpCapabilitiesDefaultProvider().GetBrowserCapabilities(HttpContext.Current.Request);
             
             //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
 
             // Act
             var isMobile = clientCapability.IsMobile;
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_False_For_EmptyUserAgent()
         {
             //Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(String.Empty);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(String.Empty);
 
             // Act
             var bIsMmobile = clientCapability.IsMobile;
@@ -158,7 +158,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         {
             //Arrange
             String agent = null;
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(agent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(agent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_HTCDesireVer1Sub22()
         {
             // Arrange
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(htcDesireVer1Sub22UserAgent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(htcDesireVer1Sub22UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -188,7 +188,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer8()
         {
             //Arrange
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(msIE8UserAgent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE8UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer9()
         {
             //Arrange
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(msIE9UserAgent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE9UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -214,7 +214,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer10()
         {
             //Arrange
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(msIE10UserAgent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE10UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -227,7 +227,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_False_For_FireFox()
         {
             //Arrange
-            var AspNetClientCapability = _clientCapabilityProvider.GetClientCapability(fireFox5NT61UserAgent);
+            var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(fireFox5NT61UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
@@ -243,7 +243,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsTablet_Returns_False_For_IPhone()
         {
             // Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
 
             // Act
             var bIsTablet = clientCapability.IsTablet;
@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsTablet_Returns_True_For_PCTablet()
         {
             // Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(winTabletPC);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(winTabletPC);
 
             // Act
             var bIsTablet = clientCapability.IsTablet;
@@ -273,7 +273,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_SupportsFlash_Returns_True_For_HTCDesireVer1Sub22()
         {
             // Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(htcDesireVer1Sub22UserAgent);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(htcDesireVer1Sub22UserAgent);
 
             // Act
             var bSupportsFlash = clientCapability.SupportsFlash;
@@ -290,7 +290,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_SupportsFlash_Returns_False_For_WindowsPhone7()
         {
             // Arrange
-            var clientCapability = _clientCapabilityProvider.GetClientCapability(wp7UserAgent);
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(wp7UserAgent);
 
             // Act
             var bIsTablet = clientCapability.IsTablet;

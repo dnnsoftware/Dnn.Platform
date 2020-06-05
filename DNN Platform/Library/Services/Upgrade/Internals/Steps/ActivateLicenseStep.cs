@@ -18,10 +18,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
-            Details = Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile);
+            this.Details = Localization.Localization.GetString("LicenseActivation", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
             var licenseConfig = (installConfig != null) ? installConfig.License : null;            
 
@@ -35,18 +35,18 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
                     if (!activationResult.ToLowerInvariant().Contains("success"))
                     {
-                        Errors.Add(Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile) + ": " + activationResult);
+                        this.Errors.Add(Localization.Localization.GetString("LicenseActivation", this.LocalInstallResourceFile) + ": " + activationResult);
                         Logger.TraceFormat("ActivateLicense Status - {0}", activationResult);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Errors.Add(Localization.Localization.GetString("LicenseActivation", LocalInstallResourceFile) + ": " + ex.Message);
+                    this.Errors.Add(Localization.Localization.GetString("LicenseActivation", this.LocalInstallResourceFile) + ": " + ex.Message);
                     Logger.TraceFormat("ActivateLicense Status - {0}", ex.Message);
                 }
             }
 
-            Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
     }
 }

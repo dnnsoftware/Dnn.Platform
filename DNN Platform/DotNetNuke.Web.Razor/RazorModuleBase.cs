@@ -22,16 +22,16 @@ namespace DotNetNuke.Web.Razor
         {
             get
             {
-                var scriptFolder = AppRelativeTemplateSourceDirectory;
-                var fileRoot = Path.GetFileNameWithoutExtension(AppRelativeVirtualPath);
+                var scriptFolder = this.AppRelativeTemplateSourceDirectory;
+                var fileRoot = Path.GetFileNameWithoutExtension(this.AppRelativeVirtualPath);
                 var scriptFile = scriptFolder + "_" + fileRoot + ".cshtml";
 
-                if (! (File.Exists(Server.MapPath(scriptFile))))
+                if (! (File.Exists(this.Server.MapPath(scriptFile))))
                 {
                     //Try VB (vbhtml)
                     scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
 
-                    if (!(File.Exists(Server.MapPath(scriptFile))))
+                    if (!(File.Exists(this.Server.MapPath(scriptFile))))
                     {
                         //Return ""
                         scriptFile = "";
@@ -48,13 +48,13 @@ namespace DotNetNuke.Web.Razor
             base.OnPreRender(e);
             try
             {
-                if (! (string.IsNullOrEmpty(RazorScriptFile)))
+                if (! (string.IsNullOrEmpty(this.RazorScriptFile)))
                 {
-                    var razorEngine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
+                    var razorEngine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
                     var writer = new StringWriter();
                     razorEngine.Render(writer);
 
-                    Controls.Add(new LiteralControl(writer.ToString()));
+                    this.Controls.Add(new LiteralControl(writer.ToString()));
                 }
             }
             catch (Exception ex)

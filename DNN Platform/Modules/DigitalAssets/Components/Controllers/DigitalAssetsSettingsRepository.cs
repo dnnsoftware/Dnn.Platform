@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             DigitalAssestsMode mode;
 
-            if (!Enum.TryParse(GetSettingByKey(moduleId, ModeSetting), true, out mode))
+            if (!Enum.TryParse(this.GetSettingByKey(moduleId, ModeSetting), true, out mode))
             {
                 return this.IsGroupMode(moduleId) ? DigitalAssestsMode.Group : DigitalAssestsMode.Normal;
             }
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         internal bool SettingExists(int moduleId, string settingName)
         {
-            return !String.IsNullOrEmpty(GetSettingByKey(moduleId, settingName));
+            return !String.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
         }
 
         internal void SetDefaultFilterCondition(int moduleId)

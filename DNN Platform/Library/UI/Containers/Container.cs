@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _contentPane ?? (_contentPane = FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
             }
         }
 
@@ -96,9 +96,9 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 IModuleControl moduleControl = null;
-                if (ModuleHost != null)
+                if (this.ModuleHost != null)
                 {
-                    moduleControl = ModuleHost.ModuleControl;
+                    moduleControl = this.ModuleHost.ModuleControl;
                 }
                 return moduleControl;
             }
@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _moduleConfiguration;
+                return this._moduleConfiguration;
             }
         }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _moduleHost;
+                return this._moduleHost;
             }
         }
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return TemplateSourceDirectory + "/";
+                return this.TemplateSourceDirectory + "/";
             }
         }
 
@@ -172,7 +172,7 @@ namespace DotNetNuke.UI.Containers
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
-            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
+            this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -192,27 +192,27 @@ namespace DotNetNuke.UI.Containers
                 actions = childControl as IActionControl;
                 if (actions != null)
                 {
-                    actions.ModuleControl = ModuleControl;
-                    actions.Action += ModuleActionClick;
+                    actions.ModuleControl = this.ModuleControl;
+                    actions.Action += this.ModuleActionClick;
                 }
 
                 //check if control is an actionLink control
                 var actionLink = childControl as ActionLink;
                 if (actionLink != null)
                 {
-                    actionLink.ModuleControl = ModuleControl;
+                    actionLink.ModuleControl = this.ModuleControl;
                 }
 
 				//check if control is a skin control
                 skinControl = childControl as ISkinControl;
                 if (skinControl != null)
                 {
-                    skinControl.ModuleControl = ModuleControl;
+                    skinControl.ModuleControl = this.ModuleControl;
                 }
                 if (childControl.HasControls())
                 {
 					//recursive call for child controls
-                    ProcessChildControls(childControl);
+                    this.ProcessChildControls(childControl);
                 }
             }
         }
@@ -224,19 +224,19 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessContentPane()
         {
-            SetAlignment();
+            this.SetAlignment();
 
-            SetBackground();
+            this.SetBackground();
 
-            SetBorder();
+            this.SetBorder();
 
             //display visual indicator if module is only visible to administrators
-			string viewRoles = ModuleConfiguration.InheritViewPermissions
-                                   ? TabPermissionController.GetTabPermissions(ModuleConfiguration.TabID, ModuleConfiguration.PortalID).ToString("VIEW")
-                                   : ModuleConfiguration.ModulePermissions.ToString("VIEW");
+			string viewRoles = this.ModuleConfiguration.InheritViewPermissions
+                                   ? TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("VIEW")
+                                   : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
 
-            string pageEditRoles = TabPermissionController.GetTabPermissions(ModuleConfiguration.TabID, ModuleConfiguration.PortalID).ToString("EDIT");
-            string moduleEditRoles = ModuleConfiguration.ModulePermissions.ToString("EDIT");
+            string pageEditRoles = TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("EDIT");
+            string moduleEditRoles = this.ModuleConfiguration.ModulePermissions.ToString("EDIT");
 
             viewRoles = viewRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
             pageEditRoles = pageEditRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
@@ -244,27 +244,27 @@ namespace DotNetNuke.UI.Containers
 
             var showMessage = false;
             var adminMessage = Null.NullString;
-            if (viewRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                            && (moduleEditRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
                                     || String.IsNullOrEmpty(moduleEditRoles))
-                            && pageEditRoles.Equals(PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
+                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
-                showMessage = !ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
+                showMessage = !this.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
             }
-            if (ModuleConfiguration.StartDate >= DateTime.Now)
+            if (this.ModuleConfiguration.StartDate >= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), ModuleConfiguration.StartDate);
+                adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), this.ModuleConfiguration.StartDate);
                 showMessage = !Globals.IsAdminControl();
             }
-            if (ModuleConfiguration.EndDate <= DateTime.Now)
+            if (this.ModuleConfiguration.EndDate <= DateTime.Now)
             {
-                adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), ModuleConfiguration.EndDate);
+                adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), this.ModuleConfiguration.EndDate);
                 showMessage = !Globals.IsAdminControl();
             }
             if (showMessage)
             {
-                AddAdministratorOnlyHighlighting(adminMessage);
+                this.AddAdministratorOnlyHighlighting(adminMessage);
             }
         }
 
@@ -275,16 +275,16 @@ namespace DotNetNuke.UI.Containers
         private void ProcessFooter()
         {
 			//inject the footer
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Footer))
+            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
-                var footer = new Literal {Text = ModuleConfiguration.Footer};
-                ContentPane.Controls.Add(footer);
+                var footer = new Literal {Text = this.ModuleConfiguration.Footer};
+                this.ContentPane.Controls.Add(footer);
             }
 			
             //inject an end comment around the module content
             if (!Globals.IsAdminControl())
             {
-                ContentPane.Controls.Add(new LiteralControl("<!-- End_Module_" + ModuleConfiguration.ModuleID + " -->"));
+                this.ContentPane.Controls.Add(new LiteralControl("<!-- End_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
         }
 
@@ -297,14 +297,14 @@ namespace DotNetNuke.UI.Containers
             if (!Globals.IsAdminControl())
             {
 				//inject a start comment around the module content
-                ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + ModuleConfiguration.ModuleID + " -->"));
+                this.ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
 			
             //inject the header
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Header))
+            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
-                var header = new Literal {Text = ModuleConfiguration.Header};
-                ContentPane.Controls.Add(header);
+                var header = new Literal {Text = this.ModuleConfiguration.Header};
+                this.ContentPane.Controls.Add(header);
             }
         }
 
@@ -314,48 +314,48 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessModule()
         {
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"Container.ProcessModule Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
 
-            if (ContentPane != null)
+            if (this.ContentPane != null)
             {
 				//Process Content Pane Attributes
-                ProcessContentPane();
+                this.ProcessContentPane();
 
                 // always add the actions menu as the first item in the content pane.
-                if (InjectActionMenu && !ModuleHost.IsViewMode(ModuleConfiguration, PortalSettings) && Request.QueryString["dnnprintmode"] != "true")
+                if (this.InjectActionMenu && !ModuleHost.IsViewMode(this.ModuleConfiguration, this.PortalSettings) && this.Request.QueryString["dnnprintmode"] != "true")
                 {
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                    ContentPane.Controls.Add(LoadControl(PortalSettings.DefaultModuleActionMenu));
+                    this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
 
                     //register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
 
                 //Process Module Header
-                ProcessHeader();
+                this.ProcessHeader();
 
                 //Try to load the module control
-                _moduleHost = new ModuleHost(ModuleConfiguration, ParentSkin, this);
-                if (_tracelLogger.IsDebugEnabled)
-                    _tracelLogger.Debug($"Container.ProcessModule Info (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{_moduleHost.ID})");
+                this._moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
+                if (this._tracelLogger.IsDebugEnabled)
+                    this._tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this._moduleHost.ID})");
 
-                ContentPane.Controls.Add(ModuleHost);
+                this.ContentPane.Controls.Add(this.ModuleHost);
 
                 //Process Module Footer
-                ProcessFooter();
+                this.ProcessFooter();
 				
 				//Process the Action Controls
-                if (ModuleHost != null && ModuleControl != null)
+                if (this.ModuleHost != null && this.ModuleControl != null)
                 {
-                    ProcessChildControls(this);
+                    this.ProcessChildControls(this);
                 }
 				
 				//Add Module Stylesheets
-                ProcessStylesheets(ModuleHost != null);
+                this.ProcessStylesheets(this.ModuleHost != null);
             }
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"Container.ProcessModule End (TabId:{PortalSettings.ActiveTab.TabID},ModuleID: {ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
         }
 
 		/// -----------------------------------------------------------------------------
@@ -365,14 +365,14 @@ namespace DotNetNuke.UI.Containers
 		/// </summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
-            ClientResourceManager.RegisterStyleSheet(Page, ContainerPath + "container.css", FileOrder.Css.ContainerCss);
-            ClientResourceManager.RegisterStyleSheet(Page, ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
 
             //process the base class module properties 
             if (includeModuleCss)
             {
-                string controlSrc = ModuleConfiguration.ModuleControl.ControlSrc;
-                string folderName = ModuleConfiguration.DesktopModule.FolderName;
+                string controlSrc = this.ModuleConfiguration.ModuleControl.ControlSrc;
+                string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
                 string stylesheet = "";
                 if (String.IsNullOrEmpty(folderName)==false)
@@ -385,48 +385,48 @@ namespace DotNetNuke.UI.Containers
                     {
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
-                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
-                    ClientResourceManager.RegisterStyleSheet(Page, stylesheet, FileOrder.Css.ModuleCss);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
             }
         }
 
         private void SetAlignment()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Alignment))
+            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Alignment))
             {
-                if (ContentPane.Attributes["class"] != null)
+                if (this.ContentPane.Attributes["class"] != null)
                 {
-                    ContentPane.Attributes["class"] = ContentPane.Attributes["class"] + " DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
+                    this.ContentPane.Attributes["class"] = this.ContentPane.Attributes["class"] + " DNNAlign" + this.ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
                 else
                 {
-                    ContentPane.Attributes["class"] = "DNNAlign" + ModuleConfiguration.Alignment.ToLowerInvariant();
+                    this.ContentPane.Attributes["class"] = "DNNAlign" + this.ModuleConfiguration.Alignment.ToLowerInvariant();
                 }
             }
         }
 
         private void SetBackground()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Color))
+            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Color))
             {
-                ContentPane.Style["background-color"] = ModuleConfiguration.Color;
+                this.ContentPane.Style["background-color"] = this.ModuleConfiguration.Color;
             }
         }
 
         private void SetBorder()
         {
-            if (!String.IsNullOrEmpty(ModuleConfiguration.Border))
+            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Border))
             {
-                ContentPane.Style["border-top"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-bottom"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-right"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
-                ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", ModuleConfiguration.Border);
+                this.ContentPane.Style["border-top"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-bottom"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-right"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
         }
 		
@@ -442,7 +442,7 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnInit(e);
 
-            InvokeContainerEvents(ContainerEventType.OnContainerInit);
+            this.InvokeContainerEvents(ContainerEventType.OnContainerInit);
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace DotNetNuke.UI.Containers
             base.OnLoad(e);
 
 
-            InvokeContainerEvents(ContainerEventType.OnContainerLoad);
+            this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
         }
 
         /// -----------------------------------------------------------------------------
@@ -464,7 +464,7 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnPreRender(e);
 
-            InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
+            this.InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
         }
 
         /// -----------------------------------------------------------------------------
@@ -475,7 +475,7 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnUnload(e);
 
-            InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
+            this.InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
         }
 
         private void InvokeContainerEvents(ContainerEventType containerEventType)
@@ -497,8 +497,8 @@ namespace DotNetNuke.UI.Containers
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
-            _moduleConfiguration = configuration;
-            ProcessModule();
+            this._moduleConfiguration = configuration;
+            this.ProcessModule();
         }
 
 		#endregion
@@ -519,7 +519,7 @@ namespace DotNetNuke.UI.Containers
         private void ModuleActionClick(object sender, ActionEventArgs e)
         {
 			//Search through the listeners
-            foreach (ModuleActionEventListener listener in ParentSkin.ActionEventListeners)
+            foreach (ModuleActionEventListener listener in this.ParentSkin.ActionEventListeners)
             {			
 				//If the associated module has registered a listener
                 if (e.ModuleConfiguration.ModuleID == listener.ModuleID)

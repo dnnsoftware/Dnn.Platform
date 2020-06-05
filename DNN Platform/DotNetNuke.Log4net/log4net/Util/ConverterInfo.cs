@@ -59,8 +59,8 @@ namespace log4net.Util
         /// </remarks>
         public string Name
         {
-            get { return m_name; }
-            set { m_name = value; }
+            get { return this.m_name; }
+            set { this.m_name = value; }
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace log4net.Util
         /// </remarks>
         public Type Type
         {
-            get { return m_type; }
-            set { m_type = value; }
+            get { return this.m_type; }
+            set { this.m_type = value; }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace log4net.Util
         /// <param name="entry"></param>
         public void AddProperty(PropertyEntry entry)
         {
-            properties[entry.Key] = entry.Value;
+            this.properties[entry.Key] = entry.Value;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace log4net.Util
         /// </summary>
         public PropertiesDictionary Properties
         {
-            get { return properties; }
+            get { return this.properties; }
         }
     }
 }

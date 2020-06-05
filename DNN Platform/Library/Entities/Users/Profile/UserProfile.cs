@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Users
 
         public UserProfile(UserInfo user)
         {
-            _user = user;
+            this._user = user;
         }
 
         #region Public Properties
@@ -96,11 +96,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Cell);
+                return this.GetPropertyValue(USERPROFILE_Cell);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Cell, value);
+                this.SetProfileProperty(USERPROFILE_Cell, value);
             }
         }
 
@@ -113,11 +113,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_City);
+                return this.GetPropertyValue(USERPROFILE_City);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_City, value);
+                this.SetProfileProperty(USERPROFILE_City, value);
             }
         }
 
@@ -130,11 +130,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Country);
+                return this.GetPropertyValue(USERPROFILE_Country);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Country, value);
+                this.SetProfileProperty(USERPROFILE_Country, value);
             }
         }
 
@@ -147,11 +147,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Fax);
+                return this.GetPropertyValue(USERPROFILE_Fax);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Fax, value);
+                this.SetProfileProperty(USERPROFILE_Fax, value);
             }
         }
 
@@ -164,11 +164,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_FirstName);
+                return this.GetPropertyValue(USERPROFILE_FirstName);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_FirstName, value);
+                this.SetProfileProperty(USERPROFILE_FirstName, value);
             }
         }
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return FirstName + " " + LastName;
+                return this.FirstName + " " + this.LastName;
             }
         }
 
@@ -194,11 +194,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_IM);
+                return this.GetPropertyValue(USERPROFILE_IM);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_IM, value);
+                this.SetProfileProperty(USERPROFILE_IM, value);
             }
         }
 
@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _IsDirty;
+                return this._IsDirty;
             }
         }
 
@@ -224,11 +224,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_LastName);
+                return this.GetPropertyValue(USERPROFILE_LastName);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_LastName, value);
+                this.SetProfileProperty(USERPROFILE_LastName, value);
             }
         }
 
@@ -236,11 +236,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Photo);
+                return this.GetPropertyValue(USERPROFILE_Photo);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Photo, value);
+                this.SetProfileProperty(USERPROFILE_Photo, value);
             }
         }
 
@@ -252,13 +252,13 @@ namespace DotNetNuke.Entities.Users
             get
             {
                 string photoURL = Globals.ApplicationPath + "/images/no_avatar.gif";
-                ProfilePropertyDefinition photoProperty = GetProperty(USERPROFILE_Photo);
+                ProfilePropertyDefinition photoProperty = this.GetProperty(USERPROFILE_Photo);
                 if ((photoProperty != null))
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-	                bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, _user);
+	                bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this._user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
@@ -281,13 +281,13 @@ namespace DotNetNuke.Entities.Users
             get
             {
                 string photoURLFile = Globals.ApplicationPath + "/images/no_avatar.gif";
-                ProfilePropertyDefinition photoProperty = GetProperty(USERPROFILE_Photo);
+                ProfilePropertyDefinition photoProperty = this.GetProperty(USERPROFILE_Photo);
                 if ((photoProperty != null))
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    bool isVisible = (user.UserID == _user.UserID);
+                    bool isVisible = (user.UserID == this._user.UserID);
                     if (!isVisible)
                     {
                         switch (photoProperty.ProfileVisibility.VisibilityMode)
@@ -336,11 +336,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_PostalCode);
+                return this.GetPropertyValue(USERPROFILE_PostalCode);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_PostalCode, value);
+                this.SetProfileProperty(USERPROFILE_PostalCode, value);
             }
         }
 
@@ -353,11 +353,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_PreferredLocale);
+                return this.GetPropertyValue(USERPROFILE_PreferredLocale);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_PreferredLocale, value);
+                this.SetProfileProperty(USERPROFILE_PreferredLocale, value);
             }
         }
 
@@ -370,7 +370,7 @@ namespace DotNetNuke.Entities.Users
                 TimeZoneInfo _TimeZone = TimeZoneInfo.Local;
 
                 //Next check if there is a Property Setting
-                string _TimeZoneId = GetPropertyValue(USERPROFILE_PreferredTimeZone);
+                string _TimeZoneId = this.GetPropertyValue(USERPROFILE_PreferredTimeZone);
                 if (!string.IsNullOrEmpty(_TimeZoneId))
                 {
                     _TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_TimeZoneId);
@@ -392,7 +392,7 @@ namespace DotNetNuke.Entities.Users
             {
                 if (value != null)
                 {
-                    SetProfileProperty(USERPROFILE_PreferredTimeZone, value.Id);
+                    this.SetProfileProperty(USERPROFILE_PreferredTimeZone, value.Id);
                 }
             }
         }
@@ -404,7 +404,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection ProfileProperties
         {
-            get { return _profileProperties ?? (_profileProperties = new ProfilePropertyDefinitionCollection()); }
+            get { return this._profileProperties ?? (this._profileProperties = new ProfilePropertyDefinitionCollection()); }
         }
 
         /// -----------------------------------------------------------------------------
@@ -416,11 +416,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Region);
+                return this.GetPropertyValue(USERPROFILE_Region);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Region, value);
+                this.SetProfileProperty(USERPROFILE_Region, value);
             }
         }
 
@@ -433,11 +433,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Street);
+                return this.GetPropertyValue(USERPROFILE_Street);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Street, value);
+                this.SetProfileProperty(USERPROFILE_Street, value);
             }
         }
 
@@ -450,11 +450,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Telephone);
+                return this.GetPropertyValue(USERPROFILE_Telephone);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Telephone, value);
+                this.SetProfileProperty(USERPROFILE_Telephone, value);
             }
         }
 
@@ -467,11 +467,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Title);
+                return this.GetPropertyValue(USERPROFILE_Title);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Title, value);
+                this.SetProfileProperty(USERPROFILE_Title, value);
             }
         }
 
@@ -484,11 +484,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Unit);
+                return this.GetPropertyValue(USERPROFILE_Unit);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Unit, value);
+                this.SetProfileProperty(USERPROFILE_Unit, value);
             }
         }
 
@@ -501,11 +501,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Website);
+                return this.GetPropertyValue(USERPROFILE_Website);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Website, value);
+                this.SetProfileProperty(USERPROFILE_Website, value);
             }
         }
 
@@ -520,8 +520,8 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
         {
-            _IsDirty = false;
-            foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
+            this._IsDirty = false;
+            foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
             {
                 profProperty?.ClearIsDirty();
             }
@@ -536,7 +536,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition GetProperty(string propName)
         {
-            return ProfileProperties[propName];
+            return this.ProfileProperties[propName];
         }
 
         /// -----------------------------------------------------------------------------
@@ -549,7 +549,7 @@ namespace DotNetNuke.Entities.Users
         public string GetPropertyValue(string propName)
         {
             string propValue = Null.NullString;
-            ProfilePropertyDefinition profileProp = GetProperty(propName);
+            ProfilePropertyDefinition profileProp = this.GetProperty(propName);
             if (profileProp != null)
             {
                 propValue = profileProp.PropertyValue;
@@ -560,7 +560,7 @@ namespace DotNetNuke.Entities.Users
                     var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
                     if (dataType.Value == "Country" || dataType.Value == "Region")
                     {
-                        propValue = GetListValue(dataType.Value, propValue);
+                        propValue = this.GetListValue(dataType.Value, propValue);
                     }
                 }
             }
@@ -591,7 +591,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void InitialiseProfile(int portalId)
         {
-            InitialiseProfile(portalId, true);
+            this.InitialiseProfile(portalId, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -605,10 +605,10 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void InitialiseProfile(int portalId, bool useDefaults)
         {
-            _profileProperties = ProfileController.GetPropertyDefinitionsByPortal(portalId, true, false);
+            this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(portalId, true, false);
             if (useDefaults)
             {
-                foreach (ProfilePropertyDefinition ProfileProperty in _profileProperties)
+                foreach (ProfilePropertyDefinition ProfileProperty in this._profileProperties)
                 {
                     ProfileProperty.PropertyValue = ProfileProperty.DefaultValue;
                 }
@@ -625,7 +625,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void SetProfileProperty(string propName, string propValue)
         {
-            ProfilePropertyDefinition profileProp = GetProperty(propName);
+            ProfilePropertyDefinition profileProp = this.GetProperty(propName);
             if (profileProp != null)
             {
                 profileProp.PropertyValue = propValue;
@@ -633,7 +633,7 @@ namespace DotNetNuke.Entities.Users
                 //Set the IsDirty flag
                 if (profileProp.IsDirty)
                 {
-                    _IsDirty = true;
+                    this._IsDirty = true;
                 }
             }
         }
@@ -644,11 +644,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Biography);
+                return this.GetPropertyValue(USERPROFILE_Biography);
             }
             set
             {
-                SetProfileProperty(USERPROFILE_Biography, value);
+                this.SetProfileProperty(USERPROFILE_Biography, value);
             }
         }
 
@@ -658,7 +658,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(name);
+                return this.GetPropertyValue(name);
             }
             set
             {
@@ -677,7 +677,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     stringValue = Convert.ToString(value);
                 }
-                SetProfileProperty(name, stringValue);
+                this.SetProfileProperty(name, stringValue);
             }
         }
 

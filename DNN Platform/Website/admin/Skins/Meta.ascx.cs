@@ -66,21 +66,21 @@ namespace DotNetNuke.UI.Skins.Controls
             //    Page.Header.Controls.Add(metaTag);
             //}
 
-            if ((!string.IsNullOrEmpty(Name) || !string.IsNullOrEmpty(HttpEquiv)) && !string.IsNullOrEmpty(Content))
+            if ((!string.IsNullOrEmpty(this.Name) || !string.IsNullOrEmpty(this.HttpEquiv)) && !string.IsNullOrEmpty(this.Content))
             {
                 var metaTag = new HtmlMeta();
 
-                if (!string.IsNullOrEmpty(HttpEquiv))
-                    metaTag.HttpEquiv = HttpEquiv;
-                if (!string.IsNullOrEmpty(Name))
-                    metaTag.Name = Name;
+                if (!string.IsNullOrEmpty(this.HttpEquiv))
+                    metaTag.HttpEquiv = this.HttpEquiv;
+                if (!string.IsNullOrEmpty(this.Name))
+                    metaTag.Name = this.Name;
 
-                metaTag.Content = Content;
+                metaTag.Content = this.Content;
 
-                if (InsertFirst)
-                    Page.Header.Controls.AddAt(0, metaTag);
+                if (this.InsertFirst)
+                    this.Page.Header.Controls.AddAt(0, metaTag);
                 else
-                    Page.Header.Controls.Add(metaTag);
+                    this.Page.Header.Controls.Add(metaTag);
             }
         }
 

@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Localization.Internal
 
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes)
         {
-            return BestCultureCodeBasedOnBrowserLanguages(cultureCodes, Localization.SystemLocale);
+            return this.BestCultureCodeBasedOnBrowserLanguages(cultureCodes, Localization.SystemLocale);
         }
 
         public CultureInfo GetPageLocale(PortalSettings portalSettings)

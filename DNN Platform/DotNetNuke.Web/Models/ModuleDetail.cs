@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Models
 
         public ModuleDetail()
         {
-            ModuleInstances = new List<ModuleInstance>();
+            this.ModuleInstances = new List<ModuleInstance>();
         }
     }
 }

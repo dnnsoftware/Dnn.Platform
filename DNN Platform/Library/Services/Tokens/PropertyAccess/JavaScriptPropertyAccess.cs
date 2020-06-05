@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Tokens
 
         public JavaScriptPropertyAccess(Page page)
         {
-            _page = page;
+            this._page = page;
         }
 
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
@@ -57,11 +57,11 @@ namespace DotNetNuke.Services.Tokens
                 }
                 if (String.IsNullOrEmpty(model.Provider))
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority);
                 }
                 else
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, model.Provider);
                 }
             }
             else if (!String.IsNullOrEmpty(model.Path))
@@ -72,11 +72,11 @@ namespace DotNetNuke.Services.Tokens
                 }
                 if (String.IsNullOrEmpty(model.Provider))
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, "", model.JsName, model.Version);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, "", model.JsName, model.Version);
                 }
                 else
                 {
-                    ClientResourceManager.RegisterScript(_page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, model.Provider, model.JsName, model.Version);
                 }
             }
             else

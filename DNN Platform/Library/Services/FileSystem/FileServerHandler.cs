@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception)
             {
                 //The TabId or ModuleId are incorrectly formatted (potential DOS)
-                Handle404Exception(context, context.Request.RawUrl);
+                this.Handle404Exception(context, context.Request.RawUrl);
             }
 
             //get Language
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.FileSystem
                     //verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
-                        Handle404Exception(context, context.Request.RawUrl);
+                        this.Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
                 if (UrlType != TabType.File)
@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(URL)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !HasAPublishedVersion(file))
+                                if (!file.IsEnabled || !this.HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                Handle404Exception(context, URL);
+                                this.Handle404Exception(context, URL);
                             }
                             break;
                         case TabType.Url:
@@ -232,12 +232,12 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    Handle404Exception(context, URL);
+                    this.Handle404Exception(context, URL);
                 }
             }
             else
             {
-                Handle404Exception(context, URL);
+                this.Handle404Exception(context, URL);
             }
         }
 

@@ -69,7 +69,7 @@ namespace log4net.Config
 		/// </remarks>
 		public PluginAttribute(string typeName)
 		{
-			m_typeName = typeName;
+			this.m_typeName = typeName;
 		}
 #endif
 
@@ -85,7 +85,7 @@ namespace log4net.Config
 		/// </remarks>
 		public PluginAttribute(Type type)
 		{
-			m_type = type;
+			this.m_type = type;
 		}
 
 		#endregion Public Instance Constructors
@@ -105,8 +105,8 @@ namespace log4net.Config
 		/// </remarks>
 		public Type Type
 		{
-			get { return m_type; }
-			set { m_type = value ; }
+			get { return this.m_type; }
+			set { this.m_type = value ; }
 		}
 
 		/// <summary>
@@ -125,8 +125,8 @@ namespace log4net.Config
 		/// </remarks>
 		public string TypeName
 		{
-			get { return m_typeName; }
-			set { m_typeName = value ; }
+			get { return this.m_typeName; }
+			set { this.m_typeName = value ; }
 		}
 
 		#endregion Public Instance Properties
@@ -145,12 +145,12 @@ namespace log4net.Config
 		/// <returns>The plugin object.</returns>
 		public IPlugin CreatePlugin()
 		{
-			Type pluginType = m_type;
+			Type pluginType = this.m_type;
 #if !NETSTANDARD1_3
-			if (m_type == null)
+			if (this.m_type == null)
 			{
 				// Get the plugin object type from the string type name
-				pluginType = SystemInfo.GetTypeFromString(m_typeName, true, true);
+				pluginType = SystemInfo.GetTypeFromString(this.m_typeName, true, true);
 			}
 #endif
 			// Check that the type is a plugin
@@ -181,11 +181,11 @@ namespace log4net.Config
 		/// <returns>A representation of the properties of this object</returns>
 		override public string ToString()
 		{
-			if (m_type != null)
+			if (this.m_type != null)
 			{
-				return "PluginAttribute[Type=" + m_type.FullName + "]";
+				return "PluginAttribute[Type=" + this.m_type.FullName + "]";
 			}
-			return "PluginAttribute[Type=" + m_typeName + "]";
+			return "PluginAttribute[Type=" + this.m_typeName + "]";
 		}
 
 		#endregion Override implementation of Object

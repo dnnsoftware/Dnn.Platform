@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
             var siteUri = new Uri(url);
-            _httpClient = new HttpClient { BaseAddress = siteUri, Timeout = _timeout };
+            this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
         [TestCase(GetModuleDetailsQuery)]
         public void CallingHelperForAnonymousUserShouldReturnSuccess(string query)
         {
-            var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
+            var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);

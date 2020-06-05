@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (NeedsAuthentication(request))
+            if (this.NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Api.Auth
                     if (isStale)
                     {
                         var staleResponse = request.CreateResponse(HttpStatusCode.Unauthorized);
-                        AddStaleWwwAuthenticateHeader(staleResponse);
+                        this.AddStaleWwwAuthenticateHeader(staleResponse);
 
                         return staleResponse;
                     }
@@ -48,9 +48,9 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsDigestAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsDigestAuth(response.RequestMessage))
             {
-                AddWwwAuthenticateHeader(response);
+                this.AddWwwAuthenticateHeader(response);
             }
 
             return base.OnOutboundResponse(response, cancellationToken);
@@ -58,13 +58,13 @@ namespace DotNetNuke.Web.Api.Auth
 
         private void AddStaleWwwAuthenticateHeader(HttpResponseMessage response)
         {
-            AddWwwAuthenticateHeader(response, true);
+            this.AddWwwAuthenticateHeader(response, true);
         }
 
         private void AddWwwAuthenticateHeader(HttpResponseMessage response, bool isStale = false)
         {
             var value = string.Format("realm=\"DNNAPI\", nonce=\"{0}\",  opaque=\"0000000000000000\", stale={1}, algorithm=MD5, qop=\"auth\"", CreateNewNonce(), isStale);
-            response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthScheme, value));
+            response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, value));
         }
 
         private static string CreateNewNonce()

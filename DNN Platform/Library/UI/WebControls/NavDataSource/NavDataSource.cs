@@ -20,8 +20,8 @@ namespace DotNetNuke.UI.WebControls
 
         protected override HierarchicalDataSourceView GetHierarchicalView(string viewPath)
         {
-            view = new NavDataSourceView(viewPath);
-            return view;
+            this.view = new NavDataSourceView(viewPath);
+            return this.view;
         }
     }
 }

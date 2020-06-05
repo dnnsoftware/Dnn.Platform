@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Mvc
 
         public DnnMvcDependencyResolver(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public object GetService(Type serviceType)
         {
-            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
                 return scope.ServiceProvider.GetService(serviceType);
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
                 return scope.ServiceProvider.GetServices(serviceType);

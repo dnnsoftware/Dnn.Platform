@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _clientCacheExpiration;
+                return this._clientCacheExpiration;
             }
             set
             {
@@ -43,8 +43,8 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
-                _clientCacheExpiration = value;
-                EnableClientCache = true;
+                this._clientCacheExpiration = value;
+                this.EnableClientCache = true;
             }
         }
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _now ?? DateTime.Now;
+                return this._now ?? DateTime.Now;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return _imageStore ?? DiskImageStore.Instance;
+                return this._imageStore ?? DiskImageStore.Instance;
             }
         }
 
@@ -100,17 +100,17 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public ImageHandlerInternal()
         {
-            ContentType = ImageFormat.Jpeg;
-            ImageCompression = 95;
-            ImageTransforms = new List<ImageTransform>();
-            AllowStandalone = false;
+            this.ContentType = ImageFormat.Jpeg;
+            this.ImageCompression = 95;
+            this.ImageTransforms = new List<ImageTransform>();
+            this.AllowStandalone = false;
         }
 
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {
-            _imageStore = imageStore;
-            _now = now;
+            this._imageStore = imageStore;
+            this._now = now;
         }
 
         internal static string GetImageMimeType(ImageFormat format)
@@ -152,10 +152,10 @@ namespace DotNetNuke.Services.GeneratedImage
             string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
 
             // Check if allowed standalone
-            if (!AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
+            if (!this.AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
             {
                 string message = "Not allowed to use standalone";
-                if (LogSecurity)
+                if (this.LogSecurity)
                 {
                     EventLogController logController = new EventLogController();
                     var logInfo = new LogInfo
@@ -175,13 +175,13 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // Check if domain is allowed to embed image
-            if (!string.IsNullOrEmpty(AllowedDomains[0]) &&
+            if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
                 context.Request.UrlReferrer != null &&
                 context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
                 string allowedDomains = "";
-                foreach (string allowedDomain in AllowedDomains)
+                foreach (string allowedDomain in this.AllowedDomains)
                 {
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (!allowed)
                 {
                     string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
-                    if (LogSecurity)
+                    if (this.LogSecurity)
                     {
                         EventLogController logController = new EventLogController();
                         var logInfo = new LogInfo
@@ -219,7 +219,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Generate Image
             var imageMethodData = imageGenCallback(context.Request.QueryString);
 
-            context.Response.ContentType = GetImageMimeType(ContentType);
+            context.Response.ContentType = GetImageMimeType(this.ContentType);
             if (imageMethodData == null)
             {
                 throw new InvalidOperationException("The DnnImageHandler cannot return null.");
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 using (var imageOutputBuffer = new MemoryStream())
                 {
-                    RenderImage(imageMethodData.Image, imageOutputBuffer);
+                    this.RenderImage(imageMethodData.Image, imageOutputBuffer);
                     var buffer = imageOutputBuffer.GetBuffer();
                     context.Response.OutputStream.Write(buffer, 0, buffer.Length);
                     context.Response.End();
@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
             }
 
-            string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
+            string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
 
             var cacheCleared = false;
             var profilepic = context.Request.QueryString["mode"];
@@ -244,19 +244,19 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 int userId;
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
-                    cacheCleared = ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+                    cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
             }
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
-            if (EnableClientCache)
+            if (this.EnableClientCache)
             {
                 if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
                 {
                     var provider = CultureInfo.InvariantCulture;
                     var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
                     var etag = context.Request.Headers["If-None-Match"];
-                    if (lastMod + ClientCacheExpiration > DateTime_Now && etag == cacheId)
+                    if (lastMod + this.ClientCacheExpiration > this.DateTime_Now && etag == cacheId)
                     {
                         context.Response.StatusCode = 304;
                         context.Response.StatusDescription = "Not Modified";
@@ -265,15 +265,15 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
                 cachePolicy.SetCacheability(HttpCacheability.Public);
-                cachePolicy.SetLastModified(DateTime_Now);
-                cachePolicy.SetExpires(DateTime_Now + ClientCacheExpiration);
+                cachePolicy.SetLastModified(this.DateTime_Now);
+                cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
                 cachePolicy.SetETag(cacheId);
             }
             
             // Handle Server cache
-            if (EnableServerCache)
+            if (this.EnableServerCache)
             {
-                if (ImageStore.TryTransmitIfContains(cacheId, context.Response))
+                if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
                 {
                     context.Response.End();
                     return;
@@ -281,13 +281,13 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // Check IP Cout boundaries
-            if (EnableIPCount)
+            if (this.EnableIPCount)
             {
                 if (!IPCount.CheckIp(ipAddress))
                 {
                     string message = "Too many requests";
 
-                    if (LogSecurity)
+                    if (this.LogSecurity)
                     {
                         EventLogController logController = new EventLogController();
                         var logInfo = new LogInfo
@@ -319,20 +319,20 @@ namespace DotNetNuke.Services.GeneratedImage
                 Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
                 if (imageMethodData.Image != null)
                 {
-                    RenderImage(GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
+                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
                 }
                 else if (imageMethodData.ImageByteBuffer != null)
                 {
-                    RenderImage(GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
+                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
                 }
 
                 byte[] buffer = imageOutputBuffer.GetBuffer();
 
                 context.Response.OutputStream.Write(buffer, 0, buffer.Length);
 
-                if (EnableServerCache)
+                if (this.EnableServerCache)
                 {
-                    ImageStore.Add(cacheId, buffer);
+                    this.ImageStore.Add(cacheId, buffer);
                 }
 
                 context.Response.End();
@@ -348,7 +348,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 builder.Append(key);
                 builder.Append(context.Request.QueryString.Get(key));
             }
-            foreach (var tran in ImageTransforms)
+            foreach (var tran in this.ImageTransforms)
             {
                 builder.Append(tran.UniqueString);
             }
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Image temp = image;
 
-                foreach (var tran in ImageTransforms)
+                foreach (var tran in this.ImageTransforms)
                 {
                     temp = tran.ProcessImage(temp);
                 }
@@ -394,10 +394,10 @@ namespace DotNetNuke.Services.GeneratedImage
             var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
             Dictionary<int, DateTime> userIds;
             if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
-            ImageStore.ForcePurgeFromServerCache(cacheId);
+            this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
             //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(ClientCacheExpiration)) return true;
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration)) return true;
             //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);
@@ -408,7 +408,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             using (var memoryStream = new MemoryStream(buffer))
             {
-                return GetImageThroughTransforms(Image.FromStream(memoryStream));
+                return this.GetImageThroughTransforms(Image.FromStream(memoryStream));
             }
         }
 
@@ -416,7 +416,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             try
             {
-                if (ContentType == ImageFormat.Gif)
+                if (this.ContentType == ImageFormat.Gif)
                 {
                     var quantizer = new OctreeQuantizer(255, 8);
                     using (var quantized = quantizer.Quantize(image))
@@ -428,9 +428,9 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, ImageCompression) }
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) }
                     };
-                    var ici = GetEncoderInfo(GetImageMimeType(ContentType));
+                    var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
                     image?.Save(outStream, ici, eps);
                 }
             }

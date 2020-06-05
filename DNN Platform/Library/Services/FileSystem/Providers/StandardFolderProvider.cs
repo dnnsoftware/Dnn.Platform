@@ -61,8 +61,8 @@ namespace DotNetNuke.Services.FileSystem
 
             if (folderPath == newFolderPath) return;
 
-            var filePath = GetActualPath(folderMapping, folderPath, fileName);
-            var newFilePath = GetActualPath(folderMapping, newFolderPath, fileName);
+            var filePath = this.GetActualPath(folderMapping, folderPath, fileName);
+            var newFilePath = this.GetActualPath(folderMapping, newFolderPath, fileName);
 
             if (FileWrapper.Instance.Exists(filePath))
             {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("content", content);
 
-            UpdateFile(folder, fileName, content);
+            this.UpdateFile(folder, fileName, content);
         }
 
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            var path = GetActualPath(file);
+            var path = this.GetActualPath(file);
 
             if (FileWrapper.Instance.Exists(path))
             {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.PropertyNotNull("fileName", fileName);
 
-            return FileWrapper.Instance.Exists(GetActualPath(folder, fileName));
+            return FileWrapper.Instance.Exists(this.GetActualPath(folder, fileName));
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            return DirectoryWrapper.Instance.Exists(GetActualPath(folderMapping, folderPath));
+            return DirectoryWrapper.Instance.Exists(this.GetActualPath(folderMapping, folderPath));
         }
 
         public override FileAttributes? GetFileAttributes(IFileInfo file)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.FileSystem
 
             try
             {
-                fileAttributes = FileWrapper.Instance.GetAttributes(GetActualPath(file));
+                fileAttributes = FileWrapper.Instance.GetAttributes(this.GetActualPath(file));
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            var fileNames = DirectoryWrapper.Instance.GetFiles(GetActualPath(folder));
+            var fileNames = DirectoryWrapper.Instance.GetFiles(this.GetActualPath(folder));
 
             for (var i = 0; i < fileNames.Length; i++)
             {
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            var physicalFile = new System.IO.FileInfo(GetActualPath(file));
+            var physicalFile = new System.IO.FileInfo(this.GetActualPath(file));
 
             return physicalFile.Length;
         }
@@ -161,14 +161,14 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            return GetFileStreamInternal(GetActualPath(file));
+            return this.GetFileStreamInternal(this.GetActualPath(file));
         }
 
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
-            return GetFileStreamInternal(GetActualPath(folder, fileName));
+            return this.GetFileStreamInternal(this.GetActualPath(folder, fileName));
         }
 
         public override string GetFileUrl(IFileInfo file)
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var portalSettings = file.PortalId == PortalSettings.Current?.PortalId ?
                 PortalSettings.Current : 
-                GetPortalSettings(file.PortalId);
+                this.GetPortalSettings(file.PortalId);
 
             var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
 
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.FileSystem
 
             try
             {
-                lastModificationTime = FileWrapper.Instance.GetLastWriteTime(GetActualPath(file));
+                lastModificationTime = FileWrapper.Instance.GetLastWriteTime(this.GetActualPath(file));
             }
             catch (Exception ex)
             {
@@ -235,15 +235,15 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            return DirectoryWrapper.Instance.GetDirectories(GetActualPath(folderMapping, folderPath))
-                .Select(directory => GetRelativePath(folderMapping, directory));
+            return DirectoryWrapper.Instance.GetDirectories(this.GetActualPath(folderMapping, folderPath))
+                .Select(directory => this.GetRelativePath(folderMapping, directory));
         }
 
         public override bool IsInSync(IFileInfo file)
         {
             Requires.NotNull("file", file);
 
-            return Convert.ToInt32((file.LastModificationTime - GetLastModificationTime(file)).TotalSeconds) == 0;
+            return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
         }
 
         public override void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
@@ -253,8 +253,8 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file.FolderId != destinationFolder.FolderID)
             {
-                string oldName = GetActualPath(file);
-                string newName = GetActualPath(destinationFolder, file.FileName);
+                string oldName = this.GetActualPath(file);
+                string newName = this.GetActualPath(destinationFolder, file.FileName);
                 FileWrapper.Instance.Move(oldName, newName);
             }
         }
@@ -272,8 +272,8 @@ namespace DotNetNuke.Services.FileSystem
             if (file.FileName != newFileName)
             {
                 IFolderInfo folder = FolderManager.Instance.GetFolder(file.FolderId);
-                string oldName = GetActualPath(file);
-                string newName = GetActualPath(folder, newFileName);
+                string oldName = this.GetActualPath(file);
+                string newName = this.GetActualPath(folder, newFileName);
                 FileWrapper.Instance.Move(oldName, newName);
             }
         }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            FileWrapper.Instance.SetAttributes(GetActualPath(file), fileAttributes);
+            FileWrapper.Instance.SetAttributes(this.GetActualPath(file), fileAttributes);
         }
 
         public override bool SupportsFileAttributes()
@@ -300,7 +300,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("content", content);
 
-            UpdateFile(FolderManager.Instance.GetFolder(file.FolderId), file.FileName, content);
+            this.UpdateFile(FolderManager.Instance.GetFolder(file.FolderId), file.FileName, content);
         }
 
         public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
@@ -310,7 +310,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("content", content);
 
             var arrData = new byte[2048];
-            var actualPath = GetActualPath(folder, fileName);
+            var actualPath = this.GetActualPath(folder, fileName);
 
             if (FileWrapper.Instance.Exists(actualPath))
             {
@@ -367,7 +367,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A windows supported path to the file</returns>
         protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
-            var actualFolderPath = GetActualPath(folderMapping, folderPath);
+            var actualFolderPath = this.GetActualPath(folderMapping, folderPath);
             return Path.Combine(actualFolderPath, fileName);
         }
 

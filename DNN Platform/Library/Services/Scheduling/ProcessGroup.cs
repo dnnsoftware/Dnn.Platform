@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Scheduling
                 //This is called from RunPooledThread()
                 ticksElapsed = Environment.TickCount - ticksElapsed;
                 serviceScope = Globals.DependencyProvider.CreateScope();
-                Process = GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
+                Process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
                 
 				//Set up the handlers for the CoreScheduler
@@ -119,9 +119,9 @@ namespace DotNetNuke.Services.Scheduling
                     if (processesCompleted == numberOfProcesses)
                     {
                         ticksElapsed = Environment.TickCount - ticksElapsed;
-                        if (Completed != null)
+                        if (this.Completed != null)
                         {
-                            Completed();
+                            this.Completed();
                         }
                     }
                 }
@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Scheduling
         //so the two subroutines cannot be combined, so instead just call Run from here.
         private void RunPooledThread(object objScheduleHistoryItem)
         {
-            Run((ScheduleHistoryItem) objScheduleHistoryItem);
+            this.Run((ScheduleHistoryItem) objScheduleHistoryItem);
         }
 
         //Add a queue request to Threadpool with a 
@@ -185,7 +185,7 @@ namespace DotNetNuke.Services.Scheduling
             try
             {
                 //Create a callback to subroutine RunPooledThread
-                WaitCallback callback = RunPooledThread;
+                WaitCallback callback = this.RunPooledThread;
                 //And put in a request to ThreadPool to run the process.
                 ThreadPool.QueueUserWorkItem(callback, obj);
             }

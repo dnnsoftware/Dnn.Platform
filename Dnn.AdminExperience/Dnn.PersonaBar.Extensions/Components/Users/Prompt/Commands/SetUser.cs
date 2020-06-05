@@ -65,25 +65,25 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Email = GetFlagValue(FlagEmail, "Email", string.Empty);
-            Username = GetFlagValue(FlagUsername, "Username", string.Empty);
-            DisplayName = GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
-            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty);
-            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty);
-            Password = GetFlagValue(FlagPassword, "Password", string.Empty);
-            Approved = GetFlagValue<bool?>(FlagApproved, "Approved", null);
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
+            this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
+            this.DisplayName = this.GetFlagValue(FlagDisplayname, "DisplayName", string.Empty);
+            this.FirstName = this.GetFlagValue(FlagFirstname, "FirstName", string.Empty);
+            this.LastName = this.GetFlagValue(FlagLastname, "LastName", string.Empty);
+            this.Password = this.GetFlagValue(FlagPassword, "Password", string.Empty);
+            this.Approved = this.GetFlagValue<bool?>(FlagApproved, "Approved", null);
 
             // ensure there's something to update
-            if (string.IsNullOrEmpty(Email) &&
-                string.IsNullOrEmpty(Username) &&
-                string.IsNullOrEmpty(DisplayName) &&
-                string.IsNullOrEmpty(FirstName) &&
-                string.IsNullOrEmpty(LastName) &&
-                string.IsNullOrEmpty(Password) &&
-                !Approved.HasValue)
+            if (string.IsNullOrEmpty(this.Email) &&
+                string.IsNullOrEmpty(this.Username) &&
+                string.IsNullOrEmpty(this.DisplayName) &&
+                string.IsNullOrEmpty(this.FirstName) &&
+                string.IsNullOrEmpty(this.LastName) &&
+                string.IsNullOrEmpty(this.Password) &&
+                !this.Approved.HasValue)
             {
-                AddMessage(LocalizeString("Prompt_NothingToSetUser"));
+                this.AddMessage(this.LocalizeString("Prompt_NothingToSetUser"));
             }
         }
 
@@ -95,10 +95,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserInfo userInfo;
 
             if (
-                (errorResultModel = _userValidator.ValidateUser(
-                    UserId,
-                    PortalSettings,
-                    User,
+                (errorResultModel = this._userValidator.ValidateUser(
+                    this.UserId,
+                    this.PortalSettings,
+                    this.User,
                     out userInfo)
                 ) != null
                )
@@ -108,12 +108,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
           
             // Update the User
             // process the password first. If invalid, we can abort other changes to the user
-            if (!string.IsNullOrEmpty(Password))
+            if (!string.IsNullOrEmpty(this.Password))
             {
                 try
                 {                    
-                    _usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, Password);
-                    sbResults.Append(LocalizeString("ChangeSuccessful"));
+                    this._usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, this.Password);
+                    sbResults.Append(this.LocalizeString("ChangeSuccessful"));
                 }
                 catch (Exception ex)
                 {
@@ -121,13 +121,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
             }
 
-            if (Approved.HasValue && userInfo.Membership.Approved != Approved.Value)
+            if (this.Approved.HasValue && userInfo.Membership.Approved != this.Approved.Value)
             {
-                _usersController.UpdateAuthorizeStatus(userInfo, userInfo.PortalID, Approved.Value);
-                sbResults.Append(LocalizeString(Approved.Value ? "UserAuthorized" : "UserUnAuthorized"));
+                this._usersController.UpdateAuthorizeStatus(userInfo, userInfo.PortalID, this.Approved.Value);
+                sbResults.Append(this.LocalizeString(this.Approved.Value ? "UserAuthorized" : "UserUnAuthorized"));
             }
 
-            var basicUpdated = !string.IsNullOrEmpty(Username) || !string.IsNullOrEmpty(DisplayName) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(Email);
+            var basicUpdated = !string.IsNullOrEmpty(this.Username) || !string.IsNullOrEmpty(this.DisplayName) || !string.IsNullOrEmpty(this.FirstName) || !string.IsNullOrEmpty(this.LastName) || !string.IsNullOrEmpty(this.Email);
             var userBasicDto = new UserBasicDto
             {
                 Displayname = userInfo.DisplayName,
@@ -139,26 +139,26 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Lastname = userInfo.LastName
             };
             // Update Username
-            if (!string.IsNullOrEmpty(Username))
-                userBasicDto.Username = Username;
+            if (!string.IsNullOrEmpty(this.Username))
+                userBasicDto.Username = this.Username;
             // Update other properties
-            if (!string.IsNullOrEmpty(DisplayName))
-                userBasicDto.Displayname = DisplayName;
-            if (!string.IsNullOrEmpty(FirstName))
-                userBasicDto.Firstname = FirstName;
-            if (!string.IsNullOrEmpty(LastName))
-                userBasicDto.Lastname = LastName;
-            if (!string.IsNullOrEmpty(Email))
-                userBasicDto.Email = Email;
+            if (!string.IsNullOrEmpty(this.DisplayName))
+                userBasicDto.Displayname = this.DisplayName;
+            if (!string.IsNullOrEmpty(this.FirstName))
+                userBasicDto.Firstname = this.FirstName;
+            if (!string.IsNullOrEmpty(this.LastName))
+                userBasicDto.Lastname = this.LastName;
+            if (!string.IsNullOrEmpty(this.Email))
+                userBasicDto.Email = this.Email;
             if (basicUpdated)
             {
                 try
                 {
-                    _usersController.UpdateUserBasicInfo(userBasicDto, userInfo.PortalID);
+                    this._usersController.UpdateUserBasicInfo(userBasicDto, userInfo.PortalID);
                 }
                 catch (SqlException)
                 {
-                    return new ConsoleErrorResultModel(LocalizeString("UsernameNotUnique") + "\n" + sbResults);
+                    return new ConsoleErrorResultModel(this.LocalizeString("UsernameNotUnique") + "\n" + sbResults);
                 }
                 catch (Exception ex)
                 {
@@ -166,7 +166,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 }
             }
             // retrieve the updated user
-            var updatedUser = _userControllerWrapper.GetUserById(userInfo.PortalID, userInfo.UserID);
+            var updatedUser = this._userControllerWrapper.GetUserById(userInfo.PortalID, userInfo.UserID);
 
             var lst = new List<UserModel> { new UserModel(updatedUser) };
 
@@ -175,7 +175,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Data = lst,
                 Records = lst.Count,
                 FieldOrder = UserModel.FieldOrder,
-                Output = LocalizeString("UserUpdated")
+                Output = this.LocalizeString("UserUpdated")
             };
         }
     }

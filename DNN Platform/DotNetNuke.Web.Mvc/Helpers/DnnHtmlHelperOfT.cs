@@ -22,8 +22,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         internal new HtmlHelper<TModel> HtmlHelper => (HtmlHelper<TModel>)base.HtmlHelper;
 
-        public new object ViewBag => HtmlHelper.ViewBag;
+        public new object ViewBag => this.HtmlHelper.ViewBag;
 
-        public new ViewDataDictionary<TModel> ViewData => HtmlHelper.ViewData;
+        public new ViewDataDictionary<TModel> ViewData => this.HtmlHelper.ViewData;
     }
 }

@@ -23,9 +23,9 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string CreatedOnString => Util.GetDateTimeString(CreatedOn);
+        public string CreatedOnString => Util.GetDateTimeString(this.CreatedOn);
         public DateTime? CompletedOn { get; set; }
-        public string CompletedOnString => Util.GetDateTimeString(CompletedOn);
+        public string CompletedOnString => Util.GetDateTimeString(this.CompletedOn);
 
         public string ExportFile { get; set; }
         //public IEnumerable<LogItem> Summary { get; set; }
@@ -34,10 +34,10 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
-            Summary?.ConvertToLocal(userInfo);
-            CreatedOn = Util.ToLocalDateTime(CreatedOn, userInfo);
-            if (CompletedOn != null)
-                CompletedOn = Util.ToLocalDateTime(CompletedOn.Value, userInfo);
+            this.Summary?.ConvertToLocal(userInfo);
+            this.CreatedOn = Util.ToLocalDateTime(this.CreatedOn, userInfo);
+            if (this.CompletedOn != null)
+                this.CompletedOn = Util.ToLocalDateTime(this.CompletedOn.Value, userInfo);
         }
     }
 }

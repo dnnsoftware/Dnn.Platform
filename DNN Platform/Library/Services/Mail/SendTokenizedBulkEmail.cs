@@ -89,27 +89,27 @@ namespace DotNetNuke.Services.Mail
 
         public SendTokenizedBulkEmail()
         {
-            ReportRecipients = true;
-            AddressMethod = AddressMethods.Send_TO;
-            BodyFormat = MailFormat.Text;
-            Subject = "";
-            Priority = MailPriority.Normal;
-            Initialize();
+            this.ReportRecipients = true;
+            this.AddressMethod = AddressMethods.Send_TO;
+            this.BodyFormat = MailFormat.Text;
+            this.Subject = "";
+            this.Priority = MailPriority.Normal;
+            this.Initialize();
         }
 
         public SendTokenizedBulkEmail(List<string> addressedRoles, List<UserInfo> addressedUsers, bool removeDuplicates, string subject, string body)
         {
-            ReportRecipients = true;
-            AddressMethod = AddressMethods.Send_TO;
-            BodyFormat = MailFormat.Text;
-            Priority = MailPriority.Normal;
-            _addressedRoles = addressedRoles;
-            _addressedUsers = addressedUsers;
-            RemoveDuplicates = removeDuplicates;
-            Subject = subject;
-            Body = body;
-            SuppressTokenReplace = SuppressTokenReplace;
-            Initialize();
+            this.ReportRecipients = true;
+            this.AddressMethod = AddressMethods.Send_TO;
+            this.BodyFormat = MailFormat.Text;
+            this.Priority = MailPriority.Normal;
+            this._addressedRoles = addressedRoles;
+            this._addressedUsers = addressedUsers;
+            this.RemoveDuplicates = removeDuplicates;
+            this.Subject = subject;
+            this.Body = body;
+            this.SuppressTokenReplace = this.SuppressTokenReplace;
+            this.Initialize();
         }
 		
 		#endregion
@@ -135,12 +135,12 @@ namespace DotNetNuke.Services.Mail
         {
             get
             {
-                return _body;
+                return this._body;
             }
             set
             {
-                _body = value;
-                BodyFormat = HtmlUtils.IsHtml(_body) ? MailFormat.Html : MailFormat.Text;
+                this._body = value;
+                this.BodyFormat = HtmlUtils.IsHtml(this._body) ? MailFormat.Html : MailFormat.Text;
             }
         }
 
@@ -161,19 +161,19 @@ namespace DotNetNuke.Services.Mail
         {
             get
             {
-                return _sendingUser;
+                return this._sendingUser;
             }
             set
             {
-                _sendingUser = value;
-                if (_sendingUser.Profile.PreferredLocale != null)
+                this._sendingUser = value;
+                if (this._sendingUser.Profile.PreferredLocale != null)
                 {
-                    _strSenderLanguage = _sendingUser.Profile.PreferredLocale;
+                    this._strSenderLanguage = this._sendingUser.Profile.PreferredLocale;
                 }
                 else
                 {
                     PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    _strSenderLanguage = portalSettings.DefaultLanguage;
+                    this._strSenderLanguage = portalSettings.DefaultLanguage;
                 }
             }
         }
@@ -184,11 +184,11 @@ namespace DotNetNuke.Services.Mail
         {
             get
             {
-                return _replyToUser ?? SendingUser;
+                return this._replyToUser ?? this.SendingUser;
             }
             set
             {
-                _replyToUser = value;
+                this._replyToUser = value;
             }
         }
 
@@ -208,11 +208,11 @@ namespace DotNetNuke.Services.Mail
         {
             get
             {
-                return AddressMethod == AddressMethods.Send_Relay ? _relayEmail : string.Empty;
+                return this.AddressMethod == AddressMethods.Send_Relay ? this._relayEmail : string.Empty;
             }
             set
             {
-                _relayEmail = value;
+                this._relayEmail = value;
             }
         }
 
@@ -225,15 +225,15 @@ namespace DotNetNuke.Services.Mail
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
         {
-            _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            PortalAlias = _portalSettings.PortalAlias.HTTPAlias;
-            SendingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
-            _tokenReplace = new TokenReplace();
-            _confirmBodyHTML = Localization.Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.Localization.GlobalResourceFile, _strSenderLanguage);
-            _confirmBodyText = Localization.Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.Localization.GlobalResourceFile, _strSenderLanguage);
-            _confirmSubject = Localization.Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.Localization.GlobalResourceFile, _strSenderLanguage);
-            _noError = Localization.Localization.GetString("NoErrorsSending", Localization.Localization.GlobalResourceFile, _strSenderLanguage);
-            _smtpEnableSSL = Host.EnableSMTPSSL;
+            this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalAlias = this._portalSettings.PortalAlias.HTTPAlias;
+            this.SendingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
+            this._tokenReplace = new TokenReplace();
+            this._confirmBodyHTML = Localization.Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._confirmBodyText = Localization.Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._confirmSubject = Localization.Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._noError = Localization.Localization.GetString("NoErrorsSending", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._smtpEnableSSL = Host.EnableSMTPSSL;
         }
 
         /// <summary>Send bulkmail confirmation to admin</summary>
@@ -265,19 +265,19 @@ namespace DotNetNuke.Services.Mail
                                      numMessages >= 0 ? numMessages.ToString(CultureInfo.InvariantCulture) : "***",
                                      DateTime.Now.ToString(CultureInfo.InvariantCulture),
                                      numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : "",
-                                     mailErrors != string.Empty ? mailErrors : _noError,
-                                     ReportRecipients ? recipientList : ""
+                                     mailErrors != string.Empty ? mailErrors : this._noError,
+                                     this.ReportRecipients ? recipientList : ""
                                  };
-            _tokenReplace.User = _sendingUser;
-            string body = _tokenReplace.ReplaceEnvironmentTokens(BodyFormat == MailFormat.Html ? _confirmBodyHTML : _confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(_confirmSubject, subject);
-            if (!SuppressTokenReplace)
+            this._tokenReplace.User = this._sendingUser;
+            string body = this._tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this._confirmBodyHTML : this._confirmBodyText, parameters, "Custom");
+            string strSubject = string.Format(this._confirmSubject, subject);
+            if (!this.SuppressTokenReplace)
             {
-                strSubject = _tokenReplace.ReplaceEnvironmentTokens(strSubject);
+                strSubject = this._tokenReplace.ReplaceEnvironmentTokens(strSubject);
             }
-            var message = new Message {FromUserID = _sendingUser.UserID, ToUserID = _sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread};
+            var message = new Message {FromUserID = this._sendingUser.UserID, ToUserID = this._sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread};
 
-            Mail.SendEmail(_sendingUser.Email, _sendingUser.Email, message.Subject, message.Body);
+            Mail.SendEmail(this._sendingUser.Email, this._sendingUser.Email, message.Subject, message.Body);
         }
 
         /// <summary>check, if the user's language matches the current language filter</summary>
@@ -286,17 +286,17 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>if filter not set, true is returned</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {
-            if (LanguageFilter == null || LanguageFilter.Length == 0)
+            if (this.LanguageFilter == null || this.LanguageFilter.Length == 0)
             {
                 return true;
             }
 
             if(string.IsNullOrEmpty(userLanguage))
             {
-                userLanguage = _portalSettings.DefaultLanguage;
+                userLanguage = this._portalSettings.DefaultLanguage;
             }
 
-            return LanguageFilter.Any(s => userLanguage.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
+            return this.LanguageFilter.Any(s => userLanguage.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>add a user to the userlist, if it is not already in there</summary>
@@ -306,10 +306,10 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>for use by Recipients method only</remarks>
         private void ConditionallyAddUser(UserInfo user, ref List<string> keyList, ref List<UserInfo> userList)
         {
-            if (((user.UserID <= 0 || user.Membership.Approved) && user.Email != string.Empty) && MatchLanguageFilter(user.Profile.PreferredLocale))
+            if (((user.UserID <= 0 || user.Membership.Approved) && user.Email != string.Empty) && this.MatchLanguageFilter(user.Profile.PreferredLocale))
             {
                 string key;
-                if (RemoveDuplicates || user.UserID == Null.NullInteger)
+                if (this.RemoveDuplicates || user.UserID == Null.NullInteger)
                 {
                     key = user.Email;
                 }
@@ -328,7 +328,7 @@ namespace DotNetNuke.Services.Mail
 		private List<Attachment> LoadAttachments()
 		{
 			var attachments = new List<Attachment>();
-			foreach (var attachment in _attachments)
+			foreach (var attachment in this._attachments)
 			{
                 Attachment newAttachment;
                 MemoryStream memoryStream = null;
@@ -374,13 +374,13 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>if not called, values will be taken from host settings</remarks>
         public bool SetSMTPServer(string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            EnsureNotDisposed();
+            this.EnsureNotDisposed();
 
-            _smtpServer = smtpServer;
-            _smtpAuthenticationMethod = smtpAuthentication;
-            _smtpUsername = smtpUsername;
-            _smtpPassword = smtpPassword;
-            _smtpEnableSSL = smtpEnableSSL;
+            this._smtpServer = smtpServer;
+            this._smtpAuthenticationMethod = smtpAuthentication;
+            this._smtpUsername = smtpUsername;
+            this._smtpPassword = smtpPassword;
+            this._smtpEnableSSL = smtpEnableSSL;
             return true;
         }
 
@@ -389,14 +389,14 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>only local stored files can be added with a path</remarks>
         public void AddAttachment(string localPath)
         {
-            EnsureNotDisposed();
-            _attachments.Add(new Attachment(localPath));
+            this.EnsureNotDisposed();
+            this._attachments.Add(new Attachment(localPath));
         }
 
         public void AddAttachment(Stream contentStream, ContentType contentType)
         {
-            EnsureNotDisposed();
-            _attachments.Add(new Attachment(contentStream, contentType));
+            this.EnsureNotDisposed();
+            this._attachments.Add(new Attachment(contentStream, contentType));
         }
 
         /// <summary>Add a single recipient</summary>
@@ -404,8 +404,8 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace</remarks>
         public void AddAddressedUser(UserInfo recipient)
         {
-            EnsureNotDisposed();
-            _addressedUsers.Add(recipient);
+            this.EnsureNotDisposed();
+            this._addressedUsers.Add(recipient);
         }
 
         /// <summary>Add all members of a role to recipient list</summary>
@@ -413,8 +413,8 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace</remarks>
         public void AddAddressedRole(string roleName)
         {
-            EnsureNotDisposed();
-            _addressedRoles.Add(roleName);
+            this.EnsureNotDisposed();
+            this._addressedRoles.Add(roleName);
         }
 
         /// <summary>All bulk mail recipients, derived from role names and individual adressees </summary>
@@ -422,32 +422,32 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>user.Email used for sending, other properties might be used for TokenReplace</remarks>
         public List<UserInfo> Recipients()
         {
-            EnsureNotDisposed();
+            this.EnsureNotDisposed();
 
             var userList = new List<UserInfo>();
             var keyList = new List<string>();
             
-            foreach (string roleName in _addressedRoles)
+            foreach (string roleName in this._addressedRoles)
             {
                 string role = roleName;
-                var roleInfo = RoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
+                var roleInfo = RoleController.Instance.GetRole(this._portalSettings.PortalId, r => r.RoleName == role);
 
-                foreach (UserInfo objUser in RoleController.Instance.GetUsersByRole(_portalSettings.PortalId, roleName))
+                foreach (UserInfo objUser in RoleController.Instance.GetUsersByRole(this._portalSettings.PortalId, roleName))
                 {
                     UserInfo user = objUser;
                     ProfileController.GetUserProfile(ref user);
-                    var userRole = RoleController.Instance.GetUserRole(_portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
+                    var userRole = RoleController.Instance.GetUserRole(this._portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
                     //only add if user role has not expired and effectivedate has been passed
                     if ((userRole.EffectiveDate <= DateTime.Now || Null.IsNull(userRole.EffectiveDate)) && (userRole.ExpiryDate >= DateTime.Now || Null.IsNull(userRole.ExpiryDate)))
                     {
-                        ConditionallyAddUser(objUser, ref keyList, ref userList);
+                        this.ConditionallyAddUser(objUser, ref keyList, ref userList);
                     }
                 }
             }
             
-            foreach (UserInfo objUser in _addressedUsers)
+            foreach (UserInfo objUser in this._addressedUsers)
             {
-                ConditionallyAddUser(objUser, ref keyList, ref userList);
+                this.ConditionallyAddUser(objUser, ref keyList, ref userList);
             }
             
             return userList;
@@ -458,7 +458,7 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>Detailed status report is sent by email to sending user</remarks>
         public int SendMails()
         {
-            EnsureNotDisposed();
+            this.EnsureNotDisposed();
             
             int recipients = 0;
             int messagesSent = 0;
@@ -467,74 +467,74 @@ namespace DotNetNuke.Services.Mail
             try
             {
 				//send to recipients
-                string body = _body;
-                if (BodyFormat == MailFormat.Html) //Add Base Href for any images inserted in to the email.
+                string body = this._body;
+                if (this.BodyFormat == MailFormat.Html) //Add Base Href for any images inserted in to the email.
                 {
-                    var host = PortalAlias.Contains("/") ? PortalAlias.Substring(0, PortalAlias.IndexOf('/')) : PortalAlias;
-                    body = "<html><head><base href='http://" + host + "'><title>" + Subject + "</title></head><body>" + body + "</body></html>";
+                    var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
+                    body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
                 }
-                string subject = Subject;
+                string subject = this.Subject;
                 string startedAt = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-                bool replaceTokens = !SuppressTokenReplace && (_tokenReplace.ContainsTokens(Subject) || _tokenReplace.ContainsTokens(_body));
+                bool replaceTokens = !this.SuppressTokenReplace && (this._tokenReplace.ContainsTokens(this.Subject) || this._tokenReplace.ContainsTokens(this._body));
                 bool individualSubj = false;
                 bool individualBody = false;
 
                 var mailErrors = new StringBuilder();
                 var mailRecipients = new StringBuilder();
 				
-                switch (AddressMethod)
+                switch (this.AddressMethod)
                 {
                     case AddressMethods.Send_TO:
                     case AddressMethods.Send_Relay:
                         //optimization:
                         if (replaceTokens)
                         {
-                            individualBody = (_tokenReplace.Cacheability(_body) == CacheLevel.notCacheable);
-                            individualSubj = (_tokenReplace.Cacheability(Subject) == CacheLevel.notCacheable);
+                            individualBody = (this._tokenReplace.Cacheability(this._body) == CacheLevel.notCacheable);
+                            individualSubj = (this._tokenReplace.Cacheability(this.Subject) == CacheLevel.notCacheable);
                             if (!individualBody)
                             {
-                                body = _tokenReplace.ReplaceEnvironmentTokens(body);
+                                body = this._tokenReplace.ReplaceEnvironmentTokens(body);
                             }
                             if (!individualSubj)
                             {
-                                subject = _tokenReplace.ReplaceEnvironmentTokens(subject);
+                                subject = this._tokenReplace.ReplaceEnvironmentTokens(subject);
                             }
                         }
-                        foreach (UserInfo user in Recipients())
+                        foreach (UserInfo user in this.Recipients())
                         {
                             recipients += 1;
                             if (individualBody || individualSubj)
                             {
-                                _tokenReplace.User = user;
-                                _tokenReplace.AccessingUser = user;
+                                this._tokenReplace.User = user;
+                                this._tokenReplace.AccessingUser = user;
                                 if (individualBody)
                                 {
-                                    body = _tokenReplace.ReplaceEnvironmentTokens(_body);
+                                    body = this._tokenReplace.ReplaceEnvironmentTokens(this._body);
                                 }
                                 if (individualSubj)
                                 {
-                                    subject = _tokenReplace.ReplaceEnvironmentTokens(Subject);
+                                    subject = this._tokenReplace.ReplaceEnvironmentTokens(this.Subject);
                                 }
                             }
-                            string recipient = AddressMethod == AddressMethods.Send_TO ? user.Email : RelayEmailAddress;
+                            string recipient = this.AddressMethod == AddressMethods.Send_TO ? user.Email : this.RelayEmailAddress;
 
-                            string mailError = Mail.SendMail(_sendingUser.Email,
+                            string mailError = Mail.SendMail(this._sendingUser.Email,
                                                                 recipient,
                                                                 "",
                                                                 "",
-                                                                ReplyTo.Email,
-                                                                Priority,
+                                                                this.ReplyTo.Email,
+                                                                this.Priority,
                                                                 subject,
-                                                                BodyFormat,
+                                                                this.BodyFormat,
                                                                 Encoding.UTF8,
                                                                 body,
-																LoadAttachments(),
-                                                                _smtpServer,
-                                                                _smtpAuthenticationMethod,
-                                                                _smtpUsername,
-                                                                _smtpPassword,
-                                                                _smtpEnableSSL);
+																this.LoadAttachments(),
+                                                                this._smtpServer,
+                                                                this._smtpAuthenticationMethod,
+                                                                this._smtpUsername,
+                                                                this._smtpPassword,
+                                                                this._smtpEnableSSL);
                             if (!string.IsNullOrEmpty(mailError))
                             {
                                 mailErrors.Append(mailError);
@@ -544,7 +544,7 @@ namespace DotNetNuke.Services.Mail
                             else
                             {
                                 mailRecipients.Append(user.Email);
-                                mailRecipients.Append(BodyFormat == MailFormat.Html ? "<br />" : Environment.NewLine);
+                                mailRecipients.Append(this.BodyFormat == MailFormat.Html ? "<br />" : Environment.NewLine);
                                 messagesSent += 1;
                             }
                         }
@@ -553,12 +553,12 @@ namespace DotNetNuke.Services.Mail
                     case AddressMethods.Send_BCC:
                         var distributionList = new StringBuilder();
                         messagesSent = Null.NullInteger;
-                        foreach (UserInfo user in Recipients())
+                        foreach (UserInfo user in this.Recipients())
                         {
                             recipients += 1;
                             distributionList.Append(user.Email + "; ");
                             mailRecipients.Append(user.Email);
-                            mailRecipients.Append(BodyFormat == MailFormat.Html ? "<br />" : Environment.NewLine);
+                            mailRecipients.Append(this.BodyFormat == MailFormat.Html ? "<br />" : Environment.NewLine);
                         }
 
                         if (distributionList.Length > 2)
@@ -567,30 +567,30 @@ namespace DotNetNuke.Services.Mail
                             {
 								//no access to User properties possible!
                                 var tr = new TokenReplace(Scope.Configuration);
-                                body = tr.ReplaceEnvironmentTokens(_body);
-                                subject = tr.ReplaceEnvironmentTokens(Subject);
+                                body = tr.ReplaceEnvironmentTokens(this._body);
+                                subject = tr.ReplaceEnvironmentTokens(this.Subject);
                             }
                             else
                             {
-                                body = _body;
-                                subject = Subject;
+                                body = this._body;
+                                subject = this.Subject;
                             }
-                            string mailError = Mail.SendMail(_sendingUser.Email,
-                                                       _sendingUser.Email,
+                            string mailError = Mail.SendMail(this._sendingUser.Email,
+                                                       this._sendingUser.Email,
                                                        "",
                                                        distributionList.ToString(0, distributionList.Length - 2),
-                                                       ReplyTo.Email,
-                                                       Priority,
+                                                       this.ReplyTo.Email,
+                                                       this.Priority,
                                                        subject,
-                                                       BodyFormat,
+                                                       this.BodyFormat,
                                                        Encoding.UTF8,
                                                        body,
-													   LoadAttachments(),
-                                                       _smtpServer,
-                                                       _smtpAuthenticationMethod,
-                                                       _smtpUsername,
-                                                       _smtpPassword,
-                                                       _smtpEnableSSL);
+													   this.LoadAttachments(),
+                                                       this._smtpServer,
+                                                       this._smtpAuthenticationMethod,
+                                                       this._smtpUsername,
+                                                       this._smtpPassword,
+                                                       this._smtpEnableSSL);
                             if (mailError == string.Empty)
                             {
                                 messagesSent = 1;
@@ -607,7 +607,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     mailRecipients = new StringBuilder();
                 }
-                SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
+                this.SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
             }
             catch (Exception exc) //send mail failure
             {
@@ -617,7 +617,7 @@ namespace DotNetNuke.Services.Mail
             }
             finally
             {
-				foreach (var attachment in _attachments)
+				foreach (var attachment in this._attachments)
 				{
 					attachment.Dispose();
 				}
@@ -628,15 +628,15 @@ namespace DotNetNuke.Services.Mail
         /// <summary>Wrapper for Function SendMails</summary>
         public void Send()
         {
-            EnsureNotDisposed();
-            SendMails();
+            this.EnsureNotDisposed();
+            this.SendMails();
         }
 		
 		#endregion
 
         private void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 throw new ObjectDisposedException("SharedDictionary");
             }
@@ -644,21 +644,21 @@ namespace DotNetNuke.Services.Mail
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
                     //get rid of managed resources
-                    foreach (Attachment attachment in _attachments)
+                    foreach (Attachment attachment in this._attachments)
                     {
                         attachment.Dispose();
-                        _isDisposed = true;
+                        this._isDisposed = true;
                     }
                 }
                 // get rid of unmanaged resources
@@ -667,7 +667,7 @@ namespace DotNetNuke.Services.Mail
 
         ~SendTokenizedBulkEmail()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
     }
 }

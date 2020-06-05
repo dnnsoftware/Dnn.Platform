@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage GetItems()
         {
-            return GetItems(null);
+            return this.GetItems(null);
         }
         
         [DnnAuthorize]
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var userFolder = _folderManager.GetUserFolder(UserInfo);
+                var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
                 var extensions = new List<string>();
 
                 if (!string.IsNullOrEmpty(fileExtensions))
@@ -46,18 +46,18 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderStructure = new Item
                 {
-                    children = GetChildren(userFolder, extensions),
+                    children = this.GetChildren(userFolder, extensions),
                     folder = true,
                     id = userFolder.FolderID,
                     name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, new List<Item> { folderStructure });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new List<Item> { folderStructure });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var everything = new List<Item>();
 
-            var folders = _folderManager.GetFolders(folder);
+            var folders = this._folderManager.GetFolders(folder);
 
             foreach (var currentFolder in folders)
             {
@@ -76,11 +76,11 @@ namespace DotNetNuke.Web.InternalServices
                     name = currentFolder.DisplayName ?? currentFolder.FolderName,
                     folder = true,
                     parentId = folder.FolderID,
-                    children = GetChildren(currentFolder, extensions)
+                    children = this.GetChildren(currentFolder, extensions)
                 });
             }
 
-            var files = _folderManager.GetFiles(folder);
+            var files = this._folderManager.GetFiles(folder);
 
             foreach (var file in files)
             {
@@ -93,7 +93,7 @@ namespace DotNetNuke.Web.InternalServices
                         name = file.FileName,
                         folder = false,
                         parentId = file.FolderId,
-                        thumb_url = GetThumbUrl(file),
+                        thumb_url = this.GetThumbUrl(file),
                         type = GetTypeName(file),
                         size = GetFileSize(file.Size),
                         modified = GetModifiedTime(file.LastModificationTime)
@@ -119,7 +119,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var fileIcon = IconController.IconURL("Ext" + file.Extension, "32x32");
-            if (!System.IO.File.Exists(Request.GetHttpContext().Server.MapPath(fileIcon)))
+            if (!System.IO.File.Exists(this.Request.GetHttpContext().Server.MapPath(fileIcon)))
             {
                 fileIcon = IconController.IconURL("File", "32x32");
             }

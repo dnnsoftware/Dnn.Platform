@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Configuration.ModuleSettings;
+                return this.ModuleContext.Configuration.ModuleSettings;
             }
         }
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Configuration.TabModuleSettings;
+                return this.ModuleContext.Configuration.TabModuleSettings;
             }
         }
 

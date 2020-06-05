@@ -26,12 +26,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get
             {
-                if (_properties != null && _properties.ContainsKey(name))
+                if (this._properties != null && this._properties.ContainsKey(name))
                 {
-                    return _properties[name];
+                    return this._properties[name];
                 }
 
-                return (Capabilities != null && Capabilities.ContainsKey(name)) ? Capabilities[name] : string.Empty;
+                return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
             }
         }
 
@@ -42,39 +42,39 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// </summary>
         public AspNetClientCapability(string userAgent, HttpCapabilitiesBase browserCaps)
         {
-            UserAgent = userAgent;
+            this.UserAgent = userAgent;
 
             if (browserCaps != null)
             {
-                ID = browserCaps.Id;
-                ScreenResolutionWidthInPixels = browserCaps.ScreenPixelsWidth;
-                ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
-                IsTouchScreen = false;
-                BrowserName = browserCaps.Browser;
+                this.ID = browserCaps.Id;
+                this.ScreenResolutionWidthInPixels = browserCaps.ScreenPixelsWidth;
+                this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
+                this.IsTouchScreen = false;
+                this.BrowserName = browserCaps.Browser;
                 if(browserCaps.Capabilities != null)
                 { 
-                    Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
+                    this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
                         .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));
                 }
                 else
                 {
-                    Capabilities = new Dictionary<string, string>();
+                    this.Capabilities = new Dictionary<string, string>();
                 }
-                SupportsFlash = false;
-                HtmlPreferedDTD = null;
+                this.SupportsFlash = false;
+                this.HtmlPreferedDTD = null;
 
-                if (UserAgent.Length < 4)
+                if (this.UserAgent.Length < 4)
                 {
                     return;
                 }
 
-                var lowerAgent = UserAgent.ToLowerInvariant();
-                IsMobile = browserCaps.IsMobileDevice || GetIfMobile(lowerAgent);
-                IsTablet = GetIfTablet(lowerAgent);
+                var lowerAgent = this.UserAgent.ToLowerInvariant();
+                this.IsMobile = browserCaps.IsMobileDevice || GetIfMobile(lowerAgent);
+                this.IsTablet = GetIfTablet(lowerAgent);
 
                 try
                 {
-                    DetectOperatingSystem(lowerAgent, Capabilities);
+                    DetectOperatingSystem(lowerAgent, this.Capabilities);
                 }
                 catch (Exception ex)
                 {
@@ -96,27 +96,27 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// </summary>
         public AspNetClientCapability(IDictionary<string, string> properties)
         {
-            _properties = properties;
+            this._properties = properties;
 
-            if (_properties != null)
+            if (this._properties != null)
             {
                 // Set Lite properties
-                ID = GetStringValue(_properties, "Id");
-                IsMobile = GetBoolValue(_properties, "IsMobile");
-                ScreenResolutionWidthInPixels = GetIntValue(_properties, "ScreenPixelsWidth");
-                ScreenResolutionHeightInPixels = GetIntValue(_properties, "ScreenPixelsHeight");
+                this.ID = GetStringValue(this._properties, "Id");
+                this.IsMobile = GetBoolValue(this._properties, "IsMobile");
+                this.ScreenResolutionWidthInPixels = GetIntValue(this._properties, "ScreenPixelsWidth");
+                this.ScreenResolutionHeightInPixels = GetIntValue(this._properties, "ScreenPixelsHeight");
                 // Set Premium properties
-                IsTablet = GetBoolValue(_properties, "IsTablet");
-                IsTouchScreen = GetBoolValue(_properties, "HasTouchScreen");
-                BrowserName = GetStringValue(_properties, "BrowserName");
-                Capabilities = GetCapabilities(_properties);
+                this.IsTablet = GetBoolValue(this._properties, "IsTablet");
+                this.IsTouchScreen = GetBoolValue(this._properties, "HasTouchScreen");
+                this.BrowserName = GetStringValue(this._properties, "BrowserName");
+                this.Capabilities = GetCapabilities(this._properties);
 
-                SupportsFlash = false;
-                HtmlPreferedDTD = null;
+                this.SupportsFlash = false;
+                this.HtmlPreferedDTD = null;
 
                 //set IsMobile to false when IsTablet is true.
-                if (IsTablet)
-                    IsMobile = false;
+                if (this.IsTablet)
+                    this.IsMobile = false;
             }
         }
 

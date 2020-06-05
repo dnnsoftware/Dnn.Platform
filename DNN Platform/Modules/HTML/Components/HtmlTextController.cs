@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Html
         protected INavigationManager NavigationManager { get; }
         public HtmlTextController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Methods
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.Html
             _htmlTextUserController.DeleteHtmlTextUsers();
 
             // ensure we have latest htmltext object loaded
-            objHtmlText = GetHtmlText(objHtmlText.ModuleID, objHtmlText.ItemID);
+            objHtmlText = this.GetHtmlText(objHtmlText.ModuleID, objHtmlText.ItemID);
 
             // build collection of users to notify
             var objWorkflow = new WorkflowStateController();
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.Html
                                                            Localization.LocalSharedResourceFile);
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
-                    strBody = strBody.Replace("[URL]", NavigationManager.NavigateURL(objModule.TabID));
+                    strBody = strBody.Replace("[URL]", this.NavigationManager.NavigateURL(objModule.TabID));
                     strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
 
                     // process user notification collection
@@ -238,7 +238,7 @@ namespace DotNetNuke.Modules.Html
                         (?<domain>(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+))?
                         (?<portalRoot>" + portalRoot + "))";
 
-            var matchEvaluator = new MatchEvaluator(ReplaceWithRootToken);
+            var matchEvaluator = new MatchEvaluator(this.ReplaceWithRootToken);
             var exp = RegexUtils.GetCachedRegex(regex, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
             return exp.Replace(content, matchEvaluator);
         }
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.Html
                                         ? workflowStateController.GetLastWorkflowStateID(workflowId)
                                         : workflowStateController.GetFirstWorkflowStateID(workflowId);
                     // update object
-                    UpdateHtmlText(htmlText, GetMaximumVersionHistory(htmlText.PortalID));
+                    this.UpdateHtmlText(htmlText, this.GetMaximumVersionHistory(htmlText.PortalID));
 
                     // get object again
                     htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, false));
@@ -545,7 +545,7 @@ namespace DotNetNuke.Modules.Html
             {
                 if (htmlContent.WorkflowName != "[REPAIR_WORKFLOW]")
                 {
-                    HtmlTextInfo objContent = GetTopHtmlText(htmlContent.ModuleID, false, htmlContent.WorkflowID);
+                    HtmlTextInfo objContent = this.GetTopHtmlText(htmlContent.ModuleID, false, htmlContent.WorkflowID);
                     if (objContent != null)
                     {
                         if (objContent.StateID == _workflowStateController.GetLastWorkflowStateID(htmlContent.WorkflowID))
@@ -597,7 +597,7 @@ namespace DotNetNuke.Modules.Html
             objLogs.AddHtmlTextLog(logInfo);
 
             // create user notifications
-            CreateUserNotifications(htmlContent);
+            this.CreateUserNotifications(htmlContent);
 
             // refresh output cache
             ModuleController.SynchronizeModule(htmlContent.ModuleID);
@@ -627,7 +627,7 @@ namespace DotNetNuke.Modules.Html
                         //Get All Modules on the current Tab
                         foreach (var kvp in ModuleController.Instance.GetTabModules(ObjectID))
                         {
-                            ClearModuleSettings(kvp.Value);
+                            this.ClearModuleSettings(kvp.Value);
                         }
                     }
                     break;
@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.Html
                         //Get All Modules in the current Site
                         foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(ObjectID))
                         {
-                            ClearModuleSettings(objModule);
+                            this.ClearModuleSettings(objModule);
                         }
                     }
                     break;
@@ -718,13 +718,13 @@ namespace DotNetNuke.Modules.Html
             string xml = "";
 
             ModuleInfo module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            int workflowID = GetWorkflow(moduleId, module.TabID, module.PortalID).Value;
+            int workflowID = this.GetWorkflow(moduleId, module.TabID, module.PortalID).Value;
 
-            HtmlTextInfo content = GetTopHtmlText(moduleId, true, workflowID);
+            HtmlTextInfo content = this.GetTopHtmlText(moduleId, true, workflowID);
             if ((content != null))
             {
                 xml += "<htmltext>";
-                xml += "<content>" + XmlUtils.XMLEncode(TokeniseLinks(content.Content, module.PortalID)) + "</content>";
+                xml += "<content>" + XmlUtils.XMLEncode(this.TokeniseLinks(content.Content, module.PortalID)) + "</content>";
                 xml += "</htmltext>";
             }
 
@@ -745,7 +745,7 @@ namespace DotNetNuke.Modules.Html
         {
             ModuleInfo module = ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, true);
             var workflowStateController = new WorkflowStateController();
-            int workflowID = GetWorkflow(ModuleID, module.TabID, module.PortalID).Value;
+            int workflowID = this.GetWorkflow(ModuleID, module.TabID, module.PortalID).Value;
             XmlNode xml = Globals.GetContent(Content, "htmltext");
 
             var htmlContent = new HtmlTextInfo();
@@ -755,17 +755,17 @@ namespace DotNetNuke.Modules.Html
             if (objVersion >= new Version(5, 1, 0))
             {
                 // current module content
-                htmlContent.Content = DeTokeniseLinks(xml.SelectSingleNode("content").InnerText, module.PortalID);
+                htmlContent.Content = this.DeTokeniseLinks(xml.SelectSingleNode("content").InnerText, module.PortalID);
             }
             else
             {
                 // legacy module content
-                htmlContent.Content = DeTokeniseLinks(xml.SelectSingleNode("desktophtml").InnerText, module.PortalID);
+                htmlContent.Content = this.DeTokeniseLinks(xml.SelectSingleNode("desktophtml").InnerText, module.PortalID);
             }
             htmlContent.WorkflowID = workflowID;
             htmlContent.StateID = workflowStateController.GetFirstWorkflowStateID(workflowID);
             // import
-            UpdateHtmlText(htmlContent, GetMaximumVersionHistory(module.PortalID));
+            this.UpdateHtmlText(htmlContent, this.GetMaximumVersionHistory(module.PortalID));
         }
 
         #endregion
@@ -774,9 +774,9 @@ namespace DotNetNuke.Modules.Html
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
-            var workflowId = GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
+            var workflowId = this.GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
             var searchDocuments = new List<SearchDocument>();
-            var htmlTextInfo = GetTopHtmlText(modInfo.ModuleID, true, workflowId);
+            var htmlTextInfo = this.GetTopHtmlText(modInfo.ModuleID, true, workflowId);
             var repo = new HtmlModuleSettingsRepository();
             var settings = repo.GetSettings(modInfo);
 
@@ -853,7 +853,7 @@ namespace DotNetNuke.Modules.Html
                     break;
 
                 case "06.02.00":
-                    AddNotificationTypes();
+                    this.AddNotificationTypes();
                     break;
             }
 

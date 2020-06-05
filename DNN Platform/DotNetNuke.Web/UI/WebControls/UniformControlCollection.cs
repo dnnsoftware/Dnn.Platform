@@ -18,12 +18,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         internal UniformControlCollection(TOwner owner)
         {
-            _owner = owner;
+            this._owner = owner;
         }
 
         public void AddAt(int index, TChildren childControl)
         {
-            _owner.Controls.AddAt(index, childControl);
+            this._owner.Controls.AddAt(index, childControl);
         }
 
         ///<summary>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</param>
         public int IndexOf(TChildren item)
         {
-            return _owner.Controls.IndexOf(item);
+            return this._owner.Controls.IndexOf(item);
         }
 
         ///<summary>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public void Insert(int index, TChildren item)
         {
-            _owner.Controls.AddAt(index, item);
+            this._owner.Controls.AddAt(index, item);
         }
 
         ///<summary>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public void RemoveAt(int index)
         {
-            _owner.Controls.RemoveAt(index);
+            this._owner.Controls.RemoveAt(index);
         }
 
         ///<summary>
@@ -93,12 +93,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _owner.Controls[index] as TChildren;
+                return this._owner.Controls[index] as TChildren;
             }
             set
             {
-                RemoveAt(index);
-                AddAt(index, value);
+                this.RemoveAt(index);
+                this.AddAt(index, value);
             }
         }
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _owner.HasControls() ? _owner.Controls.Count : 0;
+                return this._owner.HasControls() ? this._owner.Controls.Count : 0;
             }
         }
 
@@ -130,7 +130,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public bool Remove(TChildren item)
         {
-            _owner.Controls.Remove(item);
+            this._owner.Controls.Remove(item);
             return true;
         }
 
@@ -157,7 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///<filterpriority>1</filterpriority>
         public IEnumerator<TChildren> GetEnumerator()
         {
-            var enumerator = _owner.Controls.GetEnumerator();
+            var enumerator = this._owner.Controls.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current as TChildren;
@@ -172,9 +172,9 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public void Clear()
         {
-            if (_owner.HasControls())
+            if (this._owner.HasControls())
             {
-                _owner.Controls.Clear();
+                this._owner.Controls.Clear();
             }
         }
 
@@ -189,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public void Add(TChildren item)
         {
-            _owner.Controls.Add(item);
+            this._owner.Controls.Add(item);
         }
 
         ///<summary>
@@ -215,7 +215,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</exception>
         public void CopyTo(TChildren[] array, int arrayIndex)
         {
-            var enumerator = GetEnumerator();
+            var enumerator = this.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 array.SetValue(enumerator.Current, Math.Max(Interlocked.Increment(ref arrayIndex), arrayIndex - 1));
@@ -233,7 +233,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///</param>
         public bool Contains(TChildren item)
         {
-            return _owner.Controls.Contains(item);
+            return this._owner.Controls.Contains(item);
         }
 
         ///<summary>
@@ -245,12 +245,12 @@ namespace DotNetNuke.Web.UI.WebControls
         ///<filterpriority>2</filterpriority>
         private IEnumerator EnumerableGetEnumerator()
         {
-            return _owner.Controls.GetEnumerator();
+            return this._owner.Controls.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return EnumerableGetEnumerator();
+            return this.EnumerableGetEnumerator();
         }
 
     }

@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private PortalInfo Portal
         {
-            get { return PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(PortalId); }
+            get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnSkinComboBox()
         {
-            PortalId = Null.NullInteger;
+            this.PortalId = Null.NullInteger;
         }
 
         #endregion
@@ -59,33 +59,33 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            DataTextField = "Key";
-            DataValueField = "Value";
+            this.DataTextField = "Key";
+            this.DataValueField = "Value";
 
-            if (!Page.IsPostBack && !string.IsNullOrEmpty(RootPath))
+            if (!this.Page.IsPostBack && !string.IsNullOrEmpty(this.RootPath))
             {
-                DataSource = SkinController.GetSkins(Portal, RootPath, Scope)
+                this.DataSource = SkinController.GetSkins(this.Portal, this.RootPath, this.Scope)
                                            .ToDictionary(skin => skin.Key, skin => skin.Value);
-                DataBind(SelectedValue);
+                this.DataBind(this.SelectedValue);
 
-                if (IncludeNoneSpecificItem)
+                if (this.IncludeNoneSpecificItem)
                 {
-                    InsertItem(0, NoneSpecificText, string.Empty);
+                    this.InsertItem(0, this.NoneSpecificText, string.Empty);
                 }
             }
 
-            AttachEvents();
+            this.AttachEvents();
         }
 
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
             //do not select item during data binding, item will select later
-            var selectedValue = SelectedValue;
-            SelectedValue = string.Empty;
+            var selectedValue = this.SelectedValue;
+            this.SelectedValue = string.Empty;
 
             base.PerformDataBinding(dataSource);
 
-            SelectedValue = selectedValue;
+            this.SelectedValue = selectedValue;
         }
 
         #endregion
@@ -99,19 +99,19 @@ namespace DotNetNuke.Web.UI.WebControls
                 return;
             }
 
-            Attributes.Add("PortalPath", Portal != null ? Portal.HomeDirectory : string.Empty);
-            Attributes.Add("HostPath", Globals.HostPath);
+            this.Attributes.Add("PortalPath", this.Portal != null ? this.Portal.HomeDirectory : string.Empty);
+            this.Attributes.Add("HostPath", Globals.HostPath);
 
-            OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
+            this.OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
             var indexChangedMethod = @"function selectedIndexChangedMethod(sender, eventArgs){
     var value = eventArgs.get_item().get_value();
     value = value.replace('[L]', sender.get_attributes().getAttribute('PortalPath'));
     value = value.replace('[G]', sender.get_attributes().getAttribute('HostPath'));
     sender.get_inputDomElement().title = value;
 }";
-            Page.ClientScript.RegisterClientScriptBlock(GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
+            this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
 
-            foreach (RadComboBoxItem item in Items)
+            foreach (RadComboBoxItem item in this.Items)
             {
                 if (string.IsNullOrEmpty(item.Value))
                 {
@@ -119,15 +119,15 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 var tooltip = item.Value.Replace("[G]", Globals.HostPath);
-                if (Portal != null)
+                if (this.Portal != null)
                 {
-                    tooltip = tooltip.Replace("[L]", Portal.HomeDirectory);
+                    tooltip = tooltip.Replace("[L]", this.Portal.HomeDirectory);
                 }
 
                 item.ToolTip = tooltip;
-                if (item.Value.Equals(SelectedValue))
+                if (item.Value.Equals(this.SelectedValue))
                 {
-                    ToolTip = tooltip;
+                    this.ToolTip = tooltip;
                 }
             }
         }

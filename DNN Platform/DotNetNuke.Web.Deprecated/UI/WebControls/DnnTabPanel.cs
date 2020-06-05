@@ -26,12 +26,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_TelerikTabs == null)
+                if (this._TelerikTabs == null)
                 {
-                    _TelerikTabs = new RadTabStrip();
+                    this._TelerikTabs = new RadTabStrip();
                 }
 
-                return _TelerikTabs;
+                return this._TelerikTabs;
             }
         }
 
@@ -39,12 +39,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_TelerikPages == null)
+                if (this._TelerikPages == null)
                 {
-                    _TelerikPages = new RadMultiPage();
+                    this._TelerikPages = new RadMultiPage();
                 }
 
-                return _TelerikPages;
+                return this._TelerikPages;
             }
         }
 
@@ -52,12 +52,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_Tabs == null)
+                if (this._Tabs == null)
                 {
-                    _Tabs = new DnnTabCollection(this);
+                    this._Tabs = new DnnTabCollection(this);
                 }
 
-                return _Tabs;
+                return this._Tabs;
             }
         }
 
@@ -68,30 +68,30 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
-            TelerikTabs.ID = ID + "_Tabs";
-            TelerikTabs.Skin = "Office2007";
-            TelerikTabs.EnableEmbeddedSkins = true;
+            this.TelerikTabs.ID = this.ID + "_Tabs";
+            this.TelerikTabs.Skin = "Office2007";
+            this.TelerikTabs.EnableEmbeddedSkins = true;
 
-            TelerikPages.ID = ID + "_Pages";
+            this.TelerikPages.ID = this.ID + "_Pages";
 
-            TelerikTabs.MultiPageID = TelerikPages.ID;
+            this.TelerikTabs.MultiPageID = this.TelerikPages.ID;
 
-            Controls.Add(TelerikTabs);
-            Controls.Add(TelerikPages);
+            this.Controls.Add(this.TelerikTabs);
+            this.Controls.Add(this.TelerikPages);
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            if ((!Page.IsPostBack))
+            if ((!this.Page.IsPostBack))
             {
-                TelerikTabs.SelectedIndex = 0;
-                TelerikPages.SelectedIndex = 0;
+                this.TelerikTabs.SelectedIndex = 0;
+                this.TelerikPages.SelectedIndex = 0;
 
                 int idIndex = 0;
 
-                foreach (DnnTab t in Tabs)
+                foreach (DnnTab t in this.Tabs)
                 {
                     RadTab tab = new RadTab();
                     tab.TabTemplate = t.Header;
@@ -101,8 +101,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     tab.PageViewID = "PV_" + idIndex;
                     pageView.ID = "PV_" + idIndex;
 
-                    TelerikTabs.Tabs.Add(tab);
-                    TelerikPages.PageViews.Add(pageView);
+                    this.TelerikTabs.Tabs.Add(tab);
+                    this.TelerikPages.PageViews.Add(pageView);
 
                     idIndex = idIndex + 1;
                 }

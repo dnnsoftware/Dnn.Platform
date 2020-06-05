@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.InternalServices
         #region Constructor
         public ContentWorkflowServiceController()
         {
-            _workflowEngine = WorkflowEngine.Instance;
+            this._workflowEngine = WorkflowEngine.Instance;
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
                     string[] parameters = notification.Context.Split(':');
@@ -52,11 +52,11 @@ namespace DotNetNuke.Web.InternalServices
                                                ContentItemId = int.Parse(parameters[0]),
                                                CurrentStateId = int.Parse(parameters[2]),
                                                Message = new StateTransactionMessage (),
-                                               UserId = UserInfo.UserID
+                                               UserId = this.UserInfo.UserID
                                            };
-                    _workflowEngine.DiscardState(stateTransiction);
+                    this._workflowEngine.DiscardState(stateTransiction);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
             }
             catch (Exception exc)
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.InternalServices
                 Exceptions.LogException(exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
                     string[] parameters = notification.Context.Split(':');
@@ -88,11 +88,11 @@ namespace DotNetNuke.Web.InternalServices
                                                 ContentItemId = int.Parse(parameters[0]),
                                                 CurrentStateId = int.Parse(parameters[2]),
                                                 Message = new StateTransactionMessage(),
-                                                UserId = UserInfo.UserID
+                                                UserId = this.UserInfo.UserID
                                             };
-                    _workflowEngine.CompleteState(stateTransiction);
+                    this._workflowEngine.CompleteState(stateTransiction);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
             }
             catch (Exception exc)
@@ -100,7 +100,7 @@ namespace DotNetNuke.Web.InternalServices
                 Exceptions.LogException(exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
 
         }
 
@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
                     }
 
                     var source = notification.Context;
@@ -129,20 +129,20 @@ namespace DotNetNuke.Web.InternalServices
                         parameters = parameters.ToList().Skip(1).ToArray();
                     }
 
-                    var workflow = ContentWorkflowController.Instance.GetDefaultWorkflow(PortalSettings.PortalId);
+                    var workflow = ContentWorkflowController.Instance.GetDefaultWorkflow(this.PortalSettings.PortalId);
                     var workflowSource = ContentWorkflowController.Instance.GetWorkflowSource(workflow.WorkflowID, source);
                     if (workflowSource == null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
                     var sourceAction = Reflection.CreateInstance(Reflection.CreateType(workflowSource.SourceType)) as IContentWorkflowAction;
                     if (sourceAction == null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) }); 
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) }); 
                 }
             }
             catch (Exception exc)
@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.InternalServices
                 Exceptions.LogException(exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
 
         }
         #endregion

@@ -25,15 +25,15 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ctlInclude.AddTag = AddTag;
-            ctlInclude.FilePath = FilePath;
-            ctlInclude.ForceBundle = ForceBundle;
-            ctlInclude.ForceProvider = ForceProvider;
-            ctlInclude.ForceVersion = ForceVersion;
-            ctlInclude.Name = Name;
-            ctlInclude.PathNameAlias = PathNameAlias;
-            ctlInclude.Priority = Priority;
-            ctlInclude.Version = Version;
+            this.ctlInclude.AddTag = this.AddTag;
+            this.ctlInclude.FilePath = this.FilePath;
+            this.ctlInclude.ForceBundle = this.ForceBundle;
+            this.ctlInclude.ForceProvider = this.ForceProvider;
+            this.ctlInclude.ForceVersion = this.ForceVersion;
+            this.ctlInclude.Name = this.Name;
+            this.ctlInclude.PathNameAlias = this.PathNameAlias;
+            this.ctlInclude.Priority = this.Priority;
+            this.ctlInclude.Version = this.Version;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Installer.Packages
         ///-----------------------------------------------------------------------------
         public PackageCreatedEventArgs(PackageInfo package)
         {
-            _Package = package;
+            this._Package = package;
         }
 
         ///-----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return _Package;
+                return this._Package;
             }
         }
     }

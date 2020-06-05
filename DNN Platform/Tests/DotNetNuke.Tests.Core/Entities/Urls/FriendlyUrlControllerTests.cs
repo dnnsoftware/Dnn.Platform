@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Core
         [SetUp]
         public void SetUp()
         {
-            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this._mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }
 
         [Test]

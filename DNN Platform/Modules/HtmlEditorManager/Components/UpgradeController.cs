@@ -67,23 +67,23 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
                         break;
                     case "09.01.01":
-                        if (RadEditorProviderInstalled())
+                        if (this.RadEditorProviderInstalled())
                         {
                             UpdateRadCfgFiles();
                         }
-                        if (TelerikAssemblyExists())
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateWebConfigFile();
                         }
                         break;
                     case "09.02.00":
-                        if (TelerikAssemblyExists())
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
                         break;
                     case "09.02.01":
-                        if (TelerikAssemblyExists())
+                        if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
                         }

@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Analytics
 
         public AnalyticsConfiguration GetConfig()
         {
-            return AnalyticsConfiguration.GetConfig(EngineName);
+            return AnalyticsConfiguration.GetConfig(this.EngineName);
         }
 
         public virtual string RenderCustomScript(AnalyticsConfiguration config)

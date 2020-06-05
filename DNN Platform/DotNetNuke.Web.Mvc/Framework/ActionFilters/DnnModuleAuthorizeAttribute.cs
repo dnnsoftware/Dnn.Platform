@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         public DnnModuleAuthorizeAttribute()
         {
-            AccessLevel = SecurityAccessLevel.Host;
+            this.AccessLevel = SecurityAccessLevel.Host;
         }
 
         public SecurityAccessLevel AccessLevel { get; set; }
@@ -27,9 +27,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (_module != null)
+            if (this._module != null)
             {
-                return HasModuleAccess();
+                return this.HasModuleAccess();
             }
 
             return false;
@@ -44,14 +44,14 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
 
-            _module = controller.ModuleContext.Configuration;
+            this._module = controller.ModuleContext.Configuration;
 
             base.OnAuthorization(filterContext);
         }
 
         protected virtual bool HasModuleAccess()
         {
-            return ModulePermissionController.HasModuleAccess(AccessLevel, PermissionKey, _module);
+            return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, this._module);
         }
     }
 }

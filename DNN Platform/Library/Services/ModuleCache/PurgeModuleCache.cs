@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.ModuleCache
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PurgeModuleCache));
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
         }
 
         public override void DoWork()
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.ModuleCache
                         foreach (PortalInfo portal in portals)
                         {
                             kvp.Value.PurgeExpiredItems(portal.PortalID);
-                            ScheduleHistoryItem.AddLogNote(string.Format("Purged Module cache for {0}.  ", kvp.Key));
+                            this.ScheduleHistoryItem.AddLogNote(string.Format("Purged Module cache for {0}.  ", kvp.Key));
                         }
                     }
                     catch (NotSupportedException exc)
@@ -46,16 +46,16 @@ namespace DotNetNuke.Services.ModuleCache
 
                     }
                 }
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
 
-                ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
 
                 //notification that we have errored
-                Errored(ref exc); //REQUIRED
+                this.Errored(ref exc); //REQUIRED
 				
 				//log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL

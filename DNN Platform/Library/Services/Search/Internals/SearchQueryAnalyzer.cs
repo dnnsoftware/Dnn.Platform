@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         public SearchQueryAnalyzer(bool useStemmingFilter)
         {
-            _useStemmingFilter = useStemmingFilter;
+            this._useStemmingFilter = useStemmingFilter;
         }
 
         public override TokenStream TokenStream(string fieldName, TextReader reader)
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Search.Internals
                         )
                     );
 
-            if (!_useStemmingFilter)
+            if (!this._useStemmingFilter)
                 return filter;
 
             return new PorterStemFilter(filter);

@@ -24,11 +24,11 @@ namespace Dnn.PersonaBar.Users.Tests
         [SetUp]
         protected void Setup()
         {
-            ChildSetup();
-            errorResultModel = null;
-            portalSettings = new PortalSettings();
-            portalSettings.PortalId = testPortalId;
-            testPortalId = 0;
+            this.ChildSetup();
+            this.errorResultModel = null;
+            this.portalSettings = new PortalSettings();
+            this.portalSettings.PortalId = this.testPortalId;
+            this.testPortalId = 0;
         }
 
         protected UserInfo GetUser(int userId, bool isDeleted)
@@ -39,14 +39,14 @@ namespace Dnn.PersonaBar.Users.Tests
             userInfo.UserID = userId;
             userInfo.Profile = profile;
             userInfo.IsDeleted = isDeleted;
-            userInfo.PortalID = testPortalId;
+            userInfo.PortalID = this.testPortalId;
             return userInfo;
         }
 
         protected ConsoleResultModel RunCommand(params string[] args)
         {
-            var command = CreateCommand();
-            command.Initialize((new[] { CommandName }.Concat(args)).ToArray(), portalSettings, null, -1);
+            var command = this.CreateCommand();
+            command.Initialize((new[] { this.CommandName }.Concat(args)).ToArray(), this.portalSettings, null, -1);
             return command.Run();
         }
     }

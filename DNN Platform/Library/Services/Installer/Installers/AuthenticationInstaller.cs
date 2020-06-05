@@ -61,16 +61,16 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(Package.PackageID);
+                AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.Package.PackageID);
                 if (authSystem != null)
                 {
                     AuthenticationController.DeleteAuthentication(authSystem);
                 }
-                Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
+                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 		
@@ -100,37 +100,37 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the Authentication Service
-                TempAuthSystem = AuthenticationController.GetAuthenticationServiceByType(AuthSystem.AuthenticationType);
+                this.TempAuthSystem = AuthenticationController.GetAuthenticationServiceByType(this.AuthSystem.AuthenticationType);
 
-                if (TempAuthSystem == null)
+                if (this.TempAuthSystem == null)
                 {
 					//Enable by default
-                    AuthSystem.IsEnabled = true;
+                    this.AuthSystem.IsEnabled = true;
                     bAdd = true;
                 }
                 else
                 {
-                    AuthSystem.AuthenticationID = TempAuthSystem.AuthenticationID;
-                    AuthSystem.IsEnabled = TempAuthSystem.IsEnabled;
+                    this.AuthSystem.AuthenticationID = this.TempAuthSystem.AuthenticationID;
+                    this.AuthSystem.IsEnabled = this.TempAuthSystem.IsEnabled;
                 }
-                AuthSystem.PackageID = Package.PackageID;
+                this.AuthSystem.PackageID = this.Package.PackageID;
                 if (bAdd)
                 {
                     //Add new service
-                    AuthenticationController.AddAuthentication(AuthSystem);
+                    AuthenticationController.AddAuthentication(this.AuthSystem);
                 }
                 else
                 {
 					//Update service
-                    AuthenticationController.UpdateAuthentication(AuthSystem);
+                    AuthenticationController.UpdateAuthentication(this.AuthSystem);
                 }
-                Completed = true;
-                Log.AddInfo(string.Format(Util.AUTHENTICATION_Registered, AuthSystem.AuthenticationType));
+                this.Completed = true;
+                this.Log.AddInfo(string.Format(Util.AUTHENTICATION_Registered, this.AuthSystem.AuthenticationType));
             }
             catch (Exception ex)
             {
             
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
@@ -141,23 +141,23 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            AuthSystem = new AuthenticationInfo();
+            this.AuthSystem = new AuthenticationInfo();
 
             //Get the type
-            AuthSystem.AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", Log, Util.AUTHENTICATION_TypeMissing);
+            this.AuthSystem.AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", this.Log, Util.AUTHENTICATION_TypeMissing);
 
             //Get the SettingsSrc
-            AuthSystem.SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", Log, Util.AUTHENTICATION_SettingsSrcMissing);
+            this.AuthSystem.SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", this.Log, Util.AUTHENTICATION_SettingsSrcMissing);
 
             //Get the LoginSrc
-            AuthSystem.LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", Log, Util.AUTHENTICATION_LoginSrcMissing);
+            this.AuthSystem.LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", this.Log, Util.AUTHENTICATION_LoginSrcMissing);
 
             //Get the LogoffSrc
-            AuthSystem.LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc");
+            this.AuthSystem.LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc");
 
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.AddInfo(Util.AUTHENTICATION_ReadSuccess);
+                this.Log.AddInfo(Util.AUTHENTICATION_ReadSuccess);
             }
         }
 
@@ -170,15 +170,15 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
 			//If Temp Auth System exists then we need to update the DataStore with this 
-            if (TempAuthSystem == null)
+            if (this.TempAuthSystem == null)
             {
 				//No Temp Auth System - Delete newly added system
-                DeleteAuthentiation();
+                this.DeleteAuthentiation();
             }
             else
             {
 				//Temp Auth System - Rollback to Temp
-                AuthenticationController.UpdateAuthentication(TempAuthSystem);
+                AuthenticationController.UpdateAuthentication(this.TempAuthSystem);
             }
         }
 
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            DeleteAuthentiation();
+            this.DeleteAuthentiation();
         }
 		
 		#endregion

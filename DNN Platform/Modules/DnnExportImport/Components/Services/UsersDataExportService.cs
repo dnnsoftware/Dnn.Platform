@@ -31,48 +31,48 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            CheckPoint.Progress += 100;
-            CheckPoint.Completed = true;
-            CheckPoint.TotalItems = 0;
-            CheckPoint.ProcessedItems = 0;
-            CheckPointStageCallback(this);
+            this.CheckPoint.Progress += 100;
+            this.CheckPoint.Completed = true;
+            this.CheckPoint.TotalItems = 0;
+            this.CheckPoint.ProcessedItems = 0;
+            this.CheckPointStageCallback(this);
             //No implementation required in export users child as everything is exported in parent service.
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob)) return;
 
             var pageIndex = 0;
             const int pageSize = Constants.DefaultPageSize;
             var totalUserRolesImported = 0;
             var totalProfilesImported = 0;
             var totalProcessed = 0;
-            var totalUsers = Repository.GetCount<ExportUser>();
+            var totalUsers = this.Repository.GetCount<ExportUser>();
             if (totalUsers == 0)
             {
-                CheckPoint.Completed = true;
-                CheckPointStageCallback(this);
+                this.CheckPoint.Completed = true;
+                this.CheckPointStageCallback(this);
                 return;
             }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             //Skip the import if all the users has been processed already.
-            if (CheckPoint.Stage >= totalPages)
+            if (this.CheckPoint.Stage >= totalPages)
                 return;
 
-            pageIndex = CheckPoint.Stage;
+            pageIndex = this.CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
 
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
+            if (this.CheckPointStageCallback(this)) return;
             var includeProfile = importDto.ExportDto.IncludeProperfileProperties;
             try
             {
-                Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
+                this.Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
                 if (includeProfile)
-                    Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
+                    this.Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
                 var portalId = importJob.PortalId;
                 using (var tableUserProfile = new DataTable("UserProfile"))
                 using (var tableUserRoles = new DataTable("UserRoles"))
@@ -83,20 +83,20 @@ namespace Dnn.ExportImport.Components.Services
                     var dataProvider = DotNetNuke.Data.DataProvider.Instance();
                     while (totalProcessed < totalUsersToBeProcessed)
                     {
-                        if (CheckCancelled(importJob)) return;
-                        var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
+                        if (this.CheckCancelled(importJob)) return;
+                        var users = this.Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                         var tempUserRolesCount = 0;
                         var tempUserProfileCount = 0;
                         try
                         {
                             foreach (var user in users)
                             {
-                                if (CheckCancelled(importJob)) return;
+                                if (this.CheckCancelled(importJob)) return;
                                 //Find the correct userId from the system which was added/updated by UserExportService.
                                 var userId = UserController.GetUserByName(user.Username)?.UserID;
                                 if (userId != null)
                                 {
-                                    var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                                    var userRoles = this.Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                                     foreach (var userRole in userRoles)
                                     {
                                         var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleId, userRole.RoleName);
@@ -120,14 +120,14 @@ namespace Dnn.ExportImport.Components.Services
                                     if (includeProfile)
                                     {
                                         var userProfiles =
-                                            Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
+                                            this.Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
                                         foreach (var userProfile in userProfiles)
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
                                                 userProfile.PropertyDefinitionId, userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1) continue;
                                             var value = userProfile.PropertyValue;
-                                            if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = GetUserPhotoId(portalId, value, user)) == null)
+                                            if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
                                             {
                                                 continue;
                                             }
@@ -161,34 +161,34 @@ namespace Dnn.ExportImport.Components.Services
                                 totalProfilesImported += tempUserProfileCount;
                             }
 
-                            CheckPoint.ProcessedItems += users.Count;
+                            this.CheckPoint.ProcessedItems += users.Count;
                             totalProcessed += users.Count;
-                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
-                            CheckPoint.StageData = null;
+                            this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
+                            this.CheckPoint.StageData = null;
                         }
                         catch (Exception ex)
                         {
-                            Result.AddLogEntry($"Importing Users Data from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
+                            this.Result.AddLogEntry($"Importing Users Data from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
                         }
                         tableUserRoles.Rows.Clear();
                         tableUserProfile.Rows.Clear();
                         pageIndex++;
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
-                        CheckPoint.Stage++;
-                        CheckPoint.StageData = null;
-                        if (CheckPointStageCallback(this)) return;
+                        this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
+                        this.CheckPoint.Stage++;
+                        this.CheckPoint.StageData = null;
+                        if (this.CheckPointStageCallback(this)) return;
                     }
                 }
-                CheckPoint.Completed = true;
-                CheckPoint.Progress = 100;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Progress = 100;
             }
             finally
             {
-                CheckPointStageCallback(this);
-                Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
+                this.CheckPointStageCallback(this);
+                this.Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
                 if (includeProfile)
                 {
-                    Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+                    this.Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
                 }
             }
         }
@@ -205,11 +205,11 @@ namespace Dnn.ExportImport.Components.Services
                     .ToList();
             if (!files.Any()) return null;
             var importUserFolder =
-                Repository.GetItem<ExportFolder>(x => x.UserId == user.UserId);
+                this.Repository.GetItem<ExportFolder>(x => x.UserId == user.UserId);
             if (importUserFolder == null) return null;
             {
                 var profilePicture =
-                    Repository.GetRelatedItems<ExportFile>(importUserFolder.Id)
+                    this.Repository.GetRelatedItems<ExportFile>(importUserFolder.Id)
                         .FirstOrDefault(x => x.FileId == profilePictureId);
                 if (profilePicture != null &&
                     files.Any(x => x.FileName == profilePicture.FileName))
@@ -225,7 +225,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportUser>();
+            return this.Repository.GetCount<ExportUser>();
         }
 
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =

@@ -74,10 +74,10 @@ namespace DotNetNuke.UI.Modules
         /// </remarks>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
-            ID = "ModuleContent";
-            Container = container;
-            _moduleConfiguration = moduleConfiguration;
-            Skin = skin;
+            this.ID = "ModuleContent";
+            this.Container = container;
+            this._moduleConfiguration = moduleConfiguration;
+            this.Skin = skin;
         }
 
         #endregion
@@ -96,8 +96,8 @@ namespace DotNetNuke.UI.Modules
             get
             {
 				//Make sure the Control tree has been created
-                EnsureChildControls();
-                return _control as IModuleControl;
+                this.EnsureChildControls();
+                return this._control as IModuleControl;
             }
         }
 
@@ -127,62 +127,62 @@ namespace DotNetNuke.UI.Modules
 
         private void InjectVersionToTheModuleIfSupported()
         {
-            if (!(_control is IVersionableControl)) return;
+            if (!(this._control is IVersionableControl)) return;
 
-            var versionableControl = _control as IVersionableControl;
-            if (_moduleConfiguration.ModuleVersion != Null.NullInteger)
+            var versionableControl = this._control as IVersionableControl;
+            if (this._moduleConfiguration.ModuleVersion != Null.NullInteger)
             {
-                versionableControl.SetModuleVersion(_moduleConfiguration.ModuleVersion);
+                versionableControl.SetModuleVersion(this._moduleConfiguration.ModuleVersion);
             }
         }
 
         private void InjectModuleContent(Control content)
         {
-            if (_moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
+            if (this._moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
             {
 				//Assign the class - hslice to the Drag-N-Drop Panel
-                CssClass = "hslice";
+                this.CssClass = "hslice";
                 var titleLabel = new Label
                                      {
                                          CssClass = "entry-title Hidden",
-                                         Text = !string.IsNullOrEmpty(_moduleConfiguration.WebSliceTitle) ? _moduleConfiguration.WebSliceTitle : _moduleConfiguration.ModuleTitle
+                                         Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle
                                      };
-                Controls.Add(titleLabel);
+                this.Controls.Add(titleLabel);
 
                 var websliceContainer = new Panel {CssClass = "entry-content"};
                 websliceContainer.Controls.Add(content);
 
                 var expiry = new HtmlGenericControl {TagName = "abbr"};
                 expiry.Attributes["class"] = "endtime";
-                if (!Null.IsNull(_moduleConfiguration.WebSliceExpiryDate))
+                if (!Null.IsNull(this._moduleConfiguration.WebSliceExpiryDate))
                 {
-                    expiry.Attributes["title"] = _moduleConfiguration.WebSliceExpiryDate.ToString("o");
+                    expiry.Attributes["title"] = this._moduleConfiguration.WebSliceExpiryDate.ToString("o");
                     websliceContainer.Controls.Add(expiry);
                 }
-                else if (_moduleConfiguration.EndDate < DateTime.MaxValue)
+                else if (this._moduleConfiguration.EndDate < DateTime.MaxValue)
                 {
-                    expiry.Attributes["title"] = _moduleConfiguration.EndDate.ToString("o");
+                    expiry.Attributes["title"] = this._moduleConfiguration.EndDate.ToString("o");
                     websliceContainer.Controls.Add(expiry);
                 }
 
                 var ttl = new HtmlGenericControl {TagName = "abbr"};
                 ttl.Attributes["class"] = "ttl";
-                if (_moduleConfiguration.WebSliceTTL > 0)
+                if (this._moduleConfiguration.WebSliceTTL > 0)
                 {
-                    ttl.Attributes["title"] = _moduleConfiguration.WebSliceTTL.ToString();
+                    ttl.Attributes["title"] = this._moduleConfiguration.WebSliceTTL.ToString();
                     websliceContainer.Controls.Add(ttl);
                 }
-                else if (_moduleConfiguration.CacheTime > 0)
+                else if (this._moduleConfiguration.CacheTime > 0)
                 {
-                    ttl.Attributes["title"] = (_moduleConfiguration.CacheTime/60).ToString();
+                    ttl.Attributes["title"] = (this._moduleConfiguration.CacheTime/60).ToString();
                     websliceContainer.Controls.Add(ttl);
                 }
 
-                Controls.Add(websliceContainer);
+                this.Controls.Add(websliceContainer);
             }
             else
             {
-                Controls.Add(content);
+                this.Controls.Add(content);
             }
         }
 
@@ -194,10 +194,10 @@ namespace DotNetNuke.UI.Modules
         private bool DisplayContent()
         {
 			//module content visibility options
-            var content = PortalSettings.UserMode != PortalSettings.Mode.Layout;
-            if (Page.Request.QueryString["content"] != null)
+            var content = this.PortalSettings.UserMode != PortalSettings.Mode.Layout;
+            if (this.Page.Request.QueryString["content"] != null)
             {
-                switch (Page.Request.QueryString["Content"].ToLowerInvariant())
+                switch (this.Page.Request.QueryString["Content"].ToLowerInvariant())
                 {
                     case "1":
                     case "true":
@@ -254,33 +254,33 @@ namespace DotNetNuke.UI.Modules
         {
             try
             {
-                if (DisplayContent())
+                if (this.DisplayContent())
                 {
                     //if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !IsVersionRequest())
+                    if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !this.IsVersionRequest())
                     {
 						//attempt to load the cached content
-                        _isCached = TryLoadCached();
+                        this._isCached = this.TryLoadCached();
                     }
-                    if (!_isCached)
+                    if (!this._isCached)
                     {
                     	// load the control dynamically
-                        _control = _moduleControlPipeline.LoadModuleControl(Page, _moduleConfiguration);
+                        this._control = this._moduleControlPipeline.LoadModuleControl(this.Page, this._moduleConfiguration);
                     }
                 }
                 else //content placeholder
                 {
-                    _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
+                    this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
                 }
-                if (Skin != null)
+                if (this.Skin != null)
                 {
 				
                 	//check for IMC
-                    Skin.Communicator.LoadCommunicator(_control);
+                    this.Skin.Communicator.LoadCommunicator(this._control);
                 }
 				
                 //add module settings
-                ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
+                this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
             }
             catch (ThreadAbortException exc)
             {
@@ -293,12 +293,12 @@ namespace DotNetNuke.UI.Modules
                 Logger.Error(exc);
 				
 				//add module settings
-                _control = _moduleControlPipeline.CreateModuleControl(_moduleConfiguration);
-                ModuleControl.ModuleContext.Configuration = _moduleConfiguration;
+                this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
+                this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
                 if (TabPermissionController.CanAdminPage())
                 {
 					//only display the error to page administrators
-                    Exceptions.ProcessModuleLoadException(_control, exc);
+                    Exceptions.ProcessModuleLoadException(this._control, exc);
                 }
                 else
                 {
@@ -308,7 +308,7 @@ namespace DotNetNuke.UI.Modules
             }
             
             //Enable ViewState
-            _control.ViewStateMode = ViewStateMode.Enabled;
+            this._control.ViewStateMode = ViewStateMode.Enabled;
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace DotNetNuke.UI.Modules
             AJAX.RegisterScriptManager();
 
             //enable Partial Rendering
-            var scriptManager = AJAX.GetScriptManager(Page);
+            var scriptManager = AJAX.GetScriptManager(this.Page);
             if (scriptManager != null)
             {
                 scriptManager.EnablePartialRendering = true;
@@ -330,7 +330,7 @@ namespace DotNetNuke.UI.Modules
             var updatePanel = new UpdatePanel
                                   {
                                       UpdateMode = UpdatePanelUpdateMode.Conditional, 
-                                      ID = _control.ID + "_UP"
+                                      ID = this._control.ID + "_UP"
                                   };
 
             //get update panel content template
@@ -340,10 +340,10 @@ namespace DotNetNuke.UI.Modules
             InjectMessageControl(templateContainer);
 
             //inject module into update panel content template
-            templateContainer.Controls.Add(_control);
+            templateContainer.Controls.Add(this._control);
 
             //inject the update panel into the panel
-            InjectModuleContent(updatePanel);
+            this.InjectModuleContent(updatePanel);
 
             //create image for update progress control
             var progressTemplate = "<div class=\"dnnLoading dnnPanelLoading\"></div>";
@@ -356,7 +356,7 @@ namespace DotNetNuke.UI.Modules
 
                                          ProgressTemplate = new LiteralTemplate(progressTemplate)
                                      };
-            Controls.Add(updateProgress);
+            this.Controls.Add(updateProgress);
         }
 
         /// -----------------------------------------------------------------------------
@@ -366,7 +366,7 @@ namespace DotNetNuke.UI.Modules
         /// <returns>A Boolean</returns>
         private bool SupportsCaching()
         {
-            return _moduleConfiguration.CacheTime > 0;
+            return this._moduleConfiguration.CacheTime > 0;
         }
 
         /// -----------------------------------------------------------------------------
@@ -380,11 +380,11 @@ namespace DotNetNuke.UI.Modules
             string cachedContent = string.Empty;
             try
             {
-                var cache = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod());
+                var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
                 var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
 
-                string cacheKey = cache.GenerateCacheKey(_moduleConfiguration.TabModuleID, varyBy);
-                byte[] cachedBytes = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod()).GetModule(_moduleConfiguration.TabModuleID, cacheKey);
+                string cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
+                byte[] cachedBytes = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod()).GetModule(this._moduleConfiguration.TabModuleID, cacheKey);
 
                 if (cachedBytes != null && cachedBytes.Length > 0)
                 {
@@ -401,8 +401,8 @@ namespace DotNetNuke.UI.Modules
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
-                _control = _moduleControlPipeline.CreateCachedControl(cachedContent, _moduleConfiguration);
-                Controls.Add(_control);
+                this._control = this._moduleControlPipeline.CreateCachedControl(cachedContent, this._moduleConfiguration);
+                this.Controls.Add(this._control);
             }
             return success;
         }
@@ -452,7 +452,7 @@ namespace DotNetNuke.UI.Modules
                             priority = (int)FileOrder.Js.DefaultPriority;
                         }
 
-                        ClientResourceManager.RegisterScript(Page, filePath, priority, forceProvider);
+                        ClientResourceManager.RegisterScript(this.Page, filePath, priority, forceProvider);
                         break;
                     case "CSS":
                         if (string.IsNullOrEmpty(forceProvider))
@@ -465,7 +465,7 @@ namespace DotNetNuke.UI.Modules
                             priority = (int)FileOrder.Css.DefaultPriority;
                         }
 
-                        ClientResourceManager.RegisterStyleSheet(Page, filePath, priority, forceProvider);
+                        ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
                         var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
@@ -497,28 +497,28 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
             //Load Module Control (or cached control)
-            LoadModuleControl();
+            this.LoadModuleControl();
 			
 			//Optionally Inject AJAX Update Panel
-            if (ModuleControl != null)
+            if (this.ModuleControl != null)
             {
                 //if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
-                if (!_isCached && _moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
+                if (!this._isCached && this._moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
                 {
-                    LoadUpdatePanel();
+                    this.LoadUpdatePanel();
                 }
                 else
                 {
                     //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
                     InjectMessageControl(this);
 
-                    InjectVersionToTheModuleIfSupported();
+                    this.InjectVersionToTheModuleIfSupported();
 
                     //inject the module into the panel
-                    InjectModuleContent(_control);
+                    this.InjectModuleContent(this._control);
                 }
             }
         }
@@ -529,12 +529,12 @@ namespace DotNetNuke.UI.Modules
 
             if (Host.EnableCustomModuleCssClass)
             {
-                string moduleName = ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
+                string moduleName = this.ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
                 if (moduleName != null)
                 {
                     moduleName = Globals.CleanName(moduleName);
                 }
-                Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
+                this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
             }
         }
 
@@ -544,31 +544,31 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            if (_isCached)
+            if (this._isCached)
             {
 				//Render the cached control to the output stream
                 base.RenderContents(writer);
             }
             else
             {
-                if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
+                if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
                 {
 					//Render to cache
                     var tempWriter = new StringWriter();
 
-                    _control.RenderControl(new HtmlTextWriter(tempWriter));
+                    this._control.RenderControl(new HtmlTextWriter(tempWriter));
                     string cachedOutput = tempWriter.ToString();
 
                     if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
                     {
 						//Save content to cache
                         var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
-                        var cache = ModuleCachingProvider.Instance(_moduleConfiguration.GetEffectiveCacheMethod());
+                        var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
 
                         var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
 
-                        var cacheKey = cache.GenerateCacheKey(_moduleConfiguration.TabModuleID, varyBy);
-                        cache.SetModule(_moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, _moduleConfiguration.CacheTime), moduleContent);
+                        var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
+                        cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
                     }
 					
                     //Render the cached content to Response

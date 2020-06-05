@@ -17,14 +17,14 @@ namespace DotNetNuke.Modules.Html.Components
         {
             get
             {
-                if (_settings == null)
+                if (this._settings == null)
                 {
                     var repo = new HtmlModuleSettingsRepository();
-                    _settings = repo.GetSettings(this.ModuleConfiguration);
+                    this._settings = repo.GetSettings(this.ModuleConfiguration);
                 }
-                return _settings;
+                return this._settings;
             }
-            set { _settings = value; }
+            set { this._settings = value; }
         }
     }
 }

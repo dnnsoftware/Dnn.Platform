@@ -44,19 +44,19 @@ namespace DotNetNuke.UI.Containers
             base.OnLoad(e);
             try
             {
-                foreach (ModuleAction action in Actions)
+                foreach (ModuleAction action in this.Actions)
                 {
-                    DisplayAction(action);
+                    this.DisplayAction(action);
                 }
 				
                 //set visibility
-                if (Controls.Count > 0)
+                if (this.Controls.Count > 0)
                 {
-                    Visible = true;
+                    this.Visible = true;
                 }
                 else
                 {
-                    Visible = false;
+                    this.Visible = false;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -71,14 +71,14 @@ namespace DotNetNuke.UI.Containers
 	    {
 		if (action.Visible)
 		{
-		    if ((PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+		    if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
 		    {
-			if (ModuleContext.Configuration.DisplayPrint)
+			if (this.ModuleContext.Configuration.DisplayPrint)
 			{
 			    var ModuleActionIcon = new ImageButton();
-			    if (!String.IsNullOrEmpty(PrintIcon))
+			    if (!String.IsNullOrEmpty(this.PrintIcon))
 			    {
-				ModuleActionIcon.ImageUrl = ModuleContext.Configuration.ContainerPath.Substring(0, ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + PrintIcon;
+				ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
 			    }
 			    else
 			    {
@@ -88,9 +88,9 @@ namespace DotNetNuke.UI.Containers
 			    ModuleActionIcon.ID = "ico" + action.ID;
 			    ModuleActionIcon.CausesValidation = false;
 
-			    ModuleActionIcon.Click += IconAction_Click;
+			    ModuleActionIcon.Click += this.IconAction_Click;
 
-			    Controls.Add(ModuleActionIcon);
+			    this.Controls.Add(ModuleActionIcon);
 			}
 		    }
 		}
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.Containers
 	    
 	    foreach (ModuleAction subAction in action.Actions) 
 	    {
-	    	DisplayAction(subAction);
+	    	this.DisplayAction(subAction);
 	    }
 	}
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                ProcessAction(((ImageButton) sender).ID.Substring(3));
+                this.ProcessAction(((ImageButton) sender).ID.Substring(3));
             }
             catch (Exception exc) //Module failed to load
             {

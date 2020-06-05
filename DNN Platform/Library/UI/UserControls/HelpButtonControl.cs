@@ -64,11 +64,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _HelpKey;
+                return this._HelpKey;
             }
             set
             {
-                _HelpKey = value;
+                this._HelpKey = value;
             }
         }
 
@@ -84,17 +84,17 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return lblHelp.Text;
+                return this.lblHelp.Text;
             }
             set
             {
-                lblHelp.Text = value;
-                imgHelp.AlternateText = HtmlUtils.Clean(value, false);
+                this.lblHelp.Text = value;
+                this.imgHelp.AlternateText = HtmlUtils.Clean(value, false);
 				
 				//hide the help icon if the help text is ""
                 if (String.IsNullOrEmpty(value))
                 {
-                    imgHelp.Visible = false;
+                    this.imgHelp.Visible = false;
                 }
             }
         }
@@ -111,11 +111,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _ResourceKey;
+                return this._ResourceKey;
             }
             set
             {
-                _ResourceKey = value;
+                this._ResourceKey = value;
             }
         }
 		
@@ -134,20 +134,20 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            cmdHelp.Click += cmdHelp_Click;
+            this.cmdHelp.Click += this.cmdHelp_Click;
 
             try
             {
-                DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-                if (String.IsNullOrEmpty(_HelpKey))
+                DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
+                if (String.IsNullOrEmpty(this._HelpKey))
                 {
 					//Set Help Key to the Resource Key plus ".Help"
-                    _HelpKey = _ResourceKey + ".Help";
+                    this._HelpKey = this._ResourceKey + ".Help";
                 }
-                string helpText = Localization.GetString(_HelpKey, this);
+                string helpText = Localization.GetString(this._HelpKey, this);
                 if (!String.IsNullOrEmpty(helpText))
                 {
-                    HelpText = helpText;
+                    this.HelpText = helpText;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -158,7 +158,7 @@ namespace DotNetNuke.UI.UserControls
 
         protected void cmdHelp_Click(object sender, EventArgs e)
         {
-            pnlHelp.Visible = true;
+            this.pnlHelp.Visible = true;
         }
 		
 		#endregion

@@ -69,19 +69,19 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the Desktop Module
-                DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(Package.PackageID);
+                DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(this.Package.PackageID);
                 if (tempDesktopModule != null)
                 {
                     var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
                     //Remove CodeSubDirectory
-                    if ((_desktopModule != null) && (!string.IsNullOrEmpty(_desktopModule.CodeSubDirectory)))
+                    if ((this._desktopModule != null) && (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory)))
                     {
-                        Config.RemoveCodeSubDirectory(_desktopModule.CodeSubDirectory);
+                        Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
                     }
                     var controller = new DesktopModuleController();
                     
 
-                    Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
                     //remove admin/host pages
                     if (!String.IsNullOrEmpty(tempDesktopModule.AdminPage))
                     {
@@ -108,10 +108,10 @@ namespace DotNetNuke.Services.Installer.Installers
                                 }
                                 if (noOtherTabModule)
                                 {
-                                    Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
-                                Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
                         
@@ -119,8 +119,8 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
                         Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
-                        Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
-                        Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 		
@@ -153,11 +153,11 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Commit()
         {
 			//Add CodeSubDirectory
-            if (!string.IsNullOrEmpty(_desktopModule.CodeSubDirectory))
+            if (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory))
             {
-                Config.AddCodeSubDirectory(_desktopModule.CodeSubDirectory);
+                Config.AddCodeSubDirectory(this._desktopModule.CodeSubDirectory);
             }
-            if (_desktopModule.SupportedFeatures == Null.NullInteger)
+            if (this._desktopModule.SupportedFeatures == Null.NullInteger)
             {
                 //Set an Event Message so the features are loaded by reflection on restart
                 var oAppStartMessage = new EventMessage
@@ -171,65 +171,65 @@ namespace DotNetNuke.Services.Installer.Installers
                                         };
 
                 //Add custom Attributes for this message
-                oAppStartMessage.Attributes.Add("BusinessControllerClass", _desktopModule.BusinessControllerClass);
-                oAppStartMessage.Attributes.Add("desktopModuleID", _desktopModule.DesktopModuleID.ToString());
+                oAppStartMessage.Attributes.Add("BusinessControllerClass", this._desktopModule.BusinessControllerClass);
+                oAppStartMessage.Attributes.Add("desktopModuleID", this._desktopModule.DesktopModuleID.ToString());
 
                 //send it to occur on next App_Start Event
                 EventQueueController.SendMessage(oAppStartMessage, "Application_Start_FirstRequest");
             }
 			
 			//Add Event Message
-            if (_eventMessage != null)
+            if (this._eventMessage != null)
             {
-                if (!String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
+                if (!String.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
                 {
-                    _eventMessage.Attributes.Set("desktopModuleID", _desktopModule.DesktopModuleID.ToString());
-                    EventQueueController.SendMessage(_eventMessage, "Application_Start");
+                    this._eventMessage.Attributes.Set("desktopModuleID", this._desktopModule.DesktopModuleID.ToString());
+                    EventQueueController.SendMessage(this._eventMessage, "Application_Start");
                 }
             }
             
 			//Add DesktopModule to all portals
-			if (!_desktopModule.IsPremium)
+			if (!this._desktopModule.IsPremium)
             {
-                DesktopModuleController.AddDesktopModuleToPortals(_desktopModule.DesktopModuleID);
+                DesktopModuleController.AddDesktopModuleToPortals(this._desktopModule.DesktopModuleID);
             }
 
             //Add DesktopModule to all portals
-            if (!String.IsNullOrEmpty(_desktopModule.AdminPage))
+            if (!String.IsNullOrEmpty(this._desktopModule.AdminPage))
             {
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
 
                     bool createdNewPage = false, addedNewModule = false;
-                    DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+                    DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
 
                     if (createdNewPage)
                     {
-                        Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, _desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, this._desktopModule.AdminPage, portal.PortalID));
                     }
 
                     if (addedNewModule)
                     {
-                        Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, _desktopModule.AdminPage,portal.PortalID));
+                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this._desktopModule.AdminPage,portal.PortalID));
                     }
                 }
                
             }
 
             //Add host items
-            if (_desktopModule.Page != null && !String.IsNullOrEmpty(_desktopModule.HostPage))
+            if (this._desktopModule.Page != null && !String.IsNullOrEmpty(this._desktopModule.HostPage))
             {
                 bool createdNewPage = false, addedNewModule = false;
-                DesktopModuleController.AddDesktopModulePageToPortal(_desktopModule, _desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
+                DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
 
                 if (createdNewPage)
                 {
-                    Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, _desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, this._desktopModule.HostPage));
                 }
 
                 if (addedNewModule)
                 {
-                    Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, _desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, this._desktopModule.HostPage));
                 }
             }
         }
@@ -244,13 +244,13 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the Desktop Module
-                _installedDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName(_desktopModule.ModuleName, Package.InstallerInfo.PortalID);
+                this._installedDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModule.ModuleName, this.Package.InstallerInfo.PortalID);
 
-                if (_installedDesktopModule != null)
+                if (this._installedDesktopModule != null)
                 {
-                    _desktopModule.DesktopModuleID = _installedDesktopModule.DesktopModuleID;
+                    this._desktopModule.DesktopModuleID = this._installedDesktopModule.DesktopModuleID;
 					//save the module's category
-                	_desktopModule.Category = _installedDesktopModule.Category;
+                	this._desktopModule.Category = this._installedDesktopModule.Category;
                 }
 				
                 //Clear ModuleControls and Module Definitions caches in case script has modifed the contents
@@ -258,15 +258,15 @@ namespace DotNetNuke.Services.Installer.Installers
                 DataCache.RemoveCache(DataCache.ModuleControlsCacheKey);
 
                 //Save DesktopModule and child objects to database
-                _desktopModule.PackageID = Package.PackageID;
-                _desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(_desktopModule, true, false);
+                this._desktopModule.PackageID = this.Package.PackageID;
+                this._desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(this._desktopModule, true, false);
 
-                Completed = true;
-                Log.AddInfo(string.Format(Util.MODULE_Registered, _desktopModule.ModuleName));
+                this.Completed = true;
+                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this._desktopModule.ModuleName));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
@@ -278,20 +278,20 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             //Load the Desktop Module from the manifest
-            _desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
+            this._desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
 
-            _desktopModule.FriendlyName = Package.FriendlyName;
-            _desktopModule.Description = Package.Description;
-            _desktopModule.Version = Globals.FormatVersion(Package.Version, "00", 4, ".");
-            _desktopModule.CompatibleVersions = Null.NullString;
-            _desktopModule.Dependencies = Null.NullString;
-            _desktopModule.Permissions = Null.NullString;
-            if (string.IsNullOrEmpty(_desktopModule.BusinessControllerClass))
+            this._desktopModule.FriendlyName = this.Package.FriendlyName;
+            this._desktopModule.Description = this.Package.Description;
+            this._desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
+            this._desktopModule.CompatibleVersions = Null.NullString;
+            this._desktopModule.Dependencies = Null.NullString;
+            this._desktopModule.Permissions = Null.NullString;
+            if (string.IsNullOrEmpty(this._desktopModule.BusinessControllerClass))
             {
-                _desktopModule.SupportedFeatures = 0;
+                this._desktopModule.SupportedFeatures = 0;
             }
 
-            _eventMessage = ReadEventMessageNode(manifestNav);
+            this._eventMessage = this.ReadEventMessageNode(manifestNav);
 			
             //Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
@@ -303,16 +303,16 @@ namespace DotNetNuke.Services.Installer.Installers
                     permission.PermissionCode = Util.ReadAttribute(permissionNav, "code");
                     permission.PermissionKey = Util.ReadAttribute(permissionNav, "key");
                     permission.PermissionName = Util.ReadAttribute(permissionNav, "name");
-                    ModuleDefinitionInfo moduleDefinition = _desktopModule.ModuleDefinitions[friendlyName];
+                    ModuleDefinitionInfo moduleDefinition = this._desktopModule.ModuleDefinitions[friendlyName];
                     if (moduleDefinition != null)
                     {
                         moduleDefinition.Permissions.Add(permission.PermissionKey, permission);
                     }
                 }
             }
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.AddInfo(Util.MODULE_ReadSuccess);
+                this.Log.AddInfo(Util.MODULE_ReadSuccess);
             }
         }
 
@@ -325,15 +325,15 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
 			//If Temp Module exists then we need to update the DataStore with this 
-            if (_installedDesktopModule == null)
+            if (this._installedDesktopModule == null)
             {
 				//No Temp Module - Delete newly added module
-                DeleteModule();
+                this.DeleteModule();
             }
             else
             {
 				//Temp Module - Rollback to Temp
-                DesktopModuleController.SaveDesktopModule(_installedDesktopModule, true, false);
+                DesktopModuleController.SaveDesktopModule(this._installedDesktopModule, true, false);
             }
         }
 
@@ -344,7 +344,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            DeleteModule();
+            this.DeleteModule();
         }
 		
 		#endregion

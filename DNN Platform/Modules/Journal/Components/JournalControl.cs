@@ -29,15 +29,15 @@ namespace DotNetNuke.Modules.Journal.Components {
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName) {
                 case "commentlink":
-                    return CommentLink;
+                    return this.CommentLink;
                 case "likelink":
-                    return LikeLink;
+                    return this.LikeLink;
                 case "likelist":
-                    return LikeList;
+                    return this.LikeList;
                 case "commentarea":
-                    return CommentArea;
+                    return this.CommentArea;
                 case "authornamelink":
-                    return AuthorNameLink;
+                    return this.AuthorNameLink;
             }
 
             propertyNotFound = true;

@@ -79,17 +79,17 @@ namespace log4net.Util
 			}
 
 			// m_appenderList is null when empty
-			if (m_appenderList == null) 
+			if (this.m_appenderList == null) 
 			{
 				return 0;
 			}
 
-			if (m_appenderArray == null)
+			if (this.m_appenderArray == null)
 			{
-				m_appenderArray = m_appenderList.ToArray();
+				this.m_appenderArray = this.m_appenderList.ToArray();
 			}
 
-			foreach(IAppender appender in m_appenderArray)
+			foreach(IAppender appender in this.m_appenderArray)
 			{
 				try
 				{
@@ -100,7 +100,7 @@ namespace log4net.Util
 					LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
 				}
 			}
-			return m_appenderList.Count;
+			return this.m_appenderList.Count;
 		}
 
 		/// <summary>
@@ -127,21 +127,21 @@ namespace log4net.Util
 			if (loggingEvents.Length == 1)
 			{
 				// Fall back to single event path
-				return AppendLoopOnAppenders(loggingEvents[0]);
+				return this.AppendLoopOnAppenders(loggingEvents[0]);
 			}
 
 			// m_appenderList is null when empty
-			if (m_appenderList == null) 
+			if (this.m_appenderList == null) 
 			{
 				return 0;
 			}
 
-			if (m_appenderArray == null)
+			if (this.m_appenderArray == null)
 			{
-				m_appenderArray = m_appenderList.ToArray();
+				this.m_appenderArray = this.m_appenderList.ToArray();
 			}
 
-			foreach(IAppender appender in m_appenderArray)
+			foreach(IAppender appender in this.m_appenderArray)
 			{
 				try
 				{
@@ -152,7 +152,7 @@ namespace log4net.Util
 					LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
 				}
 			}
-			return m_appenderList.Count;
+			return this.m_appenderList.Count;
 		}
 
 		#endregion Public Instance Methods
@@ -210,14 +210,14 @@ namespace log4net.Util
 				throw new ArgumentNullException("newAppender");
 			}
 	
-			m_appenderArray = null;
-			if (m_appenderList == null) 
+			this.m_appenderArray = null;
+			if (this.m_appenderList == null) 
 			{
-				m_appenderList = new AppenderCollection(1);
+				this.m_appenderList = new AppenderCollection(1);
 			}
-			if (!m_appenderList.Contains(newAppender))
+			if (!this.m_appenderList.Contains(newAppender))
 			{
-				m_appenderList.Add(newAppender);
+				this.m_appenderList.Add(newAppender);
 			}
 		}
 
@@ -237,14 +237,14 @@ namespace log4net.Util
 		{
 			get
 			{
-				if (m_appenderList == null)
+				if (this.m_appenderList == null)
 				{
 					// We must always return a valid collection
 					return AppenderCollection.EmptyCollection;
 				}
 				else 
 				{
-					return AppenderCollection.ReadOnly(m_appenderList);
+					return AppenderCollection.ReadOnly(this.m_appenderList);
 				}
 			}
 		}
@@ -264,9 +264,9 @@ namespace log4net.Util
 		/// </remarks>
 		public IAppender GetAppender(string name) 
 		{
-			if (m_appenderList != null && name != null)
+			if (this.m_appenderList != null && name != null)
 			{
-				foreach(IAppender appender in m_appenderList)
+				foreach(IAppender appender in this.m_appenderList)
 				{
 					if (name == appender.Name)
 					{
@@ -287,9 +287,9 @@ namespace log4net.Util
 		/// </remarks>
 		public void RemoveAllAppenders() 
 		{
-			if (m_appenderList != null) 
+			if (this.m_appenderList != null) 
 			{
-				foreach(IAppender appender in m_appenderList)
+				foreach(IAppender appender in this.m_appenderList)
 				{
 					try
 					{
@@ -300,8 +300,8 @@ namespace log4net.Util
 						LogLog.Error(declaringType, "Failed to Close appender ["+appender.Name+"]", ex);
 					}
 				}
-				m_appenderList = null;	  
-				m_appenderArray = null;
+				this.m_appenderList = null;	  
+				this.m_appenderArray = null;
 			}
 		}
 
@@ -319,14 +319,14 @@ namespace log4net.Util
 		/// </remarks>
 		public IAppender RemoveAppender(IAppender appender) 
 		{
-			if (appender != null && m_appenderList != null) 
+			if (appender != null && this.m_appenderList != null) 
 			{
-				m_appenderList.Remove(appender);
-				if (m_appenderList.Count == 0)
+				this.m_appenderList.Remove(appender);
+				if (this.m_appenderList.Count == 0)
 				{
-					m_appenderList = null;
+					this.m_appenderList = null;
 				}
-				m_appenderArray = null;
+				this.m_appenderArray = null;
 			}
 			return appender;
 		}
@@ -345,7 +345,7 @@ namespace log4net.Util
 		/// </remarks>
 		public IAppender RemoveAppender(string name) 
 		{
-			return RemoveAppender(GetAppender(name));
+			return this.RemoveAppender(this.GetAppender(name));
 		}
 
 		#endregion

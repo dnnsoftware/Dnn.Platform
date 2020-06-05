@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {
-            _moduleContext = moduleContext;
+            this._moduleContext = moduleContext;
         }
 
         public virtual CacheLevel Cacheability
@@ -29,21 +29,21 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "moduleid":
-                    return _moduleContext.ModuleId.ToString();
+                    return this._moduleContext.ModuleId.ToString();
                 case "tabmoduleid":
-                    return _moduleContext.TabModuleId.ToString();
+                    return this._moduleContext.TabModuleId.ToString();
                 case "tabid":
-                    return _moduleContext.TabId.ToString();
+                    return this._moduleContext.TabId.ToString();
                 case "portalid":
-                    return _moduleContext.Configuration.OwnerPortalID.ToString();
+                    return this._moduleContext.Configuration.OwnerPortalID.ToString();
                 case "issuperuser":
-                    return _moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
+                    return this._moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
                 case "editmode":
-                    return _moduleContext.EditMode.ToString();
+                    return this._moduleContext.EditMode.ToString();
                 default:
-                    if (_moduleContext.Settings.ContainsKey(propertyName))
+                    if (this._moduleContext.Settings.ContainsKey(propertyName))
                     {
-                        return (string)_moduleContext.Settings[propertyName];
+                        return (string)this._moduleContext.Settings[propertyName];
                     }
                     break;
             }

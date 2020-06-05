@@ -16,10 +16,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal SubscriptionTypeBuilder()
         {
-            subscriptionTypeId = 1;
-            subscriptionName = "MySubscriptionType";
-            friendlyName = "My Subscription Type";
-            desktopModuleId = Null.NullInteger;
+            this.subscriptionTypeId = 1;
+            this.subscriptionName = "MySubscriptionType";
+            this.friendlyName = "My Subscription Type";
+            this.desktopModuleId = Null.NullInteger;
         }
 
         internal SubscriptionTypeBuilder WithSubscriptionTypeId(int subscriptionTypeId)
@@ -38,10 +38,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         {
             return new SubscriptionType
                        {
-                           SubscriptionTypeId = subscriptionTypeId,
-                           SubscriptionName = subscriptionName,
-                           DesktopModuleId = desktopModuleId,
-                           FriendlyName = friendlyName
+                           SubscriptionTypeId = this.subscriptionTypeId,
+                           SubscriptionName = this.subscriptionName,
+                           DesktopModuleId = this.desktopModuleId,
+                           FriendlyName = this.friendlyName
                        };
         }
     }

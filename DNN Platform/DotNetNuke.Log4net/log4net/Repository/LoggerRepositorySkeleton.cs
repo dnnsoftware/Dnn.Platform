@@ -88,17 +88,17 @@ namespace log4net.Repository
 		/// </remarks>
 		protected LoggerRepositorySkeleton(PropertiesDictionary properties)
 		{
-			m_properties = properties;
-			m_rendererMap = new RendererMap();
-			m_pluginMap = new PluginMap(this);
-			m_levelMap = new LevelMap();
-            m_configurationMessages = EmptyCollection.Instance;
-			m_configured = false;
+			this.m_properties = properties;
+			this.m_rendererMap = new RendererMap();
+			this.m_pluginMap = new PluginMap(this);
+			this.m_levelMap = new LevelMap();
+            this.m_configurationMessages = EmptyCollection.Instance;
+			this.m_configured = false;
 
-			AddBuiltinLevels();
+			this.AddBuiltinLevels();
 
 			// Don't disable any levels by default.
-			m_threshold = Level.All;
+			this.m_threshold = Level.All;
 		}
 
 		#endregion
@@ -120,8 +120,8 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public string Name
 		{
-			get { return m_name; }
-			set { m_name = value; }
+			get { return this.m_name; }
+			set { this.m_name = value; }
 		}
 
 		/// <summary>
@@ -137,18 +137,18 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public Level Threshold
 		{
-			get { return m_threshold; }
+			get { return this.m_threshold; }
 			set
 			{ 
 				if (value != null)
 				{
-					m_threshold = value; 
+					this.m_threshold = value; 
 				}
 				else
 				{
 					// Must not set threshold to null
 					LogLog.Warn(declaringType, "LoggerRepositorySkeleton: Threshold cannot be set to null. Setting to ALL");
-					m_threshold = Level.All;
+					this.m_threshold = Level.All;
 				}
 			}
 		}
@@ -170,7 +170,7 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public RendererMap RendererMap
 		{
-			get { return m_rendererMap; }
+			get { return this.m_rendererMap; }
 		}
 
 		/// <summary>
@@ -187,7 +187,7 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public PluginMap PluginMap
 		{
-			get { return m_pluginMap; }
+			get { return this.m_pluginMap; }
 		}
 
 		/// <summary>
@@ -205,7 +205,7 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public LevelMap LevelMap
 		{
-			get { return m_levelMap; }
+			get { return this.m_levelMap; }
 		}
 
 		/// <summary>
@@ -262,13 +262,13 @@ namespace log4net.Repository
 		virtual public void Shutdown() 
 		{
 			// Shutdown attached plugins
-			foreach(IPlugin plugin in PluginMap.AllPlugins)
+			foreach(IPlugin plugin in this.PluginMap.AllPlugins)
 			{
 				plugin.Shutdown();
 			}
 
 			// Notify listeners
-			OnShutdown(null);
+			this.OnShutdown(null);
 		}
 
 		/// <summary>
@@ -290,17 +290,17 @@ namespace log4net.Repository
 		virtual public void ResetConfiguration() 
 		{
 			// Clear internal data structures
-			m_rendererMap.Clear();
-			m_levelMap.Clear();
-            m_configurationMessages = EmptyCollection.Instance;
+			this.m_rendererMap.Clear();
+			this.m_levelMap.Clear();
+            this.m_configurationMessages = EmptyCollection.Instance;
 
 			// Add the predefined levels to the map
-			AddBuiltinLevels();
+			this.AddBuiltinLevels();
 
-			Configured = false;
+			this.Configured = false;
 
 			// Notify listeners
-			OnConfigurationReset(null);
+			this.OnConfigurationReset(null);
 		}
 
 		/// <summary>
@@ -334,8 +334,8 @@ namespace log4net.Repository
 		/// </remarks>
 		virtual public bool Configured 
 		{ 
-			get { return m_configured; }
-			set { m_configured = value; }
+			get { return this.m_configured; }
+			set { this.m_configured = value; }
 		}
 
         /// <summary>
@@ -344,8 +344,8 @@ namespace log4net.Repository
         /// </summary>
 	    virtual public ICollection ConfigurationMessages
 	    {
-            get { return m_configurationMessages; }
-            set { m_configurationMessages = value; }
+            get { return this.m_configurationMessages; }
+            set { this.m_configurationMessages = value; }
 	    }
 
 	    /// <summary>
@@ -361,8 +361,8 @@ namespace log4net.Repository
 		/// </remarks>
 		public event LoggerRepositoryShutdownEventHandler ShutdownEvent
 		{
-			add { m_shutdownEvent += value; }
-			remove { m_shutdownEvent -= value; }
+			add { this.m_shutdownEvent += value; }
+			remove { this.m_shutdownEvent -= value; }
 		}
 
 		/// <summary>
@@ -379,8 +379,8 @@ namespace log4net.Repository
 		/// </remarks>
 		public event LoggerRepositoryConfigurationResetEventHandler ConfigurationReset
 		{
-			add { m_configurationResetEvent += value; }
-			remove { m_configurationResetEvent -= value; }
+			add { this.m_configurationResetEvent += value; }
+			remove { this.m_configurationResetEvent -= value; }
 		}
 
 		/// <summary>
@@ -396,8 +396,8 @@ namespace log4net.Repository
 		/// </remarks>
 		public event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged
 		{
-			add { m_configurationChangedEvent += value; }
-			remove { m_configurationChangedEvent -= value; }
+			add { this.m_configurationChangedEvent += value; }
+			remove { this.m_configurationChangedEvent -= value; }
 		}
 
 		/// <summary>
@@ -411,7 +411,7 @@ namespace log4net.Repository
 		/// </remarks>
 		public PropertiesDictionary Properties 
 		{ 
-			get { return m_properties; } 
+			get { return this.m_properties; } 
 		}
 
 		/// <summary>
@@ -443,32 +443,32 @@ namespace log4net.Repository
 		private void AddBuiltinLevels()
 		{
 			// Add the predefined levels to the map
-			m_levelMap.Add(Level.Off);
+			this.m_levelMap.Add(Level.Off);
 
 			// Unrecoverable errors
-			m_levelMap.Add(Level.Emergency);
-			m_levelMap.Add(Level.Fatal);
-			m_levelMap.Add(Level.Alert); 
+			this.m_levelMap.Add(Level.Emergency);
+			this.m_levelMap.Add(Level.Fatal);
+			this.m_levelMap.Add(Level.Alert); 
 
 			// Recoverable errors
-			m_levelMap.Add(Level.Critical); 
-			m_levelMap.Add(Level.Severe); 
-			m_levelMap.Add(Level.Error); 
-			m_levelMap.Add(Level.Warn);
+			this.m_levelMap.Add(Level.Critical); 
+			this.m_levelMap.Add(Level.Severe); 
+			this.m_levelMap.Add(Level.Error); 
+			this.m_levelMap.Add(Level.Warn);
 
 			// Information
-			m_levelMap.Add(Level.Notice); 
-			m_levelMap.Add(Level.Info); 
+			this.m_levelMap.Add(Level.Notice); 
+			this.m_levelMap.Add(Level.Info); 
 
 			// Debug
-			m_levelMap.Add(Level.Debug);
-			m_levelMap.Add(Level.Fine);
-			m_levelMap.Add(Level.Trace);
-			m_levelMap.Add(Level.Finer);
-			m_levelMap.Add(Level.Verbose);
-			m_levelMap.Add(Level.Finest);
+			this.m_levelMap.Add(Level.Debug);
+			this.m_levelMap.Add(Level.Fine);
+			this.m_levelMap.Add(Level.Trace);
+			this.m_levelMap.Add(Level.Finer);
+			this.m_levelMap.Add(Level.Verbose);
+			this.m_levelMap.Add(Level.Finest);
 
-			m_levelMap.Add(Level.All);
+			this.m_levelMap.Add(Level.All);
 		}
 
 		/// <summary>
@@ -492,7 +492,7 @@ namespace log4net.Repository
 				throw new ArgumentNullException("rendererInstance");
 			}
 
-			m_rendererMap.Put(typeToRender, rendererInstance);
+			this.m_rendererMap.Put(typeToRender, rendererInstance);
 		}
 
 		/// <summary>
@@ -511,7 +511,7 @@ namespace log4net.Repository
 				e = EventArgs.Empty;
 			}
 
-			LoggerRepositoryShutdownEventHandler handler = m_shutdownEvent;
+			LoggerRepositoryShutdownEventHandler handler = this.m_shutdownEvent;
 			if (handler != null)
 			{
 				handler(this, e);
@@ -534,7 +534,7 @@ namespace log4net.Repository
 				e = EventArgs.Empty;
 			}
 
-			LoggerRepositoryConfigurationResetEventHandler handler = m_configurationResetEvent;
+			LoggerRepositoryConfigurationResetEventHandler handler = this.m_configurationResetEvent;
 			if (handler != null)
 			{
 				handler(this, e);
@@ -557,7 +557,7 @@ namespace log4net.Repository
 				e = EventArgs.Empty;
 			}
 
-			LoggerRepositoryConfigurationChangedEventHandler handler = m_configurationChangedEvent;
+			LoggerRepositoryConfigurationChangedEventHandler handler = this.m_configurationChangedEvent;
 			if (handler != null)
 			{
 				handler(this, e);
@@ -576,7 +576,7 @@ namespace log4net.Repository
 		/// </remarks>
 		public void RaiseConfigurationChanged(EventArgs e)
 		{
-			OnConfigurationChanged(e);
+			this.OnConfigurationChanged(e);
 		}
 
         private static int GetWaitTime(DateTime startTimeUtc, int millisecondsTimeout)
@@ -607,7 +607,7 @@ namespace log4net.Repository
             DateTime startTimeUtc = DateTime.UtcNow;
 
             // Do buffering appenders first.  These may be forwarding to other appenders
-            foreach(log4net.Appender.IAppender appender in GetAppenders())
+            foreach(log4net.Appender.IAppender appender in this.GetAppenders())
             {
                 log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
                 if (flushable == null) continue;
@@ -619,7 +619,7 @@ namespace log4net.Repository
             }
 
             // Do non-buffering appenders.
-            foreach (log4net.Appender.IAppender appender in GetAppenders())
+            foreach (log4net.Appender.IAppender appender in this.GetAppenders())
             {
                 log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
                 if (flushable == null) continue;

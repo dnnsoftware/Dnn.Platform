@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _channel;
+                return this._channel;
             }
         }
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _context;
+                return this._context;
             }
         }
 
@@ -49,10 +49,10 @@ namespace DotNetNuke.Services.Syndication
 
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
-            InternalInit(context);
+            this.InternalInit(context);
 
             // let inherited handlers setup any special handling
-            OnInit(EventArgs.Empty);
+            this.OnInit(EventArgs.Empty);
 
             // parse the channel name and the user name from the query string
             string userName;
@@ -60,11 +60,11 @@ namespace DotNetNuke.Services.Syndication
             RssHttpHandlerHelper.ParseChannelQueryString(context.Request, out channelName, out userName);
 
             // populate items (call the derived class)
-            PopulateChannel(channelName, userName);
+            this.PopulateChannel(channelName, userName);
 
-            OnPreRender(EventArgs.Empty);
+            this.OnPreRender(EventArgs.Empty);
 
-            Render(new XmlTextWriter(Context.Response.OutputStream, null));
+            this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
         bool IHttpHandler.IsReusable
@@ -85,9 +85,9 @@ namespace DotNetNuke.Services.Syndication
         /// </summary>
         protected virtual void OnInit(EventArgs ea)
         {
-            if (Init != null)
+            if (this.Init != null)
             {
-                Init(this, ea);
+                this.Init(this, ea);
             }
         }
 
@@ -96,21 +96,21 @@ namespace DotNetNuke.Services.Syndication
         /// </summary>
         protected virtual void OnPreRender(EventArgs ea)
         {
-            if (PreRender != null)
+            if (this.PreRender != null)
             {
-                PreRender(this, ea);
+                this.PreRender(this, ea);
             }
         }
 
         private void InternalInit(HttpContext context)
         {
-            _context = context;
+            this._context = context;
 
             // create the channel
-            _channel = new RssChannelType();
-            _channel.SetDefaults();
+            this._channel = new RssChannelType();
+            this._channel.SetDefaults();
 
-            Context.Response.ContentType = "text/xml";
+            this.Context.Response.ContentType = "text/xml";
         }
 
         protected virtual void PopulateChannel(string channelName, string userName)
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Syndication
 
         protected virtual void Render(XmlTextWriter writer)
         {
-            XmlDocument doc = _channel.SaveAsXml();
+            XmlDocument doc = this._channel.SaveAsXml();
             doc.Save(writer);
         }
     }

@@ -27,35 +27,35 @@ namespace DotNetNuke.ComponentModel
 
         public ProviderInstaller(string providerType, Type providerInterface)
         {
-            _ComponentLifeStyle = ComponentLifeStyleType.Singleton;
-            _ProviderType = providerType;
-            _ProviderInterface = providerInterface;
+            this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
+            this._ProviderType = providerType;
+            this._ProviderInterface = providerInterface;
         }
 
         public ProviderInstaller(string providerType, Type providerInterface, Type defaultProvider)
         {
-            _ComponentLifeStyle = ComponentLifeStyleType.Singleton;
-            _ProviderType = providerType;
-            _ProviderInterface = providerInterface;
-            _defaultProvider = defaultProvider;
+            this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
+            this._ProviderType = providerType;
+            this._ProviderInterface = providerInterface;
+            this._defaultProvider = defaultProvider;
         }
 
         public ProviderInstaller(string providerType, Type providerInterface, ComponentLifeStyleType lifeStyle)
         {
-            _ComponentLifeStyle = lifeStyle;
-            _ProviderType = providerType;
-            _ProviderInterface = providerInterface;
+            this._ComponentLifeStyle = lifeStyle;
+            this._ProviderType = providerType;
+            this._ProviderInterface = providerInterface;
         }
 
         #region IComponentInstaller Members
 
         public void InstallComponents(IContainer container)
         {
-            ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(_ProviderType);
+            ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);
             //Register the default provider first (so it is the first component registered for its service interface
 			if (config != null)
             {
-                InstallProvider(container, (Provider) config.Providers[config.DefaultProvider]);
+                this.InstallProvider(container, (Provider) config.Providers[config.DefaultProvider]);
 
                 //Register the others
                 foreach (Provider provider in config.Providers.Values)
@@ -63,7 +63,7 @@ namespace DotNetNuke.ComponentModel
 					//Skip the default because it was registered above
                     if (!config.DefaultProvider.Equals(provider.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        InstallProvider(container, provider);
+                        this.InstallProvider(container, provider);
                     }
                 }
             }
@@ -84,9 +84,9 @@ namespace DotNetNuke.ComponentModel
                  }
                 catch (TypeLoadException)
                 {
-                    if (_defaultProvider != null)
+                    if (this._defaultProvider != null)
                     {
-                        type = _defaultProvider;
+                        type = this._defaultProvider;
                     }
                 }
 
@@ -97,7 +97,7 @@ namespace DotNetNuke.ComponentModel
                 else
                 {
                     //Register the component
-                    container.RegisterComponent(provider.Name, _ProviderInterface, type, _ComponentLifeStyle);
+                    container.RegisterComponent(provider.Name, this._ProviderInterface, type, this._ComponentLifeStyle);
 
                     //Load the settings into a dictionary
                     var settingsDict = new Dictionary<string, string> { { "providerName", provider.Name } };

@@ -40,11 +40,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                if (_permissionsList == null && FolderPermissions != null)
+                if (this._permissionsList == null && this.FolderPermissions != null)
                 {
-                    _permissionsList = FolderPermissions.ToList();
+                    this._permissionsList = this.FolderPermissions.ToList();
                 }
-                return _permissionsList;
+                return this._permissionsList;
             }
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return _refreshGrid;
+                return this._refreshGrid;
             }
         }
 
@@ -69,13 +69,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return _folderPath;
+                return this._folderPath;
             }
             set
             {
-                _folderPath = value;
-                _refreshGrid = true;
-                GetFolderPermissions();
+                this._folderPath = value;
+                this._refreshGrid = true;
+                this.GetFolderPermissions();
             }
         }
 
@@ -89,10 +89,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             get
             {
                 //First Update Permissions in case they have been changed
-                UpdatePermissions();
+                this.UpdatePermissions();
 
                 //Return the FolderPermissions
-                return FolderPermissions;
+                return this.FolderPermissions;
             }
         }
 
@@ -107,8 +107,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected virtual void GetFolderPermissions()
         {
-            FolderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(PortalId, FolderPath));
-            _permissionsList = null;
+            this.FolderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalId, this.FolderPath));
+            this._permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objFolderPermission.FolderPermissionID = Convert.ToInt32(settings[2]);
             }
-            objFolderPermission.FolderPath = FolderPath;
+            objFolderPermission.FolderPath = this.FolderPath;
             return objFolderPermission;
         }
         
@@ -142,7 +142,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
                 var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
                     if (actionImage != null)
@@ -160,24 +160,24 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            rolePermissionsGrid.ItemDataBound += rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
         
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new FolderPermissionInfo(permission)
             {
-                FolderPath = FolderPath,
+                FolderPath = this.FolderPath,
                 RoleID = roleId,
                 RoleName = roleName,
                 AllowAccess = allowAccess,
                 UserID = userId,
                 DisplayName = displayName
             };
-            FolderPermissions.Add(objPermission, true);
+            this.FolderPermissions.Add(objPermission, true);
 
             //Clear Permission List
-            _permissionsList = null;
+            this._permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
             bool isMatch = false;
-            foreach (FolderPermissionInfo objFolderPermission in FolderPermissions)
+            foreach (FolderPermissionInfo objFolderPermission in this.FolderPermissions)
             {
                 if (objFolderPermission.UserID == user.UserID)
                 {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     if (objPermission.PermissionKey == "READ")
                     {
-                        AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             //Search TabPermission Collection for the user 
-            if (FolderPermissions.Cast<FolderPermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            if (this.FolderPermissions.Cast<FolderPermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
             }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 if (objPermission.PermissionKey == "READ")
                 {
-                    AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
+                    this.AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
                 }
             }            
         }
@@ -247,7 +247,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
-            return !IsImplicitRole(role.PortalID, role.RoleID);
+            return !this.IsImplicitRole(role.PortalID, role.RoleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -263,7 +263,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
             string permission;
-            if (role.RoleID == AdministratorRoleId && IsPermissionAlwaysGrantedToAdmin(objPerm))
+            if (role.RoleID == this.AdministratorRoleId && this.IsPermissionAlwaysGrantedToAdmin(objPerm))
             {
                 permission = PermissionTypeGrant;
             }
@@ -287,12 +287,12 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
         {
-            return IsSystemFolderPermission(permissionInfo);
+            return this.IsSystemFolderPermission(permissionInfo);
         }
 
         private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
         {
-            return _systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
         }
 
         private bool IsImplicitRole(int portalId, int roleId)
@@ -308,7 +308,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override ArrayList GetPermissions()
         {
             ArrayList perms = PermissionController.GetPermissionsByFolder();
-            _systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
+            this._systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
             return perms;
         }
 
@@ -334,13 +334,13 @@ namespace DotNetNuke.Security.Permissions.Controls
                 //Load FolderPath
                 if (myState[1] != null)
                 {
-                    _folderPath = Convert.ToString(myState[1]);
+                    this._folderPath = Convert.ToString(myState[1]);
                 }
 
                 //Load FolderPermissions
                 if (myState[2] != null)
                 {
-                    FolderPermissions = new FolderPermissionCollection();
+                    this.FolderPermissions = new FolderPermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!String.IsNullOrEmpty(state))
                     {
@@ -349,7 +349,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');
-                            FolderPermissions.Add(ParseKeys(settings));
+                            this.FolderPermissions.Add(this.ParseKeys(settings));
                         }
                     }
                 }
@@ -358,9 +358,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
-            FolderPermissions.Remove(permissionID, roleID, userID);
+            this.FolderPermissions.Remove(permissionID, roleID, userID);
             //Clear Permission List
-            _permissionsList = null;
+            this._permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -376,14 +376,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             allStates[0] = base.SaveViewState();
 
             //Save the Tab Id
-            allStates[1] = FolderPath;
+            allStates[1] = this.FolderPath;
 
             //Persist the TabPermisisons
             var sb = new StringBuilder();
-            if (FolderPermissions != null)
+            if (this.FolderPermissions != null)
             {
                 bool addDelimiter = false;
-                foreach (FolderPermissionInfo objFolderPermission in FolderPermissions)
+                foreach (FolderPermissionInfo objFolderPermission in this.FolderPermissions)
                 {
                     if (addDelimiter)
                     {
@@ -393,7 +393,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(BuildKey(objFolderPermission.AllowAccess,
+                    sb.Append(this.BuildKey(objFolderPermission.AllowAccess,
                                        objFolderPermission.PermissionID,
                                        objFolderPermission.FolderPermissionID,
                                        objFolderPermission.RoleID,
@@ -413,7 +413,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
-            return IsSystemFolderPermission(permissionInfo);
+            return this.IsSystemFolderPermission(permissionInfo);
         }
 
         #endregion

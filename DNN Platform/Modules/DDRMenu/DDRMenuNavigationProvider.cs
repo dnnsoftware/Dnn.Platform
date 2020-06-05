@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 		private DDRMenuControl menuControl;
 
-		public override Control NavigationControl { get { return menuControl; } }
+		public override Control NavigationControl { get { return this.menuControl; } }
 
 		public override string ControlID { get; set; }
 
@@ -110,13 +110,13 @@ namespace DotNetNuke.Web.DDRMenu
 
 		public override void Initialize()
 		{
-			menuControl = new DDRMenuControl {ID = ControlID, EnableViewState = false};
-			menuControl.NodeClick += RaiseEvent_NodeClick;
+			this.menuControl = new DDRMenuControl {ID = this.ControlID, EnableViewState = false};
+			this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
 		}
 
 		public override void Bind(DNNNodeCollection objNodes)
 		{
-			Bind(objNodes, true);
+			this.Bind(objNodes, true);
 		}
 
 		public void Bind(DNNNodeCollection objNodes, bool localise)
@@ -161,9 +161,9 @@ namespace DotNetNuke.Web.DDRMenu
 				}
 			}
 
-			if (CustomAttributes != null)
+			if (this.CustomAttributes != null)
 			{
-				foreach (var attr in CustomAttributes)
+				foreach (var attr in this.CustomAttributes)
 				{
 					if (!string.IsNullOrEmpty(attr.Name))
 					{
@@ -177,29 +177,29 @@ namespace DotNetNuke.Web.DDRMenu
 				objNodes = Localiser.LocaliseDNNNodeCollection(objNodes);
 			}
 
-			menuControl.RootNode = new MenuNode(objNodes);
-			menuControl.SkipLocalisation = !localise;
-			menuControl.MenuSettings = new Settings
+			this.menuControl.RootNode = new MenuNode(objNodes);
+			this.menuControl.SkipLocalisation = !localise;
+			this.menuControl.MenuSettings = new Settings
 			                           {
-			                           	MenuStyle = GetCustomAttribute("MenuStyle") ?? MenuStyle ?? "DNNMenu",
-			                           	NodeXmlPath = GetCustomAttribute("NodeXmlPath"),
-			                           	NodeSelector = GetCustomAttribute("NodeSelector"),
-			                           	IncludeContext = Convert.ToBoolean(GetCustomAttribute("IncludeContext") ?? "false"),
-										IncludeHidden = Convert.ToBoolean(GetCustomAttribute("IncludeHidden") ?? "false"),
-										IncludeNodes = GetCustomAttribute("IncludeNodes"),
-			                           	ExcludeNodes = GetCustomAttribute("ExcludeNodes"),
-			                           	NodeManipulator = GetCustomAttribute("NodeManipulator"),
+			                           	MenuStyle = this.GetCustomAttribute("MenuStyle") ?? this.MenuStyle ?? "DNNMenu",
+			                           	NodeXmlPath = this.GetCustomAttribute("NodeXmlPath"),
+			                           	NodeSelector = this.GetCustomAttribute("NodeSelector"),
+			                           	IncludeContext = Convert.ToBoolean(this.GetCustomAttribute("IncludeContext") ?? "false"),
+										IncludeHidden = Convert.ToBoolean(this.GetCustomAttribute("IncludeHidden") ?? "false"),
+										IncludeNodes = this.GetCustomAttribute("IncludeNodes"),
+			                           	ExcludeNodes = this.GetCustomAttribute("ExcludeNodes"),
+			                           	NodeManipulator = this.GetCustomAttribute("NodeManipulator"),
 			                           	ClientOptions = clientOptions,
-			                           	TemplateArguments = TemplateArguments,
+			                           	TemplateArguments = this.TemplateArguments,
 			                           };
 		}
 
 		private string GetCustomAttribute(string attributeName)
 		{
 			string xmlValue = null;
-			if (CustomAttributes != null)
+			if (this.CustomAttributes != null)
 			{
-				var xmlAttr = CustomAttributes.Find(a => a.Name.Equals(attributeName, StringComparison.InvariantCultureIgnoreCase));
+				var xmlAttr = this.CustomAttributes.Find(a => a.Name.Equals(attributeName, StringComparison.InvariantCultureIgnoreCase));
 				if (xmlAttr != null)
 				{
 					xmlValue = xmlAttr.Value;

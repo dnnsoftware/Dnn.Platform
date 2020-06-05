@@ -47,8 +47,8 @@ namespace DotNetNuke.UI.WebControls
             List<TabInfo> listTabs = TabController.GetPortalTabs(_portalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
 
             //Render the Select Tag
-            ControlStyle.AddAttributesToRender(writer);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            this.ControlStyle.AddAttributesToRender(writer);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
             for (int tabIndex = 0; tabIndex <= listTabs.Count - 1; tabIndex++)
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
                 //Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString());
 
-                if (tab.TabID == IntegerValue)
+                if (tab.TabID == this.IntegerValue)
                 {
 					//Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            TabInfo linkedTabInfo = TabController.Instance.GetTab(IntegerValue, Globals.GetPortalSettings().PortalId, false);
+            TabInfo linkedTabInfo = TabController.Instance.GetTab(this.IntegerValue, Globals.GetPortalSettings().PortalId, false);
 
             //don't render anything if we didn't find the tab
             if (linkedTabInfo != null)
@@ -90,11 +90,11 @@ namespace DotNetNuke.UI.WebControls
                 //Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
                 int tabID = 0;
                 int moduleID = 0;
-                Int32.TryParse(Page.Request.QueryString["tabid"], out tabID);
-                Int32.TryParse(Page.Request.QueryString["mid"], out moduleID);
+                Int32.TryParse(this.Page.Request.QueryString["tabid"], out tabID);
+                Int32.TryParse(this.Page.Request.QueryString["mid"], out moduleID);
 
-                string url = Globals.LinkClick(StringValue, tabID, moduleID, true);
-                ControlStyle.AddAttributesToRender(writer);
+                string url = Globals.LinkClick(this.StringValue, tabID, moduleID, true);
+                this.ControlStyle.AddAttributesToRender(writer);
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, url);
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "Normal");
                 writer.RenderBeginTag(HtmlTextWriterTag.A);

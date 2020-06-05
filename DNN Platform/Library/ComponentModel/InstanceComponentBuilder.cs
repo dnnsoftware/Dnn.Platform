@@ -16,22 +16,22 @@ namespace DotNetNuke.ComponentModel
         /// <param name="instance"></param>
         public InstanceComponentBuilder(string name, object instance)
         {
-            _Name = name;
-            _Instance = instance;
+            this._Name = name;
+            this._Instance = instance;
         }
 
         #region IComponentBuilder Members
 
         public object BuildComponent()
         {
-            return _Instance;
+            return this._Instance;
         }
 
         public string Name
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
         }
 

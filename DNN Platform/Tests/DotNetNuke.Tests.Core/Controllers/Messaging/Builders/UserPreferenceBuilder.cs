@@ -16,20 +16,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal UserPreferenceBuilder()
         {
-            userId = Constants.USER_InValidId;
-            portalId = Constants.PORTAL_ValidPortalId;
-            messagesEmailFrequency = Frequency.Instant;
-            notificationsEmailFrequency = Frequency.Hourly;
+            this.userId = Constants.USER_InValidId;
+            this.portalId = Constants.PORTAL_ValidPortalId;
+            this.messagesEmailFrequency = Frequency.Instant;
+            this.notificationsEmailFrequency = Frequency.Hourly;
         }
 
         internal UserPreference Build()
         {
             return new UserPreference
             {
-                UserId = userId,
-                PortalId = portalId,
-                MessagesEmailFrequency = messagesEmailFrequency,
-                NotificationsEmailFrequency = notificationsEmailFrequency
+                UserId = this.userId,
+                PortalId = this.portalId,
+                MessagesEmailFrequency = this.messagesEmailFrequency,
+                NotificationsEmailFrequency = this.notificationsEmailFrequency
             };
         }
 

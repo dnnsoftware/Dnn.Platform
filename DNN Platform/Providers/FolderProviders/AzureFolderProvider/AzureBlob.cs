@@ -22,18 +22,18 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 return;
             }
 
-            _relativePath = blob.RelativePath();
-            _lastModifiedUtc = blob.Properties.LastModified.GetValueOrDefault(DateTimeOffset.MinValue).UtcDateTime;
-            _length = blob.Properties.Length;
-            _etag = blob.Properties.ETag;
+            this._relativePath = blob.RelativePath();
+            this._lastModifiedUtc = blob.Properties.LastModified.GetValueOrDefault(DateTimeOffset.MinValue).UtcDateTime;
+            this._length = blob.Properties.Length;
+            this._etag = blob.Properties.ETag;
         }
 
-        public string RelativePath => _relativePath;
+        public string RelativePath => this._relativePath;
 
-        public DateTime LastModifiedUtc => _lastModifiedUtc;
+        public DateTime LastModifiedUtc => this._lastModifiedUtc;
 
-        public long Length => _length;
+        public long Length => this._length;
 
-        public string ETag => _etag;
+        public string ETag => this._etag;
     }
 }

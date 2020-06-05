@@ -70,10 +70,10 @@ namespace DotNetNuke.Services.Scheduling
 
         protected SchedulingProvider()
         {
-            var settings = Settings;
+            var settings = this.Settings;
             if (settings != null)
             {
-                ProviderPath = settings["providerPath"];
+                this.ProviderPath = settings["providerPath"];
 
                 string str;
                 bool dbg;

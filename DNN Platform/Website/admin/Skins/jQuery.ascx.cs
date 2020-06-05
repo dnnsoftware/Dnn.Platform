@@ -19,17 +19,17 @@ namespace DotNetNuke.UI.Skins.Controls
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
-            if (jQueryUI)
+            if (this.jQueryUI)
             {
                 JavaScript.RequestRegistration(CommonJs.jQueryUI);
             }
 
-            if (DnnjQueryPlugins)
+            if (this.DnnjQueryPlugins)
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             }
 
-            if (jQueryHoverIntent)
+            if (this.jQueryHoverIntent)
             {
                 JavaScript.RequestRegistration(CommonJs.HoverIntent);
             }

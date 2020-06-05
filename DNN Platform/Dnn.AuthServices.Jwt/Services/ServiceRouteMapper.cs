@@ -11,7 +11,7 @@ namespace Dnn.AuthServices.Jwt.Services
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute(
-                "JwtAuth", "default", "{controller}/{action}", new[] { GetType().Namespace });
+                "JwtAuth", "default", "{controller}/{action}", new[] { this.GetType().Namespace });
         }
     }
 }

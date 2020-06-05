@@ -22,7 +22,7 @@ namespace DotNetNuke.Common.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [SetUp]
         public void SetUp()
         {
-            _mockData = MockComponentProvider.CreateDataProvider();
+            this._mockData = MockComponentProvider.CreateDataProvider();
             DataTable hostSettingsTable = new DataTable("HostSettings");
 
             var nameCol = hostSettingsTable.Columns.Add("SettingName");
@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             hostSettingsTable.PrimaryKey = new[] { nameCol };
 
             hostSettingsTable.Rows.Add("PerformanceSetting", "0", false);
-            _mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
+            this._mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
         }
 
         [TearDown]
@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId };
 
             //Act, Assert
-            controller.AddPortalToGroup(portal, null, userCopied);
+            controller.AddPortalToGroup(portal, null, this.userCopied);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
 
             //Act, Assert
-            controller.AddPortalToGroup(null, portalGroup, userCopied);
+            controller.AddPortalToGroup(null, portalGroup, this.userCopied);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = -1 };
 
             //Act, Assert
-            controller.AddPortalToGroup(portal, portalGroup, userCopied);
+            controller.AddPortalToGroup(portal, portalGroup, this.userCopied);
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             //Act, Assert
-            controller.AddPortalToGroup(portal, portalGroup, userCopied);
+            controller.AddPortalToGroup(portal, portalGroup, this.userCopied);
         }
 
         #endregion
@@ -379,7 +379,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var portal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId };
 
             //Act, Assert
-            controller.RemovePortalFromGroup(portal, null, false, userCopied);
+            controller.RemovePortalFromGroup(portal, null, false, this.userCopied);
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
 
             //Act, Assert
-            controller.RemovePortalFromGroup(null, portalGroup, false, userCopied);
+            controller.RemovePortalFromGroup(null, portalGroup, false, this.userCopied);
         }
 
         [Test]
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = -1 };
 
             //Act, Assert
-            controller.RemovePortalFromGroup(portal, portalGroup, false, userCopied);
+            controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied);
         }
 
         [Test]
@@ -428,7 +428,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
 
             //Act, Assert
-            controller.RemovePortalFromGroup(portal, portalGroup, false, userCopied);
+            controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied);
         }
 
         #endregion

@@ -84,7 +84,7 @@ namespace log4net.Appender
 		[System.Obsolete("Instead use the default constructor and set the Layout property")]
 		public TraceAppender(ILayout layout)
 		{
-			Layout = layout;
+			this.Layout = layout;
 		}
 
 		#endregion Public Instance Constructors
@@ -111,8 +111,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public bool ImmediateFlush
 		{
-			get { return m_immediateFlush; }
-			set { m_immediateFlush = value; }
+			get { return this.m_immediateFlush; }
+			set { this.m_immediateFlush = value; }
 		}
 
         /// <summary>
@@ -128,8 +128,8 @@ namespace log4net.Appender
         /// </remarks>
 	    public PatternLayout Category
 	    {
-	        get { return m_category; }
-	        set { m_category = value; }
+	        get { return this.m_category; }
+	        set { this.m_category = value; }
 	    }
 
 	    #endregion Public Instance Properties
@@ -153,13 +153,13 @@ namespace log4net.Appender
 #if NETCF
 			System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), m_category.Format(loggingEvent));
 #else
-            System.Diagnostics.Trace.Write(RenderLoggingEvent(loggingEvent), m_category.Format(loggingEvent));
+            System.Diagnostics.Trace.Write(this.RenderLoggingEvent(loggingEvent), this.m_category.Format(loggingEvent));
 #endif
 	 
 			//
 			// Flush the Trace system if needed
 			//
-			if (m_immediateFlush) 
+			if (this.m_immediateFlush) 
 			{
 #if NETCF
 				System.Diagnostics.Debug.Flush();
@@ -219,7 +219,7 @@ namespace log4net.Appender
         public override bool Flush(int millisecondsTimeout)
         {
             // Nothing to do if ImmediateFlush is true
-            if (m_immediateFlush) return true;
+            if (this.m_immediateFlush) return true;
 
             // System.Diagnostics.Trace and System.Diagnostics.Debug are thread-safe, so no need for lock(this).
 #if NETCF

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public TemplateController()
         {
-            _tabController = TabController.Instance;
+            this._tabController = TabController.Instance;
         }
 
         public string SaveAsTemplate(PageTemplate template)
@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 //Serialize tabs
                 var nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
-                SerializeTab(template, xmlTemplate, nodeTabs);
+                this.SerializeTab(template, xmlTemplate, nodeTabs);
            
                 //add file to Files table
                 using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = _tabController.GetTab(template.TabId, portalSettings.PortalId, false);
+            var tab = this._tabController.GetTab(template.TabId, portalSettings.PortalId, false);
             var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
            
-            return LoadTemplates(portalSettings.PortalId, templateFolder);
+            return this.LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
         private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)

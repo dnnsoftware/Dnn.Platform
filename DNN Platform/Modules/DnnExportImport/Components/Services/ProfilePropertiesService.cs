@@ -25,41 +25,41 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (CheckCancelled(exportJob)) return;
-            if (CheckPoint.Stage > 0) return;
-            if (CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 0) return;
+            if (this.CheckCancelled(exportJob)) return;
 
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
                         .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, toDate,
                             fromDate)).ToList();
-            CheckPoint.Progress = 50;
+            this.CheckPoint.Progress = 50;
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
-            CheckPointStageCallback(this);
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
+            this.CheckPointStageCallback(this);
 
-            if (CheckCancelled(exportJob)) return;
-            Repository.CreateItems(profileProperties);
-            Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
-            CheckPoint.Progress = 100;
-            CheckPoint.ProcessedItems = profileProperties.Count;
-            CheckPoint.Completed = true;
-            CheckPoint.Stage++;
-            CheckPointStageCallback(this);
+            if (this.CheckCancelled(exportJob)) return;
+            this.Repository.CreateItems(profileProperties);
+            this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
+            this.CheckPoint.Progress = 100;
+            this.CheckPoint.ProcessedItems = profileProperties.Count;
+            this.CheckPoint.Completed = true;
+            this.CheckPoint.Stage++;
+            this.CheckPointStageCallback(this);
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckPoint.Stage > 0) return;
-            var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
+            if (this.CheckPoint.Stage > 0) return;
+            var profileProperties = this.Repository.GetAllItems<ExportProfileProperty>().ToList();
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
-            CheckPointStageCallback(this);
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
+            this.CheckPointStageCallback(this);
 
             foreach (var profileProperty in profileProperties)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
 
                 var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                     .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
@@ -87,17 +87,17 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
 
-            Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
-            CheckPoint.ProcessedItems = profileProperties.Count;
-            CheckPoint.Completed = true;
-            CheckPoint.Progress = 100;
-            CheckPoint.Stage++;
-            CheckPointStageCallback(this);
+            this.Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
+            this.CheckPoint.ProcessedItems = profileProperties.Count;
+            this.CheckPoint.Completed = true;
+            this.CheckPoint.Progress = 100;
+            this.CheckPoint.Stage++;
+            this.CheckPointStageCallback(this);
         }
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportProfileProperty>();
+            return this.Repository.GetCount<ExportProfileProperty>();
         }
 
         private static void ProcessCreateProfileProperty(ExportImportJob importJob,

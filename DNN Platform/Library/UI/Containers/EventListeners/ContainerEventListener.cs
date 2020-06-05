@@ -11,15 +11,15 @@ namespace DotNetNuke.UI.Containers.EventListeners
 
         public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
         {
-            _Type = type;
-            _ContainerEvent = e;
+            this._Type = type;
+            this._ContainerEvent = e;
         }
 
         public ContainerEventType EventType
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
         }
 
@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
         {
             get
             {
-                return _ContainerEvent;
+                return this._ContainerEvent;
             }
         }
     }

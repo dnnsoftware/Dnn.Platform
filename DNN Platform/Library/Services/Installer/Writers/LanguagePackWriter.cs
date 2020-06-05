@@ -42,61 +42,61 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public LanguagePackWriter(PackageInfo package) : base(package)
         {
-            _LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
-            if (LanguagePack != null)
+            this._LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+            if (this.LanguagePack != null)
             {
-                _Language = LocaleController.Instance.GetLocale(_LanguagePack.LanguageID);
-                if (LanguagePack.PackageType == LanguagePackType.Core)
+                this._Language = LocaleController.Instance.GetLocale(this._LanguagePack.LanguageID);
+                if (this.LanguagePack.PackageType == LanguagePackType.Core)
                 {
-                    BasePath = Null.NullString;
+                    this.BasePath = Null.NullString;
                 }
                 else
                 {
 					//Get the BasePath of the Dependent Package
-                    PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == LanguagePack.DependentPackageID);
+                    PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.LanguagePack.DependentPackageID);
                     PackageWriterBase dependentPackageWriter = PackageWriterFactory.GetWriter(dependendentPackage);
-                    BasePath = dependentPackageWriter.BasePath;
+                    this.BasePath = dependentPackageWriter.BasePath;
                 }
             }
             else
             {
-                BasePath = Null.NullString;
+                this.BasePath = Null.NullString;
             }
         }
 
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            _Language = new Locale();
+            this._Language = new Locale();
             XPathNavigator cultureNav = manifestNav.SelectSingleNode("Culture");
-            _Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
-            _Language.Code = Util.ReadAttribute(cultureNav, "Code");
-            _Language.Fallback = Localization.Localization.SystemLocale;
+            this._Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
+            this._Language.Code = Util.ReadAttribute(cultureNav, "Code");
+            this._Language.Fallback = Localization.Localization.SystemLocale;
 
             //Create a Package
-            Package = new PackageInfo(installer);
-            Package.Name = Language.Text;
-            Package.FriendlyName = Language.Text;
-            Package.Description = Null.NullString;
-            Package.Version = new Version(1, 0, 0);
-            Package.License = Util.PACKAGE_NoLicense;
+            this.Package = new PackageInfo(installer);
+            this.Package.Name = this.Language.Text;
+            this.Package.FriendlyName = this.Language.Text;
+            this.Package.Description = Null.NullString;
+            this.Package.Version = new Version(1, 0, 0);
+            this.Package.License = Util.PACKAGE_NoLicense;
 
-            ReadLegacyManifest(manifestNav);
+            this.ReadLegacyManifest(manifestNav);
 
-            if (_IsCore)
+            if (this._IsCore)
             {
-                Package.PackageType = "CoreLanguagePack";
+                this.Package.PackageType = "CoreLanguagePack";
             }
             else
             {
-                Package.PackageType = "ExtensionLanguagePack";
+                this.Package.PackageType = "ExtensionLanguagePack";
             }
-            BasePath = Null.NullString;
+            this.BasePath = Null.NullString;
         }
 
         public LanguagePackWriter(Locale language, PackageInfo package) : base(package)
         {
-            _Language = language;
-            BasePath = Null.NullString;
+            this._Language = language;
+            this.BasePath = Null.NullString;
         }
 		
 		#endregion
@@ -121,11 +121,11 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _Language;
+                return this._Language;
             }
             set
             {
-                _Language = value;
+                this._Language = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _LanguagePack;
+                return this._LanguagePack;
             }
             set
             {
-                _LanguagePack = value;
+                this._LanguagePack = value;
             }
         }
 
@@ -160,18 +160,18 @@ namespace DotNetNuke.Services.Installer.Writers
                 resourcetype = Util.ReadAttribute(fileNav, "FileType");
                 moduleName = Util.ReadAttribute(fileNav, "ModuleName").ToLowerInvariant();
                 sourceFileName = Path.Combine(resourcetype, Path.Combine(moduleName, fileName));
-                string extendedExtension = "." + Language.Code.ToLowerInvariant() + ".resx";
+                string extendedExtension = "." + this.Language.Code.ToLowerInvariant() + ".resx";
                 switch (resourcetype)
                 {
                     case "GlobalResource":
                         filePath = "App_GlobalResources";
-                        _IsCore = true;
+                        this._IsCore = true;
                         break;
                     case "ControlResource":
                         filePath = "Controls\\App_LocalResources";
                         break;
                     case "AdminResource":
-                        _IsCore = true;
+                        this._IsCore = true;
                         switch (moduleName)
                         {
                             case "authentication":
@@ -452,13 +452,13 @@ namespace DotNetNuke.Services.Installer.Writers
                         //Two assumptions are made here
                         //1. Core files appear in the package before extension files
                         //2. Module packages only include one module
-                        if (!_IsCore && _LanguagePack == null)
+                        if (!this._IsCore && this._LanguagePack == null)
                         {
 							//Check if language is installed
-                            Locale locale = LocaleController.Instance.GetLocale(_Language.Code);
+                            Locale locale = LocaleController.Instance.GetLocale(this._Language.Code);
                             if (locale == null)
                             {
-                                LegacyError = "CoreLanguageError";
+                                this.LegacyError = "CoreLanguageError";
                             }
                             else
                             {
@@ -470,17 +470,17 @@ namespace DotNetNuke.Services.Installer.Writers
                                     {
 										//Found Module - Get Package
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
-                                        Package.Name += "_" + dependentPackage.Name;
-                                        Package.FriendlyName += " " + dependentPackage.FriendlyName;
-                                        _LanguagePack = new LanguagePackInfo();
-                                        _LanguagePack.DependentPackageID = dependentPackage.PackageID;
-                                        _LanguagePack.LanguageID = locale.LanguageId;
+                                        this.Package.Name += "_" + dependentPackage.Name;
+                                        this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
+                                        this._LanguagePack = new LanguagePackInfo();
+                                        this._LanguagePack.DependentPackageID = dependentPackage.PackageID;
+                                        this._LanguagePack.LanguageID = locale.LanguageId;
                                         break;
                                     }
                                 }
-                                if (_LanguagePack == null)
+                                if (this._LanguagePack == null)
                                 {
-                                    LegacyError = "DependencyError";
+                                    this.LegacyError = "DependencyError";
                                 }
                             }
                         }
@@ -494,7 +494,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 if (!string.IsNullOrEmpty(filePath))
                 {
-                    AddFile(Path.Combine(filePath, fileName), sourceFileName);
+                    this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
         }
@@ -506,12 +506,12 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
 			//Language file starts at the root
-            ParseFolder(Path.Combine(Globals.ApplicationMapPath, BasePath), Globals.ApplicationMapPath);
+            this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
         }
 
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
-            if (LanguagePack.PackageType == LanguagePackType.Core)
+            if (this.LanguagePack.PackageType == LanguagePackType.Core)
             {
                 if (folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin") || folder.FullName.ToLowerInvariant().Contains("providers"))
                 {
@@ -533,9 +533,9 @@ namespace DotNetNuke.Services.Installer.Writers
                     {
                         filePath = filePath.Substring(1);
                     }
-                    if (file.Name.ToLowerInvariant().Contains(Language.Code.ToLowerInvariant()) || (Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
+                    if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
                     {
-                        AddFile(Path.Combine(filePath, file.Name));
+                        this.AddFile(Path.Combine(filePath, file.Name));
                     }
                 }
             }
@@ -544,13 +544,13 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             LanguageComponentWriter languageFileWriter;
-            if (LanguagePack == null)
+            if (this.LanguagePack == null)
             {
-                languageFileWriter = new LanguageComponentWriter(Language, BasePath, Files, Package);
+                languageFileWriter = new LanguageComponentWriter(this.Language, this.BasePath, this.Files, this.Package);
             }
             else
             {
-                languageFileWriter = new LanguageComponentWriter(LanguagePack, BasePath, Files, Package);
+                languageFileWriter = new LanguageComponentWriter(this.LanguagePack, this.BasePath, this.Files, this.Package);
             }
             languageFileWriter.WriteManifest(writer);
         }

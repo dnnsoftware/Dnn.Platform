@@ -29,11 +29,11 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         {
             // get portal settings for specified portal
             var ps = new PortalSettings(portal);
-            CdfVersion = ps.CdfVersion;
-            SiteTheme = Utilities.FormatSkinName(ps.DefaultPortalSkin);
-            AdminTheme = Utilities.FormatSkinName(ps.DefaultAdminSkin);
-            Container = Utilities.FormatContainerName(ps.DefaultPortalContainer);
-            AdminContainer = Utilities.FormatContainerName(ps.DefaultAdminContainer);
+            this.CdfVersion = ps.CdfVersion;
+            this.SiteTheme = Utilities.FormatSkinName(ps.DefaultPortalSkin);
+            this.AdminTheme = Utilities.FormatSkinName(ps.DefaultAdminSkin);
+            this.Container = Utilities.FormatContainerName(ps.DefaultPortalContainer);
+            this.AdminContainer = Utilities.FormatContainerName(ps.DefaultAdminContainer);
         }
         #endregion
 

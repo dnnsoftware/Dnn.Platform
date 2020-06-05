@@ -55,10 +55,10 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
+                    if (this.ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
-                        if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
+                        if (ModulePermissionController.CanViewModule(module) && this.HasModuleSearchPermission(module, searchResult))
                         {
                             //Verify against search document permissions
                             if (string.IsNullOrEmpty(searchResult.Permissions) || PortalSecurity.IsInRoles(searchResult.Permissions))
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                 viewable = true;
                                 if (string.IsNullOrEmpty(searchResult.Url))
                                 {
-                                    searchResult.Url = GetModuleSearchUrl(module, searchResult);
+                                    searchResult.Url = this.GetModuleSearchUrl(module, searchResult);
                                     if (string.IsNullOrEmpty(searchResult.Url))
                                     {
                                         searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     try
                     {
-                        url = GetModuleSearchUrl(module, searchResult);
+                        url = this.GetModuleSearchUrl(module, searchResult);
 
                         if (string.IsNullOrEmpty(url))
                         {
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Search.Controllers
         {
             var canView = true;
 
-            var moduleSearchController = GetModuleSearchController(module);
+            var moduleSearchController = this.GetModuleSearchController(module);
             if (moduleSearchController != null)
             {
                 canView = moduleSearchController.HasViewPermission(searchResult);
@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private string GetModuleSearchUrl(ModuleInfo module, SearchResult searchResult)
         {
             var url = string.Empty;
-            var moduleSearchController = GetModuleSearchController(module);
+            var moduleSearchController = this.GetModuleSearchController(module);
             if (moduleSearchController != null)
             {
                 url = moduleSearchController.GetDocUrl(searchResult);
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
         {
-            return GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
+            return this.GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
         }
 
         private IEnumerable<ModuleInfo> GetModules(TabInfo tab)

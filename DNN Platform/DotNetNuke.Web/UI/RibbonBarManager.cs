@@ -493,12 +493,12 @@ namespace DotNetNuke.Web.UI
 
         public DotNetNukeException(string message, DotNetNukeErrorCode errorCode) : base(message)
         {
-            _ErrorCode = errorCode;
+            this._ErrorCode = errorCode;
         }
 
         public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode) : base(message, innerException)
         {
-            _ErrorCode = errorCode;
+            this._ErrorCode = errorCode;
         }
 
         public DotNetNukeException(SerializationInfo info, StreamingContext context) : base(info, context)
@@ -509,7 +509,7 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return _ErrorCode;
+                return this._ErrorCode;
             }
         }
     }

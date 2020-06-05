@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Connections
                 {
                     if (_processors == null)
                     {
-                        LoadProcessors();
+                        this.LoadProcessors();
                     }
                 }
             }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Connections
 
         public IList<IConnector> GetConnectors()
         {
-            return _processors.Values.Where(x => IsPackageInstalled(x.GetType().Assembly)).ToList();
+            return _processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
         }
 
         #endregion
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Connections
             _processors = new Dictionary<string, IConnector>();
 
             var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(IsValidFilter);
+            var types = typeLocator.GetAllMatchingTypes(this.IsValidFilter);
 
             foreach (var type in types)
             {

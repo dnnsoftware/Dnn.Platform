@@ -40,60 +40,60 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    BindGroups();
-                    BindPages();
+                    this.BindGroups();
+                    this.BindPages();
                     
-                    if (Settings.ContainsKey(Constants.DefaultRoleGroupSetting)) {
-                        drpRoleGroup.SelectedIndex = drpRoleGroup.Items.IndexOf(drpRoleGroup.Items.FindByValue(Settings[Constants.DefaultRoleGroupSetting].ToString()));
+                    if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting)) {
+                        this.drpRoleGroup.SelectedIndex = this.drpRoleGroup.Items.IndexOf(this.drpRoleGroup.Items.FindByValue(this.Settings[Constants.DefaultRoleGroupSetting].ToString()));
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupViewPage)) {
-                        drpGroupViewPage.SelectedIndex = drpGroupViewPage.Items.IndexOf(drpGroupViewPage.Items.FindByValue(Settings[Constants.GroupViewPage].ToString()));
+                    if (this.Settings.ContainsKey(Constants.GroupViewPage)) {
+                        this.drpGroupViewPage.SelectedIndex = this.drpGroupViewPage.Items.IndexOf(this.drpGroupViewPage.Items.FindByValue(this.Settings[Constants.GroupViewPage].ToString()));
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListTemplate)) {
-                        txtListTemplate.Text = Settings[Constants.GroupListTemplate].ToString();
+                    if (this.Settings.ContainsKey(Constants.GroupListTemplate)) {
+                        this.txtListTemplate.Text = this.Settings[Constants.GroupListTemplate].ToString();
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupViewTemplate))
+                    if (this.Settings.ContainsKey(Constants.GroupViewTemplate))
                     {
-                        txtViewTemplate.Text = Settings[Constants.GroupViewTemplate].ToString();
+                        this.txtViewTemplate.Text = this.Settings[Constants.GroupViewTemplate].ToString();
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupModerationEnabled)) 
+                    if (this.Settings.ContainsKey(Constants.GroupModerationEnabled)) 
                     {
-                        chkGroupModeration.Checked = Convert.ToBoolean(Settings[Constants.GroupModerationEnabled].ToString());
+                        this.chkGroupModeration.Checked = Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupLoadView)) {
-                        drpViewMode.SelectedIndex = drpViewMode.Items.IndexOf(drpViewMode.Items.FindByValue(Settings[Constants.GroupLoadView].ToString()));
+                    if (this.Settings.ContainsKey(Constants.GroupLoadView)) {
+                        this.drpViewMode.SelectedIndex = this.drpViewMode.Items.IndexOf(this.drpViewMode.Items.FindByValue(this.Settings[Constants.GroupLoadView].ToString()));
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListPageSize))
+                    if (this.Settings.ContainsKey(Constants.GroupListPageSize))
                     {
-                        txtPageSize.Text = Settings[Constants.GroupListPageSize].ToString();
+                        this.txtPageSize.Text = this.Settings[Constants.GroupListPageSize].ToString();
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListUserGroupsOnly))
+                    if (this.Settings.ContainsKey(Constants.GroupListUserGroupsOnly))
                     {
-                        chkUserGroups.Checked = Convert.ToBoolean(Settings[Constants.GroupListUserGroupsOnly].ToString());
+                        this.chkUserGroups.Checked = Convert.ToBoolean(this.Settings[Constants.GroupListUserGroupsOnly].ToString());
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListSearchEnabled))
+                    if (this.Settings.ContainsKey(Constants.GroupListSearchEnabled))
                     {
-                        chkEnableSearch.Checked = Convert.ToBoolean(Settings[Constants.GroupListSearchEnabled].ToString());
+                        this.chkEnableSearch.Checked = Convert.ToBoolean(this.Settings[Constants.GroupListSearchEnabled].ToString());
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListSortField))
+                    if (this.Settings.ContainsKey(Constants.GroupListSortField))
                     {
-                        lstSortField.SelectedIndex = lstSortField.Items.IndexOf(lstSortField.Items.FindByValue(Settings[Constants.GroupListSortField].ToString()));
+                        this.lstSortField.SelectedIndex = this.lstSortField.Items.IndexOf(this.lstSortField.Items.FindByValue(this.Settings[Constants.GroupListSortField].ToString()));
                     }
 
-                    if (Settings.ContainsKey(Constants.GroupListSortDirection))
+                    if (this.Settings.ContainsKey(Constants.GroupListSortDirection))
                     {
-                        radSortDirection.SelectedIndex = radSortDirection.Items.IndexOf(radSortDirection.Items.FindByValue(Settings[Constants.GroupListSortDirection].ToString()));
+                        this.radSortDirection.SelectedIndex = this.radSortDirection.Items.IndexOf(this.radSortDirection.Items.FindByValue(this.Settings[Constants.GroupListSortDirection].ToString()));
                     }
                 }
             }
@@ -112,17 +112,17 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, drpRoleGroup.SelectedItem.Value);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, drpGroupViewPage.SelectedItem.Value);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, txtListTemplate.Text);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, txtViewTemplate.Text);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, chkGroupModeration.Checked.ToString());
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, drpViewMode.SelectedItem.Value);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, txtPageSize.Text);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, chkEnableSearch.Checked.ToString());
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, lstSortField.SelectedItem.Value);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, radSortDirection.SelectedItem.Value);
-                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, chkUserGroups.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, this.drpRoleGroup.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, this.drpGroupViewPage.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, this.txtListTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, this.txtViewTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, this.chkGroupModeration.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, this.drpViewMode.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, this.txtPageSize.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, this.chkEnableSearch.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, this.lstSortField.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, this.radSortDirection.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, this.chkUserGroups.Checked.ToString());
             }
             catch (Exception exc) //Module failed to load
             {
@@ -132,20 +132,20 @@ namespace DotNetNuke.Modules.Groups
 
         #endregion
         private void BindGroups() {
-            var arrGroups = RoleController.GetRoleGroups(PortalId);
-			drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
-            drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
+            var arrGroups = RoleController.GetRoleGroups(this.PortalId);
+			this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
+            this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
 
             foreach (RoleGroupInfo roleGroup in arrGroups) {
-                drpRoleGroup.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
+                this.drpRoleGroup.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
             }
         }
         private void BindPages() {
-            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(PortalId)) 
+            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId)) 
             {
                 if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
                 {
-                    TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, PortalId, false);
+                    TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, this.PortalId, false);
                     if (tabInfo != null) 
                     {
                         if (tabInfo.IsDeleted == false) 
@@ -154,9 +154,9 @@ namespace DotNetNuke.Modules.Groups
                             {
                                 if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) 
                                 {
-                                    if (drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
+                                    if (this.drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
                                     {
-                                        drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
+                                        this.drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }
                                 }
 

@@ -23,9 +23,9 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                _de.Key = BaseGetKey(index);
-                _de.Value = BaseGet(index);
-                return _de;
+                this._de.Key = this.BaseGetKey(index);
+                this._de.Value = this.BaseGet(index);
+                return this._de;
             }
         }
 
@@ -34,11 +34,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return (Locale) BaseGet(key);
+                return (Locale) this.BaseGet(key);
             }
             set
             {
-                BaseSet(key, value);
+                this.BaseSet(key, value);
             }
         }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return BaseGetAllKeys();
+                return this.BaseGetAllKeys();
             }
         }
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return BaseGetAllValues();
+                return this.BaseGetAllValues();
             }
         }
 
@@ -65,20 +65,20 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return BaseHasKeys();
+                return this.BaseHasKeys();
             }
         }
 
         //Adds an entry to the collection.
         public void Add(String key, Object value)
         {
-            BaseAdd(key, value);
+            this.BaseAdd(key, value);
         }
 
         //Removes an entry with the specified key from the collection.
         public void Remove(String key)
         {
-            BaseRemove(key);
+            this.BaseRemove(key);
         }
     }
 }

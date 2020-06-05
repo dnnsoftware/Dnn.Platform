@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="order"></param>
         public SortOrderAttribute(int order)
         {
-            Order = order;
+            this.Order = order;
         }
 
         public int Order { get; set; }

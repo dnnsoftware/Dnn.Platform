@@ -79,55 +79,55 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="moduleID">ID of the current module</param>
         public TokenReplace(Scope accessLevel, string language, PortalSettings portalSettings, UserInfo user, int moduleID)
         {
-            ModuleId = int.MinValue;
-            CurrentAccessLevel = accessLevel;
+            this.ModuleId = int.MinValue;
+            this.CurrentAccessLevel = accessLevel;
             if (accessLevel != Scope.NoSettings)
             {
                 if (portalSettings == null)
                 {
                     if (HttpContext.Current != null)
                     {
-                        PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                        this.PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     }
                 }
                 else
                 {
-                    PortalSettings = portalSettings;
+                    this.PortalSettings = portalSettings;
                 }
                 if (user == null)
                 {
                     if (HttpContext.Current != null)
                     {
-                        User = (UserInfo) HttpContext.Current.Items["UserInfo"];
+                        this.User = (UserInfo) HttpContext.Current.Items["UserInfo"];
                     }
                     else
                     {
-                        User = new UserInfo();
+                        this.User = new UserInfo();
                     }
-                    AccessingUser = User;
+                    this.AccessingUser = this.User;
                 }
                 else
                 {
-                    User = user;
+                    this.User = user;
                     if (HttpContext.Current != null)
                     {
-                        AccessingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
+                        this.AccessingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
                     }
                     else
                     {
-                        AccessingUser = new UserInfo();
+                        this.AccessingUser = new UserInfo();
                     }
                 }
-                Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
+                this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
                 if (moduleID != Null.NullInteger)
                 {
-                    ModuleId = moduleID;
+                    this.ModuleId = moduleID;
                 }
             }
-            PropertySource["date"] = new DateTimePropertyAccess();
-            PropertySource["datetime"] = new DateTimePropertyAccess();
-            PropertySource["ticks"] = new TicksPropertyAccess();
-            PropertySource["culture"] = new CulturePropertyAccess();
+            this.PropertySource["date"] = new DateTimePropertyAccess();
+            this.PropertySource["datetime"] = new DateTimePropertyAccess();
+            this.PropertySource["ticks"] = new TicksPropertyAccess();
+            this.PropertySource["culture"] = new CulturePropertyAccess();
         }
 		
         /// <summary>
@@ -143,22 +143,22 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                if (ModuleId > int.MinValue && (_moduleInfo == null || _moduleInfo.ModuleID != ModuleId))
+                if (this.ModuleId > int.MinValue && (this._moduleInfo == null || this._moduleInfo.ModuleID != this.ModuleId))
                 {
-                    if (PortalSettings != null && PortalSettings.ActiveTab != null)
+                    if (this.PortalSettings != null && this.PortalSettings.ActiveTab != null)
                     {
-                        _moduleInfo = ModuleController.Instance.GetModule(ModuleId, PortalSettings.ActiveTab.TabID, false);
+                        this._moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, this.PortalSettings.ActiveTab.TabID, false);
                     }
                     else
                     {
-                        _moduleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, true);
+                        this._moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
                     }
                 }
-                return _moduleInfo;
+                return this._moduleInfo;
             }
             set
             {
-                _moduleInfo = value;
+                this._moduleInfo = value;
             }
         }
 
@@ -184,33 +184,33 @@ namespace DotNetNuke.Services.Tokens
         {
             //Cleanup, by default "" is returned for these objects and any property
             IPropertyAccess defaultPropertyAccess = new EmptyPropertyAccess();
-            PropertySource["portal"] = defaultPropertyAccess;
-            PropertySource["tab"] = defaultPropertyAccess;
-            PropertySource["host"] = defaultPropertyAccess;
-            PropertySource["module"] = defaultPropertyAccess;
-            PropertySource["user"] = defaultPropertyAccess;
-            PropertySource["membership"] = defaultPropertyAccess;
-            PropertySource["profile"] = defaultPropertyAccess;
+            this.PropertySource["portal"] = defaultPropertyAccess;
+            this.PropertySource["tab"] = defaultPropertyAccess;
+            this.PropertySource["host"] = defaultPropertyAccess;
+            this.PropertySource["module"] = defaultPropertyAccess;
+            this.PropertySource["user"] = defaultPropertyAccess;
+            this.PropertySource["membership"] = defaultPropertyAccess;
+            this.PropertySource["profile"] = defaultPropertyAccess;
 
             //initialization
-            if (CurrentAccessLevel >= Scope.Configuration)
+            if (this.CurrentAccessLevel >= Scope.Configuration)
             {
-                if (PortalSettings != null)
+                if (this.PortalSettings != null)
                 {
-                    PropertySource["portal"] = PortalSettings;
-                    PropertySource["tab"] = PortalSettings.ActiveTab;
+                    this.PropertySource["portal"] = this.PortalSettings;
+                    this.PropertySource["tab"] = this.PortalSettings.ActiveTab;
                 }
-                PropertySource["host"] = new HostPropertyAccess();
-                if (ModuleInfo != null)
+                this.PropertySource["host"] = new HostPropertyAccess();
+                if (this.ModuleInfo != null)
                 {
-                    PropertySource["module"] = ModuleInfo;
+                    this.PropertySource["module"] = this.ModuleInfo;
                 }
             }
-            if (CurrentAccessLevel >= Scope.DefaultSettings && !(User == null || User.UserID == -1))
+            if (this.CurrentAccessLevel >= Scope.DefaultSettings && !(this.User == null || this.User.UserID == -1))
             {
-                PropertySource["user"] = User;
-                PropertySource["membership"] = new MembershipPropertyAccess(User);
-                PropertySource["profile"] = new ProfilePropertyAccess(User);
+                this.PropertySource["user"] = this.User;
+                this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
+                this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
             }
         }
 
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText)
         {
-            return ReplaceTokens(sourceText);
+            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary>
@@ -233,9 +233,9 @@ namespace DotNetNuke.Services.Tokens
         public string ReplaceEnvironmentTokens(string sourceText, DataRow row)
         {
             var rowProperties = new DataRowPropertyAccess(row);
-            PropertySource["field"] = rowProperties;
-            PropertySource["row"] = rowProperties;
-            return ReplaceTokens(sourceText);
+            this.PropertySource["field"] = rowProperties;
+            this.PropertySource["row"] = rowProperties;
+            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary>
@@ -247,8 +247,8 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption)
         {
-            PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
-            return ReplaceTokens(sourceText);
+            this.PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
+            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary>
@@ -260,8 +260,8 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText, IDictionary custom, string customCaption)
         {
-            PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
-            return ReplaceTokens(sourceText);
+            this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
+            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary> 
@@ -275,9 +275,9 @@ namespace DotNetNuke.Services.Tokens
         {
             foreach (var customCaption in customCaptions)
             {
-                PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);    
+                this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);    
             }           
-            return ReplaceTokens(sourceText);
+            return this.ReplaceTokens(sourceText);
         }
         
         /// <summary>
@@ -291,10 +291,10 @@ namespace DotNetNuke.Services.Tokens
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption, DataRow row)
         {
             var rowProperties = new DataRowPropertyAccess(row);
-            PropertySource["field"] = rowProperties;
-            PropertySource["row"] = rowProperties;
-            PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
-            return ReplaceTokens(sourceText);
+            this.PropertySource["field"] = rowProperties;
+            this.PropertySource["row"] = rowProperties;
+            this.PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
+            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>string containing replaced values</returns>
         protected override string ReplaceTokens(string sourceText)
         {
-            InitializePropertySources();
+            this.InitializePropertySources();
             return base.ReplaceTokens(sourceText);
         }
     }

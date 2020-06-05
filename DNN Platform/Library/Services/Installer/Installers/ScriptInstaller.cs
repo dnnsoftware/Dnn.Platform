@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _installScript;
+                return this._installScript;
             }
         }
 
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _installScripts;
+                return this._installScripts;
             }
         }
 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _unInstallScripts;
+                return this._unInstallScripts;
             }
         }
 
@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _upgradeScript;
+                return this._upgradeScript;
             }
         }
 		
@@ -155,10 +155,10 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             bool bSuccess = true;
 
-            Log.AddInfo(string.Format(Util.SQL_BeginFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(Util.SQL_BeginFile, scriptFile.Name));
 
             //read script file for installation
-            string strScript = FileSystemUtils.ReadFile(PhysicalBasePath + scriptFile.FullName);
+            string strScript = FileSystemUtils.ReadFile(this.PhysicalBasePath + scriptFile.FullName);
 
             //This check needs to be included because the unicode Byte Order mark results in an extra character at the start of the file
             //The extra character - '?' - causes an error with the database.
@@ -169,23 +169,23 @@ namespace DotNetNuke.Services.Installer.Installers
             string strSQLExceptions = DataProvider.Instance().ExecuteScript(strScript);
             if (!String.IsNullOrEmpty(strSQLExceptions))
             {
-                if (Package.InstallerInfo.IsLegacyMode)
+                if (this.Package.InstallerInfo.IsLegacyMode)
                 {
-                    Log.AddWarning(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddWarning(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
                 }
                 else
                 {
-                    Log.AddFailure(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddFailure(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
                     bSuccess = false;
                 }
             }
-            Log.AddInfo(string.Format(Util.SQL_EndFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(Util.SQL_EndFile, scriptFile.Name));
             return bSuccess;
         }
 
         private bool IsValidScript(string fileExtension)
         {
-            return ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
+            return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
         }
 		
 		#endregion
@@ -195,17 +195,17 @@ namespace DotNetNuke.Services.Installer.Installers
         private bool InstallScriptFile(InstallFile scriptFile)
         {
 			//Call base InstallFile method to copy file
-            bool bSuccess = InstallFile(scriptFile);
+            bool bSuccess = this.InstallFile(scriptFile);
 
             //Process the file if it is an Install Script
             var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
             if (extension != null)
             {
                 string fileExtension = extension.Substring(1);
-                if (bSuccess && IsValidScript(fileExtension))
+                if (bSuccess && this.IsValidScript(fileExtension))
                 {
-                    Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
-                    bSuccess = ExecuteSql(scriptFile);
+                    this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
+                    bSuccess = this.ExecuteSql(scriptFile);
                 }
             }
             return bSuccess;
@@ -232,26 +232,26 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
             string type = nav.GetAttribute("type", "");
-            if (file != null && IsCorrectType(file.Type))
+            if (file != null && this.IsCorrectType(file.Type))
             {
                 if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))
                 {
 					//This is the initial script when installing
-                    _installScript = file;
+                    this._installScript = file;
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    _upgradeScript = file;
+                    this._upgradeScript = file;
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
 					//These are the Install/Upgrade scripts
-                    InstallScripts[file.Version] = file;
+                    this.InstallScripts[file.Version] = file;
                 }
                 else
                 {
 					//These are the Uninstall scripts
-                    UnInstallScripts[file.Version] = file;
+                    this.UnInstallScripts[file.Version] = file;
                 }
             }
 			
@@ -263,14 +263,14 @@ namespace DotNetNuke.Services.Installer.Installers
         {
 			//Process the file if it is an UnInstall Script
             var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
-            if (extension != null && (UnInstallScripts.ContainsValue(scriptFile) ))
+            if (extension != null && (this.UnInstallScripts.ContainsValue(scriptFile) ))
             {
                 string fileExtension = extension.Substring(1);
-                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && IsValidScript(fileExtension))
+                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))
                 {
 					//Install Script
-                    Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
-                    ExecuteSql(scriptFile);
+                    this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
+                    this.ExecuteSql(scriptFile);
                 }
             }
 			
@@ -300,30 +300,30 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
-            Log.AddInfo(Util.SQL_Begin);
+            this.Log.AddInfo(Util.SQL_Begin);
             try
             {
                 bool bSuccess = true;
-                Version installedVersion = Package.InstalledVersion;
+                Version installedVersion = this.Package.InstalledVersion;
 
                 //First process InstallScript
                 if (installedVersion == new Version(0, 0, 0))
                 {
-                    if (InstallScript != null)
+                    if (this.InstallScript != null)
                     {
-                        bSuccess = InstallScriptFile(InstallScript);
-                        installedVersion = InstallScript.Version;
+                        bSuccess = this.InstallScriptFile(this.InstallScript);
+                        installedVersion = this.InstallScript.Version;
                     }
                 }
 				
                 //Then process remain Install/Upgrade Scripts
                 if (bSuccess)
                 {
-                    foreach (InstallFile file in InstallScripts.Values)
+                    foreach (InstallFile file in this.InstallScripts.Values)
                     {
                         if (file.Version > installedVersion)
                         {
-                            bSuccess = InstallScriptFile(file);
+                            bSuccess = this.InstallScriptFile(file);
                             if (!bSuccess)
                             {
                                 break;
@@ -333,31 +333,31 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
 				
                 //Next process UpgradeScript - this script always runs if present
-                if (UpgradeScript != null)
+                if (this.UpgradeScript != null)
                 {
-                    bSuccess = InstallScriptFile(UpgradeScript);
-                    installedVersion = UpgradeScript.Version;
+                    bSuccess = this.InstallScriptFile(this.UpgradeScript);
+                    installedVersion = this.UpgradeScript.Version;
                 }
 				
                 //Then process uninstallScripts - these need to be copied but not executed
                 if (bSuccess)
                 {
-                    foreach (InstallFile file in UnInstallScripts.Values)
+                    foreach (InstallFile file in this.UnInstallScripts.Values)
                     {
-                        bSuccess = InstallFile(file);
+                        bSuccess = this.InstallFile(file);
                         if (!bSuccess)
                         {
                             break;
                         }
                     }
                 }
-                Completed = bSuccess;
+                this.Completed = bSuccess;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
-            Log.AddInfo(Util.SQL_End);
+            this.Log.AddInfo(Util.SQL_End);
         }
 
         /// -----------------------------------------------------------------------------
@@ -378,12 +378,12 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            Log.AddInfo(Util.SQL_BeginUnInstall);
+            this.Log.AddInfo(Util.SQL_BeginUnInstall);
 
             //Call the base method
             base.UnInstall();
 
-            Log.AddInfo(Util.SQL_EndUnInstall);
+            this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
 		
 		#endregion

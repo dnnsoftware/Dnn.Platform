@@ -48,15 +48,15 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ModuleAction == null)
+                if (this._ModuleAction == null)
                 {
-                    _ModuleAction = ModuleControl.ModuleContext.Actions.GetActionByCommandName(CommandName);
+                    this._ModuleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
                 }
-                return _ModuleAction;
+                return this._ModuleAction;
             }
             set
             {
-                _ModuleAction = value;
+                this._ModuleAction = value;
             }
         }
 
@@ -74,11 +74,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+                return this._ActionManager;
             }
         }
 
@@ -107,8 +107,8 @@ namespace DotNetNuke.UI.Containers
             base.CreateChildControls();
 
             //Set Causes Validation and Enables ViewState to false
-            CausesValidation = false;
-            EnableViewState = false;
+            this.CausesValidation = false;
+            this.EnableViewState = false;
         }
 
         /// -----------------------------------------------------------------------------
@@ -118,9 +118,9 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
@@ -132,9 +132,9 @@ namespace DotNetNuke.UI.Containers
         protected override void OnButtonClick(EventArgs e)
         {
             base.OnButtonClick(e);
-            if (!ActionManager.ProcessAction(ModuleAction))
+            if (!this.ActionManager.ProcessAction(this.ModuleAction))
             {
-                OnAction(new ActionEventArgs(ModuleAction, ModuleControl.ModuleContext.Configuration));
+                this.OnAction(new ActionEventArgs(this.ModuleAction, this.ModuleControl.ModuleContext.Configuration));
             }
         }
 
@@ -147,34 +147,34 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnPreRender(e);
 
-            if (ModuleAction != null && ActionManager.IsVisible(ModuleAction))
+            if (this.ModuleAction != null && this.ActionManager.IsVisible(this.ModuleAction))
             {
-                Text = ModuleAction.Title;
-                CommandArgument = ModuleAction.ID.ToString();
+                this.Text = this.ModuleAction.Title;
+                this.CommandArgument = this.ModuleAction.ID.ToString();
 
-                if (DisplayIcon && (!string.IsNullOrEmpty(ModuleAction.Icon) || !string.IsNullOrEmpty(ImageUrl)))
+                if (this.DisplayIcon && (!string.IsNullOrEmpty(this.ModuleAction.Icon) || !string.IsNullOrEmpty(this.ImageUrl)))
                 {
-                    if (!string.IsNullOrEmpty(ImageUrl))
+                    if (!string.IsNullOrEmpty(this.ImageUrl))
                     {
-                        ImageUrl = ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + ImageUrl;
+                        this.ImageUrl = this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.ImageUrl;
                     }
                     else
                     {
-                        if (ModuleAction.Icon.IndexOf("/") > Null.NullInteger)
+                        if (this.ModuleAction.Icon.IndexOf("/") > Null.NullInteger)
                         {
-                            ImageUrl = ModuleAction.Icon;
+                            this.ImageUrl = this.ModuleAction.Icon;
                         }
                         else
                         {
-                            ImageUrl = "~/images/" + ModuleAction.Icon;
+                            this.ImageUrl = "~/images/" + this.ModuleAction.Icon;
                         }
                     }
                 }
-                ActionManager.GetClientScriptURL(ModuleAction, this);
+                this.ActionManager.GetClientScriptURL(this.ModuleAction, this);
             }
             else
             {
-                Visible = false;
+                this.Visible = false;
             }
         }
 		

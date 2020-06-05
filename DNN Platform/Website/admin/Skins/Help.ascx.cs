@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -40,23 +40,23 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    hypHelp.CssClass = CssClass;
+                    this.hypHelp.CssClass = this.CssClass;
                 }
-                if (Request.IsAuthenticated)
+                if (this.Request.IsAuthenticated)
                 {
                     if (TabPermissionController.CanAdminPage())
                     {
-                        hypHelp.Text = Localization.GetString("Help");
-                        hypHelp.NavigateUrl = "mailto:" + Host.HostEmail + "?subject=" + PortalSettings.PortalName + " Support Request";
-                        hypHelp.Visible = true;
+                        this.hypHelp.Text = Localization.GetString("Help");
+                        this.hypHelp.NavigateUrl = "mailto:" + Host.HostEmail + "?subject=" + this.PortalSettings.PortalName + " Support Request";
+                        this.hypHelp.Visible = true;
                     }
                     else
                     {
-                        hypHelp.Text = Localization.GetString("Help");
-                        hypHelp.NavigateUrl = "mailto:" + PortalSettings.Email + "?subject=" + PortalSettings.PortalName + " Support Request";
-                        hypHelp.Visible = true;
+                        this.hypHelp.Text = Localization.GetString("Help");
+                        this.hypHelp.NavigateUrl = "mailto:" + this.PortalSettings.Email + "?subject=" + this.PortalSettings.PortalName + " Support Request";
+                        this.hypHelp.Visible = true;
                     }
                 }
             }

@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
         public Purchase()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -44,93 +44,93 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            cmdPurchase.Click += cmdPurchase_Click;
-            cmdCancel.Click += cmdCancel_Click;
+            this.cmdPurchase.Click += this.cmdPurchase_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
 
             try
             {
                 double dblTotal;
                 string strCurrency;
 
-                if ((Request.QueryString["RoleID"] != null))
+                if ((this.Request.QueryString["RoleID"] != null))
                 {
-                    RoleID = Int32.Parse(Request.QueryString["RoleID"]);
+                    this.RoleID = Int32.Parse(this.Request.QueryString["RoleID"]);
                 }
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    if (RoleID != -1)
+                    if (this.RoleID != -1)
                     {
-                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == RoleID);
+                        RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this.RoleID);
 
                         if (objRole.RoleID != -1)
                         {
-                            lblServiceName.Text = objRole.RoleName;
+                            this.lblServiceName.Text = objRole.RoleName;
                             if (!Null.IsNull(objRole.Description))
                             {
-                                lblDescription.Text = objRole.Description;
+                                this.lblDescription.Text = objRole.Description;
                             }
-                            if (RoleID == PortalSettings.AdministratorRoleId)
+                            if (this.RoleID == this.PortalSettings.AdministratorRoleId)
                             {
-                                if (!Null.IsNull(PortalSettings.HostFee))
+                                if (!Null.IsNull(this.PortalSettings.HostFee))
                                 {
-                                    lblFee.Text = PortalSettings.HostFee.ToString("#,##0.00");
+                                    this.lblFee.Text = this.PortalSettings.HostFee.ToString("#,##0.00");
                                 }
                             }
                             else
                             {
                                 if (!Null.IsNull(objRole.ServiceFee))
                                 {
-                                    lblFee.Text = objRole.ServiceFee.ToString("#,##0.00");
+                                    this.lblFee.Text = objRole.ServiceFee.ToString("#,##0.00");
                                 }
                             }
                             if (!Null.IsNull(objRole.BillingFrequency))
                             {
                                 var ctlEntry = new ListController();
                                 ListEntryInfo entry = ctlEntry.GetListEntryInfo("Frequency", objRole.BillingFrequency);
-                                lblFrequency.Text = entry.Text;
+                                this.lblFrequency.Text = entry.Text;
                             }
-                            txtUnits.Text = "1";
+                            this.txtUnits.Text = "1";
                             if (objRole.BillingFrequency == "O") //one-time fee
                             {
-                                txtUnits.Enabled = false;
+                                this.txtUnits.Enabled = false;
                             }
                         }
                         else //security violation attempt to access item not related to this Module
                         {
-                            Response.Redirect(_navigationManager.NavigateURL(), true);
+                            this.Response.Redirect(this._navigationManager.NavigateURL(), true);
                         }
                     }
 
                     //Store URL Referrer to return to portal
-                    if (Request.UrlReferrer != null)
+                    if (this.Request.UrlReferrer != null)
                     {
-                        ViewState["UrlReferrer"] = Convert.ToString(Request.UrlReferrer);
+                        this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
                     }
                     else
                     {
-                        ViewState["UrlReferrer"] = "";
+                        this.ViewState["UrlReferrer"] = "";
                     }
                 }
-                if (RoleID == PortalSettings.AdministratorRoleId)
+                if (this.RoleID == this.PortalSettings.AdministratorRoleId)
                 {
                     strCurrency = Host.HostCurrency;
                 }
                 else
                 {
-                    strCurrency = PortalSettings.Currency;
+                    strCurrency = this.PortalSettings.Currency;
                 }
-                dblTotal = Convert.ToDouble(lblFee.Text)*Convert.ToDouble(txtUnits.Text);
-                lblTotal.Text = dblTotal.ToString("#.##");
+                dblTotal = Convert.ToDouble(this.lblFee.Text)*Convert.ToDouble(this.txtUnits.Text);
+                this.lblTotal.Text = dblTotal.ToString("#.##");
 
-                lblFeeCurrency.Text = strCurrency;
-                lblTotalCurrency.Text = strCurrency;
+                this.lblFeeCurrency.Text = strCurrency;
+                this.lblTotalCurrency.Text = strCurrency;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -146,9 +146,9 @@ namespace DotNetNuke.Modules.Admin.Sales
                 string strProcessorUserId = "";
                 string strProcessorPassword = "";
 
-                if (Page.IsValid)
+                if (this.Page.IsValid)
                 {
-                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                     if (objPortalInfo != null)
                     {
                         strPaymentProcessor = objPortalInfo.PaymentProcessor;
@@ -161,20 +161,20 @@ namespace DotNetNuke.Modules.Admin.Sales
                         string strPayPalURL = "";
                         strPayPalURL = "https://www.paypal.com/xclick/business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                         strPayPalURL = strPayPalURL + "&item_name=" +
-                                       Globals.HTTPPOSTEncode(PortalSettings.PortalName + " - " + lblDescription.Text + " ( " + txtUnits.Text + " units @ " + lblFee.Text + " " + lblFeeCurrency.Text +
-                                                              " per " + lblFrequency.Text + " )");
-                        strPayPalURL = strPayPalURL + "&item_number=" + Globals.HTTPPOSTEncode(Convert.ToString(RoleID));
+                                       Globals.HTTPPOSTEncode(this.PortalSettings.PortalName + " - " + this.lblDescription.Text + " ( " + this.txtUnits.Text + " units @ " + this.lblFee.Text + " " + this.lblFeeCurrency.Text +
+                                                              " per " + this.lblFrequency.Text + " )");
+                        strPayPalURL = strPayPalURL + "&item_number=" + Globals.HTTPPOSTEncode(Convert.ToString(this.RoleID));
                         strPayPalURL = strPayPalURL + "&quantity=1";
-                        strPayPalURL = strPayPalURL + "&custom=" + Globals.HTTPPOSTEncode(UserInfo.UserID.ToString());
-                        strPayPalURL = strPayPalURL + "&amount=" + Globals.HTTPPOSTEncode(lblTotal.Text);
-                        strPayPalURL = strPayPalURL + "&currency_code=" + Globals.HTTPPOSTEncode(lblTotalCurrency.Text);
-                        strPayPalURL = strPayPalURL + "&return=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(Request));
-                        strPayPalURL = strPayPalURL + "&cancel_return=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(Request));
-                        strPayPalURL = strPayPalURL + "&notify_url=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(Request) + "/admin/Sales/PayPalIPN.aspx");
+                        strPayPalURL = strPayPalURL + "&custom=" + Globals.HTTPPOSTEncode(this.UserInfo.UserID.ToString());
+                        strPayPalURL = strPayPalURL + "&amount=" + Globals.HTTPPOSTEncode(this.lblTotal.Text);
+                        strPayPalURL = strPayPalURL + "&currency_code=" + Globals.HTTPPOSTEncode(this.lblTotalCurrency.Text);
+                        strPayPalURL = strPayPalURL + "&return=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(this.Request));
+                        strPayPalURL = strPayPalURL + "&cancel_return=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(this.Request));
+                        strPayPalURL = strPayPalURL + "&notify_url=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(this.Request) + "/admin/Sales/PayPalIPN.aspx");
                         strPayPalURL = strPayPalURL + "&undefined_quantity=&no_note=1&no_shipping=1";
 
                         //redirect to PayPal
-                        Response.Redirect(strPayPalURL, true);
+                        this.Response.Redirect(strPayPalURL, true);
                     }
                 }
             }
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
             try
             {
-                Response.Redirect(Convert.ToString(ViewState["UrlReferrer"]), true);
+                this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
             }
             catch (Exception exc) //Module failed to load
             {

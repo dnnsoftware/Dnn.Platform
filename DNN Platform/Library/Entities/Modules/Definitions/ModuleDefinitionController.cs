@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
         {
-            DeleteModuleDefinition(objModuleDefinition.ModuleDefID);
+            this.DeleteModuleDefinition(objModuleDefinition.ModuleDefID);
         }
 
         /// -----------------------------------------------------------------------------

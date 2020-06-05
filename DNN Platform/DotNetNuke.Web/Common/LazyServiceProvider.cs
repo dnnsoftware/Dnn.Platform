@@ -12,15 +12,15 @@ namespace DotNetNuke.Web.Common
 
         public object GetService(Type serviceType)
         {
-            if (_serviceProvider is null)
+            if (this._serviceProvider is null)
                 throw new Exception("Cannot resolve services until the service provider is built.");
 
-            return _serviceProvider.GetService(serviceType);
+            return this._serviceProvider.GetService(serviceType);
         }
 
         internal void SetProvider(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            this._serviceProvider = serviceProvider;
         }
     }
 }

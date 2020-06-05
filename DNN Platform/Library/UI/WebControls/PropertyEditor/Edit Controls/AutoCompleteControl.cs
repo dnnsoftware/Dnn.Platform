@@ -25,8 +25,8 @@ namespace DotNetNuke.UI.WebControls
 
         public AutoCompleteControl()
         {
-            Init += AutoCompleteControl_Init;
-            Load += AutoCompleteControl_Load;
+            this.Init += this.AutoCompleteControl_Init;
+            this.Load += this.AutoCompleteControl_Load;
         }
         #endregion
 
@@ -48,9 +48,9 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
-            if ((CustomAttributes != null))
+            if ((this.CustomAttributes != null))
             {
-                foreach (Attribute attribute in CustomAttributes)
+                foreach (Attribute attribute in this.CustomAttributes)
                 {
                     if (attribute is MaxLengthAttribute)
                     {
@@ -60,16 +60,16 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, StringValue);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
             if (length > Null.NullInteger)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
-            writer.AddAttribute("data-name", Name);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+            writer.AddAttribute("data-name", this.Name);
             writer.AddAttribute("data-pid", Entities.Portals.PortalSettings.Current.PortalId.ToString());
             writer.AddAttribute("data-editor", "AutoCompleteControl");
             writer.RenderBeginTag(HtmlTextWriterTag.Input);

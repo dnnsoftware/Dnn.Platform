@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.OutputCache
 
         public PurgeOutputCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
         }
 
         public override void DoWork()
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.OutputCache
                         foreach (PortalInfo portal in portals)
                         {
                             kvp.Value.PurgeExpiredItems(portal.PortalID);
-                            ScheduleHistoryItem.AddLogNote(string.Format("Purged output cache for {0}.  ", kvp.Key));
+                            this.ScheduleHistoryItem.AddLogNote(string.Format("Purged output cache for {0}.  ", kvp.Key));
                         }
                     }
                     catch (NotSupportedException exc)
@@ -46,16 +46,16 @@ namespace DotNetNuke.Services.OutputCache
                         Logger.Debug(exc);
                     }
                 }
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
 
-                ScheduleHistoryItem.AddLogNote(string.Format("Purging output cache task failed: {0}.", exc.ToString())); //OPTIONAL
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging output cache task failed: {0}.", exc.ToString())); //OPTIONAL
 
                 //notification that we have errored
-                Errored(ref exc);
+                this.Errored(ref exc);
 				
 				//log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL
