@@ -16,7 +16,7 @@
       ],
       "systemUsingDirectivesFirst": true,
       "usingDirectivesPlacement": "insideNamespace",
-      "blankLinesBetweenUsingGroups": "allow"
+      "blankLinesBetweenUsingGroups": "require"
     },
     "namingRules": {
       "allowCommonHungarianPrefixes": true,
