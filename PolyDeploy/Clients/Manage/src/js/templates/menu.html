@@ -4,20 +4,33 @@
 
         <!-- Menu -->
         <div class="col-sm-2">
-            <ul>
-                <li><a ui-sref="menu.welcome">Welcome</a></li>
-                <li><a ui-sref="menu.users">API Users</a></li>
-                <li><a ui-sref="menu.whitelist">IP Whitelist</a></li>
-                <li><a ui-sref="menu.events">Event Log</a></li>
-            </ul>
+            <div class="list-group">
+                <a class="list-group-item" ui-sref-active="active" ui-sref="menu.events">Event Log</a>
+                <a class="list-group-item" ui-sref-active="active" ui-sref="menu.users">API Users</a>
+                <a class="list-group-item" ui-sref-active="active" ui-sref="menu.whitelist">IP Whitelist</a>
+            </div>
         </div>
         <!-- /Menu -->
 
-        <!-- Menu -->
         <div class="col-sm-10">
+
+            <!-- Warnings -->
+            <div ng-controller="WarningController">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger" ng-repeat="warning in warnings" ng-if="warning.active">
+                            <strong>Warning!</strong> {{ warning.message }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Warnings-->
+
+            <!-- Content -->
             <div ui-view></div>
+            <!-- /Content -->
+
         </div>
-        <!-- /Menu -->
 
     </div>
 

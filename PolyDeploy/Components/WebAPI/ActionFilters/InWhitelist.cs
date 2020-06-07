@@ -1,6 +1,6 @@
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Exceptions;
 using Cantarus.Modules.PolyDeploy.Components.Logging;
-using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -15,6 +15,32 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             base.OnActionExecuting(actionContext);
+
+            // Get whitelist state.
+            bool whitelistDisabled;
+
+            try
+            {
+                // Attempt to retrieve disabled state.
+                whitelistDisabled = SettingManager.GetSetting("WHITELIST", "STATE").Value.ToLower() == "false";
+            }
+            catch (SettingNotFoundException ex)
+            {
+                // Setting not set, default to off.
+                whitelistDisabled = true;
+            }
+
+            // Get api user.
+            string apiKey = actionContext.Request.GetApiKey();
+            APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
+
+            // Is the whitelist disabled or does the api user have permission to
+            // bypass it?
+            if (whitelistDisabled || (apiUser != null && apiUser.BypassIPWhitelist))
+            {
+                // No need to perform whitelisting checks, return early.
+                return;
+            }
 
             bool authenticated = false;
             string message = "Access denied.";
@@ -56,17 +82,6 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI.ActionFilters
                 message = "An error occurred while trying to authenticate this request.";
 
                 EventLogManager.Log("AUTH_EXCEPTION", EventLogSeverity.Info, null, ex);
-            }
-
-            // If IP is not whitelisted, check if API user can bypass whitelist
-            if (!authenticated)
-            {
-                string apiKey = actionContext.Request.GetApiKey();
-                APIUser apiUser = APIUserManager.GetByAPIKey(apiKey);
-                if (apiUser != null && apiUser.BypassIPWhitelist)
-                {
-                    authenticated = true;
-                }
             }
 
             // If authentication failure occurs, return a response without carrying on executing actions.

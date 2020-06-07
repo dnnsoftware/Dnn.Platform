@@ -1,5 +1,6 @@
 ﻿using Cantarus.Modules.PolyDeploy.Components.DataAccess.DataControllers;
 using Cantarus.Modules.PolyDeploy.Components.DataAccess.Models;
+using Cantarus.Modules.PolyDeploy.Components.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,46 +11,59 @@ namespace Cantarus.Modules.PolyDeploy.Components
     {
         private static IPSpecDataController IPSpecDC = new IPSpecDataController();
 
-        /*
-         * Create a new IPSpec object using the passed address.
-         */
-        public static IPSpec Create(string address)
+        /// <summary>
+        /// Create a new IPSpec object using the passed name and address.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public static IPSpec Create(string name, string address)
         {
-            IPSpec ipSpec;
+            IPSpec ipSpec = IPSpecDC.GetByName(name);
 
-            try
+            if (ipSpec != null)
             {
-                ipSpec = new IPSpec(address);
+                throw new IPSpecExistsException($"An entry named '{ipSpec.Name}' already exists.");
+            }
 
-                IPSpecDC.Create(ipSpec);
-            }
-            catch (Exception ex)
+            ipSpec = IPSpecDC.Get(address);
+
+            if (ipSpec != null)
             {
-                return null;
+                throw new IPSpecExistsException($"IP '{address}' is already whitelisted by entry named '{ipSpec.Name}'.");
             }
+
+            ipSpec = new IPSpec(name, address);
+
+            IPSpecDC.Create(ipSpec);
 
             return ipSpec;
         }
 
-        /*
-         * Retrieve all the IPSpec objects from the database.
-         */
+        /// <summary>
+        /// Retrieve all the IPSpec objects from the database.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<IPSpec> GetAll()
         {
             return IPSpecDC.Get();
         }
 
-        /*
-         * Get single IPSpec by its id.
-         */
-         public static IPSpec GetById(int id)
+        /// <summary>
+        /// Get single IPSpec by its id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static IPSpec GetById(int id)
         {
             return IPSpecDC.Get(id);
         }
 
-        /*
-         * Check to see if the passed address is whitelisted.
-         */
+        /// <summary>
+        /// Check to see if the passed address is whitelisted.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public static bool IsWhitelisted(string address)
         {
             if (!IPAddress.TryParse(address, out _))
@@ -66,15 +80,16 @@ namespace Cantarus.Modules.PolyDeploy.Components
                 }
             }
 
-            IPSpec ipSpec = IPSpecDC.FindByAddress(address);
+            IPSpec ipSpec = IPSpecDC.Get(address);
 
             return ipSpec != null;
         }
 
-        /*
-         * Delete the passed IPSpec.
-         */
-         public static void Delete(IPSpec ipSpec)
+        /// <summary>
+        /// Delete the passed IPSpec.
+        /// </summary>
+        /// <param name="ipSpec"></param>
+        public static void Delete(IPSpec ipSpec)
         {
             IPSpecDC.Delete(ipSpec);
         }

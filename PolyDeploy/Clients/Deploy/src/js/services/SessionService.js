@@ -12,6 +12,13 @@
         // Gets a new session from the API.
         function newSession() {
 
+            // Is there an interval promise?
+            if (sessionRefreshInterval) {
+
+                // Cancel it.
+                $interval.cancel(sessionRefreshInterval);
+            }
+
             // Get a session from the API.
             sessionPromise = SessionDataService.create().then(
                 function (session) {
@@ -36,6 +43,16 @@
                     return SessionDataService.get(session.Guid).then(
                         function (sessionUpdate) {
 
+                            // Do we need to stop refreshing?
+                            if (sessionUpdate
+                                && sessionUpdate.Status
+                                && sessionUpdate.Status === 2) {
+
+                                // Complete, no need to continue refreshing.
+                                $interval.cancel(sessionRefreshInterval);
+                            }
+
+                            // Replace current session data.
                             replace(sessionObject, sessionUpdate);
 
                             return sessionObject;
@@ -51,7 +68,6 @@
                 function (session) {
 
                     // Get session summary.
-                    console.log('GetSummary: ' + session.Guid);
                     return SessionDataService.summary(session.Guid);
                 });
         }

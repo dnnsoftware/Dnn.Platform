@@ -33,6 +33,12 @@ gulp.task('post-build-Release', [
     'build-release'
 ]);
 
+gulp.task('pre-build-Debug');
+gulp.task('post-build-Debug');
+
+gulp.task('pre-build-Clients');
+gulp.task('post-build-Clients');
+
 /*
     Clean Bin
     You can't rely on Visual Studio to clean the bin folder, even when calling

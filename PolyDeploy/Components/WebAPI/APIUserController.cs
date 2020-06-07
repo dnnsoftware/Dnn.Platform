@@ -21,10 +21,12 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
         {
             List<APIUser> apiUsers = APIUserManager.GetAll().ToList();
 
-            foreach(APIUser apiUser in apiUsers)
+            // Loop and remove sensitive information.
+            foreach (APIUser apiUser in apiUsers)
             {
-                apiUser.APIKey = string.Format("****************************{0}", apiUser.APIKey.Substring(apiUser.APIKey.Length - 4));
-                apiUser.EncryptionKey = string.Format("****************************{0}", apiUser.EncryptionKey.Substring(apiUser.EncryptionKey.Length - 4));
+                apiUser.APIKey_Sha = null;
+                apiUser.EncryptionKey_Enc = null;
+                apiUser.Salt = null;
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, apiUsers);
@@ -41,6 +43,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
 
             // Create user.
             APIUser apiUser = APIUserManager.Create(name, bypass);
+
+            apiUser.APIKey_Sha = null;
+            apiUser.EncryptionKey_Enc = null;
+            apiUser.Salt = null;
 
             return Request.CreateResponse(HttpStatusCode.Created, apiUser);
         }
@@ -66,6 +72,10 @@ namespace Cantarus.Modules.PolyDeploy.Components.WebAPI
             try
             {
                 apiUser = APIUserManager.Update(apiUser);
+
+                apiUser.APIKey_Sha = null;
+                apiUser.EncryptionKey_Enc = null;
+                apiUser.Salt = null;
             }
             catch(Exception ex)
             {
