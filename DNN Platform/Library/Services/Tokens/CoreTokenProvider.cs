@@ -10,7 +10,10 @@ namespace DotNetNuke.Services.Tokens {
         }
 
         public override string Tokenize(string content, TokenContext context) {
-            return content; // conttent already tokenized by BaseCustomTokenReplace
+            var tokenizer = new TokenReplace() {
+                TokenContext = context
+            };
+            return tokenizer.ReplaceEnvironmentTokens(content);
         }
     }
 }

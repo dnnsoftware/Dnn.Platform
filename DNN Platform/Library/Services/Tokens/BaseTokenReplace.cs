@@ -4,24 +4,17 @@
 
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
-    using System.Globalization;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Threading;
-
-    using DotNetNuke.Common.Utilities;
-
+using System;
     /// <summary>
-    /// The BaseTokenReplace class provides the tokenization of tokens formatted
+    /// The BaseTokenReplace class provides the tokenization of tokens formatted  
     /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
     /// with the appropriate current property/custom values.
     /// </summary>
     /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
-        protected const string ObjectLessToken = "no_object";
 
+        protected const string ObjectLessToken = "no_object";
         private const string ExpressionDefault =
             "(?:(?<text>\\[\\])|\\[(?:(?<object>[^{}\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
 
@@ -33,35 +26,17 @@ namespace DotNetNuke.Services.Tokens
         private const string TokenReplaceCacheKeyDefault = "TokenReplaceRegEx_Default";
         private const string TokenReplaceCacheKeyObjectless = "TokenReplaceRegEx_Objectless";
 
-        private CultureInfo _formatProvider;
-        private string _language;
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected abstract CultureInfo FormatProvider { get; }
 
         /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
-        public string Language
-        {
-            get
-            {
-                return this._language;
-            }
-
-            set
-            {
-                this._language = value;
-                this._formatProvider = new CultureInfo(this._language);
-            }
-        }
-
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected CultureInfo FormatProvider
-        {
-            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
-        }
+        public abstract string Language { get; set; }
 
         /// <summary>
         /// Gets the Regular expression for the token to be replaced.
@@ -126,4 +101,10 @@ namespace DotNetNuke.Services.Tokens
             return result.ToString();
         }
     }
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+
+using DotNetNuke.Common.Utilities;
 }

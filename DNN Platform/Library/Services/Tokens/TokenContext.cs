@@ -62,12 +62,5 @@ namespace DotNetNuke.Services.Tokens {
         public bool DebugMessages { get; set; }
 
         public Dictionary<string, IPropertyAccess> PropertySource { get; private set; } = new Dictionary<string, IPropertyAccess>();
-
-
-        /// <summary>
-        /// Custom data that the caller can share with the Token Provider
-        /// </summary>
-        public object Data { get; set; }
-
     }
 }
