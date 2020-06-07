@@ -111,7 +111,6 @@ using System.Collections;
         private void DetermineLanguage(string language)
         {
             Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
-            TokenContext.Language = new System.Globalization.CultureInfo(Language);
         }
 
         private void DetermineModule(int moduleID)
