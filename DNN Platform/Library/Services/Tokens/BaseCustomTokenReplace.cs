@@ -18,11 +18,16 @@ using System;
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
 
-        public TokenContext TokenContext { get; set; } = new TokenContext();
-
-        protected Dictionary<string, IPropertyAccess> PropertySource {
-            get => TokenContext.PropertySource;
+        TokenContext _tokenContext = new TokenContext();
+        public TokenContext TokenContext {
+            get => _tokenContext;
+            set {
+                _tokenContext = value;
+                PropertySource = _tokenContext.PropertySource;
+            }
         }
+
+        protected Dictionary<string, IPropertyAccess> PropertySource;
 
         /// <summary>
         /// Gets or sets /sets the user object representing the currently accessing user (permission).
@@ -75,6 +80,10 @@ using System;
         {
             get => TokenContext.CurrentAccessLevel;
             set => TokenContext.CurrentAccessLevel = value;
+        }
+
+        public BaseCustomTokenReplace() {
+            PropertySource = TokenContext.PropertySource;
         }
 
         /// <summary>
