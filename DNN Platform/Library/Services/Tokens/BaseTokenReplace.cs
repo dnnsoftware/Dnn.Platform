@@ -26,17 +26,35 @@ using System;
         private const string TokenReplaceCacheKeyDefault = "TokenReplaceRegEx_Default";
         private const string TokenReplaceCacheKeyObjectless = "TokenReplaceRegEx_Objectless";
 
+
+        private CultureInfo _formatProvider;
+        private string _language;
+
         /// <summary>
         /// Gets the Format provider as Culture info from stored language or current culture.
         /// </summary>
         /// <value>An CultureInfo.</value>
-        protected abstract CultureInfo FormatProvider { get; }
+        protected virtual CultureInfo FormatProvider
+        {
+            get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
+        }
 
         /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
-        public abstract string Language { get; set; }
+        public virtual string Language
+        {
+            get
+            {
+                return _language;
+            }
+            set
+            {
+                _language = value;
+                _formatProvider = new CultureInfo(_language);
+            }
+        }
 
         /// <summary>
         /// Gets the Regular expression for the token to be replaced.
